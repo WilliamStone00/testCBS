@@ -1,5 +1,53 @@
 ﻿
 @using Resources
+<style>
+    /* Keep actions compact & on one line in the table */
+    .actions-cell {
+        white-space: nowrap;
+    }
+
+    /* Compact pill buttons */
+    .btn-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        padding: .25rem .55rem;
+        line-height: 1;
+        font-size: .75rem;
+        border-radius: 999px;
+        box-shadow: 0 1px 0 rgba(0,0,0,.04);
+        text-transform: none !important; /* override themes that force UPPERCASE */
+    }
+
+        .btn-chip i {
+            font-size: 1rem;
+            line-height: 0;
+        }
+
+    /* Soft color variants */
+    .btn-view {
+        background: rgba(13,110,253,.08);
+        color: #0d6efd;
+        border: 1px solid rgba(13,110,253,.25);
+    }
+
+        .btn-view:hover {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+    .btn-extract {
+        background: rgba(25,135,84,.08);
+        color: #198754;
+        border: 1px solid rgba(25,135,84,.25);
+    }
+
+        .btn-extract:hover {
+            background: #198754;
+            color: #fff;
+        }
+</style>
+
 <form id="fileFilterForm">
     @Html.AntiForgeryToken()
     <div class="card shadow p-3 mb-2">
@@ -93,44 +141,44 @@
 </table>
 
 <script>
-(function ($) {
-    'use strict';
+    (function ($) {
+        'use strict';
 
-    // -----------------------
-    // Helpers
-    // -----------------------
-    function formatCurrency(num) {
-        return (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+        // -----------------------
+        // Helpers
+        // -----------------------
+        function formatCurrency(num) {
+            return (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-    function getStatusBadge(status) {
-     if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
-     let badgeClass = "bg-secondary";
-     switch ((status + "").toLowerCase()) {
-         case "pending": badgeClass = "bg-warning text-dark"; break;
-         case "approved":
-         case "extracted":
-         case "completed":
-         case "treated": badgeClass = "bg-success"; break;
-         case "rejected":
-         case "failed": badgeClass = "bg-danger"; break;
-         case "review": badgeClass = "bg-info text-dark"; break;
-     }
-     return `<span class='badge ${badgeClass}'>${status}</span>`; 
-    }
+        function getStatusBadge(status) {
+            if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
+            let badgeClass = "bg-secondary";
+            switch ((status + "").toLowerCase()) {
+                case "pending": badgeClass = "bg-warning text-dark"; break;
+                case "approved":
+                case "extracted":
+                case "completed":
+                case "treated": badgeClass = "bg-success"; break;
+                case "rejected":
+                case "failed": badgeClass = "bg-danger"; break;
+                case "review": badgeClass = "bg-info text-dark"; break;
+            }
+            return `<span class='badge ${badgeClass}'>${status}</span>`;
+        }
 
-    // Extraction preview HTML builder (unchanged behavior)
-    window.buildExtractedPreviewHtml = function (data) {
-        data = data || {};
-        const fmt = (n) => (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Extraction preview HTML builder (unchanged behavior)
+        window.buildExtractedPreviewHtml = function (data) {
+            data = data || {};
+            const fmt = (n) => (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-        const fileUploadId = data.FileUploadId ?? data.fileUploadId ?? 'N/A';
-        const collectorName = data.CollectorName ?? data.collectorName ?? '';
-        const branchName = data.BranchName ?? data.branchName ?? '';
-        const totalMember = data.TotalMember ?? data.totalMember ?? data.totalMembers ?? 0;
-        const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+            const fileUploadId = data.FileUploadId ?? data.fileUploadId ?? 'N/A';
+            const collectorName = data.CollectorName ?? data.collectorName ?? '';
+            const branchName = data.BranchName ?? data.branchName ?? '';
+            const totalMember = data.TotalMember ?? data.totalMember ?? data.totalMembers ?? 0;
+            const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
 
-        return `
+            return `
         <fieldset class="fieldset-custom">
             <legend class="legend-custom text-success">Extraction Successful: ${fileUploadId}</legend>
             <div class="row g-2">
@@ -168,338 +216,414 @@
                 <button type="button" id="closeExtractedPreviewBtn" class="btn btn-secondary">Close</button>
             </div>
         </fieldset>`;
-            };
-
-    function generateActionButtons(fileId, status) {
-        var raw = (status ?? '').toString().trim().toLowerCase();
-        var detailsLink = `<a href="#" onclick="AddORUpdateGen('${fileId}', 'mainWorkspace', '_FileDetails', 'details', 'ManualDailyCollection'); return false;" class="ms-2">Details</a>`;
-        var showExtract = raw === 'viewed';
-        var extractLink = showExtract ? `<a href="#" onclick="extractFile('${fileId}'); return false;" class="ms-2 text-primary">Extract</a>` : '';
-        return detailsLink + extractLink;
-    }
-
-    // -----------------------
-    // DataTable initialiser (id: #filesDataTable)
-    // - Guarantees only one initialization
-    // - Sends sortColumnName based on d.columns[order.column].data first (more reliable)
-    // -----------------------
-    function initFilesDataTable() {
-        if ($.fn.DataTable.isDataTable('#filesDataTable')) {
-            return $('#filesDataTable').DataTable();
-        }
-
-        var tbl = $('#filesDataTable').DataTable({
-            stripeClasses: [], // remove default zebra striping
-            processing: false,
-            serverSide: true,
-            searching: true,
-            ajax: {
-                url: '@Url.Action("LoadFilesForDataTable", "ManualDailyCollection")',
-                type: 'POST',
-                headers: (function () {
-                    var token = $('input[name="__RequestVerificationToken"]').val();
-                    return token ? { 'RequestVerificationToken': token } : {};
-                })(),
-                data: function (d) {
-                    var order = (d.order && d.order.length) ? d.order[0] : {};
-                    var columnInfo = d.columns && d.columns[order.column] ? d.columns[order.column] : null;
-                    var sortColumnName = columnInfo ? (columnInfo.data || columnInfo.name) : null;
-
-                    var query = {
-                        Options: {
-                            draw: d.draw,
-                            start: d.start,
-                            pageSize: d.length,
-                            sortColumnName: sortColumnName,
-                            sortDirection: order.dir || null
-                        },
-                        StatusFilter: $('#statusFilter').val(),
-                        StartDate: $('#byDate').is(':checked') ? ($('#startDate').val() || null) : null,
-                        EndDate: $('#byDate').is(':checked') ? ($('#endDate').val() || null) : null,
-                        BranchId: $('#byBranch').is(':checked') ? $('#BranchIdFilter').val() : null,
-                        CollectorId: $('#byUser').is(':checked') ? $('#CollectorIdFilter').val() : null,
-                        UploadedByUserId: $('#byUser').is(':checked') ? $('#UploadedByUserIdFilter').val() : null,
-                        GlobalSearch: $('#globalSearch').length ? $('#globalSearch').val() : null,
-                        FileCategory: $('#fileCategory').length ? $('#fileCategory').val() : null,
-                        ShowAll: $('#showAll').is(':checked'),
-                        FileName: $('#fileName').val()
-                    };
-
-                    // Attach query to d so server model binder can read it as "query"
-                    d.query = query;
-                    return d;
-                },
-                dataType: 'json',
-                error: function (xhr, status, errorThrown) {
-                    console.error('Files DataTable AJAX error', xhr.status, status, errorThrown);
-                    console.error('Raw response:', xhr.responseText);
-                }
-            },
-            columns: [
-                { data: 'BranchName', name: 'BranchName' },
-                { data: 'fileName', name: 'FileName' },
-                { data: 'UploadedBy', name: 'UploadedBy' },
-                {
-                    data: 'salaryProcessingStatus',                    
-                    render: function (data) {
-                        return getStatusBadge((data ?? '').toString().trim());
-                    },
-                    name: 'salaryProcessingStatus'
-                },
-                {
-                    data: 'Id',
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row) {
-                        return generateActionButtons(data, row.salaryProcessingStatus ?? row.status ?? row.Status ?? '');
-                    }
-                }
-            ],
-            responsive: true,
-            autoWidth: false,
-            lengthMenu: [10, 25, 50, 100],
-            pageLength: 10,
-            language: {
-                emptyTable: "No files. Choose filters and click 'Apply Filters' to load files."
-            },
-            drawCallback: function () {
-                // Wrap each cell's content into a .cell-block for consistent block look
-                try {
-                    var api = this.api();
-                    api.rows({ page: 'current' }).every(function () {
-                        var rowNode = this.node();
-                        $(rowNode).find('td').each(function () {
-                            var $td = $(this);
-                            // avoid double-wrapping
-                            if ($td.find('.cell-block').length === 0) {
-                                var inner = $td.html();
-                                $td.html('<div class="cell-block">' + inner + '</div>');
-                            }
-                        });
-                    });
-                    this.api().columns.adjust();
-                } catch (e) {
-                    console.warn('drawCallback error', e);
-                }
-            },
-            createdRow: function (row, data, dataIndex) {
-                // optional: add row-level data attributes if needed
-                if (data && data.Id) {
-                    $(row).attr('data-id', data.Id);
-                }
-            }
-        });
-
-        window.filesDataTable = tbl;
-        return tbl;
-    }
-
-    // -----------------------
-    // On document ready
-    // -----------------------
-    $(document).ready(function () {
-        if ($.fn.select2) { $('.select2').select2({ width: '100%' }); }
-
-        // Apply button either inits or reloads (safe)
-        $('#applyFilterBtn').off('click').on('click', function () {
-            if ($.fn.DataTable.isDataTable('#filesDataTable')) {
-                $('#filesDataTable').DataTable().ajax.reload(null, false);
-            } else {
-                initFilesDataTable();
-            }
-        });
-
-        // Reset button
-        $('#resetFilterBtn').off('click').on('click', function () {
-            var form = $('#fileFilterForm')[0];
-            if (form) form.reset();
-            $('.select2').val('').trigger('change');
-            $('input[type="checkbox"]').prop('checked', false).trigger('change');
-            $('#fileName').val('');
-            if ($.fn.DataTable.isDataTable('#filesDataTable')) {
-                $('#filesDataTable').DataTable().ajax.reload(null, false);
-            }
-        });
-
-        // show/hide filter sections
-        $('#byBranch').on('change', function () { $('#branchFilterSection').toggle(this.checked); });
-        $('#byUser').on('change', function () { $('#userFilterSection').toggle(this.checked); });
-        $('#byDate').on('change', function () { $('#dateRangeSection').toggle(this.checked); });
-
-        // respect pre-checked state
-        if ($('#byBranch').is(':checked')) $('#branchFilterSection').show();
-        if ($('#byUser').is(':checked')) $('#userFilterSection').show();
-        if ($('#byDate').is(':checked')) $('#dateRangeSection').show();
-
-        // OPTIONAL: uncomment to auto-initialize on page load:
-        // initFilesDataTable();
-    });
-
-    // -----------------------
-    // GLOBAL extractFile function and extracted details handling
-    // -----------------------
-    // -----------------------
-    // GLOBAL extractFile function and extracted details handling (robust version)
-    // -----------------------
-    window.extractFile = function (fileId) {
-        if (!fileId) { appalert('No file to extract.', 3, 1); return; }
-
-        var confirmDialog = window.alertify && typeof alertify.confirm === 'function' ? alertify.confirm : null;
-        var doConfirm = function (onOk, onCancel) {
-            if (confirmDialog) {
-                try {
-                    alertify.confirm("Confirmation", "Are you sure you want to extract this file?", onOk, onCancel).set('labels', { ok: 'Yes', cancel: 'No' });
-                    return;
-                } catch (e) { /* fallback */ }
-            }
-            if (window.confirm("Are you sure you want to extract this file?")) onOk(); else if (typeof onCancel === 'function') onCancel();
         };
 
-        doConfirm(function () {
-            var token = $('input[name="__RequestVerificationToken"]').val();
-            var $resultContainer = $('#uploadResultContainer');
+        // Beautiful, semantic action buttons
+        function generateActionButtons(fileId, status) {
+            var raw = (status ?? '').toString().trim().toLowerCase();
+            var canExtract = raw === 'viewed';
 
-            // Defensive: if container not found, create one at top of body so UI still works.
-            if ($resultContainer.length === 0) {
-                console.warn('uploadResultContainer not found - creating one dynamically for extraction preview.');
-                $resultContainer = $('<div id="uploadResultContainer"></div>').prependTo('body');
-            }
+            // Text hides on xs/sm to keep it tight (icon-only), shows from md+
+            var viewBtn =
+                `<button type="button"
+                     class="btn btn-chip btn-view btn-sm btn-view-details"
+                     data-id="${fileId}" title="View file details">
+                <i class="mdi mdi-eye-outline"></i>
+                <span class="d-none d-md-inline">View</span>
+             </button>`;
 
-            $.ajax({
-                url: '/ManualDailyCollection/extract',
-                type: 'POST',
-                data: { KEY: fileId },
-                headers: token ? { 'RequestVerificationToken': token } : {},
-                dataType: 'json',
-                beforeSend: function () {
-                    $resultContainer.stop(true, true).show().html(
-                        '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>'
-                    );
-                },
-                success: function (response) {
-                    // outer try/catch retained but with more granular guards and logging
-                    try {
-                        console.log('extractFile: success response', response);
+            var extractBtn = canExtract
+                ? `<button type="button"
+               class="btn btn-chip btn-extract btn-sm ms-1 btn-extract"
+               data-id="${fileId}" title="Extract to Daily Savers">
+                  <i class="mdi mdi-database-import"></i>
+                  <span class="d-none d-md-inline">Extract</span>
+               </button>`
+                : '';
 
-                        var status = (response && (response.status ?? response.Status ?? '')).toString().toLowerCase();
-                        var data = response && (response.data ?? response.Data ?? null);
-
-                        if (status === 'success' && data) {
-                            appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
-                            window.currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? window.currentFileUploadId;
-                            var extractedHtml = buildExtractedPreviewHtml(data);
-
-                            // inject preview HTML
-                            $resultContainer.stop(true, true).hide().html(extractedHtml).fadeIn();
-
-                            // prepare details array in tolerant manner
-                            var detailsArray = data.details ?? data.Details ?? [];
-                            if (!Array.isArray(detailsArray)) {
-                                console.warn('extractFile: expected details array, got:', detailsArray);
-                                detailsArray = [];
-                            }
-
-                            // If DataTables plugin not present, show a helpful message and bail
-                            if (typeof $.fn.DataTable !== 'function') {
-                                console.error('DataTables plugin not available. Cannot render extractedDetailsTable.');
-                                $resultContainer.append('<div class="alert alert-warning mt-2">DataTables plugin not loaded; extracted details cannot be shown.</div>');
-                                return;
-                            }
-
-                            // Destroy old extracted table if exists - wrap in try
-                            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                                try {
-                                    $('#extractedDetailsTable').DataTable().clear().destroy();
-                                    $('#extractedDetailsTable').empty();
-                                } catch (cleanupErr) {
-                                    console.warn('extractFile: cleanup error', cleanupErr);
-                                }
-                            }
-
-                            // Initialize DataTable after a micro-task so DOM insertion completes (avoids race)
-                            setTimeout(function () {
-                                try {
-                                    $('#extractedDetailsTable').DataTable({
-                                        destroy: true,
-                                        data: detailsArray,
-                                        columns: [
-                                            { title: "Member Ref.", data: function (row) { return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? ''; } },
-                                            { title: "Member Name", data: function (row) { return row.memberName ?? row.MemberName ?? row.name ?? ''; } },
-                                            { title: "Account No.", data: function (row) { return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? ''; } },
-                                            { title: "Member Branch", data: function (row) { return row.memberBranchName ?? row.MemberBranchName ?? ''; } },
-                                            { title: "Amount", className: "text-end", data: function (row) { return row.amount ?? row.Amount ?? 0; }, render: $.fn.dataTable.render.number(',', '.', 2) }
-                                        ],
-                                        responsive: true,
-                                        pageLength: 5,
-                                        lengthMenu: [5, 10, 25, 50]
-                                    });
-                                    // call post-extract handler (reload main table etc)
-                                    handleExtractSuccess(fileId);
-                                } catch (dtErr) {
-                                    console.error('Error initializing extractedDetailsTable', dtErr);
-                                    $resultContainer.append(`<div class="alert alert-danger mt-2">Error displaying extracted table: ${dtErr?.message ?? dtErr}</div>`);
-                                }
-                            }, 0); // next tick
-
-                            // bind Close button (delegate inside $resultContainer)
-                            $resultContainer.off('click', '#closeExtractedPreviewBtn').on('click', '#closeExtractedPreviewBtn', function () {
-                                $resultContainer.fadeOut(function () { $(this).empty(); });
-                            });
-
-                            // safe scroll into view: check offset exists
-                            try {
-                                if ($resultContainer.length && typeof $resultContainer.offset === 'function' && $resultContainer.offset()) {
-                                    $('html, body').animate({ scrollTop: $resultContainer.offset().top - 80 }, 300);
-                                } else {
-                                    // fallback: scroll to top of page
-                                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                                }
-                            } catch (scrollErr) {
-                                console.warn('Could not animate to result container', scrollErr);
-                            }
-                        } else {
-                            var msg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
-                            appalert(msg, 4, 1);
-                            $resultContainer.html(`<div class="alert alert-warning">${msg}</div>`);
-                        }
-                    } catch (err) {
-                        console.error('extractFile: success handler error', err, response);
-                        // show friendly message but also include error text for debugging in console
-                        appalert('An unexpected error occurred while building extraction results.', 4, 1);
-                        $resultContainer.html(`<div class="alert alert-danger">An error occurred while showing extracted data.<br/><small>${err?.message ?? err}</small></div>`);
-                    }
-                },
-                error: function (xhr, status, err) {
-                    console.error('extractFile: ajax error', status, err, xhr);
-                    appalert('An error occurred during extraction.', 4, 1);
-                    $('#uploadResultContainer').html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
-                },
-                complete: function () {
-                    console.log('extractFile: request complete for', fileId);
-                }
-            });
-        }, function () {
-            appalert("Extraction cancelled.", 3, 1);
-        });
-    }; // end extractFile
-
-
-    // -----------------------
-    // handleExtractSuccess reloads main table safely
-    // -----------------------
-    window.handleExtractSuccess = function (fileId) {
-        try {
-            if (window.filesDataTable && window.filesDataTable.ajax && typeof window.filesDataTable.ajax.reload === 'function') {
-                window.filesDataTable.ajax.reload(null, false);
-            } else if ($.fn.DataTable.isDataTable('#filesDataTable')) {
-                $('#filesDataTable').DataTable().ajax.reload(null, false);
-            } else {
-                console.warn('filesDataTable not found; skipping reload.');
-            }
-        } catch (err) {
-            console.error('handleExtractSuccess error', err);
+            return `<div class="d-inline-flex">${viewBtn}${extractBtn}</div>`;
         }
-    };
 
-})(jQuery);
+        function openFileDetailsModal(fileId) {
+            const modalEl = document.getElementById('fileDetailsModal');
+            const bodyEl = document.getElementById('fileDetailsModalBody');
+
+            // 1) Fetch the partial first (no modal shown yet)
+            $.ajax({
+                url: '@Url.Action("GetFileDetailsModal", "ManualDailyCollection")',
+                type: 'GET',
+                data: { id: fileId },
+                cache: false
+            })
+                .done(function (html) {
+                    // Guard empty/whitespace responses
+                    if (typeof html !== 'string' || html.replace(/\s+/g, '').length === 0) {
+                        bodyEl.innerHTML = [
+                            '<div class="alert alert-warning" role="alert">',
+                            '  <i class="mdi mdi-alert-outline me-1"></i>',
+                            '  No details available for this file.',
+                            '</div>'
+                        ].join('');
+                    } else {
+                        bodyEl.innerHTML = html;
+                    }
+
+                    // Wire tooltips if present inside the returned partial
+                    if (window.bootstrap && bodyEl.querySelector('[data-bs-toggle="tooltip"]')) {
+                        bodyEl.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                            new bootstrap.Tooltip(el);
+                        });
+                    }
+
+                    // 2) Show modal now that content is ready
+                    new bootstrap.Modal(modalEl).show();
+                })
+                .fail(function (xhr) {
+                    // 3) On error, render error message then show modal
+                    bodyEl.innerHTML = [
+                        '<div class="alert alert-danger" role="alert">',
+                        '  <i class="mdi mdi-alert-circle-outline me-2"></i>',
+                        '  Failed to load file details. (' + xhr.status + ')',
+                        '  <div class="small text-muted mt-1">' + (xhr.responseText || '') + '</div>',
+                        '</div>'
+                    ].join('');
+
+                    new bootstrap.Modal(modalEl).show();
+                });
+        }
+            // Delegated click handlers (work with DataTables redraws)
+            $(document).on('click', '.btn-view-details', function (e) {
+                e.preventDefault();
+                openFileDetailsModal($(this).data('id'));
+            });
+            $(document).on('click', '.btn-extract', function (e) {
+                e.preventDefault();
+                if (typeof extractFile === 'function') extractFile($(this).data('id'));
+            });
+
+
+            // -----------------------
+            // DataTable initialiser (id: #filesDataTable)
+            // - Guarantees only one initialization
+            // - Sends sortColumnName based on d.columns[order.column].data first (more reliable)
+            // -----------------------
+            function initFilesDataTable() {
+                if ($.fn.DataTable.isDataTable('#filesDataTable')) {
+                    return $('#filesDataTable').DataTable();
+                }
+
+                var tbl = $('#filesDataTable').DataTable({
+                    stripeClasses: [], // remove default zebra striping
+                    processing: false,
+                    serverSide: true,
+                    searching: true,
+                    ajax: {
+                        url: '@Url.Action("LoadFilesForDataTable", "ManualDailyCollection")',
+                        type: 'POST',
+                        headers: (function () {
+                            var token = $('input[name="__RequestVerificationToken"]').val();
+                            return token ? { 'RequestVerificationToken': token } : {};
+                        })(),
+                        data: function (d) {
+                            var order = (d.order && d.order.length) ? d.order[0] : {};
+                            var columnInfo = d.columns && d.columns[order.column] ? d.columns[order.column] : null;
+                            var sortColumnName = columnInfo ? (columnInfo.data || columnInfo.name) : null;
+
+                            var query = {
+                                Options: {
+                                    draw: d.draw,
+                                    start: d.start,
+                                    pageSize: d.length,
+                                    sortColumnName: sortColumnName,
+                                    sortDirection: order.dir || null
+                                },
+                                StatusFilter: $('#statusFilter').val(),
+                                StartDate: $('#byDate').is(':checked') ? ($('#startDate').val() || null) : null,
+                                EndDate: $('#byDate').is(':checked') ? ($('#endDate').val() || null) : null,
+                                BranchId: $('#byBranch').is(':checked') ? $('#BranchIdFilter').val() : null,
+                                CollectorId: $('#byUser').is(':checked') ? $('#CollectorIdFilter').val() : null,
+                                UploadedByUserId: $('#byUser').is(':checked') ? $('#UploadedByUserIdFilter').val() : null,
+                                GlobalSearch: $('#globalSearch').length ? $('#globalSearch').val() : null,
+                                FileCategory: $('#fileCategory').length ? $('#fileCategory').val() : null,
+                                ShowAll: $('#showAll').is(':checked'),
+                                FileName: $('#fileName').val()
+                            };
+
+                            // Attach query to d so server model binder can read it as "query"
+                            d.query = query;
+                            return d;
+                        },
+                        dataType: 'json',
+                        error: function (xhr, status, errorThrown) {
+                            console.error('Files DataTable AJAX error', xhr.status, status, errorThrown);
+                            console.error('Raw response:', xhr.responseText);
+                        }
+                    },
+                    columns: [
+                        { data: 'BranchName', name: 'BranchName' },
+                        { data: 'fileName', name: 'FileName' },
+                        { data: 'UploadedBy', name: 'UploadedBy' },
+                        {
+                            data: 'salaryProcessingStatus',
+                            render: function (data) { return getStatusBadge((data ?? '').toString().trim()); },
+                            name: 'salaryProcessingStatus'
+                        },
+                        {
+                            data: 'Id',
+                            orderable: false,
+                            searchable: false,
+                            render: function (data, type, row) {
+                                return generateActionButtons(data, row.salaryProcessingStatus ?? row.status ?? row.Status ?? '');
+                            }
+                        }
+                    ],
+
+                    responsive: true,
+                    autoWidth: false,
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    language: {
+                        emptyTable: "No files. Choose filters and click 'Apply Filters' to load files."
+                    },
+                    drawCallback: function () {
+                        // Wrap each cell's content into a .cell-block for consistent block look
+                        try {
+                            var api = this.api();
+                            api.rows({ page: 'current' }).every(function () {
+                                var rowNode = this.node();
+                                $(rowNode).find('td').each(function () {
+                                    var $td = $(this);
+                                    // avoid double-wrapping
+                                    if ($td.find('.cell-block').length === 0) {
+                                        var inner = $td.html();
+                                        $td.html('<div class="cell-block">' + inner + '</div>');
+                                    }
+                                });
+                            });
+                            this.api().columns.adjust();
+                        } catch (e) {
+                            console.warn('drawCallback error', e);
+                        }
+                    },
+                    createdRow: function (row, data, dataIndex) {
+                        // optional: add row-level data attributes if needed
+                        if (data && data.Id) {
+                            $(row).attr('data-id', data.Id);
+                        }
+                    }
+                });
+
+                window.filesDataTable = tbl;
+                return tbl;
+            }
+
+            // -----------------------
+            // On document ready
+            // -----------------------
+            $(document).ready(function () {
+                if ($.fn.select2) { $('.select2').select2({ width: '100%' }); }
+
+                // Apply button either inits or reloads (safe)
+                $('#applyFilterBtn').off('click').on('click', function () {
+                    if ($.fn.DataTable.isDataTable('#filesDataTable')) {
+                        $('#filesDataTable').DataTable().ajax.reload(null, false);
+                    } else {
+                        initFilesDataTable();
+                    }
+                });
+
+                // Reset button
+                $('#resetFilterBtn').off('click').on('click', function () {
+                    var form = $('#fileFilterForm')[0];
+                    if (form) form.reset();
+                    $('.select2').val('').trigger('change');
+                    $('input[type="checkbox"]').prop('checked', false).trigger('change');
+                    $('#fileName').val('');
+                    if ($.fn.DataTable.isDataTable('#filesDataTable')) {
+                        $('#filesDataTable').DataTable().ajax.reload(null, false);
+                    }
+                });
+
+                // show/hide filter sections
+                $('#byBranch').on('change', function () { $('#branchFilterSection').toggle(this.checked); });
+                $('#byUser').on('change', function () { $('#userFilterSection').toggle(this.checked); });
+                $('#byDate').on('change', function () { $('#dateRangeSection').toggle(this.checked); });
+
+                // respect pre-checked state
+                if ($('#byBranch').is(':checked')) $('#branchFilterSection').show();
+                if ($('#byUser').is(':checked')) $('#userFilterSection').show();
+                if ($('#byDate').is(':checked')) $('#dateRangeSection').show();
+
+                // OPTIONAL: uncomment to auto-initialize on page load:
+                // initFilesDataTable();
+            });
+
+            // -----------------------
+            // GLOBAL extractFile function and extracted details handling
+            // -----------------------
+            // -----------------------
+            // GLOBAL extractFile function and extracted details handling (robust version)
+            // -----------------------
+            window.extractFile = function (fileId) {
+                if (!fileId) { appalert('No file to extract.', 3, 1); return; }
+
+                var confirmDialog = window.alertify && typeof alertify.confirm === 'function' ? alertify.confirm : null;
+                var doConfirm = function (onOk, onCancel) {
+                    if (confirmDialog) {
+                        try {
+                            alertify.confirm("Confirmation", "Are you sure you want to extract this file?", onOk, onCancel).set('labels', { ok: 'Yes', cancel: 'No' });
+                            return;
+                        } catch (e) { /* fallback */ }
+                    }
+                    if (window.confirm("Are you sure you want to extract this file?")) onOk(); else if (typeof onCancel === 'function') onCancel();
+                };
+
+                doConfirm(function () {
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    var $resultContainer = $('#uploadResultContainer');
+
+                    // Defensive: if container not found, create one at top of body so UI still works.
+                    if ($resultContainer.length === 0) {
+                        console.warn('uploadResultContainer not found - creating one dynamically for extraction preview.');
+                        $resultContainer = $('<div id="uploadResultContainer"></div>').prependTo('body');
+                    }
+
+                    $.ajax({
+                        url: '/ManualDailyCollection/extract',
+                        type: 'POST',
+                        data: { KEY: fileId },
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $resultContainer.stop(true, true).show().html(
+                                '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>'
+                            );
+                        },
+                        success: function (response) {
+                            // outer try/catch retained but with more granular guards and logging
+                            try {
+                                console.log('extractFile: success response', response);
+
+                                var status = (response && (response.status ?? response.Status ?? '')).toString().toLowerCase();
+                                var data = response && (response.data ?? response.Data ?? null);
+
+                                if (status === 'success' && data) {
+                                    appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+                                    window.currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? window.currentFileUploadId;
+                                    var extractedHtml = buildExtractedPreviewHtml(data);
+
+                                    // inject preview HTML
+                                    $resultContainer.stop(true, true).hide().html(extractedHtml).fadeIn();
+
+                                    // prepare details array in tolerant manner
+                                    var detailsArray = data.details ?? data.Details ?? [];
+                                    if (!Array.isArray(detailsArray)) {
+                                        console.warn('extractFile: expected details array, got:', detailsArray);
+                                        detailsArray = [];
+                                    }
+
+                                    // If DataTables plugin not present, show a helpful message and bail
+                                    if (typeof $.fn.DataTable !== 'function') {
+                                        console.error('DataTables plugin not available. Cannot render extractedDetailsTable.');
+                                        $resultContainer.append('<div class="alert alert-warning mt-2">DataTables plugin not loaded; extracted details cannot be shown.</div>');
+                                        return;
+                                    }
+
+                                    // Destroy old extracted table if exists - wrap in try
+                                    if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
+                                        try {
+                                            $('#extractedDetailsTable').DataTable().clear().destroy();
+                                            $('#extractedDetailsTable').empty();
+                                        } catch (cleanupErr) {
+                                            console.warn('extractFile: cleanup error', cleanupErr);
+                                        }
+                                    }
+
+                                    // Initialize DataTable after a micro-task so DOM insertion completes (avoids race)
+                                    setTimeout(function () {
+                                        try {
+                                            $('#extractedDetailsTable').DataTable({
+                                                destroy: true,
+                                                data: detailsArray,
+                                                columns: [
+                                                    { title: "Member Ref.", data: function (row) { return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? ''; } },
+                                                    { title: "Member Name", data: function (row) { return row.memberName ?? row.MemberName ?? row.name ?? ''; } },
+                                                    { title: "Account No.", data: function (row) { return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? ''; } },
+                                                    { title: "Member Branch", data: function (row) { return row.memberBranchName ?? row.MemberBranchName ?? ''; } },
+                                                    { title: "Amount", className: "text-end", data: function (row) { return row.amount ?? row.Amount ?? 0; }, render: $.fn.dataTable.render.number(',', '.', 2) }
+                                                ],
+                                                responsive: true,
+                                                pageLength: 5,
+                                                lengthMenu: [5, 10, 25, 50]
+                                            });
+                                            // call post-extract handler (reload main table etc)
+                                            handleExtractSuccess(fileId);
+                                        } catch (dtErr) {
+                                            console.error('Error initializing extractedDetailsTable', dtErr);
+                                            $resultContainer.append(`<div class="alert alert-danger mt-2">Error displaying extracted table: ${dtErr?.message ?? dtErr}</div>`);
+                                        }
+                                    }, 0); // next tick
+
+                                    // bind Close button (delegate inside $resultContainer)
+                                    $resultContainer.off('click', '#closeExtractedPreviewBtn').on('click', '#closeExtractedPreviewBtn', function () {
+                                        $resultContainer.fadeOut(function () { $(this).empty(); });
+                                    });
+
+                                    // safe scroll into view: check offset exists
+                                    try {
+                                        if ($resultContainer.length && typeof $resultContainer.offset === 'function' && $resultContainer.offset()) {
+                                            $('html, body').animate({ scrollTop: $resultContainer.offset().top - 80 }, 300);
+                                        } else {
+                                            // fallback: scroll to top of page
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        }
+                                    } catch (scrollErr) {
+                                        console.warn('Could not animate to result container', scrollErr);
+                                    }
+                                } else {
+                                    var msg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
+                                    appalert(msg, 4, 1);
+                                    $resultContainer.html(`<div class="alert alert-warning">${msg}</div>`);
+                                }
+                            } catch (err) {
+                                console.error('extractFile: success handler error', err, response);
+                                // show friendly message but also include error text for debugging in console
+                                appalert('An unexpected error occurred while building extraction results.', 4, 1);
+                                $resultContainer.html(`<div class="alert alert-danger">An error occurred while showing extracted data.<br/><small>${err?.message ?? err}</small></div>`);
+                            }
+                        },
+                        error: function (xhr, status, err) {
+                            console.error('extractFile: ajax error', status, err, xhr);
+                            appalert('An error occurred during extraction.', 4, 1);
+                            $('#uploadResultContainer').html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
+                        },
+                        complete: function () {
+                            console.log('extractFile: request complete for', fileId);
+                        }
+                    });
+                }, function () {
+                    appalert("Extraction cancelled.", 3, 1);
+                });
+            }; // end extractFile
+
+
+            // -----------------------
+            // handleExtractSuccess reloads main table safely
+            // -----------------------
+            window.handleExtractSuccess = function (fileId) {
+                try {
+                    if (window.filesDataTable && window.filesDataTable.ajax && typeof window.filesDataTable.ajax.reload === 'function') {
+                        window.filesDataTable.ajax.reload(null, false);
+                    } else if ($.fn.DataTable.isDataTable('#filesDataTable')) {
+                        $('#filesDataTable').DataTable().ajax.reload(null, false);
+                    } else {
+                        console.warn('filesDataTable not found; skipping reload.');
+                    }
+                } catch (err) {
+                    console.error('handleExtractSuccess error', err);
+                }
+            };
+
+        }
+    )(jQuery);
 </script>

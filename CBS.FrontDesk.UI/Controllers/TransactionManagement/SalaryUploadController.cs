@@ -52,11 +52,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private static readonly IReadOnlyList<SelectListItem> FileTypeOptions =
             new List<SelectListItem>
             {
-        new SelectListItem { Value = "CivilServants",       Text = "Civil Servant Files" },
-        new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
-        new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
-        new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
-        new SelectListItem { Value = "Others",              Text = "Other Files" }
+                new SelectListItem { Value = "CivilServants",       Text = "Civil Servant Files" },
+                new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
+                new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
+                new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
+                new SelectListItem { Value = "ManualEntryDailyCollection", Text = "Daily Collection Files" },
+                new SelectListItem { Value = "Others",              Text = "Other Files" }
             }.AsReadOnly();
 
         // One helper to populate common dropdowns; optionally include Chart of Accounts

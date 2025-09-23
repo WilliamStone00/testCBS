@@ -519,13 +519,14 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> LoadDetailsDataTable(GetManualEntryDailyCollectionDetailDataTableQuery query)
-        {
-            var result = await _manualService.GetManualEntryDetailsForDataTableAsync(query);
-            return Json(result);
-        }     
+        //[HttpPost]
+        //public async Task<ActionResult> LoadDetailsDataTable(GetManualEntryDailyCollectionDetailDataTableQuery query)
+        //{
+        //    var result = await _manualService.GetManualEntryDetailsForDataTableAsync(query);
+        //    return Json(result);
+        //}     
 
+        
 
     }
 }
