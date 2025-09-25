@@ -1,0 +1,101 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques
+@using Resources
+
+
+@using (Html.BeginForm("Create", "CounterCheque", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset class="fieldset-custom">
+
+        <div class="row g-3">
+
+            <!-- Customer & Account Section -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pb-1 mb-3">
+                    <i class="mdi mdi-account-details me-1"></i> Client & Account Information
+                </h6>
+            </div>
+
+
+            <div class="col-md-6">
+                <label for="ClientId" class="form-label fw-bold">Client Reference </label>
+                @* You might want to make this a dropdown that populates based on the selected client *@
+                @Html.TextBoxFor(m => m.ClientId, new { @class = "form-control", placeholder = "Client Reference", required = "required" })
+                @Html.ValidationMessageFor(m => m.ClientId, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="AccountNumber" class="form-label fw-bold">Account Number</label>
+                @* You might want to make this a dropdown that populates based on the selected client *@
+                @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", placeholder = "Client Reference", required = "required" })
+                @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+            </div>
+
+
+
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pb-1 mb-3">
+                    <i class="mdi mdi-account-details me-1"></i> Cheque Book Info
+                </h6>
+            </div>
+
+
+            <div class="col-md-6">
+                <label for="CheckNumber" class="form-label fw-bold">Cheque Book ID </label>
+                @* You might want to make this a dropdown that populates based on the selected client *@
+                @Html.TextBoxFor(m => m.CheckNumber, new { @class = "form-control", placeholder = "Cheque Book ID", required = "required" })
+                @Html.ValidationMessageFor(m => m.CheckNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="CheckLeafId" class="form-label fw-bold">Cheque leave number</label>
+                @* You might want to make this a dropdown that populates based on the selected client *@
+                @Html.TextBoxFor(m => m.CheckLeafId, new { @class = "form-control", placeholder = "Cheque leave number", required = "required" })
+                @Html.ValidationMessageFor(m => m.CheckLeafId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Transaction Details Section -->
+            <div class="col-12 mt-4">
+                <h6 class="text-primary border-bottom pb-1 mb-3">
+                    <i class="mdi mdi-currency-usd me-1"></i> Transaction Details
+                </h6>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Amount" class="form-label fw-bold">Amount</label>
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", step = "0.01", placeholder = "0.00", required = "required" })
+                @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label for="BranchId" class="form-label fw-bold">Branch</label>
+                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-12 text-end mt-4">
+                <button type="reset" class="btn btn-outline-secondary me-2">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="mdi mdi-send-check-outline me-1"></i> Issue Cheque
+                </button>
+            </div>
+
+        </div>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        // Self-contained script to initialize select2 plugins for this partial view
+        $(document).ready(function () {
+            if ($.fn.select2) {
+                // Give specific IDs to your form elements for robust selection
+                $('#ClientId').select2({ placeholder: "--- Select Client ---", width: '100%' });
+                $('#BranchId').select2({ placeholder: "--- Select Branch ---", width: '100%' });
+            }
+        });
+    </script>
+}

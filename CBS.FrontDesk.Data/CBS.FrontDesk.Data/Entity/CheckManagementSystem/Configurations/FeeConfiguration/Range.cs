@@ -8,9 +8,10 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConf
 {
     public class Range
     {
-        public string Id { get; set; }
-        public decimal FromAmount { get; set; }
-        public decimal ToAmount { get; set; }
-        public decimal Fee { get; set; }
+        public string id { get; set; }
+        public string name { get; set; } 
+        public decimal amountFrom { get; set; }
+        public decimal amountTo { get; set; }
+        public decimal value { get; set; }
     }
 }

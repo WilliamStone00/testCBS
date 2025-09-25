@@ -476,7 +476,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             {
                 ManualEntryDailyCollectorId = fileUploadId,
                 ApprovedBy = Session["FullName"]?.ToString(),
-                Mode = mode // "approve", "review", or "reject"
+                Mode = mode 
             };
             return PartialView("_ActionForm", model);
         }

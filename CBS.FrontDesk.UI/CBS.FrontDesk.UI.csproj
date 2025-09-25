@@ -2032,7 +2032,9 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
@@ -10649,6 +10651,12 @@
     <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
     <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
+    <Content Include="Views\NotificationHistory\Index.cshtml" />
+    <Content Include="Views\CounterCheque\Index.cshtml" />
+    <Content Include="Views\CounterCheque\_Create.cshtml" />
+    <Content Include="Views\CounterCheque\_DataTable.cshtml" />
+    <Content Include="Views\CounterCheque\_ActionForm.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -8,22 +8,26 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConf
 {
     public class FeeConfig
     {
-        public string Id { get; set; } = null;
-        public bool IsCentralized { get; set; } = false;
-        public string BranchId { get; set; }
-        public string BranchName { get; set; } = null;
+        public string id { get; set; } = null;
+        public bool isCentralized { get; set; } = false;
+        public string branchId { get; set; }
+        public string branchName { get; set; } = null;
+        public string branchCode { get; set; } = null;
+        
 
-        public string Description { get; set; } = null;
-        public string FeeType { get; set; }            // e.g. "CheckFee"
+        public string description { get; set; } = null;
+        public string feeType { get; set; }            // e.g. "CheckFee"
 
-        public bool AcceptPercentage { get; set; }
-        public double? PercentageApplied { get; set; }
+        public bool acceptPercentage { get; set; }
+        public double? percentageApplied { get; set; }
 
-        public bool AcceptStatus { get; set; }
-        public double? Static { get; set; }
+        public bool acceptStaticAmount { get; set; }
+        public double? staticAmount { get; set; }
 
-        public bool AcceptRange { get; set; }
-        public List<Range> FeeTypeRanges { get; set; } = new List<Range>();
+        public bool acceptRange { get; set; }
+        public List<Range> feeTypeRanges { get; set; } = new List<Range>();
+
+
 
         public bool IsActive { get; set; } = true;
     }

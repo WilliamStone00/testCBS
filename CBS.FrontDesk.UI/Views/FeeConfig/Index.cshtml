@@ -66,7 +66,7 @@
                         foreach (var b in branches)
                         {
                             <option value="@b.Id" data-name="@b.Name">@b.Name</option>
-;
+                            ;
                         }
                     }
                 }
@@ -88,10 +88,11 @@
 
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <a type="button" onclick="LoadDataGen('FeeConfig', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+        <a type="button" onclick="LoadDataGen('FeeConfig', 'myDataTable', '_FeeConfigList', 0, 'config-form-container', null, 'list')"
+           class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+        <a type="button" onclick="AddORUpdateGen(null,'config-form-container','_Create','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
             <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
         </a>
     </div>
@@ -101,206 +102,235 @@
 <div id="config-form-container"></div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
-        (function ($) {
-            'use strict';
+        // Run on document ready
+        $(document).ready(function () {
+            setupFeeConfigToggles();
+            $('#loadConfigBtn').on('click', loadConfiguration);
+            setupDynamicFormHandlers(); // delegates to dynamic form container
+        });
 
-            // Status badge renderer
-            function getStatusBadge(status) {
-                if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
-                var s = (status + '').toLowerCase();
-                var cls = 'bg-secondary';
-                if (s === 'pending') cls = 'bg-warning text-dark';
-                else if (s === 'approved' || s === 'extracted' || s === 'completed' || s === 'treated') cls = 'bg-success';
-                else if (s === 'rejected' || s === 'failed') cls = 'bg-danger';
-                else if (s === 'review' || s === 'reviewed') cls = 'bg-info text-dark';
-                return '<span class="badge ' + cls + '">' + (status || '') + '</span>';
-            }
-
-            function formatDateForCell(val) {
-                if (!val || val === null) return '';
-                var d = new Date(val);
-                if (isNaN(d.getTime())) return String(val);
-                var yyyy = d.getFullYear();
-                var mm = String(d.getMonth() + 1).padStart(2, '0');
-                var dd = String(d.getDate()).padStart(2, '0');
-                return yyyy + '-' + mm + '-' + dd;
-            }
-
-            // DataTable initialization (server-side)
-            var table = $('#fileDetailsTable').DataTable({
-                serverSide: true,
-                processing: true,
-                ajax: {
-                    url: '@Url.Action("LoadDetailsDataTable", "TransactionDetails")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: function (d) {
-                        // Add our custom filters to the DataTables request
-                        return JSON.stringify({
-                            draw: d.draw,
-                            start: d.start,
-                            length: d.length,
-                            search: d.search,
-                            columns: d.columns,
-                            order: d.order,
-                            filters: {
-                                memberBranchCode: $('#f_memberBranchCode').val(),
-                                memberBranchId: $('#f_memberBranchId').val(),
-                                memberBranchName: $('#BranchIdFilter').val(),
-                                amountMin: $('#f_amountMin').val(),
-                                amountMax: $('#f_amountMax').val(),
-                                memberName: $('#f_memberName').val(),
-                                memberReference: $('#f_memberReference').val(),
-                                accountNumber: $('#f_accountNumber').val(),
-                                dailyCollectorName: $('#f_dailyCollectorName').val(),
-                                uploadBy: $('#f_uploadBy').val(),
-                                manualEntryDailyCollectorId: $('#f_manualEntryDailyCollectorId').val(),
-                                processingStatus: $('#statusFilter').val(),
-                                treatementStatus: $('#f_treatementStatus').val(),
-                                treatementDateFrom: $('#f_treatementDateFrom').val(),
-                                treatementDateTo: $('#f_treatementDateTo').val(),
-                                accountingDateFrom: $('#f_accountingDateFrom').val(),
-                                accountingDateTo: $('#f_accountingDateTo').val(),
-                                startDate: $('#f_startDate').val(),
-                                endDate: $('#f_endDate').val(),
-                                uploadDateFrom: $('#startDate').val(),
-                                uploadDateTo: $('#endDate').val()
-                            }
-                        });
-                    },
-                    dataSrc: function (json) {
-                        // If your API returns data in a different structure, adjust here
-                        return json.data;
-                    }
-                },
-                stripeClasses: [],
-                columns: [
-                    { data: 'memberName', name: 'MemberName' },
-                    { data: 'accountNumber', name: 'AccountNumber' },
-                    { data: 'memberBranchName', name: 'MemberBranchName' },
-                    {
-                        data: 'amount',
-                        name: 'Amount',
-                        className: 'text-end',
-                        render: function (data) {
-                            var val = data == null ? 0 : parseFloat(data);
-                            return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        }
-                    },
-                    { data: 'dailyCollectorName', name: 'DailyCollectorName' },
-                    { data: 'uploadBy', name: 'UploadBy' },
-                    {
-                        data: 'processingStatus',
-                        name: 'ProcessingStatus',
-                        render: function (data) { return getStatusBadge(data); }
-                    },
-                    {
-                        data: 'treatementStatus',
-                        name: 'TreatementStatus',
-                        render: function (data) { return getStatusBadge(data); }
-                    },
-                    {
-                        data: 'treatementDate',
-                        name: 'TreatementDate',
-                        render: function (d) { return formatDateForCell(d); }
-                    },
-                    {
-                        data: 'accountingDate',
-                        name: 'AccountingDate',
-                        render: function (d) { return formatDateForCell(d); }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row) {
-                            var id = row.manualEntryDailyCollectorId || '';
-                            return '<a class="btn btn-sm btn-outline-primary details-btn" href="@Url.Action("GetFileDetailsById", "ManualDailyCollection")?KEY=' + encodeURIComponent(id) + '">Details</a>';
-                        }
-                    }
-                ],
-                responsive: true,
-                autoWidth: false,
-                order: [[0, 'asc']],
-                pageLength: 10,
-                lengthMenu: [10, 25, 50, 100],
-                language: {
-                    emptyTable: "No details found.",
-                    processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
-                },
-                drawCallback: function () {
-                    $('#rowsCount').text('Showing ' + this.api().page.info().recordsDisplay + ' rows');
-                }
-            });
-
-            // Helper: toggle optional filter containers
-            $('.more-filter-chk').on('change', function () {
-                var target = $(this).data('target');
-                if (!target) return;
-                if ($(this).is(':checked')) {
-                    $(target).stop(true, true).slideDown().addClass('show');
+        function setupFeeConfigToggles() {
+            $('#isCentralized').on('change', function () {
+                if (this.checked) {
+                    $('#branch-selection-container').slideUp();
+                    $('#branchId').val('').trigger('change');
                 } else {
-                    // clear value and hide
-                    $(target).find('input').val('');
-                    $(target).stop(true, true).slideUp().removeClass('show');
-                    table.draw(); // reapply filters with the cleared value
+                    $('#branch-selection-container').slideDown();
                 }
             });
+        }
 
-            // Apply button behavior - redraw the table with new filters
-            $('#applyFilterBtn').on('click', function () {
-                table.draw();
+        // Load configuration (fetch partial and inject it)
+        function loadConfiguration() {
+            var isCentralized = $('#isCentralized').is(':checked');
+            var branchId = isCentralized ? null : $('#branchId').val();
+            var feeType = $('#feeType').val();
+
+            if (!isCentralized && !branchId) {
+                appalert('Please select a branch for non-centralized configuration.', 2, 1);
+                return;
+            }
+            if (!feeType) {
+                appalert('Please select a fee type.', 2, 1);
+                return;
+            }
+
+            const serviceOptionsObject = { isCentralized: isCentralized, branchId: branchId, feeType: feeType };
+            const serviceOptionString = JSON.stringify(serviceOptionsObject);
+
+            // Explicit POST to get the partial and inject HTML
+            $.post('@Url.Action("InitializeData", "FeeConfig")', {
+                partialView: '_Create',
+                serviceOption: serviceOptionString
+            }, function (html) {
+                $('#config-form-container').html(html);
+                // If you use Select2 or other plugins in the partial, re-init them here:
+                if ($.fn.select2) {
+                    $('#config-form-container').find('.select2').select2({ width: '100%' });
+                }
+            }).fail(function (err) {
+                appalert('Failed to load configuration form: ' + err.statusText, 4, 1);
             });
+        }
 
-            // Reset button behavior
-            $('#resetFilterBtn').on('click', function () {
-                // Reset all filters
-                $('#detailsFilters input').val('');
-                $('#detailsFilters select').val('').trigger('change');
+        // Template for a new range row (returns string)
+        function getRangeRowTemplate() {
+            var template = '';
+            template += '<tr>';
+            template += '  <td>';
+            template += '    <input type="hidden" name="FeeTypeRanges.Index" value="{INDEX}" />';
+            template += '    <input type="hidden" name="FeeTypeRanges[{INDEX}].Id" value="" />';
+            template += '    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].FromAmount" value="" class="form-control" />';
+            template += '  </td>';
+            template += '  <td>';
+            template += '    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].ToAmount" value="" class="form-control" />';
+            template += '  </td>';
+            template += '  <td>';
+            template += '    <input type="number" step="0.01" name="FeeTypeRanges[{INDEX}].Fee" value="" class="form-control" />';
+            template += '  </td>';
+            template += '  <td class="text-center">';
+            template += '    <button type="button" class="btn btn-sm btn-outline-danger remove-range-row"><i class="mdi mdi-delete"></i></button>';
+            template += '  </td>';
+            template += '</tr>';
+            return template;
+        }
 
-                // Uncheck all optional filters and hide their containers
-                $('.more-filter-chk').prop('checked', false);
-                $('.more-filter-chk').each(function () {
-                    var target = $(this).data('target');
-                    if (target) {
-                        $(target).stop(true, true).slideUp().removeClass('show');
+        // Reindex rows so MVC modelbinder binds FeeTypeRanges[0], FeeTypeRanges[1], ...
+        function reindexRangeRows() {
+            $('#range-table-body tr').each(function (newIndex) {
+                $(this).find('input, select, textarea').each(function () {
+                    var oldName = $(this).attr('name') || '';
+                    if (!oldName) return;
+
+                    // Replace any existing numeric index or placeholder {INDEX}
+                    var newName = oldName.replace(/\[\d+\]|\{INDEX\}/g, '[' + newIndex + ']');
+                    $(this).attr('name', newName);
+
+                    // Update the .Index hidden field value if present
+                    if (oldName.indexOf('.Index') !== -1 || oldName.indexOf('Index') !== -1) {
+                        $(this).val(newIndex);
                     }
                 });
+            });
+        }
 
-                // Redraw the table
-                table.draw();
+        // Delegated handlers inside #config-form-container so they work for dynamically loaded partials
+        function setupDynamicFormHandlers() {
+            var container = $('#config-form-container');
+
+            // Ensure only one fee method active
+            container.on('change', '#AcceptStatus', function () {
+                if ($(this).is(':checked')) {
+                    $('#AcceptRange').prop('checked', false);
+                }
+                if ($(this).is(':checked')) {
+                    $('#AcceptPercentage').prop('checked', false);
+                }
+            });
+            container.on('change', '#AcceptPercentage', function () {
+                if ($(this).is(':checked')) {
+                    $('#AcceptRange').prop('checked', false);
+                }
+                if ($(this).is(':checked')) {
+                    $('#AcceptStatus').prop('checked', false);
+                }
             });
 
-            // Delegate click to open details (modal)
-            $('#fileDetailsTable').on('click', '.details-btn', function (e) {
+            container.on('change', '#AcceptRange', function () {
+                if ($(this).is(':checked')) {
+                    $('#AcceptPercentage').prop('checked', false);
+                }
+                if ($(this).is(':checked')) {
+                    $('#AcceptStatus').prop('checked', false);
+                }
+            });
+
+            // Add new range row
+            container.on('click', '#addRangeRowBtn', function () {
+                var currentCount = $('#range-table-body tr').length;
+                var newHtml = getRangeRowTemplate().replace(/{INDEX}/g, currentCount);
+                $('#range-table-body').append(newHtml);
+                reindexRangeRows();
+            });
+
+            // Remove range row
+            container.on('click', '.remove-range-row', function () {
+                $(this).closest('tr').remove();
+                reindexRangeRows();
+            });
+
+            // Submit form (save)
+            container.on('click', '#saveConfigBtn', function (e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
-                // create modal if missing
-                if ($('#detailsModal').length === 0) {
-                    $('body').append('<div id="detailsModal" class="modal fade" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-3" id="detailsModalBody"></div></div></div></div>');
-                }
-                $('#detailsModalBody').html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div></div>');
-                var m = new bootstrap.Modal(document.getElementById('detailsModal'));
-                m.show();
-
-                $.get(url).done(function (html) {
-                    $('#detailsModalBody').html(html);
-                }).fail(function (xhr) {
-                    $('#detailsModalBody').html('<div class="alert alert-danger">Could not load details. ' + (xhr.status ? ('Status: ' + xhr.status) : '') + '</div>');
-                });
+                var form = $('#feeConfigForm');
+                saveConfiguration(form);
             });
 
-            // Initialize select2 if available
-            $(document).ready(function () {
-                if ($.fn.select2) {
-                    $('#statusFilter, #BranchIdFilter').select2({ width: '100%' });
-                }
-
-                // Add a row count display
-                $('#detailsFilters').after('<div class="ms-auto text-muted align-self-center small" id="rowsCount">Showing 0 rows</div>');
+            // Delete configuration
+            container.on('click', '#deleteConfigBtn', function (e) {
+                e.preventDefault();
+                deleteConfiguration();
             });
+        }
 
-        })(jQuery);
+        // Save configuration (POST) - synchronizes top-level controls into form first
+        function saveConfiguration($form) {
+            // Sync top-level controls into form hidden fields
+            var isCentralizedMain = $('#isCentralized').is(':checked');
+            var branchIdMain = isCentralizedMain ? null : $('#branchId').val();
+            var feeTypeMain = $('#feeType').val();
+
+            $form.find('input[name="IsCentralized"]').val(isCentralizedMain);
+            $form.find('input[name="BranchId"]').val(branchIdMain);
+            $form.find('input[name="FeeType"]').val(feeTypeMain);
+
+            // Validate at least one fee method selected
+            if (!$form.find('#AcceptPercentage').is(':checked') && !$form.find('#AcceptRange').is(':checked')) {
+                appalert('You must enable at least one fee method (Percentage or Range).', 2, 1);
+                return;
+            }
+
+            // Reindex before serialization
+            reindexRangeRows();
+
+            var formData = $form.serialize();
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '@Url.Action("CreateOrUpdate", "FeeConfig")',
+                type: 'POST',
+                data: formData + '&__RequestVerificationToken=' + encodeURIComponent(token),
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        // Reload the form to reflect saved data
+                        loadConfiguration();
+                    } else {
+                        appalert(response.message, 2, 1);
+                    }
+                },
+                error: function (err) {
+                    appalert('An error occurred while saving: ' + err.statusText, 0, 1);
+                }
+            });
+        }
+
+        // Delete configuration (POST, anti-forgery)
+        function deleteConfiguration() {
+            var configId = $('#Id').val();
+            if (!configId) {
+                appalert('Cannot delete a configuration that has not been saved yet.', 3, 1);
+                return;
+            }
+
+            alertify.confirm('Confirm Deletion', 'Are you sure you want to permanently delete this fee configuration?',
+                function () {
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    $.ajax({
+                        url: '@Url.Action("Delete", "FeeConfig")',
+                        type: 'GET',
+                        data: { KEY: configId, __RequestVerificationToken: token },
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                $('#config-form-container').empty();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        },
+                        error: function (err) {
+                            appalert('An error occurred during deletion: ' + err.statusText, 4, 1);
+                        }
+                    });
+                },
+                function () {
+                    appalert('Deletion cancelled.', 3, 1);
+                }
+            );
+        }
+  
+
     </script>
 }

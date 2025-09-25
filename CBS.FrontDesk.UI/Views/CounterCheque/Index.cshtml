@@ -1,0 +1,123 @@
+﻿@{ ViewBag.Title = "Counter Cheque Issuance"; }
+@using Resources
+
+<!-- =================================================
+     PAGE HEADER
+================================================== -->
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-cash-fast me-2"></i> Counter Cheque Management
+        </h1>
+        <p class="card-text text-muted mb-1">
+            Issue on-the-spot counter cheques for immediate customer withdrawals and manage the validation workflow.
+        </p>
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            <strong>Default View:</strong> The form to issue a new counter cheque is loaded by default.
+        </div>
+        <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+    </div>
+</div>
+
+
+<!-- =================================================
+     TIPS SECTION
+================================================== -->
+<div class="card mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Issuing Counter Cheques</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item"><strong>Issue New Cheque:</strong> Use the default form to issue a new counter cheque. You must provide a valid Client ID, their Account Number, and the withdrawal Amount.</li>
+                <li class="list-group-item"><strong>View History:</strong> Click "View All Counter Cheques" to see a complete, filterable history of all issued cheques.</li>
+                <li class="list-group-item"><strong>Action Workflow:</strong> Cheques require approval. From the list view, use the 'Actions' column to `Review`, `Validate` (approve), or `Reject` a pending cheque. Each action requires a motive or note.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<!-- =================================================
+     MAIN CONTENT AREA
+================================================== -->
+<div class="card shadow p-3 mb-4">
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <!-- These buttons correctly call your site's generic JavaScript functions -->
+            <a type="button" onclick="LoadDataGen('CounterCheque', 'counterChequeTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2">View All Counter Cheques</a>
+            <a type="button" onclick="AddORUpdateGen(null, 'datalistingview', '_Create', 'new', 'CounterCheque')" class="btn btn-label-secondary btn-sm"> New Counter Cheque</a>
+        </div>
+    </div>
+
+    <!-- The container where all partial views will be dynamically loaded -->
+    <div id="datalistingview">
+        @Html.Partial("_Create", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques())
+    </div>
+</div>
+
+<!-- =================================================
+     MODAL PLACEHOLDER FOR ACTIONS
+================================================== -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="actionModalBody">
+                <!-- The _ActionForm.cshtml partial is loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    (function ($) {
+        'use strict';
+
+        window.showActionModal = function(action, id) {
+            const url = `@Url.Action("InitializeData", "CounterCheque")`;
+            const $modalBody = $('#actionModalBody');
+
+            $('#actionModalLabel').text(`${action} Counter Cheque`);
+
+            // Show a loader while we fetch the form
+            $modalBody.html('<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>');
+            $('#actionModal').modal('show');
+
+            // Load the _ActionForm partial into the modal body
+            $modalBody.load(`${url}?partialView=_ActionForm&path=action&KEY=${id}`, function() {
+                // After loading, find the hidden 'action' input inside the form and set its value
+                $(this).find('input[name="Action"]').val(action);
+            });
+        };
+
+        /**
+         * Delegated submit handler for the form that lives inside the action modal.
+         */
+        $(document).on('submit', '#counterChequeActionForm', function(e) {
+            e.preventDefault();
+            const $form = $(this);
+
+            // Check for client-side validation if you have it
+            if ($.validator && $.validator.unobtrusive && !$form.valid()) {
+                return;
+            }
+
+            // Your existing generic function is perfect for this!
+            // It will submit the form via AJAX and handle the response.
+            AjaxPostAndUpdate(this);
+        });
+
+    })(jQuery);
+    </script>
+}

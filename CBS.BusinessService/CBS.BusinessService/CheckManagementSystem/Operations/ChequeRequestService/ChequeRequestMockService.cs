@@ -39,6 +39,46 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             return Task.FromResult(ExecutionMessage);
         }
 
+        // Inside your ChequeRequestService or ChequeRequestMockService
+
+        public async Task<ExecutionMessages> UpdateRequestAsync(ChequeBookRequest model)
+        {
+            // MOCK IMPLEMENTATION:
+            var existingRequest = _mockRequests.FirstOrDefault(r => r.Id == model.Id);
+            if (existingRequest != null)
+            {
+                // Update the properties of the existing object
+                existingRequest.customerId = model.customerId;
+                existingRequest.categoryId = model.categoryId;
+                existingRequest.checkBookAccount = model.checkBookAccount;
+                existingRequest.subscriptionPaymentAccountId = model.subscriptionPaymentAccountId;
+                existingRequest.requestNote = model.requestNote;
+                // ... update notification properties ...
+
+                GetExecutionMessages(existingRequest, true, "Cheque Request", MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Request updated successfully.");
+            }
+            else
+            {
+                GetExecutionMessages(model, false, "Cheque Request", MessagesResults.Failed,
+                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, "Request not found.");
+            }
+            return ExecutionMessage;
+
+            /*
+            // REAL SERVICE IMPLEMENTATION would look like this:
+            try
+            {
+                // PUT /api/v1/cheque-requests/{id}
+                string url = string.Format(APICallHelper.UpdateChequeRequest, model.Id); // Assumes this constant exists
+                var response = await _apiHelper.PutAsync<ServiceResponse<ChequeBookRequest>>(url, model);
+                if (response.IsSuccess) { ... } else { ... }
+            }
+            catch (Exception ex) { ... }
+            return ExecutionMessage;
+            */
+        }
+
         public Task<List<ChequeBookRequest>> GetAllRequestsAsync()
         {
             // Return a copy of the list, ordered by most recent

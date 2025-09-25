@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.Notific
     public class NotificationConfig
     {
         public string Id { get; set; }
-
+        public string Name { get; set; }
         public bool IsCentralized { get; set; } = false;
 
         public string BranchId { get; set; }
@@ -26,4 +27,18 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.Notific
 
         public bool IsActive { get; set; } = true;
     }
+
+    // using Newtonsoft.Json;
+    public class VerifyNotificationConfigRequest
+    {
+        [JsonProperty("isCentralised")]
+        public bool IsCentralised { get; set; }
+
+        [JsonProperty("branchId")]
+        public string BranchId { get; set; }
+
+        [JsonProperty("notificationType")]
+        public string NotificationType { get; set; }
+    }
+
 }

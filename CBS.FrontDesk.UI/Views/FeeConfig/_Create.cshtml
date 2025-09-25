@@ -5,21 +5,22 @@
     @Html.AntiForgeryToken()
 
     @* Hidden fields that will be synced with the page level controls before save *@
-    @Html.HiddenFor(m => m.Id, new { id = "Id" })
-    @Html.HiddenFor(m => m.IsCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
-    @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
-    @Html.HiddenFor(m => m.FeeType, new { id = "FeeType", Name = "FeeType" })
-    @Html.HiddenFor(m => m.BranchName, new { id = "BranchName", name = "BranchName" })
+    @Html.HiddenFor(m => m.id, new { id = "Id" })
+    @Html.HiddenFor(m => m.isCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
+    @Html.HiddenFor(m => m.branchId, new { id = "BranchId", Name = "BranchId" })
+    @Html.HiddenFor(m => m.feeType, new { id = "FeeType", Name = "FeeType" })
+    @Html.HiddenFor(m => m.branchName, new { id = "BranchName", name = "BranchName" })
 
 
     <div class="card shadow p-3">
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-pencil-box-outline me-2"></i>
-            Manage Configuration for: <span class="text-dark">@Model.FeeType</span>
+            Manage Configuration for: <span class="text-dark">@Model.feeType</span>
         </h5>
 
         <div class="form-floating mb-3">
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+            @Html.TextBoxFor(m => m.description, new { @class = "form-control", placeholder = "Description" })
+            @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
             <label>Description</label>
         </div>
 
@@ -27,13 +28,13 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Static Config</h5>
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.AcceptStatus, new { id = "AcceptStatus", @class = "form-check-input" })
+                    @Html.CheckBoxFor(m => m.acceptStaticAmount, new { id = "AcceptStatus", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptStatus">Enable Status Fee</label>
                 </div>
 
                 <div class="form-floating">
-                    @Html.TextBoxFor(m => m.Static, new { @class = "form-control", type = "number", step = "1", placeholder = "Static " })
-                    @Html.ValidationMessageFor(m => m.Static, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.staticAmount, new { @class = "form-control", type = "number", step = "1", placeholder = "Static " })
+                    @Html.ValidationMessageFor(m => m.staticAmount, "", new { @class = "text-danger" })
                     <label>Static</label>
                 </div>
             </div>
@@ -45,13 +46,13 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Percentage Config</h5>
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.AcceptPercentage, new { id = "AcceptPercentage", @class = "form-check-input" })
+                    @Html.CheckBoxFor(m => m.acceptPercentage, new { id = "AcceptPercentage", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptPercentage">Enable Percentage Fee</label>
                 </div>
 
                 <div class="form-floating">
-                    @Html.TextBoxFor(m => m.PercentageApplied, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
-                    @Html.ValidationMessageFor(m => m.PercentageApplied, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.percentageApplied, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
+                    @Html.ValidationMessageFor(m => m.percentageApplied, "", new { @class = "text-danger" })
                     <label>Percentage (%)</label>
                 </div>
             </div>
@@ -63,7 +64,7 @@
             <div class="mb-3">
                 <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Range Config</h5>
                 <div class="form-check form-switch mb-2">
-                    @Html.CheckBoxFor(m => m.AcceptRange, new { id = "AcceptRange", @class = "form-check-input" })
+                    @Html.CheckBoxFor(m => m.acceptRange, new { id = "AcceptRange", @class = "form-check-input" })
                     <label class="form-check-label fw-bold" for="AcceptRange">Enable Range-Based Fee</label>
                 </div>
 
@@ -83,11 +84,11 @@
                             </tr>
                         </thead>
                         <tbody id="range-table-body">
-                            @if (Model?.FeeTypeRanges != null)
+                            @if (Model?.feeTypeRanges != null)
                             {
-                                for (int i = 0; i < Model.FeeTypeRanges.Count; i++)
+                                for (int i = 0; i < Model.feeTypeRanges.Count; i++)
                                 {
-                                    @Html.Partial("_DataTable", Model.FeeTypeRanges[i], new ViewDataDictionary { { "index", i } })
+                                    @Html.Partial("_DataTable", Model.feeTypeRanges[i], new ViewDataDictionary { { "index", i } })
                                 }
                             }
                         </tbody>
@@ -100,7 +101,7 @@
 
         <div class="d-flex justify-content-end">
             <div class="col-12 text-end mt-3">
-                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                @if (string.IsNullOrWhiteSpace(Model?.id))
                 {
                     <button id="saveConfigBtn" type="button" class="btn btn-primary shadow-sm px-4">
                         <i class="fas fa-save me-1"></i> @ChequeManagements.Save

@@ -50,11 +50,11 @@ namespace CBS.BusinessService.CheckManagementSystem
             }
         }
 
-        public async Task<CategoryConfig> GetCategoryByIdAsync(string categoryId)
+        public async Task<CategoryConfig> GetCategoryByIdAsync(string id)
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, categoryId);
+                string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
 
                 // CORRECTED: Access the final payload via .ApiResponseData.Data

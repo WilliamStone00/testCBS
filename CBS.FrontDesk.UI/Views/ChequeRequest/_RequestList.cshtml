@@ -18,7 +18,7 @@
             <div class="col-md-3">
                 <label class="form-label fw-bold">Category</label>
                 @* Assumes ViewBag.Categories is loaded by the controller's InitializeData(path="list") *@
-                @Html.DropDownList("categoryFilter", new SelectList(ViewBag.Categories, "Value", "Text"), "--- All Categories ---", new { @class = "form-control select2" })
+                @Html.DropDownList("categoryFilter", new SelectList(ViewBag.Categories, "Id", "name"), "--- All Categories ---", new { @class = "form-control select2" })
             </div>
             <div class="col-md-3">
                 <label class="form-label fw-bold">Status</label>

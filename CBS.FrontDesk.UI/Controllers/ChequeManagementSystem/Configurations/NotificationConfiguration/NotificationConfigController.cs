@@ -2,22 +2,24 @@
 
 using CBS.BusinessService.CheckManagementSystem.Configurations.NotificationConfiguration;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig;
 using CBS.FrontDesk.Data.Message;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.NotificationConfiguration
 {
-  //  [CheckSessionTimeOut]
+    [CheckSessionTimeOut]
     public class NotificationConfigController : BaseController
     {
-        private readonly NotificationConfigmockService _notificationConfigService;
+        private readonly NotificationConfigService _notificationConfigService;
         private readonly BranchServices _branchServices;
 
         // Constructor for Dependency Injection
-        public NotificationConfigController(NotificationConfigmockService notificationConfigService, BranchServices branchServices)
+        public NotificationConfigController(NotificationConfigService notificationConfigService, BranchServices branchServices)
         {
             _notificationConfigService = notificationConfigService;
             _branchServices = branchServices;
@@ -36,10 +38,20 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
         /// <summary>
         /// Helper method to load common data (Branches, Notification Types) into the ViewBag.
         /// </summary>
+        //private async Task Loader()
+        //{
+        //    ViewBag.Branches = await _branchServices.GetBranches();
+        //    ViewBag.NotificationTypes = await _notificationConfigService.GetNotificationTypesAsync();
+        //}
+
         private async Task Loader()
         {
             ViewBag.Branches = await _branchServices.GetBranches();
-            ViewBag.NotificationTypes = await _notificationConfigService.GetNotificationTypesMockAsync();
+
+            // Get both notification types and placeholders
+            var notificationData = await _notificationConfigService.GetNotificationTypesAsync();
+            ViewBag.NotificationTypes = notificationData?.NotificationTypes ?? new List<NotificationTypeDto>();
+            ViewBag.PlaceHolders = notificationData?.PlaceHolders ?? new List<PlaceholderDto>();
         }
 
         /// <summary>
@@ -56,7 +68,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
             if (!string.IsNullOrWhiteSpace(notificationType))
             {
                 // Use our mock service to find a matching configuration.
-                var configs = await _notificationConfigService.GetConfigsMockAsync(isCentralizedValue, isCentralizedValue ? null : branchId, notificationType);
+                var configs = await _notificationConfigService.GetConfigsAsync(isCentralizedValue, isCentralizedValue ? null : branchId, notificationType);
                 model = configs.FirstOrDefault();
             }
 
@@ -73,8 +85,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
             }
 
             // Also, get the full definition for the selected type to show placeholders.
-            var allTypes = await _notificationConfigService.GetNotificationTypesMockAsync();
-            ViewBag.CurrentTypeDefinition = allTypes.FirstOrDefault(t => t.Value == notificationType);
+            //var allTypes = await _notificationConfigService.GetNotificationTypesAsync();
+            //ViewBag.CurrentTypeDefinition = allTypes.FirstOrDefault(t => t.Value == notificationType);
 
             return PartialView(partialView, model);
         }
@@ -84,9 +96,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
         //  and updating existing configurations.
         /// </summary>
         [HttpPost]
-       // [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrUpdate(NotificationConfig model)
         {
+            
+            if (model.Name == null)
+            {
+                return Json(new { success = false, status = "Failed", message = "Please fill in value for Name." });
+
+            }
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, status = "Failed", message = "Please fill all required fields." });
@@ -95,11 +113,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
             ExecutionMessages data;
             if (string.IsNullOrWhiteSpace(model.Id))
             {
-                data = await _notificationConfigService.CreateMockAsync(model);
+                data = await _notificationConfigService.CreateAsync(model);
             }
             else
             {
-                data = await _notificationConfigService.UpdateMockAsync(model);
+                data = await _notificationConfigService.UpdateAsync(model);
             }
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
@@ -115,7 +133,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
                 return Json(new { success = false, status = "Failed", message = "Invalid ID provided for deletion." });
             }
 
-            var result = await _notificationConfigService.DeleteMockAsync(KEY);
+            var result = await _notificationConfigService.DeleteAsync(KEY);
             return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
         }
     }

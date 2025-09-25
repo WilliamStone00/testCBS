@@ -1,7 +1,10 @@
-﻿using CBS.BusinessService.CheckManagementSystem;
+﻿using Antlr.Runtime.Misc;
+using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -13,7 +16,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeRequest
 {
-    [CheckSessionTimeOut]
+   // [CheckSessionTimeOut]
     public class ChequeRequestController : BaseController
     {
        
@@ -21,14 +24,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         private readonly ChequeRequestMockService _chequeRequestService;
         private readonly BranchServices _branchServices;
         private readonly CategoryConfigService _categoryServices;
+        private readonly CustomerService _customerService;
 
 
-
-        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService)
+        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService)
         {
             _chequeRequestService = chequeRequestService;
             _branchServices = branchServices;
             _categoryServices = categoryConfigService;
+            _customerService = customerService;
         }
 
         // The main container page.
@@ -110,23 +114,81 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             }
         }
 
+
+        [HttpGet]
+        public async Task<JsonResult> GetCustomerDetails(string customerId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(customerId))
+                {
+                    return Json(new { success = false, message = "Customer ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Get customer data using the refactored service method
+                var customerData = await _customerService.GetCustomerByIdAsync(customerId);
+
+                if (customerData != null)
+                {
+                    return Json(new { success = true, data = customerData }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Customer not found" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you might want to add logging here)
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ChequeBookRequest model)
+        public async Task<ActionResult> CreateOrUpdate(ChequeBookRequest model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed." });
+            {
+                // Return a clear validation error
+                return Json(new
+                {
+                    success = false,
+                    message = "Validation failed. Please check the required fields.",
+                    status = "ValidationError"
+                });
+            }
 
-            var result = await _chequeRequestService.CreateRequestAsync(model);
+            ExecutionMessages result;
+            string operationType;
 
+            // The core logic: check if the ID is present.
+            if (string.IsNullOrWhiteSpace(model.Id))
+            {
+                // --- CREATE PATH ---
+                result = await _chequeRequestService.CreateRequestAsync(model);
+                operationType = "Insert";
+            }
+            else
+            {
+                // --- UPDATE PATH ---
+                result = await _chequeRequestService.UpdateRequestAsync(model);
+                operationType = "Update";
+            }
+
+            // Return the standardized, rich JSON response that your generic script expects
             return Json(new
             {
                 success = result.Result,
                 message = Messaging.MessageResult(result),
+                status = result.MessageStatus,
+
+                // These properties guide the generic 'AjaxPostAndUpdate' script on how to refresh the UI
+                optype = operationType,
                 reloadDataView = "Yes",
                 controllerName = "ChequeRequest",
-                divLoaderList = "datalistingview",
-                dataLoaderActionName = "_RequestList"
+                divLoaderList = "datalistingview", // The div where the list should be reloaded
+                dataLoaderActionName = "_RequestList" // The partial view for the list
             });
         }
 
