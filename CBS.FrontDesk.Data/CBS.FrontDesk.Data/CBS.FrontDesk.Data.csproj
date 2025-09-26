@@ -133,6 +133,8 @@
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
     <Compile Include="Entity\CheckManagementSystem\ChequeCertification\ChequeCertificationDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceValidation.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\OptionRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\NumConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\VariablePosition.cs" />

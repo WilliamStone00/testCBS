@@ -2035,6 +2035,7 @@
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\ChequeCertification\ChequeCertificationController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Clearance\ChequeClearance\ChequeClearanceController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\Category\CategoryconficController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
@@ -10654,6 +10655,12 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
     <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\Index.cshtml" />
+    <Content Include="Views\ChequeClearance\_Create.cshtml" />
+    <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
+    <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
+    <Content Include="Views\ChequeClearance\_Edit.cshtml" />
+    <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10834,6 +10841,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
