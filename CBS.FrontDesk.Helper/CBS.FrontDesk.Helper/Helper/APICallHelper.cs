@@ -1264,6 +1264,14 @@ namespace CBS.FrontDesk.Helper
         public static string Createnot = "/api/v1/Notification";
         public static string Updatenot = "/api/v1/Notification/{id}";
         public static string Deletenot = "/api/v1/Notification/{id}";
+        //------------------- CounterCheque ----------------
+        public static string CreateCounterCheque = "/api/v1/counter-checks";
+        public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
+
+        //--------------------------------------TEST--------------------------------------//
+        public static string GetAllChequeClearance = "/api/v1/counter-clearance";
+        public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
+
 
         //************************** END CHEQUE BOOK *******************************
 
