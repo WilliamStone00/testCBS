@@ -1,0 +1,82 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CustomerCheckbooksDto
+
+@if (Model?.Checkbooks != null && Model.Checkbooks.Any())
+{
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                <i class="mdi mdi-book-multiple me-2"></i>
+                Checkbooks for Customer: @Model.CustomerId
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Checkbook ID</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var checkbook in Model.Checkbooks)
+                        {
+                            <tr>
+                                <td>@checkbook.CheckBookId</td>
+                                <td>
+                                    <span class="badge bg-label-primary">@checkbook.Category</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = checkbook.Status.ToLower() == "active" ? "bg-label-success" :
+                                                         checkbook.Status.ToLower() == "inactive" ? "bg-label-warning" : "bg-label-secondary";
+                                    }
+                                    <span class="badge @statusClass">@checkbook.Status</span>
+                                </td>
+                                <td>
+                                    <div class="demo-inline-spacing">
+                                        <button type="button"
+                                                class="btn btn-icon btn-label-info btn-sm"
+                                                onclick="toggleCheckLeaves(@checkbook.CheckBookId)"
+                                                data-bs-toggle="tooltip"
+                                                title="View Check Leaves">
+                                            <span class="tf-icons mdi mdi-eye-outline"></span>
+                                        </button>
+                                        <a href="@Url.Action("RequestLossForCheckbook", "LossManagement", new { checkBookId = checkbook.CheckBookId })"
+                                           class="btn btn-icon btn-label-warning btn-sm"
+                                           data-bs-toggle="tooltip"
+                                           title="Request Loss for Entire Checkbook">
+                                            <span class="tf-icons mdi mdi-alert-outline"></span>
+                                        </a>
+                                        <a href="@Url.Action("CheckbookDetails", "LossManagement", new { checkBookId = checkbook.CheckBookId })"
+                                           class="btn btn-icon btn-label-primary btn-sm"
+                                           data-bs-toggle="tooltip"
+                                           title="View Full Details">
+                                            <span class="tf-icons mdi mdi-information-outline"></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="display: none;" id="checkleaves-container-@checkbook.CheckBookId">
+                                <td colspan="4">
+                                    <div id="checkleaves-@checkbook.CheckBookId">
+                                        <!-- Check leaves will be loaded here -->
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <i class="mdi mdi-alert-circle-outline me-2"></i>
+        No checkbooks found for this customer.
+    </div>
+}

@@ -199,6 +199,12 @@
     <Reference Include="Microsoft.AspNetCore.Identity, Version=2.3.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Identity.2.3.1\lib\netstandard2.0\Microsoft.AspNetCore.Identity.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -2028,10 +2034,12 @@
     <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\ChequeCertification\ChequeCertificationController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\Category\CategoryconficController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\LossManagementSys\LossManagementController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
@@ -10635,6 +10643,17 @@
     <Content Include="Views\DailySaverManagement\_CreateDailySaver.cshtml" />
     <Content Include="Views\AccountingStatements\AccountingJournalReport.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchJournalEntryData.cshtml" />
+    <Content Include="Views\ChequeCertification\Index.cshtml" />
+    <Content Include="Views\ChequeCertification\Create.cshtml" />
+    <Content Include="Views\ChequeCertification\_ChequeCertificationDataTable.cshtml" />
+    <Content Include="Views\ChequeCertification\_ChequeCertificationForm.cshtml" />
+    <Content Include="Views\ChequeCertification\Details.cshtml" />
+    <Content Include="Views\ChequeCertification\Delete.cshtml" />
+    <Content Include="Views\LossManagement\Index.cshtml" />
+    <Content Include="Views\LossManagement\_CheckbooksTable.cshtml" />
+    <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
+    <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
+    <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

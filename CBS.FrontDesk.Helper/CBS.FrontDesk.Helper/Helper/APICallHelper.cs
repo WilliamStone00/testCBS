@@ -1289,6 +1289,23 @@ namespace CBS.FrontDesk.Helper
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
         public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
         public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
-        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************
+        //
+
+        public static string GetAllChequeCertifications = "api/ChequeCertification/GetAll";
+        public static string GetChequeCertificationById = "api/ChequeCertification/GetById/{0}";
+        public static string CreateChequeCertification = "api/ChequeCertification/Create";
+        public static string UpdateChequeCertification = "api/ChequeCertification/Update";
+        public static string ReviewChequeCertification = "api/ChequeCertification/Review/{0}";
+        public static string ValidateChequeCertification = "api/ChequeCertification/Validate/{0}";
+        public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
+        public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
+
+        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
     }
 }
