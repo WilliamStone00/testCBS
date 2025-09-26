@@ -20,6 +20,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public bool IsHeadOfficeAccount { get; set; }
         public string BranchId { get; set; } = "";
         public string TempData { get; set; }
+        public string GetOldAccountNumber()
+        {
+            if (this.Old_AccountNumber == null || this.Old_AccountNumber == "0" || this.Old_AccountNumber == "000" || this.Old_AccountNumber == "000000000000")
+            {
+                return this.New_AccountNumber;
+            }
+            else
+            {
+                return this.Old_AccountNumber;
+            }
+        }
     }
 
 

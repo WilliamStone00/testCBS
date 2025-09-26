@@ -57,6 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         {
             ViewBag.FileTypes = BuildDropDown(GenerateFIleType());
             ViewBag.ReportTypes = BuildDropDown(GenerateReportType());
+            ViewBag.ZeroStatus = BuildDropDownStatus();
             //var listAccount = (await _accountingServices.GetAllAccounting());
             //listAccount.Add(new Account { Id = "XXXXXX", AccountNumber = "000000", AccountName = "ALL" });
             //ViewBag.Accounts = BuildDropDown(GenerateAccountsListView(listAccount));
@@ -86,8 +87,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
             if (serviceOption== "accountingEntry")
             {
                 var reportData = await _accountingEntryServices.GetAccountingEntriesDtoByReferceId(key);
-                List<AccountingEntryReport> entryReport =await BuildReport(reportData,_branchServices); 
-                this.HttpContext.Session["rptSource"] = entryReport;
+              
+                this.HttpContext.Session["rptSource"] = AccountingEntryReport.ConvertToAccountingEntryReportDto(reportData, _accountingEntryServices.GetUserFullName());
     
                 // Set session values using the standard indexer 
                 //  string userPrefix = $"rpt_{_AccountServices.GetUserID()}_";
@@ -97,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Accounting/{reportName}";
 
 
-                return PartialView(partialView, new AccountingEntryQuery { AccountingEntryDtos = reportData});
+                return PartialView(partialView, new AccountingEntryQuery { AccountingEntryDtos = reportData.GetEntries()});
 
             }
             else
@@ -108,25 +109,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
    
         }
 
-        private async Task<List<AccountingEntryReport>> BuildReport(List<AccountingEntryDto> reportData, BranchServices branchServices)
-        {
-            List<AccountingEntryReport> entryReports = new List<AccountingEntryReport>();
-            var Branches =(await branchServices.GetBranches()).ToList();
-            var branch = Branches.Where(x => x.Id == reportData.FirstOrDefault().BranchId).FirstOrDefault();
-          var accountDatas=  await _accountingServices.GetAllAccounting();
-            foreach (var item in reportData)
-            {
-                var account = accountDatas.Where(x=>x.Id== item.AccountId).FirstOrDefault();
-                entryReports.Add(await CreateAEreport(item, branch, account));
-            }
-            return entryReports;
-        }
-
-        private async Task<AccountingEntryReport> CreateAEreport(AccountingEntryDto item,  Branch branch, Data.Account account)
-        {
-            var postedBy =await _userManagementServices.GetUser(item.CreatedBy);
-            return AccountingEntryReport.ConvertToEntity(item, branch, account, branch.Name,_accountingServices.GetBankName(),postedBy.firstName+" "+postedBy.lastName);
-        }
+     
+     
 
         public async Task<ActionResult> DownloadById(string fileId)
         {
@@ -419,7 +403,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 foreach (var item in debitAccounts)
                 {
 
-                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData + "-" + item.AccountName });
+                    list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumberNetwork + "-" + item.AccountName });
 
                 }
             list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "XXXXXX", Value = "[x]-ALL Account" });
@@ -436,7 +420,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                  var data = (from account in listOfAccounts
                             select new Data. Account
                             {
-                                AccountNumber= account.TempData,
+                                AccountNumber= account.AccountNumberNetwork,
                             AccountName = account.AccountName,
                             Id = account.Id
                             }).ToList();
@@ -465,6 +449,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+         private dynamic BuildDropDownStatus()
+        {
+            List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();
+            
+
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "REMOVE ZEROS ACCOUNT", Value = "REMOVE_ZEROS" });
+            list.Add(new System.Web.WebPages.Html.SelectListItem { Text = "ADD ZEROS ACCOUNT", Value = "ADD_ZEROS" });
+
+
+            return list;
+        }
+
         private dynamic BuildDropDown(IEnumerable<StringValues> stringValues)
         {
             List<System.Web.WebPages.Html.SelectListItem> list = new List<System.Web.WebPages.Html.SelectListItem>();

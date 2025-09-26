@@ -985,7 +985,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByReference = "/api/v1/Account/GetAccountByReference/{0}";
 
         public static string GetAccountByAccountType = "/api/v1/Account/GetAccountByAccountType/{0}";
-        public static string GetAccount = "/api/v1/Account/{0}";
+        public static string GetAccount = "api/v1/Account/{0}";
         public static string Delete_Account = "/api/v1/Account/{0}";
         public static string GetAccountByAccountNumberUrl = "/api/v1/Account/GetAccountByAccountNumberRef/{0}";
         public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
@@ -1021,6 +1021,8 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
+
+        public static string AccountingEntry_Report_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdForReporting/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
         public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";

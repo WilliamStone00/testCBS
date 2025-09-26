@@ -703,7 +703,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
 
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+                 
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
                 string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
 
