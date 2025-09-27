@@ -3,55 +3,58 @@
 @using Resources
 
 @{
-    // Get the full definition for the current type, which was passed via the ViewBag
-    var typeDefinition = ViewBag.CurrentTypeDefinition as NotificationType;
+    var placeholders = ViewBag.PlaceHolders as List<PlaceholderDto> ?? new List<PlaceholderDto>();
 }
 
-<form id="notificationConfigForm" onsubmit="return false;">
-   
+@* Use a real form so we can reliably call $form.serialize() *@
+@using (Html.BeginForm("CreateOrUpdate", "NotificationConfig", FormMethod.Post, new { id = "notificationConfigForm" }))
+{
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.IsCentralized)
-    @Html.HiddenFor(m => m.BranchId)
+    @Html.HiddenFor(m => m.IsCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
+    @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
     @Html.HiddenFor(m => m.NotificationType)
+
 
     <div class="card shadow p-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="text-primary mb-3">Edit Template for: <span class="text-dark">@typeDefinition?.Text</span></h5>
+            <h5 class="text-primary mb-3">Edit Template for: <span class="text-dark">@Model.NotificationType</span></h5>
             <div class="form-check form-switch">
-                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
                 <label class="form-check-label" for="IsActive">Is Active</label>
             </div>
         </div>
 
-
-        @if (typeDefinition != null)
+        @if (placeholders.Any())
         {
             <div class="alert alert-info">
-                <p class="mb-1"><strong>Description:</strong> @typeDefinition.Description</p>
-                @if (typeDefinition.Placeholders != null && typeDefinition.Placeholders.Any())
-                {
-                    <p class="mb-0"><strong>Available Placeholders:</strong></p>
-                    <div class="d-flex flex-wrap">
-                        @foreach (var placeholder in typeDefinition.Placeholders)
-                        {
-                            <code class="me-2 mb-1 p-1 bg-light border rounded">@placeholder</code>
-                        }
-                    </div>
-                }
+                <p class="mb-1"><strong>Available Placeholders:</strong></p>
+                <div class="d-flex flex-wrap" id="placeholderContainer">
+                    @foreach (var placeholder in placeholders)
+                    {
+                        <code class="me-2 mb-1 p-1 bg-light border rounded placeholder-tag" style="cursor: pointer;" title="@placeholder.Value">@placeholder.Text</code>
+                    }
+                </div>
+                <small class="text-muted">Click a placeholder to insert it into the template body.</small>
             </div>
         }
 
-        <div class="form-floating">
-            @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height: 200px;" })
-            @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
-            <label>Template Body</label>
+        <div class="form-floating mb-3">
+            @Html.TextAreaFor(m => m.Name, new { @class = "form-control", placeholder = "Name", style = "height: 50px;", id = "name" })
+            <label for="Name">Name</label>
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-floating mb-3">
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
-            <label>Template Description</label>
+            @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height: 50px;", id = "templateBody" })
+            <label for="templateBody">Template Body</label>
+            @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
         </div>
 
+        <div class="form-floating mb-3">
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description", id = "description" })
+            <label for="description">Template Description</label>
+        </div>
 
         <hr />
         <div class="d-flex justify-content-end align-items-center">
@@ -61,7 +64,11 @@
             {
                 <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">Delete Template</button>
             }
-            <button type="submit" id="saveConfigBtn" class="btn btn-primary">Save Changes</button>
+
+            @* Make Save a submit button inside the form *@
+            <button type="submit" id="saveConfigBtn" class="btn btn-primary shadow-sm px-4">
+                <i class="fas fa-save me-1"></i> Save Changes
+            </button>
         </div>
     </div>
-</form>
+}

@@ -6,7 +6,7 @@
         $('#fromDate').val(januaryFirst);
     }
 
-   
+    $('#ZeroAccount').hide();
     // Cache elements
     const $auditCheckbox = $('#ActivateAuditId');
     const $branchList = $('#ListOfBranchToHide');
@@ -54,7 +54,7 @@
         }
 
     });
-
+    //SystemQuery_ReferenceId
     $(document).on('change', '#SystemQuery_ReportType', function () {
         var selectedValue = $(this).val();
         $('#lunchBalanceSheetBuilder').hide();
@@ -63,16 +63,20 @@
         if (selectedValue === 'GL') {
             // Show the element
             $('#AccountToHide').show();
+            $('#ZeroAccount').hide();
             $('#fromDate').val('');
             var selectedId = $("#selectedBranchID").val();
             loadBranchAccounts(selectedId);
         } else if (selectedValue === 'PANDL') {
+            $('#ZeroAccount').hide();
             $('#lunchBalanceSheetBuilder').show();
             setDateToJanuaryFirst();
         } else if (selectedValue === 'BS') {
+            $('#ZeroAccount').hide();
             $('#lunchBalanceSheetBuilder').show();
             setDateToJanuaryFirst();
         } else if (selectedValue === 'TB6' || selectedValue === 'TB4') {
+            $('#ZeroAccount').show();
             // Call the function when document is ready
             setDateToJanuaryFirst();
 

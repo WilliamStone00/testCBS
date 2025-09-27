@@ -148,6 +148,12 @@
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckLeafDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CustomerCheckbooksDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\LossRequestDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationHistory\NotificationHistoryDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeBookListing\ChequeBook.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationRequest.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeRequest\ChequeBookRequest.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\CounterCheque\CounterCheque.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\CustomerDataDto.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />

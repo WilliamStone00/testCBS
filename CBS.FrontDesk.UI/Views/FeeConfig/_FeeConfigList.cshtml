@@ -1,0 +1,469 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig>
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Configuration</h5>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Fee Type</label>
+            @*<select id="feeTypeFilter" class="form-control">
+                <option value="">All Fee Types</option>
+                @if (ViewBag.FeeTypes != null)
+                {
+                    foreach (var feeType in ViewBag.FeeTypes as IEnumerable<Microsoft.Extensions.Primitives.StringValues>)
+                    {
+                        <option value="@feeType">@feeType</option>
+                    }
+                }
+            </select>*@
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Branch</label>
+            <select id="branchFilter" class="form-control">
+                <option value="">All Branches</option>
+                @if (ViewBag.Branches != null)
+                {
+                    foreach (var branch in ViewBag.Branches as IEnumerable<dynamic>)
+                    {
+                        <option value="@branch.Id">@branch.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Configuration Type</label>
+            <select id="centralizedFilter" class="form-control">
+                <option value="">All Types</option>
+                <option value="true">Centralized</option>
+                <option value="false">Branch Specific</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Status</label>
+            <select id="statusFilter" class="form-control">
+                <option value="">All Status</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
+            <button id="resetFilterBtn" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="feeConfigDataTable" class="table table-striped table-bordered" style="width:100%">
+                <thead class="table-light">
+                    <tr>
+                        <th>Fee Type</th>
+                        <th>Branch</th>
+                        <th>Type</th>
+                        <th>IsCentralized</th>
+                        <th>Description</th>
+                        <th width="150">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- DataTables will populate this automatically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Fee Configuration Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let allFeeConfigs = [];
+    let dataTable = null;
+
+    // Initialize when the partial view is loaded
+    $(document).ready(function () {
+        console.log('FeeConfigList partial loaded - initializing DataTable...');
+
+        // Initialize DataTable FIRST (empty)
+        initializeDataTable();
+
+        // Then load the data
+        loadFeeConfigs();
+
+        // Attach event handlers
+        $('#applyFilterBtn').off('click').on('click', applyFilters);
+        $('#resetFilterBtn').off('click').on('click', resetFilters);
+    });
+
+    function initializeDataTable() {
+        // Destroy existing DataTable if it exists
+        if ($.fn.DataTable.isDataTable('#feeConfigDataTable')) {
+            dataTable.destroy();
+        }
+
+        // Initialize DataTable with empty data
+        dataTable = $('#feeConfigDataTable').DataTable({
+            "processing": false,
+            "serverSide": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "paging": true,
+            "pageLength": 10,
+            "lengthMenu": [10, 25, 50, 100],
+            "autoWidth": false,
+            "data": [], // Empty data initially
+            "columns": [
+                {
+                    "data": "feeType",
+                    "width": "15%",
+                    "render": function(data, type, row) {
+                        return data || 'N/A';
+                    }
+                },
+                {
+                    "data": "branchName",
+                    "width": "15%",
+                    "render": function(data, type, row) {
+                        return data || (row.isCentralized ? 'Centralized' : 'N/A');
+                    }
+                },
+                {
+                    "data": "isCentralized",
+                    "width": "10%",
+                    "render": function(data, type, row) {
+                        return data ?
+                            '<span class="badge bg-primary">Centralized</span>' :
+                            '<span class="badge bg-secondary">Branch</span>';
+                    }
+                },
+                {
+                    "data": "isCentralized",
+                    "width": "10%",
+                    "render": function(data, type, row) {
+                        return data ?
+                            '<span class="badge bg-success">true</span>' :
+                            '<span class="badge bg-danger">false</span>';
+                    }
+                },
+                {
+                    "data": "description",
+                    "width": "30%",
+                    "render": function(data, type, row) {
+                        return data || 'No description';
+                    }
+                },
+                {
+                    "data": "id",
+                    "width": "20%",
+                    "orderable": false,
+                    "render": function(data, type, row) {
+                        return `
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-info" onclick="showDetails('${data}')" title="View Details">
+                                    <i class="mdi mdi-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="editConfig('${data}')" title="Edit">
+                                    <i class="mdi mdi-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="deleteConfig('${data}')" title="Delete">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+            "language": {
+                "emptyTable": "No fee configurations available. Click 'Apply Filters' to display data.",
+                "search": "Search:",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "Showing 0 to 0 of 0 entries",
+                "infoFiltered": "(filtered from _MAX_ total entries)",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
+        });
+    }
+
+    function loadFeeConfigs() {
+        //console.log('Loading fee configurations...');
+
+        //// Show loading state
+        //$('#feeConfigDataTable tbody').html(`
+        //    <tr>
+        //        <td colspan="6" class="text-center py-4">
+        //            <div class="spinner-border text-primary" role="status">
+        //                <span class="visually-hidden">Loading...</span>
+        //            </div>
+        //            <div class="mt-2">Loading fee configurations...</div>
+        //        </td>
+        //    </tr>
+        //`);
+
+        $.ajax({
+            url: '@Url.Action("GetAllFeeConfigs", "FeeConfig")',
+            type: 'GET',
+            success: function (response) {
+                console.log('API Response:', response);
+
+                if (response.success && response.data) {
+                    allFeeConfigs = response.data;
+                    console.log('Data loaded successfully. Records:', allFeeConfigs.length);
+
+                    // Clear the loading message but don't display data yet
+                    dataTable.clear().draw();
+
+                    $('#feeConfigDataTable tbody').html(`
+                        <tr>
+                            <td colspan="6" class="text-center text-success py-4">
+                                <i class="mdi mdi-check-circle-outline mdi-24px d-block mb-2"></i>
+                                ${allFeeConfigs.length} configurations loaded. Click "Apply Filters" to display.
+                            </td>
+                        </tr>
+                    `);
+                } else {
+                    throw new Error(response.error || 'Failed to load data');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading data:', error);
+                console.log('XHR response:', xhr.responseText);
+
+                $('#feeConfigDataTable tbody').html(`
+                    <tr>
+                        <td colspan="6" class="text-center text-danger py-4">
+                            <i class="mdi mdi-alert-circle-outline mdi-24px d-block mb-2"></i>
+                            Failed to load data. Please check console for details.
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    function applyFilters() {
+        console.log('Applying filters...');
+
+        if (!allFeeConfigs || allFeeConfigs.length === 0) {
+            appalert('No data available to filter. Please wait for data to load.', 3, 1);
+            return;
+        }
+
+        let filteredData = [...allFeeConfigs];
+
+        // Apply filters based on actual JSON property names
+        const feeType = $('#feeTypeFilter').val();
+        const branchId = $('#branchFilter').val();
+        const centralized = $('#centralizedFilter').val();
+        const status = $('#statusFilter').val();
+
+        if (feeType) {
+            filteredData = filteredData.filter(item => item.feeType === feeType);
+        }
+
+        if (branchId) {
+            filteredData = filteredData.filter(item => item.branchId === branchId);
+        }
+
+        if (centralized !== '') {
+            const isCentralized = centralized === 'true';
+            filteredData = filteredData.filter(item => item.isCentralized === isCentralized);
+        }
+
+        if (status !== '') {
+            const isActive = status === 'true';
+            filteredData = filteredData.filter(item => item.isActive === isActive);
+        }
+
+        // Clear and reload DataTable with filtered data
+        dataTable.clear();
+
+        if (filteredData.length > 0) {
+            // Add the filtered data to DataTable
+            dataTable.rows.add(filteredData).draw();
+            console.log('Filter applied. Showing', filteredData.length, 'records');
+        } else {
+            dataTable.draw(); // This will show the emptyTable message
+            console.log('No records match the current filters');
+        }
+    }
+
+    function resetFilters() {
+        console.log('Resetting filters...');
+
+        $('#feeTypeFilter').val('');
+        $('#branchFilter').val('');
+        $('#centralizedFilter').val('');
+        $('#statusFilter').val('');
+
+        // Clear the table but show message that data is ready
+        dataTable.clear().draw();
+
+        if (allFeeConfigs && allFeeConfigs.length > 0) {
+            $('#feeConfigDataTable tbody').html(`
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="mdi mdi-information-outline mdi-24px d-block mb-2"></i>
+                        Filters reset. ${allFeeConfigs.length} configurations ready. Click "Apply Filters" to display.
+                    </td>
+                </tr>
+            `);
+        }
+    }
+
+    function showDetails(id) {
+        const config = allFeeConfigs.find(item => item.id === id);
+        if (!config) {
+            appalert('Configuration not found!', 2, 1);
+            return;
+        }
+
+        let detailsHtml = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+                    <table class="table table-sm table-bordered">
+                        <tr><td class="fw-bold">Fee Type:</td><td>${escapeHtml(config.id)}</td></tr>
+                        <tr><td class="fw-bold">Fee Type:</td><td>${escapeHtml(config.feeType)}</td></tr>
+                        <tr><td class="fw-bold">Branch:</td><td>${escapeHtml(config.branchName || 'Centralized')}</td></tr>
+                        <tr><td class="fw-bold">Type:</td><td>${config.isCentralized ? 'Centralized' : 'Branch Specific'}</td></tr>
+                        <tr><td class="fw-bold">Description:</td><td>${escapeHtml(config.description || 'N/A')}</td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>Fee Settings</h6>
+                    <table class="table table-sm table-bordered">
+                        <tr><td class="fw-bold">Static Amount:</td><td>${config.staticAmount || 0}</td></tr>
+                        <tr><td class="fw-bold">Accept Static:</td><td>${config.acceptStaticAmount ? 'Yes' : 'No'}</td></tr>
+                        <tr><td class="fw-bold">Percentage:</td><td>${config.percentageApplied || 0}%</td></tr>
+                        <tr><td class="fw-bold">Accept Percentage:</td><td>${config.acceptPercentage ? 'Yes' : 'No'}</td></tr>
+                        <tr><td class="fw-bold">Accept Range:</td><td>${config.acceptRange ? 'Yes' : 'No'}</td></tr>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        if (config.feeTypeRanges && config.feeTypeRanges.length > 0) {
+            detailsHtml += `
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary"><i class="mdi mdi-chart-line me-2"></i>Fee Ranges</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Range Name</th>
+                                        <th>From Amount</th>
+                                        <th>To Amount</th>
+                                        <th>Fee Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+            `;
+
+            config.feeTypeRanges.forEach(range => {
+                detailsHtml += `
+                    <tr>
+                        <td>${escapeHtml(range.name || 'Unnamed')}</td>
+                        <td>${range.amountFrom}</td>
+                        <td>${range.amountTo}</td>
+                        <td>${range.value}</td>
+                    </tr>
+                `;
+            });
+
+            detailsHtml += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        $('#detailsModalBody').html(detailsHtml);
+        $('#detailsModal').modal('show');
+    }
+
+    function editConfig(id) {
+        if (typeof AddORUpdateGen === 'function') {
+            AddORUpdateGen(id, 'config-form-container', '_Create', 'edit', 'FeeConfig');
+        } else {
+            appalert('Edit function not available. Please refresh the page.', 2, 1);
+        }
+    }
+
+    function deleteConfig(id) {
+        const config = allFeeConfigs.find(item => item.id === id);
+        if (!config) return;
+
+        alertify.confirm('Confirm Deletion',
+            `Are you sure you want to delete the fee configuration for <strong>${config.feeType}</strong>?`,
+            function () {
+                $.ajax({
+                    url: '@Url.Action("Delete", "FeeConfig")',
+                    type: 'GET',
+                    data: {
+                        KEY: id,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            // Reload the data
+                            loadFeeConfigs();
+                        } else {
+                            appalert(response.message, 4, 1);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        appalert('Deletion failed: ' + error, 4, 1);
+                    }
+                });
+            },
+            function () {
+                appalert('Deletion cancelled.', 3, 1);
+            }
+        );
+    }
+
+    function escapeHtml(unsafe) {
+        if (!unsafe) return '';
+        return unsafe.toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
