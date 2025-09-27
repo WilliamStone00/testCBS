@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace CBS.BusinessService.CheckManagementSystem
 
         public CustomerService()
         {
-            var baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"]; // Add this to your config
+            var baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"]; 
             if (string.IsNullOrEmpty(baseUrl))
                 throw new ConfigurationErrorsException("The 'CustomerDataMartBaseUrl' appSetting is missing or empty in Web.config.");
 
@@ -28,28 +29,33 @@ namespace CBS.BusinessService.CheckManagementSystem
 
         public async Task<dynamic> GetCustomerByIdAsync(string customerId)
         {
+            if (string.IsNullOrWhiteSpace(customerId))
+                throw new ArgumentException(nameof(customerId));
+
             try
             {
-                //string url = $"/api/v1/GetCustomerDataMart/{customerId}";
+                // Build URL: substitute placeholder correctly
+                var url = string.Format(APICallHelper.getcustomerdata, Uri.EscapeDataString(customerId));
+               
+                // Use the correct response DTO type
+                var response = await _apiHelper.GetAsync<ServiceResponse<CustomerDataDto>>(url);
 
-                // Use the existing GetAsync pattern with dynamic type
-               // var response = await _apiHelper.GetAsync<ServiceResponse<dynamic>>(url);
-                var response = await _apiHelper.GetAsync<ServiceResponse<List<CategoryConfig>>>(APICallHelper.getcustomerdata);
+                if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    return response.ApiResponseData.Data; // object with customerDto + accountDtos
+                }
 
-                if (response != null && response.IsSuccess)
-                {
-                    // Return the data part of the response
-                    return response.ApiResponseData?.Data;
-                }
-                else
-                {
-                    throw new Exception(response?.ApiResponseData?.Message ?? "Failed to retrieve customer data");
-                }
+                // If response shows a failure, include API messages in exception
+                var message = response?.ApiResponseData?.Message ?? response?.Message ?? "Failed to retrieve customer data";
+                throw new Exception(message);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error fetching customer data: {ex.Message}");
+                // Prefer logging full exception (with inner) to diagnose; rethrow or return null as needed
+                // _logger.LogError(ex, "Error fetching customer data for {CustomerId}", customerId);
+                throw new Exception($"Error fetching customer data: {ex.Message}", ex);
             }
         }
+
     }
 }

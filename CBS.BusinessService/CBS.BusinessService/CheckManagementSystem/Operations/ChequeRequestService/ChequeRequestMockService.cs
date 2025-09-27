@@ -128,6 +128,24 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             return Task.FromResult(ExecutionMessage);
         }
 
+        public Task<ExecutionMessages> ReviewRequestAsync(string requestId, string rejectionNote)
+        {
+            var request = _mockRequests.FirstOrDefault(r => r.Id == requestId);
+            if (request != null && request.status == "Pending")
+            {
+                request.status = "Reviewed";
+                request.approvalNote = rejectionNote; // Using same field for simplicity
+                GetExecutionMessages(null, true, "Reviewed", MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Request rejected successfully.");
+            }
+            else
+            {
+                GetExecutionMessages(null, false, "Reviewed", MessagesResults.Failed,
+                    ExecutionProcessOption.UpdateUpject, MessagesResults.Failed.ToString(), null, "Request could not be found or is not in a pending state.");
+            }
+            return Task.FromResult(ExecutionMessage);
+        }
+
         // New mock method for "Delivered"
         public Task<ExecutionMessages> MarkAsDeliveredAsync(string requestId, string deliveryNote)
         {

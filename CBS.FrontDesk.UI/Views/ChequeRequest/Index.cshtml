@@ -1,157 +1,170 @@
-﻿@{ ViewBag.Title = "Cheque Book Requests"; }
+﻿<!-- Views/ChequeRequest/Index.cshtml -->
+@{ ViewBag.Title = "Cheque Book Requests"; }
 @using Resources;
 
-<!-- Header and Tips -->
-<!-- =================================================
-     PAGE HEADER
-================================================== -->
+<!-- Header Section -->
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
             <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Management
         </h1>
-        <p class="card-text text-muted mb-1">
-            Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.
-        </p>
-        <div class="alert alert-info mt-3 py-2">
-            <i class="mdi mdi-information-outline me-1"></i>
-            <strong>Process:</strong> Start by creating a new request. After submission, switch to the "View All Requests" tab to manage pending approvals.
-        </div>
-        <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
     </div>
 </div>
 
-<!-- =================================================
-     TIPS SECTION (Expanded by default)
-================================================== -->
-<div class="card mb-4">
-    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Managing Cheque Book Requests</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-
-    <div id="collapseTips" class="collapse">
-        <div class="card-body">
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item d-flex align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Step 1: Create Request</div>
-                        Use the "Create New Request" form to initiate a request for a customer. You will need to select the customer, their account for fee payment, the cheque book account, and the desired cheque book category.
-                    </div>
-                </li>
-                <li class="list-group-item d-flex align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Step 2: View & Approve/Reject</div>
-                        Click the "View All Requests" button to see the list of all submissions. Any request with a 'Pending' status can be actioned. You must provide a note or reason for both approvals and rejections.
-                    </div>
-                </li>
-                <li class="list-group-item d-flex align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Step 3: Mark as Delivered</div>
-                        Once a request is 'Approved', the "Deliver" action will become available. Use this to confirm that the physical cheque book has been handed over to the customer. This completes the lifecycle.
-                    </div>
-                </li>
-                <li class="list-group-item d-flex align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Understanding Statuses</div>
-                        - <strong>Pending:</strong> A new request that needs review. <br />
-                        - <strong>Approved:</strong> The request is valid and the cheque book can be prepared/delivered. <br />
-                        - <strong>Rejected:</strong> The request was denied. <br />
-                        - <strong>Delivered:</strong> The customer has received their cheque book.
-                    </div>
-                </li>
-            </ol>
-        </div>
+<!-- Action Buttons Card -->
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a type="button" onclick="showDataTableSection()" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="showSearchSection()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
     </div>
 </div>
 
 <!-- Main Content Area -->
 <div class="card shadow p-3 mb-4">
-    @*<div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button" onclick="LoadDataGen('ChequeRequest', 'requestsDataTable', '_RequestList', 0, 'datalistingview', null, 'list')">View All Requests</a>
-            <a type="button" onclick="AddORUpdateGen(null, 'datalistingview', '_CreateRequest', 'new', 'ChequeRequest')">Create New Request</a>
-        </div>
-    </div>*@
-
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button" onclick=" LoadDataGen('ChequeRequest', 'requestsDataTable', '_RequestList', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_CreateRequest','new','ChequeRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-                <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
-            </a>
-        </div>
+    <!-- Search Section (Initially Visible) -->
+    <div id="searchSection">
+        @Html.Partial("_CustomerSearch")
     </div>
 
-    <div id="datalistingview">
-        @Html.Partial("_CreateRequest", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest.ChequeBookRequest())
+    <!-- Request Form Section (Initially Hidden) -->
+    <div id="requestFormSection" style="display: none;">
+        <!-- Form will be loaded here dynamically -->
+    </div>
+
+    <!-- DataTable Section (Initially Hidden) -->
+    <div id="dataTableSection" style="display: none;">
+        <!-- DataTable will be loaded here dynamically -->
     </div>
 </div>
 
-<!-- Modal for Approve/Reject/Delivered Actions -->
+<!-- Action Modal -->
 <div class="modal fade" id="actionModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Take Action on Request</h5>
+                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="actionModalBody">
-                <!-- _ActionForm partial view is loaded here -->
+            <div class="modal-body">
+                <form id="actionForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="actionType" name="action">
+                    <input type="hidden" id="actionRequestId" name="requestId">
+
+                    <div class="mb-3">
+                        <label for="actionNote" class="form-label">Statement / Reason</label>
+                        <textarea id="actionNote" name="note" class="form-control" rows="4" required
+                                  placeholder="Please provide a statement or reason for this action..."></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Action</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details will be loaded here -->
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Corrected Script Paths -->
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>
+
     <script>
-    (function ($) {
-        // This is a global function for the modal 'onclick' attributes to call.
-        // It prepares and opens the action modal.
-        window.showActionModal = function(action, requestId, requestInfo) {
-            const url = `@Url.Action("InitializeData", "ChequeRequest")?partialView=_ActionForm&path=get`;
-            const $modalBody = $('#actionModalBody');
+        // Global section management functions
+        function showSearchSection() {
+            $('#dataTableSection').hide();
+            $('#requestFormSection').hide();
+            $('#searchSection').show();
 
-            // Set the title of the modal
-            $('#actionModalLabel').text(`${action.charAt(0).toUpperCase() + action.slice(1)} Request: ${requestInfo}`);
+            // Reset search form
+            if (window.searchManager) {
+                window.searchManager.resetSearch();
+            }
+        }
 
-            // Load a dummy partial to get the form structure and then populate it
-            $modalBody.html('<p class="text-center">Loading form...</p>').load(url, function() {
-                // After loading, populate the hidden fields needed for submission
-                $modalBody.find('#requestId').val(requestId);
-                $modalBody.find('#action').val(action);
+        function showDataTableSection() {
+            $('#searchSection').hide();
+            $('#requestFormSection').hide();
+            $('#dataTableSection').show();
+
+            // Load data table content if not already loaded
+            if (!$('#dataTableSection').html().trim()) {
+                loadDataTableContent();
+            }
+
+            // Refresh data table if already initialized
+            if (window.dataTableManager && window.dataTableManager.dataTable) {
+                window.dataTableManager.refresh();
+            }
+        }
+
+        function showRequestFormSection() {
+            $('#searchSection').hide();
+            $('#dataTableSection').hide();
+            $('#requestFormSection').show();
+        }
+
+        function loadDataTableContent() {
+            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
+                partialView: '_RequestDataTable',
+                path: 'list'
+            }, function(html) {
+                $('#dataTableSection').html(html);
+
+                // Re-initialize DataTable after content is loaded
+                if (window.dataTableManager) {
+                    window.dataTableManager.initializeDataTable();
+                }
             });
+        }
 
-            $('#actionModal').modal('show');
-        };
+        function loadRequestForm() {
+            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
+                partialView: '_ChequeRequestForm',
+                path: 'new'
+            }, function(html) {
+                $('#requestFormSection').html(html);
 
-               // Delegated submit handler for the form inside the modal
-        $(document).on('submit', '#chequeActionForm', function(e) {
-            e.preventDefault();
-            const form = this;
-            const $form = $(form);
-
-            $.ajax({
-                url: '@Url.Action("TakeAction", "ChequeRequest")',
-                type: 'POST',
-                data: $form.serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        appalert(response.message, 1, 1);
-                        $('#actionModal').modal('hide');
-                        // Reload the list to show the status change
-                        LoadDataGen('ChequeRequest', 'requestsDataTable', '_RequestList', 0, 'datalistingview', null, 'list');
-                    } else {
-                        appalert(response.message, 4, 1);
-                    }
-                },
-                error: function() { appalert('A server error occurred.', 4, 1); }
+                // Re-initialize form manager after content is loaded
+                if (window.formManager) {
+                    window.formManager.init();
+                }
             });
+        }
+
+        $(document).ready(function() {
+            // Initialize managers
+            window.searchManager = new SearchManager();
+            window.formManager = new FormManager();
+            window.dataTableManager = new DataTableManager();
+
+            // Show search section by default
+            showSearchSection();
         });
-    })(jQuery);
     </script>
 }

@@ -41,7 +41,7 @@
 </div>
 
 <!-- Configuration Selection Area -->
-<div class="card shadow p-3 mb-4">
+<div class="card shadow p-3 mb-4" id="loaddatadiv">
     <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Configuration Scope</h5>
     <div class="row align-items-end">
         <!-- Is Centralized Checkbox -->
@@ -103,7 +103,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         // Run on document ready
         $(document).ready(function () {
             setupFeeConfigToggles();
@@ -140,6 +140,8 @@
             const serviceOptionsObject = { isCentralized: isCentralized, branchId: branchId, feeType: feeType };
             const serviceOptionString = JSON.stringify(serviceOptionsObject);
 
+            $("#loaddatadiv").hide();
+
             // Explicit POST to get the partial and inject HTML
             $.post('@Url.Action("InitializeData", "FeeConfig")', {
                 partialView: '_Create',
@@ -154,6 +156,34 @@
                 appalert('Failed to load configuration form: ' + err.statusText, 4, 1);
             });
         }
+
+        @*function loadClearanceList() {
+            // Hide the config card
+            $("#configCard").hide();
+
+            // Show the container (in case it was hidden before)
+            $("#createViewContainer").show();
+
+            $.ajax({
+                url: '@Url.Action("InitializeData", "ChequeClearance")',
+                method: 'POST',
+                data: {
+                    path: 'list',
+                    partialView: '_ChequeClearanceDataTable'
+                },
+                success: function (html) {
+                    $("#createViewContainer").html(html);
+
+                    if (window.jQuery && $.fn.DataTable) {
+                        $('#myDataTable').DataTable();
+                    }
+                },
+                error: function (xhr, status, err) {
+                    console.error("InitializeData(list) error:", status, err);
+                    alert("Failed to load list: " + (xhr.statusText || status));
+                }
+            });
+        }*@
 
         // Template for a new range row (returns string)
         function getRangeRowTemplate() {
@@ -330,7 +360,7 @@
                 }
             );
         }
-  
 
-    </script>
+
+</script>
 }

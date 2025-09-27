@@ -1238,7 +1238,7 @@ namespace CBS.FrontDesk.Helper
 
         //*************************** CHEQUE BOOK ******************************
         //--------------------------Customer Data Mart -----------------
-        public static string getcustomerdata = "/api/v1/GetCustomerDataMart/{customerId}";
+        public static string getcustomerdata = "/api/v1/GetCustomerDataMart/{0}";
         // ---------------- CHEQUE BOOK CATEGORY ----------------
         public static string GetAllChequeBookCategories = "/api/v1/get-checkbook-categories";
         public static string GetChequeBookCategoryById = "/api/v1/get-checkbook-category/{0}";
@@ -1287,6 +1287,23 @@ namespace CBS.FrontDesk.Helper
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
+
+        //----------------------- Cheque Book -------------------------
+        public const string GetChequeBooksDataTable = "/api/v1/Cheque Book";
+        public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
+        public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
+        public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
+        public const string RejectCounBlockChequeLeafterCheque = "/api/v1/Cheque-Book";
+        public const string BlockChequeLeaf = "/api/v1/Cheque-Book/{0}";
+
+        //---------------------- cheque ----------------------------
+        public const string GetAllCancellationRequests = "/api/v1/Cheque Book";
+        public const string GetCancellationRequestById = "/api/v1/Cheque-Book/{0}";
+        public const string CreateCancellationRequest = "/api/v1/Cheque-Book/{0}";
+        public const string UpdateCancellationRequest = "/api/v1/Cheque-Book";
+        public const string ReviewCancellationRequest = "/api/v1/Cheque-Book";
+        public const string DeactivateCancellationRequest = "/api/v1/Cheque-Book/{0}";
+        public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
         //************************** END CHEQUE BOOK *******************************
 

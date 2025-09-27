@@ -1,0 +1,154 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            @(string.IsNullOrEmpty(Model.Id) ? "Create New Cancellation Request" : "Edit Cancellation Request")
+        </h5>
+    </div>
+    <div class="card-body">
+        <form id="cancellationRequestForm">
+            @Html.AntiForgeryToken()
+            @if (!string.IsNullOrEmpty(Model.Id))
+            {
+                @Html.HiddenFor(m => m.Id)
+            }
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Request Type *</label>
+                        <select class="form-control" name="RequestType" required>
+                            <option value="">Select Type</option>
+                            <option value="ChequeBook" @(Model.RequestType == "ChequeBook" ? "selected" : "")>Cheque Book</option>
+                            <option value="ChequeLeaf" @(Model.RequestType == "ChequeLeaf" ? "selected" : "")>Cheque Leaf</option>
+                            <option value="ChequeNumber" @(Model.RequestType == "ChequeNumber" ? "selected" : "")>Cheque Number</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Branch *</label>
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                            "Select Branch", new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Cheque Book ID</label>
+                        <input type="text" class="form-control" name="ChequeBookId"
+                               value="@Model.ChequeBookId" placeholder="Enter cheque book ID">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Cheque Leaf ID</label>
+                        <input type="text" class="form-control" name="ChequeLeafId"
+                               value="@Model.ChequeLeafId" placeholder="Enter cheque leaf ID">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Cheque Number</label>
+                        <input type="text" class="form-control" name="ChequeNumber"
+                               value="@Model.ChequeNumber" placeholder="Enter cheque number">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Page Number</label>
+                        <input type="text" class="form-control" name="PageNumber"
+                               value="@Model.PageNumber" placeholder="Enter page number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Account Number *</label>
+                        <input type="text" class="form-control" name="AccountNumber"
+                               value="@Model.AccountNumber" required placeholder="Enter account number">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Customer Name *</label>
+                        <input type="text" class="form-control" name="CustomerName"
+                               value="@Model.CustomerName" required placeholder="Enter customer name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Reason for Cancellation *</label>
+                <textarea class="form-control" name="Reason" rows="3" required
+                          placeholder="Enter detailed reason for cancellation">@Model.Reason</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Additional Notes</label>
+                <textarea class="form-control" name="AdditionalNotes" rows="2"
+                          placeholder="Optional additional information">@Model.AdditionalNotes</textarea>
+            </div>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary me-2" onclick="backToList()">
+                    <i class="fas fa-arrow-left me-1"></i> Back to List
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>
+                    @(string.IsNullOrEmpty(Model.Id) ? "Submit Request" : "Update Request")
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Show/hide fields based on request type
+        $('select[name="RequestType"]').change(function () {
+            const type = $(this).val();
+            $('input[name="ChequeBookId"]').closest('.mb-3').toggle(type === 'ChequeBook');
+            $('input[name="ChequeLeafId"]').closest('.mb-3').toggle(type === 'ChequeLeaf');
+            $('input[name="ChequeNumber"]').closest('.mb-3').toggle(type === 'ChequeNumber');
+            $('input[name="PageNumber"]').closest('.mb-3').toggle(type === 'ChequeNumber');
+        }).trigger('change');
+
+        // Form submission
+        $('#cancellationRequestForm').submit(function (e) {
+            e.preventDefault();
+
+            var formData = $(this).serialize();
+            var url = '@Url.Action("CreateOrUpdate", "ChequeCancellation")';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        // Reload the data table
+                        if (typeof cancellationTable !== 'undefined') {
+                            cancellationTable.ajax.reload();
+                        }
+                        backToList();
+                    } else {
+                        appalert(response.message, 2, 1);
+                    }
+                },
+                error: function () {
+                    appalert('An error occurred while processing your request.', 4, 1);
+                }
+            });
+        });
+    });
+</script>

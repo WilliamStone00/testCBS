@@ -2033,6 +2033,8 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeBookListing\ChequeBookController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeCancelation\CancellationRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
@@ -3299,6 +3301,9 @@
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Notification\NotificationConfig.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\datatable-manager.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\form-manager.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\search-manager.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
@@ -10648,15 +10653,23 @@
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
     <Content Include="Views\TransactionDetails\Index.cshtml" />
     <Content Include="Views\ChequeRequest\Index.cshtml" />
-    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
-    <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
-    <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
+    <Content Include="Views\ChequeRequest\_ChequeRequestForm.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestDataTable.cshtml" />
+    <Content Include="Views\ChequeRequest\_ActionModal.cshtml" />
     <Content Include="Views\NotificationHistory\Index.cshtml" />
     <Content Include="Views\CounterCheque\Index.cshtml" />
     <Content Include="Views\CounterCheque\_Create.cshtml" />
     <Content Include="Views\CounterCheque\_DataTable.cshtml" />
     <Content Include="Views\CounterCheque\_ActionForm.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigList.cshtml" />
+    <Content Include="Views\ChequeBook\Index.cshtml" />
+    <Content Include="Views\ChequeBook\_ChequeBookDetails.cshtml" />
+    <Content Include="Views\ChequeBook\_ChequeBookList.cshtml" />
+    <Content Include="Views\ChequeCancellation\Index.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CreateCancellationRequestForm.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
+    <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

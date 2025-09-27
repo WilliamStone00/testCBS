@@ -104,7 +104,7 @@ namespace CBS.BusinessService.CheckManagementSystem
                 return categories
                      .Select(category =>
                      {
-                         category.name = $"[{category.Id}] [{category.name}]";
+                         category.name = $"[{category.Id}]-[{category.name}]-[{category.basePrice}]";
                          return category;
                      })
                      .OrderBy(category => category.Id)

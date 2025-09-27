@@ -71,9 +71,12 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         }
 
         // The central router for loading all our partial views.
+        // Keep your existing controller, just ensure these actions exist:
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             await Loader();
+
             if (path == "list")
             {
                 var data = await _chequeRequestService.GetAllRequestsAsync();
@@ -83,13 +86,39 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             {
                 return PartialView(partialView, new ChequeBookRequest());
             }
-            else // "get" for details
+            else if (path == "get")
             {
                 var data = await _chequeRequestService.GetRequestByIdAsync(KEY);
                 return PartialView(partialView, data);
             }
+
+            return PartialView("_Error");
         }
 
+        [HttpPost]
+        public async Task<ActionResult> TakeAction(string requestId, string note, string action)
+        {
+            // Your existing logic
+            ExecutionMessages result;
+            switch (action?.ToLower())
+            {
+                case "approve":
+                    result = await _chequeRequestService.ApproveRequestAsync(requestId, note);
+                    break;
+                case "reject":
+                    result = await _chequeRequestService.RejectRequestAsync(requestId, note);
+                    break;
+                case "review":
+                    // Add review logic to your service
+                    result = await _chequeRequestService.ReviewRequestAsync(requestId, note);
+                    break;
+                default:
+                    result = new ExecutionMessages { Result = false, MessageString = "Invalid action" };
+                    break;
+            }
+
+            return Json(new { success = result.Result, message = result.MessageString });
+        }
         // In ChequeRequestController.cs
 
         [HttpPost]
@@ -192,28 +221,6 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             });
         }
 
-        // This single action will handle Approve, Reject, and Delivered from the modal.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> TakeAction(string requestId, string note, string action)
-        {
-            ExecutionMessages result;
-            switch (action?.ToLower())
-            {
-                case "approve":
-                    result = await _chequeRequestService.ApproveRequestAsync(requestId, note);
-                    break;
-                case "reject":
-                    result = await _chequeRequestService.RejectRequestAsync(requestId, note);
-                    break;
-                case "delivered":
-                    result = await _chequeRequestService.MarkAsDeliveredAsync(requestId, note);
-                    break;
-                default:
-                    result = new ExecutionMessages { Result = false, MessageString = "Invalid action specified." };
-                    break;
-            }
-            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-        }
+       
     }
 }
