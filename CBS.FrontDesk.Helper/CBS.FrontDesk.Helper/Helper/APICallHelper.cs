@@ -1275,6 +1275,20 @@ namespace CBS.FrontDesk.Helper
         public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
 
         // ---------------- NOTIFICATIONS ----------------
+
+        public static string GetAllnot = "/api/v1/Notification/types";
+        public static string GetNotificationTypes = "/api/v1/Notification";
+        public static string Createnot = "/api/v1/Notification";
+        public static string Updatenot = "/api/v1/Notification/{id}";
+        public static string Deletenot = "/api/v1/Notification/{id}";
+        //------------------- CounterCheque ----------------
+        public static string CreateCounterCheque = "/api/v1/counter-checks";
+        public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
+
+        //--------------------------------------TEST--------------------------------------//
+        public static string GetAllChequeClearance = "/api/v1/counter-clearance";
+        public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
+
         public static string GetAllnot = "/api/v1/verify-notification-config";
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
         
@@ -1341,7 +1355,29 @@ namespace CBS.FrontDesk.Helper
         public static string GetextracyedFileDetailsEndpoint = "api/v1/ManualEntryCollector/Extracted/data-table";
         public static string getextracteddetails = "/api/v1/ManualEntryCollector/Extracted/details";
         public static string GetManualEntryCollectorById = "/api/v1/ManualEntryCollector/{0}";
+
+        public static string GetManualEntryCollectorDetailsDataTable = "/api/v1/ManualEntryCollector/Extracted/details/data-table";
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************
+        //
+
+        public static string GetAllChequeCertifications = "api/ChequeCertification/GetAll";
+        public static string GetChequeCertificationById = "api/ChequeCertification/GetById/{0}";
+        public static string CreateChequeCertification = "api/ChequeCertification/Create";
+        public static string UpdateChequeCertification = "api/ChequeCertification/Update";
+        public static string ReviewChequeCertification = "api/ChequeCertification/Review/{0}";
+        public static string ValidateChequeCertification = "api/ChequeCertification/Validate/{0}";
+        public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
+        public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
+
+        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+
         public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+
     }
 }

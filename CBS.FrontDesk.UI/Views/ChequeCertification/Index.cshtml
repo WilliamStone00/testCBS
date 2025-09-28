@@ -1,0 +1,122 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto>
+
+@{
+    ViewBag.Title = "Cheque Certification Management";
+}
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank-check me-2"></i>  Cheque Certification System
+                </h1>
+                <p class="card-text">
+                    Create a new cheque certification by filling in the required details below.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Please ensure all mandatory fields are completed accurately before submission.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Certification Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGuidelines" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseGuidelines" class="collapse show">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Member Reference:</strong> Unique identifier for the member requesting certification.</li>
+                <li><i class="mdi mdi-bank text-info me-2"></i><strong>Branch ID:</strong> The branch where the cheque was issued.</li>
+                <li><i class="mdi mdi-book text-warning me-2"></i><strong>Cheque Book/Leaf ID:</strong> Specific identifiers from the cheque book.</li>
+                <li><i class="mdi mdi-account-box text-primary me-2"></i><strong>Account Number:</strong> The account associated with the cheque.</li>
+                <li><i class="mdi mdi-cash text-success me-2"></i><strong>Amount:</strong> The exact amount on the cheque.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        @* These buttons will now appear below the Create form *@
+        @*<a type="button" id="btnViewList"
+               onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
+               class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                <i class="mdi mdi-view-list mdi-18px"></i> View List
+            </a>*@
+
+        <a type="button" onclick=" LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','Create','new','ChequeCertification')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+    </div>
+</div>
+
+<!-- Below the form: buttons + datatable -->
+<div class="card shadow p-3 mb-4 mt-3">
+    <!-- Render the Create partial first so header + tips from Create show on page load -->
+    <!--<div id="createArea">-->
+    @* Pass a fresh model to the Create partial so it renders correctly as inline content *@
+    <!--</div>-->
+    <!-- DataTable Partial placeholder: list will be loaded here -->
+    <div id="datalistingview" class="mt-3">
+        @Html.Partial("Create", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto())
+
+    </div>
+    
+</div>
+
+<div class="card mb-1">
+    <div id="datalistingview2" class="mt-3">
+
+    </div>
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+            // Optional: if you want the list loaded on demand instead of on page load, comment out this call.
+            // Uncomment to auto-load list on page load:
+            // LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
+
+            // Called when user clicks "Add Certification" (now below the form)
+            function onAddCertificationClicked() {
+                // Reset form if it exists
+                var form = $('#createCertificationForm');
+                if (form && form.length > 0) {
+                    form[0].reset();
+                    form.removeClass('was-validated'); // clear validation state if any
+
+                    // If some fields are controlled inputs, clear them specifically:
+                    // $('#MemberReference').val('');
+                    // $('#BranchId').val('');
+                }
+
+                // Scroll smoothly to the form area so user sees the header/tips immediately
+                var createTop = $('#createArea').offset();
+                if (createTop) {
+                    window.scrollTo({ top: createTop.top - 10, behavior: 'smooth' });
+                }
+
+                // Focus first input if present
+                var firstInput = $('#createArea').find('input, textarea, select').filter(':visible').first();
+                if (firstInput && firstInput.length) {
+                    firstInput.focus();
+                }
+            }
+        </script>
+    }

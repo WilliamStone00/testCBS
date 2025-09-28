@@ -14,8 +14,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Accounting {
     using CrystalDecisions.Shared;
     using CrystalDecisions.ReportSource;
     using CrystalDecisions.CrystalReports.Engine;
-    
-    
+ 
+
     public class GeneralLedger : ReportClass {
         
         public GeneralLedger() {

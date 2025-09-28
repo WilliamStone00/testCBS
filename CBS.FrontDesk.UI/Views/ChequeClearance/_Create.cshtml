@@ -1,0 +1,188 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
+@using Resources
+@{
+    ViewBag.Title = "Cheque Clearance Request Details";
+}
+
+@using (Html.BeginForm("SaveClearance", "ChequeClearance", FormMethod.Post, new { id = "clearanceForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.IsNotfromMFI, new { id = "Id" })
+    @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
+    @Html.HiddenFor(m => m.CheckBookNumber, new { id = "CheckBookId", Name = "CheckBookId" })
+    @Html.HiddenFor(m => m.CheckBookPageNumber, new { id = "CheckBookPageNumber", Name = "CheckBookPageNumber" })
+
+    <!-- Clearance Details Form -->
+    <div id="clearanceDetailsForm" class="card shadow p-3 mb-4 mt-3 d-none">
+        <h5 class="text-success mb-3">
+            <i class="mdi mdi-file-document-edit me-1"></i> Cheque Clearance 
+        </h5>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <!-- Two checkboxes side by side -->
+                    <div class="row mb-3">
+                        @if (!Model.IsNotfromMFI)
+                        {
+                            <div class="col-md-6 pe-3">
+                                <div class="form-check">
+                                    @Html.CheckBoxFor(m => m.SameDayProcessing, new { @class = "form-check-input", id = "SameDayProcessing" })
+                                    <label class="form-check-label" for="SameDayProcessing">
+                                        Process Same Day (otherwise 3 days)
+                                    </label>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.DepositToAccount, new { @class = "form-check-input", id = "DepositToAccount" })
+                                <label class="form-check-label" for="DepositToAccount">
+                                    Deposit into Account
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Number (conditional) -->
+                    <div class="col-md-6 mb-3 d-none" id="AccountNumberWrapper">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", id = "AccountNumber" })
+                            @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+                            <label for="AccountNumber">Account Number</label>
+                        </div>
+                    </div>
+
+                    <!-- Member Reference -->
+                    <div class="col-md-6 mb-3 pe-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", id = "MemberReference" })
+                            @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
+                            <label for="MemberReference">Member Reference</label>
+                        </div>
+                    </div>
+
+                    <!-- Cheque BranchId -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.ChequeBranchId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
+                            <label>Cheque Branch Id (Created)</label>
+                        </div>
+                    </div>
+
+                    <!-- Receiving BranchId -->
+                    <div class="col-md-6 mb-3 pe-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.ReceivingBranchId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
+                            <label>Branch Id (Receiving)</label>
+                        </div>
+                    </div>
+
+                    <!-- Cheque Amount -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number" })
+                            @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
+                            <label>Cheque Amount</label>
+                        </div>
+                    </div>
+
+                    <!-- Cheque Creation Date -->
+                    <div class="col-md-6 mb-3 pe-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.ChequeCreationDate, "", new { @class = "text-danger" })
+                            <label>Cheque Creation Date</label>
+                        </div>
+                    </div>
+
+                    <!-- Cheque Expiration Date -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.ChequeExpirationDate, "", new { @class = "text-danger" })
+                            <label>Cheque Expiration Date</label>
+                        </div>
+                    </div>
+
+                    <!-- National Id Number -->
+                    <div class="col-md-6 mb-3 pe-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.NationalIdNumber, "", new { @class = "text-danger" })
+                            <label>National ID Number</label>
+                        </div>
+                    </div>
+
+                    <!-- National Id Creation Date -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.NationalIdCreationDate, "", new { @class = "text-danger" })
+                            <label>National ID Creation Date</label>
+                        </div>
+                    </div>
+
+                    <!-- National Id Expiration Date -->
+                    <div class="col-md-6 mb-3 pe-3">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.NationalIdExpirationDate, "", new { @class = "text-danger" })
+                            <label>National ID Expiration Date</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Save & Reset Buttons -->
+        <div class="text-end">
+            <button type="submit" class="btn btn-success shadow-sm px-4 me-2">
+                <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
+            </button>
+            <button type="reset" class="btn btn-outline-secondary shadow-sm px-4" id="resetFormBtn">
+                @GlobalShared.Reset
+            </button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+    var isNotFromMFI = $('#Id').val() === "true";
+
+    if (isNotFromMFI) {
+        $('#SameDayProcessing').closest('.col-md-6').hide(); 
+    }
+});
+
+
+        // toggle account number field
+        $(document).on('change', '#DepositToAccount', function () {
+            if ($(this).is(':checked')) {
+                $('#AccountNumberWrapper').removeClass('d-none');
+            } else {
+                $('#AccountNumberWrapper').addClass('d-none');
+                $('#AccountNumber').val('');
+            }
+        });
+
+        // reset form properly
+        $(document).on('click', '#resetFormBtn', function () {
+            var form = $('#clearanceForm')[0];
+            form.reset();
+
+            // reset select2 if used
+            $('.select2').val(null).trigger('change');
+
+            // hide account number again
+            $('#AccountNumberWrapper').addClass('d-none');
+        });
+    </script>
+}

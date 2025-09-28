@@ -1,0 +1,161 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
+
+@using (Html.BeginForm("SaveCertification", "ChequeCertification", FormMethod.Post, new { id = "certificationForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">
+                <i class="mdi mdi-bank-check me-2"></i>
+                @(Model?.MemberReference == null ? "Create New Certification" : "Edit Certification")
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.ChequeCertificationID, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.ChequeCertificationID, new { @class = "form-control", required = "required", placeholder = "Enter Cheque Certification ID" })
+                        @Html.ValidationMessageFor(model => model.ChequeCertificationID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.MemberReference, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.MemberReference, new { @class = "form-control", required = "required", placeholder = "Enter member reference" })
+                        @Html.ValidationMessageFor(model => model.MemberReference, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.BranchId, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.BranchId, new { @class = "form-control", required = "required", placeholder = "Enter branch ID" })
+                        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.ChequeBookId, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.ChequeBookId, new { @class = "form-control", required = "required", placeholder = "Enter cheque book ID" })
+                        @Html.ValidationMessageFor(model => model.ChequeBookId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.ChequeleafId, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.ChequeleafId, new { @class = "form-control", required = "required", placeholder = "Enter cheque leaf ID" })
+                        @Html.ValidationMessageFor(model => model.ChequeleafId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.AccountNumber, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control", required = "required", placeholder = "Enter account number" })
+                        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Amount, new { @class = "form-label required" })
+                        @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "0.00" })
+                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Description, new { @class = "form-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 3, placeholder = "Enter certification description" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+            @if (Model?.MemberReference != null)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Certification Status</label>
+                            <div>
+                                @{
+                                    var statusBadgeClass = "bg-secondary";
+                                    switch (Model.CertificationStatus?.ToLower())
+                                    {
+                                        case "approved": statusBadgeClass = "bg-success"; break;
+                                        case "rejected": statusBadgeClass = "bg-danger"; break;
+                                        case "pending": statusBadgeClass = "bg-warning"; break;
+                                        case "reviewed": statusBadgeClass = "bg-info"; break;
+                                        default: statusBadgeClass = "bg-secondary"; break;
+                                    }
+                                }
+                                <span class="badge @statusBadgeClass fs-6">@Model.CertificationStatus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Created Date</label>
+                            <div class="form-control-plaintext">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-between">
+                <button type="button" onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
+                        class="btn btn-secondary">
+                    <i class="mdi mdi-arrow-left me-1"></i> Back to List
+                </button>
+                <div>
+                    <button type="button" onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
+                            class="btn btn-light me-2">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="mdi mdi-content-save me-1"></i> Save Certification
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#certificationForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function () {
+                    toastr.error('Error saving certification');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .required::after {
+        content: " *";
+        color: red;
+    }
+</style>
