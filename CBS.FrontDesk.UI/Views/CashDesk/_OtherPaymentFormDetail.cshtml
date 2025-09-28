@@ -1,0 +1,110 @@
+﻿
+
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+
+
+<div class="table-responsive" id="cash_collected" style="width: 100%;">
+    <div class="row mb-3">
+        <div class="col text-end">
+            <label class="form-label fw-semibold me-2">Accounting Date</label>
+            @Html.TextBoxFor(
+                m => m.BulkDeposit.AccountingDate,
+                Model.BulkDeposit.AccountingDate.HasValue
+                    ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
+                    : DateTime.Today.ToString("yyyy-MM-dd"),
+                new
+                {
+                    @class = "form-control accounting-date d-inline-block",
+                    style = "width: 200px; display:inline-block;",
+                    type = "date",
+                    data_date_default = "today",
+                    data_date_max = "today",
+                    @readonly = "readonly"   // 🚀 Added here
+                }
+            )
+            @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+
+    <select id="accountIdOptionsTemplate" style="display:none;">
+        @foreach (var acc in (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>())
+        {
+            <option value="@acc.Value">@acc.Text</option>
+        }
+    </select>
+
+    <table class="table table-hover align-middle" id="myDataTableT">
+        <thead class="table-light">
+            <tr>
+                <th style="width:45%;">Account</th>
+                <th style="width:30%;">Note</th>
+                <th style="width:17%;" class="text-end">@CashDesk_NoneMemberPayment.Amount</th>
+                <th style="width:5%; text-align:center;">Select</th>
+                <th style="width:50px;" class="text-center">✖</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="alloc-cell">
+                        <select class="form-control accountid-select">
+                            @* use the same options as the template *@
+                            <option value=""></option>
+                            @foreach (var acc in (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>())
+                            {
+                                <option value="@acc.Value">@acc.Text</option>
+                            }
+                        </select>
+                    </div>
+                </td>
+
+                <td>
+                    <textarea class="form-control alloc-note autosize" rows="1" placeholder="Narration…"></textarea>
+                </td>
+
+                <td class="text-end">
+                    <input type="number" class="form-control text-end alloc-amount" min="0" step="0.01" value="0" />
+                </td>
+
+                <td class="text-center">
+                    <input type="checkbox" class="form-check-input alloc-check" />
+                </td>
+
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row">
+                        <i class="mdi mdi-delete"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-end" colspan="2"><strong>@CashDesk_NoneMemberPayment.Total (Selected):</strong></td>
+                <td class="text-end"><strong id="tableTotal">0.00</strong></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="text-end" colspan="2"><strong>@CashDesk_NoneMemberPayment.Difference:</strong></td>
+                <td class="text-end"><strong id="tableBalance">0.00</strong></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-2">
+        <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddAllocRow">
+            <i class="mdi mdi-plus"></i> Add Row
+        </button>
+    </div>
+
+    <input type="hidden" id="AccountAmountCollectionsJson" name="AccountAmountCollectionsJson" />
+
+
+</div>
+
+

@@ -24,7 +24,7 @@ namespace CBS.BusinessService.Accounting
             _accountingApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
 
         }
-
+        
         public async Task<List<ProductAccountingChart>> GetProductAccountingBookByproducttype(string productType)
         {
             try
@@ -71,7 +71,6 @@ namespace CBS.BusinessService.Accounting
                 throw new ApplicationException("Error occurred while fetching accounting event names.", ex);
             }
         }
-
         public async Task<IEnumerable<StringValues>> GetChartOfAccounts(bool byBranch=false)
         {
             try
@@ -86,6 +85,21 @@ namespace CBS.BusinessService.Accounting
                     var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(APICallHelper.GetAllChartOfAccountManagementPositionByChart);
                     return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
                 }
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<StringValues>> GetGLAccountsQueryByBranch()
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(string.Format(APICallHelper.GetGLAccountsQueryByBranchId, GetBranchID()));
+                return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
+
             }
             catch (Exception ex)
             {
