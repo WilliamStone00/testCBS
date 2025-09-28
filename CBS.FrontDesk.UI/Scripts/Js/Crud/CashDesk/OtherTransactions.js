@@ -175,12 +175,17 @@ function validateTotalAmount(total, totalNotes) {
     }
 
     if (total.total !== totalNotes) {
-        appalert("Amount entered must equal the total of notes entered. Make sure you have checked/unchecked corresponding accounts. Please reevaluate and enter again.", 3, 1);
+        const diff = totalNotes - total.total;
+        appalert(`Amount mismatch! 
+Selected Accounts = ${total.total.toLocaleString()} 
+Denominations = ${totalNotes.toLocaleString()} 
+Difference = ${diff.toLocaleString()}`, 3, 1);
         return false;
     }
 
     return true;
 }
+
 
 function collectDeposits() {
     var deposits = [];
@@ -271,159 +276,314 @@ function PostCashOut() {
     message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
     confirmTransaction('Confirm Cash-Out Operation', message, '/CashDesk/PostRequestCash', deposits, 'Withdrawal');
 }
-function PostOtherCashIn() {
-    // ✅ Check confirmation in table rows
-    var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
-    if (checkedRows.length === 0) {
-        appalert("Please confirm at least one row in the table.", 3, 1);
-        return;
-    }
 
-    // ✅ Ensure a Source Type is selected
-    var sourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
-    if (!sourceType) {
-        appalert("Please select a source type.", 3, 1);
-        return;
-    }
 
-    // ✅ Check valid Amount entries
-    var amountInputs = $("#myDataTableT tbody input.amount-input");
-    var isValidAmount = true;
-    amountInputs.each(function () {
-        var amount = parseFloat($(this).val());
-        if (isNaN(amount) || amount <= 0) {
-            isValidAmount = false;
-            return false;
-        }
+
+// ===================== Context & UI =====================
+function getFormMode() {
+    // "OtherCashIn" or "OtherCashOut" (set in a hidden input by the view/controller)
+    return ($('#FormContext').val() || 'OtherCashIn');
+}
+function isCashIn() { return getFormMode() === 'OtherCashIn'; }
+
+// Apply context: title + source label
+function applyContextUI() {
+    const cashIn = isCashIn();
+    $('#contextTitle').text(cashIn ? '💰 Other Cash-In' : '💸 Other Cash-Out');
+    $('#sourceCollectLabel').text(cashIn ? 'Collect Cash' : 'Payout Cash');
+}
+$(function () { applyContextUI(); });
+
+// ===================== Helpers =========================
+function money(n) {
+    const v = parseFloat(n || 0);
+    return v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function getSourceTypeRaw() {
+    return $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val() || "";
+}
+function getSourceTypeFinal() {
+    // In Cash-Out, if user chose "Cash_Collected", post "Payout_Cash"
+    const raw = getSourceTypeRaw(); // "Cash_Collected" | "Member_Account"
+    if (!isCashIn() && raw === 'Cash_Collected') return 'Payout_Cash';
+    return raw;
+}
+function getExternalBranchId() { return $("#isInterBranchCheck").prop("checked") ? ($("#ExternalBranchId").val() || "") : ""; }
+function getDenominationTotal() { return parseFloat($("#totalNoteAmount").val() || "0") || 0; }
+function getName() { return ($("#Name").val() || "").trim(); }
+function getCNI() { return ($("#CNI").val() || "").trim(); }
+function getTelephone() { return ($("#TelephoneNumber").val() || "").trim(); }
+function getTopNarration() { return ($("#DepositerNote").val() || "").trim(); }
+function getCustomerId() { return $("#customerId").val() || ""; }
+function getAccountNumber() { return $("#account_number").val() || ""; }
+function getAccountingDate() { const v = $('.accounting-date').val(); return v || new Date().toISOString().slice(0, 10); }
+
+function collectAllocationsFromTable() {
+    const rows = [];
+    $("#myDataTableT tbody tr").each(function () {
+        const $tr = $(this);
+        if (!$tr.find(".alloc-check").prop("checked")) return;
+        const accountId = $tr.find(".accountid-select").val() || "";
+        const amount = parseFloat($tr.find(".alloc-amount").val() || "0") || 0;
+        const naration = ($tr.find(".alloc-note").val() || "").trim();
+        if (accountId && amount > 0) rows.push({ AccountId: accountId, Amount: amount, Naration: naration, _row: $tr });
     });
-    if (!isValidAmount) {
-        appalert("Please enter a valid amount greater than 0.", 3, 1);
-        return;
-    }
-
-    // ✅ Validate denominations
-    if (!checkTotalNotes()) return false;
-
-    // ✅ Validate amount vs denominations
-    var totalNotes = parseFloat($("#totalNoteAmount").val());
-    var totalInfo = calculateTotalAmount();
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-    // ✅ Prepare data object
-    var deposits = collectDeposits();
-    if (deposits.length === 0) {
-        appalert("Please provide at least one account entry.", 3, 1);
-        return;
-    }
-
-    // ✅ Fetch form data
-    var eventCode = document.getElementById("BulkDeposit_OtherTransaction_EventCode").value;
-    var memberName = document.getElementById("Name").value;
-
-    if (!eventCode) {
-        appalert("Please select an Event Item.", 3, 1);
-        return;
-    }
-
-    if (!memberName || memberName.trim() === "") {
-        appalert("Member name cannot be empty.", 3, 1);
-        return;
-    }
-
-    // ✅ Add currency notes breakdown
-    deposits[0].currencyNotes = collectCurrencyNotes();
-
-    // ✅ Construct confirmation message
-    var message = `Are you sure you want to record a cash-in of ${totalInfo.total} for the service: ` +
-        `${$("#BulkDeposit_OtherTransaction_EventCode option:selected").text()}?
-Name: ${memberName}`;
-
-    // ✅ Final call
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
+    return rows;
+}
+function sumAllocations(list) { return list.reduce((s, r) => s + (r.Amount || 0), 0); }
+function collectCurrencyNotesSafe() {
+    try { return (typeof collectCurrencyNotes === 'function') ? collectCurrencyNotes() : null; }
+    catch { return null; }
 }
 
-//function PostOtherCashIn() {
+// ===================== Build payload ===================
+function buildOtherTxnPayload() {
+    const lines = collectAllocationsFromTable();
+    const amountTotal = sumAllocations(lines);
+    const notesTotal = getDenominationTotal();
 
-//    // Check if at least one table row is checked
+    const isOut = !isCashIn();
+    const useOtherSrc = isOut ? $('#IsOtherSource').prop('checked') : false;
+    const otherSrcId = isOut && useOtherSrc ? ($('#OtherSourceOfAccountId').val() || '') : null;
+
+    const cmd = {
+        Amount: amountTotal,
+        Direction: isCashIn() ? 'Credit' : 'Debit',
+        Name: getName(),
+        Naration: getTopNarration(),
+        TransactionType: isCashIn() ? 'Income' : 'Expense',
+        SourceType: getSourceTypeFinal(),
+        CustomerId: getCustomerId(),
+        AccountNumber: getAccountNumber(),
+        ExternalBranchId: getExternalBranchId(),
+        AccountAmountCollections: lines.map(x => ({ AccountId: x.AccountId, Amount: x.Amount, Naration: x.Naration })),
+        CurrencyNotesRequest: collectCurrencyNotesSafe(),
+        AccountingDate: getAccountingDate(),
+
+        // NEW
+        CNI: getCNI(),
+        TelephoneNumber: getTelephone(),
+        IsOtherSource: useOtherSrc,
+        OtherSourceOfAccountId: otherSrcId
+    };
+
+    return { cmd, amountTotal, notesTotal, lines };
+}
+// ===================== Confirmation (ASH) ==============
+function renderConfirmationHtml(summary) {
+    const { cmd, amountTotal, notesTotal, lines } = summary;
+
+    // Header (ash)
+    const header = `
+    <div style="background:#eeeeee;border:1px solid #ddd;border-radius:6px; padding:10px 12px; width:100%;">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:0.95rem;">
+        <div><b>Context:</b> ${isCashIn() ? 'Other Cash-In' : 'Other Cash-Out'}</div>
+        <div><b>Transaction Type:</b> ${cmd.TransactionType}</div>
+        <div><b>Direction:</b> ${cmd.Direction}</div>
+        <div><b>Source:</b> ${cmd.SourceType || '(not set)'}</div>
+        ${cmd.ExternalBranchId ? `<div><b>Destination Branch:</b> ${cmd.ExternalBranchId}</div>` : ''}
+        <div><b>Accounting Date:</b> ${cmd.AccountingDate}</div>
+        ${cmd.Name ? `<div><b>Name:</b> ${cmd.Name}</div>` : ''}
+        ${cmd.CNI ? `<div><b>CNI:</b> ${cmd.CNI}</div>` : ''}
+      </div>
+      ${cmd.TelephoneNumber ? `<div style="margin-top:6px;"><b>Telephone:</b> ${cmd.TelephoneNumber}</div>` : ''}
+      ${cmd.Naration ? `<div style="margin-top:6px;"><b>Narration:</b> ${cmd.Naration.replace(/</g, '&lt;')}</div>` : ''}
+    </div>`;
+
+    // Rows
+    const rows = lines.map((r, i) => {
+        const text = r._row?.find(".accountid-select option:selected").text() || r.AccountId;
+        return `
+      <tr>
+        <td style="padding:8px; border-top:1px solid #e5e5e5;">${i + 1}</td>
+        <td style="padding:8px; border-top:1px solid #e5e5e5;">${text}</td>
+        <td style="padding:8px; border-top:1px solid #e5e5e5;">${(r.Naration || '').replace(/</g, '&lt;')}</td>
+        <td style="padding:8px; border-top:1px solid #e5e5e5; text-align:right;">${money(r.Amount)}</td>
+      </tr>`;
+    }).join('');
+
+    // Table (ash header, full width)
+    const table = `
+    <div style="border:1px solid #ddd; border-radius:6px; margin-top:10px; overflow:hidden; width:100%;">
+      <table style="width:100%; border-collapse:separate; border-spacing:0;">
+        <thead>
+          <tr style="background:#f2f2f2; color:#333; border-bottom:1px solid #ddd;">
+            <th style="padding:8px; text-align:left; width:36px; border-right:1px solid #e5e5e5;">#</th>
+            <th style="padding:8px; text-align:left; border-right:1px solid #e5e5e5;">Account</th>
+            <th style="padding:8px; text-align:left; border-right:1px solid #e5e5e5;">Note</th>
+            <th style="padding:8px; text-align:right; width:120px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr style="background:#fafafa;">
+            <td colspan="3" style="padding:10px 8px; text-align:right; border-top:1px solid #e5e5e5;"><b>Total (Selected):</b></td>
+            <td style="padding:10px 8px; text-align:right; border-top:1px solid #e5e5e5;"><b>${money(amountTotal)}</b></td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td colspan="3" style="padding:8px; text-align:right; border-top:1px solid #e5e5e5;">Total Notes (Denominations):</td>
+            <td style="padding:8px; text-align:right; border-top:1px solid #e5e5e5;">${money(notesTotal)}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+
+    // Wrap in a container that expands to dialog width
+    return `<div style="width:100%; max-width:100%;">${header}${table}</div>`;
+}
+
+// ===================== Validation ======================
+function validateOtherTxn(summary) {
+    const { cmd, amountTotal, notesTotal, lines } = summary;
+
+    if (!lines.length) { appalert("Please select at least one account (check the 'Select' column).", 3, 1); return false; }
+    if (amountTotal <= 0) { appalert("Please enter a valid amount (> 0) on the selected rows.", 3, 1); return false; }
+    if (!cmd.SourceType) { appalert("Please select a Source Type.", 3, 1); return false; }
+    if (!cmd.Name || !cmd.Name.trim()) { appalert("Name cannot be empty.", 3, 1); return false; }
+
+    // Phone sanity check (optional but helpful)
+    const phoneDigits = (cmd.TelephoneNumber || '').replace(/\D/g, '');
+    if (phoneDigits && phoneDigits.length < 8) {
+        appalert("Please check the telephone number.", 3, 1);
+        return false;
+    }
+
+    if (!(notesTotal > 0)) { appalert("Please enter cash in the denomination box.", 3, 1); return false; }
+    if (Math.abs(amountTotal - notesTotal) > 0.0001) {
+        const diff = notesTotal - amountTotal;
+        appalert(`Amount mismatch!
+Selected Accounts = ${money(amountTotal)}
+Denominations = ${money(notesTotal)}
+Difference = ${money(diff)}`, 3, 1);
+        return false;
+        // NEW: if expense and "other source" is checked, require the GL
+        const isOut = ($('#FormContext').val() || 'OtherCashIn') === 'OtherCashOut';
+        if (isOut && cmd.IsOtherSource && !cmd.OtherSourceOfAccountId) {
+            appalert("Please select the Source GL for this expense.", 3, 1);
+            return false;
+        }
+    }
+    return true;
+}
+
+// ===================== Submit (both modes) =============
+function PostOtherCashIn() {
+    const summary = buildOtherTxnPayload();
+    if (!validateOtherTxn(summary)) return;
+
+    const html = renderConfirmationHtml(summary);
+    const title = isCashIn() ? "Confirm Other Cash-In" : "Confirm Other Cash-Out";
+
+    alertify.confirm(
+        title,
+        html,
+        function onOk() {
+            $.ajax({
+                url: "/CashDesk/OtherCashinPosting",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(summary.cmd),
+                success: function (response) {
+                    if (response && response.success) {
+                        appalert(response.message || "Transaction posted successfully.", 1, 1);
+                        //if (response.redirectUrl) window.open(response.redirectUrl, "_blank");
+                        if (window.PageReload) window.PageReload();
+                    } else {
+                        const msg = (response && response.message) ? response.message : "Operation failed.";
+                        appalert(msg, 3, 1);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    appalert(err || "Failed to post transaction.", 0, 1);
+                }
+            });
+        },
+        function onCancel() { appalert("Transaction cancelled.", 3, 1); }
+    );
+}
+
+// Make available to inline onclick (non-module script)
+window.PostOtherCashIn = PostOtherCashIn;
+
+
+
+
+
+
+
+//function PostOtherCashIn() {
+//    // ✅ Check confirmation in table rows
 //    var checkedRows = $("#myDataTableT tbody input[type='checkbox']:checked");
 //    if (checkedRows.length === 0) {
-//        appalert("Please select the confirmation option from the table", 3, 1);
+//        appalert("Please confirm at least one row in the table.", 3, 1);
 //        return;
 //    }
 
-//    // Check if one of the radio buttons is selected
+//    // ✅ Ensure a Source Type is selected
 //    var sourceType = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
 //    if (!sourceType) {
-//        appalert("Please select source type, Either member's account OR Cash collection", 3, 1);
+//        appalert("Please select a source type.", 3, 1);
 //        return;
 //    }
-//    // Check if amount entered is greater than 0 and not negative
+
+//    // ✅ Check valid Amount entries
 //    var amountInputs = $("#myDataTableT tbody input.amount-input");
 //    var isValidAmount = true;
 //    amountInputs.each(function () {
 //        var amount = parseFloat($(this).val());
 //        if (isNaN(amount) || amount <= 0) {
 //            isValidAmount = false;
-//            return false; // Exit the loop early
+//            return false;
 //        }
 //    });
 //    if (!isValidAmount) {
-//        appalert("Please enter a valid amount greater than 0");
+//        appalert("Please enter a valid amount greater than 0.", 3, 1);
 //        return;
 //    }
 
-
+//    // ✅ Validate denominations
 //    if (!checkTotalNotes()) return false;
 
+//    // ✅ Validate amount vs denominations
 //    var totalNotes = parseFloat($("#totalNoteAmount").val());
 //    var totalInfo = calculateTotalAmount();
-
 //    if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
+//    // ✅ Prepare data object
 //    var deposits = collectDeposits();
 //    if (deposits.length === 0) {
-//        appalert("Please select at least one account to perform the cash-in.", 3, 1);
+//        appalert("Please provide at least one account entry.", 3, 1);
 //        return;
 //    }
-//    var sourceType = document.querySelector('input[name="BulkDeposit.OtherTransaction.SourceType"]:checked').value;
+
+//    // ✅ Fetch form data
 //    var eventCode = document.getElementById("BulkDeposit_OtherTransaction_EventCode").value;
 //    var memberName = document.getElementById("Name").value;
-//    var accountNumber = document.getElementById("account_number").value;
-//    // Check if Event Code is selected
+
 //    if (!eventCode) {
-//        appalert("Please select an event item.", 3, 1);
+//        appalert("Please select an Event Item.", 3, 1);
 //        return;
 //    }
 
-//    // Check SourceType requirements
-//    if (sourceType === "Member_Account" && !document.getElementById("account_number").value) {
-//        appalert("Please select a member account.", 3, 1);
-//        return;
-//    }
-
-//    // Check if Member Name is provided
 //    if (!memberName || memberName.trim() === "") {
-//        appalert("Member Name cannot be empty.", 3, 1);
+//        appalert("Member name cannot be empty.", 3, 1);
 //        return;
 //    }
-//    // Check SourceType requirements
-//    if (sourceType === "Member_Account") {
-//        if (!accountNumber) {
-//            appalert("Please select a member account", 3, 1);
-//            return;
-//        }
-//    }
+
+//    // ✅ Add currency notes breakdown
 //    deposits[0].currencyNotes = collectCurrencyNotes();
-//    var message = "";
-//    // Check if MemberAccount radio button is checked
-//    if ($('#memberAccountOption').prop('checked')) {
-//        message += "Are you sure you want to debit " + totalInfo.total + " from the account number " + $("#account_number").val() + "?\n";
-//        message += "and pay for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + " on behalf of the member?\n";
-//    } else {
-//        message += "Are you sure you want to process a transaction of " + totalInfo.total + " for the service: " + $("#BulkDeposit_OtherTransaction_EventCode option:selected").text() + "?\n";
-//    }
+
+//    // ✅ Construct confirmation message
+//    var message = `Are you sure you want to record a cash-in of ${totalInfo.total} for the service: ` +
+//        `${$("#BulkDeposit_OtherTransaction_EventCode option:selected").text()}?
+//Name: ${memberName}`;
+
+//    // ✅ Final call
 //    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits);
 //}
+
+
+
 
 
 function checkTotalNotes() {

@@ -1,0 +1,372 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>
+@using System
+@using System.Linq
+
+@functions {
+    // Accepts either DateTime or DateTime? or string; returns "-" for default/empty
+    private string FmtDate(object o)
+    {
+        if (o == null) return "-";
+        DateTime dt;
+        if (DateTime.TryParse(o.ToString(), out dt))
+        {
+            return dt == default(DateTime) ? "-" : dt.ToString("MM/dd/yyyy HH:mm"); // includes hour and minute
+        }
+        return "-";
+    }
+
+    // Accepts decimal or decimal? or string; returns "-" for null/0
+    private string FmtDecimalObj(object o)
+    {
+        if (o == null) return "-";
+        decimal d;
+        if (decimal.TryParse(o.ToString(), out d))
+        {
+            // treat 0 as empty (change if 0 is valid in your domain)
+            return d == 0 ? "-" : d.ToString();
+        }
+        return "-";
+    }
+
+    private string FmtString(string s) => string.IsNullOrWhiteSpace(s) ? "-" : s;
+}
+
+<fieldset class="fieldset-custom">
+    <div class="table-responsive">
+        <table class="table table-hover" id="myDataTable">
+            <colgroup>
+                <col style="width: 13%;">
+                <col style="width: 13%;">
+                <col style="width: 13%;">
+                <col style="width: 13%;">
+                <col style="width: 13%;">
+                <col style="width: 16%;">
+                <col style="width: 19%;"> <!-- Actions -->
+            </colgroup>
+            <thead class="table-light">
+                <tr>
+                    <th>ChequeClearanceId</th>
+                    <th>Member Reference</th>
+                    <th>Cheque Branch Id (Created)</th>
+                    <th>Cheque Amount</th>
+                    <th>Cheque Creation Date</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    var list = (Model ?? Enumerable.Empty<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>()).ToList();
+
+                    if (list.Any())
+                    {
+                        var idx = 0;
+                        foreach (var c in list)
+                        {
+                            var key = !string.IsNullOrWhiteSpace(c.ChequeClearanceId)
+                                ? c.ChequeClearanceId
+                                : ("row" + idx);
+
+                            <tr>
+                                <td>@FmtString(c.ChequeClearanceId)</td>
+                                <td>@FmtString(c.MemberReference)</td>
+                                <td>@FmtString(c.ChequeBranchId)</td>
+                                <td>@FmtDecimalObj(c.ChequeAmount)</td>
+                                <td>@FmtDate(c.ChequeCreationDate)</td>
+                                <td>
+                                    @switch (c.Status)
+                                    {
+                                        case "Pending":
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            break;
+                                        case "Disbursed":
+                                            <span class="badge bg-info text-dark">Disbursed</span>
+                                            break;
+                                        case "Approved":
+                                            <span class="badge bg-success">Approved</span>
+                                            break;
+                                        case "Rejected":
+                                            <span class="badge bg-danger">Rejected</span>
+                                            break;
+                                        case "Reviewed":
+                                            <span class="badge bg-primary">Reviewed</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">-</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown_@idx" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu p-2" aria-labelledby="actionDropdown_@idx" style="min-width: 180px;">
+                                            @switch (c.Status)
+                                            {
+                                                case "Pending":
+                                                    <text>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-primary w-100 mb-1"
+                                                                    onclick="AddORUpdateGen('@c.ChequeClearanceId','createViewContainer','_Edit','get','ChequeClearance')">
+
+                                                                Edit
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-warning w-100 mb-1"
+                                                                    onclick="ReviewClearance('@c.ChequeClearanceId')">
+
+                                                                Review
+                                                            </button>
+                                                        </li>
+
+
+                                                        <li>
+                                                            <button class="btn btn-sm btn-danger w-100 mb-1"
+                                                                    onclick="RejectClearance('@c.ChequeClearanceId')">
+                                                                Reject
+                                                            </button>
+                                                        </li>
+
+                                                        <li>
+                                                            <button class="btn btn-sm btn-info w-100"
+                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
+                                                                Details
+                                                            </button>
+                                                        </li>
+                                                    </text>
+                                                    break;
+                                                case "Disbursed":
+                                                    <text>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-info w-100"
+                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
+                                                                Details
+                                                            </button>
+                                                        </li>
+                                                    </text>
+                                                    break;
+                                                case "Reviewed":
+                                                    <text>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-info w-100"
+                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
+                                                                Details
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-success w-100 mb-1"
+                                                                    onclick="ApproveClearance('@c.ChequeClearanceId')">
+                                                                Approve
+                                                            </button>
+                                                        </li>
+
+                                                    </text>
+                                                    break;
+                                                case "Approved":
+                                                    <text>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-warning w-100 mb-1"
+                                                                    onclick="DisburseClearance('@c.ChequeClearanceId')">
+                                                                Disburse
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button class="btn btn-sm btn-info w-100"
+                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
+                                                                Details
+                                                            </button>
+                                                        </li>
+                                                    </text>
+                                                    break;
+                                                case "Rejected":
+                                                    <text>
+                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
+                                                    </text>
+                                                    break;
+                                                default:
+                                                    <text>
+                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
+                                                    </text>
+                                                    break;
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            idx++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="mdi mdi-information-outline me-1"></i> No clearance records found.
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+    </div>
+</fieldset>
+
+<div id="detailsContainer"></div>
+
+
+
+<script>
+    (function () {
+        if (window.jQuery && $.fn.DataTable) {
+            try {
+                if ($('#myDataTable').hasClass('dataTable')) {
+                    $('#myDataTable').DataTable().destroy();
+                }
+            } catch (e) { /* ignore */ }
+
+            $('#myDataTable').DataTable({
+                pageLength: 10,
+                lengthChange: true,
+                ordering: true,
+                searching: true
+            });
+        }
+    })();
+
+
+
+
+
+
+
+
+
+
+
+    (function ($) {
+    var getActionFormUrl = '@Url.Action("GetActionForm", "ChequeClearance")'; // server-generated endpoint
+
+    function appalert(msg) {
+        if (window.appalert) return window.appalert(msg, 4, 3);
+        console.log('ALERT:', msg);
+    }
+
+    function ensureModal() {
+        var $modal = $('#actionModal');
+        if ($modal.length === 0) {
+            // create a minimal modal if not present
+            var m = `
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actionModalLabel">Action</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="actionModalBody"></div>
+    </div>
+  </div>
+</div>`;
+            $('body').append(m);
+            $modal = $('#actionModal');
+        }
+        return $modal;
+    }
+
+    function openClearanceAction(chequeClearanceId, mode) {
+        if (!chequeClearanceId) { appalert('Missing clearance id'); return; }
+        mode = (mode || 'review').toLowerCase();
+
+        var $modal = ensureModal();
+        var $body = $modal.find('#actionModalBody');
+        $('#actionModalLabel').text((mode.charAt(0).toUpperCase() + mode.slice(1)) + ' Clearance');
+
+        $body.html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Loading form...</p></div>');
+        // show modal now (so user sees loader)
+        $modal.modal('show');
+
+        $.ajax({
+            url: getActionFormUrl,
+            type: 'GET',
+            data: { fileUploadId: chequeClearanceId, mode: mode },
+            dataType: 'html',   // expect HTML
+            timeout: 20000
+        })
+        .done(function (response, textStatus, xhr) {
+            // Log some info
+            console.log('GetActionForm response: content-type=', xhr.getResponseHeader('content-type'));
+            // Heuristic: response might actually be JSON (e.g. auth redirect). Try parse JSON safely.
+            var trimmed = (response || '').trim();
+            var looksLikeJson = trimmed && (trimmed[0] === '{' || trimmed[0] === '[');
+            if (looksLikeJson) {
+                try {
+                    var j = JSON.parse(trimmed);
+                    console.warn('Server returned JSON instead of HTML:', j);
+                    // Show readable JSON in modal for debugging
+                    $body.html('<pre class="p-3 bg-light small" style="white-space:pre-wrap;">' +
+                               $('<div>').text(JSON.stringify(j, null, 2)).html() + '</pre>');
+                    return;
+                } catch (e) {
+                    // not JSON, continue
+                    console.warn('Response looked like JSON but failed parse', e);
+                }
+            }
+
+            // Basic sanity: empty response -> show debug
+            if (!trimmed) {
+                $body.html('<div class="alert alert-warning">Server returned empty HTML. Check the partial is returned (PartialView) and not a full View or redirect.</div>');
+                return;
+            }
+
+            // If the returned HTML contains "<form", we assume it's our partial and insert it.
+            if (trimmed.indexOf('<form') !== -1 || trimmed.indexOf('name="Statement"') !== -1) {
+                $body.html(response);
+                // ensure we set expected hidden fields in case they were not set server-side
+                $body.find('[name="ChequeClearanceId"]').val(chequeClearanceId);
+                $body.find('[name="Mode"]').val(mode);
+                // Execute scripts embedded in response (if any)
+                $body.find('script').each(function () {
+                    try {
+                        $.globalEval(this.innerHTML || this.text || '');
+                    } catch (e) { console.warn('Script eval error', e); }
+                });
+            } else {
+                // Not the expected partial: dump HTML into modal so you can see what arrived
+                $body.html('<div class="alert alert-info">Received unexpected HTML (preview below):</div><div class="border p-2 small" style="max-height:400px; overflow:auto;">' +
+                    $('<div>').text(response).html() +
+                    '</div>');
+                console.warn('Unexpected HTML received for GetActionForm:', response);
+            }
+        })
+        .fail(function (xhr, status, err) {
+            console.error('GetActionForm failed', status, err, xhr);
+            // If server returns HTML error page, show it inside modal for debugging
+            var ct = xhr && xhr.getResponseHeader ? xhr.getResponseHeader('content-type') : '';
+            if (xhr.responseText && ct && ct.indexOf('text/html') !== -1) {
+                $('#actionModalBody').html('<div class="alert alert-danger">Server returned an error page (see below):</div><div class="border p-2 small" style="max-height:400px; overflow:auto;">' +
+                    $('<div>').text(xhr.responseText).html() +
+                    '</div>');
+            } else if (xhr.responseJSON) {
+                $('#actionModalBody').html('<div class="alert alert-danger">Error: ' + (xhr.responseJSON.message || JSON.stringify(xhr.responseJSON)) + '</div>');
+            } else {
+                $('#actionModalBody').html('<div class="alert alert-danger">Could not load form. ' + (err || status) + '</div>');
+            }
+        });
+    }
+
+    // expose
+    window.ReviewClearance = function (id) { openClearanceAction(id, 'review'); };
+    window.ApproveClearance = function (id) { openClearanceAction(id, 'approve'); };
+    window.RejectClearance = function (id) { openClearanceAction(id, 'reject'); };
+    window.DisburseClearance = function (id) { openClearanceAction(id, 'disburse'); };
+
+})(jQuery);
+
+
+</script>
+

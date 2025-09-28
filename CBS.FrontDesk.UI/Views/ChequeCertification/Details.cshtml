@@ -1,0 +1,243 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
+
+<div class="card-header">
+    <h6 class="card-title mb-0 text-primary text-start">
+        <i class="mdi mdi-plus-circle me-2 text-success"></i> Certification ID: @Model.ChequeCertificationID
+    </h6>
+</div>
+<div class="card-body">
+    <div class="row">
+        <!-- Cheque Certification ID Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-primary h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-identifier mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.ChequeCertificationID</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Cheque Certification ID</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Reference Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-info h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-info">
+                                <i class="mdi mdi-account mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.MemberReference</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Member Reference</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch ID Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-secondary h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-bank mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.BranchId</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Branch ID</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheque Book ID Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-warning h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-warning">
+                                <i class="mdi mdi-book mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.ChequeBookId</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Cheque Book ID</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheque Leaf ID Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-success h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-success">
+                                <i class="mdi mdi-file-document mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.ChequeleafId</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Cheque Leaf ID</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Number Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-primary h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="mdi mdi-credit-card mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.AccountNumber</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Account Number</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amount Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-info h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-info">
+                                <i class="mdi mdi-cash mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.Amount.ToString("N2")</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Amount</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certification Status Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-secondary h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            @{
+                                var statusBadgeClass = "bg-label-secondary";
+                                switch (Model.CertificationStatus?.ToLower())
+                                {
+                                    case "approved": statusBadgeClass = "bg-label-success"; break;
+                                    case "rejected": statusBadgeClass = "bg-label-danger"; break;
+                                    case "pending": statusBadgeClass = "bg-label-warning"; break;
+                                    case "reviewed": statusBadgeClass = "bg-label-info"; break;
+                                    default: statusBadgeClass = "bg-label-secondary"; break;
+                                }
+                            }
+                            <span class="avatar-initial rounded @statusBadgeClass">
+                                <i class="mdi mdi-check-circle mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">
+                            @{
+                                var statusTextClass = "text-secondary";
+                                switch (Model.CertificationStatus?.ToLower())
+                                {
+                                    case "approved": statusTextClass = "text-success"; break;
+                                    case "rejected": statusTextClass = "text-danger"; break;
+                                    case "pending": statusTextClass = "text-warning"; break;
+                                    case "reviewed": statusTextClass = "text-info"; break;
+                                    default: statusTextClass = "text-secondary"; break;
+                                }
+                            }
+                            <span class="@statusTextClass">@Model.CertificationStatus</span>
+                        </h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Certification Status</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Created Date Card -->
+        <div class="col-sm-6 col-lg-3 mb-3">
+            <div class="card card-border-shadow-warning h-100" style="padding: 0.5rem;">
+                <div class="card-body p-2">
+                    <div class="d-flex align-items-center mb-1 pb-1">
+                        <div class="avatar me-1">
+                            <span class="avatar-initial rounded bg-label-warning">
+                                <i class="mdi mdi-calendar mdi-16px"></i>
+                            </span>
+                        </div>
+                        <h5 class="ms-1 mb-0" style="font-size: 1.2rem;">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</h5>
+                    </div>
+                    <p class="mb-0 text-heading" style="font-size: 0.85rem;">Created Date</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card card-border-shadow-info">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="avatar me-2">
+                                <span class="avatar-initial rounded bg-label-info">
+                                    <i class="mdi mdi-text mdi-16px"></i>
+                                </span>
+                            </div>
+                            <h5 class="mb-0">Description</h5>
+                        </div>
+                        <p class="mb-0">@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!--<div class="card-footer bg-light">
+    <div class="d-flex justify-content-between">
+        <button type="button" onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
+                class="btn btn-secondary">
+            <i class="mdi mdi-arrow-left me-1"></i> Back to List
+        </button>
+        <div>
+            @@if (Model.CertificationStatus?.ToLower() == "pending")
+            {
+                <button type="button" onclick="ReviewCertification('@@Model.ChequeCertificationID')"
+                        class="btn btn-warning me-2">
+                    <i class="mdi mdi-file-search me-1"></i> Review
+                </button>
+            }
+
+            @@if (Model.CertificationStatus?.ToLower() == "reviewed")
+            {
+                <button type="button" onclick="ValidateCertification('@@Model.ChequeCertificationID')"
+                        class="btn btn-success me-2">
+                    <i class="mdi mdi-check-circle me-1"></i> Validate
+                </button>
+                <button type="button" onclick="RejectCertification('@@Model.ChequeCertificationID')"
+                        class="btn btn-danger me-2">
+                    <i class="mdi mdi-close-circle me-1"></i> Reject
+                </button>
+            }-->
+
+            @*<button type="button" onclick="AddORUpdateGen('@Model.ChequeCertificationID', 'datalistingview', '_ChequeCertificationForm', 'edit', 'ChequeCertification')"
+                    class="btn btn-primary">
+                <i class="mdi mdi-pencil me-1"></i> Edit
+            </button>*@
+        <!--</div>
+    </div>
+</div>-->
+@*</div>*@

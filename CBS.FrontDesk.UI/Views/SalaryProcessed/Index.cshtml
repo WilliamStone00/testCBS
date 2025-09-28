@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Title = "Processed Salary Overview";
+}
+<style>
+
+    /* Force status column to shrink */
+    table.dataTable td.status-col {
+        white-space: nowrap;
+        width: 1%;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Processed Salary
+                </h1>
+                <p class="card-text">
+                    Review executed salary entries, filter by branch, operators, member, status, date, and temporary pay-code state.
+                </p>
+                <p class="card-text text-black fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to refine results, then Apply or Export.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for filtering processed salary</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-2">
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> Focus on a specific branch.</li>
+                <li><i class="mdi mdi-account-cash text-success me-2"></i><strong>Uploaded/Executed by:</strong> Filter by who uploaded or executed.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Dates:</strong> Start/End are inclusive.</li>
+                <li><i class="mdi mdi-account-search text-warning me-2"></i><strong>Member:</strong> Filter by Member Ref/Name or show non-members only.</li>
+                <li><i class="mdi mdi-timer-sand-complete text-secondary me-2"></i><strong>Temp Pay Code:</strong> Show entries with an active TempPayCode or without one (mutually exclusive).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Status:</strong> Paid vs Pending.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Advanced Filters
+    </h5>
+
+    <!-- Root wrapper improves Select2 dropdown positioning -->
+    <div id="filterRoot" class="card p-3 mb-3 bg-light position-relative">
+        <!-- Toggles -->
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2" id="byBranch" />
+                    <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2" id="byOperators" />
+                    <label class="form-check-label fw-bold" for="byOperators">Filter by Uploaded/Executed By</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2" id="byDate" />
+                    <label class="form-check-label fw-bold" for="byDate">Filter by Date Range</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch -->
+        <div id="branchFilterSection" class="row g-3 mb-3" style="display:none;">
+            <div class="col-12">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList(
+                    "branchInput",
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2", id = "branchInput" }
+                )
+            </div>
+        </div>
+
+        <!-- Operators -->
+        <div id="operatorsFilterSection" class="row g-3 mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Uploaded by</label>
+                @if (ViewBag.Users != null)
+                {
+                    @Html.DropDownList(
+                        "uploadedByInput",
+                        new SelectList(ViewBag.Users, "Text", "Value"),
+                        "--- Any ---",
+                        new { @class = "form-control select2", id = "uploadedBy" }
+                    )
+                }
+                else
+                {
+                    <input type="text" id="uploadedBy" class="form-control" placeholder="Uploader username or ID" />
+                }
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Executed by</label>
+                @if (ViewBag.Users != null)
+                {
+                    @Html.DropDownList(
+                        "executedByInput",
+                        new SelectList(ViewBag.Users, "Text", "Value"),
+                        "--- Any ---",
+                        new { @class = "form-control select2", id = "executedBy" }
+                    )
+                }
+                else
+                {
+                    <input type="text" id="executedBy" class="form-control" placeholder="Executor username or ID" />
+                }
+            </div>
+        </div>
+
+        <!-- Dates -->
+        <div id="dateRangeSection" class="row g-3 mb-3" style="display:none;">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Start date (inclusive)</label>
+                <input type="date" id="startDate" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">End date (inclusive)</label>
+                <input type="date" id="endDate" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Member / TempPayCode / Status -->
+        <div id="memberCodeStatusBlock" class="mb-2">
+            <label class="form-label fw-bold d-block mb-2">Member / TempPayCode / Status</label>
+
+            <!-- A) Checkboxes -->
+            <div class="row g-3 align-items-center mb-2">
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="withActiveCodeOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="withActiveCodeOnly">With Active TempPayCode only</label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="nonMembersOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="nonMembersOnly">Non-members only</label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="withoutActiveCodeOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="withoutActiveCodeOnly">Without Active TempPayCode only</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B) Inputs -->
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="memberReference" class="form-control" placeholder="e.g., MEM000123" />
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Member Name</label>
+                    <input type="text" id="memberName" class="form-control" placeholder="Search by member name" />
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Status</label>
+                    @if (ViewBag.StatusOptions != null)
+                    {
+                        @Html.DropDownList(
+                            "status",
+                            (IEnumerable<SelectListItem>)ViewBag.StatusOptions,
+                            new { @class = "form-select", id = "status" }
+                        )
+                    }
+                    else
+                    {
+                        <select id="status" class="form-select">
+                            <option value="">All</option>
+                            <option value="true">Salary Paid</option>
+                            <option value="false">Pending</option>
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify"></i> Apply Filter
+            </button>
+            <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                <i class="mdi mdi-refresh"></i> Reset
+            </button>
+            <button id="exportBtn" type="button" class="btn btn-success w-100">
+                <i class="mdi mdi-file-export"></i> Export
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- DataTable Partial -->
+<div id="processedSalaryTableView">
+    @Html.Partial("_ProcessedSalaryDataTable")
+</div>
+
+@section Scripts {
+    <script>
+
+        (function () {
+            function toggleSections() {
+                const byBranch = document.getElementById('byBranch').checked;
+                const byOperators = document.getElementById('byOperators').checked;
+                const byDate = document.getElementById('byDate').checked;
+
+                document.getElementById('branchFilterSection').style.display = byBranch ? '' : 'none';
+                document.getElementById('operatorsFilterSection').style.display = byOperators ? '' : 'none';
+                document.getElementById('dateRangeSection').style.display = byDate ? '' : 'none';
+            }
+            if (window.$ && $.fn.select2) {
+                // Branch dropdown attaches to its row/section
+                const $branchSection = $('#branchFilterSection');
+                $('#branchInput').select2({
+                    width: 'resolve',
+                    dropdownAutoWidth: true,
+                    dropdownParent: $branchSection.length ? $branchSection : $('#filterRoot'),
+                    placeholder: '--- Select ---',
+                    allowClear: true
+                });
+
+                // Operators: UploadedBy & ExecutedBy
+                const $opsSection = $('#operatorsFilterSection');
+                $('#uploadedBy, #executedBy').select2({
+                    width: 'resolve',
+                    dropdownAutoWidth: true,
+                    dropdownParent: $opsSection.length ? $opsSection : $('#filterRoot'),
+                    placeholder: '--- Any ---',
+                    allowClear: true
+                });
+
+                // Status (we usually don’t need a search box here)
+                const $memberBlock = $('#memberCodeStatusBlock');
+                $('#status').select2({
+                    width: 'resolve',
+                    dropdownAutoWidth: true,
+                    dropdownParent: $memberBlock.length ? $memberBlock : $('#filterRoot'),
+                    minimumResultsForSearch: Infinity, // hide search bar
+                    placeholder: 'All',
+                    allowClear: true
+                });
+            }
+            // Ensure TempPayCode presence filters are mutually exclusive
+            function wireMutualExclusion() {
+                const withActive = document.getElementById('withActiveCodeOnly');
+                const withoutActive = document.getElementById('withoutActiveCodeOnly');
+
+                withActive.addEventListener('change', function () {
+                    if (withActive.checked) withoutActive.checked = false;
+                });
+                withoutActive.addEventListener('change', function () {
+                    if (withoutActive.checked) withActive.checked = false;
+                });
+            }
+
+            // Reset
+            function wireReset() {
+                document.getElementById('resetFilterBtn').addEventListener('click', function () {
+                    // toggles
+                    ['byBranch', 'byOperators', 'byDate',
+                        'withActiveCodeOnly', 'withoutActiveCodeOnly', 'nonMembersOnly']
+                        .forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
+
+                    // selects & inputs
+                    ['branchInput', 'uploadedBy', 'executedBy', 'status']
+                        .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+                    ['memberReference', 'memberName', 'startDate', 'endDate']
+                        .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+                    toggleSections();
+
+                    // trigger a fresh reload (expects your JS to read current DOM values)
+                    document.getElementById('applyFilterBtn').click();
+                });
+            }
+
+            // Initial bindings
+            ['byBranch', 'byOperators', 'byDate'].forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('change', toggleSections);
+            });
+            toggleSections();
+            wireMutualExclusion();
+            wireReset();
+
+            // Optional: initialize Select2 if present
+            $(function () {
+                if (window.$ && $.fn.select2) {
+                    $('.select2').select2({
+                        width: 'resolve',
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        placeholder: '--- Select ---'
+                    });
+                }
+            });
+        })();
+    </script>
+
+    <script src="~/Scripts/Js/Crud/SalaryProcessed/ProcessedSalary.js"></script>
+}
