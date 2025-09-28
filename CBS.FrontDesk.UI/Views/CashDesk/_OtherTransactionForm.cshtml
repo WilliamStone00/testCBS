@@ -2,104 +2,250 @@
 @using Resources
 @{
     var selectedSourceType = Model?.BulkDeposit?.OtherTransaction?.SourceType ?? "Cash_Collected";
+    var isOut = (string)ViewBag.FormContext == "OtherCashOut";
+    var legendClass = isOut ? "text-danger" : "text-success"; // red for expense, green for income
+    var legendIcon = isOut ? "💸" : "💰";
+    var legendText = isOut ? "Other Cash-Out" : "Other Cash-In";
 }
+
+<style>
+    /* The cell wrapper for the select */
+    .alloc-cell {
+        position: relative;
+        /* IMPORTANT: allow the popup to be clickable */
+        overflow: visible; /* was hidden */
+    }
+
+        /* Select2 should fill the cell, text truncates with … */
+        .alloc-cell .select2-container {
+            width: 100% !important;
+        }
+
+        .alloc-cell .select2-selection--single {
+            max-width: 100%;
+        }
+
+        .alloc-cell .select2-selection__rendered {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Keep the dropdown no wider than the cell, but make it clickable above neighbors */
+        .alloc-cell .select2-dropdown {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+    /* When open, guarantee it sits above table/headers/etc */
+    .select2-container--open .select2-dropdown {
+        z-index: 9999 !important; /* was 2000; raise to win stacking */
+    }
+
+    /* Let options wrap so the menu stays narrow */
+    .select2-results__option {
+        white-space: normal;
+    }
+
+    /* Textarea look (unchanged) */
+    .autosize {
+        overflow: hidden;
+        resize: none;
+        line-height: 1.25rem;
+    }
+
+    .alloc-note {
+        max-height: 7.5rem;
+    }
+    /* ~6 lines */
+
+    /* Compact fieldset + legend */
+    .fieldset-custom {
+        border-radius: 8px;
+    }
+
+    #contextTitle {
+        margin-bottom: .75rem !important;
+    }
+
+    /* Tighter vertical rhythm */
+    .form-wrapper .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .form-wrapper .mb-3 {
+        margin-bottom: .75rem !important;
+    }
+
+    .form-wrapper .form-floating > .form-control {
+        min-height: 2.5rem;
+    }
+
+    .form-wrapper .form-floating > label {
+        padding: .25rem .75rem;
+    }
+
+    /* Right-aligned “Total Amount” badge */
+    .total-badge {
+        display: inline-block;
+        background: #f6f6f6;
+        border: 1px solid #ddd;
+        color: #333;
+        font-weight: 700;
+        border-radius: .5rem;
+        padding: .35rem .6rem;
+    }
+
+    /* Make Select2 match form-control height in this form */
+    .select2-container--default .select2-selection--single {
+        height: 2.5rem;
+        border: 1px solid #ced4da;
+    }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 2.4rem;
+            padding-left: .75rem;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 2.5rem;
+        }
+</style>
+
+
+
+
 @if (ViewBag.Operation == "income_expense")
 {
     <div class="form-wrapper">
-        <fieldset class="fieldset-custom p-4">
-            <legend class="text-primary h5 mb-4">💰 @CashDesk_OtherTransactionForm.OtherCashIn</legend>
+        <fieldset class="fieldset-custom p-3">
+            <input type="hidden" id="FormContext" value="@ViewBag.FormContext" />
 
-            <!-- 🔹 Toggle Inter-Branch -->
-            <div class="col-md-12 mb-3">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
-                    <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
-                        🔄 Enable Inter-Branch Transaction
-                    </label>
-                </div>
-            </div>
-            <!-- 🔹 Branch Selection (Shown only if Inter-Branch is checked) -->
-            <div id="branchDropdownContainer" class="col-md-12 mb-3" style="display: none;">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId,
-                        new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control select2", @id = "ExternalBranchId" })
-                    <label for="ExternalBranchId">Destination Branch</label>
-                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger"})
-                </div>
-            </div>
+            <legend class="h6 mb-3 @(isOut ? "text-danger" : "text-primary")" id="contextTitle">
+                @(isOut ? "💸 Other Cash-Out" : "💰 Other Cash-In")
+            </legend>
 
-            <!-- 🔹 Source Type Selection -->
-            <div class="mb-4">
-                <label class="fw-semibold mb-2 d-block">@CashDesk_OtherTransactionForm.SelectSource</label>
-                <div class="form-check">
-                    @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected", new
+            <!-- Inter-Branch + Source + Total -->
+            <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <div class="form-check m-0">
+                            <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
+                            <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
+                                🔄 Enable Inter-Branch Transaction
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline m-0">
+                            <span class="fw-semibold me-2">@CashDesk_OtherTransactionForm.SelectSource</span>
+                            @Html.RadioButtonFor(
+                                m => m.BulkDeposit.OtherTransaction.SourceType,
+                                "Cash_Collected",
+                                new { @class = "form-check-input", id = "cashCollectionOption", @onclick = "toggleAccountDropdown()" }
+                            )
+                            <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">
+                                @(isOut ? "Payout Cash" : "Collect Cash")
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Inter-branch destination dropdown (only when checked) -->
+                    <div id="branchDropdownContainer" class="mt-2" style="display:none;">
+                        <div class="form-floating">
+                            @Html.DropDownListFor(
+                                m => m.BulkDeposit.OtherTransaction.ExternalBranchId,
+                                new SelectList(ViewBag.Branches, "Id", "Name"),
+                                "--- Select Branch ---",
+                                new { @class = "form-control select2", @id = "ExternalBranchId" }
+                            )
+                            <label for="ExternalBranchId">Destination Branch</label>
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @* -------- NEW: Other Source (Cash-OUT only) -------- *@
+                    @if (isOut)
                     {
-                        @class = "form-check-input",
-                        id = "cashCollectionOption",
-                        @onclick = "toggleAccountDropdown()"
-                    })
-                    <label class="form-check-label" for="cashCollectionOption">@CashDesk_OtherTransactionForm.CollectCash</label>
-                </div>
-            </div>
+                        <div class="mt-3">
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="IsOtherSource"
+                                       onchange="OtherSourceUI.toggle()">
+                                <label class="form-check-label fw-semibold" for="IsOtherSource">
+                                    Use another source GL (e.g., petty cash)
+                                </label>
+                            </div>
 
-            <!-- 🔹 Event Code -->
-            <div class="mb-4">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BulkDeposit.OtherTransaction.EventCode,
-                        new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                        "---Select Event Item---",
-                        new { @class = "form-control select2", @id = "BulkDeposit_OtherTransaction_EventCode" })
-                    <label for="BulkDeposit_OtherTransaction_EventCode">@CashDesk_OtherTransactionForm.EventItem</label>
-                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.EventCode, "", new { @class = "text-danger" })
+                            <div id="OtherSourceContainer" class="mt-2" style="display:none;">
+                                <div class="form-floating">
+                                    @Html.DropDownList(
+                                        "OtherSourceOfAccountId",
+                                        new SelectList((IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>(), "Value", "Text"),
+                                        "--- Select Source GL ---",
+                                        new { @class = "form-control select2", @id = "OtherSourceOfAccountId" }
+                                    )
+                                    <label for="OtherSourceOfAccountId">Source GL (credited)</label>
+                                    <span class="small text-muted d-block mt-1">
+                                        This GL will be credited as the source of funds for the expense.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @* -------- /NEW -------- *@
                 </div>
-            </div>
 
-            <!-- 🔹 Member Name -->
-            <div class="mb-4">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.BulkDeposit.OtherTransaction.MemberName, new
-                   {
-                       @class = "form-control",
-                       @id = "Name"
-                   })
-                    <label for="MemberName">@CashDesk_OtherTransactionForm.Name</label>
-                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <!-- 🔹 Narration -->
-            <div class="mb-4">
-                <div class="form-floating shadow-sm">
-                    @Html.TextAreaFor(m => m.BulkDeposit.OtherTransaction.Narration, new
-                    {
-                        @class = "form-control",
-                        @style = "height: 80px;",
-                        @id = "DepositerNote"
-                    })
-                    <label for="DepositerNote">@CashDesk_OtherTransactionForm.NarrationDescription</label>
-                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <!-- 🔹 Summary Amount Display -->
-            <div class="row mb-4">
-                <div class="col-md-6"></div>
-                <div class="col-md-6 text-end">
-                    <span class="formatted-amount shadow-box fw-bold" id="lblDepositRequest_amount">
+                <div class="col-lg-4 d-flex justify-content-lg-end">
+                    <span class="total-badge" id="lblDepositRequest_amount">
                         @CashDesk_OtherTransactionForm.TotalAmount 0.0
                     </span>
                     <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>
             </div>
 
-            <!-- 🔹 Include Non-Member Info -->
-            @Html.Partial("_NoneMemberPayment")
+            <!-- Name / CNI / Phone -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(
+                            m => m.BulkDeposit.OtherTransaction.MemberName,
+                            new { @class = "form-control", @id = "Name", placeholder = "Name" }
+                        )
+                        <label for="Name">@CashDesk_OtherTransactionForm.Name</label>
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.MemberName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text" id="CNI" class="form-control" placeholder="CNI" />
+                        <label for="CNI">CNI</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="tel" id="TelephoneNumber" class="form-control" inputmode="tel" placeholder="Telephone" />
+                        <label for="TelephoneNumber">Telephone</label>
+                    </div>
+                </div>
+            </div>
 
-            <!-- 🔹 Action Buttons -->
-            <div class="d-flex justify-content-end mt-4">
-                <input type="hidden" name="OperationType" value="OtherCashIn" id="OperationType" />
+            <div class="mb-3">
+                <div class="form-floating">
+                    @Html.TextAreaFor(
+                        m => m.BulkDeposit.OtherTransaction.Narration,
+                        new { @class = "form-control", @style = "height:74px;", @id = "DepositerNote", placeholder = "Narration / Description" }
+                    )
+                    <label for="DepositerNote">@CashDesk_OtherTransactionForm.NarrationDescription</label>
+                    @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.Narration, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.Partial("_OtherPaymentFormDetail")
+
+            <div class="d-flex justify-content-end mt-3">
+                <input type="hidden" name="OperationType" value="@(isOut ? "OtherCashOut" : "OtherCashIn")" id="OperationType" />
                 <input type="hidden" name="customerId" value="" id="customerId" />
 
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostOtherCashIn()">
@@ -118,100 +264,66 @@
     </div>
 }
 
+
 else if (ViewBag.Operation == "transfer_non_member")
 {
+
+
     <div class="form-wrapper">
-        <fieldset class="fieldset-custom">
-            <legend>@CashDesk_OtherTransactionForm.SavingWithdrawalNotificationCharges</legend>
-            <hr />
-            <div class="change-group">
-                <div class="row mt-2 gy-4">
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OtherTransactionForm.MembersName: @Model.Customer.name</span>
+        <fieldset class="fieldset-custom p-3">
+            <input type="hidden" id="FormContext" value="@ViewBag.FormContext" />
+
+            <!-- Context-sensitive legend -->
+            <legend class="@legendClass h6" id="contextTitle">
+                @legendIcon @legendText
+            </legend>
+
+            <!-- Inter-Branch + Source + Total -->
+            <div class="row g-3 align-items-center mb-3">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <div class="form-check m-0">
+                            <input type="checkbox" class="form-check-input" id="isInterBranchCheck" onchange="toggleBranchDropdown()" />
+                            <label class="form-check-label fw-semibold" for="isInterBranchCheck" id="interBranchLabel">
+                                🔄 Enable Inter-Branch Transaction
+                            </label>
+                        </div>
+
+                        <div class="form-check form-check-inline m-0">
+                            <span class="fw-semibold me-2">Select Source</span>
+                            @Html.RadioButtonFor(
+                              m => m.BulkDeposit.OtherTransaction.SourceType,
+                              "Cash_Collected",
+                              new { @class = "form-check-input", id = "cashCollectionOption", @onclick = "toggleAccountDropdown()" }
+                            )
+                            <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">
+                                @(isOut ? "Payout Cash" : "Collect Cash")
+                            </label>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OtherTransactionForm.TotalAmount: 0.0</span>
-                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                    <div id="branchDropdownContainer" class="mt-2" style="display:none;">
+                        <div class="form-floating">
+                            @Html.DropDownListFor(
+                              m => m.BulkDeposit.OtherTransaction.ExternalBranchId,
+                              new SelectList(ViewBag.Branches, "Id", "Name"),
+                              "--- Select Branch ---",
+                              new { @class = "form-control select2", @id = "ExternalBranchId" })
+                            <label for="ExternalBranchId">Destination Branch</label>
+                            @Html.ValidationMessageFor(m => m.BulkDeposit.OtherTransaction.ExternalBranchId, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="table-responsive" style="width: 100%;">
-                        <table class="table table-hover" id="myDataTableT">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="display:none;">@CashDesk_OtherTransactionForm.NotificationId</th>
-                                    <th>@CashDesk_OtherTransactionForm.RequestedAmount</th>
-                                    <th>@CashDesk_OtherTransactionForm.FormCharges</th>
-                                    <th>@CashDesk_OtherTransactionForm.Status</th>
-                                    <th>@CashDesk_OtherTransactionForm.IDW</th>
-                                    <th>@CashDesk_OtherTransactionForm.Grace</th>
-                                    <th>@CashDesk_OtherTransactionForm.Total</th>
-                                    <th>@CashDesk_OtherTransactionForm.Confirm</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var d in Model.WithdrawalNotifications.Where(x => !x.IsWithdrawalDone).OrderBy(t
-                                => t.NotificationDate))
-                                {
-                                    <tr>
-                                        <td style="display:none;">@d.Id</td>
-                                        <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes"
-                                                   value="@d.AmountRequired">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control fee-input shadow-input-boxes"
-                                                   value="@d.FormNotificationCharge" readonly="readonly">
-                                        </td>
-                                        <td>
-                                            <span class="status">@d.ApprovalStatus</span>
-                                        </td>
-                                        <td>
-                                            <span class="doiw">@d.DateOfIntendedWithdrawal.ToShortDateString()</span>
-                                        </td>
-                                        <td>
-                                            <span class="dogp">@d.GracePeriodDate.ToShortDateString()</span>
-                                        </td>
-                                        <td>
-                                            <span class="total-span">@d.Total</span>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" class="form-check-input">
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5" style="text-align: right;"><strong>@CashDesk_OtherTransactionForm.Total:</strong></td>
-                                    <td id="tableTotal">0</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OtherTransactionForm.Balance:</strong></td>
-                                    <td id="tableBalance">0</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
                 </div>
-                <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="SavingWithdrawalFormFee" id="OperationType" />
-                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostWithdrawalFromFee()">
-                        <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OtherTransactionForm.ConfirmPayment
-                    </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_OtherTransactionForm.Reprint
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_OtherTransactionForm.Reset
-                    </button>
+
+                <div class="col-lg-4 d-flex justify-content-lg-end">
+                    <span class="total-badge" id="lblDepositRequest_amount">
+                        Total Amount: 0.0
+                    </span>
+                    <input type="hidden" id="totalNoteAmount" value="0" />
                 </div>
             </div>
+
+            <!-- rest of your form... -->
         </fieldset>
     </div>
 

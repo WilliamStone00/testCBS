@@ -159,6 +159,18 @@ namespace CBS.FrontDesk.Helper
         public static string GetMemberByCustomerTypeAndBranchId = "/api/v1/Customers/get-customers-by-category";
 
 
+
+        //ProcessedSalary
+        public static string RevolkTempCodeBulk = "/api/v1/ProcessedSalary/temp-code/bulk-delete";
+        public static string GetProcessedSalaryById = "/api/v1/ProcessedSalary/{0}";
+        public static string GetProcessedSalaryDataTable = "/api/v1/ProcessedSalary/datatable";
+        public static string GenerateProcessedSalaryTempCodeNoneMember = "/api/v1/ProcessedSalary/temp-code/generate-nonmember";
+        public static string GenerateProcessedSalaryTempCodeKnown = "/api/v1/ProcessedSalary/temp-code/generate-known";
+        public static string GetTempPayCodeId = "/api/v1/ProcessedSalary/temp-code/{0}";
+        public static string RedeemTempCode = "/api/v1/ProcessedSalary/temp-code/redeem";
+        public static string NoneMemberPendingPayOut = "/api/v1/ProcessedSalary/nonmember-pending";
+
+
         //SalaryExecution
         public static string ExecuteSalary = "/api/v1/SalaryExecution/execute-salary";
         public static string UploadAnalysedSalaryFile = "/api/v1/SalaryExecution/upload-analysed-file";
@@ -966,7 +978,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllChartOfAccountManagementPositionByChart = "api/v1/ChartOfAccountManagementPosition/GetAllChartOfAccounts";
         public static string GetAllChartOfAccountManagementPositionByBranch = "api/v1/Account/GetAllBranchAccountForSelection/{0}";
         public static string Get_ChartOfAccount_By_AccountNumber = "/api/v1/ChartOfAccount/GetChartOfAccountByAccountNumber/{0}";
-        //GetAllowAnonymous All ChartOfAccount
+        public static string GetGLAccountsQueryByBranchId = "/api/v1/Account/GetGLAccountsQuery/{0}";
+        ///api/v1/Account/GetGLAccountsQuery/{branchId}
 
         public static string GetOperationEventAttributes = "/api/v1/AccountType/GetOperationEventAttributes/{0}";
         public static string GetAllOperationEventAttributes = "/api/v1/OperationEventAttributes";

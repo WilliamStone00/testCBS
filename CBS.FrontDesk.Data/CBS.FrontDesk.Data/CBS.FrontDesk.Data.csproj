@@ -217,6 +217,7 @@
     <Compile Include="Entity\RequestManagement\SuspiciousPath.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryExtract.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
     <Compile Include="Entity\SMSP\Sms.cs" />

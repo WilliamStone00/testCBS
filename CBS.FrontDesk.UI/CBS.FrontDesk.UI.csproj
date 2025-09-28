@@ -2147,6 +2147,7 @@
     <Compile Include="Controllers\TransactionManagement\PISalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\PISalaryUploadController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SalaryProcessedController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
@@ -7970,7 +7971,9 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
+    <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
@@ -9410,6 +9413,7 @@
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\VAT.js" />
+    <Content Include="Scripts\Js\Crud\SalaryProcessed\ProcessedSalary.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
@@ -9735,11 +9739,9 @@
     <Content Include="Views\CashChangeManagement\_Data.cshtml" />
     <Content Include="Views\CashDesk\Cashin.cshtml" />
     <Content Include="Views\CashDesk\Cashout.cshtml" />
-    <Content Include="Views\CashDesk\ExpenseOtherPayment.cshtml" />
     <Content Include="Views\CashDesk\LoanRepaymentSimulation.cshtml" />
     <Content Include="Views\CashDesk\MomocashCollection.cshtml" />
     <Content Include="Views\CashDesk\OtherCashMobileMoney.cshtml" />
-    <Content Include="Views\CashDesk\OtherCashTransactions.cshtml" />
     <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
     <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
     <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
@@ -9754,7 +9756,7 @@
     <Content Include="Views\CashDesk\_MomocashCollectionForm.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionSearchBox.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionTabs.cshtml" />
-    <Content Include="Views\CashDesk\_NoneMemberPayment.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentFormDetail.cshtml" />
     <Content Include="Views\CashDesk\_Note.cshtml" />
     <Content Include="Views\CashDesk\_OperationDesk.cshtml" />
     <Content Include="Views\CashDesk\_OperationForm.cshtml" />
@@ -10679,6 +10681,16 @@
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
     <Content Include="Views\TransactionDetails\Index.cshtml" />
     <Content Include="Views\ChequeRequest\Index.cshtml" />
+    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
+    <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
+    <Content Include="Views\CashDesk\_OtherCashTransactionsPage.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashOut.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashIn.cshtml" />
+    <Content Include="Views\SalaryProcessed\Index.cshtml" />
+    <Content Include="Views\SalaryProcessed\_ProcessedSalaryDataTable.cshtml" />
+    <Content Include="Views\SalaryProcessed\_ProcessedSalaryDetails.cshtml" />
+    <Content Include="Views\SalaryProcessed\_modal.cshtml" />
     <Content Include="Views\ChequeRequest\_ChequeRequestForm.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDataTable.cshtml" />
     <Content Include="Views\ChequeRequest\_ActionModal.cshtml" />

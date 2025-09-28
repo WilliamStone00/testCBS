@@ -59,10 +59,6 @@ namespace CBS.BusinessService.Accounts
             _accountServices=accountServices;
         }
 
-
-
-
-
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumber(string customerNumber)
         {
             try
@@ -369,6 +365,53 @@ namespace CBS.BusinessService.Accounts
                 SystemMessageStatus.Failed.ToString(),
                 null, failMsg);
 
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> OtherCashin(AddOtherTransactionCommand a)
+        {//OtherCashIn
+            try
+            {
+                var (isValid, discrepancyMessage) = ValidateDenominations(a.CurrencyNotesRequest, a.Amount);
+                if (!isValid)
+                {
+                    string errorMessage = $"Other cashIn has a discrepancy. {discrepancyMessage}";
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                    return ExecutionMessage;
+                }
+                if (a.ExternalBranchId == null)
+                {
+                    a.ExternalBranchId = GetBranchID();
+                }
+                a.Naration = string.IsNullOrEmpty(a.Naration) ? "N/A" : a.Naration;
+                a.CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account")) ? a.CustomerId
+             : "N/A";
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, a);
+                if (response.ApiResponseData != null)
+                {
+                    Branch branch = RetrieveBranchFromSession();
+                    var rpt = MapToDto(branch, response.ApiResponseData.Data);
+                    var rptSource = new List<OtherTransactionDto>();
+                    rptSource.Add(rpt);
+                    HttpContext.Current.Session["rptSource"] = rptSource;
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
             return ExecutionMessage;
         }
 
@@ -870,8 +913,6 @@ namespace CBS.BusinessService.Accounts
                         Direction = "",
                         Name = a.Period,
                         Naration = a.Note=string.IsNullOrEmpty(a.Note) ? "N/A" : a.Note,
-                        EnventName = a.EventCode,
-                        EventCode = a.EventCode,
                         SourceType = a.SourceType,
                         TransactionType = "Income"
                     };
@@ -989,8 +1030,6 @@ namespace CBS.BusinessService.Accounts
                         Name = a.Period,
                         ExternalBranchId=a.ExternalBranchId,
                         Naration = a.Note,
-                        EnventName = a.EventCode,
-                        EventCode = a.EventCode,
                         SourceType = a.SourceType,
                         TransactionType = "Expense"
                     };

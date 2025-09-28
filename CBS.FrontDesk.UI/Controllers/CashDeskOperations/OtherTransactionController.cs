@@ -68,8 +68,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
         private Func<Task<ExecutionMessages>> GetInsertServiceAction(CashDesk model)
         {
+            return null;
 
-            return () => _OtherTransactionServices.Create(model.OtherTransaction);
+            //return () => _OtherTransactionServices.Create(model.OtherTransaction);
         }
 
         //private Func<Task<ExecutionMessages>> GetUpdateServiceAction(string serviceOption, CashDesk model)
