@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,4 +29,23 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.Notific
         /// </summary>
         public List<string> Placeholders { get; set; } = new List<string>();
     }
+
+    public class NotificationAggregatesDto
+    {
+        public List<PlaceholderDto> PlaceHolders { get; set; }
+        public List<NotificationTypeDto> NotificationTypes { get; set; }
+    }
+
+    public class PlaceholderDto
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class NotificationTypeDto
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+    }
+
 }

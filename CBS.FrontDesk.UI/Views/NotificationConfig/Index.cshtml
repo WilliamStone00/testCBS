@@ -1,6 +1,6 @@
-﻿@* Location: ~/Views/NotificationConfig/Index.cshtml *@
-
+﻿
 @model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfig
+@using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig
 @using Resources
 
 @{
@@ -9,92 +9,143 @@
 
 <!-- This token is essential for the secure POST actions in the controller -->
 @Html.AntiForgeryToken()
+<div id="notificationConfigWorkspace"
+     data-init-url="@Url.Action("InitializeData", "NotificationConfig")"
+     data-delete-url="@Url.Action("Delete", "NotificationConfig")"
+     data-save-url="@Url.Action("CreateOrUpdate", "NotificationConfig")">
 
-<!-- Page Header -->
-<div class="card bg-light mb-3">
-    <div class="card-body text-center">
-        <h1 class="card-title text-primary"><i class="mdi mdi-email-edit-outline me-2"></i> Notification Templates</h1>
-        <p class="card-text">Create and manage automated notification templates for different system events.</p>
-    </div>
-</div>
-
-<!-- Tips Section can be added here if desired -->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR NOTIFICATION TEMPLATES</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNotificationTips" aria-expanded="true">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseNotificationTips" class="collapse show">
-        <div class="card-body">
-            <ul>
-                <li>
-                    <i class="mdi mdi-cogs text-primary me-2"></i>
-                    <strong>Start Here:</strong> Begin by selecting a scope. Choose 'Is Centralized' for a default template that applies to all branches. Uncheck it and select a specific 'Branch' to create a custom template that overrides the centralized one for that branch only.
-                </li>
-                <li>
-                    <i class="mdi mdi-magnify text-info me-2"></i>
-                    <strong>Load Template:</strong> After choosing your scope and the 'Notification Type', you must click the 'Load' button. This will fetch the specific template for you to edit or create a new one if it doesn't exist.
-                </li>
-                <li>
-                    <i class="mdi mdi-code-tags text-success me-2"></i>
-                    <strong>Using Placeholders:</strong> The 'Available Placeholders' are dynamic tags that will be automatically replaced with real data (like the client's name or account number) when the notification is sent. Simply **click on a placeholder** to copy it to your clipboard and then paste it into the 'Template Body' below.
-                </li>
-                <li>
-                    <i class="mdi mdi-undo text-secondary me-2"></i>
-                    <strong>Reset Button:</strong> If you make changes to the template and want to start over, the 'Reset' button is your friend. It will discard your unsaved edits and reload the last saved version of the template.
-                </li>
-                <li>
-                    <i class="mdi mdi-content-save text-warning me-2"></i>
-                    <strong>Save vs. Update:</strong> The 'Save Changes' button will either create a new template (if one didn't exist for your selected scope) or update the existing one with your changes.
-                </li>
-                <li>
-                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
-                    <strong>Deleting a Template:</strong> The 'Delete' button will only remove the **custom template** for the currently loaded scope. If you delete a branch-specific template, the system will fall back to using the centralized template for that branch. It does not delete the notification type itself.
-                </li>
-            </ul>
+    <!-- Page Header -->
+    <div class="card bg-light mb-3">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary"><i class="mdi mdi-email-edit-outline me-2"></i> Notification Templates</h1>
+            <p class="card-text">Create and manage automated notification templates for different system events.</p>
         </div>
     </div>
-</div>
 
-<!-- Configuration Selection Area -->
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Notification to Configure</h5>
-    <div class="row align-items-end">
-        <!-- Is Centralized Checkbox -->
-        <div class="col-md-3">
-            <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" id="isCentralized" checked>
-                <label class="form-check-label fw-bold" for="isCentralized">Is Centralized?</label>
+    <!-- Tips Section can be added here if desired -->
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR NOTIFICATION TEMPLATES</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNotificationTips" aria-expanded="true">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseNotificationTips" class="collapse show">
+            <div class="card-body">
+                <ul>
+                    <li>
+                        <i class="mdi mdi-cogs text-primary me-2"></i>
+                        <strong>Start Here:</strong> Begin by selecting a scope. Choose 'Is Centralized' for a default template that applies to all branches. Uncheck it and select a specific 'Branch' to create a custom template that overrides the centralized one for that branch only.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-magnify text-info me-2"></i>
+                        <strong>Load Template:</strong> After choosing your scope and the 'Notification Type', you must click the 'Load' button. This will fetch the specific template for you to edit or create a new one if it doesn't exist.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-code-tags text-success me-2"></i>
+                        <strong>Using Placeholders:</strong> The 'Available Placeholders' are dynamic tags that will be automatically replaced with real data (like the client's name or account number) when the notification is sent. Simply **click on a placeholder** to copy it to your clipboard and then paste it into the 'Template Body' below.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-undo text-secondary me-2"></i>
+                        <strong>Reset Button:</strong> If you make changes to the template and want to start over, the 'Reset' button is your friend. It will discard your unsaved edits and reload the last saved version of the template.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-content-save text-warning me-2"></i>
+                        <strong>Save vs. Update:</strong> The 'Save Changes' button will either create a new template (if one didn't exist for your selected scope) or update the existing one with your changes.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
+                        <strong>Deleting a Template:</strong> The 'Delete' button will only remove the **custom template** for the currently loaded scope. If you delete a branch-specific template, the system will fall back to using the centralized template for that branch. It does not delete the notification type itself.
+                    </li>
+                </ul>
             </div>
         </div>
+    </div>
 
-        <!-- Branch Dropdown (Initially Hidden) -->
-        <div class="col-md-4" id="branch-selection-container" style="display: none;">
-            <label class="form-label fw-bold">Select Branch</label>
-            @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchId" })
-        </div>
+    <!-- Configuration Selection Area -->
+    <div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Notification to Configure</h5>
+        <div class="row align-items-end">
+            <!-- Is Centralized Checkbox -->
+            <div class="col-md-3">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="isCentralized" checked>
+                    <label class="form-check-label fw-bold" for="isCentralized">Is Centralized?</label>
+                </div>
+            </div>
 
-        <!-- Notification Type Dropdown -->
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Select Notification Type</label>
-            @* This uses the ViewBag.NotificationTypes loaded in the controller *@
-            @Html.DropDownList("NotificationType", new SelectList(ViewBag.NotificationTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-control select2", id = "notificationType" })
-        </div>
+            <!-- Branch Dropdown (Initially Hidden) -->
+            <div class="col-md-4" id="branch-selection-container" style="display: none;">
+                <label class="form-label fw-bold">Select Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchId" })
+            </div>
 
-        <!-- Load Button -->
-        <div class="col-md-1">
-            <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
+            <!-- Notification Type Dropdown -->
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Select Notification Type</label>
+                @* This uses the ViewBag.NotificationTypes loaded in the controller *@
+                @Html.DropDownList("NotificationType", new SelectList(ViewBag.NotificationTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-control select2", id = "notificationType" })
+            </div>
+
+            <!-- Load Button -->
+            <div class="col-md-1">
+                <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
+            </div>
         </div>
+    </div>
+
+    <!-- This is the container where our dynamic form will be injected by JavaScript -->
+    <div id="config-form-container">
+
     </div>
 </div>
 
-<!-- This is the container where our dynamic form will be injected by JavaScript -->
-<div id="config-form-container">
-</div>
+<!-- Temporary debug section - add this to your main view -->
+@*<div class="card mt-3 border-warning">
+        <div class="card-header bg-warning text-dark">
+            <i class="fas fa-bug me-2"></i> Debug Tools
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="testSave" class="btn btn-info me-2">Test Save Button Exists</button>
+                    <button id="testLoad" class="btn btn-info">Test Load Function</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="testConsole" class="btn btn-secondary">Show Console Info</button>
+                </div>
+            </div>
+            <div id="debugOutput" class="mt-3" style="display: none;">
+                <pre class="bg-light p-2 border rounded"></pre>
+            </div>
+        </div>
+    </div>*@
+
+
+
 
 @section Scripts {
     <!-- Reference to the JavaScript file that will power this page -->
     <script src="~/Scripts/Js/Crud/ChequeManagement/CategoryConfig/Notification/NotificationConfig.js"></script>
+
+    @*<script>
+            // Debug functions
+            $('#testConsole').click(function () {
+                const output = $('#debugOutput');
+                const pre = output.find('pre');
+                const info = {
+                    timestamp: new Date().toISOString(),
+                    saveButtonExists: $('#saveConfigBtn').length > 0,
+                    formContainerExists: $('#config-form-container').length > 0,
+                    urls: {
+                        init: $('#notificationConfigWorkspace').data('init-url'),
+                        save: $('#notificationConfigWorkspace').data('save-url'),
+                        delete: $('#notificationConfigWorkspace').data('delete-url')
+                    }
+                };
+                pre.text(JSON.stringify(info, null, 2));
+                output.show();
+            });
+        </script>*@
+
 }

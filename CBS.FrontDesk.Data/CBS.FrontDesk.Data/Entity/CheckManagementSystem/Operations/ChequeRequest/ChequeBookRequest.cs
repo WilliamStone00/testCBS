@@ -31,6 +31,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public bool notifyOnPayment { get; set; }
         public bool notifyOnAnyTransaction { get; set; }
 
+        public bool automticRenewal { get; set; }
+
         // Properties for Displaying/Listing Requests (populated by the backend)
         public string Id { get; set; } = null;
         public string status { get; set; }

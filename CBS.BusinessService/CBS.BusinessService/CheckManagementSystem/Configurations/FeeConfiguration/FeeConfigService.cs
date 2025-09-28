@@ -477,7 +477,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 if (!string.IsNullOrEmpty(branchId)) queryParts.Add($"branchId={Uri.EscapeDataString(branchId)}");
                 if (centralized.HasValue) queryParts.Add($"centralized={centralized.Value.ToString().ToLower()}");
 
-                var url = APICallHelper.GetAllFeeConfigs + (queryParts.Count > 0 ? "?" + string.Join("&", queryParts) : string.Empty);
+                var url = APICallHelper.GetAllFeeConfigs;
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<FeeConfig>>>(url);
 
                 if (response != null && (response.IsSuccess) && response.ApiResponseData?.Data != null)
@@ -529,19 +529,24 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             try
             {
+               
+                model.branchName = "string";
+                model.branchCode = "string";
+               
+
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<FeeConfig>>(APICallHelper.CreateFeeConfig, model);
                 if (response != null && (response.IsSuccess))
                 {
-                    GetExecutionMessages(response.ApiResponseData?.Data, true, model?.FeeType ?? "FeeConfig", MessagesResults.Success, ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                    GetExecutionMessages(response.ApiResponseData?.Data, true, model?.feeType ?? "FeeConfig", MessagesResults.Success, ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model?.FeeType ?? "FeeConfig", MessagesResults.Failed, ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
+                    GetExecutionMessages(model, false, model?.feeType ?? "FeeConfig", MessagesResults.Failed, ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model?.FeeType ?? "FeeConfig", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                GetExecutionMessages(model, false, model?.feeType ?? "FeeConfig", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
         }
@@ -550,26 +555,26 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             try
             {
-                if (model == null || string.IsNullOrWhiteSpace(model.Id))
+                if (model == null || string.IsNullOrWhiteSpace(model.id))
                 {
-                    GetExecutionMessages(model, false, model?.FeeType ?? "FeeConfig", MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, "Invalid model or Id.");
+                    GetExecutionMessages(model, false, model?.feeType ?? "FeeConfig", MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, "Invalid model or Id.");
                     return ExecutionMessage;
                 }
 
-                string url = string.Format(APICallHelper.UpdateFeeConfig, model.Id);
+                string url = string.Format(APICallHelper.UpdateFeeConfig, model.id);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<FeeConfig>>(url, model);
                 if (response != null && (response.IsSuccess))
                 {
-                    GetExecutionMessages(response.ApiResponseData?.Data, true, model.FeeType, MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                    GetExecutionMessages(response.ApiResponseData?.Data, true, model.feeType, MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.FeeType, MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
+                    GetExecutionMessages(model, false, model.feeType, MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response?.ApiResponseData?.Message ?? response?.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model?.FeeType ?? "FeeConfig", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                GetExecutionMessages(model, false, model?.feeType ?? "FeeConfig", MessagesResults.Error, ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
         }
