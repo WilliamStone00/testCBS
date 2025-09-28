@@ -1,0 +1,141 @@
+﻿@model string
+@using Resources
+@{
+    ViewBag.Title = "Loss Management";
+}
+
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+            <div class="card">
+                <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                    <div class="accordion-item active">
+                        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+                            <button type="button"
+                                    class="accordion-button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#accordionPopoutIcon-3"
+                                    aria-expanded="true"
+                                    aria-controls="accordionPopoutIcon-3">
+                                <i class="mdi mdi-alert-circle-outline me-2"></i>
+                                Loss Management
+                            </button>
+                        </h2>
+                        <div id="accordionPopoutIcon-3"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#accordionPopoutIcon">
+                            <div class="accordion-body">
+                                <div id="mainviewChange">
+                                    <div class="change-group">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Search Customer Checkbooks</h5>
+                                                <p class="card-text">Enter customer member reference to view their checkbooks and manage loss declarations.</p>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label for="customerId" class="form-label">Customer Member Reference</label>
+                                                            <input type="text" class="form-control" id="customerId" name="customerId" placeholder="Enter customer ID">
+                                                        </div>
+                                                        <button type="button" onclick="searchCustomer()" class="btn btn-primary">
+                                                            <i class="mdi mdi-search me-1"></i> Search Checkbooks
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row justify-content-end">
+                                            <div class="demo-inline-spacing text-end">
+                                                <a type="button" onclick="loadCheckbooksTable()" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="View Checkbooks List">
+                                                    <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                                </a>
+                                                <a type="button" onclick="clearSearch()" class="btn btn-icon btn-label-secondary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="Clear Search">
+                                                    <span class="tf-icons mdi mdi-refresh mdi-18px"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div id="checkbooksListingView">
+                                            <!-- Checkbooks table will be loaded here -->
+                                            <div class="text-center text-muted py-5">
+                                                <i class="mdi mdi-alert-outline mdi-48px"></i>
+                                                <p>Enter a customer member reference to view their checkbooks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+        function searchCustomer() {
+            var customerId = $('#customerId').val().trim();
+            if (!customerId) {
+                alert('Please enter a customer member reference');
+                return;
+            }
+
+            showLoading('checkbooksListingView');
+
+            $.post('@Url.Action("GetCheckbooksByCustomer", "LossManagement")', { memberRef: customerId })
+                .done(function (data) {
+                    $('#checkbooksListingView').html(data);
+                })
+                .fail(function (xhr, status, error) {
+                    $('#checkbooksListingView').html('<div class="alert alert-danger">Error loading checkbooks: ' + error + '</div>');
+                });
+        }
+
+        function loadCheckbooksTable() {
+            var customerId = $('#customerId').val().trim();
+            if (!customerId) {
+                alert('Please enter a customer member reference first');
+                return;
+            }
+            searchCustomer();
+        }
+
+        function clearSearch() {
+            $('#customerId').val('');
+            $('#checkbooksListingView').html('<div class="text-center text-muted py-5"><i class="mdi mdi-alert-outline mdi-48px"></i><p>Enter a customer member reference to view their checkbooks</p></div>');
+        }
+
+        function showLoading(containerId) {
+            $('#' + containerId).html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading...</p></div>');
+        }
+
+        // Function to load check leaves (will be called from the checkbooks table)
+        function loadCheckLeaves(checkBookId) {
+            showLoading('checkleaves-' + checkBookId);
+
+            $.post('@Url.Action("GetCheckLeavesByCheckbook", "LossManagement")', { checkBookId: checkBookId })
+                .done(function (data) {
+                    $('#checkleaves-' + checkBookId).html(data);
+                    $('#checkleaves-container-' + checkBookId).show();
+                })
+                .fail(function (xhr, status, error) {
+                    $('#checkleaves-' + checkBookId).html('<div class="alert alert-danger">Error loading check leaves: ' + error + '</div>');
+                });
+        }
+
+        function toggleCheckLeaves(checkBookId) {
+            var container = $('#checkleaves-container-' + checkBookId);
+            if (container.is(':visible')) {
+                container.hide();
+            } else {
+                loadCheckLeaves(checkBookId);
+            }
+        }
+        </script>
+    }
