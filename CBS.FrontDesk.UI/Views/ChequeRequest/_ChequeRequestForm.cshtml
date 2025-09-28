@@ -5,7 +5,7 @@
     @using (Html.BeginForm("CreateOrUpdate", "ChequeRequest", FormMethod.Post, new
     {
         id = "chequeRequestForm",
-        onsubmit = "return AjaxPostAndUpdate(this);"
+        onsubmit = "return submitChequeRequestForm(this);"  // Changed to custom function
     }))
     {
         @Html.AntiForgeryToken()
@@ -28,13 +28,16 @@
                 <i class="mdi mdi-credit-card-outline me-1"></i> Branch Info
             </h6>
         </div>
+        <div class="col-md-12">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.branchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
 
-        <div class="form-floating shadow-sm">
-            @Html.DropDownListFor(m => m.branchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
-            @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
-
-            <label>@GlobalUserManagement.Branch</label>
+                <label>@GlobalUserManagement.Branch</label>
+            </div>
         </div>
+
+        <p></p>
 
         <div class="col-12">
             <h6 class="text-primary border-bottom pb-1 mb-3">
@@ -72,9 +75,9 @@
 
             <div class="col-md-6">
                 <label class="form-label fw-bold">Account for Fees(To pay for fees)</label>
-                @Html.DropDownListFor(m => m.subscriptionPaymentAccountId, new SelectList(Enumerable.Empty<SelectListItem>()),
+                @Html.DropDownListFor(m => m.subscriptionPaymentAccount, new SelectList(Enumerable.Empty<SelectListItem>()),
                     "Select Account", new { @class = "form-control", id = "subscriptionPaymentAccountDropdown", required = "required" })
-                @Html.ValidationMessageFor(m => m.subscriptionPaymentAccountId)
+                @Html.ValidationMessageFor(m => m.subscriptionPaymentAccount)
             </div>
 
             <div class="col-12">
@@ -91,51 +94,92 @@
                 <div class="row">
                     <!-- Left Column -->
                     <div class="col-md-6">
+                        <!-- In your _ChequeRequestForm.cshtml, update checkboxes like this: -->
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.notifyOnApproval, new { @class = "form-check-input", id = "NotifyOnApproval" })
+                            @Html.CheckBoxFor(m => m.notifyOnApproval, new
+                            {
+                                @class = "form-check-input",
+                                id = "NotifyOnApproval",
+                                value = "true"  // Explicitly set value
+                            })
                             <label class="form-check-label fw-medium" for="NotifyOnApproval">
                                 <i class="mdi mdi-check-circle-outline me-1 text-success"></i>Notify on Approval
                             </label>
+                            <!-- Add this to handle the hidden field issue -->
+                            @Html.HiddenFor(m => m.notifyOnApproval, new { value = "false" })
                         </div>
 
+                        <!-- Repeat this pattern for all checkboxes -->
+
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.notifyOnRejection, new { @class = "form-check-input", id = "NotifyOnRejection" })
+                            @Html.CheckBoxFor(m => m.notifyOnRejection, new
+                            {
+                                @class = "form-check-input",
+                                id = "NotifyOnRejection",
+                                value = "true"
+                            })
                             <label class="form-check-label fw-medium" for="NotifyOnRejection">
                                 <i class="mdi mdi-close-circle-outline me-1 text-danger"></i>Notify on Rejection
                             </label>
+                            @Html.HiddenFor(m => m.notifyOnRejection, new { value = "false" })
                         </div>
 
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.notifyOnClearance, new { @class = "form-check-input", id = "NotifyOnClearance" })
+                            @Html.CheckBoxFor(m => m.notifyOnClearance, new
+                            {
+                                @class = "form-check-input",
+                                id = "NotifyOnClearance",
+                                value = "true"
+                            })
                             <label class="form-check-label fw-medium" for="NotifyOnClearance">
                                 <i class="mdi mdi-shield-check-outline me-1 text-info"></i>Notify on Cheque Clearance
                             </label>
+                            @Html.HiddenFor(m => m.notifyOnClearance, new { value = "false" })
                         </div>
                     </div>
 
                     <!-- Right Column -->
                     <div class="col-md-6">
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.notifyOnPayment, new { @class = "form-check-input", id = "NotifyOnPayment" })
+                            @Html.CheckBoxFor(m => m.notifyOnPayment, new
+                            {
+                                @class = "form-check-input",
+                                id = "NotifyOnPayment",
+                                value = "true"
+                            })
                             <label class="form-check-label fw-medium" for="NotifyOnPayment">
                                 <i class="mdi mdi-cash-check me-1 text-warning"></i>Notify on Fee Payment
                             </label>
+                            @Html.HiddenFor(m => m.notifyOnPayment, new { value = "false" })
                         </div>
 
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.notifyOnAnyTransaction, new { @class = "form-check-input", id = "NotifyOnAnyTransaction" })
+                            @Html.CheckBoxFor(m => m.notifyOnAnyTransaction, new
+                            {
+                                @class = "form-check-input",
+                                id = "NotifyOnAnyTransaction",
+                                value = "true"
+                            })
                             <label class="form-check-label fw-medium" for="NotifyOnAnyTransaction">
                                 <i class="mdi mdi-alert-circle-outline me-1 text-primary"></i>Notify on Any Transaction
                             </label>
+                            @Html.HiddenFor(m => m.notifyOnAnyTransaction, new { value = "false" })
                         </div>
 
                         <div class="form-check form-switch mb-3">
-                            @Html.CheckBoxFor(m => m.automticRenewal, new { @class = "form-check-input", id = "AutomticRenewal" })
+                            @Html.CheckBoxFor(m => m.automaticRenewal, new
+                            {
+                                @class = "form-check-input",
+                                id = "AutomticRenewal",
+                                value = "true"
+                            })
                             <label class="form-check-label fw-medium" for="AutomticRenewal">
                                 <i class="mdi mdi-autorenew me-1 text-success"></i>Automatic Renewal
                             </label>
+                            @Html.HiddenFor(m => m.automaticRenewal, new { value = "false" })
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Help Text -->

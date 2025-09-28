@@ -1275,7 +1275,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
 
         //------------------------- Cheque Request -------------------------
-        public const string CreateChequeRequest = "/api/v1/cheque-requests";
+        public const string CreateChequeRequest = "/api/v1/CheckRequest";
         public const string GetAllChequeRequests = "/api/v1/cheque-requests";
         public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
         public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";

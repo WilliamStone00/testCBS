@@ -20,19 +20,20 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
     public class ChequeRequestController : BaseController
     {
        
-        //private readonly ChequeRequestService _chequeRequestService;   
+        private readonly ChequeRequestService _chequeRequestService1;   
         private readonly ChequeRequestMockService _chequeRequestService;
         private readonly BranchServices _branchServices;
         private readonly CategoryConfigService _categoryServices;
         private readonly CustomerService _customerService;
 
 
-        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService)
+        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService,ChequeRequestService chequeRequestService1)
         {
             _chequeRequestService = chequeRequestService;
             _branchServices = branchServices;
             _categoryServices = categoryConfigService;
             _customerService = customerService;
+            _chequeRequestService1 = chequeRequestService1;
         }
 
         // The main container page.
@@ -52,20 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             var categories = await _categoryServices.GetCategories();
             ViewBag.Categories = categories;
 
-            // Mock data for the category dropdown in the create form
-            //ViewBag.Categories = new List<SelectListItem>
-            //{
-            //    new SelectListItem { Value = "CAT01", Text = "Standard - 25 Leaves" },
-            //    new SelectListItem { Value = "CAT02", Text = "Business Gold - 100 Leaves" }
-            //};
-
-            // Mock data for a customer dropdown
-            ViewBag.Customers = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "CUST01", Text = "John Doe" },
-                new SelectListItem { Value = "CUST02", Text = "Jane Smith" }
-            };
-
+          
             // Keep method async-friendly — replace this with real awaited calls later
             await Task.CompletedTask;
         }
@@ -146,6 +134,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
 
         [HttpGet]
         public async Task<JsonResult> GetCustomerDetails(string customerId)
+        
         {
             try
             {
@@ -195,7 +184,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             if (string.IsNullOrWhiteSpace(model.Id))
             {
                 // --- CREATE PATH ---
-                result = await _chequeRequestService.CreateRequestAsync(model);
+                result = await _chequeRequestService1.CreateRequestAsync(model);
                 operationType = "Insert";
             }
             else
