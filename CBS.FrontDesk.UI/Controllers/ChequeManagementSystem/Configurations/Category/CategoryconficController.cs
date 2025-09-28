@@ -154,16 +154,21 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
-                return Json(new { success = false, message = "Invalid ID provided." });
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
 
             var result = await _CategoryConfigService.DeactivateCategoryAsync(KEY);
-            // We will make the script that calls this expect the simple response
-            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+
+            // Map to simple JSON shape the client expects. Adjust if result has different property names.
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
+
 
 
         //[HttpGet]

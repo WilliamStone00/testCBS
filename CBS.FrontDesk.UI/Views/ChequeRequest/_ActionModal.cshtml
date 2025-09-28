@@ -1,0 +1,42 @@
+﻿@* This simple partial is just a form for the modal *@
+<form id="chequeActionForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="requestId" name="requestId" />
+    <input type="hidden" id="action" name="action" />
+    <div class="mb-3<!-- Partial Views/_ActionModal.cshtml -->
+<div class="modal fade" id="actionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="actionForm" onsubmit="return dataTableManager.submitAction(this)">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="actionType" name="action">
+                    <input type="hidden" id="actionRequestId" name="requestId">
+                    
+                    <div class="mb-3">
+                        <label for="actionNote" class="form-label">Statement / Reason</label>
+                        <textarea id="actionNote" name="note" class="form-control" rows="4" required 
+                                  placeholder="Please provide a statement or reason for this action..."></textarea>
+                    </div>
+                    
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Action</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>">
+        <label for="note" class="form-label">Note / Reason</label>
+        <textarea id="note" name="note" class="form-control" rows="4" required></textarea>
+    </div>
+    <div class="text-end">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Action</button>
+    </div>
+</form>

@@ -43,7 +43,11 @@
                                data-toggle="tooltip"
                                title="Edit @category.name">Edits</a>
 
-                            <a href="#" class="ms-2 text-danger js-delete-category" data-id="@category.Id" data-name="@category.name">Delete</a>
+                            <a href="#"
+                               onclick="DeleteRecordDataTable('Categoryconfic', '@category.Id', 'myDataTable', '_DataTable', 0, 'datalistingview', null,'list')"
+                               class="mr-2 text-danger"
+                               data-toggle="tooltip"
+                               title="Delete @category.name">Delete</a>
                         </td>
                     </tr>
 

@@ -319,7 +319,7 @@ namespace CBS.FrontDesk.UI.Controllers
             }
             else
             {
-                //   var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
+              //var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
                 var ListOfData = await _AccountServices.GetAllAccounting();
                 ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
                 return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);

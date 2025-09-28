@@ -186,7 +186,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
         }
 
         public async Task<ActionResult> Index()
-        {
+       {
             await Loader();
             return View(new FeeConfig());
         }
@@ -248,12 +248,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
         //}
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string path = null,string serviceOption = null)
-         {
+        {
             // ROUTE: Return summary list
             if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
-                var data = await _feeConfigService.GetConfigsAsync();
-                return PartialView(partialView ?? "_DataTable", data);
+                await Loader(); // Make sure ViewBag is populated for filters
+
+                // Get the data but don't pass it to the view - it will be loaded via AJAX
+                // We just return the empty partial view structure
+                return PartialView(partialView ?? "_FeeConfigList");
             }
 
             // ROUTE: Get by id (KEY expected)
@@ -275,7 +278,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
                 {
                     // Fallback: query all and find by Id (less efficient)
                     var all = await _feeConfigService.GetConfigsAsync();
-                    model = all?.FirstOrDefault(m => string.Equals(m.Id, KEY, StringComparison.OrdinalIgnoreCase));
+                    model = all?.FirstOrDefault(m => string.Equals(m.id, KEY, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (model == null)
@@ -303,11 +306,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
                     model = new FeeConfig
                     {
-                        IsCentralized = isCentralized,
-                        BranchId = isCentralized ? null : branchId,
-                        FeeType = feeType,
+                        isCentralized = isCentralized,
+                        branchId = isCentralized ? null : branchId,
+                        feeType = feeType,
                         IsActive = true,
-                        AcceptPercentage = true
+                        acceptPercentage = true
                     };
                 }
 
@@ -331,7 +334,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
                 catch (MissingMethodException)
                 {
                     var all = await _feeConfigService.GetConfigsAsync();
-                    defaultModel = all?.FirstOrDefault(m => string.Equals(m.Id, KEY, StringComparison.OrdinalIgnoreCase));
+                    defaultModel = all?.FirstOrDefault(m => string.Equals(m.id, KEY, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (defaultModel == null)
@@ -346,11 +349,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
                 defaultModel = new FeeConfig
                 {
-                    IsCentralized = opts?.isCentralized ?? false,
-                    BranchId = (opts?.isCentralized ?? false) ? null : opts?.branchId,
-                    FeeType = opts?.feeType,
+                    isCentralized = opts?.isCentralized ?? false,
+                    branchId = (opts?.isCentralized ?? false) ? null : opts?.branchId,
+                    feeType = opts?.feeType,
                     IsActive = true,
-                    AcceptPercentage = true
+                    acceptPercentage = true
                 };
             }
 
@@ -358,10 +361,24 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
             return PartialView(partialView ?? "_Create", defaultModel);
         }
 
+       
 
+        [HttpGet]
+        public async Task<JsonResult> GetAllFeeConfigs()
+        {
+            try
+            {
+                var data = await _feeConfigService.GetConfigsAsync();
+                return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrUpdate(FeeConfig model)
         {
             if (!ModelState.IsValid)
@@ -370,27 +387,27 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
             }
 
             ExecutionMessages data;
-            if (string.IsNullOrWhiteSpace(model.Id))
+            if (string.IsNullOrWhiteSpace(model.id))
             {
                 data = await _feeConfigService.CreateAsync(model);
             }
             else
             {
-                data = await _mockFeeConfigService.UpdateMockAsync(model);
+                data = await _feeConfigService.UpdateAsync(model);
             }
 
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
+       // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrWhiteSpace(KEY))
             {
                 return Json(new { success = false, status = "Failed", message = "Invalid ID provided." });
             }
-            var result = await _mockFeeConfigService.DeleteMockAsync(KEY);
+            var result = await _feeConfigService.DeleteAsync(KEY);
             return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
         }
     }

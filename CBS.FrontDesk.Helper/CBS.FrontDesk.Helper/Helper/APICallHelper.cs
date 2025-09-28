@@ -1034,6 +1034,8 @@ namespace CBS.FrontDesk.Helper
         public static string AccountingEntry_LiaisonEntries = "/api/v1/AccountingEntries/LiaisonEntries";
         public static string AccountingEntry_Get_Update_delete = "/api/v1/AccountingEntry/{0}";
         public static string AccountingEntry_Get_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdQuery/{0}";
+
+        public static string AccountingEntry_Report_reference_Id = "/api/v1/AccountingEntry/GetAccountingEntryByReferenceIdForReporting/{0}";
         public static string AccountingEntry_ReverseEntry = "/api/v1/AccountingEntry/ReverseAccountingEntry";
         public static string PostAutomatedEventEntryCommand_url = "/api/v1/AccountingEntries/PostAutomatedEventEntryCommand";
         public static string RetrieveAllUnProcessedTransactionTracker = "/api/v1/AccountingEntries/RetrieveAllUnProcessedTransactionTracker";
@@ -1248,42 +1250,73 @@ namespace CBS.FrontDesk.Helper
         //public static string GetTransactionTrackerPaginated = "/api/v1/AccountingEntries/TransactionTrackers/SearchByAnyCriterialQuery";
 
         //*************************** CHEQUE BOOK ******************************
-
+        //--------------------------Customer Data Mart -----------------
+        public static string getcustomerdata = "/api/v1/GetCustomerDataMart/{0}";
         // ---------------- CHEQUE BOOK CATEGORY ----------------
-        public static string GetAllChequeBookCategories = "/api/CheckBookCategory";
-        public static string GetChequeBookCategoryById = "/api/CheckBookCategory/{0}";
-        public static string CreateChequeBookCategory = "/api/CheckBookCategory";
+        public static string GetAllChequeBookCategories = "/api/v1/get-checkbook-categories";
+        public static string GetChequeBookCategoryById = "/api/v1/get-checkbook-category/{0}";
+        public static string CreateChequeBookCategory = "/api/v1/checkbook-category";
         public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
         public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
 
         // ---------------- GENERIC CRUD ----------------
-        public static string GetAll = "/api/v1/{entity}";
-        public static string GetById = "/api/v1/{entity}/{id}";
-        public static string Create = "/api/v1/{entity}";
-        public static string Update = "/api/v1/{entity}/{id}";
-        public static string Delete = "/api/v1/{entity}/{id}";
+        public static string GetAll = "/api/v1/check-configs";
+        public static string GetById = "/api/v1/check-config/{0}";
+        public static string Create = "/api/v1/check-config";
+        public static string Update = "/api/v1/check-config/{0}";
+        public static string Delete = "/api/v1/check-config/{0}";
 
         // ---------------- FEE CONFIG ----------------
-        public static string GetAllFeeConfigs = "/api/v1/FeeConfig";
+        public static string GetAllFeeConfigs = "/api/v1/get-Feeconfigs";
         public static string GetFeeTypes = "/api/v1/Fee-types";
-        public static string GetFeeConfigById = "/api/v1/FeeConfig/{id}";
+        public static string GetFeeConfigById = "/api/v1/FeeConfig/{0}";
         public static string CreateFeeConfig = "/api/v1/fee-config";
-        public static string UpdateFeeConfig = "/api/v1/fee-config/{Id}";
-        public static string DeleteFeeConfig = "/api/v1/fee-config/{Id}";
+        public static string UpdateFeeConfig = "/api/v1/fee-config/{0}";
+        public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
 
         // ---------------- NOTIFICATIONS ----------------
-        public static string GetAllnot = "/api/v1/Notification/types";
-        public static string GetNotificationTypes = "/api/v1/Notification";
-        public static string Createnot = "/api/v1/Notification";
-        public static string Updatenot = "/api/v1/Notification/{id}";
-        public static string Deletenot = "/api/v1/Notification/{id}";
+        public static string GetAllnot = "/api/v1/verify-notification-config";
+        public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
+        
+        public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        public static string Createnot = "/api/v1/Notification/Config";
+        public static string Updatenot = "/api/NotificationConfig/{0}";
+        public static string Deletenot = "/api/NotificationConfig/{0}";
+
+        //---------------------Notification History -----------------------
+        public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
+        public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
 
         //------------------------- Cheque Request -------------------------
-         public const string CreateChequeRequest = "/api/v1/cheque-requests";
+        public const string CreateChequeRequest = "/api/v1/cheque-requests";
         public const string GetAllChequeRequests = "/api/v1/cheque-requests";
         public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
         public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
         public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
+
+        //------------------------ Counter Cheque ------------------------
+        public const string IssueCounterCheque = "/api/v1/counter-checks";
+        public const string GetCounterChequesForDataTable = "/api/v1/counter-checks/data-table";
+        public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
+        public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
+        public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
+
+        //----------------------- Cheque Book -------------------------
+        public const string GetChequeBooksDataTable = "/api/v1/Cheque Book";
+        public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
+        public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
+        public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
+        public const string RejectCounBlockChequeLeafterCheque = "/api/v1/Cheque-Book";
+        public const string BlockChequeLeaf = "/api/v1/Cheque-Book/{0}";
+
+        //---------------------- cheque ----------------------------
+        public const string GetAllCancellationRequests = "/api/v1/Cheque Book";
+        public const string GetCancellationRequestById = "/api/v1/Cheque-Book/{0}";
+        public const string CreateCancellationRequest = "/api/v1/Cheque-Book/{0}";
+        public const string UpdateCancellationRequest = "/api/v1/Cheque-Book";
+        public const string ReviewCancellationRequest = "/api/v1/Cheque-Book";
+        public const string DeactivateCancellationRequest = "/api/v1/Cheque-Book/{0}";
+        public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
         //************************** END CHEQUE BOOK *******************************
 
