@@ -363,6 +363,67 @@ namespace CBS.BusinessService.UserManagement
                 throw;
             }
         }
+        public async Task<IEnumerable<StringValues>> GetUserDropDownList(List<Branch> branches)
+        {
+            try
+            {
+                var identityServerBaseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString();
+                var apiCallerHelper = new ApiCallerHelper(identityServerBaseUrl);
+
+                var UsersResponse = await apiCallerHelper.GetAsync<ResponseObject<List<User>>>(APICallHelper.GetUsers);
+                var newList = new List<User>();
+                var stringValues = new List<StringValues>();
+                if (UsersResponse != null && UsersResponse.IsSuccess)
+                {
+                    var Users = UsersResponse.ApiResponseData.Data;
+                    var isHeadOffice = IsHeadOffice();
+                    var branchId = GetBranchID();
+
+                    foreach (var user in Users.Where(u => isHeadOffice || u.BranchID == branchId))
+                    {
+                        user.name = $"{user.firstName} {user.lastName}";
+                        user.strlastLoginDate = user.LastLoginDate.ToString("dd-MM-yyyy hh:mm:ss");
+                        user.status = user.isActive ? "Active" : "In-active";
+
+                        if (user.BranchID != null)
+                        {
+                            var branch = branches.FirstOrDefault(b => b.Id == user.BranchID);
+                            if (branch != null)
+                            {
+                                user.Brancch = branch;
+                                user.Bank = branch.Bank ?? new Bank();
+                            }
+                        }
+                        else
+                        {
+                            user.Brancch = new Branch();
+                            user.Bank = new Bank();
+                        }
+
+                        newList.Add(user);
+
+                    }
+
+                    stringValues = (from a in newList
+                                    select new StringValues
+                                    {
+                                        Text = $"{a.firstName} {a.lastName}, Branch Name: {a.Brancch?.Name}",
+                                        Value = a.id.ToString(),
+                                    }).ToList();
+
+
+                    return stringValues.ToList();
+                }
+                else
+                {
+                    return Enumerable.Empty<StringValues>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<StringValues>> GetUsesForTellerAssignation()
         {

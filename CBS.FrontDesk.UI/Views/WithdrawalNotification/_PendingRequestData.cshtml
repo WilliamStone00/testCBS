@@ -28,9 +28,12 @@
                             <td style="width:10%">@d.ApprovalStatus</td>
                             <td style="width:10%">@d.ReasonForWithdrawal</td>
                             <td style="width:10%">
-                                <a href="#" onclick="ValidateRequest('@d.Id')" data-toggle="modal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="@GlobalShared.Validate">
-                                    <i class="fas fa-check-circle"></i>
-                                </a>
+                                <button type="button"
+                                        class="btn btn-sm btn-primary"
+                                        onclick="openApproveWithdrawalModal('@d.Id', '@Resources.GlobalWithdrawalNotification.WithdrawalRequestConfirmation')">
+                                    <i class="mdi mdi-check-decagram-outline me-1"></i> Validate
+                                </button>
+
                             </td>
                         </tr>
                     }
