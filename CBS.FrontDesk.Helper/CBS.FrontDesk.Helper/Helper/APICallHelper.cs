@@ -1269,7 +1269,7 @@ namespace CBS.FrontDesk.Helper
         // ---------------- FEE CONFIG ----------------
         public static string GetAllFeeConfigs = "/api/v1/get-Feeconfigs";
         public static string GetFeeTypes = "/api/v1/Fee-types";
-        public static string GetFeeConfigById = "/api/v1/FeeConfig/{0}";
+        public static string GetFeeConfigById = "/api/v1/Fee-config/{0}";
         public static string CreateFeeConfig = "/api/v1/fee-config";
         public static string UpdateFeeConfig = "/api/v1/fee-config/{0}";
         public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
@@ -1289,13 +1289,13 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllChequeClearance = "/api/v1/counter-clearance";
         public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
 
-        public static string GetAllnot = "/api/v1/verify-notification-config";
+        //public static string GetAllnot = "/api/v1/verify-notification-config";
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
         
-        public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-        public static string Createnot = "/api/v1/Notification/Config";
-        public static string Updatenot = "/api/NotificationConfig/{0}";
-        public static string Deletenot = "/api/NotificationConfig/{0}";
+        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        //public static string Createnot = "/api/v1/Notification/Config";
+        //public static string Updatenot = "/api/NotificationConfig/{0}";
+        //public static string Deletenot = "/api/NotificationConfig/{0}";
 
         //---------------------Notification History -----------------------
         public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
@@ -1376,7 +1376,7 @@ namespace CBS.FrontDesk.Helper
     public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
     public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-        public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
+       // public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 
     }

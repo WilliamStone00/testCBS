@@ -1,42 +1,209 @@
-﻿@* This simple partial is just a form for the modal *@
-<form id="chequeActionForm">
-    @Html.AntiForgeryToken()
-    <input type="hidden" id="requestId" name="requestId" />
-    <input type="hidden" id="action" name="action" />
-    <div class="mb-3<!-- Partial Views/_ActionModal.cshtml -->
-<div class="modal fade" id="actionModal" tabindex="-1">
+﻿@using Resources
+@{
+    ViewBag.Title = "Cheque Requests";
+}
+
+<fieldset class="fieldset-custom">
+    <legend class="legend-custom">
+        <i class="mdi mdi-clipboard-list-outline me-2"></i>
+        Cheque Book Request History
+    </legend>
+
+    <div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="mdi mdi-filter-outline me-1"></i> Advanced Request Filters
+        </h5>
+
+        <div class="alert alert-info">
+            <strong>Tip:</strong> Toggle the checkboxes to reveal filter inputs. Click <strong>Apply Filters</strong> to fetch results.
+        </div>
+
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-2">
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byCustomerToggle">
+                        <label class="form-check-label" for="byCustomerToggle">Filter by Customer</label>
+                    </div>
+                    <div id="customerFilterSection" style="display:none; margin-top:8px;">
+                        <input type="text" id="customerFilter" class="form-control" placeholder="Name or ID..." />
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byCategoryToggle">
+                        <label class="form-check-label" for="byCategoryToggle">Filter by Category</label>
+                    </div>
+                    <div id="categoryFilterSection" style="display:none; margin-top:8px;">
+                        @* server-side DropDownList; update ViewBag.Categories if needed *@
+                        @Html.DropDownList("categoryFilter", new SelectList(ViewBag.Categories, "Id", "name"), "All Categories", new { @class = "form-select", id = "categoryFilter" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byStatusToggle">
+                        <label class="form-check-label" for="byStatusToggle">Filter by Status</label>
+                    </div>
+                    <div id="statusFilterSection" style="display:none; margin-top:8px;">
+                        <select id="statusFilter" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Reviewed">Reviewed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byBranchToggle">
+                        <label class="form-check-label" for="byBranchToggle">Filter by Branch</label>
+                    </div>
+                    <div id="branchFilterSection" style="display:none; margin-top:8px;">
+                        @* Replace ViewBag.Branches with your data *@
+                        @Html.DropDownList("branchFilter", new SelectList(ViewBag.Branches, "Id", "name"), "All Branches", new { @class = "form-select", id = "branchFilter" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byBankToggle">
+                        <label class="form-check-label" for="byBankToggle">Filter by Bank</label>
+                    </div>
+                    <div id="bankFilterSection" style="display:none; margin-top:8px;">
+                        @Html.DropDownList("bankFilter", new SelectList(ViewBag.Banks, "Id", "name"), "All Banks", new { @class = "form-select", id = "bankFilter" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byCustomerNameToggle">
+                        <label class="form-check-label" for="byCustomerNameToggle">Filter by Customer Name</label>
+                    </div>
+                    <div id="customerNameFilterSection" style="display:none; margin-top:8px;">
+                        <input type="text" id="customerNameFilter" class="form-control" placeholder="Exact name..." />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byNotifyToggle">
+                        <label class="form-check-label" for="byNotifyToggle">Notification Options</label>
+                    </div>
+                    <div id="notifyFilterSection" style="display:none; margin-top:8px;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notifyRejectionFilter" />
+                            <label class="form-check-label small" for="notifyRejectionFilter">Notify on Rejection</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notifyAnyTransactionFilter" />
+                            <label class="form-check-label small" for="notifyAnyTransactionFilter">Notify on Any Transaction</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notifyClearanceFilter" />
+                            <label class="form-check-label small" for="notifyClearanceFilter">Notify on Clearance</label>
+                        </div>
+                        <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox" id="automaticRenewalFilter" />
+                            <label class="form-check-label small" for="automaticRenewalFilter">Automatic Renewal</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="byDateToggle">
+                        <label class="form-check-label" for="byDateToggle">Filter by Date Range</label>
+                    </div>
+                    <div id="dateFilterSection" style="display:none; margin-top:8px;">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="date" id="startDateFilter" class="form-control" />
+                            </div>
+                            <div class="col-6">
+                                <input type="date" id="endDateFilter" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="resetFilterBtn" class="btn btn-secondary"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button id="printBtn" class="btn btn-outline-danger ms-auto"><i class="mdi mdi-printer"></i> Print PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <table id="requestsDataTable" class="table table-bordered table-striped" width="100%">
+        <thead class="table-light">
+            <tr>
+                <th>Customer Name</th>
+                <th>Category</th>
+                <th>Request Date</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+    </table>
+</fieldset>
+
+<!-- DETAILS MODAL -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title"><i class="mdi mdi-eye-outline me-1"></i> Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="detailsModalBody" class="modal-body p-3">Loading…</div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ACTION MODAL (loads partial form into body) -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <form id="actionForm" onsubmit="return dataTableManager.submitAction(this)">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" id="actionType" name="action">
-                    <input type="hidden" id="actionRequestId" name="requestId">
-                    
-                    <div class="mb-3">
-                        <label for="actionNote" class="form-label">Statement / Reason</label>
-                        <textarea id="actionNote" name="note" class="form-control" rows="4" required 
-                                  placeholder="Please provide a statement or reason for this action..."></textarea>
-                    </div>
-                    
-                    <div class="text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit Action</button>
-                    </div>
-                </form>
+            <div id="actionModalBody" class="modal-body">
+                <div class="text-center text-muted py-4">Loading form…</div>
             </div>
         </div>
     </div>
-</div>">
-        <label for="note" class="form-label">Note / Reason</label>
-        <textarea id="note" name="note" class="form-control" rows="4" required></textarea>
-    </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit Action</button>
-    </div>
-</form>
+</div>
+
+<!-- expose endpoints (so external JS file doesn't need Razor) -->
+<script>
+    window.ChequeRequestsEndpoints = {
+        loadDatatable: '@Url.Action("LoadRequestsForDataTable", "ChequeRequest")',
+        initializeData: '@Url.Action("InitializeData", "ChequeRequest")',
+        takeAction: '@Url.Action("TakeAction", "ChequeRequest")',
+        preload: '@Url.Action("PreloadRequests", "ChequeRequest")' // optional endpoint that returns initial/preload data (create if you want)
+    };
+</script>
+
+

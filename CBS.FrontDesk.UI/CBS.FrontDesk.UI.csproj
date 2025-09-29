@@ -10681,9 +10681,6 @@
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
     <Content Include="Views\TransactionDetails\Index.cshtml" />
     <Content Include="Views\ChequeRequest\Index.cshtml" />
-    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
-    <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
-    <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
     <Content Include="Views\CashDesk\_OtherCashTransactionsPage.cshtml" />
     <Content Include="Views\CashDesk\OtherCashOut.cshtml" />
     <Content Include="Views\CashDesk\OtherCashIn.cshtml" />
@@ -10708,6 +10705,7 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
