@@ -16,7 +16,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeRequest
 {
-   // [CheckSessionTimeOut]
+   [CheckSessionTimeOut]
     public class ChequeRequestController : BaseController
     {
        
@@ -114,12 +114,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         {
             try
             {
-                // IMPORTANT: You will need a new service method that accepts the query object
                 var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
 
                 return Json(new
                 {
-                    draw = dataTable.draw,
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
                     data = dataTable.data
@@ -127,10 +126,16 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(500, "Error loading request data.");
+                // Log the exception
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<ChequeBookRequest>()
+                });
             }
         }
-
 
         [HttpGet]
         public async Task<JsonResult> GetCustomerDetails(string customerId)

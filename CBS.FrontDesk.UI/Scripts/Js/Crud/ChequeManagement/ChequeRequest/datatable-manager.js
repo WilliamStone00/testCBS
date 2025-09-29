@@ -1,71 +1,82 @@
 ﻿class DataTableManager {
     constructor() {
         this.dataTable = null;
-        this.init();
-    }
-
-    init() {
         this.initializeDataTable();
         this.bindEvents();
     }
 
     initializeDataTable() {
-        if ($.fn.DataTable) {
-            this.dataTable = $('#myDataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '/ChequeRequest/LoadRequestsForDataTable',
-                    type: 'POST',
-                    data: (d) => this.buildQuery(d)
-                },
-                columns: [
-                    { data: 'customerName', name: 'customerName' },
-                    { data: 'categoryName', name: 'categoryName' },
-                    {
-                        data: 'requestDate',
-                        name: 'requestDate',
-                        render: (data) => data ? new Date(data).toLocaleDateString() : ''
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        render: (data) => this.getStatusBadge(data)
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: (data, type, row) => this.renderActionDropdown(row)
-                    }
-                ]
-            });
+        if ($.fn.DataTable.isDataTable('#requestsDataTable')) {
+            this.dataTable = $('#requestsDataTable').DataTable();
+            return;
         }
-    }
 
-    buildQuery(dataTableParams) {
-        return {
-            query: {
-                Options: {
-                    draw: dataTableParams.draw,
-                    start: dataTableParams.start,
-                    pageSize: dataTableParams.length,
-                    sortColumnName: dataTableParams.columns[dataTableParams.order[0]?.column]?.data,
-                    sortDirection: dataTableParams.order[0]?.dir || 'asc'
+        this.dataTable = $('#requestsDataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/ChequeRequest/LoadRequestsForDataTable',
+                type: 'POST',
+                data: (d) => {
+                    return {
+                        query: this.buildQuery(d)
+                    };
+                }
+            },
+            columns: [
+                {
+                    data: 'customerName',
+                    name: 'CustomerName',
+                    className: "ps-4"
                 },
-                CustomerFilter: $('#customerFilter')?.val() || '',
-                CategoryFilter: $('#categoryFilter')?.val() || '',
-                StatusFilter: $('#statusFilter')?.val() || ''
+                {
+                    data: 'categoryName',
+                    name: 'CategoryName'
+                },
+                {
+                    data: 'requestDate',
+                    name: 'RequestDate',
+                    render: (data) => data ? new Date(data).toLocaleDateString() : 'N/A'
+                },
+                {
+                    data: 'status',
+                    name: 'Status',
+                    className: "text-center",
+                    render: (data) => this.getStatusBadge(data)
+                },
+                {
+                    data: null,
+                    className: "text-center pe-4",
+                    orderable: false,
+                    render: (data, type, row) => this.renderActionButtons(row)
+                }
+            ],
+            order: [[2, 'desc']],
+            language: {
+                emptyTable: "No cheque requests found",
+                zeroRecords: "No matching requests found"
             }
-        };
+        });
     }
 
-    bindEvents() {
-        // Action form submission
-        $('#actionForm').on('submit', (e) => this.submitAction(e));
+    buildQuery(d) {
+        const order = d.order && d.order[0] ? d.order[0] : {};
+        const orderColumn = d.columns && d.columns[order.column] ? d.columns[order.column] : null;
 
-        // Apply filters if they exist
-        $('#applyListFilterBtn')?.on('click', () => this.refresh());
+        return {
+            Options: {
+                draw: d.draw,
+                start: d.start,
+                pageSize: d.length,
+                sortColumnName: orderColumn ? orderColumn.data : 'requestDate',
+                sortDirection: order.dir || 'desc'
+            },
+            CustomerName: $('#customerFilter').val() || '',
+            CategoryName: $('#categoryFilter').val() || '',
+            Status: $('#statusFilter').val() || '',
+            StartDate: $('#startDateFilter').val() || null,
+            EndDate: $('#endDateFilter').val() || null
+        };
     }
 
     getStatusBadge(status) {
@@ -74,111 +85,182 @@
             'approved': 'bg-success',
             'rejected': 'bg-danger',
             'delivered': 'bg-info',
-            'review': 'bg-secondary'
+            'reviewed': 'bg-secondary'
         };
-        const cssClass = statusMap[status?.toLowerCase()] || 'bg-secondary';
-        return `<span class="badge ${cssClass}">${status}</span>`;
+
+        const statusClass = statusMap[(status || '').toLowerCase()] || 'bg-secondary';
+        return `<span class="badge ${statusClass}">${status || '—'}</span>`;
     }
 
-    renderActionDropdown(row) {
-        return `
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-cog"></i> Actions
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="#" onclick="dataTableManager.showDetails('${row.Id}')">
-                            <i class="mdi mdi-eye-outline me-2 text-info"></i>Details
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#" onclick="dataTableManager.editRequest('${row.Id}')">
-                            <i class="mdi mdi-pencil-outline me-2 text-primary"></i>Edit
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item text-warning" href="#" onclick="dataTableManager.showActionModal('review', '${row.Id}', '${row.customerName}')">
-                            <i class="mdi mdi-clock-outline me-2"></i>Review
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item text-success" href="#" onclick="dataTableManager.showActionModal('approve', '${row.Id}', '${row.customerName}')">
-                            <i class="mdi mdi-check-circle-outline me-2"></i>Approve
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item text-danger" href="#" onclick="dataTableManager.showActionModal('reject', '${row.Id}', '${row.customerName}')">
-                            <i class="mdi mdi-close-circle-outline me-2"></i>Reject
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    renderActionButtons(row) {
+        const status = (row.status || '').toLowerCase();
+        const id = row.Id || row.id || '';
+        const customerName = (row.customerName || '').replace(/'/g, "\\'");
+
+        // Details button (always visible)
+        const detailsBtn = `
+            <button type="button" class="btn btn-sm btn-outline-info me-1" 
+                onclick="dataTableManager.viewDetails('${id}')" 
+                title="View Details">
+                <i class="mdi mdi-eye-outline"></i>
+            </button>
         `;
+
+        let actionButtons = '';
+
+        // Show action buttons based on status
+        if (status === 'pending' || status === 'reviewed') {
+            actionButtons = `
+                <button type="button" class="btn btn-sm btn-success me-1" 
+                    onclick="dataTableManager.showActionModal('approve', '${id}', '${customerName}')" 
+                    title="Approve Request">
+                    <i class="mdi mdi-check"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" 
+                    onclick="dataTableManager.showActionModal('reject', '${id}', '${customerName}')" 
+                    title="Reject Request">
+                    <i class="mdi mdi-close"></i>
+                </button>
+            `;
+        }
+
+        return `<div class="btn-group">${detailsBtn}${actionButtons}</div>`;
     }
 
-    showDetails(requestId) {
+    bindEvents() {
+        // Apply filters
+        $('#applyFilterBtn').on('click', () => {
+            this.dataTable.ajax.reload();
+        });
+
+        // Reset filters
+        $('#resetFilterBtn').on('click', () => {
+            $('input[type="text"], select').val('');
+            $('input[type="date"]').val('');
+            $('input[type="checkbox"]').prop('checked', false);
+            this.dataTable.ajax.reload();
+        });
+
+        // Toggle filter sections
+        $('#byCustomerToggle').change(function () {
+            $('#customerFilterSection').toggle(this.checked);
+        });
+        $('#byCategoryToggle').change(function () {
+            $('#categoryFilterSection').toggle(this.checked);
+        });
+        $('#byStatusToggle').change(function () {
+            $('#statusFilterSection').toggle(this.checked);
+        });
+        $('#byDateToggle').change(function () {
+            $('#dateFilterSection').toggle(this.checked);
+        });
+    }
+
+    viewDetails(requestId) {
         $.get('/ChequeRequest/InitializeData', {
             KEY: requestId,
             partialView: '_RequestDetails',
             path: 'get'
-        }, (html) => {
+        }).done(function (html) {
             $('#detailsModalBody').html(html);
-            $('#detailsModal').modal('show');
-        });
-    }
-
-    editRequest(requestId) {
-        $.get('/ChequeRequest/InitializeData', {
-            KEY: requestId,
-            partialView: '_ChequeRequestForm',
-            path: 'get'
-        }, (html) => {
-            $('#requestFormSection').html(html).show();
-            $('#searchSection').hide();
-            if (window.formManager) {
-                window.formManager.setEditMode(requestId);
-            }
+            new bootstrap.Modal(document.getElementById('detailsModal')).show();
+        }).fail(function () {
+            alert('Unable to load request details.');
         });
     }
 
     showActionModal(action, requestId, customerName) {
-        $('#actionType').val(action);
-        $('#actionRequestId').val(requestId);
-        $('#actionModalLabel').text(`${action.charAt(0).toUpperCase() + action.slice(1)} Request - ${customerName}`);
-        $('#actionNote').val('');
-        $('#actionModal').modal('show');
+        const modalTitle = action === 'approve' ? 'Approve Request' : 'Reject Request';
+        const modalBody = this.getActionModalBody(action, requestId, customerName);
+
+        $('#actionModalLabel').text(`${modalTitle} - ${customerName}`);
+        $('#actionModalBody').html(modalBody);
+
+        // Bind form submission
+        $('#actionModalBody').off('submit', '#actionForm').on('submit', '#actionForm', (e) => {
+            e.preventDefault();
+            this.submitAction(e.target);
+        });
+
+        new bootstrap.Modal(document.getElementById('actionModal')).show();
     }
 
-    async submitAction(e) {
-        e.preventDefault();
+    getActionModalBody(action, requestId, customerName) {
+        const isApprove = action === 'approve';
+        const noteRequired = isApprove ? 'required' : '';
+        const placeholder = isApprove
+            ? 'Please provide approval notes...'
+            : 'Optional rejection reason...';
 
-        const formData = new FormData(e.target);
-        const actionData = {
-            requestId: formData.get('requestId'),
-            action: formData.get('action'),
-            note: formData.get('note')
-        };
+        return `
+            <form id="actionForm">
+                <input type="hidden" name="requestId" value="${requestId}" />
+                <input type="hidden" name="action" value="${action}" />
+                
+                <div class="mb-3">
+                    <label for="actionNote" class="form-label">
+                        ${isApprove ? 'Approval Notes *' : 'Rejection Reason'}
+                    </label>
+                    <textarea id="actionNote" name="note" class="form-control" rows="4" 
+                        ${noteRequired} placeholder="${placeholder}"></textarea>
+                    ${isApprove ? '<div class="form-text text-warning">Approval notes are required</div>' : ''}
+                </div>
 
-        try {
-            const response = await $.ajax({
-                url: '/ChequeRequest/TakeAction',
-                type: 'POST',
-                data: actionData
-            });
+                <div class="alert alert-info">
+                    <i class="mdi mdi-information-outline me-2"></i>
+                    You are about to <strong>${action}</strong> the cheque book request for <strong>${customerName}</strong>.
+                </div>
 
-            if (response.success) {
-                this.showAlert(response.message, 'success');
-                $('#actionModal').modal('hide');
-                this.refresh();
-            } else {
-                this.showAlert(response.message, 'error');
-            }
-        } catch (error) {
-            this.showAlert('Error submitting action', 'error');
+                <div class="text-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-${isApprove ? 'success' : 'danger'}">
+                        ${isApprove ? 'Approve Request' : 'Reject Request'}
+                    </button>
+                </div>
+            </form>
+        `;
+    }
+
+    submitAction(form) {
+        const formData = $(form).serializeArray();
+        const payload = {};
+
+        formData.forEach(field => {
+            payload[field.name] = field.value;
+        });
+
+        // Validation for approve action
+        if (payload.action === 'approve' && !payload.note.trim()) {
+            alert('Approval notes are required');
+            return false;
         }
+
+        const submitBtn = $(form).find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Processing...');
+
+        $.ajax({
+            url: '/ChequeRequest/TakeAction',
+            type: 'POST',
+            data: payload,
+            success: (response) => {
+                if (response.success) {
+                    this.dataTable.ajax.reload();
+                    $('#actionModal').modal('hide');
+                    appalert(response.message, 1, 1);
+                } else {
+                    appalert(response.message, 2, 1);
+                }
+            },
+            error: (xhr) => {
+                appalert('Error processing action', 4, 1);
+            },
+            complete: () => {
+                submitBtn.prop('disabled', false).html(originalText);
+            }
+        });
+
+        return false;
     }
 
     refresh() {
@@ -186,13 +268,9 @@
             this.dataTable.ajax.reload();
         }
     }
-
-    showAlert(message, type) {
-        const alertType = type === 'error' ? 4 : type === 'warning' ? 2 : 1;
-        if (typeof appalert === 'function') {
-            appalert(message, alertType, 1);
-        } else {
-            alert(message);
-        }
-    }
 }
+
+// Initialize when document is ready
+$(document).ready(function () {
+    window.dataTableManager = new DataTableManager();
+});
