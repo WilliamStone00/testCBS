@@ -10681,7 +10681,6 @@
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
     <Content Include="Views\TransactionDetails\Index.cshtml" />
     <Content Include="Views\ChequeRequest\Index.cshtml" />
-    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
     <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
     <Content Include="Views\CashDesk\_OtherCashTransactionsPage.cshtml" />
