@@ -199,6 +199,12 @@
     <Reference Include="Microsoft.AspNetCore.Identity, Version=2.3.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Identity.2.3.1\lib\netstandard2.0\Microsoft.AspNetCore.Identity.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.3.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -2028,15 +2034,23 @@
     <Compile Include="Controllers\CashDeskOperations\CashDeskController.cs" />
     <Compile Include="Controllers\CashDeskOperations\OtherTransactionController.cs" />
     <Compile Include="Controllers\ChangeCustomerNumber\ChangeNumberController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\ChequeCertification\ChequeCertificationController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Clearance\ChequeClearance\ChequeClearanceController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\Category\CategoryconficController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\LossManagementSys\LossManagementController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeBookListing\ChequeBookController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeCancelation\CancellationRequestController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\ChequeRequest\ChequeRequestController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Operations\CounterCheque\CounterChequeController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailyCollectionDashboardController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\DailySaverRequest.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\FileValidationController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
+    <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
@@ -2133,6 +2147,7 @@
     <Compile Include="Controllers\TransactionManagement\PISalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryExecutionController.cs" />
     <Compile Include="Controllers\TransactionManagement\PISalaryUploadController.cs" />
+    <Compile Include="Controllers\TransactionManagement\SalaryProcessedController.cs" />
     <Compile Include="Controllers\TransactionManagement\SalaryUploadController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingController.cs" />
     <Compile Include="Controllers\TransactionManagement\SavingProductFeeController.cs" />
@@ -3293,6 +3308,12 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Notification\NotificationConfig.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\datatable-manager.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\form-manager.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\search-manager.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
@@ -7950,7 +7971,9 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
+    <None Include="Properties\PublishProfiles\TB.pubxml" />
     <None Include="Properties\PublishProfiles\TBED.pubxml" />
     <None Include="Resources\TextFile1.txt" />
     <Content Include="DataSet\Transaction\TransactionDS.xsc">
@@ -9390,11 +9413,13 @@
     <Content Include="Scripts\Js\Crud\LoanAdjustmentConsole\LoanAdjustmentLoader.js" />
     <Content Include="Scripts\Js\CommissionManagement\DSFileUploaded.js" />
     <Content Include="Scripts\Js\Crud\LoanRepaymentBackOffice\VAT.js" />
+    <Content Include="Scripts\Js\Crud\SalaryProcessed\ProcessedSalary.js" />
     <Content Include="Scripts\Js\Dashboard\DailyCollection\DailyCollectionDashboard.js" />
     <Content Include="Scripts\Js\main.js\AccountBalanceInitialization.js" />
     <Content Include="Scripts\Js\main.js\AccountingBookingAlert.js" />
     <Content Include="Scripts\Js\main.js\DailySaverOperations.js" />
     <Content Include="Scripts\Js\main.js\DailySaverUploud.js" />
+    <Content Include="Scripts\Js\main.js\GetJournalEntryByReference.js" />
     <Content Include="Scripts\Js\main.js\TransactionTracker.js" />
     <Content Include="Scripts\Js\MemberReceiptsP\MemberReceipt.js" />
     <Content Include="Scripts\Js\CMoney\cmoney.js" />
@@ -9714,11 +9739,9 @@
     <Content Include="Views\CashChangeManagement\_Data.cshtml" />
     <Content Include="Views\CashDesk\Cashin.cshtml" />
     <Content Include="Views\CashDesk\Cashout.cshtml" />
-    <Content Include="Views\CashDesk\ExpenseOtherPayment.cshtml" />
     <Content Include="Views\CashDesk\LoanRepaymentSimulation.cshtml" />
     <Content Include="Views\CashDesk\MomocashCollection.cshtml" />
     <Content Include="Views\CashDesk\OtherCashMobileMoney.cshtml" />
-    <Content Include="Views\CashDesk\OtherCashTransactions.cshtml" />
     <Content Include="Views\CashDesk\_CustomerCard.cshtml" />
     <Content Include="Views\CashDesk\_DenominationBreakDown.cshtml" />
     <Content Include="Views\CashDesk\_DepositerForm.cshtml" />
@@ -9733,7 +9756,7 @@
     <Content Include="Views\CashDesk\_MomocashCollectionForm.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionSearchBox.cshtml" />
     <Content Include="Views\CashDesk\_MomocashCollectionTabs.cshtml" />
-    <Content Include="Views\CashDesk\_NoneMemberPayment.cshtml" />
+    <Content Include="Views\CashDesk\_OtherPaymentFormDetail.cshtml" />
     <Content Include="Views\CashDesk\_Note.cshtml" />
     <Content Include="Views\CashDesk\_OperationDesk.cshtml" />
     <Content Include="Views\CashDesk\_OperationForm.cshtml" />
@@ -10636,6 +10659,17 @@
     <Content Include="Views\DailySaverManagement\_CreateDailySaver.cshtml" />
     <Content Include="Views\AccountingStatements\AccountingJournalReport.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchJournalEntryData.cshtml" />
+    <Content Include="Views\ChequeCertification\Index.cshtml" />
+    <Content Include="Views\ChequeCertification\Create.cshtml" />
+    <Content Include="Views\ChequeCertification\_ChequeCertificationDataTable.cshtml" />
+    <Content Include="Views\ChequeCertification\_ChequeCertificationForm.cshtml" />
+    <Content Include="Views\ChequeCertification\Details.cshtml" />
+    <Content Include="Views\ChequeCertification\Delete.cshtml" />
+    <Content Include="Views\LossManagement\Index.cshtml" />
+    <Content Include="Views\LossManagement\_CheckbooksTable.cshtml" />
+    <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
+    <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
+    <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
@@ -10643,6 +10677,41 @@
     <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
     <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
+    <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
+    <Content Include="Views\ManualDailyCollection\_listingFilesdatatable.cshtml" />
+    <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
+    <Content Include="Views\TransactionDetails\Index.cshtml" />
+    <Content Include="Views\ChequeRequest\Index.cshtml" />
+    <Content Include="Views\ChequeRequest\_CreateRequest.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestList.cshtml" />
+    <Content Include="Views\ChequeRequest\_ActionForm.cshtml" />
+    <Content Include="Views\CashDesk\_OtherCashTransactionsPage.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashOut.cshtml" />
+    <Content Include="Views\CashDesk\OtherCashIn.cshtml" />
+    <Content Include="Views\SalaryProcessed\Index.cshtml" />
+    <Content Include="Views\SalaryProcessed\_ProcessedSalaryDataTable.cshtml" />
+    <Content Include="Views\SalaryProcessed\_ProcessedSalaryDetails.cshtml" />
+    <Content Include="Views\SalaryProcessed\_modal.cshtml" />
+    <Content Include="Views\ChequeRequest\_ChequeRequestForm.cshtml" />
+    <Content Include="Views\ChequeRequest\_RequestDataTable.cshtml" />
+    <Content Include="Views\ChequeRequest\_ActionModal.cshtml" />
+    <Content Include="Views\NotificationHistory\Index.cshtml" />
+    <Content Include="Views\CounterCheque\Index.cshtml" />
+    <Content Include="Views\CounterCheque\_Create.cshtml" />
+    <Content Include="Views\CounterCheque\_DataTable.cshtml" />
+    <Content Include="Views\CounterCheque\_ActionForm.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigList.cshtml" />
+    <Content Include="Views\ChequeBook\Index.cshtml" />
+    <Content Include="Views\ChequeBook\_ChequeBookDetails.cshtml" />
+    <Content Include="Views\ChequeBook\_ChequeBookList.cshtml" />
+    <Content Include="Views\ChequeCancellation\Index.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CreateCancellationRequestForm.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
+    <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
+    <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
+    <Content Include="Views\ChequeCancellation\_Edit.cshtml" />
+    <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

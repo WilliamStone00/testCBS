@@ -3,15 +3,20 @@
 <div class="container">
     @*<fieldset class="fieldset">*@
     <div class="card-body">
-   
-                    <div class="col-md-12 mb-sm-1">
-                        <div class="form-floating form-floating-outline">
-                            @Html.TextBoxFor(m => m.SystemQuery.ReferenceId, new { @class = "form-control", placeholder = "Enter Transaction Reference" })
-                            @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
-                            <label>Enter journal entries</label>
-                        </div>
-                    </div>
+
+        <div class="col-md-12 mb-sm-1">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.SystemQuery.ReferenceId, new { @class = "form-control", placeholder = "Enter Transaction Reference" })
+                @Html.ValidationMessageFor(model => model.SystemQuery.ReferenceId, "", new { @class = "text-danger" })
+                <label>Enter journal entries</label>
+            </div>
+        </div>
+
+        <div class="col-md-12 d-flex justify-content-end">
+            <!-- Right-aligned button -->
+            <button type="submit" class="btn btn-primary mdi mdi-search-web mdi-24px me-2" onclick="LoadDataGeneration('AccountingStatements','myDataTable','_JournalEntryData','datalistingview',0,'accountingEntry','list')">Search</button>
  
-      
+        </div>
+
     </div>
 </div>

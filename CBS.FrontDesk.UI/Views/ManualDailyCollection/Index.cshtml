@@ -110,11 +110,63 @@
         </small>
     </div>
 </div>
+<!-- File Details Modal -->
+<div class="modal fade" id="fileDetailsModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="mdi mdi-file-document-outline me-2"></i>
+                    File Upload Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div id="fileDetailsModalBody" class="modal-body">
+                <!-- loader placeholder -->
+                <div class="d-flex align-items-center py-5 justify-content-center text-muted">
+                    <div class="spinner-border me-2" role="status"></div> Loading…
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="printFileDetailsModal()">
+                    <i class="mdi mdi-printer"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Extraction Result Modal -->
+<div class="modal fade" id="extractionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="mdi mdi-database-import-outline me-2"></i> Extraction Result</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="extractionModalBody" class="modal-body"><!-- injected after success/error --></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="printExtractionModal()">
+                    <i class="mdi mdi-printer"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script>
+    <script>
 
         // Utility: detect Select2
   function hasSelect2() { return !!(window.jQuery && $.fn && $.fn.select2); }
@@ -194,7 +246,7 @@
         // send AccountingDate in dd-MM-yyyy HH:mm:ss for the controller
         const parts = iso.split('-'); // [Y,M,D]
         if (parts.length === 3) {
-            const ddMMyyyyHHmmss = `${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`;
+            const ddMMyyyyHHmmss = `${parts[0]}-${parts[1]}-${parts[2]}`;
             formData.set('AccountingDate', ddMMyyyyHHmmss);
         }
 
@@ -207,7 +259,7 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + units[i];
         }
-        const niceDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        const niceDate = `${parts[0]}-${parts[1]}-${parts[2]}`;
 
         const html = `
     <div class="text-start">
@@ -317,102 +369,19 @@
 
 
 
-    //function handleUploadSubmit(e) {
-    //    e.preventDefault();
-    //    const form = this;
-    //    const $form = $(form);
-    //    const actionUrl = $form.attr('action');
-    //    const formData = new FormData(form);
-    //    const $submitButton = $form.find('button[type="submit"]');
-    //    const $resultContainer = $('#uploadResultContainer');
-
-    //    if ($form.length && typeof $form.valid === 'function' && !$form.valid()) return false;
-
-    //    // confirm before uploading
-    //    alertify.confirm("Confirmation", "Are you sure you want to upload this file?", function () {
-    //        $.ajax({
-    //            type: 'POST',
-    //            url: actionUrl,
-    //            data: formData,
-    //            contentType: false,
-    //            processData: false,
-    //            beforeSend: function () {
-    //                $submitButton.prop('disabled', true).html('Uploading...');
-    //                $resultContainer.slideUp().html('');
-    //            },
-    //            success: function (response) {
-    //                if ((response.success === true || response.isSuccess === true) && response.data) {
-    //                    appalert(response.message || "File processed successfully!", 1, 1);
-
-    //                    // Save ID for later actions (delete/extract)
-    //                    currentFileUploadId = response.data.FileUploadId || response.data.fileUploadId || currentFileUploadId;
-
-    //                    const previewHtml = buildInitialPreviewHtml(response.data);
-    //                    $resultContainer.html(previewHtml).slideDown();
-
-    //                    const tableData = response.data.manualEntryDailyCollectorUploadListDtos || [];
-
-    //                    // initialize preview details table (destroy any prior instance)
-    //                    try {
-    //                        if ($.fn.DataTable.isDataTable('#previewDetailsTable')) {
-    //                            $('#previewDetailsTable').DataTable().clear().destroy();
-    //                            $('#previewDetailsTable').empty();
-    //                        }
-    //                        $('#previewDetailsTable').DataTable({
-    //                            destroy: true,
-    //                            data: tableData,
-    //                            columns: [
-    //                                { data: "memberReference", title: "Member Ref." },
-    //                                { data: "memberName", title: "Member Name" },
-    //                                { data: "dailyCollectorName", title: "Collector Name" },
-    //                                { data: "memberBranchName", title: "Member Branch" },
-    //                                {
-    //                                    data: "amount",
-    //                                    title: "Amount",
-    //                                    className: "text-end",
-    //                                    render: $.fn.dataTable.render.number(',', '.', 2)
-    //                                }
-    //                            ],
-    //                            responsive: true,
-    //                            pageLength: 5,
-    //                            lengthMenu: [5, 10, 25, 50]
-    //                        });
-    //                    } catch (dtErr) {
-    //                        console.error('Error initializing previewDetailsTable', dtErr);
-    //                    }
-
-    //                    form.reset();
-    //                    $form.find('.select2').val(null).trigger('change');
-    //                } else {
-    //                    appalert(response.message || "Upload Failed.", 4, 1);
-    //                }
-    //            },
-    //            error: function (err) {
-    //                appalert(err.statusText || "An error occurred.", 4, 1);
-    //            },
-    //            complete: function () {
-    //                $submitButton.prop('disabled', false).html('<i class="mdi mdi-cloud-upload-outline me-1"></i> Upload');
-    //            }
-    //        });
-    //    }, function () {
-    //        appalert('Upload cancelled.', 3, 1);
-    //    });
-    //}
-
-    // -------------------------------
-    // Build preview HTML (unchanged)
-    // -------------------------------
     function buildInitialPreviewHtml(data) {
         const formatCurrency = (num) => (num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         const uploadedBy = data.UploadedBy ?? data.uploadedBy ?? '';
         const branchName = data.BranchName ?? data.branchName ?? '';
         const totalMembers = data.TotalMembers ?? data.totalMember ?? 0;
         const totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+        const fileId = data.FileUploadId || data.fileUploadId || '';
+        const currentFileUploadId = data.FileUploadId || data.fileUploadId || '';
 
         return `
  <fieldset class="fieldset-custom">
      <div class="row g-2">
-     <h4 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h4>
+     <h5 class="legend-custom text-info">File Preview: ${data.FileUploadId || data.fileUploadId || 'N/A'}</h5>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-warning h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Uploaded By</p><h6 class="ms-1 mb-0">${uploadedBy}</h6></div></div></div>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-info h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Branch</p><h6 class="ms-1 mb-0">${branchName}</h6></div></div></div>
          <div class="col-6 col-md-3"><div class="card card-border-shadow-success h-100 p-2"><div class="card-body p-2 text-center"><p class="mb-0 text-muted" style="font-size: 0.75rem;">Total Members</p><h6 class="ms-1 mb-0">${totalMembers}</h6></div></div></div>
@@ -423,8 +392,8 @@
      </div>
      <div class="d-flex justify-content-end mt-3">
          <button type="button" id="resetFirstPreviewBtn" class="btn btn-outline-secondary me-2">Reset upload Preview</button> <!-- NEW -->
-         <button type="button" id="deleteUploadedFileBtn" class="btn btn-danger me-2">Delete</button>
-         <button type="button" id="extractFileBtn" class="btn btn-primary">Extract File</button>
+         <button type="button" onclick="deleteUploadedFile('${currentFileUploadId}')" class="btn btn-danger me-2">Delete</button>
+         <button type="button" onclick="extractFile('${fileId}')" class="btn btn-primary">Extract File</button>
      </div>
  </fieldset>`;
     }
@@ -459,139 +428,212 @@
      </div>
  </fieldset>`;
     }
+        // Builds the modal body with a dashboard section and listing section
+        window.buildExtractionModalHtml = function (data) {
+            data = data || {};
+            var fileUploadId = data.FileUploadId ?? data.fileUploadId ?? 'N/A';
+            var collectorName = data.CollectorName ?? data.collectorName ?? '';
+            var branchName = data.BranchName ?? data.branchName ?? '';
+            var totalMember = data.TotalMember ?? data.totalMember ?? data.totalMembers ?? 0;
+            var totalAmount = data.TotalAmount ?? data.totalAmount ?? 0;
+            var tableDomId = 'extractedDetailsTable_' + (fileUploadId ? fileUploadId.toString().replace(/[^a-zA-Z0-9_]/g, '_') : Date.now());
 
+            return [
+                '<div class="mb-2 d-flex flex-wrap gap-2">',
+                '  <span class="badge bg-light text-dark border"><i class="mdi mdi-identifier me-1"></i>' + fileUploadId + '</span>',
+                '  <span class="badge bg-light text-dark border"><i class="mdi mdi-office-building me-1"></i>' + branchName + '</span>',
+                '  <span class="badge bg-light text-dark border"><i class="mdi mdi-account-outline me-1"></i>' + collectorName + '</span>',
+                '</div>',
+
+                '<div class="row g-3 mb-3">',
+                '  <div class="col-12 col-md-6 col-xl-3">',
+                '    <div class="card shadow-sm h-100"><div class="card-body d-flex align-items-center">',
+                '      <div class="avatar me-3"><span class="avatar-initial rounded bg-label-success"><i class="mdi mdi-cash mdi-20px"></i></span></div>',
+                '      <div><div class="text-muted small">Total Amount</div><div class="fw-bold fs-4">' + ' ' + (Number(totalAmount) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</div></div>',
+                '    </div></div>',
+                '  </div>',
+                '  <div class="col-12 col-md-6 col-xl-3">',
+                '    <div class="card shadow-sm h-100"><div class="card-body d-flex align-items-center">',
+                '      <div class="avatar me-3"><span class="avatar-initial rounded bg-label-primary"><i class="mdi mdi-account-group mdi-20px"></i></span></div>',
+                '      <div><div class="text-muted small">Total Members</div><div class="fw-bold fs-4">' + (totalMember || 0) + '</div></div>',
+                '    </div></div>',
+                '  </div>',
+                '  <div class="col-12 col-md-6 col-xl-3">',
+                '    <div class="card shadow-sm h-100"><div class="card-body d-flex align-items-center">',
+                '      <div class="avatar me-3"><span class="avatar-initial rounded bg-label-info"><i class="mdi mdi-office-building-outline mdi-20px"></i></span></div>',
+                '      <div><div class="text-muted small">Branch</div><div class="fw-bold fs-6">' + (branchName || 'N/A') + '</div></div>',
+                '    </div></div>',
+                '  </div>',
+                '  <div class="col-12 col-md-6 col-xl-3">',
+                '    <div class="card shadow-sm h-100"><div class="card-body d-flex align-items-center">',
+                '      <div class="avatar me-3"><span class="avatar-initial rounded bg-label-warning"><i class="mdi mdi-account mdi-20px"></i></span></div>',
+                '      <div><div class="text-muted small">Collector</div><div class="fw-bold fs-6">' + (collectorName || 'N/A') + '</div></div>',
+                '    </div></div>',
+                '  </div>',
+                '</div>',
+
+                '<div class="card shadow-sm">',
+                '  <div class="card-header bg-white border-0">',
+                '    <h6 class="mb-0"><i class="mdi mdi-format-list-bulleted me-1"></i> Listing</h6>',
+                '  </div>',
+                '  <div class="card-body">',
+                '    <div class="table-responsive">',
+                '      <table id="' + tableDomId + '" class="table table-hover align-middle w-100">',
+                '        <thead class="table-light"><tr>',
+                '          <th>Member Ref</th><th>Member Name</th><th>Account No.</th><th>Member Branch</th><th class="text-end">Amount</th>',
+                '        </tr></thead>',
+                '        <tbody></tbody>',
+                '        <tfoot class="table-light"><tr>',
+                '          <th colspan="4" class="text-end">Total</th>',
+                '          <th class="text-end">' + fmtMoney(totalAmount) + '</th>',
+                '        </tr></tfoot>',
+                '      </table>',
+                '    </div>',
+                '  </div>',
+                '</div>'
+            ].join('');
+        };
     // -------------------------------
     // File extraction
     // -------------------------------
-    function extractFile() {
-        // if called as handler with event, prevent default
-        if (arguments.length && arguments[0] && arguments[0].preventDefault) {
-            arguments[0].preventDefault();
-        }
+        // Small helpers
+        function sanitizeId(s) { return (s || '').toString().replace(/[^a-zA-Z0-9_]/g, '_'); }
+        function fmtMoney(n) { return (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
-        // allow passing explicit id via parameter when needed
-        let fileId = null;
-        if (arguments.length > 1 && typeof arguments[1] === 'string') {
-            fileId = arguments[1];
-        } else {
-            fileId = currentFileUploadId;
-        }
+        window.extractFile = function (fileId) {
+            if (!fileId) { appalert('No file to extract.', 3, 1); return; }
 
-        if (!fileId) {
-            appalert('No file to extract.', 3, 1);
-            return;
-        }
+            // Confirmation (kept from your version)
+            var confirmDialog = window.alertify && typeof alertify.confirm === 'function' ? alertify.confirm : null;
+            var doConfirm = function (onOk, onCancel) {
+                if (confirmDialog) {
+                    try {
+                        alertify.confirm("Confirmation", "Are you sure you want to extract this file?", onOk, onCancel)
+                            .set('labels', { ok: 'Yes', cancel: 'No' });
+                        return;
+                    } catch (e) { /* fallback */ }
+                }
+                if (window.confirm("Are you sure you want to extract this file?")) onOk(); else if (typeof onCancel === 'function') onCancel();
+            };
 
-        const token = $('input[name="__RequestVerificationToken"]').val();
-        const $resultContainer = $('#uploadResultContainer');
+            doConfirm(function () {
+                var token = $('input[name="__RequestVerificationToken"]').val();
 
-        $.ajax({
-            url: '/ManualDailyCollection/extract',
-            type: 'POST',
-            data: { KEY: fileId },
-            headers: token ? { 'RequestVerificationToken': token } : {},
-            dataType: 'json',
-            beforeSend: function () {
-                $resultContainer.stop(true, true).html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Extracting data...</p></div>').show();
-            },
-            success: function (response) {
-                try {
-                    // tolerate different success casing
-                    const status = (response && (response.status ?? response.Status ?? '')).toString();
-                    const data = response && (response.data ?? response.Data ?? null);
-
-                    if ((status && status.toLowerCase() === 'success') && data) {
-                        appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
-
-                        // update currentFileUploadId from response if provided
-                        currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? currentFileUploadId;
-
-                        // build and inject extracted preview
-                        const extractedHtml = buildExtractedPreviewHtml(data);
-                        $resultContainer.hide().html(extractedHtml).fadeIn();
-
-                        // Initialize extracted details DataTable defensively
+                $.ajax({
+                    url: '/ManualDailyCollection/extract',
+                    type: 'POST',
+                    data: { KEY: fileId },
+                    headers: token ? { 'RequestVerificationToken': token } : {},
+                    dataType: 'json',
+                    beforeSend: function () {
+                        // no modal yet; optional toast:
+                        if (typeof appalert === 'function') appalert('Extracting…', 2, 0);
+                    }
+                })
+                    .done(function (response) {
                         try {
-                            // ensure prior table destroyed
-                            if ($.fn.DataTable.isDataTable('#extractedDetailsTable')) {
-                                $('#extractedDetailsTable').DataTable().clear().destroy();
-                                $('#extractedDetailsTable').empty();
+                            var status = ((response && (response.status ?? response.Status)) || '').toString().toLowerCase();
+                            var data = response && (response.data ?? response.Data ?? null);
+
+                            // Build body HTML for modal
+                            var bodyEl = document.getElementById('extractionModalBody');
+                            if (status === 'success' && data) {
+                                if (typeof appalert === 'function') appalert(response.statusDescription || 'File extracted successfully.', 1, 1);
+
+                                // remember last id if needed
+                                window.currentFileUploadId = data.FileUploadId ?? data.fileUploadId ?? window.currentFileUploadId;
+
+                                // Build HTML (dashboard + listing)
+                                var modalHtml = buildExtractionModalHtml(data);
+                                bodyEl.innerHTML = modalHtml;
+
+                                // Initialize table
+                                var tableId = '#extractedDetailsTable_' + sanitizeId(data.FileUploadId ?? data.fileUploadId ?? Date.now());
+                                var detailsArray = data.details ?? data.Details ?? [];
+                                if (!Array.isArray(detailsArray)) detailsArray = [];
+
+                                if (typeof $.fn.DataTable === 'function') {
+                                    // Enhance via DataTables
+                                    $(tableId).DataTable({
+                                        destroy: true,
+                                        data: detailsArray,
+                                        columns: [
+                                            { title: "Member Ref.", data: function (row) { return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? ''; } },
+                                            { title: "Member Name", data: function (row) { return row.memberName ?? row.MemberName ?? row.name ?? ''; } },
+                                            { title: "Account No.", data: function (row) { return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? ''; } },
+                                            { title: "Member Branch", data: function (row) { return row.memberBranchName ?? row.MemberBranchName ?? ''; } },
+                                            { title: "Amount", className: "text-end", data: function (row) { return row.amount ?? row.Amount ?? 0; }, render: $.fn.dataTable.render.number(',', '.', 2) }
+                                        ],
+                                        responsive: true,
+                                        pageLength: 10,
+                                        lengthMenu: [10, 25, 50, 100]
+                                    });
+                                } else {
+                                    // Plain HTML fallback (no DataTables)
+                                    var tbody = document.querySelector(tableId + ' tbody');
+                                    if (tbody) {
+                                        var rows = detailsArray.map(function (r) {
+                                            return '<tr>'
+                                                + '<td>' + (r.memberReference ?? r.MemberReference ?? r.MemberRef ?? '') + '</td>'
+                                                + '<td>' + (r.memberName ?? r.MemberName ?? r.name ?? '') + '</td>'
+                                                + '<td>' + (r.accountNumber ?? r.AccountNumber ?? r.fullAccountNumber ?? r.FullAccountNumber ?? '') + '</td>'
+                                                + '<td>' + (r.memberBranchName ?? r.MemberBranchName ?? '') + '</td>'
+                                                + '<td class="text-end">' + fmtMoney(r.amount ?? r.Amount ?? 0) + '</td>'
+                                                + '</tr>';
+                                        }).join('');
+                                        tbody.innerHTML = rows || '<tr><td colspan="5" class="text-center text-muted">No details.</td></tr>';
+                                    }
+                                }
+
+                                // Refresh main list if you want
+                                if (typeof handleExtractSuccess === 'function') handleExtractSuccess(fileId);
+                            } else {
+                                var msg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
+                                bodyEl.innerHTML =
+                                    '<div class="alert alert-warning" role="alert">'
+                                    + '<i class="mdi mdi-alert-outline me-1"></i>' + msg + '</div>';
+                                if (typeof appalert === 'function') appalert(msg, 4, 1);
                             }
 
-                            // details array tolerance
-                            let detailsArray = data.details ?? data.Details ?? data.data?.details ?? [];
-                            if (!Array.isArray(detailsArray)) detailsArray = [];
-
-                            $('#extractedDetailsTable').DataTable({
-                                destroy: true,
-                                data: detailsArray,
-                                columns: [
-                                    {
-                                        title: "Member Ref.",
-                                        data: function (row) {
-                                            return row.memberReference ?? row.MemberReference ?? row.MemberRef ?? '';
-                                        }
-                                    },
-                                    {
-                                        title: "Member Name",
-                                        data: function (row) {
-                                            return row.memberName ?? row.MemberName ?? row.Member ?? '';
-                                        }
-                                    },
-                                    {
-                                        title: "Account No.",
-                                        data: function (row) {
-                                            return row.accountNumber ?? row.AccountNumber ?? row.fullAccountNumber ?? row.FullAccountNumber ?? '';
-                                        }
-                                    },
-                                    {
-                                        title: "Member Branch",
-                                        data: function (row) {
-                                            return row.memberBranchName ?? row.MemberBranchName ?? row.memberBranch ?? '';
-                                        }
-                                    },
-                                    {
-                                        title: "Amount",
-                                        className: "text-end",
-                                        data: function (row) {
-                                            return row.amount ?? row.Amount ?? 0;
-                                        },
-                                        render: $.fn.dataTable.render.number(',', '.', 2)
-                                    }
-                                ],
-                                responsive: true,
-                                pageLength: 5,
-                                lengthMenu: [5, 10, 25, 50]
-                            });
-                        } catch (dtErr) {
-                            console.error('Error initializing extractedDetailsTable', dtErr);
-                            appalert('An error occurred displaying extracted details.', 4, 1);
+                            // Finally show the modal (after content is ready)
+                            new bootstrap.Modal(document.getElementById('extractionModal')).show();
+                        } catch (err) {
+                            console.error('extractFile: success handler error', err, response);
+                            showExtractionErrorModal('An unexpected error occurred while building extraction results.', err);
                         }
+                    })
+                    .fail(function (xhr, status, err) {
+                        console.error('extractFile: ajax error', status, err, xhr);
+                        showExtractionErrorModal('An error occurred during extraction. Please try again.', err, xhr);
+                    });
+            }, function () {
+                if (typeof appalert === 'function') appalert("Extraction cancelled.", 3, 1);
+            });
+        }; // end extractFile
 
-                        // wire close button to reset preview (keeps single behavior)
-                        $('#closeExtractedPreviewBtn').off('click').on('click', function () {
-                            resetInitialPreview();
-                        });
+        function showExtractionErrorModal(message, err, xhr) {
+            var bodyEl = document.getElementById('extractionModalBody');
+            bodyEl.innerHTML =
+                '<div class="alert alert-danger" role="alert">'
+                + '<i class="mdi mdi-alert-circle-outline me-2"></i>' + message
+                + (err ? '<div class="small text-muted mt-1">' + (err.message || err) + '</div>' : '')
+                + (xhr && xhr.responseText ? '<div class="small text-muted mt-1">' + xhr.responseText + '</div>' : '')
+                + '</div>';
+            new bootstrap.Modal(document.getElementById('extractionModal')).show();
+        }
 
-                    } else {
-                        const errMsg = (response && (response.message || response.statusDescription)) || 'Extraction failed.';
-                        appalert(errMsg, 4, 1);
-                        $resultContainer.html(`<div class="alert alert-warning">${errMsg}</div>`);
-                    }
-                } catch (err) {
-                    console.error('extractFile: exception', err);
-                    appalert('An unexpected error occurred while processing extraction results.', 4, 1);
-                    $resultContainer.html('<div class="alert alert-danger">An unexpected error occurred while showing extracted data.</div>');
-                }
-            },
-            error: function (xhr, status, err) {
-                console.error('extractFile: ajax error', status, err, xhr);
-                appalert('An error occurred during extraction.', 4, 1);
-                $resultContainer.html('<div class="alert alert-danger">An error occurred during extraction. Please try again.</div>');
-            }
-        });
-    }
-
+        // Print helper (modal)
+        function printExtractionModal() {
+            var html = document.getElementById('extractionModalBody').innerHTML;
+            var w = window.open('', 'printExtract');
+            w.document.write('<html><head><title>Extraction Result</title>');
+            w.document.write('<link rel="stylesheet" href="/Content/bootstrap.min.css" />');
+            w.document.write('<link rel="stylesheet" href="/Content/site.css" />');
+            w.document.write('</head><body class="p-3">');
+            w.document.write(html);
+            w.document.write('</body></html>');
+            w.document.close(); w.focus(); w.print(); w.close();
+        }
     // -------------------------------
     // NEW RESET FUNCTIONS (optional)
     // -------------------------------
@@ -680,11 +722,10 @@
         }
     }
 
-    function deleteUploadedFile(e) {
+    function deleteUploadedFile(currentFileUploadId) {
         // prevent default when called as a click event
-        if (e && e.preventDefault) e.preventDefault();
+        //f (e && e.preventDefault) e.preventDefault();
 
-        console.log('deleteUploadedFile: invoked, currentFileUploadId=', currentFileUploadId);
 
         if (!currentFileUploadId) {
             appalert('No uploaded file to delete.', 3, 1);
@@ -703,7 +744,7 @@
                     type: 'GET', // keep GET to match current controller; change to POST if you update controller
                     data: {
                         // supply both parameter names so controller binding works with either signature
-                        KEY: currentFileUploadId,
+                       // KEY: currentFileUploadId,
                         fileUploadId: currentFileUploadId
                     },
                     headers: token ? { 'RequestVerificationToken': token } : {},
@@ -800,6 +841,6 @@
     }
   }
 
-</script>
+    </script>
 
 }

@@ -10,9 +10,9 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
     public class OptionRequest
     {
         public string ChequeClearanceId { get; set; }
-        public bool IsNotfromMFI { get; set; }
+        public bool External { get; set; }
         [Required(ErrorMessage = "Branch is required")]
-        public string BranchId { get; set; } = null;
+        public string BranchId { get; set; } 
 
         [Required(ErrorMessage = "CheckBook ID is required")]
         public string CheckBookNumber { get; set; } = null ;
@@ -34,6 +34,24 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public decimal ChequeAmount { get; set; }
         public string Status { get; set; }
         //public string DepositToAccount { get; set; }
-        public string ChequeImagePath { get; set; } 
+        public string ChequeImagePath { get; set; }
+
+
+
+
+    }
+
+    public class Discount
+    {
+
+        public string BranchId { get; set; }
+        public string FeeType { get; set; }
+        public bool IsCentralized { get; set; }
+        public double IssueAmount { get; set; }
+
+        public double NewAmount { get; set; }
+        public double Fees { get; set; }
+
+
     }
 }

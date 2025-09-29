@@ -2,6 +2,7 @@
 
 using BusinessServices;
 using CBS.API.Helper; // For ApiCallerHelper
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -19,7 +20,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
 
         public NotificationConfigService()
         {
-            // The base URL of your backend API, e.g., "http://localhost:5000/"
             string baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
@@ -33,69 +33,102 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
         /// <summary>
         /// Gets the list of all available notification type definitions from the backend API.
         /// </summary>
-        public async Task<IEnumerable<NotificationType>> GetNotificationTypesAsync()
+        //public async Task<IEnumerable<StringValues>> GetNotificationTypesAsync()
+        //{
+        //    try
+        //    {
+        //        var url = APICallHelper.GetNotificationTypes;
+
+        //        // Deserialize into the aggregate DTO so we match the JSON shape
+        //        var response = await _apiCallerHelper.GetAsync<ServiceResponse<NotificationAggregatesDto>>(url);
+
+        //        if (response != null && response.IsSuccess && response.ApiResponseData?.Data?.NotificationTypes != null)
+        //        {
+        //            return response.ApiResponseData.Data.NotificationTypes;
+        //        }
+
+        //        return Enumerable.Empty<StringValues>();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        // log if needed
+        //        throw;
+        //    }
+        //}
+
+        public async Task<NotificationAggregatesDto> GetNotificationTypesAsync()
         {
             try
             {
-                // Assumes APICallHelper.GetNotificationTypes is a constant like "api/notifications/types"
                 var url = APICallHelper.GetNotificationTypes;
-
-                // The ApiCallerHelper makes the HTTP GET request and deserializes the JSON response.
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<NotificationType>>>(url);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<NotificationAggregatesDto>>(url);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     return response.ApiResponseData.Data;
                 }
-                // Return an empty list if the call fails or returns no data
-                return Enumerable.Empty<NotificationType>();
+
+                return new NotificationAggregatesDto(); // or null, depending on your preference
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // In a real scenario, you would log the exception 'ex'
+                // log if needed
                 throw;
             }
         }
+
+
+        //public async Task<IEnumerable<StringValues>> GetFeeTypesAsync()
+        //{
+        //    try
+        //    {
+        //        var url = APICallHelper.GetFeeTypes;
+        //        var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<StringValues>>>(url);
+        //        if (response != null && (response.IsSuccess) && response.ApiResponseData?.Data != null)
+        //            return response.ApiResponseData.Data;
+        //        return Enumerable.Empty<StringValues>();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         /// <summary>
         /// Gets saved configurations from the API, supporting all filters.
         /// </summary>
-        public async Task<IEnumerable<NotificationConfig>> GetConfigsAsync(bool isCentralized, string branchId = null, string notificationType = null)
+        public async Task<IEnumerable<NotificationConfig>> GetConfigsAsync(
+           bool isCentralized,
+           string branchId = null,
+           string notificationType = null)
         {
             try
             {
-                // Build the query string for the API call
-                var queryParts = new List<string>
+                var url = APICallHelper.VerifyNotificationConfig;
+
+                var request = new VerifyNotificationConfigRequest
                 {
-                    $"isCentralized={isCentralized.ToString().ToLower()}"
+                    IsCentralised = isCentralized,
+                    BranchId = branchId,
+                    NotificationType = notificationType
                 };
 
-                if (!isCentralized && !string.IsNullOrEmpty(branchId))
-                {
-                    queryParts.Add($"branchId={Uri.EscapeDataString(branchId)}");
-                }
-
-                if (!string.IsNullOrEmpty(notificationType))
-                {
-                    queryParts.Add($"notificationType={Uri.EscapeDataString(notificationType)}");
-                }
-
-                // Assumes APICallHelper.GetNotificationConfigs is "api/notifications/configurations"
-                var url = APICallHelper.GetAllnot + "?" + string.Join("&", queryParts);
-
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<NotificationConfig>>>(url);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<NotificationConfig>>(url, request);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    return response.ApiResponseData.Data;
+                    // Wrap the single config in a collection
+                    return new[] { response.ApiResponseData.Data };
                 }
+
                 return Enumerable.Empty<NotificationConfig>();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
+
 
         /// <summary>
         /// Creates a new NotificationConfig by sending it to the backend API.

@@ -1,0 +1,394 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.ManualDailycollection.TransactionDetailDto>
+@using System.Globalization
+@using System.Web.Helpers
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary"><i class="mdi mdi-file-document-outline me-2"></i> Manual Entry - File Details</h1>
+        <p class="card-text">Review, filter and inspect the extracted manual daily collection rows below.</p>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><strong>Server-side filtering:</strong> All filters are processed on the server for better performance with large datasets.</li>
+                <li><strong>Actions:</strong> Click Details to open row-level partials provided by your controller.</li>
+                <li><strong>Formatting:</strong> Amounts show two decimals; dates display as yyyy-MM-dd.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+
+    <div class="card p-3 mb-3 bg-light">
+        <form id="detailsFilters" class="row g-2">
+            <div class="col-md-6">
+                <label for="statusFilter" class="form-label fw-bold">Filter by Status</label>
+                @Html.DropDownList("StatusFilter", (SelectList)ViewBag.Statuses, "---- All Status ----", new { @class = "form-control select2", id = "statusFilter" })
+            </div>
+
+            <div class="col-md-6">
+                <label for="BranchIdFilter" class="form-label fw-bold">Branch</label>
+                @Html.DropDownList("BranchIdFilter", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchIdFilter" })
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Upload Date From</label>
+                <input type="date" id="startDate" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Upload Date To</label>
+                <input type="date" id="endDate" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Treatement Date (from / to)</label>
+                <div class="d-flex gap-2">
+                    <input type="date" id="f_treatementDateFrom" class="form-control" />
+                    <input type="date" id="f_treatementDateTo" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Accounting Date (from / to)</label>
+                <div class="d-flex gap-2">
+                    <input type="date" id="f_accountingDateFrom" class="form-control" />
+                    <input type="date" id="f_accountingDateTo" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Start / End Date</label>
+                <div class="d-flex gap-2">
+                    <input type="date" id="f_startDate" class="form-control" placeholder="Start" />
+                    <input type="date" id="f_endDate" class="form-control" placeholder="End" />
+                </div>
+            </div>
+
+            <!-- More filters dropdown (checkboxes) -->
+            <div class="col-md-4 d-flex align-items-end justify-content-end">
+                <div class="dropdown">
+                    <button class="btn btn-primary me-2 w-100" type="button" id="moreFiltersBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                        More filters
+                    </button>
+
+                    <div class="dropdown-menu p-3" aria-labelledby="moreFiltersBtn" style="min-width:320px;">
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_amount" data-target="#container_amountRange">
+                            <label class="form-check-label" for="chk_amount">amount (min/max)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_memberName" data-target="#container_memberName">
+                            <label class="form-check-label" for="chk_memberName">memberName</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_memberReference" data-target="#container_memberReference">
+                            <label class="form-check-label" for="chk_memberReference">memberReference</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_accountNumber" data-target="#container_accountNumber">
+                            <label class="form-check-label" for="chk_accountNumber">accountNumber</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_dailyCollectorName" data-target="#container_dailyCollectorName">
+                            <label class="form-check-label" for="chk_dailyCollectorName">dailyCollectorName</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_uploadBy" data-target="#container_uploadBy">
+                            <label class="form-check-label" for="chk_uploadBy">uploadBy</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_manualEntryDailyCollectorId" data-target="#container_manualEntryDailyCollectorId">
+                            <label class="form-check-label" for="chk_manualEntryDailyCollectorId">manualEntryDailyCollectorId</label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input more-filter-chk" type="checkbox" value="" id="chk_treatementStatus" data-target="#container_treatementStatus">
+                            <label class="form-check-label" for="chk_treatementStatus">treatementStatus</label>
+                        </div>
+
+                        <div class="dropdown-divider my-2"></div>
+                        <small class="text-muted">Check any filter to reveal its input below the main filters area.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden containers for optional filters (initially hidden); IDs match data-target attributes above -->
+            <div class="col-12" id="optionalFiltersArea" style="margin-top:0.5rem;">
+                <div class="row g-2">
+                    <div class="col-md-3 collapse" id="container_amountRange">
+                        <label class="form-label fw-semibold">Amount (min / max)</label>
+                        <div class="d-flex gap-2">
+                            <input type="number" step="0.01" id="f_amountMin" class="form-control" placeholder="Min" />
+                            <input type="number" step="0.01" id="f_amountMax" class="form-control" placeholder="Max" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 collapse" id="container_memberName">
+                        <label class="form-label fw-semibold">memberName</label>
+                        <input type="text" id="f_memberName" class="form-control" />
+                    </div>
+
+                    <div class="col-md-3 collapse" id="container_memberReference">
+                        <label class="form-label fw-semibold">memberReference</label>
+                        <input type="text" id="f_memberReference" class="form-control" />
+                    </div>
+                    <div class="col-md-3 collapse" id="container_accountNumber">
+                        <label class="form-label fw-semibold">accountNumber</label>
+                        <input type="text" id="f_accountNumber" class="form-control" />
+                    </div>
+                    <div class="col-md-3 collapse" id="container_dailyCollectorName">
+                        <label class="form-label fw-semibold">dailyCollectorName</label>
+                        <input type="text" id="f_dailyCollectorName" class="form-control" />
+                    </div>
+                    <div class="col-md-3 collapse" id="container_uploadBy">
+                        <label class="form-label fw-semibold">uploadBy</label>
+                        <input type="text" id="f_uploadBy" class="form-control" />
+                    </div>
+
+                    <div class="col-md-3 collapse" id="container_manualEntryDailyCollectorId">
+                        <label class="form-label fw-semibold">manualEntryDailyCollectorId</label>
+                        <input type="text" id="f_manualEntryDailyCollectorId" class="form-control" />
+                    </div>
+                    <div class="col-md-3 collapse" id="container_treatementStatus">
+                        <label class="form-label fw-semibold">treatementStatus</label>
+                        <input type="text" id="f_treatementStatus" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card shadow p-3">
+    <div class="table-responsive">
+        <table id="fileDetailsTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-light">
+                <tr>
+                    <th>Member Name</th>
+                    <th>Account Number</th>
+                    <th>Branch Name</th>
+                    <th class="text-end">Amount</th>
+                    <th>Collector</th>
+                    <th>Uploaded By</th>
+                    <th>Processing Status</th>
+                    <th>Treatement Status</th>
+                    <th>Treatement Date</th>
+                    <th>Accounting Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            'use strict';
+
+            // Status badge renderer
+            function getStatusBadge(status) {
+                if (!status) return "<span class='badge bg-secondary'>Unknown</span>";
+                var s = (status + '').toLowerCase();
+                var cls = 'bg-secondary';
+                if (s === 'pending') cls = 'bg-warning text-dark';
+                else if (s === 'approved' || s === 'extracted' || s === 'completed' || s === 'treated') cls = 'bg-success';
+                else if (s === 'rejected' || s === 'failed') cls = 'bg-danger';
+                else if (s === 'review' || s === 'reviewed') cls = 'bg-info text-dark';
+                return '<span class="badge ' + cls + '">' + (status || '') + '</span>';
+            }
+
+            function formatDateForCell(val) {
+                if (!val || val === null) return '';
+                var d = new Date(val);
+                if (isNaN(d.getTime())) return String(val);
+                var yyyy = d.getFullYear();
+                var mm = String(d.getMonth() + 1).padStart(2, '0');
+                var dd = String(d.getDate()).padStart(2, '0');
+                return yyyy + '-' + mm + '-' + dd;
+            }
+
+            // DataTable initialization (server-side)
+            var table = $('#fileDetailsTable').DataTable({
+                serverSide: true,
+                processing: false,
+                ajax: {
+                    url: '@Url.Action("LoadDetailsDataTable", "TransactionDetails")',
+                    type: 'POST',
+                    data: function (d) {
+                        // Add our custom filters to the DataTables request
+                        d.filters = {
+                            memberBranchCode: $('#f_memberBranchCode').val(),
+                            memberBranchId: $('#f_memberBranchId').val(),
+                            memberBranchName: $('#BranchIdFilter').val(),
+                            amountMin: $('#f_amountMin').val(),
+                            amountMax: $('#f_amountMax').val(),
+                            memberName: $('#f_memberName').val(),
+                            memberReference: $('#f_memberReference').val(),
+                            accountNumber: $('#f_accountNumber').val(),
+                            dailyCollectorName: $('#f_dailyCollectorName').val(),
+                            uploadBy: $('#f_uploadBy').val(),
+                            manualEntryDailyCollectorId: $('#f_manualEntryDailyCollectorId').val(),
+                            processingStatus: $('#statusFilter').val(),
+                            treatementStatus: $('#f_treatementStatus').val(),
+                            treatementDateFrom: $('#f_treatementDateFrom').val(),
+                            treatementDateTo: $('#f_treatementDateTo').val(),
+                            accountingDateFrom: $('#f_accountingDateFrom').val(),
+                            accountingDateTo: $('#f_accountingDateTo').val(),
+                            startDate: $('#f_startDate').val(),
+                            endDate: $('#f_endDate').val(),
+                            uploadDateFrom: $('#startDate').val(),
+                            uploadDateTo: $('#endDate').val()
+                        };
+                    }
+                },
+                stripeClasses: [],
+                columns: [
+                    { data: 'memberName', name: 'MemberName' },
+                    { data: 'accountNumber', name: 'AccountNumber' },
+                    { data: 'memberBranchName', name: 'MemberBranchName' },
+                    {
+                        data: 'amount',
+                        name: 'Amount',
+                        className: 'text-end',
+                        render: function (data) {
+                            var val = data == null ? 0 : parseFloat(data);
+                            return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
+                    { data: 'dailyCollectorName', name: 'DailyCollectorName' },
+                    { data: 'uploadBy', name: 'UploadBy' },
+                    {
+                        data: 'processingStatus',
+                        name: 'ProcessingStatus',
+                        render: function (data) { return getStatusBadge(data); }
+                    },
+                    {
+                        data: 'treatementStatus',
+                        name: 'TreatementStatus',
+                        render: function (data) { return getStatusBadge(data); }
+                    },
+                    {
+                        data: 'treatementDate',
+                        name: 'TreatementDate',
+                        render: function (d) { return formatDateForCell(d); }
+                    },
+                    {
+                        data: 'accountingDate',
+                        name: 'AccountingDate',
+                        render: function (d) { return formatDateForCell(d); }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            var id = row.manualEntryDailyCollectorId || '';
+                            return '<a class="btn btn-sm btn-outline-primary details-btn" href="@Url.Action("GetFileDetailsById", "ManualDailyCollection")?KEY=' + encodeURIComponent(id) + '">Details</a>';
+                        }
+                    }
+                ],
+                responsive: true,
+                autoWidth: false,
+                order: [[0, 'asc']],
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                language: {
+                    emptyTable: "No details found.",
+                    
+                },
+                drawCallback: function () {
+                    $('#rowsCount').text('Showing ' + this.api().page.info().recordsDisplay + ' rows');
+                }
+            });
+
+            // Helper: toggle optional filter containers
+            $('.more-filter-chk').on('change', function () {
+                var target = $(this).data('target');
+                if (!target) return;
+                if ($(this).is(':checked')) {
+                    $(target).stop(true, true).slideDown().addClass('show');
+                } else {
+                    // clear value and hide
+                    $(target).find('input').val('');
+                    $(target).stop(true, true).slideUp().removeClass('show');
+                    table.draw(); // reapply filters with the cleared value
+                }
+            });
+
+            // Apply button behavior - redraw the table with new filters
+            $('#applyFilterBtn').on('click', function () {
+                table.draw();
+            });
+
+            // Reset button behavior
+            $('#resetFilterBtn').on('click', function () {
+                // Reset all filters
+                $('#detailsFilters input').val('');
+                $('#detailsFilters select').val('').trigger('change');
+
+                // Uncheck all optional filters and hide their containers
+                $('.more-filter-chk').prop('checked', false);
+                $('.more-filter-chk').each(function () {
+                    var target = $(this).data('target');
+                    if (target) {
+                        $(target).stop(true, true).slideUp().removeClass('show');
+                    }
+                });
+
+                // Redraw the table
+                table.draw();
+            });
+
+            // Delegate click to open details (modal)
+            $('#fileDetailsTable').on('click', '.details-btn', function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                // create modal if missing
+                if ($('#detailsModal').length === 0) {
+                    $('body').append('<div id="detailsModal" class="modal fade" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-3" id="detailsModalBody"></div></div></div></div>');
+                }
+                $('#detailsModalBody').html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div></div>');
+                var m = new bootstrap.Modal(document.getElementById('detailsModal'));
+                m.show();
+
+                $.get(url).done(function (html) {
+                    $('#detailsModalBody').html(html);
+                }).fail(function (xhr) {
+                    $('#detailsModalBody').html('<div class="alert alert-danger">Could not load details. ' + (xhr.status ? ('Status: ' + xhr.status) : '') + '</div>');
+                });
+            });
+
+            // Initialize select2 if available
+            $(document).ready(function () {
+                if ($.fn.select2) {
+                    $('#statusFilter, #BranchIdFilter').select2({ width: '100%' });
+                }
+
+                // Add a row count display
+                $('#detailsFilters').after('<div class="ms-auto text-muted align-self-center small" id="rowsCount">Showing 0 rows</div>');
+            });
+
+        })(jQuery);
+    </script>
+}

@@ -1,28 +1,29 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
 @using Resources
 
-@using (Html.BeginForm("SaveClearance", "ChequeClearance", FormMethod.Post, new { id = "clearanceForm" }))
+@* ----------------- Clearance Form ----------------- *@
+@using (Html.BeginForm("CreateOrUpdate", "ChequeClearance", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return clearanceSubmitAjax(this);" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.IsNotfromMFI)
-    @Html.HiddenFor(m => m.BranchId)
-    @Html.HiddenFor(m => m.CheckBookNumber)
-    @Html.HiddenFor(m => m.CheckBookPageNumber)
 
-    <div id="clearanceDetailsForm" class="card shadow p-3 mb-4 mt-3 d-none">
+
+    <div id="clearanceDetailsForm" class="card shadow p-3 mb-4 mt-3">
         <h5 class="text-success mb-3">
             <i class="mdi mdi-file-document-edit me-1"></i> Cheque Clearance
         </h5>
 
         <div class="text-end mb-2">
-            <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#discountModal">
+            <button type="button" class="btn btn-primary btn-sm px-3"
+                    data-bs-toggle="modal" data-bs-target="#discountModal">
                 <i class="mdi mdi-tag"></i> Discount
             </button>
         </div>
 
+
+
         <div class="row">
-            <!-- Same day (only if cheque IS from MFI) -->
-            @if (!Model.IsNotfromMFI)
+            @if (!Model.External)
             {
                 <div class="col-md-6 mb-3">
                     <div class="form-check">
@@ -32,7 +33,6 @@
                 </div>
             }
 
-            <!-- Deposit to Account -->
             <div class="col-md-6 mb-3">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.DepositToAccount, new { @class = "form-check-input", id = "DepositToAccount" })
@@ -40,8 +40,7 @@
                 </div>
             </div>
 
-            <!-- Account Number -->
-            <div class="col-md-6 mb-3 d-none" id="AccountNumberWrapper">
+            <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", id = "AccountNumber" })
                     @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
@@ -49,7 +48,6 @@
                 </div>
             </div>
 
-            <!-- Member Reference -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", id = "MemberReference" })
@@ -58,7 +56,7 @@
                 </div>
             </div>
 
-            <!-- Cheque BranchId -->
+            <!-- Other inputs like ChequeBranchId, ReceivingBranchId, Amount, Dates, etc. -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeBranchId, new { @class = "form-control" })
@@ -67,7 +65,6 @@
                 </div>
             </div>
 
-            <!-- Receiving BranchId -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ReceivingBranchId, new { @class = "form-control" })
@@ -76,7 +73,6 @@
                 </div>
             </div>
 
-            <!-- Amount -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number" })
@@ -85,7 +81,6 @@
                 </div>
             </div>
 
-            <!-- Cheque Creation Date -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "date" })
@@ -94,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Cheque Expiration Date -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "date" })
@@ -103,7 +97,7 @@
                 </div>
             </div>
 
-            <!-- National Id Number -->
+            <!-- National ID -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control" })
@@ -112,7 +106,6 @@
                 </div>
             </div>
 
-            <!-- National Id Creation Date -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
@@ -121,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- National Id Expiration Date -->
             <div class="col-md-6 mb-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
@@ -133,6 +125,7 @@
 
         <hr />
 
+        <!-- Cheque Image -->
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">Cheque Proof Image</h5>
@@ -156,70 +149,18 @@
             <button type="submit" class="btn btn-success shadow-sm px-4 me-2">
                 <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
             </button>
-            <button type="reset" class="btn btn-outline-secondary shadow-sm px-4" id="resetFormBtn">
+            <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
                 @GlobalShared.Reset
             </button>
         </div>
     </div>
 }
 
-<div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-            <!-- Header with lemon green -->
-            <div class="modal-header bg-success">
-                <h5 class="modal-title text-dark">
-                    <i class="mdi mdi-tag text-white me-2"></i> Apply Discount
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
 
 
 
-            <div class="modal-body">
-                <!-- Cheque Amount -->
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="ChequeAmount" placeholder="Enter Cheque Amount" />
-                    <label for="ChequeAmount">Cheque Amount</label>
-                </div>
 
-                <!-- Load Button -->
-                <div class="mb-3">
-                    <button type="button" class="btn btn-primary w-100" id="btnLoad">Load</button>
-                </div>
 
-                <!-- Hidden Discount Section -->
-                <div class="row g-3 d-none" id="discountSection">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="DiscountAmount" readonly />
-                            <label for="DiscountAmount">Discount Amount</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="AmountToBeIssued" readonly />
-                            <label for="AmountToBeIssued">Amount to be Issued</label>
-                        </div>
-                    </div>
-
-                    <!-- Discount Reason -->
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <textarea class="form-control" id="DiscountReason" placeholder="Enter Reason" style="height:60px;"></textarea>
-                            <label for="DiscountReason">Reason</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer justify-content-start">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Photo Modal -->
 <div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -245,11 +186,13 @@
     </div>
 </div>
 
+
 @section Scripts {
+    
     <script>
 $(function () {
-    // hide SameDay if IsNotfromMFI
-    if ('@(Model.IsNotfromMFI)' === 'True') {
+    // hide SameDay if External
+    if ('@(Model.External)' === 'True') {
         $('#SameDayProcessing').closest('.col-md-6').hide();
     }
 
@@ -269,58 +212,11 @@ $(function () {
         $('#AccountNumberWrapper').addClass('d-none');
     });
 
-    document.getElementById("btnLoad").addEventListener("click", function () {
-        const chequeAmount = parseFloat(document.getElementById("ChequeAmount").value) || 0;
 
-        if (chequeAmount <= 0) {
-            alert("Please enter a valid cheque amount.");
-            return;
-        }
-
-        const discount = chequeAmount * 0.1; // fixed 10%
-        const amountToBeIssued = chequeAmount - discount;
-
-        document.getElementById("DiscountAmount").value = discount.toFixed(2);
-        document.getElementById("AmountToBeIssued").value = amountToBeIssued.toFixed(2);
-
-        // Show hidden section
-        document.getElementById("discountSection").classList.remove("d-none");
-    });
-
-    // Save Discount → append hidden inputs to #clearanceForm
-    document.getElementById("saveDiscountBtn").addEventListener("click", function () {
-        const amount = document.getElementById("DiscountAmount").value;
-        const reason = document.getElementById("DiscountReason").value;
-
-        if (!amount || amount <= 0) {
-            alert("Please enter a valid discount amount.");
-            return;
-        }
-
-        // Remove old hidden inputs if any
-        const oldAmount = document.querySelector('#clearanceForm input[name="DiscountAmount"]');
-        const oldReason = document.querySelector('#clearanceForm input[name="DiscountReason"]');
-        if (oldAmount) oldAmount.remove();
-        if (oldReason) oldReason.remove();
-
-        // Append new hidden inputs
-        const form = document.getElementById("clearanceForm");
-        const inputAmount = document.createElement("input");
-        inputAmount.type = "hidden";
-        inputAmount.name = "DiscountAmount";
-        inputAmount.value = amount;
-        form.appendChild(inputAmount);
-
-        const inputReason = document.createElement("input");
-        inputReason.type = "hidden";
-        inputReason.name = "DiscountReason";
-        inputReason.value = reason;
-        form.appendChild(inputReason);
-
-        // Hide modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById("discountModal"));
-        modal.hide();
-    });
 });
+
+
+
+
     </script>
 }

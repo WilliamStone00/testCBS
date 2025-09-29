@@ -1,0 +1,358 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest>
+@using Resources;
+
+@functions {
+    private string FmtDate(object o)
+    {
+        if (o == null) return "-";
+        DateTime dt;
+        if (DateTime.TryParse(o.ToString(), out dt))
+            return dt == default(DateTime) ? "-" : dt.ToString("MM/dd/yyyy HH:mm");
+        return "-";
+    }
+    private string FmtString(string s) => string.IsNullOrWhiteSpace(s) ? "-" : s;
+}
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-cancel me-2"></i> Manage Cancellation Requests
+    </h5>
+
+    <!-- Filters -->
+    <div class="bg-light p-3 rounded mb-3">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Status</label>
+                <select id="statusFilter" class="form-control">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Branch</label>
+                @Html.DropDownList("branchFilter",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "All Branches",
+                    new { @class = "form-control select2", id = "branchFilter" })
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">From Date</label>
+                <input type="date" id="fromDateFilter" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">To Date</label>
+                <input type="date" id="toDateFilter" class="form-control" />
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify"></i> Apply Filters
+            </button>
+            <button id="resetFilterBtn" class="btn btn-secondary w-100">
+                <i class="mdi mdi-refresh"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Request ID</th>
+                    <th>Customer</th>
+                    
+                    <th>Request Type</th>
+
+                    <th>Status</th>
+                    <th>Requested Date</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    var idx = 0;
+                    foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>@FmtString(c.Id)</td>
+                            <td>@FmtString(c.CustomerName)</td>
+                            
+                            <td>@FmtString(c.RequestType)</td>
+
+                            <td>
+                                @switch (c.Status)
+                                {
+                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending:
+                                        <span class="badge bg-warning text-dark">Pending</span>;
+                                        break;
+                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Approved:
+                                        <span class="badge bg-success">Approved</span>;
+                                        break;
+                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Rejected:
+                                        <span class="badge bg-danger">Rejected</span>;
+                                        break;
+                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Cancelled:
+                                        <span class="badge bg-secondary">Cancelled</span>;
+                                        break;
+                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Completed:
+                                        <span class="badge bg-info text-dark">Completed</span>;
+                                        break;
+                                    default:
+                                        <span class="badge bg-light text-dark">-</span>;
+                                        break;
+                                }
+                            </td>
+
+                            <td>@FmtDate(c.RequestedDate)</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="actionDropdown_@idx"
+                                            data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                    onclick="ViewCancellation('@c.Id')">
+                                                <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                            </button>
+
+
+                                        </li>
+                                        <li>
+                                            <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                    onclick="AddORUpdateGen('@c.Id','datalistingview','_Edit',null,'ChequeCancellation')">
+                                                <i class="mdi mdi-pencil me-1 text-primary"></i> Edit
+                                            </button>
+                                        </li>
+                                        @if (c.Status == 0)
+                                        {
+                                            <li>
+                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                        onclick="ApproveCancellation('@c.Id')">
+                                                    <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                        onclick="RejectCancellation('@c.Id')">
+                                                    <i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        idx++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">
+                            <i class="mdi mdi-information-outline"></i> No cancellation requests found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg">
+           
+            <div class="modal-body" id="detailsModalBody">
+                <div class="text-center text-muted p-3">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+
+
+   
+        function ViewCancellation(id) {
+        // Show modal
+        var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+        modal.show();
+
+        
+
+        // Fetch partial view (your detail card) from controller
+        $.get('/ChequeCancellation/Details/' + id, function (data) {
+            $("#detailsModalBody").html(data);
+        }).fail(function () {
+            $("#detailsModalBody").html(
+                '<div class="alert alert-danger">Unable to load details.</div>'
+            );
+        });
+    }
+
+
+
+
+(function ($) {
+    var getActionFormUrl = '@Url.Action("GetActionForm", "ChequeCancellation")';
+
+    function ensureModal() {
+        var $modal = $('#actionModal');
+        if ($modal.length === 0) {
+            var m = `
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actionModalLabel">Action</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="actionModalBody"></div>
+    </div>
+  </div>
+</div>`;
+            $('body').append(m);
+            $modal = $('#actionModal');
+        }
+        return $modal;
+    }
+
+    function openCancellationAction(requestId, mode) {
+        if (!requestId) { alert('Missing request id'); return; }
+        mode = (mode || 'review').toLowerCase();
+
+        var $modal = ensureModal();
+        var $body = $modal.find('#actionModalBody');
+        $('#actionModalLabel').text(mode.charAt(0).toUpperCase() + mode.slice(1) + ' Request');
+
+        $body.html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p>Loading form...</p></div>');
+        $modal.modal('show');
+
+        $.ajax({
+            url: getActionFormUrl,
+            type: 'GET',
+            data: { requestId: requestId, mode: mode },
+            dataType: 'html'
+        })
+        .done(function (response) {
+            $body.html(response);
+        })
+        .fail(function (xhr, status, err) {
+            $body.html('<div class="alert alert-danger">Failed to load form: ' + (err || status) + '</div>');
+        });
+    }
+
+    // Global expose
+    
+    window.ReviewCancellation = function (id) { openCancellationAction(id, 'review'); };
+    window.ApproveCancellation = function (id) { openCancellationAction(id, 'approve'); };
+    window.RejectCancellation = function (id) { openCancellationAction(id, 'reject'); };
+    window.CompleteCancellation = function (id) { openCancellationAction(id, 'complete'); };
+
+})(jQuery);
+
+// Datatable setup
+function loadCancellationData() {
+    $('#cancellationDataTable').DataTable({
+        serverSide: true,
+        destroy: true,
+        order: [[0, 'asc']],
+        ajax: {
+            url: '@Url.Action("LoadCancellationData", "ChequeCancellation")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
+                const filters = collectCancellationFilterParams();
+                filters.Options = {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    skip: d.start,
+                    pageSize: d.length,
+                    sortColumnName: d.columns[d.order[0].column].data,
+                    sortColumnDirection: d.order[0].dir
+                };
+                return JSON.stringify(filters);
+            }
+        },
+        columns: [
+            { data: 'RequestId', name: 'RequestId' },
+            { data: 'CustomerName', name: 'CustomerName' },
+            { data: 'AccountNumber', name: 'AccountNumber' },
+            { data: 'RequestType', name: 'RequestType' },
+            { data: 'Reference', name: 'Reference' },
+            { data: 'Status', name: 'Status' },
+            { data: 'RequestedDate', name: 'RequestedDate' },
+            {
+                data: null,
+                orderable: false,
+                render: function (data, type, row) {
+                    return `
+                        <div class="dropdown">
+                            <button class="btn btn-sm dropdown-toggle text-white" style="background-color:#0dcaf0;" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-cog-outline me-1"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" onclick="ReviewCancellation('${row.RequestId}')"><i class="mdi mdi-eye-check-outline me-1 text-warning"></i> Review</button></li>
+                                <li><button class="dropdown-item" onclick="ApproveCancellation('${row.RequestId}')"><i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve</button></li>
+                                <li><button class="dropdown-item" onclick="RejectCancellation('${row.RequestId}')"><i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject</button></li>
+                                <li><button class="dropdown-item" onclick="CompleteCancellation('${row.RequestId}')"><i class="mdi mdi-flag-checkered me-1 text-info"></i> Complete</button></li>
+                            </ul>
+                        </div>`;
+                }
+            }
+        ],
+        language: {
+            emptyTable: "No cancellation requests found",
+            zeroRecords: "No matching records"
+        }
+    });
+}
+
+function collectCancellationFilterParams() {
+    return {
+        Status: $('#statusFilter').val(),
+        BranchId: $('#branchFilter').val(),
+        FromDate: $('#fromDateFilter').val(),
+        ToDate: $('#toDateFilter').val(),
+        Options: {}
+    };
+}
+
+// Buttons
+$('#applyFilterBtn').on('click', function (e) {
+    e.preventDefault();
+    if ($.fn.DataTable.isDataTable('#cancellationDataTable')) {
+        $('#cancellationDataTable').DataTable().destroy();
+    }
+    loadCancellationData();
+});
+
+$('#resetFilterBtn').on('click', function (e) {
+    e.preventDefault();
+    $('#statusFilter, #branchFilter, #fromDateFilter, #toDateFilter').val('');
+    if ($.fn.DataTable.isDataTable('#cancellationDataTable')) {
+        $('#cancellationDataTable').DataTable().destroy();
+    }
+});
+</script>

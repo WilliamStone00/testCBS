@@ -7,6 +7,18 @@
         <hr />
         <div class="change-group">
             <div class="row mt-2 gy-4">
+                @* Tell JS which screen the user opened: "OtherCashIn" or "OtherCashOut" *@
+                <input type="hidden" id="FormContext" value="@ViewBag.FormContext" /> @* e.g., set in controller *@
+
+                <legend class="text-primary h6 mb-3" id="contextTitle">💰 @CashDesk_OtherTransactionForm.OtherCashIn</legend>
+
+                <label class="fw-semibold mb-2 d-block">@CashDesk_OtherTransactionForm.SelectSource</label>
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.BulkDeposit.OtherTransaction.SourceType, "Cash_Collected",
+                      new { @class = "form-check-input", id = "cashCollectionOption" })
+                    <label class="form-check-label" for="cashCollectionOption" id="sourceCollectLabel">Collect Cash</label>
+                </div>
+
                 <!-- 🔹 Toggle Inter-Branch -->
                 <div class="col-md-12 mb-3">
                     <div class="form-check">
@@ -60,7 +72,7 @@
                 </div>
 
 
-                @Html.Partial("_NoneMemberPayment")
+                @Html.Partial("_OtherPaymentFormDetail")
 
             </div>
             <div class="header-buttons mt-4 float-end">

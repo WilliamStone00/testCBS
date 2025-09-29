@@ -9,7 +9,7 @@ namespace CBS.FrontDesk.Data
     public class Account
     {
         
-        public string AccountNumberNetwok { get; set; } = "";
+        public string AccountNumberNetwork { get; set; } = "";
         public string UpdateScope { get; set; } = "";
         public string AccountNumberCU { get; set; } = "";
         public string Id { get; set; }

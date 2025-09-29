@@ -24,7 +24,8 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
         public string fileName { get; set; }
         public string uploadedOn { get; set; }
         public string AccountingDay { get; set; }
-                                                  //  public DateTime UploadedAt { get; set; }           // Timestamp of upload
+
+               // Timestamp of upload
 
         // Navigation property
         public List<ManualDailyCollectionFileDetail> manualEntryDailyCollectorUploadListDtos { get; set; }

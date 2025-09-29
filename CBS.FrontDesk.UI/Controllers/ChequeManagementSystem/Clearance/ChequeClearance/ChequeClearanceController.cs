@@ -17,6 +17,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using ZXing;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeClearance
 {
@@ -26,12 +27,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         private readonly ChequeClearanceService _chequeClearanceService;
         private readonly BranchServices _branchServices;
        private readonly MockCheckClearanceService _mockCheckClearanceService;
+        private readonly FeeConfigService _feeConfigService;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, MockCheckClearanceService mockCheckClearanceService)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, FeeConfigService feeConfigService, MockCheckClearanceService mockCheckClearanceService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
            _mockCheckClearanceService = mockCheckClearanceService;
+            _feeConfigService = feeConfigService;
 
 
         }
@@ -46,11 +49,16 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
+            var feeConfigure = await _feeConfigService.GetFeeTypesAsync();
+            ViewBag.FeeTypes = feeConfigure;
+
             return true;
         }
         // Ajax entry point
         public async Task<ActionResult> InitializeData(string KEY = null,string partialView = null, string path = null,string serviceOption = null)
         {
+            await loader();
+
             if (path == "list")
             {
                 // ✅ When loading list view
@@ -58,8 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 return PartialView(partialView?? "_ChequeClearanceDataTable", data);
             }
             else if (path == "new")
-            {
-                await loader();
+            {               
 
                 OptionRequest model = null;
                 OptionRequest options = new OptionRequest(); // ✅ always initialized
@@ -78,7 +85,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
                     // ✅ Now options can never be null
                     model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
-                        options.IsNotfromMFI,
+                        options.External,
                         options.BranchId,
                         options.CheckBookNumber,
                         options.CheckBookPageNumber
@@ -88,7 +95,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                     {
                         model = new OptionRequest
                         {
-                            IsNotfromMFI = options.IsNotfromMFI,
+                            External = options.External,
                             BranchId = options.BranchId,
                             CheckBookNumber = options.CheckBookNumber,
                             CheckBookPageNumber = options.CheckBookPageNumber
@@ -138,7 +145,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 ChequeClearanceId = fileUploadId,
                 ApprovedBy = Session["FullName"]?.ToString(),
-                Mode = mode // "approve", "review", or "reject"
+                Mode = mode // "approve", "review", or "reject",""
             };
             return PartialView("_ValidationForm", model);
         }
@@ -166,6 +173,57 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             // Ensure Messaging.MessageResult returns a string
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+        [HttpPost]
+        public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.GetClearanceDataTableAsync(query);
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
+       {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, status = "Failed", message = "Please fill all required fields." });
+            }
+
+            ExecutionMessages data;
+            if (string.IsNullOrWhiteSpace(model.ChequeClearanceId))
+            {
+                data = await _chequeClearanceService.CreateAsync(model);
+            }
+            else
+            {
+                data = await _chequeClearanceService.UpdateAsync(model);
+            }
+
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        }
+
+
+
 
 
     }

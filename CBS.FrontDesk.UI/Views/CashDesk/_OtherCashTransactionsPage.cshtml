@@ -1,0 +1,139 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@using Resources
+
+
+@{
+    bool isOut = (string)ViewBag.FormContext == "OtherCashOut";
+    var pageTitle = isOut ? "Other Cash-Out Operations" : "Other Cash-In Operations";
+    var opName = isOut ? "Other Cash-Out" : "Other Cash-In";
+    ViewBag.Title = pageTitle;
+}
+<!-- Page Title and Welcome Message -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center p-3">
+                <h2 class="card-title text-primary mb-2">
+                    <i class="mdi mdi-cash me-2"></i> @pageTitle
+                    <span class="badge @(isOut ? "bg-danger" : "bg-primary") ms-2">
+                        @(isOut ? "Expense" : "Income")
+                    </span>
+                </h2>
+
+                <p class="mb-1">
+                    Welcome to the Cash Desk of <strong>TSC</strong>.
+                    This interface manages <strong>@opName</strong> transactions posted directly
+                    to the <strong>branch chart of accounts</strong>.
+                </p>
+
+                <p class="mb-1">
+                    <strong>@opName</strong>
+                    @(isOut ? "refers to cash paid out" : "refers to cash received")
+                    at the teller desk, allocated against predefined branch GL accounts.
+                </p>
+
+                <p class="mb-2 text-muted small">
+                    💡 <strong>Note:</strong> Use this strictly for
+                    <strong>@(isOut ? "cash-out" : "cash-in")</strong> that does not involve member accounts.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips (operation-aware, compact) -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i>
+            @(isOut ? "Tips for Other Cash-Out" : "Tips for Other Cash-In")
+        </span>
+        <button class="btn btn-light btn-sm" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseOtherCashTips"
+                aria-expanded="false" aria-controls="collapseOtherCashTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseOtherCashTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-view-grid-plus-outline text-success me-2"></i>
+                    You can allocate the transaction to <strong>multiple GL accounts</strong>. Use
+                    <em>Add Row</em> to insert additional GL lines.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-primary me-2"></i>
+                    <strong>Confirm the GLs to be impacted</strong> by ticking the <em>Select</em> checkbox on each row
+                    before posting. Only checked rows are included.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-calendar-lock-outline text-secondary me-2"></i>
+                    <strong>Accounting Date</strong> is <em>read-only</em> and uses the current accounting date.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-plus-circle-outline text-info me-2"></i>
+                    Click <strong>Add Row</strong> to add a new GL entry (choose GL, enter Note and Amount).
+                </li>
+
+                <li>
+                    <i class="mdi mdi-trash-can-outline text-danger me-2"></i>
+                    Click the <strong>Delete</strong> button on a row to remove that GL entry.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-cash-multiple text-warning me-2"></i>
+                    Ensure the sum of all <strong>selected</strong> GL amounts equals the cash <strong>Denominations</strong>.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-note-text-outline text-muted me-2"></i>
+                    Add a clear <strong>Narration</strong> and capture <strong>Name / CNI / Telephone</strong> for audit.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-domain text-muted me-2"></i>
+                    If <strong>Inter-Branch</strong> is enabled, select the destination branch before posting.
+                </li>
+                <li>
+                    <i class="mdi mdi-printer-check text-success me-2"></i>
+                    After posting successfully, click <strong>Re-Print</strong> to print the operation receipt for your records.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Transaction Area -->
+<div class="row g-2">
+    <!-- Left: Denominations -->
+    <div class="col-md-3">
+        <div class="card shadow-sm mb-0">
+            <div class="card-body p-2">
+                @Html.Partial("_DenominationBreakDown")
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Other Cash Transactions -->
+    <div class="col-md-9">
+        <div class="card shadow-sm mb-0">
+            <div class="card-body p-3">
+                <div id="datalistingview_inner">
+                    @Html.Partial("_OtherTransactionForm")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

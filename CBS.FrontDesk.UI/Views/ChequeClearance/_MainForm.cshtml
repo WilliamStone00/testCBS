@@ -14,10 +14,10 @@
         <div class="col-md-12">
             <div class="form-group ps-2">
                 <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IsNotfromMFI, new { @class = "form-check-input", id = "IsNotfromMFI" })
-                    <label class="form-check-label" for="IsfromMFI">Is Not From MFI( Not from Micro-Finance)</label>
+                    @Html.CheckBoxFor(m => m.External, new { @class = "form-check-input", id = "External" })
+                    <label class="form-check-label" for="IsfromMFI">External( Not from Micro-Finance)</label>
                 </div>
-                @Html.ValidationMessageFor(m => m.IsNotfromMFI, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.External, "", new { @class = "text-danger" })
             </div>
         </div>
 

@@ -76,38 +76,136 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(CategoryConfig model)
         {
-            if (model.Id == null)
+            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
+            if (string.IsNullOrWhiteSpace(model.Id))
             {
-                if (ModelState.IsValid)
-                {
-                    var data = await _CategoryConfigService.CreateCategoryAsync(model);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                }
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, message = "Validation failed." });
+
+                var result = await _CategoryConfigService.CreateCategoryAsync(model);
+                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
             else
             {
-                await Update(model);
+                // IMPORTANT: return the ActionResult from Update
+                return await Update(model);
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            // unreachable now but keep for safety (or remove)
+            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult> CreateOrUpdate(CategoryConfig model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        // For a validation failure, success should definitely be false.
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            status = "ValidationError", // Provide a more specific status
+        //            message = "Validation failed. Please check the form for errors."
+        //        });
+        //    }
+
+        //    ExecutionMessages result;
+        //    string operationType;
+
+        //    if (string.IsNullOrWhiteSpace(model.Id))
+        //    {
+        //        result = await _CategoryConfigService.CreateCategoryAsync(model);
+        //        operationType = "Insert";
+        //    }
+        //    else
+        //    {
+        //        result = await _CategoryConfigService.UpdateCategoryAsync(model);
+        //        operationType = "Update";
+        //    }
+
+        //    bool isAjaxSuccess = result.Result ||
+        //                         (result.MessageStatus == SystemMessageStatus.Exist.ToString());
+
+        //     return Json(new
+        //    {
+        //        success = isAjaxSuccess,
+        //        status = result.MessageStatus,
+        //        message = Messaging.MessageResult(result),
+        //        optype = operationType,
+        //        reloadDataView = "Yes",
+        //        controllerName = "Categoryconfic",
+        //        divLoaderList = "datalistingview",
+        //        tableName = "myDataTable",
+        //        dataLoaderActionName = "_CategoryDataTable",
+        //        divLoaderCreator = "datalistingview",
+        //        reinitializedActionName = "_Categories"
+        //    });
+        //}
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(CategoryConfig model)
         {
-            if (ModelState.IsValid)
-            {
-                var data = await _CategoryConfigService.UpdateCategoryAsync(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            var result = await _CategoryConfigService.UpdateCategoryAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpGet]
+        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
             var result = await _CategoryConfigService.DeactivateCategoryAsync(KEY);
-            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
+
+            // Map to simple JSON shape the client expects. Adjust if result has different property names.
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
+
+
+
+        //[HttpGet]
+        //public async Task<ActionResult> Delete(string KEY)
+        //{
+        //    var result = await _CategoryConfigService.DeactivateCategoryAsync(KEY);
+
+        //    // Your DeleteRecordDataTable script expects a full response object
+        //    // so it knows what/how to reload.
+        //    if (result.Result)
+        //    {
+        //        // On success, return a message AND instructions to reload the data.
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            status = result.MessageStatus,
+        //            message = Messaging.MessageResult(result),
+        //            // The reload instructions:
+        //            controller = "Categoryconfic",
+        //            datatable = "myDataTable",
+        //            PartialView = "_CategoryDataTable",
+        //            pr = 0,
+        //            div = "datalistingview",
+        //            id = (string)null,
+        //            path = "list"
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+
+        //    // On failure, just return the error message.
+        //    return Json(new
+        //    {
+        //        success = false,
+        //        status = result.MessageStatus,
+        //        message = Messaging.MessageResult(result)
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
+
+
     }
 }

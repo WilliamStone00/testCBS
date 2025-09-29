@@ -19,52 +19,52 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             new FeeConfig
             {
-                Id = "FeeConfig961205778227",
-                IsCentralized = true,
-                BranchId = null,
-                BranchName = "Central Branch",
-                Description = "Configuration centralisée",
-                FeeType = "CashIn",
-                AcceptPercentage = true,
-                PercentageApplied = 2.5,
-                AcceptRange = false,
+                id = "FeeConfig961205778227",
+                isCentralized = true,
+                branchId = null,
+                branchName = "Central Branch",
+                description = "Configuration centralisée",
+                feeType = "CashIn",
+                acceptPercentage = true,
+                percentageApplied = 2.5,
+                acceptRange = false,
                 IsActive = true,
-                FeeTypeRanges = new List<Range> { new Range { FromAmount = 0, ToAmount = 1000, Fee = 10 } }
+                feeTypeRanges = new List<Range> { new Range { amountFrom = 0, amountTo = 1000, value = 10 } }
             },
             new FeeConfig
             {
-                Id = "FeeConfig731204065348",
-                IsCentralized = false,
-                BranchId = "BR123",
-                BranchName = "Main Branch",
-                Description = "Configuration par branche",
-                FeeType = "CashOut",
-                AcceptPercentage = false,
-                PercentageApplied = null,
-                AcceptRange = true,
+                id = "FeeConfig731204065348",
+                isCentralized = false,
+                branchId = "BR123",
+                branchName = "Main Branch",
+                description = "Configuration par branche",
+                feeType = "CashOut",
+                acceptPercentage = false,
+                percentageApplied = null,
+                acceptRange = true,
                 IsActive = true,
-                FeeTypeRanges = new List<Range>
+                feeTypeRanges = new List<Range>
                 {
-                    new Range { FromAmount = 0, ToAmount = 500, Fee = 5 },
-                    new Range { FromAmount = 500.01m, ToAmount = 2000, Fee = 15 }
+                    new Range { amountFrom = 0, amountTo = 500, value = 5 },
+                    new Range { amountFrom = 500.01m, amountTo = 2000, value = 15 }
                 }
             },
             new FeeConfig
             {
-                Id = "FeeConfigABCDEFGHIJKL",
-                IsCentralized = true,
-                BranchId = null,
-                BranchName = "Central Branch",
-                Description = "Frais de carnet de chèques",
-                FeeType = "CheckFee",
-                AcceptPercentage = false,
-                PercentageApplied = null,
-                AcceptRange = true,
+                id = "FeeConfigABCDEFGHIJKL",
+                isCentralized = true,
+                branchId = null,
+                branchName = "Central Branch",
+                description = "Frais de carnet de chèques",
+                feeType = "CheckFee",
+                acceptPercentage = false,
+                percentageApplied = null,
+                acceptRange = true,
                 IsActive = true,
-                FeeTypeRanges = new List<Range>
+                feeTypeRanges = new List<Range>
                 {
-                    new Range { FromAmount = 0, ToAmount = 10000, Fee = 2500 },
-                    new Range { FromAmount = 10001, ToAmount = 50000, Fee = 5000 }
+                    new Range { amountFrom = 0, amountTo = 10000, value = 2500 },
+                    new Range { amountFrom = 10001, amountTo = 50000, value = 5000 }
                 }
             }
         };
@@ -84,9 +84,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                     query = _mockFeeConfigs.ToList();
                 }
 
-                if (centralized.HasValue) query = query.Where(c => c.IsCentralized == centralized.Value);
-                if (!string.IsNullOrEmpty(feeType)) query = query.Where(c => c.FeeType.Equals(feeType, StringComparison.OrdinalIgnoreCase));
-                if (!string.IsNullOrEmpty(branchId)) query = query.Where(c => c.BranchId == branchId);
+                if (centralized.HasValue) query = query.Where(c => c.isCentralized == centralized.Value);
+                if (!string.IsNullOrEmpty(feeType)) query = query.Where(c => c.feeType.Equals(feeType, StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrEmpty(branchId)) query = query.Where(c => c.branchId == branchId);
 
                 return Task.FromResult(query.ToList().AsEnumerable());
             }
@@ -98,12 +98,12 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 {
                     summaryList = _mockFeeConfigs.Select(c => new FeeConfig
                     {
-                        Id = c.Id,
-                        FeeType = c.FeeType,
-                        Description = c.Description,
+                        id = c.id,
+                        feeType = c.feeType,
+                        description = c.description,
                         IsActive = c.IsActive,
-                        IsCentralized = c.IsCentralized,
-                        BranchName = c.BranchName
+                        isCentralized = c.isCentralized,
+                        branchName = c.branchName
                     }).ToList();
                 }
                 return Task.FromResult(summaryList.AsEnumerable());
@@ -128,7 +128,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
                 if (string.IsNullOrWhiteSpace(id)) return Task.FromResult<FeeConfig>(null);
                 lock (_mockLock)
                 {
-                    var cfg = _mockFeeConfigs.FirstOrDefault(c => c.Id == id);
+                    var cfg = _mockFeeConfigs.FirstOrDefault(c => c.id == id);
                     return Task.FromResult(cfg);
                 }
             }
@@ -137,7 +137,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
 
             public Task<ExecutionMessages> CreateMockAsync(FeeConfig model)
             {
-                model.Id = "FeeConfig" + Guid.NewGuid().ToString("N");
+                model.id = "FeeConfig" + Guid.NewGuid().ToString("N");
                 lock (_mockLock)
                 {
                     _mockFeeConfigs.Add(model);
@@ -150,7 +150,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
 
             public Task<ExecutionMessages> UpdateMockAsync(FeeConfig model)
             {
-                if (model == null || string.IsNullOrWhiteSpace(model.Id))
+                if (model == null || string.IsNullOrWhiteSpace(model.id))
                 {
                     GetExecutionMessages(model, false, "FeeConfig", MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, "Invalid model or Id.");
                     return Task.FromResult(ExecutionMessage);
@@ -158,19 +158,19 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
 
                 lock (_mockLock)
                 {
-                    var existing = _mockFeeConfigs.FirstOrDefault(c => c.Id == model.Id);
+                    var existing = _mockFeeConfigs.FirstOrDefault(c => c.id == model.id);
                     if (existing != null)
                     {
-                        existing.FeeType = model.FeeType;
-                        existing.Description = model.Description;
-                        existing.IsCentralized = model.IsCentralized;
-                        existing.BranchId = model.BranchId;
-                        existing.BranchName = model.BranchName;
-                        existing.AcceptPercentage = model.AcceptPercentage;
-                        existing.PercentageApplied = model.PercentageApplied;
-                        existing.AcceptRange = model.AcceptRange;
+                        existing.feeType = model.feeType;
+                        existing.description = model.description;
+                        existing.isCentralized = model.isCentralized;
+                        existing.branchId = model.branchId;
+                        existing.branchName = model.branchName;
+                        existing.acceptPercentage = model.acceptPercentage;
+                        existing.percentageApplied = model.percentageApplied;
+                        existing.acceptRange = model.acceptRange;
                         existing.IsActive = model.IsActive;
-                        existing.FeeTypeRanges = model.FeeTypeRanges ?? new List<Range>();
+                        existing.feeTypeRanges = model.feeTypeRanges ?? new List<Range>();
 
                         GetExecutionMessages(existing, true, "FeeConfig", MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Updated");
                     }
@@ -194,7 +194,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
 
                 lock (_mockLock)
                 {
-                    var itemToRemove = _mockFeeConfigs.FirstOrDefault(c => c.Id == id);
+                    var itemToRemove = _mockFeeConfigs.FirstOrDefault(c => c.id == id);
                     if (itemToRemove != null)
                     {
                         _mockFeeConfigs.Remove(itemToRemove);

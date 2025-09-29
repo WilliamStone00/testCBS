@@ -1393,18 +1393,31 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class AddOtherTransactionCommand
     {
-        public string EnventName { get; set; }
+
         public decimal Amount { get; set; }
-        public string EventCode { get; set; }
         public string Direction { get; set; }
         public string Name { get; set; }
         public string Naration { get; set; }
+        public bool IsOtherSource { get; set; }
+        public string OtherSourceOfAccountId { get; set; }
         public string TransactionType { get; set; }//Income Or Expenses
         public string SourceType { get; set; }//Cash_Collection Or Member_Account
         public string CustomerId { get; set; }
         public string AccountNumber { get; set; }
         public string ExternalBranchId { get; set; }
+        public List<AccountAmountCollection> AccountAmountCollections { get; set; }
         public CurrencyNotes CurrencyNotesRequest { get; set; }
+        public string CNI { get; set; }
+        public string TelephoneNumber { get; set; }
+      
+    }
+    public class AccountAmountCollection
+    {
+
+        public string AccountId { get; set; }   // Generated from rule
+        public decimal Amount { get; set; }
+        public string Naration { get; set; }
+
     }
     public class AddOtherTransactionMobileMoneyCommand
     {

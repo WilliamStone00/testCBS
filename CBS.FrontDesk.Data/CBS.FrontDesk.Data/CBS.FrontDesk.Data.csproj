@@ -132,6 +132,8 @@
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
+    <Compile Include="Entity\CheckManagementSystem\ChequeCertification\ChequeCertificationDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceQuery.cs" />
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceValidation.cs" />
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\OptionRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
@@ -142,6 +144,18 @@
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckbookDetailDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckbookDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckLeafDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CustomerCheckbooksDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\LossRequestDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationHistory\NotificationHistoryDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeBookListing\ChequeBook.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationRequest.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationValidatiion.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeRequest\ChequeBookRequest.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\CounterCheque\CounterCheque.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\CustomerDataDto.cs" />
     <Compile Include="Entity\Class1.cs" />
     <Compile Include="Entity\CMoney\CMoneyMembersActivationAccount.cs" />
     <Compile Include="Entity\DailyCollectionData\AgentAccount\AgentAccount.cs" />
@@ -205,6 +219,7 @@
     <Compile Include="Entity\RequestManagement\SuspiciousPath.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryExtract.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
     <Compile Include="Entity\SMSP\Sms.cs" />

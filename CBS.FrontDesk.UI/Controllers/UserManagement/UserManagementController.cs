@@ -246,6 +246,7 @@ namespace CBS.FrontDesk.UI.Controllers.UserManagement
             }
         }
 
+      
 
         [HttpPost]
         public async Task<ActionResult> LoadUsers(GetAllUsersDataTableQuery query)

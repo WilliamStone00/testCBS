@@ -13,7 +13,7 @@
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Always choose either Cheque is from MFI or Not.
+            Always choose either Cheque is Internal  or External .
         </div>
     </div>
 </div>
@@ -21,15 +21,20 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CLEARANCE</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="true">
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClearanceTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseClearanceTips" class="collapse show">
         <div class="card-body">
             <ul>
-                <li><strong>Configuration Scope:</strong> Use 'Is Not from MFI (Not from Micro-Finance)' if the cheque is found in the system — check the box.</li>
-                <li><strong>Load Configuration:</strong> After filling the information click 'Load' to fetch existing settings.</li>
+                <li><strong>Verify Cheque Details:</strong> Ensure the cheque number, amount, and account match the customer’s information before processing.</li>
+                <li><strong>Check Account Balance:</strong> Confirm that the issuing account has sufficient funds to avoid rejection.</li>
+                <li><strong>Endorsements:</strong> Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</li>
+                <li><strong>External vs Internal:</strong> Use <em>External</em> if the cheque originates from another Microfinance ; select <em>Internal</em> if it’s from the same branch/system.</li>
+                <li><strong>Load Configuration:</strong> Use the <em>Load</em> button to fetch and validate existing cheque details before clearance.</li>
+                <li><strong>Hold Period:</strong> Be aware of clearance/hold periods for external cheques before confirming availability of funds.</li>
+                <li><strong>Final Approval:</strong> Some clearances may require supervisor authorization; check workflow rules before confirming.</li>
             </ul>
         </div>
     </div>
@@ -37,13 +42,16 @@
 
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <a href="javascript:;" class="btn btn-label-primary btn-sm me-2" onclick="loadClearanceList()">
+
+        <a type="button" onclick=" LoadDataGen('ChequeClearance', 'myDataTable', '_ChequeClearanceDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
+
 
         <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MainForm','new','ChequeClearance')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
             <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
         </a>
+
     </div>
 </div>
 
@@ -54,14 +62,16 @@
 
 <div id="createViewContainer"></div>
 
+@Html.Partial("_DiscountModal", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.Discount())
+
 @section Scripts {
 
-  @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
 $(document).ready(function () {
 
-    // toggle fields when IsNotfromMFI changes
-    $(document).on("change", "#IsNotfromMFI", function () {
+    // toggle fields when External changes
+    $(document).on("change", "#External", function () {
         if ($(this).is(":checked")) {
             $("#BranchId").closest(".col-md-6").hide();
             $("#CheckBookNumber").closest(".col-md-6").hide();
@@ -77,9 +87,11 @@ $(document).ready(function () {
     $("#loadConfigBtn").click(function (e) {
         e.preventDefault();
 
+
+
         var payload = {
             serviceOption: JSON.stringify({
-                IsNotfromMFI: $("#IsNotfromMFI").is(":checked"),
+                External: $("#External").is(":checked"),
                 BranchId: $("#BranchId").val(),
                 CheckBookNumber: $("#CheckBookNumber").val(),
                 CheckBookPageNumber: $("#CheckBookPageNumber").val()
@@ -120,23 +132,55 @@ $(document).ready(function () {
     }
 });
 
+
+
+
 // load list
-function loadClearanceList() {
-    $.ajax({
-        url: '@Url.Action("InitializeData", "ChequeClearance")',
-        method: 'POST',
-        data: { path: 'list', partialView: '_ChequeClearanceDataTable' },
-        success: function (html) {
-            $("#datalistingview").html(html);
-            if ($.fn.DataTable) {
-                $('#myDataTable').DataTable();
-            }
-        },
-        error: function (xhr, status, err) {
-            alert("Failed to load list: " + (xhr.statusText || status));
-        }
-    });
-}
+
+
+
+
+        window.clearanceSubmitAjax = function (form) {
+            var $form = $(form);
+            if (!$form.length) return false;
+
+            // Basic client-side validation
+            try { $.validator.unobtrusive.parse($form); } catch (e) { }
+            if (!$form.valid()) return false;
+
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.html();
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+            var ajaxOptions = {
+                url: $form.attr('action'),
+                type: $form.attr('method') || 'POST',
+                data: isMultipart ? new FormData(form) : $form.serialize(),
+                contentType: isMultipart ? false : 'application/x-www-form-urlencoded; charset=UTF-8',
+                processData: !isMultipart,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (res) {
+                    if (res.success) {
+                        appalert(res.message, 1, 1);
+                        if (typeof cancellationTable !== 'undefined') cancellationTable.ajax.reload();
+                    } else {
+                        appalert(res.message, 2, 1);
+                    }
+                },
+                error: function () {
+                    appalert('An error occurred while processing your request.', 4, 1);
+                },
+                complete: function () {
+                    $submit.prop('disabled', false).html(origHtml);
+                }
+            };
+
+            $.ajax(ajaxOptions);
+            return false; // prevent default form submission
+        };
+
 
 // details
 function ViewDetails(id) {
@@ -151,6 +195,6 @@ function ViewDetails(id) {
             alert("Could not load details.");
         }
     });
-}
+        }
     </script>
-    }
+}
