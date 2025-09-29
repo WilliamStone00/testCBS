@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Config;
+﻿using CBS.BusinessService.CheckManagementSystem.LossManagementSystem;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -14,10 +15,12 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
     public class LossManagementController : BaseController
     {
         private readonly LossManagementService _lossManagementService;
+        private readonly MockLossManagementService _mockCustomerCheckbooks;
 
-        public LossManagementController(LossManagementService lossManagementService)
+        public LossManagementController(LossManagementService lossManagementService, MockLossManagementService mockCustomerCheckbooks)
         {
             _lossManagementService = lossManagementService;
+            _mockCustomerCheckbooks = mockCustomerCheckbooks;
         }
 
         // GET: LossManagement - Landing page with search input
@@ -34,50 +37,97 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
                 return Json(new { success = false, message = "Member Reference is required." });
             }
 
-            var result = await _lossManagementService.GetCustomerCheckbooks(memberRef);
+            var result = await _mockCustomerCheckbooks.GetCustomerCheckbooks(memberRef);
             if (result != null && result.Checkbooks.Any())
             {
-                // Return as partial view for table display
                 return PartialView("_CheckbooksTable", result);
             }
 
-            return Json(new { success = false, message = "No checkbooks found for this customer." });
+            return PartialView("_NoCheckbooksFound");
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetCheckLeavesByCheckbook(int checkBookId)
+        public async Task<ActionResult> GetCheckLeavesByCheckbook(string checkBookId)
         {
-            var result = await _lossManagementService.GetCheckLeavesByCheckbook(checkBookId);
+            var result = await _mockCustomerCheckbooks.GetCheckLeavesByCheckbook(checkBookId);
             if (result != null && result.CheckLeaves.Any())
             {
                 return PartialView("_CheckLeavesTable", result);
             }
 
-            return Json(new { success = false, message = "No check leaves found for this checkbook." });
+            return PartialView("_NoCheckLeavesFound");
         }
 
-        public async Task<ActionResult> RequestLossForCheckbook(int checkBookId)
+        // This should return a partial view for the modal
+        public async Task<ActionResult> RequestLossForCheckbook(string checkBookId)
         {
-            var lossRequestData = await _lossManagementService.RequestLossForCheckbook(checkBookId);
+            var lossRequestData = await _mockCustomerCheckbooks.RequestLossForCheckbook(checkBookId);
             if (lossRequestData != null)
             {
-                return View("LossRequestForm", lossRequestData);
+                return PartialView("_LossRequestForm", lossRequestData);
             }
 
-            TempData["ErrorMessage"] = "Unable to load loss request form for the selected checkbook.";
-            return RedirectToAction("Index");
+            return PartialView("_Error", "Unable to load loss request form for the selected checkbook.");
         }
 
-        public async Task<ActionResult> RequestLossForCheckLeaf(int checkLeafId)
+        // This should return a partial view for the modal
+        public async Task<ActionResult> RequestLossForCheckLeaf(string checkLeafId)
         {
-            var lossRequestData = await _lossManagementService.RequestLossForCheckLeaf(checkLeafId);
+            var lossRequestData = await _mockCustomerCheckbooks.RequestLossForCheckLeaf(checkLeafId);
             if (lossRequestData != null)
             {
-                return View("LossRequestForm", lossRequestData);
+                return PartialView("_LossRequestForm", lossRequestData);
             }
 
-            TempData["ErrorMessage"] = "Unable to load loss request form for the selected check leaf.";
-            return RedirectToAction("Index");
+            return PartialView("_Error", "Unable to load loss request form for the selected check leaf.");
+        }
+
+        // This should return a partial view for the modal with checkbook details AND check leaves
+        public async Task<ActionResult> CheckbookDetails(string checkBookId)
+        {
+            var checkbookDetails = await _mockCustomerCheckbooks.GetCheckbookDetails(checkBookId);
+            if (checkbookDetails != null)
+            {
+                return PartialView("_CheckbookDetails", checkbookDetails);
+            }
+
+            return PartialView("_Error", "Checkbook details not found.");
+        }
+
+        public async Task<ActionResult> CheckLeafDetails(string checkLeafId)
+        {
+            var checkLeafDetails = await _mockCustomerCheckbooks.GetCheckLeafDetails(checkLeafId);
+            if (checkLeafDetails != null)
+            {
+                return PartialView("_CheckLeafDetails", checkLeafDetails);
+            }
+
+            return PartialView("_Error", "Check leaf details not found.");
+        }
+
+        // Add these to your LossManagementController
+        public async Task<ActionResult> GetBranches()
+        {
+            var branches = await _mockCustomerCheckbooks.GetBranches();
+            return Json(branches, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetLossReasons()
+        {
+            var reasons = await _mockCustomerCheckbooks.GetLossReasons();
+            return Json(reasons, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetClientSuggestions()
+        {
+            var suggestions = await _mockCustomerCheckbooks.GetClientSuggestions();
+            return Json(suggestions, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetReportedByOptions()
+        {
+            var options = await _mockCustomerCheckbooks.GetReportedByOptions();
+            return Json(options, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -86,7 +136,7 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
         {
             if (ModelState.IsValid)
             {
-                var result = await _lossManagementService.SubmitLossRequest(request);
+                var result = await _mockCustomerCheckbooks.SubmitLossRequest(request);
                 if (result.Result)
                 {
                     return Json(new
@@ -113,19 +163,6 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
                 status = false,
                 message = "Please fill all required fields correctly."
             });
-        }
-
-        // Additional method for loading details view
-        public async Task<ActionResult> CheckbookDetails(int checkBookId)
-        {
-            var checkbookDetails = await _lossManagementService.GetCheckbookDetails(checkBookId);
-            if (checkbookDetails != null)
-            {
-                return View(checkbookDetails);
-            }
-
-            TempData["ErrorMessage"] = "Checkbook details not found.";
-            return RedirectToAction("Index");
         }
     }
 }

@@ -10653,14 +10653,15 @@
     <Content Include="Views\LossManagement\Index.cshtml" />
     <Content Include="Views\LossManagement\_CheckbooksTable.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
-    <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
-    <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
+    <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
     <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
+    <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
+    <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

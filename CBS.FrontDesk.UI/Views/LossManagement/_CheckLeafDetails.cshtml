@@ -1,0 +1,89 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckLeafDetailDto
+
+<div class="checkleaf-details-modal">
+    <div class="card">
+        <div class="card-header bg-light">
+            <h6 class="mb-0">
+                <i class="mdi mdi-eye-outline me-2"></i>
+                Check Leaf Details
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Check Leaf ID:</dt>
+                        <dd class="col-sm-8">@Model.CheckLeafId</dd>
+
+                        <dt class="col-sm-4">Checkbook ID:</dt>
+                        <dd class="col-sm-8">@Model.CheckBookId</dd>
+
+                        <dt class="col-sm-4">Status:</dt>
+                        <dd class="col-sm-8">
+                            @{
+                                var statusClass = Model.Status.ToLower() == "used" ? "bg-success" :
+                                                Model.Status.ToLower() == "available" ? "bg-primary" :
+                                                Model.Status.ToLower() == "lost" ? "bg-danger" : "bg-warning";
+                            }
+                            <span class="badge @statusClass">@Model.Status</span>
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.LeafNumber))
+                        {
+                            <dt class="col-sm-4">Leaf Number:</dt>
+                            <dd class="col-sm-8">@Model.LeafNumber</dd>
+                        }
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Customer ID:</dt>
+                        <dd class="col-sm-8">@Model.CustomerId</dd>
+
+                        <dt class="col-sm-4">Account Number:</dt>
+                        <dd class="col-sm-8">@Model.AccountNumber</dd>
+
+                        <dt class="col-sm-4">Branch Code:</dt>
+                        <dd class="col-sm-8">@Model.BranchCode</dd>
+
+                        @if (Model.IssueDate.HasValue)
+                        {
+                            <dt class="col-sm-4">Issue Date:</dt>
+                            <dd class="col-sm-8">@Model.IssueDate.Value.ToString("yyyy-MM-dd")</dd>
+                        }
+
+                        @if (Model.ExpiryDate.HasValue)
+                        {
+                            <dt class="col-sm-4">Expiry Date:</dt>
+                            <dd class="col-sm-8">@Model.ExpiryDate.Value.ToString("yyyy-MM-dd")</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Additional information section if needed -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="mdi mdi-information-outline me-2"></i>
+                        This check leaf belongs to checkbook <strong>@Model.CheckBookId</strong> and is currently <strong>@Model.Status</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action buttons at the bottom -->
+    <div class="row mt-3">
+        <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-warning"
+                    onclick="requestLossForCheckLeaf(@Model.CheckLeafId)">
+                <i class="mdi mdi-alert-outline me-1"></i> Report Loss for this Check Leaf
+            </button>
+            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                <i class="mdi mdi-close me-1"></i> Close
+            </button>
+        </div>
+    </div>
+</div>
