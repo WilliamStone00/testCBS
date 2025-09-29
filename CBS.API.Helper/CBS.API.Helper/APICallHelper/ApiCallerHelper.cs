@@ -1975,8 +1975,9 @@ Dictionary<string, string> additionalFields = null)
 
                         }
 
-                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
+                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden|| response.StatusCode == HttpStatusCode.InternalServerError)
                         {
+
 
                             T data;
                             try

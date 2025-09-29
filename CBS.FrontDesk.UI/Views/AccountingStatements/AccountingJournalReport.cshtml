@@ -34,7 +34,7 @@
         <div class="card-body">
             <ul>
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>ENTER THE REFERENCE :</strong>Enter the journal entry accounting reference.</li>
-          
+
             </ul>
         </div>
     </div>
@@ -53,13 +53,15 @@
                 @Html.Partial("_SearchJournalEntryData")
 
             </div>
-           
+            <div id="datalistingview">
+            
+            </div>
 
         </div>
     </div>
 </div>
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
-<script src="~/Scripts/Js/main.js/AccountingStatements.js"></script>
+<script src="~/Scripts/Js/main.js/GetJournalEntryByReference.js"></script>
 }
 

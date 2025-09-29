@@ -1,0 +1,170 @@
+﻿<!-- Views/ChequeRequest/Index.cshtml -->
+@{ ViewBag.Title = "Cheque Book Requests"; }
+@using Resources;
+
+<!-- Header Section -->
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Management
+        </h1>
+    </div>
+</div>
+
+<!-- Action Buttons Card -->
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a type="button" onclick="showDataTableSection()" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="showSearchSection()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="card shadow p-3 mb-4">
+    <!-- Search Section (Initially Visible) -->
+    <div id="searchSection">
+        @Html.Partial("_CustomerSearch")
+    </div>
+
+    <!-- Request Form Section (Initially Hidden) -->
+    <div id="requestFormSection" style="display: none;">
+        <!-- Form will be loaded here dynamically -->
+    </div>
+
+    <!-- DataTable Section (Initially Hidden) -->
+    <div id="dataTableSection" style="display: none;">
+        <!-- DataTable will be loaded here dynamically -->
+    </div>
+</div>
+
+<!-- Action Modal -->
+<div class="modal fade" id="actionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="actionForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="actionType" name="action">
+                    <input type="hidden" id="actionRequestId" name="requestId">
+
+                    <div class="mb-3">
+                        <label for="actionNote" class="form-label">Statement / Reason</label>
+                        <textarea id="actionNote" name="note" class="form-control" rows="4" required
+                                  placeholder="Please provide a statement or reason for this action..."></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Action</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Corrected Script Paths -->
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
+    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>
+
+    <script>
+        // Global section management functions
+        function showSearchSection() {
+            $('#dataTableSection').hide();
+            $('#requestFormSection').hide();
+            $('#searchSection').show();
+
+            // Reset search form
+            if (window.searchManager) {
+                window.searchManager.resetSearch();
+            }
+        }
+
+        function showDataTableSection() {
+            $('#searchSection').hide();
+            $('#requestFormSection').hide();
+            $('#dataTableSection').show();
+
+            // Load data table content if not already loaded
+            if (!$('#dataTableSection').html().trim()) {
+                loadDataTableContent();
+            }
+
+            // Refresh data table if already initialized
+            if (window.dataTableManager && window.dataTableManager.dataTable) {
+                window.dataTableManager.refresh();
+            }
+        }
+
+        function showRequestFormSection() {
+            $('#searchSection').hide();
+            $('#dataTableSection').hide();
+            $('#requestFormSection').show();
+        }
+
+        function loadDataTableContent() {
+            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
+                partialView: '_RequestDataTable',
+                path: 'list'
+            }, function(html) {
+                $('#dataTableSection').html(html);
+
+                // Re-initialize DataTable after content is loaded
+                if (window.dataTableManager) {
+                    window.dataTableManager.initializeDataTable();
+                }
+            });
+        }
+
+        function loadRequestForm() {
+            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
+                partialView: '_ChequeRequestForm',
+                path: 'new'
+            }, function(html) {
+                $('#requestFormSection').html(html);
+
+                // Re-initialize form manager after content is loaded
+                if (window.formManager) {
+                    window.formManager.init();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            // Initialize managers
+            window.searchManager = new SearchManager();
+            window.formManager = new FormManager();
+            window.dataTableManager = new DataTableManager();
+
+            // Show search section by default
+            showSearchSection();
+        });
+    </script>
+}

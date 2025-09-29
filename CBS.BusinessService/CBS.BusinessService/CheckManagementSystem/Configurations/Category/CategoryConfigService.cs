@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
@@ -49,11 +50,11 @@ namespace CBS.BusinessService.CheckManagementSystem
             }
         }
 
-        public async Task<CategoryConfig> GetCategoryByIdAsync(string categoryId)
+        public async Task<CategoryConfig> GetCategoryByIdAsync(string id)
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, categoryId);
+                string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
 
                 // CORRECTED: Access the final payload via .ApiResponseData.Data
@@ -70,6 +71,54 @@ namespace CBS.BusinessService.CheckManagementSystem
             }
         }
 
+        // using System.Web.Mvc; // for SelectListItem in classic ASP.NET MVC
+        // If you're on ASP.NET Core, use Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+
+        public async Task<IEnumerable<CategoryConfig>> GetCategories()
+        {
+            try
+            {
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<CategoryConfig>>>(APICallHelper.GetAllChequeBookCategories);
+                var categories = response?.ApiResponseData?.Data ?? new List<CategoryConfig>();
+
+                // If you have a different permission check for categories, replace IsHeadOffice() accordingly
+                if (!IsHeadOffice())
+                {
+                    // Example: limit categories based on user's branch or permission.
+                    string currentBranchId = GetBranchID();
+                    // adjust filter logic if categories aren't branch-scoped
+                    categories = categories.Where(c => c.branchID == currentBranchId).ToList();
+                }
+                else
+                {
+                    // Add "All" option as the default for head-office users
+                    var defaultCategory = new CategoryConfig
+                    {
+                        Id = "All",
+                        name = "All Categories"
+                    };
+                    categories.Insert(0, defaultCategory);
+                }
+
+                // Format display Name and order by Code (adjust property names if needed)
+                return categories
+                     .Select(category =>
+                     {
+                         category.name = $"[{category.Id}]-[{category.name}]-[{category.basePrice}]";
+                         return category;
+                     })
+                     .OrderBy(category => category.Id)
+                     .ToList();
+            }
+            catch (Exception)
+            {
+                // log if you have a logger, then rethrow or return empty list
+                // _logger.LogError(ex, "Failed getting categories");
+                throw;
+            }
+        }
+
+       
         public async Task<ExecutionMessages> CreateCategoryAsync(CategoryConfig model)
         {
             try
@@ -79,18 +128,18 @@ namespace CBS.BusinessService.CheckManagementSystem
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.name, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+                GetExecutionMessages(model, false, model.name, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
@@ -100,24 +149,27 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.UpdateChequeBookCategory);
+                var catid = model.Id;
+                string formattedUrl = string.Format(APICallHelper.UpdateChequeBookCategory, catid);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<CategoryConfig>>(formattedUrl, model);
 
-                // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    // --- THIS IS THE FIX ---
+                    // We now pass the message from the API response (`response.ApiResponseData?.Message`)
+                    // instead of a hardcoded string.
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.name, MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.name, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+                GetExecutionMessages(model, false, model.name, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
@@ -127,19 +179,12 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             try
             {
-                if (string.IsNullOrEmpty(APICallHelper.DeactivateChequeBookCategory))
-                    throw new InvalidOperationException("DeactivateChequeBookCategory URL is not configured.");
-
                 string formattedUrl = string.Format(APICallHelper.DeactivateChequeBookCategory, categoryId);
-
-                if (_apiCallerHelper == null)
-                    throw new InvalidOperationException("_apiCallerHelper is not initialized.");
-
                 var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
 
-                if (response == null)
-                    throw new InvalidOperationException("API returned null response.");
-
+                // --- THIS IS THE FIX ---
+                // The GetExecutionMessages calls were missing. They are now restored.
+                // They correctly use the message from the API response.
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
@@ -150,7 +195,7 @@ namespace CBS.BusinessService.CheckManagementSystem
                 {
                     GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
-                        response.ApiResponseData?.Message ?? response.Message ?? "Unknown error.");
+                        response.ApiResponseData?.Message ?? response.Message ?? "Failed to deactivate category.");
                 }
             }
             catch (Exception ex)
@@ -159,12 +204,9 @@ namespace CBS.BusinessService.CheckManagementSystem
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
 
-            return ExecutionMessage ?? new ExecutionMessages
-            {
-                MessageString = "No execution message was created.",
-                MessageStatus = MessagesResults.Error.ToString()
-            };
+            return ExecutionMessage;
         }
+
 
 
         public async Task<CustomDataTable> GetDataTableAsync(GetAllUsersDataTableQuery getAllUsersDataTableQuery)
@@ -204,12 +246,12 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             return new CategoryConfig
             {
-                Name = cat.Name,
-                BasePrice = cat.BasePrice,
-                NumberOfPages = cat.NumberOfPages,
-                IssuanceLimitPerCustomerType = cat.IssuanceLimitPerCustomerType,
-                ValidityPeriodInMonths = cat.ValidityPeriodInMonths,
-                IsActive = cat.IsActive,
+                name = cat.name,
+                basePrice = cat.basePrice,
+                numberOfPages = cat.numberOfPages,
+                issuanceLimitPerCustomerType = cat.issuanceLimitPerCustomerType,
+                validityPeriodInMonths = cat.validityPeriodInMonths,
+                isActive = cat.isActive,
             };
         }
 

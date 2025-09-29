@@ -41,7 +41,7 @@
 </div>
 
 <!-- Configuration Selection Area -->
-<div class="card shadow p-3 mb-4">
+<div class="card shadow p-3 mb-4" id="loaddatadiv">
     <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Configuration Scope</h5>
     <div class="row align-items-end">
         <!-- Is Centralized Checkbox -->
@@ -55,7 +55,22 @@
         <!-- Branch Dropdown (Initially Hidden) -->
         <div class="col-md-4" id="branch-selection-container" style="display: none;">
             <label class="form-label fw-bold">Select Branch</label>
-            @Html.DropDownList("branchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchId" })
+
+            @* If ViewBag.Branches is IEnumerable with Id and Name *@
+            <select id="branchId" name="BranchId" class="form-control select2">
+                <option value="">--- Select Branch ---</option>
+                @{
+                    var branches = ViewBag.Branches as IEnumerable<dynamic>;
+                    if (branches != null)
+                    {
+                        foreach (var b in branches)
+                        {
+                            <option value="@b.Id" data-name="@b.Name">@b.Name</option>
+                            ;
+                        }
+                    }
+                }
+            </select>
         </div>
 
         <!-- Fee Type Dropdown -->
@@ -73,10 +88,11 @@
 
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <a type="button" onclick="LoadDataGen('FeeConfig', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+        <a type="button" onclick="LoadDataGen('FeeConfig', 'myDataTable', '_FeeConfigList', 0, 'config-form-container', null, 'list')"
+           class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+        <a type="button" onclick="AddORUpdateGen(null,'config-form-container','_Create','new','FeeConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
             <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
         </a>
     </div>
@@ -86,7 +102,8 @@
 <div id="config-form-container"></div>
 
 @section Scripts {
-    <script>
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
         // Run on document ready
         $(document).ready(function () {
             setupFeeConfigToggles();
@@ -123,6 +140,8 @@
             const serviceOptionsObject = { isCentralized: isCentralized, branchId: branchId, feeType: feeType };
             const serviceOptionString = JSON.stringify(serviceOptionsObject);
 
+            $("#loaddatadiv").hide();
+
             // Explicit POST to get the partial and inject HTML
             $.post('@Url.Action("InitializeData", "FeeConfig")', {
                 partialView: '_Create',
@@ -137,6 +156,34 @@
                 appalert('Failed to load configuration form: ' + err.statusText, 4, 1);
             });
         }
+
+        @*function loadClearanceList() {
+            // Hide the config card
+            $("#configCard").hide();
+
+            // Show the container (in case it was hidden before)
+            $("#createViewContainer").show();
+
+            $.ajax({
+                url: '@Url.Action("InitializeData", "ChequeClearance")',
+                method: 'POST',
+                data: {
+                    path: 'list',
+                    partialView: '_ChequeClearanceDataTable'
+                },
+                success: function (html) {
+                    $("#createViewContainer").html(html);
+
+                    if (window.jQuery && $.fn.DataTable) {
+                        $('#myDataTable').DataTable();
+                    }
+                },
+                error: function (xhr, status, err) {
+                    console.error("InitializeData(list) error:", status, err);
+                    alert("Failed to load list: " + (xhr.statusText || status));
+                }
+            });
+        }*@
 
         // Template for a new range row (returns string)
         function getRangeRowTemplate() {
@@ -184,14 +231,29 @@
             var container = $('#config-form-container');
 
             // Ensure only one fee method active
+            container.on('change', '#AcceptStatus', function () {
+                if ($(this).is(':checked')) {
+                    $('#AcceptRange').prop('checked', false);
+                }
+                if ($(this).is(':checked')) {
+                    $('#AcceptPercentage').prop('checked', false);
+                }
+            });
             container.on('change', '#AcceptPercentage', function () {
                 if ($(this).is(':checked')) {
                     $('#AcceptRange').prop('checked', false);
                 }
+                if ($(this).is(':checked')) {
+                    $('#AcceptStatus').prop('checked', false);
+                }
             });
+
             container.on('change', '#AcceptRange', function () {
                 if ($(this).is(':checked')) {
                     $('#AcceptPercentage').prop('checked', false);
+                }
+                if ($(this).is(':checked')) {
+                    $('#AcceptStatus').prop('checked', false);
                 }
             });
 
@@ -298,5 +360,7 @@
                 }
             );
         }
-    </script>
+
+
+</script>
 }

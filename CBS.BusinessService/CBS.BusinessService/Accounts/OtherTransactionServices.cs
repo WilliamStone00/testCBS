@@ -3,7 +3,9 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.Helper;
 using System;
 using System.Collections.Generic;
@@ -11,17 +13,18 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.BusinessService.Accounts
 {
     public class OtherTransactionServices : BaseService
     {
-        private readonly ApiCallerHelper _savingConfigApiHelper;
+        private readonly ApiCallerHelper _transactionApiHelper;
         private readonly BranchServices _branchServices;
 
         public OtherTransactionServices()
         {
-            _savingConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
+            _transactionApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = new BranchServices();
         }
 
@@ -30,7 +33,7 @@ namespace CBS.BusinessService.Accounts
             try
             {
                 var objOtherTransaction = await GetOtherTransaction(id);
-                var inResponse = await _savingConfigApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_OtherTransaction, id), id));
+                var inResponse = await _transactionApiHelper.DeleteAsync<ServiceResponse<bool>>(string.Format(string.Format(APICallHelper.Get_Update_Delete_OtherTransaction, id), id));
                 if (inResponse.IsSuccess)
                 {
 
@@ -56,7 +59,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<OtherTransaction>>>(APICallHelper.GetAllOtherTransaction);
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<List<OtherTransaction>>>(APICallHelper.GetAllOtherTransaction);
                 var branches = await _branchServices.GetBranches();
 
                 if (IsHeadOffice())
@@ -128,7 +131,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var cusResponseObject = await _savingConfigApiHelper.GetAsync<ResponseObject<OtherTransaction>>(string.Format(APICallHelper.Get_Update_Delete_OtherTransaction, id));
+                var cusResponseObject = await _transactionApiHelper.GetAsync<ResponseObject<OtherTransaction>>(string.Format(APICallHelper.Get_Update_Delete_OtherTransaction, id));
                 if (cusResponseObject.IsSuccess)
                 {
                     return cusResponseObject.ApiResponseData.Data;
@@ -141,33 +144,65 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-        public async Task<ExecutionMessages> Create(OtherTransaction model)
-        {
-            try
-            {
-                var response = await _savingConfigApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, model);
-                if (response.IsSuccess)
-                {
-                    // Successful creation
-                    GetExecutionMessages(response, true, $"{model.EnventName}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
-                    return ExecutionMessage;
-                }
-                else
-                {
-                    // Failed creation
-                    GetExecutionMessages(model, false, $"{model.EnventName}", MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log and handle exception
-                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
-                    SystemMessageStatus.Failed.ToString(), ex);
-            }
-            return ExecutionMessage;
-        }
+        //public async Task<ExecutionMessages> Create(AddOtherTransactionCommand a)
+        //{//OtherCashIn
+        //    try
+        //    {
+        //        var (isValid, discrepancyMessage) = ValidateDenominations(a.CurrencyNotesRequest, a.Amount);
+
+        //        if (!isValid)
+        //        {
+        //            string errorMessage = $"Other cashIn has a discrepancy. {discrepancyMessage}";
+        //            GetExecutionMessages(null, false, null, MessagesResults.Failed,
+        //               ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+        //            return ExecutionMessage;
+        //        }
+        //        var addOtherTransaction = new AddOtherTransactionCommand
+        //        {
+        //            AccountNumber = a.AccountNumber,
+        //            Amount = a.Amount,
+        //            ExternalBranchId = a.ExternalBranchId,
+        //            CurrencyNotesRequest = a.CurrencyNotesRequest,
+        //            CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account")) ? a.CustomerId
+        //     : "N/A",
+        //            Direction = "",
+        //            Name = a.Name,
+        //            Naration = a.Naration = string.IsNullOrEmpty(a.Naration) ? "N/A" : a.Naration,
+        //            SourceType = a.SourceType, AccountAmountCollections = a.AccountAmountCollections,
+        //            TransactionType = "Income"
+        //        };
+        //        if (addOtherTransaction.ExternalBranchId == null)
+        //        {
+        //            addOtherTransaction.ExternalBranchId = GetBranchID();
+        //        }
+        //        var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
+        //        if (response.ApiResponseData != null)
+        //        {
+        //            Branch branch = RetrieveBranchFromSession();
+        //            var rpt = MapToDto(branch, response.ApiResponseData.Data);
+        //            var rptSource = new List<OtherTransactionDto>();
+        //            rptSource.Add(rpt);
+        //            HttpContext.Current.Session["rptSource"] = rptSource;
+        //            GetExecutionMessages(response, true, null, MessagesResults.Success,
+        //                ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+        //            return ExecutionMessage;
+        //        }
+        //        else
+        //        {
+        //            // Failed creation
+        //            GetExecutionMessages(null, false, null, MessagesResults.Failed,
+        //                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log and handle exception
+        //        GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+        //            SystemMessageStatus.Failed.ToString(), ex);
+        //    }
+        //    return ExecutionMessage;
+        //}
 
     }
 

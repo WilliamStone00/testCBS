@@ -250,10 +250,14 @@
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
+
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\ChequeClearanceService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\MockCheckClearanceService.cs" />
+
+    <Compile Include="Accounts\SalaryProcessedServices.cs" />
+
     <Compile Include="CheckManagementSystem\Configurations\Category\CategoryConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\MockFeeConfigService.cs" />
@@ -262,6 +266,15 @@
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\LossManagementService.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\MockLossManagementService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryService.cs" />
+    <Compile Include="CheckManagementSystem\CustomerService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookMockService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestMockService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestMockService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestService.cs" />
+    <Compile Include="CheckManagementSystem\Operations\CounterCheque\CounterChequeService.cs" />
     <Compile Include="CustomerManagement\DailySaverServices.cs" />
     <Compile Include="DailyCollectionServices\DailyCollectionEndOfDayServices.cs" />
     <Compile Include="Accounting\DocumentTypeServices.cs" />

@@ -1,0 +1,192 @@
+﻿@{ ViewBag.Title = "Notification History"; }
+@using Resources
+
+<!-- =================================================
+     PAGE HEADER
+================================================== -->
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-history me-2"></i> Notification History
+        </h1>
+        <p class="card-text text-muted mb-1">
+            Search and review the history of all automated notifications sent by the system.
+        </p>
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            <strong>How to Search:</strong> You must select a search criteria (either Branch or Customer ID) and click the "Search" button to load data.
+        </div>
+        <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+    </div>
+</div>
+
+
+<!-- =================================================
+     TIPS SECTION (Collapsible)
+================================================== -->
+<div class="card mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Searching History</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item">
+                    <strong>Choose Your Search Method:</strong> Start by using the "Search By" dropdown. This changes the input field to allow you to search for all notifications sent to a specific `Branch` or a single `Customer ID`.
+                </li>
+                <li class="list-group-item">
+                    <strong>Branch Search:</strong> When searching by branch, you will see a complete history of all notifications related to that branch's activities. This is useful for branch-level audits.
+                </li>
+                <li class="list-group-item">
+                    <strong>Customer ID Search:</strong> When searching by Customer ID, you will see all notifications sent directly to that specific customer. This is useful for investigating a customer's query.
+                </li>
+                <li class="list-group-item">
+                    <strong>Review Content:</strong> The "Content" column in the results table shows the exact message that was sent. For long messages, hover over the text to see the full content in a tooltip.
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<!-- Search/Filter Section -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-magnify me-1"></i> Search Notification History</h5>
+    <div class="card p-3 mb-3 bg-light border">
+        <div class="row g-3 align-items-end">
+            <!-- Search Type Selector -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Search By:</label>
+                <select id="searchBy" class="form-control select2">
+                    <option value="branch" selected>Branch</option>
+                    <option value="customer">Customer ID</option>
+                </select>
+            </div>
+
+            <!-- Branch Search Input (Visible by default) -->
+            <div id="branchSearchContainer" class="col-md-7">
+                <label class="form-label">Select Branch</label>
+                @Html.DropDownList("branchSearchValue", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select a Branch ---", new { @class = "form-control select2" })
+            </div>
+
+            <!-- Customer Search Input (Initially Hidden) -->
+            <div id="customerSearchContainer" class="col-md-7" style="display:none;">
+                <label class="form-label">Enter Customer ID</label>
+                <input type="text" id="customerSearchValue" class="form-control" placeholder="Enter full Customer ID..." />
+            </div>
+
+            <!-- Action Button -->
+            <div class="col-md-2">
+                <button id="applyFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify"></i> Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DataTable Container -->
+<div class="card shadow p-3">
+    <div class="table-responsive">
+        <table id="historyDataTable" class="table table-hover" style="width:100%;">
+            <thead class="table-light">
+                <tr>
+                    <th>Customer</th>
+                    <th>Branch</th>
+                    <th>Notification Type</th>
+                    <th>Sent Date</th>
+                    <th>Content</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+    $(document).ready(function() {
+        let dataTable = null; // Holds the DataTable instance
+
+        // --- Initialize UI ---
+        $('.select2').select2({ width: '100%' });
+
+        // --- Event Handlers ---
+
+        // Toggle visibility of search inputs when the 'Search By' dropdown changes
+        $('#searchBy').on('change', function() {
+            const selected = $(this).val();
+            if (selected === 'branch') {
+                $('#branchSearchContainer').show();
+                $('#customerSearchContainer').hide();
+            } else {
+                $('#branchSearchContainer').hide();
+                $('#customerSearchContainer').show();
+            }
+        });
+
+        // "Search" button click handler
+        $('#applyFilterBtn').on('click', function () {
+            const searchBy = $('#searchBy').val();
+            const value = (searchBy === 'branch')
+                ? $('#branchSearchValue').val()
+                : $('#customerSearchValue').val();
+
+            if (!value) {
+                appalert('Please select a branch or enter a customer ID to search.', 2, 1);
+                return;
+            }
+
+            // Initialize or reload the DataTable with new search criteria
+            if (!dataTable) {
+                dataTable = initializeDataTable(searchBy, value);
+            } else {
+                // Change the AJAX URL and reload
+                let newUrl = `@Url.Action("LoadHistoryData", "NotificationHistory")?searchBy=${searchBy}&value=${value}`;
+                dataTable.ajax.url(newUrl).load();
+            }
+        });
+
+        // --- DataTable Initialization Function ---
+        function initializeDataTable(searchBy, value) {
+            return $('#historyDataTable').DataTable({
+                "processing": true,
+                "serverSide": false, // This is CLIENT-SIDE processing, as the full list is returned
+                "ajax": {
+                    "url": `@Url.Action("LoadHistoryData", "NotificationHistory")`,
+                    "type": "POST",
+                    "data": {
+                        // Pass the filter criteria to the controller
+                        searchBy: searchBy,
+                        value: value
+                    },
+                    // The 'dataSrc' property points to the array in the JSON response
+                    "dataSrc": "data"
+                },
+                "columns": [
+                    { "data": "CustomerName", "defaultContent": "" },
+                    { "data": "BranchName", "defaultContent": "" },
+                    { "data": "NotificationType" },
+                    {
+                        "data": "SentDate",
+                        "render": function(data) { return data ? new Date(data).toLocaleString() : ''; }
+                    },
+                    {
+                        "data": "Content",
+                        // Truncate long content for better display
+                        "render": function(data) {
+                             return data && data.length > 50 ?
+                                `<span title="${data}">${data.substring(0, 50)}...</span>` :
+                                data;
+                        }
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No notification history found. Please apply a search filter."
+                }
+            });
+        }
+    });
+    </script>
+}

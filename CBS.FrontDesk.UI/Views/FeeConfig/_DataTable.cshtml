@@ -10,13 +10,13 @@
     <td style="width: 30%;">
         <input type="hidden" name="FeeTypeRanges.Index" value="@index" />
         <input type="hidden" name="FeeTypeRanges[@index].Id" value="@Model?.Id" />
-        <input type="number" step="0.01" name="FeeTypeRanges[@index].FromAmount" value="@(Model?.FromAmount.ToString() ?? "")" class="form-control" />
+        <input type="number" step="0.01" name="FeeTypeRanges[@index].FromAmount" value="@(Model?.amountFrom.ToString() ?? "")" class="form-control" />
     </td>
     <td style="width: 30%;">
-        <input type="number" step="0.01" name="FeeTypeRanges[@index].ToAmount" value="@(Model?.ToAmount.ToString() ?? "")" class="form-control" />
+        <input type="number" step="0.01" name="FeeTypeRanges[@index].ToAmount" value="@(Model?.amountTo.ToString() ?? "")" class="form-control" />
     </td>
     <td style="width: 30%;">
-        <input type="number" step="0.01" name="FeeTypeRanges[@index].Fee" value="@(Model?.Fee.ToString() ?? "")" class="form-control" />
+        <input type="number" step="0.01" name="FeeTypeRanges[@index].Fee" value="@(Model?.value.ToString() ?? "")" class="form-control" />
     </td>
     <td class="text-center" style="width: 10%;">
         <button type="button" class="btn btn-sm btn-outline-danger remove-range-row" title="Remove this row">

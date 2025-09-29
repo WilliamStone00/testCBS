@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account description.
+        ///   Looks up a localized string similar to Account Description.
         /// </summary>
         internal static string AccountDescription {
             get {

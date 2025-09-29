@@ -920,7 +920,7 @@ loadAccountByIdWithCallBack(123, (error, account) => {
 
         // Update form state
         const isBasketEmpty = basket.length === 0;
-        $('#EntryTempData_Reference, #EntryTempData_Description').prop('disabled', !isBasketEmpty);
+        //$('#EntryTempData_Reference, #EntryTempData_Description').prop('disabled', !isBasketEmpty);
 
         $('#basket_Label').text(`Reference: ${item.reference}`);
 

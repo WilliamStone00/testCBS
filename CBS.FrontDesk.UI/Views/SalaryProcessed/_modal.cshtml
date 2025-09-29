@@ -1,0 +1,87 @@
+﻿<!-- Processed Salary – Details Modal -->
+<div class="modal fade" id="salaryDetailModal" tabindex="-1" aria-labelledby="salaryDetailTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header bg-light border-bottom sticky-top">
+                <div class="d-flex flex-column">
+                    <h5 class="modal-title d-flex align-items-center gap-2">
+                        <i class="mdi mdi-file-document-outline text-primary"></i>
+                        <span id="salaryDetailTitle">Processed Salary – Detail</span>
+                        <span id="salaryDetailStatus" class="badge ms-2 align-middle"></span>
+                    </h5>
+                    <small id="salaryDetailSub" class="text-muted">
+                        <span class="me-2"><i class="mdi mdi-account"></i> <span id="salaryDetailName">—</span></span>
+                        <span class="me-2"><i class="mdi mdi-card-account-details-outline"></i> Ref: <span id="salaryDetailRef">—</span></span>
+                        <span class="me-2"><i class="mdi mdi-bank-outline"></i> <span id="salaryDetailBranch">—</span></span>
+                    </small>
+                </div>
+
+                <div class="ms-auto d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-secondary" id="salaryDetailPrintBtn" type="button" title="Print">
+                        <i class="mdi mdi-printer"></i> Print
+                    </button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Tips (collapsible) -->
+            <div class="px-3 pt-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted d-flex align-items-center">
+                        <i class="mdi mdi-lightbulb-on-outline me-1"></i> Helpful tips
+                    </small>
+                    <button class="btn btn-link btn-sm p-0" type="button" data-bs-toggle="collapse" data-bs-target="#salaryDetailTips"
+                            aria-expanded="false" aria-controls="salaryDetailTips">
+                        <span class="me-1">Show/Hide</span><i class="mdi mdi-chevron-down"></i>
+                    </button>
+                </div>
+                <div id="salaryDetailTips" class="collapse">
+                    <div class="alert alert-info py-2 px-3 mb-2 mt-1" role="alert">
+                        <ul class="mb-0 ps-3 small">
+                            <li><em>G.Salary</em> is the gross amount; <em>N.Salary</em> is after Savings, Shares, Charges and Standing Order.</li>
+                            <li><em>Remaining</em> shows what’s left after deductions; <em>Paid</em> indicates if the execution completed.</li>
+                            <li>Loan blocks (Main / Exceptional / Elected / Special / Micro) appear only when values exist or were used.</li>
+                            <li>TempPayCode shows the last generated code + expiry for non-member payout activation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body (PV goes here) -->
+            <div class="modal-body position-relative" id="salaryDetailBody">
+                <!-- _ProcessedSalaryDetails.cshtml will be injected here after successful fetch -->
+                <!-- Optional loader (kept hidden by default; you control via JS if desired) -->
+                <div id="salaryDetailLoader" class="d-none position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <div class="spinner-border mb-2" role="status" aria-hidden="true"></div>
+                        <div class="small text-muted">Loading details…</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* compact status chip */
+    #salaryDetailStatus.badge {
+        white-space: nowrap;
+        font-weight: 600;
+    }
+    /* comfortable body padding + room for injected PV */
+    #salaryDetailBody {
+        padding-top: .25rem;
+        min-height: 120px;
+    }
+    /* make header stay visible during scroll */
+    .modal .sticky-top {
+        z-index: 1031;
+    }
+</style>
