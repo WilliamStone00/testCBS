@@ -1376,6 +1376,7 @@ namespace CBS.FrontDesk.Helper
     public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
     public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
+        //public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
        // public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 

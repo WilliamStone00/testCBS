@@ -10705,6 +10705,8 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
+    <Content Include="Views\SalaryProcessed\_RegisterNonMemberPv.cshtml" />
+    <Content Include="Views\SalaryProcessed\_RevokeTempPayCodePv.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>

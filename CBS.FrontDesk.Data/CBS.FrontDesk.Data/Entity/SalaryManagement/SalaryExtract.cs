@@ -110,6 +110,8 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public DateTime LastTempPayCodeExpiresAt { get; set; } = DateTime.MinValue;
         public string LastTempPayCodeStatus { get; set; }
         public string SpSavingType { get; set; }
+        public RevokeTempPayCodesByIdList RevokeTempPayCodesByIdList { get; set; } = new RevokeTempPayCodesByIdList();
+        public RegisterNonMemberAndGenerateTempCode RegisterNonMemberAndGenerateTempCode { get; set; } = new RegisterNonMemberAndGenerateTempCode();
     }
     public class TempPayCodeResultDto
     {
@@ -255,5 +257,14 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         public string Address { get; set; }
         public string BranchId { get; set; }
         public string BranchCode { get; set; }
+        public string SubDivisionId { get; set; }
+        public string CountryId { get; set; }
+        public string RegionId { get; set; }
+        public string TownId { get; set; }
+        public string DivisionId { get; set; }
+        public string Language { get; set; }
+        public string BankId { get; set; }
+        public string CustomerCode { get; set; }
+
     }
 }

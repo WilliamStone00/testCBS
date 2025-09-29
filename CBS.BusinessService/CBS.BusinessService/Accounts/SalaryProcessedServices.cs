@@ -86,7 +86,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.GenerateProcessedSalaryTempCodeNoneMember, model);
+                model.Kyc.BankId = "1";
+                model.Kyc.CustomerCode = "0";
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TempPayCodeResultDto>>(APICallHelper.GenerateProcessedSalaryTempCodeNoneMember, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
