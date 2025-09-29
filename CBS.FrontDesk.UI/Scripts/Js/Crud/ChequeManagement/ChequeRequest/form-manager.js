@@ -1,13 +1,11 @@
-﻿// wwwroot/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js
-class FormManager {
+﻿class FormManager {
     constructor() {
         this.isEditMode = false;
         this.init();
     }
 
     init() {
-        // Back to search button - event delegation since form is loaded dynamically
-        $(document).on('click', '#backToSearchBtn', () => this.backToSearch());
+        $('#backToSearchBtn').on('click', () => this.backToSearch());
         this.interceptGenericAjax();
     }
 
@@ -16,7 +14,6 @@ class FormManager {
         if (typeof window.AjaxPostAndUpdate === 'function') {
             const originalAjaxPostAndUpdate = window.AjaxPostAndUpdate;
 
-            // Override to add custom validation
             window.AjaxPostAndUpdate = function (form) {
                 if (!window.formManager.validateForm()) {
                     return false;
@@ -34,10 +31,7 @@ class FormManager {
 
         $('#formCustomerId').val(customer.customerId);
         $('#formCustomerName').val(`${customer.firstName} ${customer.lastName}`);
-        $('#formCustomerSummary').html(`
-            <i class="mdi mdi-account-outline me-2"></i>
-            <strong>${customer.customerId} - ${customer.firstName} ${customer.lastName}</strong>
-        `);
+        $('#formCustomerSummary').text(`${customer.customerId} - ${customer.firstName} ${customer.lastName}`);
 
         this.populateAccountDropdowns(accounts);
     }
@@ -50,41 +44,23 @@ class FormManager {
         $sub.empty().append('<option value="">Select Account</option>');
 
         if (accounts && accounts.length > 0) {
-            const activeAccounts = accounts.filter(acc => acc.status && acc.status.toLowerCase() === 'active');
-
-            activeAccounts.forEach(account => {
-                const balance = account.balance ? parseFloat(account.balance).toLocaleString() : '0.00';
-                const text = `${account.accountNumber} - ${account.accountName} (${account.accountType}) - ${balance}`;
+            accounts.filter(acc => acc.status && acc.status.toLowerCase() === 'active').forEach(account => {
+                const text = `${account.accountNumber} - ${account.accountName} (${account.accountType})`;
                 $check.append(new Option(text, account.accountNumber));
                 $sub.append(new Option(text, account.accountNumber));
             });
-
-            // Auto-select first account if available
-            if (activeAccounts.length > 0) {
-                $check.val(activeAccounts[0].accountNumber);
-                $sub.val(activeAccounts[0].accountNumber);
-            }
         }
     }
 
-    setEditMode(requestId) {
+    setEditMode(requestData) {
         this.isEditMode = true;
         $('#formTitle').text('Edit Cheque Book Request');
         $('#submitButtonText').text('Update Request');
 
-        // Load request data for editing
-        this.loadRequestData(requestId);
-    }
-
-    loadRequestData(requestId) {
-        $.get('/ChequeRequest/InitializeData', {
-            KEY: requestId,
-            partialView: '_ChequeRequestForm',
-            path: 'get'
-        }, (html) => {
-            $('#requestFormSection').html(html);
-            showRequestFormSection();
-        });
+        // Populate form with existing request data
+        if (requestData) {
+            // Implementation for editing existing request
+        }
     }
 
     validateForm() {
@@ -107,12 +83,22 @@ class FormManager {
     }
 
     backToSearch() {
-        showSearchSection();
+        if (window.searchManager) {
+            window.searchManager.backToSearch();
+        } else {
+            $('#requestFormSection').hide();
+            $('#searchSection').show();
+        }
         this.resetForm();
     }
 
     resetForm() {
         this.isEditMode = false;
+        const form = document.getElementById('chequeRequestForm');
+        if (form) form.reset();
+        $('#formTitle').text('Create Cheque Book Request');
+        $('#submitButtonText').text('Submit Request');
+        $('#formCustomerSummary').text('Customer will appear here');
     }
 
     showAlert(message, type) {

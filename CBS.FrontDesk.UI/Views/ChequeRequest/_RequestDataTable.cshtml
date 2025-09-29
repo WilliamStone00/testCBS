@@ -1,4 +1,95 @@
-﻿<!-- Partial Views/_RequestDataTable.cshtml -->
+﻿<!-- Filter Section -->
+<div class="card shadow mb-3">
+    <div class="card-header bg-light">
+        <h6 class="card-title mb-0">
+            <i class="mdi mdi-filter-outline me-2"></i>Filter Cheque Requests
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label small">Customer Name</label>
+                <input type="text" id="customerNameFilter" class="form-control form-control-sm filter-input" placeholder="Search customer...">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Category</label>
+                <select id="categoryFilter" class="form-select form-select-sm filter-select">
+                    <option value="">All Categories</option>
+                    <option value="Standard - 25">Standard - 25</option>
+                    <option value="Business Gold - 100">Business Gold - 100</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Status</label>
+                <select id="statusFilter" class="form-select form-select-sm filter-select">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Reviewed">Reviewed</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">From Date</label>
+                <input type="date" id="startDateFilter" class="form-control form-control-sm filter-input">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">To Date</label>
+                <input type="date" id="endDateFilter" class="form-control form-control-sm filter-input">
+            </div>
+            <div class="col-md-1">
+                <label class="form-label small">&nbsp;</label>
+                <button class="btn btn-primary btn-sm w-100" onclick="applyFilters()">
+                    <i class="mdi mdi-filter"></i> Filter
+                </button>
+            </div>
+            <div class="col-md-1">
+                <label class="form-label small">&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
+                    <i class="mdi mdi-filter-remove"></i> Clear
+                </button>
+            </div>
+        </div>
+
+        <!-- Optional: Notification Filters -->
+        <div class="row g-3 mt-2">
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input filter-checkbox" type="checkbox" id="notifyRejectionFilter">
+                    <label class="form-check-label small" for="notifyRejectionFilter">
+                        Notify on Rejection
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input filter-checkbox" type="checkbox" id="notifyAnyTransactionFilter">
+                    <label class="form-check-label small" for="notifyAnyTransactionFilter">
+                        Notify on Any Transaction
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input filter-checkbox" type="checkbox" id="notifyClearanceFilter">
+                    <label class="form-check-label small" for="notifyClearanceFilter">
+                        Notify on Clearance
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input filter-checkbox" type="checkbox" id="autoRenewalFilter">
+                    <label class="form-check-label small" for="autoRenewalFilter">
+                        Automatic Renewal
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card shadow p-3">
     <fieldset class="fieldset-custom">
         <legend class="text-primary">
@@ -16,8 +107,27 @@
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                </tbody>
             </table>
         </div>
     </fieldset>
 </div>
+
+<!-- Partial Views/_RequestDataTable.cshtml -->
+<!--<div class="table-responsive">
+    <table id="myDataTable" class="table table-hover" style="width:100%;">
+        <thead class="table-light">
+            <tr>
+                <th>Customer Name</th>
+                <th>Category</th>
+                <th>Request Date</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>-->
+<!-- Data will be populated by DataTables -->
+<!--</tbody>
+    </table>
+</div>-->

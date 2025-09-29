@@ -1,11 +1,11 @@
-﻿// wwwroot/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js
-class DataTableManager {
+﻿class DataTableManager {
     constructor() {
         this.dataTable = null;
         this.init();
     }
 
     init() {
+        this.initializeDataTable();
         this.bindEvents();
     }
 
@@ -25,7 +25,7 @@ class DataTableManager {
                     {
                         data: 'requestDate',
                         name: 'requestDate',
-                        render: (data) => data ? new Date(data).toLocaleDateString() : 'N/A'
+                        render: (data) => data ? new Date(data).toLocaleDateString() : ''
                     },
                     {
                         data: 'status',
@@ -38,11 +38,7 @@ class DataTableManager {
                         className: 'text-center',
                         render: (data, type, row) => this.renderActionDropdown(row)
                     }
-                ],
-                language: {
-                    emptyTable: "No cheque requests found",
-                    zeroRecords: "No matching records found"
-                }
+                ]
             });
         }
     }
@@ -66,77 +62,25 @@ class DataTableManager {
 
     bindEvents() {
         // Action form submission
-        $(document).on('submit', '#actionForm', (e) => this.submitAction(e));
+        $('#actionForm').on('submit', (e) => this.submitAction(e));
+
+        // Apply filters if they exist
+        $('#applyListFilterBtn')?.on('click', () => this.refresh());
     }
 
     getStatusBadge(status) {
         const statusMap = {
-            'pending': { class: 'bg-warning text-dark', text: 'Pending' },
-            'approved': { class: 'bg-success', text: 'Approved' },
-            'rejected': { class: 'bg-danger', text: 'Rejected' },
-            'delivered': { class: 'bg-info', text: 'Delivered' },
-            'review': { class: 'bg-secondary', text: 'Under Review' }
+            'pending': 'bg-warning text-dark',
+            'approved': 'bg-success',
+            'rejected': 'bg-danger',
+            'delivered': 'bg-info',
+            'review': 'bg-secondary'
         };
-
-        const statusInfo = statusMap[status?.toLowerCase()] || { class: 'bg-secondary', text: status };
-        return `<span class="badge ${statusInfo.class}">${statusInfo.text}</span>`;
+        const cssClass = statusMap[status?.toLowerCase()] || 'bg-secondary';
+        return `<span class="badge ${cssClass}">${status}</span>`;
     }
 
     renderActionDropdown(row) {
-        // Determine which actions are available based on status
-        const status = (row.status || '').toLowerCase();
-        let actionsHtml = '';
-
-        // Details action - always available
-        actionsHtml += `
-            <li>
-                <a class="dropdown-item" href="#" onclick="dataTableManager.showDetails('${row.Id}')">
-                    <i class="mdi mdi-eye-outline me-2 text-info"></i>Details
-                </a>
-            </li>
-        `;
-
-        // Edit action - only for pending requests
-        if (status === 'pending') {
-            actionsHtml += `
-                <li>
-                    <a class="dropdown-item" href="#" onclick="dataTableManager.editRequest('${row.Id}')">
-                        <i class="mdi mdi-pencil-outline me-2 text-primary"></i>Edit
-                    </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-            `;
-        }
-
-        // Status actions based on current status
-        if (status === 'pending') {
-            actionsHtml += `
-                <li>
-                    <a class="dropdown-item text-warning" href="#" onclick="dataTableManager.showActionModal('review', '${row.Id}', '${row.customerName}')">
-                        <i class="mdi mdi-clock-outline me-2"></i>Mark for Review
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item text-success" href="#" onclick="dataTableManager.showActionModal('approve', '${row.Id}', '${row.customerName}')">
-                        <i class="mdi mdi-check-circle-outline me-2"></i>Approve
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item text-danger" href="#" onclick="dataTableManager.showActionModal('reject', '${row.Id}', '${row.customerName}')">
-                        <i class="mdi mdi-close-circle-outline me-2"></i>Reject
-                    </a>
-                </li>
-            `;
-        } else if (status === 'approved') {
-            actionsHtml += `
-                <li>
-                    <a class="dropdown-item text-info" href="#" onclick="dataTableManager.showActionModal('deliver', '${row.Id}', '${row.customerName}')">
-                        <i class="mdi mdi-truck-check-outline me-2"></i>Mark as Delivered
-                    </a>
-                </li>
-            `;
-        }
-
         return `
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
@@ -144,7 +88,32 @@ class DataTableManager {
                     <i class="mdi mdi-cog"></i> Actions
                 </button>
                 <ul class="dropdown-menu">
-                    ${actionsHtml}
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="dataTableManager.showDetails('${row.Id}')">
+                            <i class="mdi mdi-eye-outline me-2 text-info"></i>Details
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="dataTableManager.editRequest('${row.Id}')">
+                            <i class="mdi mdi-pencil-outline me-2 text-primary"></i>Edit
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-warning" href="#" onclick="dataTableManager.showActionModal('review', '${row.Id}', '${row.customerName}')">
+                            <i class="mdi mdi-clock-outline me-2"></i>Review
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-success" href="#" onclick="dataTableManager.showActionModal('approve', '${row.Id}', '${row.customerName}')">
+                            <i class="mdi mdi-check-circle-outline me-2"></i>Approve
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#" onclick="dataTableManager.showActionModal('reject', '${row.Id}', '${row.customerName}')">
+                            <i class="mdi mdi-close-circle-outline me-2"></i>Reject
+                        </a>
+                    </li>
                 </ul>
             </div>
         `;
@@ -162,25 +131,23 @@ class DataTableManager {
     }
 
     editRequest(requestId) {
-        // Load the form in edit mode
-        if (window.formManager) {
-            window.formManager.setEditMode(requestId);
-        }
+        $.get('/ChequeRequest/InitializeData', {
+            KEY: requestId,
+            partialView: '_ChequeRequestForm',
+            path: 'get'
+        }, (html) => {
+            $('#requestFormSection').html(html).show();
+            $('#searchSection').hide();
+            if (window.formManager) {
+                window.formManager.setEditMode(requestId);
+            }
+        });
     }
 
     showActionModal(action, requestId, customerName) {
         $('#actionType').val(action);
         $('#actionRequestId').val(requestId);
-
-        // Set appropriate modal title based on action
-        const actionTitles = {
-            'approve': 'Approve Request',
-            'reject': 'Reject Request',
-            'review': 'Mark for Review',
-            'deliver': 'Mark as Delivered'
-        };
-
-        $('#actionModalLabel').text(`${actionTitles[action] || 'Take Action'} - ${customerName}`);
+        $('#actionModalLabel').text(`${action.charAt(0).toUpperCase() + action.slice(1)} Request - ${customerName}`);
         $('#actionNote').val('');
         $('#actionModal').modal('show');
     }
@@ -203,11 +170,11 @@ class DataTableManager {
             });
 
             if (response.success) {
-                this.showAlert('Action completed successfully', 'success');
+                this.showAlert(response.message, 'success');
                 $('#actionModal').modal('hide');
                 this.refresh();
             } else {
-                this.showAlert(response.message || 'Action failed', 'error');
+                this.showAlert(response.message, 'error');
             }
         } catch (error) {
             this.showAlert('Error submitting action', 'error');

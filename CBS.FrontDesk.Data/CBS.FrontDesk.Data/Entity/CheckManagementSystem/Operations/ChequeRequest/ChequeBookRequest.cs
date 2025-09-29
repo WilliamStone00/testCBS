@@ -13,10 +13,12 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         // Properties for Creating/Updating a Request
         [Required]
         public string customerId { get; set; } = null;
+        public string bankId { get; set; }
         public string branchId { get; set; } = null;
         public string customerName { get; set; } = null;
         [Required]
-        public string subscriptionPaymentAccountId { get; set; } = null;
+        public string subscriptionPaymentAccount { get; set; } = null;
+
         [Required]
         public string checkBookAccount { get; set; } = null;
         [Required]
@@ -31,7 +33,11 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public bool notifyOnPayment { get; set; }
         public bool notifyOnAnyTransaction { get; set; }
 
-        public bool automticRenewal { get; set; }
+        public bool automaticRenewal { get; set; }
+        public decimal transactionAmount { get; set; }
+        public decimal feeAmount { get; set; }
+        public int numberofCheckBooks { get; set; }
+        public int numberOfPages { get; set; }
 
         // Properties for Displaying/Listing Requests (populated by the backend)
         public string Id { get; set; } = null;
@@ -50,6 +56,19 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public string CustomerFilter { get; set; }
         public string CategoryFilter { get; set; }
         public string StatusFilter { get; set; }
+        public string CustomerName { get; set; }
+        public string Status { get; set; }
+        public string BranchId { get; set; }
+        public string BankId { get; set; }
+        public bool? NotifyOnRejection { get; set; }
+        public bool? AutomaticRenewal { get; set; }
+        public bool? NotifyOnAnyTransaction { get; set; }
+        public string CategoryName { get; set; }
+        public bool? NotifyOnClearance { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+
 
         public ChequeRequestQuery() { Options = new DataTableOptions(); }
     }

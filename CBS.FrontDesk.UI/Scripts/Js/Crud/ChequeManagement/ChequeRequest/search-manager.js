@@ -10,7 +10,7 @@ class SearchManager {
         $('#customerIdInput').on('keypress', (e) => {
             if (e.which === 13) this.searchCustomer();
         });
-
+        
         $('#proceedToRequestBtn').on('click', () => this.proceedToRequest());
     }
 
@@ -51,7 +51,7 @@ class SearchManager {
     displayCustomerDetails(customerData) {
         const customer = customerData.customerDto;
         const accounts = customerData.accountDtos || [];
-
+        
         $('#customerSummary').html(`
             <strong>${customer.customerId}</strong> - ${customer.firstName} ${customer.lastName}
             <br><small class="text-muted">${customer.email} | ${customer.phone}</small>
@@ -77,7 +77,7 @@ class SearchManager {
         }, (html) => {
             $('#requestFormSection').html(html);
             showRequestFormSection();
-
+            
             // Populate form with customer data
             if (window.formManager) {
                 window.formManager.populateForm(this.currentCustomer);
