@@ -68,135 +68,155 @@
                                 ? c.ChequeClearanceId
                                 : ("row" + idx);
 
-                            <tr>
-                                <td>@FmtString(c.ChequeClearanceId)</td>
-                                <td>@FmtString(c.MemberReference)</td>
-                                <td>@FmtString(c.ChequeBranchId)</td>
-                                <td>@FmtDecimalObj(c.ChequeAmount)</td>
-                                <td>@FmtDate(c.ChequeCreationDate)</td>
-                                <td>
-                                    @switch (c.Status)
-                                    {
-                                        case "Pending":
-                                            <span class="badge bg-warning text-dark">Pending</span>
-                                            break;
-                                        case "Disbursed":
-                                            <span class="badge bg-info text-dark">Disbursed</span>
-                                            break;
-                                        case "Approved":
-                                            <span class="badge bg-success">Approved</span>
-                                            break;
-                                        case "Rejected":
-                                            <span class="badge bg-danger">Rejected</span>
-                                            break;
-                                        case "Reviewed":
-                                            <span class="badge bg-primary">Reviewed</span>
-                                            break;
-                                        default:
-                                            <span class="badge bg-secondary">-</span>
-                                            break;
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown_@idx" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu p-2" aria-labelledby="actionDropdown_@idx" style="min-width: 180px;">
-                                            @switch (c.Status)
-                                            {
-                                                case "Pending":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-primary w-100 mb-1"
-                                                                    onclick="AddORUpdateGen('@c.ChequeClearanceId','createViewContainer','_Edit','get','ChequeClearance')">
+                                <tr>
+                                    <td>@FmtString(c.ChequeClearanceId)</td>
+                                    <td>@FmtString(c.MemberReference)</td>
+                                    <td>@FmtString(c.ChequeBranchId)</td>
+                                    <td>@FmtDecimalObj(c.ChequeAmount)</td>
+                                    <td>@FmtDate(c.ChequeCreationDate)</td>
+                                    <td>
+                                        @switch (c.Status)
+                                        {
+                                            case "Pending":
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                                break;
+                                            case "Disbursed":
+                                                <span class="badge bg-info text-dark">Disbursed</span>
+                                                break;
+                                            case "Approved":
+                                                <span class="badge bg-success">Approved</span>
+                                                break;
+                                            case "Rejected":
+                                                <span class="badge bg-danger">Rejected</span>
+                                                break;
+                                            case "Reviewed":
+                                                <span class="badge bg-primary">Reviewed</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">-</span>
+                                                break;
+                                        }
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <!-- Action button -->
+                                            <button class="btn btn-sm dropdown-toggle text-white"
+                                                    type="button"
+                                                    id="actionDropdown_@idx"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    style="background-color:#0dcaf0; border:none;">
+                                                <i class="mdi mdi-cog-outline me-1"></i> Actions
+                                            </button>
 
-                                                                Edit
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button"
-                                                                    class="btn btn-sm btn-warning w-100 mb-1"
-                                                                    onclick="ReviewClearance('@c.ChequeClearanceId')">
+                                            <!-- Dropdown menu -->
+                                            <ul class="dropdown-menu p-2 bg-white" aria-labelledby="actionDropdown_@idx" style="min-width: 180px;">
+                                                @switch (c.Status)
+                                                {
+                                                    case "Pending":
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_Edit',null,'ChequeClearance')">
+                                                                    
+                                                                    <i class="mdi mdi-pencil me-1 text-primary"></i> Edit
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                                        onclick="ReviewClearance('@c.ChequeClearanceId')">
+                                                                    <i class="mdi mdi-eye-check-outline me-1 text-warning"></i> Review
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                                        onclick="RejectClearance('@c.ChequeClearanceId')">
+                                                                    <i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
 
-                                                                Review
-                                                            </button>
-                                                        </li>
+                                                    case "Disbursed":
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
+
+                                                    case "Reviewed":
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                                        onclick="ApproveClearance('@c.ChequeClearanceId')">
+                                                                    <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
+
+                                                    case "Approved":
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                                        onclick="DisburseClearance('@c.ChequeClearanceId')">
+                                                                    <i class="mdi mdi-cash-multiple me-1 text-warning"></i> Disburse
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
+
+                                                    case "Rejected":
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                        onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
+
+                                                    default:
+                                                        <text>
+                                                            <li>
+                                                                <button class="btn w-100 bg-transparent text-dark"
+                                                                       onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_ChequeClearanceDetails','Details','ChequeClearance')">
+                                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                                </button>
+                                                            </li>
+                                                        </text>
+                                                        break;
+                                                }
+                                            </ul>
+                                        </div>
+                                    </td>
 
 
-                                                        <li>
-                                                            <button class="btn btn-sm btn-danger w-100 mb-1"
-                                                                    onclick="RejectClearance('@c.ChequeClearanceId')">
-                                                                Reject
-                                                            </button>
-                                                        </li>
 
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Disbursed":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Reviewed":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-success w-100 mb-1"
-                                                                    onclick="ApproveClearance('@c.ChequeClearanceId')">
-                                                                Approve
-                                                            </button>
-                                                        </li>
 
-                                                    </text>
-                                                    break;
-                                                case "Approved":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-warning w-100 mb-1"
-                                                                    onclick="DisburseClearance('@c.ChequeClearanceId')">
-                                                                Disburse
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Rejected":
-                                                    <text>
-                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
-                                                    </text>
-                                                    break;
-                                                default:
-                                                    <text>
-                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
-                                                    </text>
-                                                    break;
-                                            }
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                                </tr>
 
                             idx++;
                         }
@@ -237,15 +257,6 @@
             });
         }
     })();
-
-
-
-
-
-
-
-
-
 
 
     (function ($) {

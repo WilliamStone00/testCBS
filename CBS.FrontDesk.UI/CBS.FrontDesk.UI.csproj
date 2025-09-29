@@ -10637,11 +10637,12 @@
     <Content Include="Views\AccountingStatements\AccountingJournalReport.cshtml" />
     <Content Include="Views\AccountingStatements\_SearchJournalEntryData.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

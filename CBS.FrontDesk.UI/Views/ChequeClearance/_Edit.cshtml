@@ -1,144 +1,121 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
 
-<div class="modal-body">
-    @using (Html.BeginForm("CreateOrUpdate", "ChequeClearance", FormMethod.Post,
-        new { enctype = "multipart/form-data", id = "editClearanceForm", onsubmit = "return AjaxPostAndUpdate(this);" }))
-    {
-        @Html.AntiForgeryToken()
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h6 class="text-success border-bottom pb-2 mb-3">
+            <i class="mdi mdi-file-document-outline me-1"></i> Cheque Clearance Details
+        </h6>
 
-        @* Hidden id if you want to track it separately *@
-        @Html.HiddenFor(m => m.ChequeClearanceId)
+        @using (Html.BeginForm("CreateOrUpdate", "ChequeClearance", FormMethod.Post,
+            new { enctype = "multipart/form-data", id = "editClearanceForm", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ChequeClearanceId)
 
-    <div class="row gy-3">
-        <div class="col-12">
-            <h6 class="text-primary border-bottom pt-2 pb-1">
-                <i class="mdi mdi-file-check-outline me-1"></i> Cheque Clearance Details
-            </h6>
-        </div>
+            <div class="row gy-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", placeholder = "Member Reference" })
+                        <label>Member Reference</label>
+                        @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount" })
+                        <label>Cheque Amount</label>
+                        @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", placeholder = "Member Reference" })
-                @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
-                <label>Member Reference</label>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.ChequeBranchId,
+                            ViewBag.Branches != null
+                                ? new SelectList(ViewBag.Branches, "Id", "Name", Model.ChequeBranchId)
+                                : Enumerable.Empty<SelectListItem>(),
+                            "--- Select Branch ---",
+                            new { @class = "form-select" })
+                        <label>Cheque Branch</label>
+                        @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.ReceivingBranchId,
+                            ViewBag.Branches != null
+                                ? new SelectList(ViewBag.Branches, "Id", "Name", Model.ReceivingBranchId)
+                                : Enumerable.Empty<SelectListItem>(),
+                            "--- Select Branch ---",
+                            new { @class = "form-select" })
+                        <label>Receiving Branch</label>
+                        @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Status, new { @class = "form-control", @readonly = "readonly", placeholder = "Status" })
+                        <label>Status</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control", placeholder = "National ID Number" })
+                        <label>National ID Number</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "datetime-local" })
+                        <label>Cheque Creation Date</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "datetime-local" })
+                        <label>Cheque Expiration Date</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
+                        <label>National ID Creation Date</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
+                        <label>National ID Expiration Date</label>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", placeholder = "Amount", type = "number", step = "0.01" })
-                @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
-                <label>Cheque Amount</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @* If you have a Branch list in ViewBag like the other form, use DropDownListFor *@
-                @if (ViewBag.Branches != null)
+            <div class="mt-4 text-end">
+                @if (String.IsNullOrEmpty(Model?.ChequeClearanceId))
                 {
-                    @Html.DropDownListFor(m => m.ChequeBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @placeholder = "Branch" })
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="fas fa-save me-1"></i> Create
+                    </button>
                 }
                 else
                 {
-                    @Html.TextBoxFor(m => m.ChequeBranchId, new { @class = "form-control", placeholder = "Branch ID" })
+                    <button type="submit" class="btn btn-success px-4 me-2">
+                        <i class="fas fa-save me-1"></i> Update
+                    </button>
                 }
-                @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
-                <label>Cheque Branch</label>
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Back To List</button>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @* If you have a Branch list in ViewBag like the other form, use DropDownListFor *@
-                @if (ViewBag.Branches != null)
-                {
-                    @Html.DropDownListFor(m => m.ReceivingBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @placeholder = "Branch" })
-                }
-                else
-                {
-                    @Html.TextBoxFor(m => m.ReceivingBranchId, new { @class = "form-control", placeholder = "Branch ID" })
-                }
-                @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
-                <label>Cheque Branch</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.Status, new { @class = "form-control", placeholder = "Status", @readonly = "readonly" })
-                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
-                <label>Status</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control", placeholder = "NationalIdNumber" })
-                @Html.ValidationMessageFor(m => m.NationalIdNumber, "", new { @class = "text-danger" })
-                <label>National ID Number</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", placeholder = "Creation Date" })
-                @Html.ValidationMessageFor(m => m.ChequeCreationDate, "", new { @class = "text-danger" })
-                <label>Cheque Creation Date</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", placeholder = "Expiration Date" })
-                @Html.ValidationMessageFor(m => m.ChequeExpirationDate, "", new { @class = "text-danger" })
-                <label>Cheque Expiration Date</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", placeholder = "National ID Creation" })
-                @Html.ValidationMessageFor(m => m.NationalIdCreationDate, "", new { @class = "text-danger" })
-                <label>National ID Creation Date</label>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", placeholder = "National ID Expiration" })
-                @Html.ValidationMessageFor(m => m.NationalIdExpirationDate, "", new { @class = "text-danger" })
-                <label>National ID Expiration Date</label>
-            </div>
-        </div>
-
-        <div class="col-12 text-end mt-3">
-            @if (String.IsNullOrEmpty(Model?.ChequeClearanceId))
-            {
-                <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="fas fa-save me-1"></i> Create
-                </button>
-                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                    Reset
-                </button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-primary me-2">
-                    <i class="fas fa-save me-1"></i> Update
-                </button>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-            }
-        </div>
+        }
     </div>
-    }
 </div>
-
-
-
-
-
-
-
 
 
 

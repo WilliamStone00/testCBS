@@ -1,147 +1,158 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
 @using Resources
-@{
-    ViewBag.Title = "Cheque Clearance Request Details";
-}
 
 @using (Html.BeginForm("SaveClearance", "ChequeClearance", FormMethod.Post, new { id = "clearanceForm" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.IsNotfromMFI, new { id = "Id" })
-    @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
-    @Html.HiddenFor(m => m.CheckBookNumber, new { id = "CheckBookId", Name = "CheckBookId" })
-    @Html.HiddenFor(m => m.CheckBookPageNumber, new { id = "CheckBookPageNumber", Name = "CheckBookPageNumber" })
+    @Html.HiddenFor(m => m.IsNotfromMFI)
+    @Html.HiddenFor(m => m.BranchId)
+    @Html.HiddenFor(m => m.CheckBookNumber)
+    @Html.HiddenFor(m => m.CheckBookPageNumber)
 
-    <!-- Clearance Details Form -->
     <div id="clearanceDetailsForm" class="card shadow p-3 mb-4 mt-3 d-none">
         <h5 class="text-success mb-3">
-            <i class="mdi mdi-file-document-edit me-1"></i> Cheque Clearance 
+            <i class="mdi mdi-file-document-edit me-1"></i> Cheque Clearance
         </h5>
 
+        <div class="text-end mb-2">
+            <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#discountModal">
+                <i class="mdi mdi-tag"></i> Discount
+            </button>
+        </div>
+
         <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <!-- Two checkboxes side by side -->
-                    <div class="row mb-3">
-                        @if (!Model.IsNotfromMFI)
-                        {
-                            <div class="col-md-6 pe-3">
-                                <div class="form-check">
-                                    @Html.CheckBoxFor(m => m.SameDayProcessing, new { @class = "form-check-input", id = "SameDayProcessing" })
-                                    <label class="form-check-label" for="SameDayProcessing">
-                                        Process Same Day (otherwise 3 days)
-                                    </label>
-                                </div>
-                            </div>
-                        }
-
-                        <div class="col-md-6">
-                            <div class="form-check">
-                                @Html.CheckBoxFor(m => m.DepositToAccount, new { @class = "form-check-input", id = "DepositToAccount" })
-                                <label class="form-check-label" for="DepositToAccount">
-                                    Deposit into Account
-                                </label>
-                            </div>
-                        </div>
+            <!-- Same day (only if cheque IS from MFI) -->
+            @if (!Model.IsNotfromMFI)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.SameDayProcessing, new { @class = "form-check-input", id = "SameDayProcessing" })
+                        <label class="form-check-label" for="SameDayProcessing">Process Same Day (otherwise 3 days)</label>
                     </div>
+                </div>
+            }
 
-                    <!-- Account Number (conditional) -->
-                    <div class="col-md-6 mb-3 d-none" id="AccountNumberWrapper">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", id = "AccountNumber" })
-                            @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
-                            <label for="AccountNumber">Account Number</label>
-                        </div>
-                    </div>
+            <!-- Deposit to Account -->
+            <div class="col-md-6 mb-3">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.DepositToAccount, new { @class = "form-check-input", id = "DepositToAccount" })
+                    <label class="form-check-label" for="DepositToAccount">Deposit into Account</label>
+                </div>
+            </div>
 
-                    <!-- Member Reference -->
-                    <div class="col-md-6 mb-3 pe-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", id = "MemberReference" })
-                            @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
-                            <label for="MemberReference">Member Reference</label>
-                        </div>
-                    </div>
+            <!-- Account Number -->
+            <div class="col-md-6 mb-3 d-none" id="AccountNumberWrapper">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", id = "AccountNumber" })
+                    @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+                    <label for="AccountNumber">Account Number</label>
+                </div>
+            </div>
 
-                    <!-- Cheque BranchId -->
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.ChequeBranchId, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
-                            <label>Cheque Branch Id (Created)</label>
-                        </div>
-                    </div>
+            <!-- Member Reference -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", id = "MemberReference" })
+                    @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
+                    <label for="MemberReference">Member Reference</label>
+                </div>
+            </div>
 
-                    <!-- Receiving BranchId -->
-                    <div class="col-md-6 mb-3 pe-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.ReceivingBranchId, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
-                            <label>Branch Id (Receiving)</label>
-                        </div>
-                    </div>
+            <!-- Cheque BranchId -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ChequeBranchId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
+                    <label>Cheque Branch Id (Created)</label>
+                </div>
+            </div>
 
-                    <!-- Cheque Amount -->
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number" })
-                            @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
-                            <label>Cheque Amount</label>
-                        </div>
-                    </div>
+            <!-- Receiving BranchId -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ReceivingBranchId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
+                    <label>Branch Id (Receiving)</label>
+                </div>
+            </div>
 
-                    <!-- Cheque Creation Date -->
-                    <div class="col-md-6 mb-3 pe-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "date" })
-                            @Html.ValidationMessageFor(m => m.ChequeCreationDate, "", new { @class = "text-danger" })
-                            <label>Cheque Creation Date</label>
-                        </div>
-                    </div>
+            <!-- Amount -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number" })
+                    @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
+                    <label>Cheque Amount</label>
+                </div>
+            </div>
 
-                    <!-- Cheque Expiration Date -->
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "date" })
-                            @Html.ValidationMessageFor(m => m.ChequeExpirationDate, "", new { @class = "text-danger" })
-                            <label>Cheque Expiration Date</label>
-                        </div>
-                    </div>
+            <!-- Cheque Creation Date -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.ChequeCreationDate, "", new { @class = "text-danger" })
+                    <label>Cheque Creation Date</label>
+                </div>
+            </div>
 
-                    <!-- National Id Number -->
-                    <div class="col-md-6 mb-3 pe-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.NationalIdNumber, "", new { @class = "text-danger" })
-                            <label>National ID Number</label>
-                        </div>
-                    </div>
+            <!-- Cheque Expiration Date -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.ChequeExpirationDate, "", new { @class = "text-danger" })
+                    <label>Cheque Expiration Date</label>
+                </div>
+            </div>
 
-                    <!-- National Id Creation Date -->
-                    <div class="col-md-6 mb-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
-                            @Html.ValidationMessageFor(m => m.NationalIdCreationDate, "", new { @class = "text-danger" })
-                            <label>National ID Creation Date</label>
-                        </div>
-                    </div>
+            <!-- National Id Number -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NationalIdNumber, "", new { @class = "text-danger" })
+                    <label>National ID Number</label>
+                </div>
+            </div>
 
-                    <!-- National Id Expiration Date -->
-                    <div class="col-md-6 mb-3 pe-3">
-                        <div class="form-floating shadow-sm">
-                            @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
-                            @Html.ValidationMessageFor(m => m.NationalIdExpirationDate, "", new { @class = "text-danger" })
-                            <label>National ID Expiration Date</label>
-                        </div>
-                    </div>
+            <!-- National Id Creation Date -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.NationalIdCreationDate, "", new { @class = "text-danger" })
+                    <label>National ID Creation Date</label>
+                </div>
+            </div>
+
+            <!-- National Id Expiration Date -->
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.NationalIdExpirationDate, "", new { @class = "text-danger" })
+                    <label>National ID Expiration Date</label>
                 </div>
             </div>
         </div>
 
         <hr />
 
-        <!-- Save & Reset Buttons -->
-        <div class="text-end">
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Cheque Proof Image</h5>
+                <div class="image-upload-container">
+                    @if (Model.ChequeImagePath != null)
+                    {
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#photoPreviewModal">
+                            <img src="@Model.ChequeImagePath" class="img-fluid preview-image" alt="@GlobalShared.UploadedImage">
+                        </a>
+                    }
+                    else
+                    {
+                        <img src="@Url.Content(Model.ChequeImagePath)" class="img-fluid preview-image" alt="@GlobalShared.NoPhotoFound">
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Save & Reset -->
+        <div class="text-end mt-3">
             <button type="submit" class="btn btn-success shadow-sm px-4 me-2">
                 <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save
             </button>
@@ -152,37 +163,164 @@
     </div>
 }
 
+<div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <!-- Header with lemon green -->
+            <div class="modal-header bg-success">
+                <h5 class="modal-title text-dark">
+                    <i class="mdi mdi-tag text-white me-2"></i> Apply Discount
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+
+
+            <div class="modal-body">
+                <!-- Cheque Amount -->
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="ChequeAmount" placeholder="Enter Cheque Amount" />
+                    <label for="ChequeAmount">Cheque Amount</label>
+                </div>
+
+                <!-- Load Button -->
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary w-100" id="btnLoad">Load</button>
+                </div>
+
+                <!-- Hidden Discount Section -->
+                <div class="row g-3 d-none" id="discountSection">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="DiscountAmount" readonly />
+                            <label for="DiscountAmount">Discount Amount</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="AmountToBeIssued" readonly />
+                            <label for="AmountToBeIssued">Amount to be Issued</label>
+                        </div>
+                    </div>
+
+                    <!-- Discount Reason -->
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <textarea class="form-control" id="DiscountReason" placeholder="Enter Reason" style="height:60px;"></textarea>
+                            <label for="DiscountReason">Reason</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Photo Modal -->
+<div class="modal fade" id="photoPreviewModal" tabindex="-1" aria-labelledby="photoPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoPreviewModalLabel">@GlobalShared.PhotoPreview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (Model.ChequeImagePath != null)
+                {
+                    <img src="@Model.ChequeImagePath" class="img-fluid" alt="@GlobalShared.PreviewImage">
+                }
+                else
+                {
+                    <img src="@Url.Content(Model.ChequeImagePath)" class="img-fluid" alt="@GlobalShared.NoImageFound">
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-        $(document).ready(function () {
-    var isNotFromMFI = $('#Id').val() === "true";
-
-    if (isNotFromMFI) {
-        $('#SameDayProcessing').closest('.col-md-6').hide(); 
+$(function () {
+    // hide SameDay if IsNotfromMFI
+    if ('@(Model.IsNotfromMFI)' === 'True') {
+        $('#SameDayProcessing').closest('.col-md-6').hide();
     }
-});
 
-
-        // toggle account number field
-        $(document).on('change', '#DepositToAccount', function () {
-            if ($(this).is(':checked')) {
-                $('#AccountNumberWrapper').removeClass('d-none');
-            } else {
-                $('#AccountNumberWrapper').addClass('d-none');
-                $('#AccountNumber').val('');
-            }
-        });
-
-        // reset form properly
-        $(document).on('click', '#resetFormBtn', function () {
-            var form = $('#clearanceForm')[0];
-            form.reset();
-
-            // reset select2 if used
-            $('.select2').val(null).trigger('change');
-
-            // hide account number again
+    // toggle account number
+    $(document).on('change', '#DepositToAccount', function () {
+        if ($(this).is(':checked')) {
+            $('#AccountNumberWrapper').removeClass('d-none');
+        } else {
             $('#AccountNumberWrapper').addClass('d-none');
-        });
+            $('#AccountNumber').val('');
+        }
+    });
+
+    // reset form
+    $(document).on('click', '#resetFormBtn', function () {
+        $('#clearanceForm')[0].reset();
+        $('#AccountNumberWrapper').addClass('d-none');
+    });
+
+    document.getElementById("btnLoad").addEventListener("click", function () {
+        const chequeAmount = parseFloat(document.getElementById("ChequeAmount").value) || 0;
+
+        if (chequeAmount <= 0) {
+            alert("Please enter a valid cheque amount.");
+            return;
+        }
+
+        const discount = chequeAmount * 0.1; // fixed 10%
+        const amountToBeIssued = chequeAmount - discount;
+
+        document.getElementById("DiscountAmount").value = discount.toFixed(2);
+        document.getElementById("AmountToBeIssued").value = amountToBeIssued.toFixed(2);
+
+        // Show hidden section
+        document.getElementById("discountSection").classList.remove("d-none");
+    });
+
+    // Save Discount → append hidden inputs to #clearanceForm
+    document.getElementById("saveDiscountBtn").addEventListener("click", function () {
+        const amount = document.getElementById("DiscountAmount").value;
+        const reason = document.getElementById("DiscountReason").value;
+
+        if (!amount || amount <= 0) {
+            alert("Please enter a valid discount amount.");
+            return;
+        }
+
+        // Remove old hidden inputs if any
+        const oldAmount = document.querySelector('#clearanceForm input[name="DiscountAmount"]');
+        const oldReason = document.querySelector('#clearanceForm input[name="DiscountReason"]');
+        if (oldAmount) oldAmount.remove();
+        if (oldReason) oldReason.remove();
+
+        // Append new hidden inputs
+        const form = document.getElementById("clearanceForm");
+        const inputAmount = document.createElement("input");
+        inputAmount.type = "hidden";
+        inputAmount.name = "DiscountAmount";
+        inputAmount.value = amount;
+        form.appendChild(inputAmount);
+
+        const inputReason = document.createElement("input");
+        inputReason.type = "hidden";
+        inputReason.name = "DiscountReason";
+        inputReason.value = reason;
+        form.appendChild(inputReason);
+
+        // Hide modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById("discountModal"));
+        modal.hide();
+    });
+});
     </script>
 }

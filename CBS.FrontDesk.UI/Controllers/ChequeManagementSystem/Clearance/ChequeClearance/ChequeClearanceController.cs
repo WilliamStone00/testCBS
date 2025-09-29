@@ -25,13 +25,13 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
 
         private readonly ChequeClearanceService _chequeClearanceService;
         private readonly BranchServices _branchServices;
-        private readonly MockCheckClearanceService _mockCheckClearanceService;
+       private readonly MockCheckClearanceService _mockCheckClearanceService;
 
         public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, MockCheckClearanceService mockCheckClearanceService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
-            _mockCheckClearanceService = mockCheckClearanceService;
+           _mockCheckClearanceService = mockCheckClearanceService;
 
 
         }
@@ -49,37 +49,43 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             return true;
         }
         // Ajax entry point
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        public async Task<ActionResult> InitializeData(string KEY = null,string partialView = null, string path = null,string serviceOption = null)
         {
             if (path == "list")
             {
                 // ✅ When loading list view
                 var data = await _mockCheckClearanceService.GetAllAsync();
-                return PartialView(partialView, data);
+                return PartialView(partialView?? "_ChequeClearanceDataTable", data);
             }
             else if (path == "new")
             {
-                // ✅ New record (with mock check for now)
                 await loader();
 
                 OptionRequest model = null;
+                OptionRequest options = new OptionRequest(); // ✅ always initialized
 
                 if (!string.IsNullOrWhiteSpace(serviceOption))
                 {
-                    OptionRequest options;
                     try
                     {
-                        options = JsonConvert.DeserializeObject<OptionRequest>(serviceOption);
+                        options = JsonConvert.DeserializeObject<OptionRequest>(serviceOption)
+                                  ?? new OptionRequest(); // ✅ fallback if null
                     }
                     catch
                     {
-                        options = new OptionRequest();
+                        options = new OptionRequest(); // ✅ fallback on bad JSON
                     }
 
-                    // ← Replace your old call with this safe null-check version
-                    if (options.BranchId == null || options.CheckBookNumber == null || options.CheckBookPageNumber == null)
+                    // ✅ Now options can never be null
+                    model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
+                        options.IsNotfromMFI,
+                        options.BranchId,
+                        options.CheckBookNumber,
+                        options.CheckBookPageNumber
+                    );
+
+                    if (model == null)
                     {
-                        // Return empty model or echo the inputs
                         model = new OptionRequest
                         {
                             IsNotfromMFI = options.IsNotfromMFI,
@@ -88,32 +94,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                             CheckBookPageNumber = options.CheckBookPageNumber
                         };
                     }
-                    else
-                    {
-                        model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
-                            options.IsNotfromMFI,
-                            options.BranchId,
-                            options.CheckBookNumber,
-                            options.CheckBookPageNumber
-                        );
-
-                        if (model == null)
-                        {
-                            model = new OptionRequest
-                            {
-                                IsNotfromMFI = options.IsNotfromMFI,
-                                BranchId = options.BranchId,
-                                CheckBookNumber = options.CheckBookNumber,
-                                CheckBookPageNumber = options.CheckBookPageNumber
-                            };
-                        }
-                    }
                 }
 
                 if (model == null)
                     model = new OptionRequest();
 
-                return PartialView(partialView, model);
+                model.ChequeImagePath = "~/AppFiles/Images/noimage.jpg";
+
+                return PartialView(partialView ?? "_Create", model);
             }
 
             else
@@ -121,7 +109,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 // ✅ Edit existing record
                 await loader();
                 var data = await _mockCheckClearanceService.GetByIdAsync(KEY);
-                return PartialView(partialView, data);
+                return PartialView(partialView ?? "_Edit", data);
             }
         }
 

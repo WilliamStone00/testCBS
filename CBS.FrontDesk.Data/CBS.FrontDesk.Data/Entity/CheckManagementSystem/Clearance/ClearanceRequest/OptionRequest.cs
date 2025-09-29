@@ -27,13 +27,13 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string ChequeBranchId { get; set; }
         public string ReceivingBranchId { get; set; }
         public string MemberReference { get; set; }
-        public DateTime NationalIdCreationDate { get; set; }
-        public DateTime NationalIdExpirationDate { get; set; }
-        public DateTime ChequeCreationDate { get; set; }
-        public DateTime ChequeExpirationDate { get; set; }
+        public DateTime? NationalIdCreationDate { get; set; } = DateTime.Now;
+        public DateTime? NationalIdExpirationDate { get; set; } = DateTime.Now;
+        public DateTime? ChequeCreationDate { get; set; } = DateTime.Now;
+        public DateTime? ChequeExpirationDate { get; set; } = DateTime.Now;
         public decimal ChequeAmount { get; set; }
         public string Status { get; set; }
         //public string DepositToAccount { get; set; }
-        public string FrontShotImagePath { get; set; } = null;
+        public string ChequeImagePath { get; set; } 
     }
 }

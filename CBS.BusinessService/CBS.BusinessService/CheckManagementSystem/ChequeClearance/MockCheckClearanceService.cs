@@ -138,18 +138,18 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             var clearance = _mockClearances.FirstOrDefault(c => c.ChequeClearanceId == chequeClearanceId);
             return Task.FromResult(clearance);
         }
-        public Task<OptionRequest> GetByBranchAndBookAsync(bool isNotfromfi, string branchId, string CheckBookNumber, string pageNumber)
+        public async Task<OptionRequest> GetByBranchAndBookAsync(bool isNotfromfi, string branchId, string CheckBookNumber, string pageNumber)
         {
-            lock (_lock)
-            {
+            /*lock (_lock)
+            {*/
                 var result = _mockClearances.FirstOrDefault(c =>
                    
                     c.BranchId == branchId &&
                     c.CheckBookNumber == CheckBookNumber &&
                     c.CheckBookPageNumber == pageNumber);
 
-                return Task.FromResult(result);
-            }
+                return result;
+            //}
         }
 
         public Task<OptionRequest> CreateAsync(OptionRequest model)

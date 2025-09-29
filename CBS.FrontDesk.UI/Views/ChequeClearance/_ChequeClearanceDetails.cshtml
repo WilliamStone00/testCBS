@@ -1,198 +1,132 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
 
-@{
-    // helpers
-    Func<string, string> Safe = s => string.IsNullOrWhiteSpace(s) ? "—" : s;
-    Func<DateTime?, string> DateOrDash = d => d.HasValue ? d.Value.ToString("dd/MM/yyyy HH:mm") : "—";
-    Func<decimal?, string> Money = v => v.HasValue ? v.Value.ToString("N2") : "0.00";
-    Func<bool?, string> YesNo = v => (v ?? false) ? "Yes" : "No";
-
-    // Determine header class based on Member flag (used for ALL headers)
-    var allHeaderClass = (Model?.IsNotfromMFI == true) ? "bg-success text-white" : "bg-light";
-
-    // Compute status badge classes & icon (done here — no inline control flow in markup)
-    var st = (Model?.Status ?? string.Empty).Trim().ToLowerInvariant();
-    var statusBadgeClass = "bg-secondary";
-    var statusIcon = "bi-info-circle";
-
-    if (st.Contains("approved"))
-    {
-        statusBadgeClass = "bg-success text-white";
-        statusIcon = "bi-check-circle";
+<style>
+    .section-header {
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
-    else if (st.Contains("pending"))
-    {
-        statusBadgeClass = "bg-warning text-dark";
-        statusIcon = "bi-clock";
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 220px;
+        font-weight: 600;
+        text-transform: uppercase;
     }
-    else if (st.Contains("rejected") || st.Contains("failed"))
-    {
-        statusBadgeClass = "bg-danger text-white";
-        statusIcon = "bi-x-circle";
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
     }
-    else if (!string.IsNullOrEmpty(st))
-    {
-        statusBadgeClass = "bg-primary text-white";
-        statusIcon = "bi-info-circle";
-    }
-}
+</style>
 
-<div class="container py-3">
-    <div class="row g-3">
-        <!-- Branch Info -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-building"></i>
-                    </span>
-                    <strong class="ms-1">Branch Info</strong>
-                </div>
-                <div class="card-body">
-                    
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="px-3 py-2">
+            <!-- 🔷 Clearance Header -->
+            <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
+                <i class="mdi mdi-bank-transfer me-1"></i> Cheque Clearance (@Model.ChequeClearanceId)
+            </h5>
 
-                    <div class="small text-secondary">Receiving Branch</div>
-                    <div class="mb-2">@Safe(Model?.ReceivingBranchId)</div>
+            <!-- 🔷 Branch Info -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-office-building me-1"></i> Branch Information
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">Receiving Branch</th><td>@Model.ReceivingBranchId</td></tr>
+                    <tr><th class="bg-label">Cheque Branch</th><td>@Model.ChequeBranchId</td></tr>
+                </tbody>
+            </table>
 
-                    <div class="small text-secondary">Cheque Branch</div>
-                    <div>@Safe(Model?.ChequeBranchId)</div>
-                </div>
-            </div>
-        </div>
+            <!-- 🔷 CheckBook Details -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-book-open-variant me-1"></i> CheckBook Details
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">CheckBook Number</th><td>@Model.CheckBookNumber</td></tr>
+                    <tr><th class="bg-label">Page Number</th><td>@Model.CheckBookPageNumber</td></tr>
+                </tbody>
+            </table>
 
-        <!-- CheckBook Details -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-journal-text"></i>
-                    </span>
-                    <strong class="ms-1">Check Book</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">CheckBook ID</div>
-                    <div class="fw-semibold mb-2">@Safe(Model?.CheckBookNumber)</div>
+            <!-- 🔷 Member -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-account-card-details me-1"></i> Member
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
+                    <tr>
+                        <th class="bg-label">Not From MFI</th>
+                        <td>
+                            <span class="badge @(Model.IsNotfromMFI ? "bg-success" : "bg-secondary")">
+                                @(Model.IsNotfromMFI ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <div class="small text-secondary">Page #</div>
-                    <div>@Safe(Model?.CheckBookPageNumber?.ToString())</div>
-                </div>
-            </div>
-        </div>
+            <!-- 🔷 Cheque -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-cash me-1"></i> Cheque
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">Amount</th><td>@Model.ChequeAmount.ToString("N0") FCFA</td></tr>
+                    <tr><th class="bg-label">Created</th><td>@(Model.ChequeCreationDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                    <tr><th class="bg-label">Expires</th><td>@(Model.ChequeExpirationDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                </tbody>
+            </table>
 
-        <!-- Member Information -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-person-badge"></i>
-                    </span>
-                    <strong class="ms-1">Member</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">Member Ref</div>
-                    <div class="fw-semibold mb-2">@Safe(Model?.MemberReference)</div>
+            <!-- 🔷 Identification -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-card-account-details me-1"></i> Identification
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">National ID</th><td>@Model.NationalIdNumber</td></tr>
+                    <tr><th class="bg-label">ID Created</th><td>@(Model.NationalIdCreationDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                    <tr><th class="bg-label">ID Expires</th><td>@(Model.NationalIdExpirationDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                </tbody>
+            </table>
 
-                    <div class="small text-secondary">NotFrom MFI</div>
-                    <div>
-                        <span class="badge @(Model?.IsNotfromMFI == true ? "bg-success" : "bg-secondary")">
-                            @(Model?.IsNotfromMFI == true ? "Yes" : "No")
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <!-- 🔷 Processing -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-settings me-1"></i> Processing
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr>
+                        <th class="bg-label">Deposit to Account</th>
+                        <td>
+                            @if (Model.DepositToAccount)
+                            {
+                                <span class="badge bg-success">Yes (@Model.AccountNumber)</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr><th class="bg-label">Same Day Processing</th><td>@(Model.SameDayProcessing ? "Yes" : "No")</td></tr>
+                </tbody>
+            </table>
 
-        <!-- Cheque Information -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-currency-dollar"></i>
-                    </span>
-                    <strong class="ms-1">Cheque</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">Amount</div>
-                    <div class="fw-semibold text-success mb-2">@Money(Model?.ChequeAmount)</div>
-
-                    <div class="small text-secondary">Created</div>
-                    <div class="mb-1">@DateOrDash(Model?.ChequeCreationDate)</div>
-
-                    <div class="small text-secondary">Expires</div>
-                    <div>@DateOrDash(Model?.ChequeExpirationDate)</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Identification -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-credit-card-2-front"></i>
-                    </span>
-                    <strong class="ms-1">Identification</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">National ID</div>
-                    <div class="fw-semibold mb-2">@Safe(Model?.NationalIdNumber)</div>
-
-                    <div class="small text-secondary">ID Created</div>
-                    <div class="mb-1">@DateOrDash(Model?.NationalIdCreationDate)</div>
-
-                    <div class="small text-secondary">ID Expires</div>
-                    <div>@DateOrDash(Model?.NationalIdExpirationDate)</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Processing -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-gear-fill"></i>
-                    </span>
-                    <strong class="ms-1">Processing</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">Deposit to Account</div>
-                    <div class="fw-semibold mb-2">
-                        @if (Model?.DepositToAccount == true)
-                        {
-                            <span class="badge bg-success">Yes (@Safe(Model?.AccountNumber))</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">No</span>
-                        }
-                    </div>
-
-                    <div class="small text-secondary">Same Day</div>
-                    <div class="fw-semibold">@YesNo(Model?.SameDayProcessing)</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status -->
-        <div class="col-sm-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header @allHeaderClass d-flex align-items-center">
-                    <span class="me-2 rounded-circle bg-white text-dark p-2 d-inline-flex align-items-center justify-content-center" style="width:36px; height:36px;">
-                        <i class="bi bi-info-circle-fill"></i>
-                    </span>
-                    <strong class="ms-1">Status</strong>
-                </div>
-                <div class="card-body">
-                    <div class="small text-secondary">Request Status</div>
-                    <div class="mt-1">
-                        <span class="badge @statusBadgeClass p-2">
-                            <i class="bi @statusIcon me-1"></i>
-                            @Safe(Model?.Status)
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <!-- 🔷 Status -->
+            <h6 class="fw-bold border-bottom text-primary">
+                <i class="mdi mdi-information-outline me-1"></i> Status
+            </h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><th class="bg-label">Request Status</th><td>@Model.Status</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -1,0 +1,59 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
+
+@using Resources
+@{
+    ViewBag.Title = "Cheque Clearance Request";
+}
+@Html.AntiForgeryToken()
+
+<!-- Configuration Selection Area -->
+<div id="configCard" class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Configuration Scope</h5>
+    <div class="row align-items-end">
+        <!-- Is Centralized Checkbox -->
+        <div class="col-md-12">
+            <div class="form-group ps-2">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsNotfromMFI, new { @class = "form-check-input", id = "IsNotfromMFI" })
+                    <label class="form-check-label" for="IsfromMFI">Is Not From MFI( Not from Micro-Finance)</label>
+                </div>
+                @Html.ValidationMessageFor(m => m.IsNotfromMFI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "---" + @GlobalUserManagement.SelectBranch + "---",
+                    new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                <label>@GlobalUserManagement.Branch</label>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.CheckBookPageNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CheckBookPageNumber, "", new { @class = "text-danger" })
+                <label>CheckBookPageNumber</label>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.CheckBookNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CheckBookNumber, "", new { @class = "text-danger" })
+                <label>CheckBookNumber</label>
+            </div>
+        </div>
+
+
+        <!-- Load Button -->
+        <div class="col-md-1">
+            <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
+        </div>
+    </div>
+</div>
+
