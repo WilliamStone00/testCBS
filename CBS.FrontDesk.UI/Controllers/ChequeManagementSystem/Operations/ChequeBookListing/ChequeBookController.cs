@@ -3,6 +3,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,20 +93,22 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
         }
 
+        // using Microsoft.AspNetCore.Mvc;
+
+       
         [HttpGet]
         public async Task<ActionResult> List()
         {
             await LoadViewBagData();
             return View();
-
         }
 
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
         public async Task<JsonResult> LoadChequeBooksData(ChequeBookQuery query)
         {
             try
             {
-                // Try main service first
                 var data = await _chequeBookService.GetChequeBooksDataTableAsync(query);
                 return Json(new
                 {
@@ -117,33 +120,28 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
             catch (Exception ex)
             {
-               return Json(new { success = false, message = ex.Message });
-
-                /* // Fall back to mock service
-                 try
-                 {
-                     //var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
-                     return Json(new
-                     {
-                         draw = mockData.draw,
-                         recordsTotal = mockData.recordsTotal,
-                         recordsFiltered = mockData.recordsFiltered,
-                         data = mockData.data
-                     });
-                 }
-                 catch (Exception mockEx)
-                 {
-                     return Json(new
-                     {
-                         draw = query.DataTableOptions.draw,
-                         recordsTotal = 0,
-                         recordsFiltered = 0,
-                         data = new List<object>(),
-                         error = "Failed to load cheque books data"
-                     });
-                 }*/
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
             }
         }
+
+            // Example Download endpoint (GET) receives querystring params for export
+            //[HttpGet]
+            //public async Task<IActionResult> DownloadChequeBooks(ChequeBookQuery query)
+            //{
+            //    // implement export using the query (server will bind from query string)
+            //    var fileBytes = await _chequeBookService.GenerateChequeBookExportAsync(query);
+            //    return File(fileBytes, "application/octet-stream", "chequebooks.csv");
+            //}
+        
+
 
         public async Task<ActionResult> GetChequeBookDetails(string id)
         {
