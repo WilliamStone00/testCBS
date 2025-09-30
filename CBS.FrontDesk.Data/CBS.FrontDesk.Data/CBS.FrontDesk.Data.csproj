@@ -136,7 +136,7 @@
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceValidation.cs" />
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\OptionRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
-    <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\NumConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\CheckConfig\NumConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\VariablePosition.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\FeeConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\InitOptions.cs" />

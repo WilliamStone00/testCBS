@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeNumber
+namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
 {
     public class NumConfig
     {
@@ -23,10 +23,10 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeNumber
     {
         public NumconfogQuery()
         {
-            DataTableOptions = new DataTableOptions();
+            Options = new DataTableOptions();
         }
 
-        public DataTableOptions DataTableOptions { get; set; }
+        public DataTableOptions Options { get; set; }
 
         public string Name { get; set; }
         public string BranchId { get; set; }

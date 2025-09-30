@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="Users" controller="UserManagement" action="Index">
+      <mvcSiteMapNode title="Create user" controller="UserManagement" action="Create" />
+      <mvcSiteMapNode title="Profile" controller="UserManagement" action="UserProfile" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Savings" controller="Saving" action="Index">
+      <mvcSiteMapNode title="Account Details" controller="Operation" action="AccountDetails" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Members" controller="Individual" action="Create">
+      <mvcSiteMapNode title="List" controller="Individual" action="List"/>
+      <mvcSiteMapNode title="Profile" controller="Individual" action="CustomerProfile" preservedRouteParameters="KEY"/>
+      <mvcSiteMapNode title="Account" controller="Individual" action="Account" preservedRouteParameters="KEY"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Primary teller provissioning" controller="TellerProvissioing" action="Primary">
+    </mvcSiteMapNode>
+   
+    <mvcSiteMapNode title="Sub teller provissioning" controller="TellerProvissioing" action="SubTeller">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Global Configuration" controller="GlobalConfiguration" action="Index">
+      <mvcSiteMapNode title="Country" controller="Country" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create period" controller="Period" action="Index">
+        <mvcSiteMapNode title="List" controller="Period" action="List"/>
+        <mvcSiteMapNode title="Update" controller="Period" action="Update" preservedRouteParameters="KEY"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create document" controller="Document" action="Index">
+        <mvcSiteMapNode title="List" controller="Document" action="List"/>
+        <mvcSiteMapNode title="Update" controller="Document" action="Update" preservedRouteParameters="KEY"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Period" controller="Period" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Document" controller="Document" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Teller management" controller="TellerManagement" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Loan product" controller="LoanProduct" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Guaranty" controller="Guaranty" action="Index">
+        <mvcSiteMapNode title="Guaranty pack" controller="GuarantyPack" action="Index"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Create Collateral" controller="Collateral" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Product collateral" controller="LoanProductCollateral" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Alert profile" controller="AlertProfile" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Service fee" controller="Fee" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Installment Type" controller="InstallmentType" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Funding-line" controller="FundingLine" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Penalty" controller="Penalty" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Loan purpose" controller="LoanPurpose" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Tax" controller="Tax" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Menu master" controller="MenuMaster" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Role permission" controller="RolePermission" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Role management" controller="Role" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Branch management" controller="BranchManagement" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Transaction configuration" controller="TransactionConfiguration" action="Index">
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Accounting Configurations" controller="AccountingConfiguration" action="Index">
+        <mvcSiteMapNode title="Accounting Event" controller="OperationEvent" action="Index"/>
+        <mvcSiteMapNode title="OperationEventAttribute" controller="OperationEventAttribute" action="Index"/>
+        <mvcSiteMapNode title="Chart Of Account " controller="AccountingChart" action="Index"/>
+        <mvcSiteMapNode title="Entry Rule " controller="AccountingEntryRule" action="Index"/>
+        <mvcSiteMapNode title="AccountingRule" controller="AccountingRule" action="Index" preservedRouteParameters="KEY"/>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Accounting-Configuration" controller="AccountingConfiguration" action="Index">
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Manual Operations" controller="BankingOperations" action="Index">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Transaction Reversal" controller="BankingOperations" action="CreateTransactionReversalRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Transaction Reversal" controller="BankingOperations" action="GetAllTransasctionReversalRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Accounting Reports" controller="AccountingStatements" action="Index">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Dashboard" controller="Dashboard" action="Index">
+      <mvcSiteMapNode title="Head office dashboard" controller="Dashboard" action="HeadOffice"/>
+      <mvcSiteMapNode title="Branch office dashboard" controller="Dashboard" action="BranchOffice"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="CreateCashReplenishmentRequest">   
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Approval" controller="CashFlowManagement" action="CreateApprovalRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="View Cash Replenishment Request" controller="CashFlowManagement" action="GetAllCashReplenimentRequestData">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Request" controller="CashFlowManagement" action="GetCashReplenimentRequest">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Teller Cash Replenishment Request" controller="TellerCashDemand" action="Index">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Teller Cash Replenishment Request" controller="TellerCashDemand" action="CreateCashReplenishmentRequest">
+    </mvcSiteMapNode>
+<mvcSiteMapNode title="Teller Cash Replenishment Approval" controller="TellerCashDemand" action="CreateApprovalRequest">
+  </mvcSiteMapNode>
+    <mvcSiteMapNode title="View Teller Cash Replenishment Request" controller="TellerCashDemand" action="GetAllCashReplenimentRequestData">
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Cash Replenishment Request" controller="TellerCashDemand" action="GetCashReplenimentRequest">
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+
+
+  
+</mvcSiteMap>

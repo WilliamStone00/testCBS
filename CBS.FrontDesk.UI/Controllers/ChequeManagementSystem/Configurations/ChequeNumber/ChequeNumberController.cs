@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -64,12 +65,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
                 // Call the main service to get the DataTable
                 var data = await _NumConfigService.GetNumConfigDataTableAsync(query);
 
+                var numConfigs = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.NumConfig>>(JsonConvert.SerializeObject(data.data));
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    data = numConfigs
                 });
             }
             catch (Exception ex)
@@ -80,7 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
                 // Return a clean JSON response for DataTable even on error
                 return Json(new
                 {
-                    draw = query.DataTableOptions?.draw ?? "1",
+                    draw = query.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
