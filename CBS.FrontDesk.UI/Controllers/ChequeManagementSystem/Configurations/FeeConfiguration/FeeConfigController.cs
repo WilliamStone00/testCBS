@@ -249,13 +249,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string path = null,string serviceOption = null)
         {
+            await Loader(); 
             // ROUTE: Return summary list
             if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
-                await Loader(); // Make sure ViewBag is populated for filters
-
-                // Get the data but don't pass it to the view - it will be loaded via AJAX
-                // We just return the empty partial view structure
+              // We just return the empty partial view structure
                 return PartialView(partialView ?? "_FeeConfigList");
             }
 
@@ -284,14 +282,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
                 if (model == null)
                     return HttpNotFound($"FeeConfig with id '{KEY}' not found.");
 
-                await Loader();
-                return PartialView(partialView ?? "_FormPartial", model);
+                // await Loader();
+                return PartialView(partialView , model);
             }
 
             // ROUTE: Create (return a new FeeConfig prefilled if serviceOption provided)
-            if (string.Equals(path, "create", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(path, "_Create", StringComparison.OrdinalIgnoreCase))
             {
-                await Loader();
+               // await Loader();
 
                 FeeConfig model = null;
                 if (!string.IsNullOrWhiteSpace(serviceOption))
@@ -322,7 +320,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
             // DEFAULT BEHAVIOUR:
             // If path is null or unknown, attempt: if KEY provided => get by id, else => create new
-            await Loader();
+            //await Loader();
             FeeConfig defaultModel = null;
 
             if (!string.IsNullOrWhiteSpace(KEY))

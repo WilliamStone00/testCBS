@@ -47,6 +47,49 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
 
             return true;
         }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadNumConfigData(NumconfogQuery query)
+        {
+            try
+            {
+                // Call the main service to get the DataTable
+                var data = await _NumConfigService.GetNumConfigDataTableAsync(query);
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log error if needed
+                System.Diagnostics.Debug.WriteLine($"LoadNumConfigData Error: {ex.Message}");
+
+                // Return a clean JSON response for DataTable even on error
+                return Json(new
+                {
+                    draw = query.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = $"Failed to load NumConfig data: {ex.Message}"
+                });
+            }
+        }
+
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             if (path == "list")

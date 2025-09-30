@@ -1,0 +1,313 @@
+﻿@* Cheque Book Filters - minimal fields to match ChequeBookQuery *@
+@using Resources
+@{
+    ViewBag.Title = "Cheque Book Overview"; // or @GlobalCheque.Whatever
+}
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Cheque Book Filters</h5>
+
+    <form id="chequeFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for optional filter groups -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleFlags" onclick="document.getElementById('flagFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleFlags">Show Status Flags</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters (always visible) -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Customer Account / ID</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="Customer account or ID" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Customer Name</label>
+                    <input type="text" id="customerName" name="CustomerName" class="form-control" placeholder="Customer name" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Category</label>
+                    <select id="category" name="Category" class="form-select">
+                        <option value="">All</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Corporate">Corporate</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Branch Filter (togglable) -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
+                        @* Replace ViewBag.Branches with your actual branches collection *@
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flags (togglable) -->
+            <div id="flagFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Status</label>
+                        <select id="status" name="Status" class="form-select">
+                            <option value="">All</option>
+                            <option value="Active">Active</option>
+                            <option value="Closed">Closed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Number Of Leaves</label>
+                        <input type="number" id="numberOfLeaves" name="NumberOfLeaves" class="form-control" min="0" placeholder="e.g. 25" />
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-center">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="true" id="isLost" name="IsLost" />
+                            <label class="form-check-label fw-bold" for="isLost">Is Lost</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="true" id="isBlocked" name="IsBlocked" />
+                            <label class="form-check-label fw-bold" for="isBlocked">Is Blocked</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters (togglable) -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date (Created/Lost From)</label>
+                        <input type="date" id="startDate" name="StartDate" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date (Created/Lost To)</label>
+                        <input type="date" id="endDate" name="EndDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_CheckBookData")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        // Load Cheque Book data into DataTable
+        function loadChequeData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/ChequeBook/LoadChequeBooksData', // adjust endpoint as needed
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectChequeExportParams();
+
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreatedDate',
+                        name: 'CreatedDate',
+                        render: function (data) {
+                            if (!data) return '';
+                            return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                        }
+                    },
+                    { data: 'CustomerName', name: 'CustomerName' },
+                    { data: 'CustomerId', name: 'CustomerId' },
+                    { data: 'BranchName', name: 'BranchName' },
+                    { data: 'Category', name: 'Category' },
+                    { data: 'NumberOfLeaves', name: 'NumberOfLeaves' },
+                    {
+                        data: null,
+                        name: 'Flags',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            const lost = row.IsLost ? '<span class="badge bg-danger me-1">Lost</span>' : '';
+                            const blocked = row.IsBlocked ? '<span class="badge bg-warning text-dark">Blocked</span>' : '';
+                            return `${lost}${blocked}` || '<span class="text-muted">—</span>';
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        name: 'Status',
+                        render: function (data) {
+                            const label = data || '';
+                            const badgeClass = label === 'Active' ? 'bg-success' : (label === 'Pending' ? 'bg-warning text-dark' : 'bg-secondary');
+                            return `<span class="badge ${badgeClass}">${label}</span>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            // adjust actions as needed
+                            return `
+                            <a href="/Cheque/Details?key=${encodeURIComponent(row.Id || row.ChequeId || '')}" class="btn btn-sm btn-info me-1">
+                                <i class="mdi mdi-file-document-outline"></i> View
+                            </a>
+                            <a href="/Cheque/Edit?key=${encodeURIComponent(row.Id || row.ChequeId || '')}" class="btn btn-sm btn-primary">
+                                <i class="mdi mdi-pencil"></i> Edit
+                            </a>
+                        `;
+                        }
+                    }
+                ]
+            });
+        }
+
+        // Collect filters (only fields present in the view / ChequeBookQuery)
+        function collectChequeExportParams() {
+            // Normalize checkbox values to explicit booleans (true/false/null)
+            const isLostEl = document.getElementById('isLost');
+            const isBlockedEl = document.getElementById('isBlocked');
+
+            // Convert empty strings to null so server can differentiate "no filter"
+            function emptyToNull(v) {
+                return (v === undefined || v === null || v === '') ? null : v;
+            }
+
+            return {
+                CustomerId: emptyToNull($('#customerId').val()),
+                CustomerName: emptyToNull($('#customerName').val()),
+                BranchId: emptyToNull($('#branchId').val()),
+                Category: emptyToNull($('#category').val()),
+                Status: emptyToNull($('#status').val()),
+                NumberOfLeaves: (function () {
+                    const val = $('#numberOfLeaves').val();
+                    return val ? Number(val) : null;
+                })(),
+                IsLost: isLostEl ? (isLostEl.checked ? true : null) : null,
+                IsBlocked: isBlockedEl ? (isBlockedEl.checked ? true : null) : null,
+                StartDate: emptyToNull($('#startDate').val()),
+                EndDate: emptyToNull($('#endDate').val()),
+                options: {} // DataTables fills this inside loadChequeData
+            };
+        }
+
+        // Build query and trigger download (server-side should accept query params)
+        function exportChequeData() {
+            const filters = collectChequeExportParams();
+
+            // Flatten object for URLSearchParams: exclude nulls to keep URL clean
+            const paramsObj = {};
+            Object.keys(filters).forEach(key => {
+                const val = filters[key];
+                // skip options (DataTable) when exporting via GET
+                if (key === 'options' || val === null || val === undefined) return;
+                paramsObj[key] = val;
+            });
+
+            const params = new URLSearchParams(paramsObj).toString();
+            window.location.href = `/Cheque/DownloadChequeBooks?${params}`; // adjust endpoint as needed
+        }
+
+        // Reset filters and reload table
+        function resetChequeFilters() {
+            $('#chequeFilterForm').trigger('reset');
+
+            // If using select2, reset selects
+            $('.select2').val('').trigger('change');
+
+            // Hide toggled groups after reset
+            $('#branchFilter, #dateFilters, #flagFilters').addClass('d-none');
+
+            // Make sure checkboxes behave as expected (unchecked)
+            $('#isLost').prop('checked', false);
+            $('#isBlocked').prop('checked', false);
+
+            // reload datatable with no filters
+            loadChequeData();
+        }
+       
+
+        $(document).ready(function () {
+            // initialize table on page load if desired:
+            // loadChequeData();
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadChequeData();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetChequeFilters();
+            });
+
+            // If you added an export button (uncomment in your view), bind it:
+            $('#exportBtn').on('click', function (e) {
+                e.preventDefault();
+                exportChequeData();
+            });
+
+            // Initialize select2 where applicable
+            if ($.fn.select2) {
+                $('#branchId.select2').select2({ width: '100%' });
+            }
+        });
+
+    </script>
+}

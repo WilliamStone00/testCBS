@@ -101,7 +101,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
             return leaves;
         }
 
-        public async Task<CustomDataTable> GetChequeBooksDataTableAsync(ChequeBookQuery query)
+    /*    public async Task<CustomDataTable> GetChequeBooksDataTableAsync(ChequeBookQuery query)
         {
             await Task.Delay(100); // Simulate API delay
 
@@ -177,7 +177,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 dataTableOptions: query.DataTableOptions
             );
         }
-
+*/
         public async Task<ChequeBook> GetChequeBookByIdAsync(string chequeBookId)
         {
             await Task.Delay(50);

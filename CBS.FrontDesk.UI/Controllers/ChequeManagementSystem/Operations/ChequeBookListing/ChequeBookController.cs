@@ -7,8 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+
 using System.Web.Mvc;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeBookListing
 {
@@ -64,29 +65,83 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
             catch (Exception ex)
             {
+                return Json(new { success = false, message = ex.Message });
                 // Fall back to mock service
-                try
+                //try
+                //{
+                /*    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);*/
+                /*     return Json(new
+                     {
+                         draw = query.DataTableOptions.draw,
+                         recordsTotal = mockData.recordsTotal,
+                         recordsFiltered = mockData.recordsFiltered,
+                         data = mockData.data
+                     });
+                 }
+                 catch (Exception mockEx)
+                 {
+                     return Json(new
+                     {
+                         draw = query.DataTableOptions.draw,
+                         recordsTotal = 0,
+                         recordsFiltered = 0,
+                         data = new List<object>(),
+                         error = "Failed to load cheque books data"
+                     });
+                 }*/
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await LoadViewBagData();
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadChequeBooksData(ChequeBookQuery query)
+        {
+            try
+            {
+                // Try main service first
+                var data = await _chequeBookService.GetChequeBooksDataTableAsync(query);
+                return Json(new
                 {
-                    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
-                    return Json(new
-                    {
-                        draw = mockData.draw,
-                        recordsTotal = mockData.recordsTotal,
-                        recordsFiltered = mockData.recordsFiltered,
-                        data = mockData.data
-                    });
-                }
-                catch (Exception mockEx)
-                {
-                    return Json(new
-                    {
-                        draw = query.DataTableOptions.draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0,
-                        data = new List<object>(),
-                        error = "Failed to load cheque books data"
-                    });
-                }
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+               return Json(new { success = false, message = ex.Message });
+
+                /* // Fall back to mock service
+                 try
+                 {
+                     //var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
+                     return Json(new
+                     {
+                         draw = mockData.draw,
+                         recordsTotal = mockData.recordsTotal,
+                         recordsFiltered = mockData.recordsFiltered,
+                         data = mockData.data
+                     });
+                 }
+                 catch (Exception mockEx)
+                 {
+                     return Json(new
+                     {
+                         draw = query.DataTableOptions.draw,
+                         recordsTotal = 0,
+                         recordsFiltered = 0,
+                         data = new List<object>(),
+                         error = "Failed to load cheque books data"
+                     });
+                 }*/
             }
         }
 

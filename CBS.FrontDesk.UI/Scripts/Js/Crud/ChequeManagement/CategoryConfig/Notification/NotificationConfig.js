@@ -432,9 +432,14 @@
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         const text = textarea.value;
-        textarea.value = text.substring(0, start) + placeholderText + text.substring(end);
+
+        // Add $ before the placeholder text
+        const textToInsert = `$${placeholderText}`;
+
+        textarea.value = text.substring(0, start) + textToInsert + text.substring(end);
         textarea.focus();
-        textarea.selectionStart = textarea.selectionEnd = start + placeholderText.length;
+        textarea.selectionStart = textarea.selectionEnd = start + textToInsert.length;
     }
+
 
 }(jQuery));

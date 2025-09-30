@@ -1259,12 +1259,13 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
         public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
 
-        // ---------------- GENERIC CRUD ----------------
+        // ---------------- cheque number position CRUD ----------------
         public static string GetAll = "/api/v1/check-configs";
         public static string GetById = "/api/v1/check-config/{0}";
         public static string Create = "/api/v1/check-config";
         public static string Update = "/api/v1/check-config/{0}";
         public static string Delete = "/api/v1/check-config/{0}";
+        public static string datatable = "/api/v1/check-config/data-table";
 
         // ---------------- FEE CONFIG ----------------
         public static string GetAllFeeConfigs = "/api/v1/get-Feeconfigs";
@@ -1277,10 +1278,11 @@ namespace CBS.FrontDesk.Helper
         // ---------------- NOTIFICATIONS ----------------
 
         public static string GetAllnot = "/api/v1/Notification/types";
-        public static string GetNotificationTypes = "/api/v1/Notification";
-        public static string Createnot = "/api/v1/Notification";
-        public static string Updatenot = "/api/v1/Notification/{id}";
-        public static string Deletenot = "/api/v1/Notification/{id}";
+        public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        public static string Createnot = "/api/v1/Notification/Config";
+        public static string Updatenot = "/api/v1/update-notification-config/{0}";
+        public static string Deletenot = "/api/v1/delete-notification-config/{0}";
+
         //------------------- CounterCheque ----------------
         public static string CreateCounterCheque = "/api/v1/counter-checks";
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
@@ -1316,7 +1318,7 @@ namespace CBS.FrontDesk.Helper
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
 
         //----------------------- Cheque Book -------------------------
-        public const string GetChequeBooksDataTable = "/api/v1/Cheque Book";
+        public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
         public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
         public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";

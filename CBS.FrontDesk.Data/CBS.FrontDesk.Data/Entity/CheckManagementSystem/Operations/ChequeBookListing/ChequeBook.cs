@@ -81,19 +81,35 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
 
 
 
+
     public class ChequeBookQuery
     {
-        public DataTableOptions DataTableOptions { get; set; }
-        public string customerName { get; set; }
-        public string branchId { get; set; }
-        public string status { get; set; }
-        public DateTime? fromDate { get; set; }
-        public DateTime? toDate { get; set; }
-
         public ChequeBookQuery()
         {
             DataTableOptions = new DataTableOptions();
         }
 
+        public DataTableOptions DataTableOptions { get; set; }
+
+        // Basic identity / search
+        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+        public string BranchId { get; set; }
+
+        // Status / category
+        public string Status { get; set; }
+        public string Category { get; set; }
+
+        public int? NumberOfLeaves { get; set; }
+
+        // Flags
+        public bool? IsLost { get; set; }
+        public bool? IsBlocked { get; set; }
+
+
+        // Date filters
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
+
 }

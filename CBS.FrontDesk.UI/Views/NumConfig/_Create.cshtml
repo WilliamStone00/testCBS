@@ -1,137 +1,126 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeNumber.NumConfig
 @using Resources
 
-
 <div class="modal-body">
-    @using (Html.BeginForm("CreateOrUpdate", "NumConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    @using (Html.BeginForm("CreateOrUpdate", "NumConfig", FormMethod.Post,
+        new { enctype = "multipart/form-data", onsubmit = "return NumconfogSyncBeforeSubmit(this) && AjaxPostAndUpdate(this);" }))
     {
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
 
-    <div class="container mt-3">
-        <h2 class="mb-3 text-primary">Create Cheque Number Configuration</h2>
+        <div class="container mt-2">
+            <h4 class="mb-3 text-primary">@ChequeManagements.configName</h4>
 
-        <!-- Form fields -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = ChequeManagements.configName })
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.configName</label>
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Configuration name", id = "name" })
+                        <label>@ChequeManagements.configName</label>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                            new { @class = "form-control select2", id = "branchId" })
+                        <label>@GlobalUserManagement.SelectBranch</label>
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BranchId,new SelectList(ViewBag.Branches, "Id", "Name"),"---" + @GlobalUserManagement.SelectBranch + "---",new { @class = "form-control select2" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label>Branch</label>
+            <hr />
+
+            <h5 class="mb-2">Number Components & Positions</h5>
+
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="toggleNumericPositions" />
+                <label class="form-check-label fw-bold" for="toggleNumericPositions">
+                    Show numeric position inputs
+                </label>
+            </div>
+
+            <div id="numericPositions" class="row g-2 mb-2" style="display:none;">
+                <div class="col-md-3">
+                    <label class="form-label">Bank Code Position</label>
+                    @Html.TextBoxFor(m => m.BankCodePosition, new { type = "number", @class = "form-control", id = "bankCodePosition", min = "0" })
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Branch Code Position</label>
+                    @Html.TextBoxFor(m => m.BranchCodePosition, new { type = "number", @class = "form-control", id = "branchCodePosition", min = "0" })
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Year Position</label>
+                    @Html.TextBoxFor(m => m.YearPosition, new { type = "number", @class = "form-control", id = "yearPosition", min = "0" })
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Serial Number Position</label>
+                    @Html.TextBoxFor(m => m.SeriaNumberPosition, new { type = "number", @class = "form-control", id = "seriaNumberPosition", min = "0" })
                 </div>
             </div>
-        </div>
 
-        <p></p>
-        <!-- Drag and Drop Zone -->
-        <h5 class="mb-2">Arrange Cheque Number Components</h5>
-        <div id="dragZone" class="drag-zone">
-            <div class="draggable" draggable="true" data-variable="BankCode">🏦 Bank Code</div>
-            <div class="draggable" draggable="true" data-variable="BranchCode">🏢 Branch Code</div>
-            <div class="draggable" draggable="true" data-variable="Year">📅 Year</div>
-            <div class="draggable" draggable="true" data-variable="SerialNumber">#️⃣ Serial Number</div>
-        </div>
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.AcceptSerialNumber, new { @class = "form-check-input", id = "acceptSerialNumber" })
+                        <label class="form-check-label fw-bold ms-2" for="acceptSerialNumber">Accept Serial Number</label>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Save Button -->
-        <div class="col-12 text-end mt-3">
-            @if (Model.Id == null)
-            {
-                <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="fas fa-save me-1"></i> @ChequeManagements.Save
-                </button>
-                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                    @GlobalShared.Reset
-                </button>
-            }
-            else
-            { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
+            <p class="mb-1">Arrange components visually (drag to reorder). Drag-and-drop overrides numeric inputs automatically.</p>
 
-        }
+            <div id="dragZone" class="drag-zone mb-3">
+                <div class="draggable" data-variable="BankCode">🏦 Bank Code</div>
+                <div class="draggable" data-variable="BranchCode">🏢 Branch Code</div>
+                <div class="draggable" data-variable="Year">📅 Year</div>
+                <div class="draggable" data-variable="SerialNumber">#️⃣ Serial Number</div>
+            </div>
+
+            <div class="text-end">
+                @if (Model?.Id == null)
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @ChequeManagements.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }
+            </div>
         </div>
-    </div>
     }
-    </div>
-        <style>
-            .drag-zone {
-                display: flex;
-                gap: 12px;
-                padding: 15px;
-                border: 2px dashed #007bff;
-                border-radius: 8px;
-                background-color: #f8f9fa;
-                min-height: 80px;
-            }
+</div>
 
-            .draggable {
-                padding: 10px 15px;
-                background-color: #e9ecef;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                cursor: grab;
-                user-select: none;
-                transition: background-color 0.2s;
-            }
+<style>
+    .drag-zone {
+        display: flex;
+        gap: 10px;
+        padding: 12px;
+        border: 2px dashed #0d6efd;
+        border-radius: 8px;
+        background: #f8f9fa;
+        min-height: 70px;
+        align-items: center;
+    }
 
-                .draggable:active {
-                    cursor: grabbing;
-                    background-color: #d6e4ff;
-                }
+    .draggable {
+        padding: 8px 12px;
+        background: #e9ecef;
+        border-radius: 6px;
+        cursor: grab;
+        user-select: none;
+        border: 1px solid #ced4da;
+    }
 
-            .drag-over {
-                border: 2px dashed #28a745;
-                background-color: #f1fff1;
-            }
-        </style>
-
-        <script>
-            const dragZone = document.getElementById("dragZone");
-            let draggedItem = null;
-
-            // Drag start
-            document.querySelectorAll(".draggable").forEach(item => {
-                item.addEventListener("dragstart", e => {
-                    draggedItem = item;
-                    setTimeout(() => item.style.display = "none", 0);
-                });
-
-                item.addEventListener("dragend", e => {
-                    draggedItem.style.display = "block";
-                    draggedItem = null;
-                });
-            });
-
-            // Drag over
-            dragZone.addEventListener("dragover", e => {
-                e.preventDefault();
-                const afterElement = getDragAfterElement(dragZone, e.clientX);
-                if (afterElement == null) {
-                    dragZone.appendChild(draggedItem);
-                } else {
-                    dragZone.insertBefore(draggedItem, afterElement);
-                }
-            });
-
-            function getDragAfterElement(container, x) {
-                const draggableElements = [...container.querySelectorAll(".draggable:not([style*='display: none'])")];
-                return draggableElements.reduce((closest, child) => {
-                    const box = child.getBoundingClientRect();
-                    const offset = x - box.left - box.width / 2;
-                    if (offset < 0 && offset > closest.offset) {
-                        return { offset: offset, element: child };
-                    } else {
-                        return closest;
-                    }
-                }, { offset: Number.NEGATIVE_INFINITY }).element;
-            }
+        .draggable:active {
+            cursor: grabbing;
+            background: #d6e4ff;
+        }
+</style>
 
 
-            
-        </script>
+
