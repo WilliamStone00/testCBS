@@ -1,14 +1,13 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeNumber.NumConfig
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
 @using Resources
 
 <div class="modal-body">
-    @using (Html.BeginForm("CreateOrUpdate", "NumConfig", FormMethod.Post,
-        new { enctype = "multipart/form-data", onsubmit = "return NumconfogSyncBeforeSubmit(this) && AjaxPostAndUpdate(this);" }))
+    @using (Html.BeginForm("CreateOrUpdate", "NumConfig", FormMethod.Post, new { id = "manualForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.Id)
+        @*@Html.AntiForgeryToken()*@
+        @*@Html.HiddenFor(m => m.Id)*@
 
-        <div class="container mt-2">
+        <div class="mt-2">
             <h4 class="mb-3 text-primary">@ChequeManagements.configName</h4>
 
             <div class="row g-2">
@@ -120,7 +119,15 @@
             cursor: grabbing;
             background: #d6e4ff;
         }
-</style>
 
+    #numericPositions {
+        display: none;
+    }
+
+    #toggleNumericPositions:checked ~ #numericPositions {
+        display: flex; /* or block, depending on your layout */
+    }
+
+</style>
 
 

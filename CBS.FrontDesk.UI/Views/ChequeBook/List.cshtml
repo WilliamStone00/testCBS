@@ -131,54 +131,42 @@
 <div id="datalistingview">
     @Html.Partial("_CheckBookData")
 </div>
+
+
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     <script>
-        // Global variable to store DataTable instance
         var chequeTable = null;
 
-        // Convert empty string to null for server side clarity
         function emptyToNull(v) {
             return (v === undefined || v === null || v === '') ? null : v;
         }
 
-        // Collect filters (only fields present in the view / ChequeBookQuery)
-        function collectChequeExportParams(includeDataTableOptions = false) {
-            var isLostEl = document.getElementById('isLost');
-            var isBlockedEl = document.getElementById('isBlocked');
+        function collectChequeExportParams() {
+            const isLostEl = document.getElementById('isLost');
+            const isBlockedEl = document.getElementById('isBlocked');
 
-            var params = {
+            const ret= {
                 CustomerId: emptyToNull($('#customerId').val()),
                 CustomerName: emptyToNull($('#customerName').val()),
                 BranchId: emptyToNull($('#branchId').val()),
                 Category: emptyToNull($('#category').val()),
                 Status: emptyToNull($('#status').val()),
                 NumberOfLeaves: (function () {
-                    var val = $('#numberOfLeaves').val();
-                    return val ? Number(val) : null; // Changed from 0 to null for consistency
+                    const val = $('#numberOfLeaves').val();
+                    return val ? Number(val) : 0;
                 })(),
                 IsLost: isLostEl ? isLostEl.checked : false,
                 IsBlocked: isBlockedEl ? isBlockedEl.checked : false,
                 StartDate: emptyToNull($('#startDate').val()),
-                EndDate: emptyToNull($('#endDate').val())
+                EndDate: emptyToNull($('#endDate').val()),
+                options: {}
             };
-
-            // Only include DataTable options when needed (for AJAX calls)
-            if (includeDataTableOptions) {
-                params.DataTableOptions = {};
-            }
-
-            return params;
+            console.log("Request : "+ret);
+            return ret;
         }
 
-        // Initialize or reload DataTable
         function loadChequeData() {
-            // If DataTable already exists, destroy it first to avoid conflicts
-           /* if ($.fn.dataTable.isDataTable('#myDataTable')) {
-                chequeTable.destroy();
-                $('#myDataTable').empty(); // Clear table body
-            }*/
-
             chequeTable = $('#myDataTable').DataTable({
                 serverSide: true,
                 destroy: true,
@@ -188,10 +176,11 @@
                 ajax: {
                     url: '/ChequeBook/LoadChequeBooksData',
                     type: 'POST',
-                    contentType: 'application/json; charset=utf-8',
+                    contentType: 'application/json',
                     data: function (d) {
-                        var filters = collectChequeExportParams(true);
-                        filters.DataTableOptions = {
+                        const filters = collectChequeExportParams();
+
+                        filters.options = {
                             draw: d.draw,
                             start: d.start,
                             length: d.length,
@@ -201,12 +190,10 @@
                             sortColumnName: d.columns[d.order[0].column].data,
                             sortColumnDirection: d.order[0].dir
                         };
-                        console.log('Sending filters:', filters);
+
                         return JSON.stringify(filters);
                     },
-                    error: function (xhr, status, error) {
-                        console.error('Failed to load cheque books:', error);
-                        // Optional: Show user-friendly error message
+                    error: function () {
                         alert('Failed to load data. Please try again.');
                     }
                 },
@@ -215,121 +202,95 @@
                         data: 'CreatedDate',
                         name: 'CreatedDate',
                         render: function (data) {
-                            if (!data) return '';
-                            // server should send ISO-format date; moment will parse it
-                            if (window.moment) {
-                                return moment(data).format('DD/MM/YYYY HH:mm:ss');
-                            }
-                            return data;
+                            return data && window.moment
+                                ? moment(data).format('DD/MM/YYYY HH:mm:ss')
+                                : (data || '');
                         }
                     },
-                    { data: 'CustomerName', name: 'CustomerName' },
-                    { data: 'CustomerId', name: 'CustomerId' },
-                    { data: 'BranchName', name: 'BranchName' },
-                    { data: 'Category', name: 'Category' },
-                    { data: 'NumberOfLeaves', name: 'NumberOfLeaves' },
+                    { data: 'CustomerName', name: 'MemberName' },
                     {
-                        data: null,
-                        name: 'Flags',
-                        orderable: false,
-                        render: function (data, type, row) {
-                            var lost = row.IsLost ? '<span class="badge bg-danger me-1">Lost</span>' : '';
-                            var blocked = row.IsBlocked ? '<span class="badge bg-warning text-dark">Blocked</span>' : '';
-                            var out = (lost + blocked);
-                            return out || '<span class="text-muted">—</span>';
-                        }
+                        data: 'CategoryName',  // Changed from 'Category' to 'CategoryName'
+                        name: 'Category'   // Changed from 'Category' to 'CategoryName'
                     },
+                    { data: 'NumberOfLeaves', name: 'Num. Of Leaves' },
                     {
                         data: 'Status',
                         name: 'Status',
                         render: function (data) {
-                            var label = data || '';
-                            var badgeClass = label === 'Active' ? 'bg-success' :
-                                (label === 'Pending' ? 'bg-warning text-dark' : 'bg-secondary');
-                            return '<span class="badge ' + badgeClass + '">' + label + '</span>';
+                            const label = data || '';
+                            let badgeClass = 'bg-secondary';
+
+                            if (label === 'Active') {
+                                badgeClass = 'bg-success';
+                            } else if (label === 'Pending') {
+                                badgeClass = 'bg-warning text-dark';
+                            } else if (label === 'Used') {
+                                badgeClass = 'bg-info';
+                            } else if (label === 'Cancelled') {
+                                badgeClass = 'bg-danger';
+                            } else if (label === 'Blocked') {
+                                badgeClass = 'bg-dark';
+                            }
+
+                            return `<span class="badge ${badgeClass}">${label}</span>`;
                         }
                     },
+                    
+                    { data: 'CustomerId', name: 'Member Ref.' },
                     {
-                        data: null,
+
+                        data: 'Id',
                         orderable: false,
-                        className: 'text-nowrap',
-                        render: function (data, type, row) {
-                            // Safely get the ID with fallback
-                            var id = encodeURIComponent(row.Id || row.ChequeId || '');
-                            return '\
-                                    <a href="/Cheque/Details?key=' + id + '" class="btn btn-sm btn-info me-1">\
-                                        <i class="mdi mdi-file-document-outline"></i> View\
-                                    </a>\
-                                    <a href="/Cheque/Edit?key=' + id + '" class="btn btn-sm btn-primary">\
-                                        <i class="mdi mdi-pencil"></i> Edit\
-                                    </a>';
+                        searchable: false,
+                        render: function (id) {
+                            return `<a href="/Cheque/Details?key=${id}" class="btn btn-sm btn-outline-primary">
+                                        <i class="mdi mdi-file-document-outline"></i> View
+                                    </a>`;
                         }
                     }
                 ],
                 language: {
-                    emptyTable: 'No cheque books found',
-                    processing: '<i class="fa fa-spinner fa-spin"></i> Loading...'
+                    emptyTable: 'No cheque books found'
                 }
             });
         }
 
-        // Build query and trigger download (server-side should accept query params)
         function exportChequeData() {
-            var filters = collectChequeExportParams(false);
-
-            var paramsObj = {};
-            Object.keys(filters).forEach(function (key) {
-                var val = filters[key];
-                // Skip null/undefined values and DataTableOptions
-                if (val === null || val === undefined || key === 'DataTableOptions') return;
-                paramsObj[key] = val;
-            });
-
-            var params = new URLSearchParams(paramsObj).toString();
-            window.location.href = '/Cheque/DownloadChequeBooks?' + params;
+            const filters = collectChequeExportParams();
+            const params = new URLSearchParams(filters).toString();
+            window.location.href = `/Cheque/DownloadChequeBooks?${params}`;
         }
 
-        // Reset filters and reload table
         function resetChequeFilters() {
-            $('#chequeFilterForm')[0].reset();
+            $('#chequeFilterForm').trigger('reset');
 
-            // Reset select2 if initialized
             if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
                 $('#branchId').val(null).trigger('change');
             }
 
-            // Hide filter groups if they were toggled
             $('#branchFilter, #dateFilters, #flagFilters').addClass('d-none');
-
-            // Ensure checkboxes are properly reset
             $('#isLost').prop('checked', false);
             $('#isBlocked').prop('checked', false);
 
-            // Reload data with reset filters
-            loadChequeData();
+          //  loadChequeData();
         }
 
-        // Document ready
         $(document).ready(function () {
-            // Bind apply filter button
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 loadChequeData();
             });
 
-            // Bind reset filter button
             $('#resetFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 resetChequeFilters();
             });
 
-            // Bind export button
             $('#exportBtn').on('click', function (e) {
                 e.preventDefault();
                 exportChequeData();
             });
 
-            // Initialize select2 where applicable
             if ($.fn.select2) {
                 try {
                     $('#branchId').select2({
@@ -341,12 +302,10 @@
                 }
             }
 
-            // Auto-load table on page load
-            loadChequeData();
+           // loadChequeData();
 
-            // Optional: Add enter key support for filter inputs
             $('#chequeFilterForm input').on('keypress', function (e) {
-                if (e.which === 13) { // Enter key
+                if (e.which === 13) {
                     e.preventDefault();
                     loadChequeData();
                 }
@@ -354,3 +313,4 @@
         });
     </script>
 }
+

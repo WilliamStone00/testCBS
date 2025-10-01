@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
+
+@{
     ViewBag.Title = "Cheque Number Configuration";
 }
 @using Resources
@@ -85,7 +87,7 @@
 
     <!-- DataTable Partial -->
     <div id="datalistingview">
-        @Html.Partial("_Create")
+        @Html.Partial("_Create",Model)
     </div>
 </div>
 

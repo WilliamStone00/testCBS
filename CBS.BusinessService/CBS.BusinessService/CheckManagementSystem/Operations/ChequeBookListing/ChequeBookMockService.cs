@@ -14,9 +14,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
     {
         private static readonly List<ChequeBook> _mockChequeBooks = new List<ChequeBook>
         {
-            new ChequeBook
+      /*      new ChequeBook
             {
-                id = "CB001",
+                Id = "CB001",
                 customerId = "CUST001",
                 customerName = "John Doe",
                 accountNumber = "3711000012345678",
@@ -70,7 +70,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 chequeSeriesStart = "300001",
                 chequeSeriesEnd = "300025",
                 ChequeLeaves = GenerateMockLeaves("CB003", 25, "300001")
-            }
+            }*/
         };
 
         private static List<ChequeLeaf> GenerateMockLeaves(string chequeBookId, int count, string startSeries)
@@ -86,16 +86,16 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
 
                 leaves.Add(new ChequeLeaf
                 {
-                    id = $"{chequeBookId}-L{i}",
-                    chequeBookId = chequeBookId,
-                    leafNumber = i,
-                    chequeNumber = leafNumber.ToString("D6"),
-                    status = status,
-                    usedDate = status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
-                    amount = status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
-                    beneficiary = status == "Used" ? "Test Beneficiary" : null,
-                    remarks = status == "Blocked" ? "Reported lost" : null,
-                    createdDate = DateTime.Now.AddMonths(-random.Next(1, 3))
+                    Id = $"{chequeBookId}-L{i}",
+                    ChequeBookId = chequeBookId,
+                    LeafNumber = i,
+                    ChequeNumber = leafNumber.ToString("D6"),
+                    Status = status,
+                    UsedDate = status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
+                    Amount = status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
+                    Beneficiary = status == "Used" ? "Test Beneficiary" : null,
+                    Remarks = status == "Blocked" ? "Reported lost" : null,
+                    CreatedDate = DateTime.Now.AddMonths(-random.Next(1, 3))
                 });
             }
             return leaves;
@@ -181,20 +181,20 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         public async Task<ChequeBook> GetChequeBookByIdAsync(string chequeBookId)
         {
             await Task.Delay(50);
-            return _mockChequeBooks.FirstOrDefault(cb => cb.id == chequeBookId);
+            return _mockChequeBooks.FirstOrDefault(cb => cb.Id == chequeBookId);
         }
 
         public async Task<ExecutionMessages> CancelChequeBookAsync(string chequeBookId, string cancellationReason)
         {
             await Task.Delay(100);
 
-            var chequeBook = _mockChequeBooks.FirstOrDefault(cb => cb.id == chequeBookId);
+            var chequeBook = _mockChequeBooks.FirstOrDefault(cb => cb.Id == chequeBookId);
             if (chequeBook != null)
             {
-                chequeBook.status = "Cancelled";
+                chequeBook.Status = "Cancelled";
                 foreach (var leaf in chequeBook.ChequeLeaves)
                 {
-                    leaf.status = "Cancelled";
+                    leaf.Status = "Cancelled";
                 }
 
                 GetExecutionMessages(null, true, "Cheque Book", MessagesResults.Success,
@@ -214,16 +214,16 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         {
             await Task.Delay(100);
 
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.id == leafId);
+            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.Id == leafId);
             if (leaf != null)
             {
-                leaf.status = "Used";
-                leaf.usedDate = DateTime.Now;
-                leaf.remarks = statement;
+                leaf.Status = "Used";
+                leaf.UsedDate = DateTime.Now;
+                leaf.Remarks = statement;
 
                 GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
                     ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                    null, $"Leaf {leaf.chequeNumber} marked as used. Statement: {statement}");
+                    null, $"Leaf {leaf.ChequeNumber} marked as used. Statement: {statement}");
             }
             else
             {
@@ -238,15 +238,15 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         {
             await Task.Delay(100);
 
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.id == leafId);
+            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.Id == leafId);
             if (leaf != null)
             {
-                leaf.status = "Blocked";
-                leaf.remarks = blockReason;
+                leaf.Status = "Blocked";
+                leaf.Remarks = blockReason;
 
                 GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
                     ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                    null, $"Leaf {leaf.chequeNumber} blocked. Reason: {blockReason}");
+                    null, $"Leaf {leaf.ChequeNumber} blocked. Reason: {blockReason}");
             }
             else
             {

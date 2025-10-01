@@ -1,6 +1,6 @@
 ﻿@using Resources
 @{
-    ViewBag.Title = "Number Config Overview"; // or @GlobalNumberConfig.OverviewTitle
+    ViewBag.Title = "Number Config Overview";
 }
 
 <div class="row">
@@ -42,7 +42,7 @@
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Number Config Filters</h5>
 
-    <form id="numconfogFilterForm" autocomplete="off">
+    <form id="numconfigFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
             <!-- Toggle switches (Branch / Dates) -->
             <div class="row mb-3">
@@ -69,8 +69,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Seria Number Position</label>
-                    <input type="number" id="seriaNumberPosition" name="SeriaNumberPosition" class="form-control" min="0" />
+                    <label class="form-label fw-bold">Serial Number Position</label>
+                    <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
                 </div>
             </div>
 
@@ -79,7 +79,6 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Branch</label>
-                        @* Replace ViewBag.Branches with your actual branches collection *@
                         @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                     </div>
                 </div>
@@ -128,8 +127,12 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
             </div>
         </div>
     </form>
@@ -140,7 +143,6 @@
     @Html.Partial("_NumconfogData")
 </div>
 
-@*@section Scripts {
-
-    <script src="~/Scripts/Js/Crud/NumberConfig/Numconfog.js"></script>
-}*@
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
+}

@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListi
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,12 +111,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             try
             {
                 var data = await _chequeBookService.GetChequeBooksDataTableAsync(query);
+
+                var chequeBooks = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook>>(JsonConvert.SerializeObject(data.data));
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    data = chequeBooks
                 });
             }
             catch (Exception ex)
@@ -123,7 +127,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = query?.DataTableOptions?.draw ?? "1",
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
@@ -202,7 +206,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                     return HttpNotFound("Cheque book not found");
                 }
 
-                var leaf = chequeBook.ChequeLeaves.Find(l => l.id == leafId);
+                var leaf = chequeBook.ChequeLeaves.Find(l => l.Id == leafId);
                 if (leaf == null)
                 {
                     return HttpNotFound("Leaf not found");
