@@ -1,10 +1,12 @@
 ﻿using Antlr.Runtime.Misc;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
 using Microsoft.AspNetCore.Mvc;
@@ -111,44 +113,35 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
 
             return Json(new { success = result.Result, message = result.MessageString });
         }
-        // In ChequeRequestController.cs
-
-
+       
         [HttpPost]
-        public async Task<ActionResult> LoadRequestsForDataTable()
+        public async Task<JsonResult> LoadChequeBooksData(ChequeRequestQuery query)
         {
             try
             {
-                string json;
-                using (var reader = new StreamReader(Request.InputStream))
-                {
-                    json = reader.ReadToEnd();
-                }
-
-                var query = JsonConvert.DeserializeObject<ChequeRequestQuery>(json) ?? new ChequeRequestQuery();
-
-                var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
-
+                var data = await _chequeRequestService1.GetChequeBooksrequestDataTableAsync(query);
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
-                    recordsTotal = dataTable.recordsTotal,
-                    recordsFiltered = dataTable.recordsFiltered,
-                    data = dataTable.data
-                }, JsonRequestBehavior.AllowGet);
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
             }
             catch (Exception ex)
             {
-                // log ex
+                // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = 1,
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
-                    data = new List<ChequeBookRequest>()
-                }, JsonRequestBehavior.AllowGet);
+                    data = new List<object>(),
+                    error = ex.Message
+                });
             }
         }
+
 
 
 

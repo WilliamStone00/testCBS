@@ -1309,6 +1309,7 @@ namespace CBS.FrontDesk.Helper
         public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
         public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
         public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
+        public const string datatableforrequest = "/api/v1/checkbook-request/data-table";
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";

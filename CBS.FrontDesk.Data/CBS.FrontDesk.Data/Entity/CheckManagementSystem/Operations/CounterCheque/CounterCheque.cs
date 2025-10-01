@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.ManualDailycollection;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -39,8 +40,25 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
     }
 
     // Query object for the server-side DataTable
-    public class CounterChequeQuery : GetFilesForDataTableQuery // Re-using for consistency
+    public class CounterChequeQuery 
     {
-        // We can add specific filters for this module if needed
+        public CounterChequeQuery()
+        {
+            DataTableOptions = new DataTableOptions();
+        }
+
+        public DataTableOptions DataTableOptions { get; set; }
+
+        public string Id { get; set; }
+        public string CustomerId { get; set; }
+        public decimal Amount { get; set; }
+        public string AccountNumber { get; set; }
+        public string BranchId { get; set; }
+        public string CheckLeafId { get; set; }
+        public string CheckNumber { get; set; }
+        public DateTime IssuedOn { get; set; }
+        public string IssuedBy { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

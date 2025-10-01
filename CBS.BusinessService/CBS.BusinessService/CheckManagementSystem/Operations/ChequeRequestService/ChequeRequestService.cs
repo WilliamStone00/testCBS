@@ -14,6 +14,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
 {
     using CBS.API.Helper;
     using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+    using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
+    using CBS.FrontDesk.Data.Entity.DataTable;
     using CBS.FrontDesk.Data.Message;
     using DocumentFormat.OpenXml.EMMA;
     using System;
@@ -31,11 +33,12 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
 
+
         public async Task<ExecutionMessages> CreateRequestAsync(ChequeBookRequest model)
         {
             try
             {
-                model.bankId = "1";
+                model.bankId = GetBankCode();
                 var response = await _apiHelper.PostAsync<ServiceResponse<ChequeBookRequest>>(APICallHelper.CreateChequeRequest, model);
                 if (response.IsSuccess)
                 {
@@ -54,6 +57,36 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
+        }
+
+        public async Task<CustomDataTable> GetChequeBooksrequestDataTableAsync(ChequeRequestQuery query)
+        {
+            try
+            {
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.datatableforrequest, query);
+
+                // ⚠ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
         }
 
         public async Task<List<ChequeBookRequest>> GetAllRequestsAsync()

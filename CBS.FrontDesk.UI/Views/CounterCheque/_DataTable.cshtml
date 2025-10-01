@@ -13,15 +13,78 @@
         <div class="row g-3">
             <div class="col-md-3">
                 <label class="form-label fw-bold">Client Name/ID</label>
-                <input type="text" id="clientFilter" class="form-control" placeholder="Search client...">
+                <!-- maps to CustomerId -->
+                <input type="text" id="CustomerId" name="CustomerId" class="form-control" placeholder="Search client...">
             </div>
+
             <div class="col-md-3">
                 <label class="form-label fw-bold">Branch</label>
-                @Html.DropDownList("branchFilter", new SelectList(ViewBag.Branches, "Id", "Name"), "--- All Branches ---", new { @class = "form-control select2" })
+                <!-- maps to BranchId -->
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- All Branches ---", new { @class = "form-control select2", id = "BranchId" })
             </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Account Number</label>
+                <!-- maps to AccountNumber -->
+                <input type="text" id="AccountNumber" name="AccountNumber" class="form-control" placeholder="Account number...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Check Leaf ID</label>
+                <!-- maps to CheckLeafId -->
+                <input type="text" id="CheckLeafId" name="CheckLeafId" class="form-control" placeholder="Leaf id...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Check Number</label>
+                <!-- maps to CheckNumber -->
+                <input type="text" id="CheckNumber" name="CheckNumber" class="form-control" placeholder="Check number...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Issued By</label>
+                <!-- maps to IssuedBy -->
+                <input type="text" id="IssuedBy" name="IssuedBy" class="form-control" placeholder="Issuer name or id...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Amount (min)</label>
+                <!-- use AmountMin to allow range filtering; you can adjust on server side -->
+                <input type="number" step="0.01" id="AmountMin" name="AmountMin" class="form-control" placeholder="Min amount...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Amount (max)</label>
+                <input type="number" step="0.01" id="AmountMax" name="AmountMax" class="form-control" placeholder="Max amount...">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Issued On</label>
+                <!-- maps to IssuedOn (single date) -->
+                <input type="date" id="IssuedOn" name="IssuedOn" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Validity Start</label>
+                <!-- maps to StartDate -->
+                <input type="date" id="StartDate" name="StartDate" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Validity End</label>
+                <!-- maps to EndDate -->
+                <input type="date" id="EndDate" name="EndDate" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Record ID</label>
+                <!-- maps to Id -->
+                <input type="text" id="Id" name="Id" class="form-control" placeholder="Exact record id...">
+            </div>
+
             <div class="col-md-3">
                 <label class="form-label fw-bold">Status</label>
-                <select id="statusFilter" class="form-control select2">
+                <select id="statusFilter" name="Status" class="form-control select2">
                     <option value="">--- All Statuses ---</option>
                     <option value="Pending">Pending</option>
                     <option value="Reviewed">Reviewed</option>
@@ -29,8 +92,17 @@
                     <option value="Rejected">Rejected</option>
                 </select>
             </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button id="applyCounterChequeFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify me-1"></i>Filter</button>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyCounterChequeFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -60,10 +132,21 @@
 
 <script>
     // Self-contained script for this partial view
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // --- Initialize Plugins ---
         $('#branchFilter, #statusFilter').select2({ width: '100%' });
+
+        // --- Toggle sections (if these checkboxes/sections exist in the page) ---
+        $('#showTransactionFilter').on('change', function () {
+            $('#transactionFilterSection').toggle(this.checked);
+        });
+        $('#showDateFilter').on('change', function () {
+            $('#dateFilterSection').toggle(this.checked);
+        });
+        // Initialize visibility based on current state
+        $('#showTransactionFilter').trigger('change');
+        $('#showDateFilter').trigger('change');
 
         // --- Helper Functions for Rendering ---
         function getStatusBadge(status) {
@@ -93,60 +176,179 @@
             return `<div class="btn-group btn-group-sm">${buttons}</div>`;
         }
 
-        // --- DataTable Initialization ---
-        const dataTable = $('#counterChequeTable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "searching": false,
-            "ajax": {
-                "url": "@Url.Action("LoadCounterCheques", "CounterCheque")",
-                "type": "POST",
-                "data": function (d) {
-                    const order = d.order[0] || {};
-                    const query = {
-                        Options: {
-                            draw: d.draw,
-                            start: d.start,
-                            pageSize: d.length,
-                            sortColumnName: d.columns[order.column]?.name,
-                            sortDirection: order.dir
-                        },
-                        // Pass our filter values to the controller
-                        ClientFilter: $('#clientFilter').val(),
-                        BranchFilter: $('#branchFilter').val(),
-                        StatusFilter: $('#statusFilter').val()
-                    };
-                    return { query: query };
-                }
-            },
-            "columns": [
-                { "data": "CheckNumber", "name": "CheckNumber" },
-                { "data": "ClientName", "name": "ClientName" },
-                { "data": "BranchName", "name": "BranchName" },
-                {
-                    "data": "Amount", "name": "Amount", "className": "text-end",
-                    "render": $.fn.dataTable.render.number(',', '.', 2, '')
-                },
-                {
-                    "data": "IssuedOn", "name": "IssuedOn",
-                    "render": function(data) { return data ? new Date(data).toLocaleString() : ''; }
-                },
-                {
-                    "data": "Status", "name": "Status", "orderable": false,
-                    "className": "text-center", "render": getStatusBadge
-                },
-                {
-                    "data": null, "orderable": false, "className": "text-center",
-                    "render": function(data, type, row) {
-                        return generateActionButtons(row);
+        // --- DataTable variable (will be initialized by loadCounterCheques) ---
+        let counterChequeTable = null;
+
+        // --- Load / Initialize DataTable ---
+        function loadCounterCheques() {
+            // If table already exists, destroy it first to re-init with new params
+            if ($.fn.DataTable.isDataTable('#counterChequeTable')) {
+                $('#counterChequeTable').DataTable().destroy();
+            }
+
+            counterChequeTable = $('#counterChequeTable').DataTable({
+           
+                serverSide: true,
+                searching: false,
+                destroy: true,
+                order: [[4, 'desc']],
+                ajax: {
+                    url: '@Url.Action("LoadCounterCheques", "CounterCheque")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectCounterChequeFilterParams();
+
+                        // populate datatable options from d
+                        filters.options = filters.options || {};
+                        filters.options.draw = d.draw;
+                        filters.options.start = d.start;
+                        filters.options.length = d.length;
+                        filters.options.skip = d.start;
+                        filters.options.pageSize = d.length;
+
+                        const order = d.order && d.order.length ? d.order[0] : {};
+                        filters.options.sortColumnName = d.columns && d.columns[order.column] ? d.columns[order.column].name : null;
+                        filters.options.sortColumnDirection = order.dir || null;
+
+                        return JSON.stringify(filters);
                     }
+                },
+                columns: [
+                    { data: "CheckNumber", name: "CheckNumber" },
+                    { data: "ClientName", name: "ClientName" },
+                    { data: "BranchName", name: "BranchName" },
+                    {
+                        data: "Amount", name: "Amount", className: "text-end",
+                        render: $.fn.dataTable.render.number(',', '.', 2, '')
+                    },
+                    {
+                        data: "IssuedOn", name: "IssuedOn",
+                        render: function (data) { return data ? new Date(data).toLocaleString() : ''; }
+                    },
+                    {
+                        data: "Status", name: "Status", orderable: false,
+                        className: "text-center", render: getStatusBadge
+                    },
+                    {
+                        data: null, orderable: false, className: "text-center",
+                        render: function (data, type, row) {
+                            return generateActionButtons(row);
+                        }
+                    }
+                ]
+            });
+        }
+
+        // --- Collect filter params to match server-side model ---
+        function collectCounterChequeFilterParams() {
+            return {
+                // DataTable options will be overwritten in the DataTable "data" function
+                Options: { SearchValue: '' },
+
+                // Map form inputs to the exact C# property names (case doesn't matter for model binding)
+                Id: $('#Id').length ? $('#Id').val() : null,
+                CustomerId: $('#CustomerId').length ? $('#CustomerId').val() : null,     // clientFilter -> CustomerId
+                Amount: $('#Amount').length ? parseDecimalOrNull($('#Amount').val()) : null,
+                AccountNumber: $('#AccountNumber').length ? $('#AccountNumber').val() : null,
+                BranchId: $('#branchFilter').length ? $('#branchFilter').val() : null,
+                CheckLeafId: $('#CheckLeafId').length ? $('#CheckLeafId').val() : null,
+                CheckNumber: $('#CheckNumber').length ? $('#CheckNumber').val() : null,
+                IssuedOn: $('#IssuedOn').length ? $('#IssuedOn').val() : null,          // use ISO date string
+                IssuedBy: $('#IssuedBy').length ? $('#IssuedBy').val() : null,
+                StartDate: $('#startDate').length ? $('#startDate').val() : null,
+                EndDate: $('#endDate').length ? $('#endDate').val() : null
+            };
+        }
+
+        // --- Reset filters and reload table ---
+        function resetFilters() {
+            // Clear inputs and reset select2 controls
+            if ($('#branchFilter').length) { $('#branchFilter').val('').trigger('change'); }
+            if ($('#statusFilter').length) { $('#statusFilter').val('').trigger('change'); }
+            if ($('#clientFilter').length) { $('#clientFilter').val(''); }
+            if ($('#transactionReference').length) { $('#transactionReference').val(''); }
+            if ($('#memberReference').length) { $('#memberReference').val(''); }
+            if ($('#startDate').length) { $('#startDate').val(''); }
+            if ($('#endDate').length) { $('#endDate').val(''); }
+
+            // reload dataTable
+            if (counterChequeTable) counterChequeTable.ajax.reload();
+            else loadCounterCheques();
+        }
+
+        // --- Reset filters and reload table ---
+        function resetFilters() {
+            // Direct text / date / number inputs that map to ChequeIssue
+            if ($('#Id').length) { $('#Id').val(''); }
+            if ($('#CustomerId').length) { $('#CustomerId').val(''); }         // or clientFilter mapping
+            if ($('#clientFilter').length) { $('#clientFilter').val(''); }     // keep if view uses clientFilter
+            if ($('#AccountNumber').length) { $('#AccountNumber').val(''); }
+            if ($('#CheckLeafId').length) { $('#CheckLeafId').val(''); }
+            if ($('#CheckNumber').length) { $('#CheckNumber').val(''); }
+            if ($('#IssuedBy').length) { $('#IssuedBy').val(''); }
+            if ($('#IssuedOn').length) { $('#IssuedOn').val(''); }
+
+            // Amount / range fields (clear both single and min/max variants)
+            if ($('#Amount').length) { $('#Amount').val(''); }
+             if ($('#StartDate').length) { $('#StartDate').val(''); } // alternate id
+            if ($('#EndDate').length) { $('#EndDate').val(''); }     // alternate id
+
+            // reload dataTable
+            if (counterChequeTable) counterChequeTable.ajax.reload();
+            else loadCounterCheques();
+        }
+
+
+        // --- Export using current filters ---
+        function exportCounterCheques() {
+            // Build URL query using current filter values
+            const params = $.param({
+                branchId: $('#branchFilter').length ? $('#branchFilter').val() : '',
+                memberName: $('#clientFilter').length ? $('#clientFilter').val() : '',
+                transactionReference: $('#transactionReference').length ? $('#transactionReference').val() : '',
+                memberReference: $('#memberReference').length ? $('#memberReference').val() : '',
+                status: $('#statusFilter').length ? $('#statusFilter').val() : '',
+                startDate: $('#startDate').length ? $('#startDate').val() : '',
+                endDate: $('#endDate').length ? $('#endDate').val() : ''
+            });
+
+            // Adjust action name/route if you have a dedicated export endpoint
+            const url = `@Url.Action("Download", "CounterCheque")?${params}`;
+            window.location.href = url;
+        }
+
+        // --- View row details (reuse existing viewReceipt pattern if you have it) ---
+        window.viewCounterCheque = function (id) {
+            $.ajax({
+                url: `@Url.Action("ViewCounterCheque", "CounterCheque")/${id}`,
+                type: 'GET',
+                success: function (html) {
+                    $('#receiptModalContainer').html(html);
+                    $('#viewReceiptModal').modal('show');
+                },
+                error: function () {
+                    alert("❌ Failed to load details.");
                 }
-            ]
+            });
+        };
+
+        // --- Event Handlers (wired similarly to your member receipts flow) ---
+        $('#applyCounterChequeFilterBtn').on('click', function () {
+            if (counterChequeTable) counterChequeTable.ajax.reload();
+            else loadCounterCheques();
         });
 
-        // --- Event Handlers ---
-        $('#applyCounterChequeFilterBtn').on('click', function() {
-            dataTable.ajax.reload();
+        $('#resetCounterChequeFilterBtn').on('click', function () {
+            resetFilters();
         });
+
+        // wire export button if present
+        $('#exportBtn, #exportCounterChequeBtn').on('click', function () {
+            exportCounterCheques();
+        });
+
+        // initialize table on first load
+        loadCounterCheques();
     });
 </script>
