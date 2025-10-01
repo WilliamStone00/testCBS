@@ -1289,14 +1289,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllChequeClearance = "/api/v1/counter-clearance";
         public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
 
-        public static string GetAllnot = "/api/v1/verify-notification-config";
+        
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
         
-        public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-        public static string Createnot = "/api/v1/Notification/Config";
-        public static string Updatenot = "/api/NotificationConfig/{0}";
-        public static string Deletenot = "/api/NotificationConfig/{0}";
-
+        
         //---------------------Notification History -----------------------
         public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
         public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
@@ -1316,7 +1312,8 @@ namespace CBS.FrontDesk.Helper
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
 
         //----------------------- Cheque Book -------------------------
-        public const string GetChequeBooksDataTable = "/api/v1/Cheque Book";
+        public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
+        public const string GetChequeBooksDataTableloss = "/api/v1/checkbook/data-table";
         public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
         public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
@@ -1371,12 +1368,12 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
     public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    public static string GetCheckbookDetails = "/api/v1/checkbooks/{checkbookId}/checkleaves";
     public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
     public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
     public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-        public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
+        
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 
     }

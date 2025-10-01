@@ -10709,6 +10709,8 @@
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
+    <Content Include="Views\LossManagement\_Header.cshtml" />
+    <Content Include="Views\LossManagement\_Filters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

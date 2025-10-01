@@ -384,6 +384,38 @@ namespace CBS.BusinessService.CheckManagementSystem.LossManagementSystem
             return Task.FromResult(ExecutionMessage);
         }
 
+        public async Task<CustomerCheckbooksDto> GetCustomerCheckbooksWithFilters(string customerId, string checkbookId = null, string status = null, string category = null)
+        {
+            var result = await GetCustomerCheckbooks(customerId);
+
+            if (result != null && result.Checkbooks != null)
+            {
+                // Apply filters
+                if (!string.IsNullOrEmpty(checkbookId))
+                {
+                    result.Checkbooks = result.Checkbooks
+                        .Where(c => c.CheckBookId.Contains(checkbookId))
+                        .ToList();
+                }
+
+                if (!string.IsNullOrEmpty(status))
+                {
+                    result.Checkbooks = result.Checkbooks
+                        .Where(c => c.Status.Equals(status, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }
+
+                if (!string.IsNullOrEmpty(category))
+                {
+                    result.Checkbooks = result.Checkbooks
+                        .Where(c => c.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }
+            }
+
+            return result;
+        }
+
         // Helper method to get all mock customer IDs for testing
         public Task<List<string>> GetMockCustomerIds()
         {

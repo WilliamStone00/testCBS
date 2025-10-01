@@ -1,6 +1,10 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -8,6 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Config
 {
@@ -36,6 +41,67 @@ namespace CBS.BusinessService.Config
             }
         }
 
+        public async Task<CustomDataTable> GetChequeBooksDataTableAsync(ChequeBookQuery query)
+        {
+            try
+            {
+                var response = await _lossManagementApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.GetChequeBooksDataTableloss, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
+
+     
+
+        public async Task<CustomDataTable> GetChequeleavesDataTableAsync(ChequeBookQuery query)
+        {
+            try
+            {
+                var response = await _lossManagementApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.GetChequeBooksDataTableloss, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
         public async Task<CheckbookDetailDto> GetCheckLeavesByCheckbook(int checkBookId)
         {
             try
@@ -52,7 +118,7 @@ namespace CBS.BusinessService.Config
             }
         }
 
-        public async Task<CheckbookDetailDto> GetCheckbookDetails(int checkBookId)
+        public async Task<CheckbookDetailDto> GetCheckbookDetails(string checkBookId)
         {
             try
             {

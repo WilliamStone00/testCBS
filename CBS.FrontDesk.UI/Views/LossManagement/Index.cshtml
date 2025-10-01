@@ -14,10 +14,9 @@
                 <p class="card-text">
                     Search for customer checkbooks and manage loss declarations efficiently.
                 </p>
-                <div class="alert alert-info mt-3 py-2">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    Enter a customer member reference to view their checkbooks and report any losses.
-                </div>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to narrow down checkbook search results.
+                </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
@@ -44,46 +43,107 @@
     </div>
 </div>
 
-<!-- Simplified Search Interface (without accordion) -->
-<div class="card mb-4">
-    <div class="card-body">
-        <h5 class="card-title">
-            <i class="mdi mdi-magnify me-2"></i>Search Customer Checkbooks
-        </h5>
-        <p class="card-text">Enter customer member reference to view their checkbooks and manage loss declarations.</p>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="customerId" class="form-label">Customer Member Reference</label>
-                    <input type="text" class="form-control" id="customerId" name="customerId" placeholder="Enter customer ID">
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Checkbook Search Filters</h5>
+    <form id="checkbookFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for additional filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleStatus" onclick="document.getElementById('statusFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleStatus">Show Status Filter</label>
+                    </div>
                 </div>
-                <button type="button" onclick="searchCustomer()" class="btn btn-primary">
-                    <i class="mdi mdi-search me-1"></i> Search Checkbooks
-                </button>
-                
-                <div class="demo-inline-spacing mt-3">
-                    <button type="button" onclick="loadCheckbooksTable()" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="View Checkbooks List">
-                        <i class="mdi mdi-view-list me-1"></i> View List
-                    </button>
-                    <button type="button" onclick="clearSearch()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Clear Search">
-                        <i class="mdi mdi-refresh me-1"></i> Clear
-                    </button>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleCategory" onclick="document.getElementById('categoryFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleCategory">Show Category Filter</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDate" onclick="document.getElementById('dateFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDate">Show Date Filter</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Customer Member Reference</label>
+                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="Enter customer ID" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Checkbook ID</label>
+                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="Enter specific checkbook ID" />
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div id="statusFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Checkbook Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div id="categoryFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Checkbook Category</label>
+                        <select id="category" name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Business">Business</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Corporate">Corporate</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filter -->
+            <div id="dateFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Issue Date From</label>
+                        <input type="date" id="issueDateFrom" name="issueDateFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Issue Date To</label>
+                        <input type="date" id="issueDateTo" name="issueDateTo" class="form-control" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Search Checkbooks</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset Filters</button>
+               @* <button id="clearResultsBtn" class="btn btn-label-secondary w-100"><i class="mdi mdi-close"></i> Clear Results</button>*@
+            </div>
+        </div>
+    </form>
 </div>
 
-<!-- Results Area - THIS WAS MISSING! -->
-<div id="checkbooksListingView">
-    <!-- Checkbooks table will be loaded here -->
-    <div class="card">
-        <div class="card-body text-center py-5">
-            <i class="mdi mdi-book-search-outline mdi-48px text-muted"></i>
-            <p class="text-muted mt-3">Enter a customer member reference to view their checkbooks</p>
-        </div>
-    </div>
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    <!-- Checkbooks table will be loaded here via DataTable -->
 </div>
 
 <!-- Modal Structure -->
@@ -107,114 +167,268 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-    function searchCustomer() {
-        var customerId = $('#customerId').val().trim();
-        if (!customerId) {
-            alert('Please enter a customer member reference');
-            return;
-        }
+        // Load Checkbooks into DataTable
+        function loadCheckbooksData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                order: [[0, 'asc']],
+                ajax: {
+                    url: '@Url.Action("LoadCheckbooksData", "LossManagement")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectCheckbookFilterParams();
 
-        showLoading('checkbooksListingView');
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
 
-        $.post('@Url.Action("GetCheckbooksByCustomer", "LossManagement")', { memberRef: customerId })
-            .done(function (data) {
-                $('#checkbooksListingView').html(data);
-            })
-            .fail(function (xhr, status, error) {
-                $('#checkbooksListingView').html('<div class="alert alert-danger">Error loading checkbooks: ' + error + '</div>');
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    { 
+                        data: 'CheckBookId', 
+                        name: 'CheckBookId',
+                        width: '30%'
+                    },
+                    { 
+                        data: 'Category', 
+                        name: 'Category',
+                        width: '25%'
+                    },
+                    { 
+                        data: 'Status', 
+                        name: 'Status',
+                        width: '20%'
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        width: '25%',
+                        render: function (data, type, row) {
+                            return `
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button"
+                                            class="btn btn-icon btn-label-info btn-sm"
+                                            onclick="loadCheckbookDetails('${row.CheckBookId}')"
+                                            data-bs-toggle="tooltip"
+                                            title="View Checkbook Details and Check Leaves">
+                                        <span class="tf-icons mdi mdi-information-outline"></span>
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-icon btn-label-warning btn-sm"
+                                            onclick="requestLossForCheckbook('${row.CheckBookId}')"
+                                            data-bs-toggle="tooltip"
+                                            title="Request Loss for Entire Checkbook">
+                                        <span class="tf-icons mdi mdi-alert-outline"></span>
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                initComplete: function() {
+                    // Add any initialization complete logic here
+                },
+                language: {
+                    emptyTable: "No checkbooks found matching your criteria",
+                    zeroRecords: "No matching checkbooks found"
+                }
             });
-    }
-
-    function loadCheckbooksTable() {
-        var customerId = $('#customerId').val().trim();
-        if (!customerId) {
-            alert('Please enter a customer member reference first');
-            return;
         }
-        searchCustomer();
-    }
 
-    function clearSearch() {
-        $('#customerId').val('');
-        $('#checkbooksListingView').html('<div class="card"><div class="card-body text-center py-5"><i class="mdi mdi-book-search-outline mdi-48px text-muted"></i><p class="text-muted mt-3">Enter a customer member reference to view their checkbooks</p></div></div>');
-    }
 
-    function showLoading(containerId) {
-        $('#' + containerId).html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading...</p></div>');
-    }
+     function loadCheckleavesData() {
+    $('#myDataTable').DataTable({
+        serverSide: true,
+        destroy: true,
+        searching: false,
+        order: [[0, 'asc']],
+        ajax: {
+            url: '@Url.Action("LoadCheckleavesData", "LossManagement")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
+                const filters = collectCheckleavesFilterParams();
 
-    // Load check leaves in modal
-    function loadCheckLeaves(checkBookId) {
-        $("#modalBody").html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading check leaves...</p></div>');
-        $("#mainModal").modal("show");
+                filters.options = {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    skip: d.start,
+                    pageSize: d.length,
+                    searchValue: '',
+                    sortColumnName: d.columns[d.order[0].column].data,
+                    sortColumnDirection: d.order[0].dir
+                };
 
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetCheckLeavesByCheckbook", "LossManagement")',
-            data: { checkBookId: checkBookId },
-            success: function (data) {
-                $("#modalBody").html(data);
-                $("#mainModal .modal-title").html('<i class="mdi mdi-book-open-page-variant me-2"></i>Check Leaves for Checkbook ' + checkBookId);
-            },
-            error: function (err) {
-                if (err.status === 401) {
-                    window.location.href = '/Authentication/Login';
-                } else {
-                    $("#modalBody").html('<div class="alert alert-danger">Error loading check leaves: ' + err.statusText + '</div>');
-                }
+                return JSON.stringify(filters);
             }
-        });
-    }
-
-    // Request loss for entire checkbook
-    function requestLossForCheckbook(checkBookId) {
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("RequestLossForCheckbook", "LossManagement")',
-            data: { checkBookId: checkBookId },
-            success: function (data) {
-                $("#modalBody").html(data);
-                $("#mainModal .modal-title").text("Report Loss for Checkbook");
-                $("#mainModal").modal("show");
-            },
-            error: function (err) {
-                if (err.status === 401) {
-                    window.location.href = '/Authentication/Login';
-                } else {
-                    alert("Error loading request loss form: " + err.statusText);
-                }
-            }
-        });
-    }
-
-    // Load checkbook details (modal)
-    // Load checkbook details in modal (with check leaves)
-function loadCheckbookDetails(checkBookId) {
-    $("#modalBody").html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading checkbook details...</p></div>');
-    $("#mainModal .modal-title").html('<i class="mdi mdi-book-information-variant me-2"></i>Checkbook Details');
-    $("#mainModal").modal("show");
-
-    $.ajax({
-        type: "GET",
-        url: '@Url.Action("CheckbookDetails", "LossManagement")',
-        data: { checkBookId: checkBookId },
-        success: function (data) {
-            $("#modalBody").html(data);
         },
-        error: function (err) {
-            if (err.status === 401) {
-                window.location.href = '/Authentication/Login';
-            } else {
-                $("#modalBody").html('<div class="alert alert-danger">Error loading checkbook details: ' + err.statusText + '</div>');
+        columns: [
+             { 
+                data: 'CreatedDate', 
+                name: 'CreatedDate',
+                width: '30%'
+             },
+             { 
+                data: 'CheckleavesId', 
+                name: 'CheckleavesId',
+                width: '30%'
+            },
+            { 
+                data: 'Category', 
+                name: 'Category',
+                width: '25%'
+            },
+            { 
+                data: 'Status', 
+                name: 'Status',
+                width: '20%'
+            },
+            {
+                data: null,
+                orderable: false,
+                width: '25%',
+                render: function (data, type, row) {
+                    return `
+                        <div class="d-flex justify-content-center gap-2">
+                            <button type="button"
+                                    class="btn btn-icon btn-label-info btn-sm"
+                                    onclick="loadCheckbookDetails('${row.CheckleavesId}')"
+                                    data-bs-toggle="tooltip"
+                                    title="View Checkbook Details and Check Leaves">
+                                <span class="tf-icons mdi mdi-information-outline"></span>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-icon btn-label-warning btn-sm"
+                                    onclick="requestLossForCheckbook('${row.CheckleavesId}')"
+                                    data-bs-toggle="tooltip"
+                                    title="Request Loss for Entire Checkbook">
+                                <span class="tf-icons mdi mdi-alert-outline"></span>
+                            </button>
+                        </div>
+                    `;
+                }
             }
+        ],
+        initComplete: function() {
+            // Add any initialization complete logic here
+        },
+        language: {
+            emptyTable: "No checkbooks found matching your criteria",
+            zeroRecords: "No matching checkbooks found"
         }
     });
 }
 
-// Load check leaf details (you'll need to create this action)
+        function collectCheckbookFilterParams() {
+            return {
+                CustomerId: $('#customerId').val(),
+                CheckbookId: $('#checkbookId').val(),
+                Status: $('#status').val(),
+                Category: $('#category').val(),
+                IssueDateFrom: $('#issueDateFrom').val(),
+                IssueDateTo: $('#issueDateTo').val(),
+                options: {}
+            };
+        }
+
+        function resetCheckbookFilters() {
+            $('#checkbookFilterForm').trigger('reset');
+            $('#statusFilter, #categoryFilter, #dateFilter').addClass('d-none');
+            $('#toggleStatus, #toggleCategory, #toggleDate').prop('checked', false);
+            
+            // Clear and reinitialize DataTable
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().destroy();
+            }
+            $('#datalistingview').html('<div class="card"><div class="card-body text-center py-5"><i class="mdi mdi-book-search-outline mdi-48px text-muted"></i><p class="text-muted mt-3">Enter search criteria to view checkbooks</p></div></div>');
+        }
+
+        function clearCheckbookResults() {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().destroy();
+            }
+            $('#datalistingview').html('<div class="card"><div class="card-body text-center py-5"><i class="mdi mdi-book-search-outline mdi-48px text-muted"></i><p class="text-muted mt-3">Enter search criteria to view checkbooks</p></div></div>');
+        }
+
+        // Modal functions (keep your existing modal functions)
+        function loadCheckLeaves(checkBookId) {
+            $("#modalBody").html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading check leaves...</p></div>');
+            $("#mainModal").modal("show");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCheckLeavesByCheckbook", "LossManagement")',
+                data: { checkBookId: checkBookId },
+                success: function (data) {
+                    $("#modalBody").html(data);
+                    $("#mainModal .modal-title").html('<i class="mdi mdi-book-open-page-variant me-2"></i>Check Leaves for Checkbook ' + checkBookId);
+                },
+                error: function (err) {
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        $("#modalBody").html('<div class="alert alert-danger">Error loading check leaves: ' + err.statusText + '</div>');
+                    }
+                }
+            });
+        }
+
+        function requestLossForCheckbook(checkBookId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("RequestLossForCheckbook", "LossManagement")',
+                data: { checkBookId: checkBookId },
+                success: function (data) {
+                    $("#modalBody").html(data);
+                    $("#mainModal .modal-title").text("Report Loss for Checkbook");
+                    $("#mainModal").modal("show");
+                },
+                error: function (err) {
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        alert("Error loading request loss form: " + err.statusText);
+                    }
+                }
+            });
+        }
+
+        function loadCheckbookDetails(checkBookId) {
+            $("#modalBody").html();
+            $("#mainModal .modal-title").html('<i class="mdi mdi-book-information-variant me-2"></i>Checkbook Details');
+            $("#mainModal").modal("show");
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("CheckbookDetails", "LossManagement")',
+                data: { checkBookId: checkBookId },
+                success: function (data) {
+                    $("#modalBody").html(data);
+                },
+                error: function (err) {
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        $("#modalBody").html('<div class="alert alert-danger">Error loading checkbook details: ' + err.statusText + '</div>');
+                    }
+                }
+            });
+        }
+
         function loadCheckLeafDetails(checkLeafId) {
-            console.log('Loading check leaf details for:', checkLeafId);
-    
             $("#modalBody").html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading check leaf details...</p></div>');
             $("#mainModal .modal-title").html('<i class="mdi mdi-eye-outline me-2"></i>Check Leaf Details');
             $("#mainModal").modal("show");
@@ -237,25 +451,81 @@ function loadCheckbookDetails(checkBookId) {
             });
         }
 
-    // Function to request loss for individual check leaf
-    function requestLossForCheckLeaf(checkLeafId) {
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("RequestLossForCheckLeaf", "LossManagement")',
-            data: { checkLeafId: checkLeafId },
-            success: function (data) {
-                $("#modalBody").html(data);
-                $("#mainModal .modal-title").text("Report Loss for Check Leaf");
-                $("#mainModal").modal("show");
-            },
-            error: function (err) {
-                if (err.status === 401) {
-                    window.location.href = '/Authentication/Login';
-                } else {
-                    alert("Error loading loss request form: " + err.statusText);
+        function requestLossForCheckLeaf(checkLeafId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("RequestLossForCheckLeaf", "LossManagement")',
+                data: { checkLeafId: checkLeafId },
+                success: function (data) {
+                    $("#modalBody").html(data);
+                    $("#mainModal .modal-title").text("Report Loss for Check Leaf");
+                    $("#mainModal").modal("show");
+                },
+                error: function (err) {
+                    if (err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        alert("Error loading loss request form: " + err.statusText);
+                    }
                 }
-            }
+            });
+        }
+
+        $(document).ready(function () {
+            // Initialize with empty state
+            $('#datalistingview').html(`
+                <div class="card p-3 shadow mb-4">
+                    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Checkbooks</h5>
+                    <div class="table-responsive">
+                        <table id="myDataTable" class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Checkbook ID</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            `);
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                
+                // Validate that we have at least one search criteria
+                var customerId = $('#customerId').val().trim();
+                var checkbookId = $('#checkbookId').val().trim();
+                
+                if (!customerId && !checkbookId) {
+                    alert('Please enter either a Customer Member Reference or Checkbook ID');
+                    return;
+                }
+
+                // Destroy existing DataTable if it exists
+                if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                    $('#myDataTable').DataTable().destroy();
+                }
+
+                // Reinitialize DataTable with new filters
+                loadCheckbooksData();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetCheckbookFilters();
+            });
+
+            $('#clearResultsBtn').on('click', function (e) {
+                e.preventDefault();
+                clearCheckbookResults();
+            });
+
+            // Initialize date fields with today's date
+            var today = new Date().toISOString().split('T')[0];
+            $('#issueDateFrom').val(today);
         });
-    }
     </script>
 }

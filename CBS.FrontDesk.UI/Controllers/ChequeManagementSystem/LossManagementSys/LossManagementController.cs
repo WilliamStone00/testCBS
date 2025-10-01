@@ -1,6 +1,8 @@
 ﻿using CBS.BusinessService.CheckManagementSystem.LossManagementSystem;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -47,6 +49,64 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
         }
 
         [HttpPost]
+        public async Task<JsonResult> LoadCheckbooksData(ChequeBookQuery query)
+        {
+            try
+            {
+                var data = await _lossManagementService.GetChequeBooksDataTableAsync(query);
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.DataTableOptions.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadCheckleavesData(ChequeBookQuery query)
+        {
+            try
+            {
+                var data = await _lossManagementService.GetChequeBooksDataTableAsync(query);
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
+
+        [HttpPost]
         public async Task<ActionResult> GetCheckLeavesByCheckbook(string checkBookId)
         {
             var result = await _mockCustomerCheckbooks.GetCheckLeavesByCheckbook(checkBookId);
@@ -83,9 +143,10 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
         }
 
         // This should return a partial view for the modal with checkbook details AND check leaves
+        [HttpGet]
         public async Task<ActionResult> CheckbookDetails(string checkBookId)
         {
-            var checkbookDetails = await _mockCustomerCheckbooks.GetCheckbookDetails(checkBookId);
+            var checkbookDetails = await _lossManagementService.GetCheckbookDetails(checkBookId);
             if (checkbookDetails != null)
             {
                 return PartialView("_CheckbookDetails", checkbookDetails);
@@ -163,6 +224,8 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
                 status = false,
                 message = "Please fill all required fields correctly."
             });
+
+
         }
     }
 }
