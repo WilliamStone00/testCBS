@@ -1,5 +1,6 @@
 ﻿using Antlr.Runtime.Misc;
 using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber;
 using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService;
@@ -73,7 +74,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
 
             if (path == "list")
             {
-                var data = await _chequeRequestService.GetAllRequestsAsync();
+                var data = await _chequeRequestService1.GetAllRequestsAsync();
                 return PartialView(partialView, data);
             }
             else if (path == "new")
@@ -82,7 +83,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             }
             else if (path == "get")
             {
-                var data = await _chequeRequestService.GetRequestByIdAsync(KEY);
+                var data = await _chequeRequestService1.GetRequestByIdAsync(KEY);
                 return PartialView(partialView, data);
             }
 
@@ -92,19 +93,27 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         [HttpPost]
         public async Task<ActionResult> TakeAction(string requestId, string note, string action)
         {
+            if (note == null)
+                return Json(new { success = false, message = "Please Enter a value ." });
+
+
             // Your existing logic
             ExecutionMessages result;
             switch (action?.ToLower())
             {
                 case "approve":
-                    result = await _chequeRequestService.ApproveRequestAsync(requestId, note);
+                    result = await _chequeRequestService1.ApproveRequestAsync(requestId, note);
                     break;
                 case "reject":
-                    result = await _chequeRequestService.RejectRequestAsync(requestId, note);
+                    result = await _chequeRequestService1.RejectRequestAsync(requestId, note);
                     break;
-                case "review":
+                //case "review":
+                //    // Add review logic to your service
+                //    result = await _chequeRequestService1.ReviewRequestAsync(requestId, note);
+                //    break;
+                case "delivered":
                     // Add review logic to your service
-                    result = await _chequeRequestService.ReviewRequestAsync(requestId, note);
+                    result = await _chequeRequestService1.ReviewRequestAsync(requestId, note);
                     break;
                 default:
                     result = new ExecutionMessages { Result = false, MessageString = "Invalid action" };
@@ -120,13 +129,17 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             try
             {
                 var data = await _chequeRequestService1.GetChequeBooksrequestDataTableAsync(query);
+
+                var numConfigs = JsonConvert.DeserializeObject<List<ChequeBookRequest>>(JsonConvert.SerializeObject(data.data));
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    data = numConfigs
                 });
+
             }
             catch (Exception ex)
             {

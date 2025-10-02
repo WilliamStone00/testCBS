@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -10,18 +11,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService
 {
-    using CBS.API.Helper;
-    using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
-    using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
-    using CBS.FrontDesk.Data.Entity.DataTable;
-    using CBS.FrontDesk.Data.Message;
-    using DocumentFormat.OpenXml.EMMA;
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Threading.Tasks;
+    
 
     public class ChequeRequestService : BaseService
     {
@@ -128,6 +121,29 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
         }
 
         public async Task<ExecutionMessages> RejectRequestAsync(string requestId, string rejectionNote)
+        {
+            try
+            {
+                string url = string.Format(APICallHelper.RejectChequeRequest, requestId);
+                var payload = new { RejectionNote = rejectionNote, RejectedBy = GetUserFullName() };
+                var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(url, payload);
+                if (response.IsSuccess && response.ApiResponseData.Data)
+                {
+                    GetExecutionMessages(null, true, $"Request ID: {requestId}", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Request rejected successfully.");
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, $"Request ID: {requestId}", MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex) { /* ... Error Handling ... */ }
+            return ExecutionMessage;
+        }
+
+
+        public async Task<ExecutionMessages> ReviewRequestAsync(string requestId, string rejectionNote)
         {
             try
             {

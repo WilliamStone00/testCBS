@@ -1306,9 +1306,10 @@ namespace CBS.FrontDesk.Helper
         //------------------------- Cheque Request -------------------------
         public const string CreateChequeRequest = "/api/v1/CheckRequest";
         public const string GetAllChequeRequests = "/api/v1/cheque-requests";
-        public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
-        public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
-        public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
+        public const string GetChequeRequestById = "/api/v1/cheque-request/{0}";
+        public const string ApproveChequeRequest = "/api/v1/approval-request";
+        public const string RejectChequeRequest = "/api/v1/approval-request";
+        public const string ReviewChequeRequest = "not yet provided by backend";
         public const string datatableforrequest = "/api/v1/checkbook-request/data-table";
 
         //------------------------ Counter Cheque ------------------------
@@ -1317,6 +1318,8 @@ namespace CBS.FrontDesk.Helper
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
+
+        public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
 
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";

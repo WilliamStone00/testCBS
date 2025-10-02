@@ -1,14 +1,28 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest.ChequeBookRequest
 
 <fieldset class="fieldset-custom">
-    <legend class="legend-custom d-flex justify-content-between align-items-center">
+
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+               Here we have the details of a cheque request with all the informations required 
+            </p>
+                   <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+        </div>
+    </div>
+
+    @*<legend class="legend-custom d-flex justify-content-between align-items-center">
         <span>
             <i class="mdi mdi-information-outline me-2"></i>Cheque Request Details
         </span>
         <small class="text-muted">Request ID: @Model.Id</small>
-    </legend>
+    </legend>*@
 
     <div class="row">
+        <h5 class="text-muted">Request ID: @Model.Id</h5>
         <!-- Left Column: Key Details -->
         <div class="col-md-7">
             <div class="card h-100">
@@ -46,7 +60,7 @@
                             <span>Current Status:</span>
                             <span class="badge bg-info">@Model.status</span>
                         </li>
-                        <li class="list-group-item"><strong>Request Date:</strong> @Model.requestDate?.ToString("f")</li>
+
                         @if (Model.approvalDate.HasValue)
                         {
                             <li class="list-group-item"><strong>Approval/Rejection Date:</strong> @Model.approvalDate?.ToString("f")</li>

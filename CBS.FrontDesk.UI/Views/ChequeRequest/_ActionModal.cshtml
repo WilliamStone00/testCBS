@@ -1,209 +1,197 @@
-﻿@using Resources
-@{
-    ViewBag.Title = "Cheque Requests";
+﻿<!-- Page Header -->
+<fieldset class="fieldset-custom">
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Actions
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Validate,Reject or Deliver a customers cheque request and manage the lifecycle of a request using this page.
+            </p>
+            <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+        </div>
+    </div>
+
+   
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="actionModalTitle">
+                        <i class="mdi mdi-cog-outline me-2"></i>
+                        <span id="actionTypeText">Process Request</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <!-- Request Information Header -->
+                    <div class="card mb-4 border-0 bg-light">
+                        <div class="card-body py-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label small text-muted mb-1">Customer Name</label>
+                                    <p class="fw-bold text-dark mb-0" id="actionCustomerName">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small text-muted mb-1">Customer ID</label>
+                                    <p class="fw-bold text-dark mb-0" id="actionCustomerId">-</p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <label class="form-label small text-muted mb-1">Request ID</label>
+                                    <p class="fw-bold text-dark mb-0" id="actionRequestIdDisplay">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small text-muted mb-1">Current Status</label>
+                                    <p class="fw-bold mb-0">
+                                        <span id="actionCurrentStatus" class="badge bg-warning">-</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Form (only field user fills is "approvalNote") -->
+                    <form id="actionForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="actionType" name="actionType" value=""> <!-- e.g. "approve" or "reject" -->
+                        <input type="hidden" id="hiddenRequestId" name="requestId" value="">
+
+                        <div class="mb-3">
+                            <label for="actionNote" class="form-label fw-bold text-dark">
+                                <i class="mdi mdi-text-box-edit-outline me-1"></i>
+                                Action Statement / Reason
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea id="actionNote" name="note" class="form-control" rows="5"
+                                      placeholder="Please provide a detailed statement or reason for this action. This information will be recorded in the request history and may be visible to the customer..."
+                                      required minlength="10"></textarea>
+                            <div class="form-text text-muted">
+                                <small>
+                                    <i class="mdi mdi-information-outline me-1"></i>
+                                    Required field. Minimum 10 characters.
+                                </small>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close-circle-outline me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="actionSubmitBtn">
+                        <i class="mdi mdi-check-circle-outline me-1"></i>
+                        <span id="submitButtonText">Submit Action</span>
+                    </button>
+                </div>
+            </div>
+    
+
+    </fieldset>
+    <script>
+/*
+  showActionModal(action, requestId, customerName, customerId, currentStatus)
+  - action (string): e.g. "approve" | "reject" | "review" — we derive isApprove from it
+  - requestId (string)
+  - customerName, customerId, currentStatus are optional for display
+*/
+function showActionModal(action, requestId, customerName, customerId, currentStatus) {
+    // normalize action text for display
+    var displayAction = (action || 'Process').toString().replace(/^\w/, function (c) { return c.toUpperCase(); });
+
+    // set visible fields
+    $('#actionTypeText').text(displayAction +'For'+ customerName);
+    $('#actionCustomerName').text(customerName || '-');
+    $('#actionCustomerId').text(customerId || '-');
+    $('#actionRequestIdDisplay').text(requestId || '-');
+    $('#actionCurrentStatus').text(currentStatus || '-');
+
+    // set hidden form values
+    $('#actionType').val((action || '').toString().toLowerCase());
+    $('#hiddenRequestId').val(requestId || '');
+
+    // update summary text to reflect the chosen action
+    $('#summaryAction').text(displayAction + ' Summary');
+    $('#summaryDescription').text('You are about to ' + displayAction.toLowerCase() + ' this request. Please provide a short statement and confirm.');
+
+    // reset comment field
+    $('#actionNote').val('').removeClass('is-invalid');
+
+    // set submit button text
+    $('#submitButtonText').text(displayAction + ' Request');
+
+    // show modal
+    var modalEl = document.getElementById('actionModal');
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
 }
 
-<fieldset class="fieldset-custom">
-    <legend class="legend-custom">
-        <i class="mdi mdi-clipboard-list-outline me-2"></i>
-        Cheque Book Request History
-    </legend>
+// Submit handler: builds the required JSON object and POSTs as application/json
+$(document).on('click', '#actionSubmitBtn', function (e) {
+    e.preventDefault();
 
-    <div class="card shadow p-3 mb-4">
-        <h5 class="text-primary mb-3">
-            <i class="mdi mdi-filter-outline me-1"></i> Advanced Request Filters
-        </h5>
+    // basic validation
+    var note = $('#actionNote').val() ? $('#actionNote').val().trim() : '';
+    if (!note || note.length < 10) {
+        $('#actionNote').addClass('is-invalid');
+        // scroll into view so user sees validation (helpful on small screens)
+        $('#actionNote').get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
 
-        <div class="alert alert-info">
-            <strong>Tip:</strong> Toggle the checkboxes to reveal filter inputs. Click <strong>Apply Filters</strong> to fetch results.
-        </div>
+    var requestId = $('#hiddenRequestId').val();
+    if (!requestId) {
+        alert('Missing request identifier. Cannot proceed.');
+        return;
+    }
 
-        <div class="card p-3 mb-3 bg-light">
-            <div class="row mb-2">
+    // Decide isApprove: only 'approve' is true; everything else false
+    var actionType = ($('#actionType').val() || '').toLowerCase();
+    var isApprove = (actionType === 'approve');
 
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCustomerToggle">
-                        <label class="form-check-label" for="byCustomerToggle">Filter by Customer</label>
-                    </div>
-                    <div id="customerFilterSection" style="display:none; margin-top:8px;">
-                        <input type="text" id="customerFilter" class="form-control" placeholder="Name or ID..." />
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCategoryToggle">
-                        <label class="form-check-label" for="byCategoryToggle">Filter by Category</label>
-                    </div>
-                    <div id="categoryFilterSection" style="display:none; margin-top:8px;">
-                        @* server-side DropDownList; update ViewBag.Categories if needed *@
-                        @Html.DropDownList("categoryFilter", new SelectList(ViewBag.Categories, "Id", "name"), "All Categories", new { @class = "form-select", id = "categoryFilter" })
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byStatusToggle">
-                        <label class="form-check-label" for="byStatusToggle">Filter by Status</label>
-                    </div>
-                    <div id="statusFilterSection" style="display:none; margin-top:8px;">
-                        <select id="statusFilter" class="form-select">
-                            <option value="">All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Delivered">Delivered</option>
-                            <option value="Reviewed">Reviewed</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byBranchToggle">
-                        <label class="form-check-label" for="byBranchToggle">Filter by Branch</label>
-                    </div>
-                    <div id="branchFilterSection" style="display:none; margin-top:8px;">
-                        @* Replace ViewBag.Branches with your data *@
-                        @Html.DropDownList("branchFilter", new SelectList(ViewBag.Branches, "Id", "name"), "All Branches", new { @class = "form-select", id = "branchFilter" })
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byBankToggle">
-                        <label class="form-check-label" for="byBankToggle">Filter by Bank</label>
-                    </div>
-                    <div id="bankFilterSection" style="display:none; margin-top:8px;">
-                        @Html.DropDownList("bankFilter", new SelectList(ViewBag.Banks, "Id", "name"), "All Banks", new { @class = "form-select", id = "bankFilter" })
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row mb-2">
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCustomerNameToggle">
-                        <label class="form-check-label" for="byCustomerNameToggle">Filter by Customer Name</label>
-                    </div>
-                    <div id="customerNameFilterSection" style="display:none; margin-top:8px;">
-                        <input type="text" id="customerNameFilter" class="form-control" placeholder="Exact name..." />
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byNotifyToggle">
-                        <label class="form-check-label" for="byNotifyToggle">Notification Options</label>
-                    </div>
-                    <div id="notifyFilterSection" style="display:none; margin-top:8px;">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyRejectionFilter" />
-                            <label class="form-check-label small" for="notifyRejectionFilter">Notify on Rejection</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyAnyTransactionFilter" />
-                            <label class="form-check-label small" for="notifyAnyTransactionFilter">Notify on Any Transaction</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyClearanceFilter" />
-                            <label class="form-check-label small" for="notifyClearanceFilter">Notify on Clearance</label>
-                        </div>
-                        <div class="form-check mt-1">
-                            <input class="form-check-input" type="checkbox" id="automaticRenewalFilter" />
-                            <label class="form-check-label small" for="automaticRenewalFilter">Automatic Renewal</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byDateToggle">
-                        <label class="form-check-label" for="byDateToggle">Filter by Date Range</label>
-                    </div>
-                    <div id="dateFilterSection" style="display:none; margin-top:8px;">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <input type="date" id="startDateFilter" class="form-control" />
-                            </div>
-                            <div class="col-6">
-                                <input type="date" id="endDateFilter" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2 d-flex align-items-end">
-                    <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="resetFilterBtn" class="btn btn-secondary"><i class="mdi mdi-refresh"></i> Reset</button>
-                <button id="printBtn" class="btn btn-outline-danger ms-auto"><i class="mdi mdi-printer"></i> Print PDF</button>
-            </div>
-        </div>
-    </div>
-
-    <hr />
-
-    <table id="requestsDataTable" class="table table-bordered table-striped" width="100%">
-        <thead class="table-light">
-            <tr>
-                <th>Customer Name</th>
-                <th>Category</th>
-                <th>Request Date</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-    </table>
-</fieldset>
-
-<!-- DETAILS MODAL -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-white">
-                <h5 class="modal-title"><i class="mdi mdi-eye-outline me-1"></i> Request Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id="detailsModalBody" class="modal-body p-3">Loading…</div>
-            <div class="modal-footer">
-                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ACTION MODAL (loads partial form into body) -->
-<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div id="actionModalBody" class="modal-body">
-                <div class="text-center text-muted py-4">Loading form…</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- expose endpoints (so external JS file doesn't need Razor) -->
-<script>
-    window.ChequeRequestsEndpoints = {
-        loadDatatable: '@Url.Action("LoadRequestsForDataTable", "ChequeRequest")',
-        initializeData: '@Url.Action("InitializeData", "ChequeRequest")',
-        takeAction: '@Url.Action("TakeAction", "ChequeRequest")',
-        preload: '@Url.Action("PreloadRequests", "ChequeRequest")' // optional endpoint that returns initial/preload data (create if you want)
+    // Build payload matching specified schema
+    var payload = {
+        id: requestId,
+        isApprove: isApprove,
+        approvalNote: note,
+        approvalDate: new Date().toISOString()
     };
-</script>
 
+    // anti-forgery token
+    var token = $('#actionForm input[name="__RequestVerificationToken"]').val();
 
+    // POST JSON to server - adjust URL if your controller expects a different route
+    $.ajax({
+        url: '@Url.Action("TakeAction", "ChequeRequest")', // adjust if needed
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(payload),
+        headers: token ? { 'RequestVerificationToken': token } : {},
+        success: function (res) {
+            // hide modal and refresh table if present
+            var modalEl = document.getElementById('actionModal');
+            bootstrap.Modal.getInstance(modalEl)?.hide();
+
+            // reload datatable if present
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().ajax.reload(null, false);
+            }
+
+            // success feedback (you can change to your appalert)
+            if (res && res.message) {
+                alert(res.message);
+            } else {
+                alert('Action processed successfully.');
+            }
+        },
+        error: function (xhr) {
+            console.error('Action submission failed', xhr);
+            var msg = 'Error performing action.';
+            if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+            alert(msg);
+        }
+    });
+});
+    </script>

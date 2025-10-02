@@ -530,8 +530,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
             try
             {
                
-                model.branchName = "string";
-                model.branchCode = "string";
+                model.branchName = GetBranchName();
+                model.branchCode = GetBankCode();
                
 
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<FeeConfig>>(APICallHelper.CreateFeeConfig, model);

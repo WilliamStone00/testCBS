@@ -1,7 +1,5 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
-using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
+﻿using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config; // Assuming BranchServices is here
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
@@ -134,13 +132,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             try
             {
                 var data = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
+                var numConfigs = JsonConvert.DeserializeObject<List<ChequeRequestDto>>(JsonConvert.SerializeObject(data.data));
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    data = numConfigs
                 });
+               
             }
             catch (Exception ex)
             {

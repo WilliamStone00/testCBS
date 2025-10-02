@@ -206,7 +206,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                     return HttpNotFound("Cheque book not found");
                 }
 
-                var leaf = chequeBook.ChequeLeaves.Find(l => l.Id == leafId);
+                var leaf = chequeBook.ChequeLeaves.Find(l => l.id == leafId);
                 if (leaf == null)
                 {
                     return HttpNotFound("Leaf not found");

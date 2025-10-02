@@ -16,6 +16,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public string bankId { get; set; }
         public string branchId { get; set; } = null;
         public string customerName { get; set; } = null;
+        public string branchName { get; set; } = null;
+
         [Required]
         public string subscriptionPaymentAccount { get; set; } = null;
 
@@ -44,8 +46,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public string status { get; set; }
         //  public DateTime? requestDate { get; set; }
         public DateTime? approvalDate { get; set; }
-        public DateTime? requestDate { get; set; }
-        public string approvalNote { get; set; }
+          public string approvalNote { get; set; }
     }
 
     // In your Data/Entity folder

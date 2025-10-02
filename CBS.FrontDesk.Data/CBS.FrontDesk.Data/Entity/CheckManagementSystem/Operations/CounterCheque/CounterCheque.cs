@@ -22,11 +22,11 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public string CheckLeafId { get; set; }
         public string Id { get; set; }
         public string CheckNumber { get; set; }
-        public DateTime IssuedOn { get; set; }
+        public DateTime? IssuedOn { get; set; }
         public string IssuedBy { get; set; }
         public string Status { get; set; }
         public string ClientName { get; set; } // For better display
-      //  public string BranchName { get; set; } // For better display
+                                               //  public string BranchName { get; set; } // For better display
     }
 
     // DTO for the modal action form
@@ -39,8 +39,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public string Action { get; set; } // "Review", "Validate", or "Reject"
     }
 
-    // Query object for the server-side DataTable
-    public class CounterChequeQuery 
+    
+    public class CounterChequeQuery
     {
         public CounterChequeQuery()
         {
@@ -54,11 +54,26 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public decimal Amount { get; set; }
         public string AccountNumber { get; set; }
         public string BranchId { get; set; }
-        public string CheckLeafId { get; set; }
-        public string CheckNumber { get; set; }
-        public DateTime IssuedOn { get; set; }
-        public string IssuedBy { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        //public string CheckLeafId { get; set; }
+        //public string CheckNumber { get; set; }
+        //public DateTime? IssuedOn { get; set; }
+        //public string IssuedBy { get; set; }
+        //public DateTime? StartDate { get; set; }
+        //public DateTime? EndDate { get; set; }
     }
+
+
+    public class ChequeRequestDto
+    {
+        public string Id { get; set; }              
+        public string CustomerId { get; set; }      
+        public decimal Amount { get; set; }         
+        public string AccountNumber { get; set; }   
+        public string BranchId { get; set; }        
+        public string CheckLeafId { get; set; }     
+        public string CheckNumber { get; set; }    
+        public DateTime? IssuedOn { get; set; }      
+        public string IssuedBy { get; set; }        
+    }
+
 }

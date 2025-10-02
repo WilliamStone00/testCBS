@@ -22,8 +22,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                 customerName = "John Doe",
                 categoryId = "Category001",
                 categoryName = "Standard - 25",
-                requestDate = DateTime.Now.AddDays(-2),
-                status = "Pending",
+                             status = "Pending",
                 checkBookAccount = "ACC001",
                 subscriptionPaymentAccount = "ACC002",
                 branchId = "BR001",
@@ -45,8 +44,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                 customerName = "Jane Smith",
                 categoryId = "Category002",
                 categoryName = "Business Gold - 100",
-                requestDate = DateTime.Now.AddDays(-1),
-                status = "Approved",
+                 status = "Approved",
                 approvalDate = DateTime.Now,
                 checkBookAccount = "ACC003",
                 subscriptionPaymentAccount = "ACC004",
@@ -69,8 +67,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                 customerName = "Peter Jones",
                 categoryId = "Category001",
                 categoryName = "Standard - 25",
-                requestDate = DateTime.Now.AddHours(-5),
-                status = "Delivered",
+                            status = "Delivered",
                 checkBookAccount = "ACC005",
                 subscriptionPaymentAccount = "ACC006",
                 branchId = "BR002",
@@ -90,8 +87,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
         public Task<ExecutionMessages> CreateRequestAsync(ChequeBookRequest model)
         {
             model.Id = "REQ" + (_mockRequests.Count + 1).ToString("D3");
-            model.requestDate = DateTime.Now;
-            model.status = "Pending";
+                      model.status = "Pending";
             _mockRequests.Add(model);
 
             GetExecutionMessages(model, true, "Cheque Request", MessagesResults.Success,
@@ -143,10 +139,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
 
 
 
-        public Task<List<ChequeBookRequest>> GetAllRequestsAsync()
-        {
-            return Task.FromResult(_mockRequests.OrderByDescending(r => r.requestDate).ToList());
-        }
 
         public Task<ChequeBookRequest> GetRequestByIdAsync(string requestId)
         {

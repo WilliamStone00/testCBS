@@ -56,41 +56,13 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             return ExecutionMessage;
         }
 
-        //public async Task<CustomDataTable> GetCounterChequesForDataTableAsync(CounterChequeQuery query)
-        //{
-        //    try
-        //    {
-        //        var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(APICallHelper.GetCounterChequesForDataTable, query);
-
-        //        if (response.IsSuccess && response.ApiResponseData != null)
-        //        {
-        //            return response.ApiResponseData.Data;
-        //        }
-
-        //        // Return an empty, but valid, CustomDataTable on failure
-        //        return new CustomDataTable(
-        //            draw: Convert.ToInt32(query.Options?.draw),
-        //            recordsTotal: 0, recordsFiltered: 0,
-        //            data: new List<object>(),
-        //            dataTableOptions: query.Options);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception in a real application
-        //        return new CustomDataTable(
-        //            draw: Convert.ToInt32(query.Options?.draw),
-        //            recordsTotal: 0, recordsFiltered: 0,
-        //            data: new List<object>(),
-        //            dataTableOptions: query.Options);
-        //    }
-        //}
-
+   
         public async Task<CustomDataTable> GetCounterChequesForDataTableAsync(CounterChequeQuery query)
         {
             try
             {
                 var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.datatableforrequest, query);
+                    APICallHelper.datatableforcounterrequest, query);
 
                 // ⚠ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
