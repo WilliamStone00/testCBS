@@ -991,8 +991,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
-        public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
-
+        //public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
+        public static string GetAllAccountByBranch = "/api/v1/Accounts/GetAllAccountByBranchIDQuery/{0}";
         public static string GetAllBankAccountChartUsedToCreditCashFlow = "/api/v1/ChartOfAccountManagementPosition/{0}/{1}";
 
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
