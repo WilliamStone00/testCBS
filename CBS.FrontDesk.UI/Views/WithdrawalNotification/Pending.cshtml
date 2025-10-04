@@ -1,6 +1,18 @@
 ﻿@{
     ViewBag.Title = "Pending Withdrawal Notifications";
 }
+<style>
+    /* Hide the header entirely */
+    #withdrawalApprovalModal .modal-header {
+        display: none;
+    }
+
+    /* Optional: add a bit of top padding to the body now that header is gone */
+    #withdrawalApprovalModal .modal-body {
+        padding-top: 1rem;
+    }
+
+</style>
 @using Resources
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
@@ -51,11 +63,169 @@
 </div>
 
 
-@Html.Partial("_model")
+<!-- _WithdrawalApprovalModalHost.cshtml (include once on the page/list that opens it) -->
+<div id="withdrawalApprovalModal" class="modal fade" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="withdrawalApprovalModalTitle" class="modal-title">
+                    @Resources.GlobalWithdrawalNotification.WithdrawalRequestConfirmation
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Resources.GlobalShared.Close"></button>
+            </div>
+
+            <div id="withdrawalApprovalModalAlert" class="alert d-none m-3"></div>
+
+            <div id="withdrawalApprovalModalBody" class="modal-body">
+                <div class="text-center py-5">
+                    <div class="spinner-border" role="status" aria-hidden="true"></div>
+                    <div class="mt-2 small text-muted">@Resources.GlobalShared.Loading...</div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <!-- Submit button lives INSIDE the form you already posted, so footer stays minimal -->
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    @Resources.GlobalShared.Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+(function () {
+  const MODAL_ID = '#withdrawalApprovalModal';
+  const MODAL_BODY = '#withdrawalApprovalModalBody';
+  const MODAL_ALERT = '#withdrawalApprovalModalAlert';
+  let bsModal;
+
+  function showAlert(html, kind = 'danger') {
+    const $a = $(MODAL_ALERT);
+    $a.removeClass('d-none alert-danger alert-success alert-warning')
+      .addClass('alert alert-' + kind)
+      .html(html);
+  }
+  function clearAlert() {
+    $(MODAL_ALERT).addClass('d-none').removeClass('alert alert-danger alert-success alert-warning').empty();
+  }
+  function setLoading() {
+    $(MODAL_BODY).html(
+      `<div class="text-center py-5">
+         <div class="spinner-border" role="status" aria-hidden="true"></div>
+         <div class="mt-2 small text-muted">Loading...</div>
+       </div>`
+    );
+  }
+
+  // PUBLIC: call this from your list action button
+  window.openApproveWithdrawalModal = function (id, titleText) {
+    clearAlert();
+    $('#withdrawalApprovalModalTitle').text(titleText || '@Resources.GlobalWithdrawalNotification.WithdrawalRequestConfirmation');
+
+    if (!bsModal) bsModal = new bootstrap.Modal(document.querySelector(MODAL_ID), { backdrop: 'static', keyboard: false });
+    bsModal.show();
+
+    setLoading();
+
+    // Load the form partial via your InitializeData action
+      const url = `/WithdrawalNotification/InitializeData?KEY=${encodeURIComponent(id)}&partialView=_ValidatePendingRequest&path=get_to_approve`;
+
+    $.get(url)
+      .done(function (html) {
+        $(MODAL_BODY).html(html);
+
+        // (re)initialize select2 if present
+        if (window.$ && $.fn.select2) {
+          $(MODAL_BODY).find('.select2').select2({ width: '100%', dropdownParent: $(MODAL_ID) });
+        }
+
+        // live client validation: if Rejected => comment required (10+ chars)
+        $(MODAL_BODY).off('change.approval').on('change.approval', '#ApprovalStatus', function () {
+          const status = ($(this).val() || '').toLowerCase();
+          const $comment = $(MODAL_BODY).find('#ApprovalComment');
+          if (status === 'rejected') {
+            $comment.attr('required', 'required');
+          } else {
+            $comment.removeAttr('required');
+          }
+        }).trigger('change.approval');
+
+      })
+      .fail(function (xhr) {
+        showAlert(`Failed to load form. <br/><small>${xhr.responseText || xhr.statusText}</small>`, 'danger');
+        $(MODAL_BODY).html('');
+      });
+  };
+
+  // === Submit hook referenced by your form ===
+  window.AjaxPostAndUpdateWithdrawalFromRequest = function (form) {
+    clearAlert();
+
+    const $form = $(form);
+    const $btn = $form.find('#wnSubmitBtn');
+    const status = ($form.find('#ApprovalStatus').val() || '').toLowerCase();
+    const comment = ($form.find('#ApprovalComment').val() || '').trim();
+
+    // Client-side rules:
+    // 1) Status required
+    if (!status) {
+      showAlert('Please select an approval status.', 'warning');
+      return false;
+    }
+    // 2) If Rejected, comment is required (>= 10 chars)
+    if (status === 'rejected' && comment.length < 10) {
+      showAlert('Please provide a clear rejection note (at least 10 characters).', 'warning');
+      return false;
+    }
+
+    // Disable UI & show spinner on button
+    const btnHtml = $btn.html();
+    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Submitting...');
+
+    // AJAX post
+    $.ajax({
+      url: $form.attr('action'),
+      method: $form.attr('method') || 'POST',
+      data: $form.serialize(),
+      success: function (res) {
+        // You can standardize this based on your API:
+        // Expecting { success: bool, message: string }
+        if (res && (res.success === true || res.Success === true)) {
+          showAlert(res.message || 'Request processed successfully.', 'success');
+
+          // Optional: refresh your pending list/table
+          if (typeof window.reloadPendingWithdrawalList === 'function') {
+            window.reloadPendingWithdrawalList(); // implement this to reload your table via DataTables or a partial refresh
+          }
+
+          // Close after a short delay
+          setTimeout(function () {
+            if (bsModal) bsModal.hide();
+          }, 700);
+        } else {
+          showAlert((res && (res.message || res.Message)) || 'Could not process the request.', 'danger');
+        }
+      },
+      error: function (xhr) {
+        const msg = xhr?.responseJSON?.message || xhr?.responseText || xhr?.statusText || 'Error occurred.';
+        showAlert(msg, 'danger');
+      },
+      complete: function () {
+        $btn.prop('disabled', false).html(btnHtml);
+      }
+    });
+
+    return false; // prevent normal POST navigation
+  };
+
+})();
+</script>
+
 <script src="~/Scripts/Js/Crud/WithdrawalNotification/Pending.js"></script>
 }
 

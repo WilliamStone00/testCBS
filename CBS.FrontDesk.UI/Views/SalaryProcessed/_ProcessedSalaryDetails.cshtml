@@ -1,0 +1,359 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
+
+@functions {
+    public string Money(decimal v) =>
+        v.ToString("N0");
+
+    public string YesNo(bool v) =>
+        v ? "<span class=\"badge bg-success\">Yes</span>"
+          : "<span class=\"badge bg-secondary\">No</span>";
+
+    public string Paid(bool v) =>
+        v ? "<span class=\"badge bg-success\">Paid</span>"
+          : "<span class=\"badge bg-warning text-dark\">Pending</span>";
+
+    // Non-member = null/empty OR length 10 with first 3 digits + "0000000"
+    public bool IsNonMemberRef(string mr)
+    {
+        if (string.IsNullOrEmpty(mr)) return true;
+        if (mr.Length != 10) return false;
+        if (!char.IsDigit(mr[0]) || !char.IsDigit(mr[1]) || !char.IsDigit(mr[2])) return false;
+        return string.Equals(mr.Substring(3), "0000000", StringComparison.Ordinal);
+    }
+}
+
+@{
+    var memberRef = Model.MemberReference ?? string.Empty;
+    var isNonMember = IsNonMemberRef(memberRef);
+    var canActivate = isNonMember && !Model.Status; // only when Pending
+}
+
+<style>
+    .section-title {
+        font-weight: 700;
+        color: #0d6efd;
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: .35rem;
+        margin-top: 1rem;
+        margin-bottom: .75rem;
+        display: flex;
+        align-items: center;
+        gap: .5rem
+    }
+
+    .kv th {
+        width: 260px;
+        background: #f7f7f7;
+        text-transform: uppercase;
+        font-weight: 600
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle
+    }
+
+    .mono {
+        font-family: ui-monospace,SFMono-Regular,Menlo,monospace
+    }
+
+    .nowrap {
+        white-space: nowrap
+    }
+</style>
+
+<div class="px-3 py-2">
+    <!-- Header + conditional Activate -->
+    <div class="d-flex justify-content-between align-items-start">
+        <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
+            <i class="mdi mdi-file-document-outline me-1"></i> Processed Salary – Details
+        </h5>
+
+        @if (canActivate)
+        {
+            <div class="text-end ms-3">
+                <button type="button"
+                        class="btn btn-sm btn-success"
+                        title="Activate / Register non-member"
+                        onclick="openRegisterNonMember('@Model.Id', {
+                        name: '@(Model.MemberName ?? "—")',
+                        ref: '@(Model.MemberReference ?? Model.NonMemberReference ?? "—")',
+                        branchText: '@(Model.BranchName ?? "—")',
+                        branchId: '@(Model.BranchId ?? "")',
+                        branchCode: '@(Model.BranchCode ?? "")'
+                })">
+                    <i class="mdi mdi-account-plus-outline me-1"></i>
+                    Activate / Register
+                </button>
+                <div class="small text-muted mt-1">
+                    Non-member reference detected (@(string.IsNullOrEmpty(Model.MemberReference) ? "—" : Model.MemberReference)).
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <!-- Member summary -->
+    <div class="row g-3">
+        <div class="col-md-7">
+            <h6 class="section-title"><i class="mdi mdi-account-circle-outline"></i> Member</h6>
+            <table class="table table-sm table-bordered kv mb-3">
+                <tbody>
+                    <tr><th>Name</th><td>@Model.MemberName</td></tr>
+                    <tr><th>Member Reference</th><td class="mono">@Model.MemberReference</td></tr>
+                    <tr><th>Matricule</th><td class="mono">@Model.Matricule</td></tr>
+                    <tr><th>Non-Member Reference</th><td class="mono">@Model.NonMemberReference</td></tr>
+                    <tr><th>Branch</th><td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td></tr>
+                    <tr><th>Paid Status</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
+                    <tr><th>Is Old Loan?</th><td>@Html.Raw(YesNo(Model.IsOnldLoan)) <span class="ms-2 text-muted">@Model.LoanType</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-5">
+            <h6 class="section-title"><i class="mdi mdi-clipboard-text-outline"></i> File / Batch</h6>
+            <table class="table table-sm table-bordered kv mb-3">
+                <tbody>
+                    <tr><th>File Upload Id</th><td class="mono">@Model.FileUploadId</td></tr>
+                    <tr><th>File Ref Id</th><td class="mono">@Model.FileUploadIdReferenceId</td></tr>
+                    <tr><th>Salary Analysis Result Id</th><td class="mono">@Model.SalaryAnalysisResultId</td></tr>
+                    <tr><th>Temp Pay Code</th><td class="mono">@Model.LastTempPayCodeId</td></tr>
+                    <tr><th>Temp Code Status</th><td>@Model.LastTempPayCodeStatus</td></tr>
+                    <tr>
+                        <th>Temp Code Expires</th>
+                        <td class="nowrap">
+                            @(Model.LastTempPayCodeExpiresAt == DateTime.MinValue ? "—" : Model.LastTempPayCodeExpiresAt.ToString("dd/MM/yyyy HH:mm"))
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Amounts -->
+    <h6 class="section-title"><i class="mdi mdi-cash-multiple"></i> Amounts</h6>
+    <table class="table table-sm table-bordered mb-3">
+        <thead class="table-light">
+            <tr>
+                <th class="text-end">Gross Salary</th>
+                <th class="text-end">Saving</th>
+                <th class="text-end">Deposit</th>
+                <th class="text-end">Shares</th>
+                <th class="text-end">Preference Shares</th>
+                <th class="text-end">Charges</th>
+                <th class="text-end">Standing Order</th>
+                <th class="text-end">Remaining</th>
+                <th class="text-end">Net Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-end">@Money(Model.Salary)</td>
+                <td class="text-end">@Money(Model.Saving)</td>
+                <td class="text-end">@Money(Model.Deposit)</td>
+                <td class="text-end">@Money(Model.Shares)</td>
+                <td class="text-end">@Money(Model.PreferenceShares)</td>
+                <td class="text-end">@Money(Model.Charges)</td>
+                <td class="text-end">
+                    @Money(Model.StandingOrderAmount)
+                    @if (!string.IsNullOrWhiteSpace(Model.StandingOrderStatement))
+                    {<span class="text-muted ms-1">(@Model.StandingOrderStatement)</span>}
+                </td>
+                <td class="text-end">@Money(Model.RemainingSalary)</td>
+                <td class="text-end fw-bold">@Money(Model.NetSalary)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Savings (Special) -->
+    <h6 class="section-title"><i class="mdi mdi-safe-square-outline"></i> Savings (Special)</h6>
+    <table class="table table-sm table-bordered kv mb-3">
+        <tbody>
+            <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.SpSavingId_Used))</td></tr>
+            <tr><th>Type</th><td>@Model.SpSavingType</td></tr>
+            <tr><th>Product</th><td>@Model.SpSavingProductName <span class="text-muted">(@Model.SpSavingProductId)</span></td></tr>
+            <tr><th>Saving Id</th><td class="mono">@Model.SpSavingId</td></tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered mb-3">
+        <thead class="table-light">
+            <tr>
+                <th class="text-end">Capital</th>
+                <th class="text-end">Interest</th>
+                <th class="text-end">VAT</th>
+                <th class="text-end">Total Repayment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-end">@Money(Model.SpSavingCapital)</td>
+                <td class="text-end">@Money(Model.SpSavingInterest)</td>
+                <td class="text-end">@Money(Model.SpSavingVAT)</td>
+                <td class="text-end fw-bold">@Money(Model.SpSavingTotalRepayment)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Loans (only when present) -->
+    @* Loan 1 *@
+    @if ((!string.IsNullOrWhiteSpace(Model.Loan1_Main_Loan_Id)) ||
+         (Model.Loan1_Main_Loan_Capital + Model.Loan1_Main_Loan_Interest + Model.Loan1_Main_Loan_VAT + Model.Loan1_Main_Loan_TotalRepayment) > 0)
+    {
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 1 – Main</h6>
+        <table class="table table-sm table-bordered kv mb-2">
+            <tbody>
+                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan1_Main_Loan_Id_Used))</td></tr>
+                <tr><th>Loan Id</th><td class="mono">@Model.Loan1_Main_Loan_Id</td></tr>
+                <tr><th>Type</th><td>@Model.Loan1_Main_Loan_Type</td></tr>
+                <tr><th>Product</th><td>@Model.Loan1_Main_Loan_ProductName <span class="text-muted">(@Model.Loan1_Main_Loan_ProductId)</span></td></tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered mb-3">
+            <thead class="table-light">
+                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-end">@Money(Model.Loan1_Main_Loan_Capital)</td>
+                    <td class="text-end">@Money(Model.Loan1_Main_Loan_Interest)</td>
+                    <td class="text-end">@Money(Model.Loan1_Main_Loan_VAT)</td>
+                    <td class="text-end fw-bold">@Money(Model.Loan1_Main_Loan_TotalRepayment)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    @* Loan 2 *@
+    @if ((!string.IsNullOrWhiteSpace(Model.Loan2_Exceptional_Loan_Id)) ||
+         (Model.Loan2_Exceptional_Loan_Capital + Model.Loan2_Exceptional_Loan_Interest + Model.Loan2_Exceptional_Loan_VAT + Model.Loan2_Exceptional_Loan_TotalRepayment) > 0)
+    {
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 2 – Exceptional</h6>
+        <table class="table table-sm table-bordered kv mb-2">
+            <tbody>
+                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan2_Exceptional_Loan_Id_Used))</td></tr>
+                <tr><th>Loan Id</th><td class="mono">@Model.Loan2_Exceptional_Loan_Id</td></tr>
+                <tr><th>Type</th><td>@Model.Loan2_Exceptional_Loan_Type</td></tr>
+                <tr><th>Product</th><td>@Model.Loan2_Exceptional_Loan_ProductName <span class="text-muted">(@Model.Loan2_Exceptional_Loan_ProductId)</span></td></tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered mb-3">
+            <thead class="table-light">
+                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-end">@Money(Model.Loan2_Exceptional_Loan_Capital)</td>
+                    <td class="text-end">@Money(Model.Loan2_Exceptional_Loan_Interest)</td>
+                    <td class="text-end">@Money(Model.Loan2_Exceptional_Loan_VAT)</td>
+                    <td class="text-end fw-bold">@Money(Model.Loan2_Exceptional_Loan_TotalRepayment)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    @* Loan 3 *@
+    @if ((!string.IsNullOrWhiteSpace(Model.Loan3_Elected_Staff_Id)) ||
+         (Model.Loan3_Elected_Staff_Capital + Model.Loan3_Elected_Staff_Interest + Model.Loan3_Elected_Staff_VAT + Model.Loan3_Elected_Staff_TotalRepayment) > 0)
+    {
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 3 – Elected Staff</h6>
+        <table class="table table-sm table-bordered kv mb-2">
+            <tbody>
+                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan3_Elected_Staff_Id_Used))</td></tr>
+                <tr><th>Loan Id</th><td class="mono">@Model.Loan3_Elected_Staff_Id</td></tr>
+                <tr><th>Type</th><td>@Model.Loan3_Elected_Staff_Type</td></tr>
+                <tr><th>Product</th><td>@Model.Loan3_Elected_Staff_ProductName <span class="text-muted">(@Model.Loan3_Elected_Staff_ProductId)</span></td></tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered mb-3">
+            <thead class="table-light">
+                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-end">@Money(Model.Loan3_Elected_Staff_Capital)</td>
+                    <td class="text-end">@Money(Model.Loan3_Elected_Staff_Interest)</td>
+                    <td class="text-end">@Money(Model.Loan3_Elected_Staff_VAT)</td>
+                    <td class="text-end fw-bold">@Money(Model.Loan3_Elected_Staff_TotalRepayment)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    @* Loan 4 *@
+    @if ((!string.IsNullOrWhiteSpace(Model.Loan4_Special_Loan_With_Overdraft_Id)) ||
+         (Model.Loan4_Special_Loan_With_Overdraft_Capital + Model.Loan4_Special_Loan_With_Overdraft_Interest + Model.Loan4_Special_Loan_With_Overdraft_VAT + Model.Loan4_Special_Loan_With_Overdraft_TotalRepayment) > 0)
+    {
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 4 – Special / Overdraft</h6>
+        <table class="table table-sm table-bordered kv mb-2">
+            <tbody>
+                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan4_Special_Loan_With_Overdraft_Id_Used))</td></tr>
+                <tr><th>Loan Id</th><td class="mono">@Model.Loan4_Special_Loan_With_Overdraft_Id</td></tr>
+                <tr><th>Type</th><td>@Model.Loan4_Special_Loan_With_Overdraft_Type</td></tr>
+                <tr><th>Product</th><td>@Model.Loan4_Special_Loan_With_Overdraft_ProductName <span class="text-muted">(@Model.Loan4_Special_Loan_With_Overdraft_ProductId)</span></td></tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered mb-3">
+            <thead class="table-light">
+                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-end">@Money(Model.Loan4_Special_Loan_With_Overdraft_Capital)</td>
+                    <td class="text-end">@Money(Model.Loan4_Special_Loan_With_Overdraft_Interest)</td>
+                    <td class="text-end">@Money(Model.Loan4_Special_Loan_With_Overdraft_VAT)</td>
+                    <td class="text-end fw-bold">@Money(Model.Loan4_Special_Loan_With_Overdraft_TotalRepayment)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    @* Loan 8 *@
+    @if ((!string.IsNullOrWhiteSpace(Model.Loan8_Micro_Loan_Id)) ||
+         (Model.Loan8_Micro_Loan_Capital + Model.Loan8_Micro_Loan_Interest + Model.Loan8_Micro_Loan_VAT + Model.Loan8_Micro_Loan_TotalRepayment) > 0)
+    {
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 8 – Micro</h6>
+        <table class="table table-sm table-bordered kv mb-2">
+            <tbody>
+                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan8_Micro_Loan_Id_Used))</td></tr>
+                <tr><th>Loan Id</th><td class="mono">@Model.Loan8_Micro_Loan_Id</td></tr>
+                <tr><th>Type</th><td>@Model.Loan8_Micro_Loan_Type</td></tr>
+                <tr><th>Product</th><td>@Model.Loan8_Micro_Loan_ProductName <span class="text-muted">(@Model.Loan8_Micro_Loan_ProductId)</span></td></tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered mb-3">
+            <thead class="table-light">
+                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-end">@Money(Model.Loan8_Micro_Loan_Capital)</td>
+                    <td class="text-end">@Money(Model.Loan8_Micro_Loan_Interest)</td>
+                    <td class="text-end">@Money(Model.Loan8_Micro_Loan_VAT)</td>
+                    <td class="text-end fw-bold">@Money(Model.Loan8_Micro_Loan_TotalRepayment)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    <!-- Operators / Status -->
+    <h6 class="section-title"><i class="mdi mdi-account-badge-outline"></i> Operators / Status</h6>
+    <table class="table table-sm table-bordered kv mb-3">
+        <tbody>
+            <tr><th>Uploaded By</th><td>@Model.UploadedBy</td></tr>
+            <tr><th>Executed By</th><td>@Model.ExecutedBy</td></tr>
+            <tr><th>Payment Comment</th><td>@Model.PaymentComment</td></tr>
+            <tr><th>Is Paid (Execution)</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
+            <tr><th>Is Paid (Flag)</th><td>@Html.Raw(YesNo(Model.Ispaid))</td></tr>
+        </tbody>
+    </table>
+
+    <!-- Dates -->
+    <h6 class="section-title"><i class="mdi mdi-calendar-multiselect"></i> Dates</h6>
+    <table class="table table-sm table-bordered kv mb-1">
+        <tbody>
+            <tr><th>Extraction Date</th><td>@Model.ExtrationDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th>Execution Date</th><td>@Model.ExecutionDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th>Accounting Date</th><td>@Model.AccountingDate.ToString("dd/MM/yyyy")</td></tr>
+            <tr><th>Created Date</th><td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+        </tbody>
+    </table>
+</div>

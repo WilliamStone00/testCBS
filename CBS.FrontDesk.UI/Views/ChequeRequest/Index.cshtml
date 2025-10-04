@@ -2,26 +2,151 @@
 @{ ViewBag.Title = "Cheque Book Requests"; }
 @using Resources;
 
-<!-- Header Section -->
+<!-- =================================================
+     PAGE HEADER
+================================================== -->
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
             <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Management
         </h1>
+        <p class="card-text text-muted mb-1">
+            Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.
+        </p>
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            <strong>Process:</strong> Start by creating a new request. After submission, switch to the "View All Requests" tab to manage pending approvals.
+        </div>
+        <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+    </div>
+</div>
+
+<!-- =================================================
+     TIPS SECTION (Expanded by default)
+================================================== -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalUserManagement.TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-primary rounded-circle p-2 me-3">1</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-primary mb-1">Customer Search & Selection</h6>
+                            <p class="text-muted mb-0 small">
+                                Use the search function to find customers by ID. The system will display complete customer details and accounts in a popup for verification.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-success rounded-circle p-2 me-3">2</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-success mb-1">Request Creation</h6>
+                            <p class="text-muted mb-0 small">
+                                After selecting a customer, the cheque request form opens in a popup. Choose the appropriate category and accounts for the cheque book and fee payment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-warning rounded-circle p-2 me-3">3</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-warning mb-1">Status Management</h6>
+                            <p class="text-muted mb-0 small">
+                                Use the "View All Requests" tab to see all submissions. Actions like Approve, Reject, Review, and Mark as Delivered are available based on current status.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-info rounded-circle p-2 me-3">4</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-info mb-1">Notification Options</h6>
+                            <p class="text-muted mb-0 small">
+                                Configure notification preferences for customers and set up automatic renewal for recurring cheque book requests.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Guide -->
+            <div class="mt-4 pt-3 border-top">
+                <h6 class="text-primary mb-3">
+                    <i class="mdi mdi-progress-clock me-2"></i> Understanding Request Statuses
+                </h6>
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <span class="badge bg-warning text-dark me-2">Pending</span>
+                        <small class="text-muted">New request awaiting review</small>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <span class="badge bg-secondary me-2">Review</span>
+                        <small class="text-muted">Under additional verification</small>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <span class="badge bg-success me-2">Approved</span>
+                        <small class="text-muted">Ready for processing</small>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <span class="badge bg-danger me-2">Rejected</span>
+                        <small class="text-muted">Request declined</small>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <span class="badge bg-info me-2">Delivered</span>
+                        <small class="text-muted">Cheque book handed over</small>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </div>
 
 <!-- Action Buttons Card -->
+
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <a type="button" onclick="showDataTableSection()" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+        <!-- Use custom functions for better control -->
+        <a type="button" onclick="loadDataTable()" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
-        <a type="button" onclick="showSearchSection()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+
+        <a type="button" onclick="loadSearchForm()" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
             <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
         </a>
     </div>
 </div>
+
+@*<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a type="button" onclick=" LoadDataGen('ChequeRequest', 'dataTableSection', '_RequestDataTable', 0, 'requestFormSection', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'requestFormSection','_RequestDataTable','new','ChequeRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+    </div>
+</div>*@
 
 <!-- Main Content Area -->
 <div class="card shadow p-3 mb-4">
@@ -92,7 +217,7 @@
     <!-- Corrected Script Paths -->
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
-    <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>
+ @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
 
     <script>
         // Global section management functions
@@ -157,12 +282,404 @@
             });
         }
 
+             function loadDataTable() {
+            // Hide other sections
+            $('#searchSection').hide();
+            $('#emptyState').hide();
+
+            // Show and load data table section
+            $('#dataTableSection').show();
+
+            // Load the DataTable partial view
+            $.get('/ChequeRequest/InitializeData', {
+                partialView: '_RequestDataTable',
+                path: 'list'
+            }, function(html) {
+                $('#dataTableSection').html(html);
+
+                // Initialize DataTable after content is loaded
+                initializeDataTable();
+            });
+        }
+
+        function loadSearchForm() {
+            // Hide other sections
+            $('#dataTableSection').hide();
+            $('#emptyState').hide();
+
+            // Show search section
+            $('#searchSection').show();
+
+            // Reset search form
+            if (window.searchManager) {
+                window.searchManager.resetSearch();
+            }
+        }
+
+                function initializeDataTable() {
+                    // Wait a brief moment for the table to be rendered
+                    setTimeout(function() {
+                        if ($.fn.DataTable && $('#myDataTable').length) {
+                            // Destroy existing DataTable if it exists
+                            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                                $('#myDataTable').DataTable().destroy();
+                            }
+
+                            // Initialize new DataTable
+                            $('#myDataTable').DataTable({
+                                processing: true,
+                                serverSide: true,
+                                ajax: {
+                                    url: '/ChequeRequest/LoadRequestsForDataTable',
+                                    type: 'POST',
+                                    data: function(d) {
+                                        return {
+                                            query: {
+                                                Options: {
+                                                    draw: d.draw,
+                                                    start: d.start,
+                                                    pageSize: d.length,
+                                                    sortColumnName: d.columns[d.order[0]?.column]?.data,
+                                                    sortDirection: d.order[0]?.dir || 'asc'
+                                                },
+                                                CustomerFilter: $('#customerFilter')?.val() || '',
+                                                CategoryFilter: $('#categoryFilter')?.val() || '',
+                                                StatusFilter: $('#statusFilter')?.val() || ''
+                                            }
+                                        };
+                                    }
+                                },
+                                columns: [
+                                    { data: 'customerName', name: 'customerName' },
+                                    { data: 'categoryName', name: 'categoryName' },
+                                    {
+                                        data: 'requestDate',
+                                        name: 'requestDate',
+                                        render: function(data) {
+                                            return data ? new Date(data).toLocaleDateString() : 'N/A';
+                                        }
+                                    },
+                                    {
+                                        data: 'status',
+                                        name: 'status',
+                                        render: function(data) {
+                                            // Your status badge rendering logic
+                                            return data;
+                                        }
+                                    },
+                                    {
+                                        data: null,
+                                        orderable: false,
+                                        className: 'text-center',
+                                        render: function(data, type, row) {
+                                            // Your action buttons rendering logic
+                                            return '<div class="dropdown">...</div>';
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                    }, 100);
+        }
+
+             
+
+///*        function submitChequeRequestForm(form)*/ {
+//            // Validate form first
+//            if (!$(form).valid()) {
+//                return false;
+//            }
+
+//            const submitBtn = $(form).find('button[type="submit"]');
+//            const originalText = submitBtn.html();
+//            submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
+
+//            // Build FormData manually so we control checkbox values and avoid MVC duplicate hidden fields
+//            const formData = new FormData();
+
+//            // Add non-checkbox fields from serializeArray() (skips MVC's checkbox hidden duplicates)
+//            $(form).serializeArray().forEach(function (field) {
+//                if (!field.name.endsWith("_false")) {
+//                    formData.append(field.name, field.value);
+//                }
+//            });
+
+//            // Add checkboxes explicitly as "true"/"false"
+//            $(form).find('input[type="checkbox"]').each(function () {
+//                const checkbox = $(this);
+//                const isChecked = checkbox.is(':checked');
+//                const fieldName = checkbox.attr('name');
+
+//                // Ensure no previous value remains
+//                formData.delete(fieldName);
+//                formData.append(fieldName, isChecked.toString());
+//            });
+
+//            // Add file inputs (if any) with proper keys (keeps FormData semantics)
+//            $(form).find('input[type="file"]').each(function () {
+//                const input = this;
+//                const name = $(input).attr('name') || $(input).attr('id') || 'file';
+//                // If multiple files allowed, append each; otherwise append first file
+//                if (input.files && input.files.length) {
+//                    for (let i = 0; i < input.files.length; i++) {
+//                        // use name (for server it may be "files" or specific field name). If multiple, include index.
+//                        formData.append(name, input.files[i]);
+//                    }
+//                }
+//            });
+
+//            // Optional debug logging (comment out in production)
+//            console.log('Form Data (preview):');
+//            for (let [key, value] of formData.entries()) {
+//                // If value is a File show its name
+//                if (value instanceof File) {
+//                    console.log(`${key}: [File] ${value.name}`);
+//                } else {
+//                    console.log(`${key}: ${value}`);
+//                }
+//            }
+
+//            // Re-parse unobtrusive validation (if you rely on it)
+//            if ($.validator && $.validator.unobtrusive) {
+//                $.validator.unobtrusive.parse(form);
+//            }
+
+//            if (!$(form).valid()) {
+//                submitBtn.prop('disabled', false).html(originalText);
+//                return false;
+//            }
+
+//            // --- Build dynamic confirmation message ---
+//            // Helper to pick first existing key from an array of keys
+//            function pick(formData, keys) {
+//                for (let k of keys) {
+//                    if (formData.get(k) !== null && formData.get(k) !== undefined && formData.get(k) !== '') {
+//                        return formData.get(k);
+//                    }
+//                }
+//                return null;
+//            }
+
+//            const idValue = pick(formData, ['Id', 'id', 'RequestId', 'requestId']);
+//            const customerName = pick(formData, ['customerName', 'CustomerName', 'customer', 'customerId']);
+//            const customerId = pick(formData, ['customerId', 'CustomerId']);
+//            const branchId = pick(formData, ['branchId', 'BranchId', 'branch']);
+//            const note = pick(formData, ['requestNote', 'note', 'RequestNote']);
+//            const operation = idValue ? 'Update' : 'Create';
+
+//            // collect filenames if any files exist
+//            const fileNames = [];
+//            for (let [key, val] of formData.entries()) {
+//                if (val instanceof File) {
+//                    fileNames.push(val.name);
+//                }
+//            }
+
+//            // Build readable summary lines
+//            const summaryParts = [];
+//            summaryParts.push(`Action: ${operation}`);
+//            if (idValue) summaryParts.push(`Id: ${idValue}`);
+//            if (customerName && customerName !== customerId) summaryParts.push(`Customer: ${customerName}`);
+//            if (customerId) summaryParts.push(`Customer ID: ${customerId}`);
+//            if (branchId) summaryParts.push(`Branch: ${branchId}`);
+//            if (note) summaryParts.push(`Note: ${note}`);
+//            if (fileNames.length) summaryParts.push(`Files: ${fileNames.join(', ')}`);
+
+//            const summary = summaryParts.join('\n');
+
+//            const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Submission';
+//            const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
+
+//            // --- Show confirmation using alertify (styled) ---
+//            alertify.confirm(confirmTitle, confirmMessage,
+//                function () { // OK callback -> perform AJAX
+//                    const ajaxConfig = {
+//                        type: 'POST',
+//                        url: form.action,
+//                        data: formData,
+//                        success: function (response) {
+//                            console.log("Response:", response);
+
+//                            if (response && response.success) {
+//                                if (response.status === "Exist") {
+//                                    appalert(response.message, 3, 1);
+//                                } else if (response.status === "Failed") {
+//                                    appalert(response.message, 2, 1);
+//                                } else {
+//                                    appalert(response.message, 1, 1);
+//                                }
+
+//                                // Refresh logic (keeps behavior you already used)
+//                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
+//                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+//                                } else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+//                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+//                                } else if (response.reloadDataView === "Yes") {
+//                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+//                                }
+
+//                                // UI cleanup
+//                                $('#chequeRequestModal').modal('hide');
+//                                if (window.dataTableManager) {
+//                                    window.dataTableManager.refresh();
+//                                }
+//                                form.reset();
+//                            } else {
+//                                // Non-success response handling
+//                                if (response && (response.Status === "Exist" || response.status === "Exist")) {
+//                                    appalert(response.message, 3, 1);
+//                                } else {
+//                                    const msg = response && response.message ? response.message : 'Operation failed';
+//                                    appalert(msg, 2, 1);
+//                                }
+//                            }
+//                        },
+//                        error: function (err) {
+//                            console.error('AJAX Error:', err);
+//                            if (err && err.status === 401) {
+//                                window.location.href = '/Authentication/Login';
+//                            } else {
+//                                const text = err && err.statusText ? err.statusText : 'An error occurred';
+//                                appalert(text, 0, 1);
+//                            }
+//                        },
+//                        complete: function () {
+//                            // always restore the submit button
+//                            submitBtn.prop('disabled', false).html(originalText);
+//                        }
+//                    };
+
+//                    // If multipart/form-data (has files), tell jQuery not to process
+//                    if ($(form).attr('enctype') === "multipart/form-data" || fileNames.length > 0) {
+//                        ajaxConfig.contentType = false;
+//                        ajaxConfig.processData = false;
+//                    }
+
+//                    console.log('AJAX Config:', ajaxConfig);
+//                    $.ajax(ajaxConfig);
+//                },
+//                function () { // Cancel callback
+//                    submitBtn.prop('disabled', false).html(originalText);
+//                    appalert('Transaction cancelled', 3, 1);
+//                }
+//            ).set('labels', { ok: 'Yes', cancel: 'No' });
+
+//            return false;
+//        }
+
+    function submitChequeRequestForm(form) {
+    // Validate form first
+    if (!$(form).valid()) {
+        return false;
+    }
+
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
+
+    // Build FormData manually
+    const formData = new FormData();
+
+    // Add non-checkbox fields
+    $(form).serializeArray().forEach(function (field) {
+        if (!field.name.endsWith("_false")) {
+            formData.append(field.name, field.value);
+        }
+    });
+
+    // Add checkboxes explicitly
+    $(form).find('input[type="checkbox"]').each(function () {
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked');
+        const fieldName = checkbox.attr('name');
+        formData.delete(fieldName);
+        formData.append(fieldName, isChecked.toString());
+    });
+
+    // Build confirmation message
+    const idValue = formData.get('Id') || formData.get('id');
+    const customerName = formData.get('customerName') || 'Not specified';
+    const customerId = formData.get('customerId') || 'Not specified';
+    const operation = idValue ? 'Update' : 'Create';
+
+    const summaryParts = [];
+    summaryParts.push(`Action: ${operation}`);
+    if (idValue) summaryParts.push(`ID: ${idValue}`);
+    summaryParts.push(`Customer: ${customerName} (${customerId})`);
+
+    const summary = summaryParts.join('\n');
+    const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Cheque Book Request';
+    const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
+
+    // Show confirmation using alertify
+    alertify.confirm(confirmTitle, confirmMessage,
+        function () { // OK callback -> perform AJAX
+            const ajaxConfig = {
+                type: 'POST',
+                url: form.action,
+                data: formData,
+                contentType: false,  // CRITICAL: Add this
+                processData: false,  // CRITICAL: Add this
+                success: function (response) {
+                    console.log("Response:", response);
+
+                    if (response && response.success) {
+                        // Use the actual properties your controller returns
+                        const messageType = response.status === "Exist" ? 3 : 
+                                          response.status === "Failed" ? 2 : 1;
+                        
+                        appalert(response.message, messageType, 1);
+
+                        // Simple success handling
+                        $('#chequeRequestModal').modal('hide');
+                        
+                        if (window.dataTableManager) {
+                            window.dataTableManager.refresh();
+                        }
+                        
+                        form.reset();
+                        
+                    } else {
+                        // Handle failure
+                        const msg = response && response.message ? response.message : 'Operation failed';
+                        const msgType = response && response.status === "Exist" ? 3 : 2;
+                        appalert(msg, msgType, 1);
+                    }
+                },
+                error: function (err) {
+                    console.error('AJAX Error:', err);
+                    if (err && err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        const errorMsg = err.responseJSON && err.responseJSON.message ? 
+                                       err.responseJSON.message : 
+                                       (err.statusText || 'An error occurred');
+                        appalert(errorMsg, 4, 1);
+                    }
+                },
+                complete: function () {
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            };
+
+            console.log('AJAX Config:', ajaxConfig);
+            $.ajax(ajaxConfig);
+        },
+        function () { // Cancel callback
+            submitBtn.prop('disabled', false).html(originalText);
+            appalert('Transaction cancelled', 3, 1);
+        }
+    ).set('labels', { ok: 'Yes', cancel: 'No' });
+
+    return false;
+}
+
         $(document).ready(function() {
             // Initialize managers
             window.searchManager = new SearchManager();
             window.formManager = new FormManager();
             window.dataTableManager = new DataTableManager();
-
+            loadChequeRequests();
             // Show search section by default
             showSearchSection();
         });

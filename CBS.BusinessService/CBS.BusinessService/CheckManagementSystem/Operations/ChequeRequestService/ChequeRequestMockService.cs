@@ -6,29 +6,90 @@ using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService
 {
-
-
     public class ChequeRequestMockService : BaseService
     {
-        // Our in-memory "database" table for cheque requests. Static to persist across requests.
+        // Updated mock data with proper backend format
         private static readonly List<ChequeBookRequest> _mockRequests = new List<ChequeBookRequest>
-    {
-        new ChequeBookRequest { Id = "REQ001", customerName = "John Doe", categoryName = "Standard - 25", requestDate = DateTime.Now.AddDays(-2), status = "Pending" },
-        new ChequeBookRequest { Id = "REQ002", customerName = "Jane Smith", categoryName = "Business Gold - 100", requestDate = DateTime.Now.AddDays(-1), status = "Approved", approvalDate = DateTime.Now },
-        new ChequeBookRequest { Id = "REQ003", customerName = "Peter Jones", categoryName = "Standard - 25", requestDate = DateTime.Now.AddHours(-5), status = "Delivered" },
-        new ChequeBookRequest { Id = "REQ004", customerName = "Mary Williams", categoryName = "Standard - 25", requestDate = DateTime.Now.AddHours(-2), status = "Rejected" },
-        new ChequeBookRequest { Id = "REQ005", customerName = "David Miller", categoryName = "Standard - 25", requestDate = DateTime.Now.AddDays(-3), status = "Pending" }
-
-    };
+        {
+            new ChequeBookRequest
+            {
+                Id = "REQ001",
+                customerId = "CUST001",
+                customerName = "John Doe",
+                categoryId = "Category001",
+                categoryName = "Standard - 25",
+                requestDate = DateTime.Now.AddDays(-2),
+                status = "Pending",
+                checkBookAccount = "ACC001",
+                subscriptionPaymentAccount = "ACC002",
+                branchId = "BR001",
+                bankId = "BK001",
+                requestNote = "Initial request",
+                notifyOnRejection = true,
+                notifyOnAnyTransaction = false,
+                notifyOnClearance = true,
+                automaticRenewal = false,
+                numberofCheckBooks = 1,
+                numberOfPages = 25,
+                feeAmount = 25.00m,
+                transactionAmount = 0.00m
+            },
+            new ChequeBookRequest
+            {
+                Id = "REQ002",
+                customerId = "CUST002",
+                customerName = "Jane Smith",
+                categoryId = "Category002",
+                categoryName = "Business Gold - 100",
+                requestDate = DateTime.Now.AddDays(-1),
+                status = "Approved",
+                approvalDate = DateTime.Now,
+                checkBookAccount = "ACC003",
+                subscriptionPaymentAccount = "ACC004",
+                branchId = "BR001",
+                bankId = "BK001",
+                requestNote = "Business account",
+                notifyOnRejection = true,
+                notifyOnAnyTransaction = true,
+                notifyOnClearance = true,
+                automaticRenewal = true,
+                numberofCheckBooks = 1,
+                numberOfPages = 100,
+                feeAmount = 100.00m,
+                transactionAmount = 0.00m
+            },
+            new ChequeBookRequest
+            {
+                Id = "REQ003",
+                customerId = "CUST003",
+                customerName = "Peter Jones",
+                categoryId = "Category001",
+                categoryName = "Standard - 25",
+                requestDate = DateTime.Now.AddHours(-5),
+                status = "Delivered",
+                checkBookAccount = "ACC005",
+                subscriptionPaymentAccount = "ACC006",
+                branchId = "BR002",
+                bankId = "BK001",
+                requestNote = "Personal account",
+                notifyOnRejection = false,
+                notifyOnAnyTransaction = true,
+                notifyOnClearance = false,
+                automaticRenewal = false,
+                numberofCheckBooks = 1,
+                numberOfPages = 25,
+                feeAmount = 25.00m,
+                transactionAmount = 0.00m
+            }
+        };
 
         public Task<ExecutionMessages> CreateRequestAsync(ChequeBookRequest model)
         {
-            model.Id = "REQ" + new Random().Next(100, 999);
+            model.Id = "REQ" + (_mockRequests.Count + 1).ToString("D3");
             model.requestDate = DateTime.Now;
             model.status = "Pending";
             _mockRequests.Add(model);
@@ -38,8 +99,6 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
 
             return Task.FromResult(ExecutionMessage);
         }
-
-        // Inside your ChequeRequestService or ChequeRequestMockService
 
         public async Task<ExecutionMessages> UpdateRequestAsync(ChequeBookRequest model)
         {
@@ -51,7 +110,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
                 existingRequest.customerId = model.customerId;
                 existingRequest.categoryId = model.categoryId;
                 existingRequest.checkBookAccount = model.checkBookAccount;
-                existingRequest.subscriptionPaymentAccountId = model.subscriptionPaymentAccountId;
+                existingRequest.subscriptionPaymentAccount = model.subscriptionPaymentAccount;
                 existingRequest.requestNote = model.requestNote;
                 // ... update notification properties ...
 
@@ -79,9 +138,150 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             */
         }
 
+
+        public Task<CustomDataTable> GetRequestsForDataTableAsync(ChequeRequestQuery query)
+        {
+            // C# 7.3 friendly null-check (no ??=)
+            if (query == null) query = new ChequeRequestQuery();
+
+            int start = query.Options != null ? query.Options.start : 0;
+            int pageSize = (query.Options != null && query.Options.pageSize > 0) ? query.Options.pageSize : 10;
+
+            // Start with IQueryable (avoid typing to IOrderedQueryable to prevent assignment problems)
+            IQueryable<ChequeBookRequest> data = _mockRequests.AsQueryable();
+
+            // Default sort first (so recordsTotal counts the total set in a known order)
+            data = data.OrderByDescending(r => r.requestDate);
+
+            int recordsTotal = data.Count();
+
+            // -----------------------
+            // Filters
+            // -----------------------
+            if (!string.IsNullOrWhiteSpace(query.CustomerName))
+            {
+                var nameFilter = query.CustomerName.Trim();
+                data = data.Where(r => (r.customerName ?? "").IndexOf(nameFilter, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.CategoryName))
+            {
+                var cat = query.CategoryName.Trim();
+                data = data.Where(r => string.Equals(r.categoryName ?? "", cat, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                var st = query.Status.Trim();
+                data = data.Where(r => string.Equals(r.status ?? "", st, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.BranchId))
+            {
+                var bid = query.BranchId.Trim();
+                data = data.Where(r => string.Equals(r.branchId ?? "", bid, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.BankId))
+            {
+                var bk = query.BankId.Trim();
+                data = data.Where(r => string.Equals(r.bankId ?? "", bk, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (query.StartDate.HasValue)
+            {
+                var s = query.StartDate.Value;
+                data = data.Where(r => r.requestDate >= s);
+            }
+
+            if (query.EndDate.HasValue)
+            {
+                var e = query.EndDate.Value;
+                data = data.Where(r => r.requestDate <= e);
+            }
+
+            if (query.NotifyOnRejection.HasValue)
+                data = data.Where(r => r.notifyOnRejection == query.NotifyOnRejection.Value);
+
+            if (query.AutomaticRenewal.HasValue)
+                data = data.Where(r => r.automaticRenewal == query.AutomaticRenewal.Value);
+
+            if (query.NotifyOnAnyTransaction.HasValue)
+                data = data.Where(r => r.notifyOnAnyTransaction == query.NotifyOnAnyTransaction.Value);
+
+            if (query.NotifyOnClearance.HasValue)
+                data = data.Where(r => r.notifyOnClearance == query.NotifyOnClearance.Value);
+
+            int recordsFiltered = data.Count();
+
+            // -----------------------
+            // Sorting - use IOrderedQueryable locally to avoid type issues
+            // -----------------------
+            IOrderedQueryable<ChequeBookRequest> ordered = null;
+
+            if (query.Options != null && !string.IsNullOrWhiteSpace(query.Options.sortColumnName))
+            {
+                bool asc = string.Equals(query.Options.sortDirection, "asc", StringComparison.OrdinalIgnoreCase);
+                switch (query.Options.sortColumnName.Trim().ToLower())
+                {
+                    case "customername":
+                        ordered = asc ? data.OrderBy(r => r.customerName) : data.OrderByDescending(r => r.customerName);
+                        break;
+                    case "categoryname":
+                        ordered = asc ? data.OrderBy(r => r.categoryName) : data.OrderByDescending(r => r.categoryName);
+                        break;
+                    case "requestdate":
+                        ordered = asc ? data.OrderBy(r => r.requestDate) : data.OrderByDescending(r => r.requestDate);
+                        break;
+                    case "status":
+                        ordered = asc ? data.OrderBy(r => r.status) : data.OrderByDescending(r => r.status);
+                        break;
+                    default:
+                        ordered = data.OrderByDescending(r => r.requestDate);
+                        break;
+                }
+            }
+
+            // If no explicit ordered was created, apply default ordering
+            var finalQuery = (ordered != null) ? (IQueryable<ChequeBookRequest>)ordered : data.OrderByDescending(r => r.requestDate);
+
+            // -----------------------
+            // Pagination
+            // -----------------------
+            var paged = finalQuery.Skip(start).Take(pageSize).ToList();
+
+            // -----------------------
+            // draw handling - query.Options.draw might be string or int depending on your DTO
+            // Ensure we return an int draw
+            // -----------------------
+            int draw = 1;
+            if (query?.Options != null)
+            {
+                // Try to parse safely whether draw is int or string
+                object rawDraw = query.Options.draw as object;
+                if (rawDraw != null)
+                {
+                    int parsed;
+                    if (rawDraw is int) draw = (int)rawDraw;
+                    else if (int.TryParse(rawDraw.ToString(), out parsed)) draw = parsed;
+                }
+            }
+
+            var result = new CustomDataTable
+            {
+                draw = draw,
+                recordsTotal = recordsTotal,
+                recordsFiltered = recordsFiltered,
+                data = paged
+            };
+
+            return Task.FromResult(result);
+        }
+
+
+
         public Task<List<ChequeBookRequest>> GetAllRequestsAsync()
         {
-            // Return a copy of the list, ordered by most recent
             return Task.FromResult(_mockRequests.OrderByDescending(r => r.requestDate).ToList());
         }
 
@@ -116,7 +316,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             if (request != null && request.status == "Pending")
             {
                 request.status = "Rejected";
-                request.approvalNote = rejectionNote; // Using same field for simplicity
+                request.approvalNote = rejectionNote;
                 GetExecutionMessages(null, true, "Rejection", MessagesResults.Success,
                     ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Request rejected successfully.");
             }
@@ -128,15 +328,15 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             return Task.FromResult(ExecutionMessage);
         }
 
-        public Task<ExecutionMessages> ReviewRequestAsync(string requestId, string rejectionNote)
+        public Task<ExecutionMessages> ReviewRequestAsync(string requestId, string reviewNote)
         {
             var request = _mockRequests.FirstOrDefault(r => r.Id == requestId);
             if (request != null && request.status == "Pending")
             {
                 request.status = "Reviewed";
-                request.approvalNote = rejectionNote; // Using same field for simplicity
+                request.approvalNote = reviewNote;
                 GetExecutionMessages(null, true, "Reviewed", MessagesResults.Success,
-                    ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Request rejected successfully.");
+                    ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Request reviewed successfully.");
             }
             else
             {
@@ -146,97 +346,22 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             return Task.FromResult(ExecutionMessage);
         }
 
-        // New mock method for "Delivered"
         public Task<ExecutionMessages> MarkAsDeliveredAsync(string requestId, string deliveryNote)
         {
             var request = _mockRequests.FirstOrDefault(r => r.Id == requestId);
             if (request != null && request.status == "Approved")
             {
                 request.status = "Delivered";
-                GetExecutionMessages(null, true, "Delivery", MessagesResults.Success, ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Cheque book marked as delivered.");
+                request.approvalNote = deliveryNote;
+                GetExecutionMessages(null, true, "Delivery", MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, MessagesResults.Success.ToString(), null, "Cheque book marked as delivered.");
             }
             else
             {
-                GetExecutionMessages(null, false, "Delivery", MessagesResults.Failed, ExecutionProcessOption.UpdateUpject, MessagesResults.Failed.ToString(), null, "Request is not in an approved state.");
+                GetExecutionMessages(null, false, "Delivery", MessagesResults.Failed,
+                    ExecutionProcessOption.UpdateUpject, MessagesResults.Failed.ToString(), null, "Request is not in an approved state.");
             }
             return Task.FromResult(ExecutionMessage);
         }
-
-        public Task<CustomDataTable> GetRequestsForDataTableAsync(ChequeRequestQuery query)
-        {
-            // Start with the full, unfiltered list of mock data.
-            IEnumerable<ChequeBookRequest> filteredData = _mockRequests;
-
-            int recordsTotal = _mockRequests.Count;
-
-            // --- 1. SIMULATE FILTERING ---
-            // Apply each filter from the query object if it has a value.
-
-            // Filter by Customer Name (case-insensitive search)
-            if (!string.IsNullOrWhiteSpace(query.CustomerFilter))
-            {
-                filteredData = filteredData.Where(r =>
-                    r.customerName.IndexOf(query.CustomerFilter, StringComparison.OrdinalIgnoreCase) >= 0
-                );
-            }
-
-            // Filter by Category
-            if (!string.IsNullOrWhiteSpace(query.CategoryFilter))
-            {
-                filteredData = filteredData.Where(r => r.categoryName == query.CategoryFilter);
-            }
-
-            // Filter by Status
-            if (!string.IsNullOrWhiteSpace(query.StatusFilter))
-            {
-                filteredData = filteredData.Where(r =>
-                    r.status.Equals(query.StatusFilter, StringComparison.OrdinalIgnoreCase)
-                );
-            }
-
-            int recordsFiltered = filteredData.Count();
-
-            // --- 2. SIMULATE SORTING ---
-            // Apply sorting based on the column name and direction from the DataTable.
-            if (query.Options != null && !string.IsNullOrEmpty(query.Options.sortColumnName))
-            {
-                bool isAscending = query.Options.sortDirection?.ToLower() == "asc";
-
-                switch (query.Options.sortColumnName)
-                {
-                    case "CustomerName":
-                        filteredData = isAscending ? filteredData.OrderBy(r => r.customerName) : filteredData.OrderByDescending(r => r.customerName);
-                        break;
-                    case "CategoryName":
-                        filteredData = isAscending ? filteredData.OrderBy(r => r.categoryName) : filteredData.OrderByDescending(r => r.categoryName);
-                        break;
-                    case "RequestDate":
-                        filteredData = isAscending ? filteredData.OrderBy(r => r.requestDate) : filteredData.OrderByDescending(r => r.requestDate);
-                        break;
-                        // Add other sortable columns here if needed
-                }
-            }
-
-            // --- 3. SIMULATE PAGINATION ---
-            // Apply Skip() and Take() to get only the data for the current page.
-            if (query.Options != null)
-            {
-                filteredData = filteredData.Skip(query.Options.start).Take(query.Options.pageSize);
-            }
-
-            // --- 4. ASSEMBLE THE FINAL RESPONSE ---
-            // Create the CustomDataTable object that the controller expects.
-            var dataTable = new CustomDataTable
-            {
-               // draw = query.Options?.draw ?? "0",
-                draw = Convert.ToInt32(query.Options.draw),
-                recordsTotal = recordsTotal,
-                recordsFiltered = recordsFiltered,
-                data = filteredData.ToList() // The final, paged, and sorted data
-            };
-
-            return Task.FromResult(dataTable);
-        }
-
     }
 }

@@ -1,0 +1,181 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@{
+    ViewBag.FormContext = "OtherCashIn";
+    ViewBag.Title = "Other Cash-In Operations";
+}
+@Html.Partial("_OtherCashTransactionsPage", Model)
+<!-- 🔷 Scripts -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        // Ensure namespace exists once
+        window.Allocations = (function () {
+            // ----- helpers -----
+            function getOptionsHtml() {
+                const tpl = document.getElementById('accountIdOptionsTemplate');
+                let html = tpl ? tpl.innerHTML : '';
+                // always include an empty option (placeholder + allowClear)
+                if (!/value\s*=\s*""/.test(html)) html = '<option value=""></option>' + html;
+                return html;
+            }
+
+            function initSelect2(context) {
+                if (!(window.$ && $.fn.select2)) {
+                    console.error('Select2 is not loaded');
+                    return;
+                }
+                $(context).find('.accountid-select').each(function () {
+                    const $select = $(this);
+
+                    // Skip if already initialized
+                    if ($select.hasClass('select2-hidden-accessible')) return;
+
+                    // Constrain dropdown to the cell
+                    const $parent = $select.closest('.alloc-cell');
+                    $select.select2({
+                        width: 'resolve',
+                        dropdownAutoWidth: false,
+                        dropdownParent: $parent.length ? $parent : $(document.body),
+                        placeholder: 'Select Account',
+                        allowClear: true
+                    });
+
+                    // start unselected so placeholder is visible
+                    $select.val(null).trigger('change');
+                });
+
+                // grow any textareas within the scope
+                $(context).find('.autosize').each(function () { autosize(this); });
+            }
+
+            // Auto-grow textareas
+            function autosize(el) {
+                el.style.height = 'auto';
+                el.style.height = el.scrollHeight + 'px';
+            }
+            $(function () {
+                Allocations.initSelect2('#myDataTableT'); // rebind for current rows
+            });
+
+            // ----- row ops -----
+            function addRow() {
+                const tbody = document.querySelector('#myDataTableT tbody');
+                if (!tbody) return;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                          <td>
+                            <div class="alloc-cell">
+                              <select class="form-control accountid-select">
+                                ${getOptionsHtml()}
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <textarea class="form-control alloc-note autosize" rows="1" placeholder="Narration…"></textarea>
+                          </td>
+                          <td class="text-end">
+                            <input type="number" class="form-control text-end alloc-amount" min="0" step="0.01" value="0" />
+                          </td>
+                          <td class="text-center">
+                            <input type="checkbox" class="form-check-input alloc-check" />
+                          </td>
+                          <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row">
+                              <i class="mdi mdi-delete"></i>
+                            </button>
+                          </td>
+                        `;
+                tbody.appendChild(tr);
+
+                initSelect2(tr);                          // init the new select
+                $(tr).find('.autosize').each(function () { autosize(this); }); // grow the new textarea
+            }
+
+            function removeRow(btn) {
+                const row = btn.closest('tr');
+                const tbody = row && row.parentElement;
+                if (!tbody) return;
+
+                if (tbody.querySelectorAll('tr').length > 1) {
+                    row.remove();
+                } else {
+                    // reset the single remaining row instead of removing it
+                    const sel = row.querySelector('.accountid-select');
+                    if (sel) {
+                        if ($ && $.fn.select2 && $(sel).data('select2')) $(sel).val(null).trigger('change');
+                        else sel.value = '';
+                    }
+                    row.querySelector('.alloc-note').value = '';
+                    row.querySelector('.alloc-amount').value = '0';
+                    row.querySelector('.alloc-check').checked = false;
+                }
+                recalc();
+            }
+
+            // ----- totals + serialization -----
+            function recalc() {
+                let total = 0;
+                document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                    if (tr.querySelector('.alloc-check')?.checked) {
+                        const v = parseFloat(tr.querySelector('.alloc-amount')?.value || '0');
+                        if (!isNaN(v)) total += v;
+                    }
+                });
+
+                const totalEl = document.getElementById('tableTotal');
+                if (totalEl) totalEl.textContent = total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                const notesTotal = parseFloat(document.getElementById('totalNoteAmount')?.value || '0') || 0;
+                const diff = notesTotal - total;
+                const balEl = document.getElementById('tableBalance');
+                if (balEl) balEl.textContent = diff.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            function serialize() {
+                const list = [];
+                document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                    if (!tr.querySelector('.alloc-check')?.checked) return;
+                    const accountId = tr.querySelector('.accountid-select')?.value || '';
+                    const amount = parseFloat(tr.querySelector('.alloc-amount')?.value || '0') || 0;
+                    const note = (tr.querySelector('.alloc-note')?.value || '').trim();
+                    if (accountId && amount > 0) {
+                        list.push({ AccountId: accountId, Amount: amount, Naration: note });
+                    }
+                });
+                const hidden = document.getElementById('AccountAmountCollectionsJson');
+                if (hidden) hidden.value = JSON.stringify(list);
+                return list;
+            }
+
+            // ----- delegated events (work for dynamic rows) -----
+            $(document).on('click', '#btnAddAllocRow', addRow);
+            $(document).on('click', '#myDataTableT .btn-remove-row', function () { removeRow(this); });
+            $(document).on('input', '#myDataTableT .alloc-amount', recalc);
+            $(document).on('change', '#myDataTableT .alloc-check', recalc);
+            $(document).on('change input', '#totalNoteAmount', recalc);
+            $(document).on('input', '.autosize', function () { autosize(this); });
+
+            // expose API
+            return { addRow, removeRow, recalc, serialize, initSelect2 };
+        })();
+
+        // Initialize when the partial is present
+        $(function () {
+            if (window.Allocations) {
+                Allocations.initSelect2(document);    // initialize initial row(s)
+                Allocations.recalc();                 // compute initial totals
+                // ensure existing textareas are sized
+                $('.autosize').each(function () {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            }
+        });
+
+
+    </script>
+
+    <script src="~/Scripts/Js/Crud/CashDesk/OtherTransactions.js"></script>
+}

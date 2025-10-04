@@ -1,0 +1,59 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckbookDetailDto
+
+@if (Model?.CheckLeaves != null && Model.CheckLeaves.Any())
+{
+    <div class="card">
+        <div class="card-header bg-light py-2">
+            <h6 class="mb-0">
+                <i class="mdi mdi-book-open-page-variant me-2"></i>
+                Check Leaves for Checkbook: @Model.CheckBookId
+            </h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Check Leaf ID</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var leaf in Model.CheckLeaves)
+                        {
+                            <tr>
+                                <td>@leaf.CheckLeafId</td>
+                                <td>
+                                    @{
+                                        var leafStatusClass = leaf.Status.ToLower() == "used" ? "bg-label-success" :
+                                                            leaf.Status.ToLower() == "available" ? "bg-label-primary" :
+                                                            leaf.Status.ToLower() == "lost" ? "bg-label-danger" : "bg-label-warning";
+                                    }
+                                    <span class="badge @leafStatusClass">@leaf.Status</span>
+                                </td>
+                                <td>
+                                    <div class="demo-inline-spacing">
+                                        <a href="@Url.Action("RequestLossForCheckLeaf", "LossManagement", new { checkLeafId = leaf.CheckLeafId })"
+                                           class="btn btn-xs btn-label-warning"
+                                           data-bs-toggle="tooltip"
+                                           title="Report Loss for this Check Leaf">
+                                            <span class="tf-icons mdi mdi-alert-outline me-1"></span>Request Loss
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info m-3">
+        <i class="mdi mdi-information-outline me-2"></i>
+        No check leaves found for this checkbook.
+    </div>
+}

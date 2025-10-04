@@ -1,0 +1,832 @@
+﻿@{
+    ViewBag.Title = "Processed Salary Overview";
+}
+<style>
+
+    /* Force status column to shrink */
+    table.dataTable td.status-col {
+        white-space: nowrap;
+        width: 1%;
+    }
+    /* Make collapse sections reflow instead of overlaying during animation */
+    #filterRoot .collapsing {
+        height: auto !important;
+        overflow: visible !important;
+        transition: none !important; /* kill the height animation */
+    }
+
+    #filterRoot .collapse {
+        display: none;
+    }
+
+        #filterRoot .collapse.show {
+            display: block;
+            height: auto !important;
+            overflow: visible !important;
+            margin-bottom: .75rem; /* give each open section some breathing room */
+        }
+
+    /* Keep Select2 inputs full-width and above neighbors */
+    #filterRoot .select2 {
+        width: 100% !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-1">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Processed Salary
+                </h1>
+                <p class="card-text">
+                    Review executed salary entries, filter by branch, operators, member, status, date, and temporary pay-code state.
+                </p>
+                <p class="card-text text-black fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to refine results, then Apply or Export.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for filtering processed salary</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-2">
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> Focus on a specific branch.</li>
+                <li><i class="mdi mdi-account-cash text-success me-2"></i><strong>Uploaded/Executed by:</strong> Filter by who uploaded or executed.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Dates:</strong> Start/End are inclusive.</li>
+                <li><i class="mdi mdi-account-search text-warning me-2"></i><strong>Member:</strong> Filter by Member Ref/Name or show non-members only.</li>
+                <li><i class="mdi mdi-timer-sand-complete text-secondary me-2"></i><strong>Temp Pay Code:</strong> Show entries with an active TempPayCode or without one (mutually exclusive).</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Status:</strong> Paid vs Pending.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-1">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Advanced Filters
+    </h5>
+
+    <!-- Root wrapper improves Select2 dropdown positioning -->
+    <div id="filterRoot" class="card p-3 mb-3 bg-light position-relative">
+
+        <!-- Toggles -->
+        <div class="row g-3 mb-1">
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2"
+                           id="byBranch" data-bs-toggle="collapse" data-bs-target="#branchFilterSection"
+                           aria-controls="branchFilterSection" />
+                    <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2"
+                           id="byOperators" data-bs-toggle="collapse" data-bs-target="#operatorsFilterSection"
+                           aria-controls="operatorsFilterSection" />
+                    <label class="form-check-label fw-bold" for="byOperators">Filter by Uploaded/Executed By</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-check m-0 d-flex align-items-center h-100">
+                    <input type="checkbox" class="form-check-input me-2"
+                           id="byDate" data-bs-toggle="collapse" data-bs-target="#dateRangeSection"
+                           aria-controls="dateRangeSection" />
+                    <label class="form-check-label fw-bold" for="byDate">Filter by Date Range</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch -->
+        <div id="branchFilterSection" class="collapse mb-1">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label fw-bold">Select Branch</label>
+                    @Html.DropDownList(
+                      "branchInput",
+                      new SelectList(ViewBag.Branches, "Id", "Name"),
+                      "--- Select Branch ---",
+                      new { @class = "form-select select2", id = "branchInput" }
+                    )
+                </div>
+            </div>
+        </div>
+
+        <!-- Operators -->
+        <div id="operatorsFilterSection" class="collapse mb-1">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Uploaded by</label>
+                    @if (ViewBag.Users != null)
+                    {
+                        @Html.DropDownList(
+                          "uploadedByInput",
+                          new SelectList(ViewBag.Users, "Value", "Text"),   // Value then Text
+                          "--- Any ---",
+                          new { @class = "form-select select2", id = "uploadedBy" }
+                        )
+                    }
+                    else
+                    {
+                        <input type="text" id="uploadedBy" class="form-control" placeholder="Uploader username or ID" />
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Executed by</label>
+                    @if (ViewBag.Users != null)
+                    {
+                        @Html.DropDownList(
+                          "executedByInput",
+                          new SelectList(ViewBag.Users, "Value", "Text"),
+                          "--- Any ---",
+                          new { @class = "form-select select2", id = "executedBy" }
+                        )
+                    }
+                    else
+                    {
+                        <input type="text" id="executedBy" class="form-control" placeholder="Executor username or ID" />
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Dates -->
+        <div id="dateRangeSection" class="collapse mb-1">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Start date (inclusive)</label>
+                    <input type="date" id="startDate" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">End date (inclusive)</label>
+                    <input type="date" id="endDate" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Member / TempPayCode / Status -->
+        <div id="memberCodeStatusBlock" class="mb-1">
+            <div class="row g-3 align-items-center mb-2">
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="withActiveCodeOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="withActiveCodeOnly">With Active TempPayCode only</label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="nonMembersOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="nonMembersOnly">Non-members only</label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="form-check m-0 d-flex align-items-center">
+                        <input type="checkbox" id="withoutActiveCodeOnly" class="form-check-input me-2" />
+                        <label class="form-check-label fw-bold" for="withoutActiveCodeOnly">Without Active TempPayCode only</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="memberReference" class="form-control" placeholder="e.g., MEM000123" />
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Member Name</label>
+                    <input type="text" id="memberName" class="form-control" placeholder="Search by member name" />
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-bold">Status</label>
+                    @if (ViewBag.StatusOptions != null)
+                    {
+                        @Html.DropDownList(
+                          "status",
+                          (IEnumerable<SelectListItem>)ViewBag.StatusOptions,
+                          new { @class = "form-select", id = "status" }
+                        )
+                    }
+                    else
+                    {
+                        <select id="status" class="form-select">
+                            <option value="">All</option>
+                            <option value="true">Salary Paid</option>
+                            <option value="false">Pending</option>
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify"></i> Apply Filter
+            </button>
+            <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                <i class="mdi mdi-refresh"></i> Reset
+            </button>
+            <button id="exportBtn" type="button" class="btn btn-success w-100">
+                <i class="mdi mdi-file-export"></i> Export
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+@Html.Partial("_modal")
+
+<!-- DataTable Partial -->
+<div id="processedSalaryTableView">
+    @Html.Partial("_ProcessedSalaryDataTable")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            const MODAL_BODY = '#salaryDetailBody';
+
+            // ------- helpers -------
+            function populateDropdown($dd, data, placeholder) {
+                $dd.empty().append($('<option>').val('').text(placeholder));
+                (data || []).forEach(item => $dd.append($('<option>').val(item.Id).text(item.Name)));
+                $dd.trigger('change');
+            }
+            function resetDropdowns($list) {
+                $list.each(function () {
+                    const $dd = $(this);
+                    $dd.empty().append('<option value="">---Select---</option>').trigger('change');
+                });
+            }
+            function setLoading($dd) {
+                $dd.empty().append('<option>Loading...</option>').trigger('change');
+            }
+
+            // Country → Regions
+            $(document).off('change.country', `${MODAL_BODY} #nmCountry`).on('change.country', `${MODAL_BODY} #nmCountry`, function () {
+                const $form = $(this).closest('form');
+                const countryId = $(this).val();
+                const $region = $form.find('#nmRegion');
+                const $division = $form.find('#nmDivision');
+                const $subDiv = $form.find('#nmSubDivision');
+                const $town = $form.find('#nmTown');
+
+                resetDropdowns($region.add($division).add($subDiv).add($town));
+                if (!countryId) return;
+
+                setLoading($region);
+                $.getJSON('/Individual/GetRegionsByCountry', { countryId })
+                    .done(data => populateDropdown($region, data, '--- Select Region ---'))
+                    .fail(() => populateDropdown($region, [], 'Error loading regions'));
+            });
+
+            // Region → Divisions
+            $(document).off('change.region', `${MODAL_BODY} #nmRegion`).on('change.region', `${MODAL_BODY} #nmRegion`, function () {
+                const $form = $(this).closest('form');
+                const regionId = $(this).val();
+                const $division = $form.find('#nmDivision');
+                const $subDiv = $form.find('#nmSubDivision');
+                const $town = $form.find('#nmTown');
+
+                resetDropdowns($division.add($subDiv).add($town));
+                if (!regionId) return;
+
+                setLoading($division);
+                $.getJSON('/Individual/GetDivisionsByRegion', { regionId })
+                    .done(data => populateDropdown($division, data, '--- Select Division ---'))
+                    .fail(() => populateDropdown($division, [], 'Error loading divisions'));
+            });
+
+            // Division → SubDivisions
+            $(document).off('change.division', `${MODAL_BODY} #nmDivision`).on('change.division', `${MODAL_BODY} #nmDivision`, function () {
+                const $form = $(this).closest('form');
+                const divisionId = $(this).val();
+                const $subDiv = $form.find('#nmSubDivision');
+                const $town = $form.find('#nmTown');
+
+                resetDropdowns($subDiv.add($town));
+                if (!divisionId) return;
+
+                setLoading($subDiv);
+                $.getJSON('/Individual/GetSubDivisionsByDivision', { divisionId })
+                    .done(data => populateDropdown($subDiv, data, '--- Select Sub-Division ---'))
+                    .fail(() => populateDropdown($subDiv, [], 'Error loading sub-divisions'));
+            });
+
+            // SubDivision → Towns
+            $(document).off('change.subdivision', `${MODAL_BODY} #nmSubDivision`).on('change.subdivision', `${MODAL_BODY} #nmSubDivision`, function () {
+                const $form = $(this).closest('form');
+                const subDivisionId = $(this).val();
+                const $town = $form.find('#nmTown');
+
+                resetDropdowns($town);
+                if (!subDivisionId) return;
+
+                setLoading($town);
+                $.getJSON('/Individual/GetTownsBySubDivision', { subDivisionId })
+                    .done(data => populateDropdown($town, data, '--- Select Town ---'))
+                    .fail(() => populateDropdown($town, [], 'Error loading towns'));
+            });
+
+            // Optional auto-cascade
+            function autoCascade($form) {
+                const $country = $form.find('#nmCountry');
+                const $region = $form.find('#nmRegion');
+                const $division = $form.find('#nmDivision');
+                const $subDiv = $form.find('#nmSubDivision');
+                const $town = $form.find('#nmTown');
+
+                if ($country.val()) {
+                    $country.trigger('change');
+
+                    const trySelect = ($dd, val) => {
+                        if (!val) return;
+                        const applyVal = () => {
+                            if ($dd.find(`option[value="${val}"]`).length) $dd.val(val).trigger('change');
+                            else setTimeout(applyVal, 150);
+                        };
+                        applyVal();
+                    };
+
+                    setTimeout(() => trySelect($region, $region.data('selected') || $region.val()), 200);
+                    setTimeout(() => trySelect($division, $division.data('selected') || $division.val()), 400);
+                    setTimeout(() => trySelect($subDiv, $subDiv.data('selected') || $subDiv.val()), 600);
+                    setTimeout(() => trySelect($town, $town.data('selected') || $town.val()), 800);
+                }
+            }
+
+            $(document).off('ready.nm init.nm').on('ready.nm init.nm', function () {
+                const $form = $(`${MODAL_BODY} #nmForm`);
+                if ($form.length) autoCascade($form);
+            });
+
+            $(document).trigger('init.nm');
+        })();
+    </script>
+
+    <script>
+        // ======= Non-member Register / Activate + Revoke (delegated, modal-safe) =======
+        (function () {
+            const MODAL_BODY = '#salaryDetailBody';
+            const MODAL_ID = '#salaryDetailModal';
+
+            // ---- small helpers ----
+            const money = n => { try { return Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }); } catch (_) { return n; } };
+            const tokenHeader = ($form) => {
+                const t = $form.find('input[name="__RequestVerificationToken"]').val();
+                return t ? { 'RequestVerificationToken': t } : {};
+            };
+            const busyBtn = ($btn, on) => {
+                const $spin = $btn.find('.spinner-border');
+                const $txt = $btn.find('.btn-text');
+                $btn.prop('disabled', on);
+                if ($spin.length) $spin.toggleClass('d-none', !on);
+                if ($txt.length) $txt.toggleClass('opacity-50', on);
+            };
+            const modalAlert = (type, html) => {
+                const $a = $('#nmAlert');
+                if (!$a.length) return;
+                $a.removeClass('d-none alert-success alert-danger alert-warning')
+                    .addClass('alert alert-' + type).html(html);
+            };
+            const clearModalAlert = () => $('#nmAlert').addClass('d-none').empty();
+
+            // helper: read SELECT text (fallback to raw value for INPUTs)
+            const readFieldText = ($form, name) => {
+                const $el = $form.find(`[name="${name}"]`);
+                if (!$el.length) return '';
+                if ($el.is('select')) {
+                    const t = ($el.find('option:selected').text() || '').trim();
+                    // If placeholder-like text selected, show nothing
+                    return t && !/^---\s*select/i.test(t) ? t : ($el.val() || '');
+                }
+                return $el.val() || '';
+            };
+
+            // =================================================================================
+            // REGISTER / ACTIVATE SUBMIT (delegated) - FIXED to show TempPayCodeResultDto
+            // =================================================================================
+            $(document)
+                .off('submit.nm', `${MODAL_BODY} #nmForm`)
+                .on('submit.nm', `${MODAL_BODY} #nmForm`, function (e) {
+                    e.preventDefault();
+                    clearModalAlert();
+
+                    const $form = $(this);
+                    const $btn = $form.find('#nmSubmit');
+
+                    // Build readable summary for confirm dialog (unchanged from yours)
+                    const payload = $form.serializeArray().reduce((o, x) => (o[x.name] = x.value, o), {});
+                    const fullName = `${payload['Kyc.FirstName'] || ''} ${payload['Kyc.LastName'] || ''}`.trim() || '—';
+
+                    const readFieldText = (name) => {
+                        const $el = $form.find(`[name="${name}"]`);
+                        if (!$el.length) return '';
+                        if ($el.is('select')) {
+                            const t = ($el.find('option:selected').text() || '').trim();
+                            return t && !/^---\s*select/i.test(t) ? t : ($el.val() || '');
+                        }
+                        return $el.val() || '';
+                    };
+
+                    const country = readFieldText('Kyc.CountryId');
+                    const region = readFieldText('Kyc.RegionId');
+                    const division = readFieldText('Kyc.DivisionId');
+                    const subDiv = readFieldText('Kyc.SubDivisionId');
+                    const town = readFieldText('Kyc.TownId');
+                    const language = readFieldText('Kyc.Language');
+
+                    const confirmHtml = `
+                  <div style="text-align:left;">
+                    <div style="border-left:4px solid #0d6efd; background:#eef6ff; padding:10px 12px; margin-bottom:10px;">
+                      <strong>Confirm Non-Member Activation</strong><br/>
+                      A TempPayCode will be generated and communicated to the beneficiary.
+                    </div>
+
+                    <div class="mb-2"><strong>SalaryExtract Id:</strong> <span class="mono">${payload['SalaryExtractId'] || '—'}</span></div>
+
+                    <div class="row g-2">
+                      <div class="col-6"><strong>Name:</strong> ${fullName}</div>
+                      <div class="col-6"><strong>Phone:</strong> ${payload['Kyc.Phone'] || '—'}</div>
+                      <div class="col-6"><strong>CNI/ID:</strong> ${payload['Kyc.CNI'] || '—'}</div>
+                      <div class="col-6"><strong>DOB:</strong> ${payload['Kyc.DOB'] || '—'}</div>
+                      <div class="col-6"><strong>Issued:</strong> ${payload['Kyc.IssuedDate'] || '—'}</div>
+                      <div class="col-6"><strong>Expiry:</strong> ${payload['Kyc.ExpiryDate'] || '—'}</div>
+                      <div class="col-12"><strong>Address:</strong> ${payload['Kyc.Address'] || '—'}</div>
+                      <div class="col-6"><strong>Place of Issue:</strong> ${payload['Kyc.PlaceOfIssued'] || '—'}</div>
+                      <div class="col-6"><strong>Place of Birth:</strong> ${payload['Kyc.PlaceOfBirth'] || '—'}</div>
+
+                      <div class="col-6"><strong>Country:</strong> ${country || '—'}</div>
+                      <div class="col-6"><strong>Region:</strong> ${region || '—'}</div>
+                      <div class="col-6"><strong>Division:</strong> ${division || '—'}</div>
+                      <div class="col-6"><strong>Sub-Division:</strong> ${subDiv || '—'}</div>
+                      <div class="col-6"><strong>Town:</strong> ${town || '—'}</div>
+                      <div class="col-6"><strong>Language:</strong> ${language || '—'}</div>
+
+                      <div class="col-6"><strong>Branch:</strong> ${(payload['Kyc.BranchCode'] || '')} / ${(payload['Kyc.BranchId'] || '')}</div>
+                      <div class="col-6"><strong>TempPayCode Expires (UTC):</strong> ${payload['ExpiresAt'] || '(server default: now + 48h UTC)'}</div>
+                    </div>
+
+                    <hr/>
+                    <div id="ackNmWrapper" class="form-check">
+                      <input class="form-check-input" type="checkbox" id="ackNm">
+                      <label class="form-check-label" for="ackNm">I confirm the KYC information is correct and I want to generate a TempPayCode.</label>
+                      <div id="ackNmError" class="text-danger small d-none">Please confirm to proceed.</div>
+                    </div>
+                  </div>`;
+
+                    const dlg = alertify
+                        .confirm("Final Confirmation – Activate Non-Member", confirmHtml, null, null)
+                        .set({ labels: { ok: 'Generate', cancel: 'Back' }, transition: 'zoom', closable: false });
+
+                    dlg.set('onok', function (ev) {
+                        const ok = $('#ackNm').is(':checked');
+                        if (!ok) {
+                            ev.cancel = true;
+                            $('#ackNmError').removeClass('d-none');
+                            $('#ackNmWrapper').addClass('border border-danger rounded-2 p-2');
+                            $('#ackNm').trigger('focus');
+                            return;
+                        }
+
+                        // keep dialog open while posting
+                        ev.cancel = true;
+
+                        const $root = $('.ajs-modal:visible').last();
+                        const $okBtn = $root.find('.ajs-footer .ajs-buttons .ajs-ok');
+                        const $canBtn = $root.find('.ajs-footer .ajs-buttons .ajs-cancel');
+                        if ($root.data('processing')) return;
+                        $root.data('processing', true);
+
+                        const okHtml = $okBtn.html();
+                        if ($okBtn.length) $okBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span> Processing...');
+                        if ($canBtn.length) $canBtn.prop('disabled', true);
+
+                        busyBtn($btn, true);
+
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: 'POST',
+                            data: $form.serialize(),    // keep MVC validation & PV re-render
+                            dataType: 'text',           // may be HTML or JSON
+                            headers: tokenHeader($form),
+                        })
+                            .done(function (data, _t, xhr) {
+                                const ct = (xhr.getResponseHeader('content-type') || '').toLowerCase();
+
+                                // 1) Validation errors → render PartialView back into modal
+                                if (ct.indexOf('text/html') >= 0 || (typeof data === 'string' && data.trim().charAt(0) === '<')) {
+                                    alertify.closeAll();
+                                    $(MODAL_BODY).html(data);
+                                    if (typeof initSelect2InSalaryModal === 'function') initSelect2InSalaryModal();
+                                    return;
+                                }
+
+                                // 2) Parse JSON (envelope or raw DTO)
+                                let res = null; try { res = (typeof data === 'string') ? JSON.parse(data) : data; } catch (_) { }
+
+                                // helper: pick prop from camelCase or PascalCase
+                                const pick = (o, keys) => {
+                                    if (!o) return undefined;
+                                    for (let k of keys) if (Object.prototype.hasOwnProperty.call(o, k)) return o[k];
+                                    return undefined;
+                                };
+
+                                const isEnvelope = res && (typeof res.success !== 'undefined' || typeof res.message !== 'undefined' || typeof res.status !== 'undefined');
+                                const ok = isEnvelope ? (res.success === true || String(res.status || '').toLowerCase() === 'ok') : true;
+                                const dto = isEnvelope ? res.data : res;
+
+                                if (!ok || !dto) {
+                                    alertify.closeAll();
+                                    modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i>${(res && res.message) || 'Registration failed.'}`);
+                                    return;
+                                }
+
+                                // 3) Extract fields from TempPayCodeResultDto (handle both casings)
+                                const tempPayCodeId = pick(dto, ['tempPayCodeId', 'TempPayCodeId']) || '—';
+                                const tempCodePlaintext = pick(dto, ['tempCode', 'TempCode']) || '—';
+                                const expiresAt = pick(dto, ['expiresAt', 'ExpiresAt']);
+                                const salaryExtractId = pick(dto, ['salaryExtractId', 'SalaryExtractId']) || '—';
+                                const nonMemberReference = pick(dto, ['nonMemberReference', 'NonMemberReference']) || '—';
+                                const amount = pick(dto, ['amount', 'Amount']) ?? 0;
+                                const beneficiaryType = pick(dto, ['beneficiaryType', 'BeneficiaryType']) || '—';
+
+                                const expiresAtStr = expiresAt ? (window.moment ? moment(expiresAt).format('DD/MM/YYYY HH:mm') : new Date(expiresAt).toLocaleString()) : '—';
+
+                                // 4) Success UI: show plaintext code immediately for beneficiary
+                                alertify.closeAll();
+                                $form.find(':input').prop('disabled', true);
+
+                                const codeCard = `
+                              <div class="card border-success">
+                                <div class="card-header bg-success bg-opacity-10 text-success fw-bold">
+                                  <i class="mdi mdi-check-circle-outline me-1"></i> Activation Successful
+                                </div>
+                                <div class="card-body">
+                                  <div class="mb-2"><strong>TempPayCode Id:</strong> <span class="mono">${tempPayCodeId}</span></div>
+                                  <div class="mb-2"><strong>Non-Member Reference:</strong> <span class="mono">${nonMemberReference}</span></div>
+                                  <div class="mb-2"><strong>Beneficiary Type:</strong> ${beneficiaryType}</div>
+                                  <div class="mb-2"><strong>Amount:</strong> ${typeof money === 'function' ? money(amount) : amount} FCFA</div>
+                                  <div class="mb-2"><strong>Expires:</strong> ${expiresAtStr}</div>
+
+                                  <div class="mt-3">
+                                    <label class="form-label fw-semibold">Temp Code (share with beneficiary):</label>
+                                    <div class="input-group">
+                                      <input id="tempCodeDisplay" type="text" class="form-control form-control-sm mono" readonly value="${tempCodePlaintext}">
+                                      <button id="copyTempCodeBtn" type="button" class="btn btn-outline-secondary btn-sm" data-code="${tempCodePlaintext}">
+                                        <i class="mdi mdi-content-copy me-1"></i> Copy
+                                      </button>
+                                    </div>
+                                    <div class="text-muted small mt-1">
+                                      <i class="mdi mdi-shield-key-outline me-1"></i> Store/communicate this code securely — it may be shown only once in plaintext.
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>`;
+
+                                // Ensure a result container exists
+                                const $result = $('#nmResult').length ? $('#nmResult') : $('<div id="nmResult" class="mt-2"></div>').insertAfter($form);
+                                $result.removeClass('d-none').html(codeCard);
+
+                                // Copy handler (delegated once)
+                                $(document).off('click.copyTempCode').on('click.copyTempCode', '#copyTempCodeBtn', function () {
+                                    const code = $(this).data('code') || '';
+                                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                                        navigator.clipboard.writeText(code).then(() => {
+                                            $(this).html('<i class="mdi mdi-check me-1"></i> Copied').prop('disabled', true);
+                                            setTimeout(() => $(this).prop('disabled', false).html('<i class="mdi mdi-content-copy me-1"></i> Copy'), 1500);
+                                        }).catch(() => alert('Copy failed. Select and copy the code manually.'));
+                                    } else {
+                                        // Fallback
+                                        const $inp = $('#tempCodeDisplay');
+                                        $inp.trigger('select');
+                                        document.execCommand && document.execCommand('copy');
+                                    }
+                                });
+
+                                // Update status & refresh table
+                                $('#salaryDetailStatus').attr('class', 'badge bg-info').text('TempCode Issued');
+                                if (window.salaryTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                                    window.salaryTable.ajax.reload(null, false);
+                                }
+                            })
+                            .fail(function (xhr) {
+                                const ct = (xhr.getResponseHeader('content-type') || '').toLowerCase();
+
+                                if (ct.indexOf('text/html') >= 0 && xhr.responseText) {
+                                    alertify.closeAll();
+                                    $(MODAL_BODY).html(xhr.responseText);
+                                    if (typeof initSelect2InSalaryModal === 'function') initSelect2InSalaryModal();
+                                    return;
+                                }
+
+                                let res = null; try { res = JSON.parse(xhr.responseText || '{}'); } catch (_) { }
+                                alertify.closeAll();
+                                modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i>${(res && res.message) || 'Request failed.'}`);
+                            })
+                            .always(function () {
+                                busyBtn($btn, false);
+                                if ($okBtn.length) $okBtn.prop('disabled', false).html(okHtml);
+                                if ($canBtn.length) $canBtn.prop('disabled', false);
+                                $root.removeData('processing');
+                            });
+                    });
+
+                    // live validation/focus in confirm
+                    dlg.set('onshow', function () {
+                        const gate = () => {
+                            const ok = $('#ackNm').is(':checked');
+                            $('#ackNmError').toggleClass('d-none', ok);
+                            $('#ackNmWrapper').toggleClass('border border-danger rounded-2 p-2', !ok);
+                        };
+                        $(dlg.elements.content).on('change input', '#ackNm', gate);
+                        setTimeout(() => $('#ackNm').trigger('focus'), 0);
+                        gate();
+                    });
+
+                    dlg.set('oncancel', function () {
+                        setTimeout(() => $(MODAL_ID).modal('show'), 150);
+                    });
+                });
+
+            // =================================================================================
+            // REVOKE SUBMIT (delegated)
+            // =================================================================================
+            $(document).off('submit.revoke', `${MODAL_BODY} #revokeForm`).on('submit.revoke', `${MODAL_BODY} #revokeForm`, function (e) {
+                e.preventDefault(); // stop native post
+                clearModalAlert();
+
+                const $form = $(this);
+                const $btn = $form.find('#revokeBtn');
+                const tempId = ($form.find('input[name="TempPayCodeIds[0]"]').val() || '—');
+                const branchId = ($form.find('input[name="BranchId"]').val() || '—');
+                const reason = ($form.find('textarea[name="Reason"]').val() || '').trim();
+
+                const confirmHtml = `
+                                              <div style="text-align:left;">
+                                                <div style="border-left:4px solid #dc3545; background:#fff3f3; padding:10px 12px; margin-bottom:10px;">
+                                                  <strong style="color:#b52b27;">This action will immediately invalidate the code.</strong>
+                                                </div>
+                                                <p><strong>TempPayCode Id:</strong> <span class="mono">${tempId}</span></p>
+                                                <p><strong>Branch Id:</strong> ${branchId}</p>
+                                                <p><strong>Reason:</strong> ${reason || '(none provided)'}</p>
+                                                <hr/>
+                                                <div id="ackRevokeWrapper" class="form-check mb-2">
+                                                  <input class="form-check-input" type="checkbox" id="ackRevoke">
+                                                  <label class="form-check-label" for="ackRevoke">I understand revocation is immediate and logged.</label>
+                                                  <div id="ackRevokeError" class="text-danger small d-none">Please acknowledge to proceed.</div>
+                                                </div>
+                                                <div class="mb-1">
+                                                  <label for="confirmPhraseRevoke" class="form-label">Type <strong>REVOKE</strong> to confirm:</label>
+                                                  <input id="confirmPhraseRevoke" class="form-control form-control-sm" autocomplete="off" placeholder="REVOKE" />
+                                                </div>
+                                                <div id="phraseErr" class="text-danger small d-none">Please type REVOKE.</div>
+                                              </div>`;
+
+                const dlg = alertify.confirm("Final Confirmation – Revoke TempPayCode", confirmHtml, null, null)
+                    .set({ labels: { ok: 'Revoke', cancel: 'Back' }, transition: 'zoom', closable: false });
+
+                dlg.set('onok', function (ev) {
+                    const ack = $('#ackRevoke').is(':checked');
+                    const phrase = ($('#confirmPhraseRevoke').val() || '').trim().toUpperCase();
+                    if (!(ack && phrase === 'REVOKE')) {
+                        ev.cancel = true;
+                        $('#ackRevokeError').toggleClass('d-none', ack);
+                        $('#ackRevokeWrapper').toggleClass('border border-danger rounded-2 p-2', !ack);
+                        $('#phraseErr').toggleClass('d-none', phrase === 'REVOKE');
+                        if (!ack) { $('#ackRevoke').trigger('focus'); return; }
+                        $('#confirmPhraseRevoke').trigger('focus').select();
+                        return;
+                    }
+
+                    ev.cancel = true;
+
+                    const $root = $('.ajs-modal:visible').last();
+                    const $ok = $root.find('.ajs-footer .ajs-buttons .ajs-ok');
+                    const $cancel = $root.find('.ajs-footer .ajs-buttons .ajs-cancel');
+                    if ($root.data('processing')) return;
+                    $root.data('processing', true);
+
+                    const okHtml = $ok.html();
+                    if ($ok.length) $ok.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span> Processing...');
+                    if ($cancel.length) $cancel.prop('disabled', true);
+
+                    busyBtn($btn, true);
+                    $.ajax({
+                        url: $form.attr('action'),
+                        type: 'POST',
+                        data: $form.serialize(),
+                        dataType: 'json',
+                        headers: tokenHeader($form),
+                    })
+                        .done(function (res) {
+                            if (!res || res.success === false) {
+                                modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i> ${res?.message || 'Revoke failed.'}`);
+                                if ($ok.length) $ok.prop('disabled', false).html(okHtml);
+                                if ($cancel.length) $cancel.prop('disabled', false);
+                                $root.removeData('processing');
+                                return;
+                            }
+                            alertify.closeAll();
+                            modalAlert('success', `<i class="mdi mdi-check-circle-outline me-1"></i> Code revoked successfully.`);
+                            $('#salaryDetailStatus').attr('class', 'badge bg-secondary').text('Revoked');
+
+                            if (window.salaryTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                                window.salaryTable.ajax.reload(null, false);
+                            }
+                        })
+                        .fail(function (xhr) {
+                            const safe = $('<div>').text(xhr.responseText || '').html();
+                            modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i> Request failed<br/><span class="small">${safe}</span>`);
+                            if ($ok.length) $ok.prop('disabled', false).html(okHtml);
+                            if ($cancel.length) $cancel.prop('disabled', false);
+                            $root.removeData('processing');
+                        })
+                        .always(function () { busyBtn($btn, false); });
+                });
+
+                dlg.set('onshow', function () {
+                    const gate = () => {
+                        const ack = $('#ackRevoke').is(':checked');
+                        const phrase = ($('#confirmPhraseRevoke').val() || '').trim().toUpperCase();
+                        $('#ackRevokeError').toggleClass('d-none', ack);
+                        $('#ackRevokeWrapper').toggleClass('border border-danger rounded-2 p-2', !ack);
+                        $('#phraseErr').toggleClass('d-none', phrase === 'REVOKE');
+                    };
+                    $(dlg.elements.content).on('change input', '#ackRevoke, #confirmPhraseRevoke', gate);
+                    setTimeout(() => $('#confirmPhraseRevoke').trigger('focus').select(), 0);
+                    gate();
+                });
+                dlg.set('oncancel', function () { setTimeout(() => $(MODAL_ID).modal('show'), 150); });
+            });
+        })();
+
+    </script>
+    <script>
+        (function () {
+            $(function () {
+                // Branch filter
+                $('#byBranch').on('change', function () {
+                    if (!this.checked) {
+                        $('#branchFilterSection').collapse('hide');
+                        $('#branchInput').val('');
+                    } else {
+                        $('#branchFilterSection').collapse('show');
+                    }
+                });
+
+                // Uploaded/Executed By filter
+                $('#byOperators').on('change', function () {
+                    if (!this.checked) {
+                        $('#operatorsFilterSection').collapse('hide');
+                        $('#uploadedBy').val('');
+                        $('#executedBy').val('');
+                    } else {
+                        $('#operatorsFilterSection').collapse('show');
+                    }
+                });
+
+                // Date Range filter
+                $('#byDate').on('change', function () {
+                    if (!this.checked) {
+                        $('#dateRangeSection').collapse('hide');
+                        $('#startDate').val('');
+                        $('#endDate').val('');
+                    } else {
+                        $('#dateRangeSection').collapse('show');
+                    }
+                });
+            });
+        })();
+    </script>
+
+  
+
+    <script src="~/Scripts/Js/Crud/SalaryProcessed/ProcessedSalary.js"></script>
+}

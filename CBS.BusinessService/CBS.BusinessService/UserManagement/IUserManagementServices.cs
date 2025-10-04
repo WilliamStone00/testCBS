@@ -21,6 +21,7 @@ namespace CBS.BusinessService.UserManagement
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(Guid userid);
         Task<IEnumerable<StringValues>> GetUserDropDownList();
+        Task<IEnumerable<StringValues>> GetUserDropDownList(List<Branch> branches);
         Task<IEnumerable<UserSessionDto>> GetUserSessions();
         Task<IEnumerable<UserSessionDto>> GetUserSessions(Guid userid);
         Task<UserDto> GetUserDto(Guid userid);

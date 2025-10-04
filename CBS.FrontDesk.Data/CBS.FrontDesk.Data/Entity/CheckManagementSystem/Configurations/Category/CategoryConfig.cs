@@ -15,8 +15,9 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public string Id { get; set; } = null;
         public string branchID { get; set; } = null;
         public string name { get; set; }  = string.Empty; 
-        public decimal basePrice { get; set; } 
-        public int numberOfPages { get; set; } 
+        public decimal basePrice { get; set; }
+        public int numberOfPages { get; set; }
+        public int numberofCheckBooks { get; set; }
         public int validityPeriodInMonths { get; set; } 
         public int issuanceLimitPerCustomerType { get; set; }
         public bool isActive { get; set; } = false;

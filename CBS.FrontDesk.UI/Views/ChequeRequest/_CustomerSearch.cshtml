@@ -5,13 +5,13 @@
     </legend>
 
     <div class="row g-3">
-        <div class="col-md-4">
+        @*<div class="col-md-4">
             <label class="form-label fw-bold">Branch</label>
             @Html.DropDownList("searchBranchId", new SelectList(ViewBag.Branches, "Id", "name"),
                 "Select Branch", new { @class = "form-control select2", id = "searchBranchId" })
-        </div>
+        </div>*@
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label class="form-label fw-bold">Customer ID</label>
             <div class="input-group">
                 <input type="text" id="customerIdInput" class="form-control" placeholder="Enter Customer ID" value="003DCT0001">
@@ -31,7 +31,7 @@
                         <h6 id="customerSummary" class="mb-0"></h6>
                         <small id="accountSummary" class="text-muted"></small>
                     </div>
-                    <button type="button" class="btn btn-success btn-sm" id="proceedToRequestBtn">
+                    <button type="button" class="btn btn-primary btn-sm" id="proceedToRequestBtn">
                         <i class="mdi mdi-arrow-right"></i> Proceed to Request
                     </button>
                 </div>

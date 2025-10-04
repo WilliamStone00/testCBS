@@ -35,6 +35,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
         {
             try
             {
+                model.bankId = "1";
                 var response = await _apiHelper.PostAsync<ServiceResponse<ChequeBookRequest>>(APICallHelper.CreateChequeRequest, model);
                 if (response.IsSuccess)
                 {

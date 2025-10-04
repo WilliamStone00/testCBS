@@ -50,7 +50,7 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -132,14 +132,22 @@
     <Compile Include="Entity\CashCeilingManagement\CashCeilingRequest.cs" />
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
+    <Compile Include="Entity\CheckManagementSystem\ChequeCertification\ChequeCertificationDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceValidation.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\OptionRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
-    <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\NumConfig.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\CheckConfig\NumConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\ChequeNumber\VariablePosition.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\FeeConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\InitOptions.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckbookDetailDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckbookDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckLeafDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CustomerCheckbooksDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\LossRequestDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationHistory\NotificationHistoryDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeBookListing\ChequeBook.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationRequest.cs" />
@@ -209,6 +217,7 @@
     <Compile Include="Entity\RequestManagement\SuspiciousPath.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryAnalysisResultSummary.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryExecutionModel.cs" />
+    <Compile Include="Entity\SalaryManagement\SalaryExtract.cs" />
     <Compile Include="Entity\SalaryManagement\SalaryUploadModel.cs" />
     <Compile Include="Entity\SalaryManagement\StandingOrder.cs" />
     <Compile Include="Entity\SMSP\Sms.cs" />

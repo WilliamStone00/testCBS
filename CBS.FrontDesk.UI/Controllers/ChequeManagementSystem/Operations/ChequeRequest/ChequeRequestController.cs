@@ -7,32 +7,37 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeRequest
 {
-   // [CheckSessionTimeOut]
+   [CheckSessionTimeOut]
     public class ChequeRequestController : BaseController
     {
        
-        //private readonly ChequeRequestService _chequeRequestService;   
+        private readonly ChequeRequestService _chequeRequestService1;   
         private readonly ChequeRequestMockService _chequeRequestService;
         private readonly BranchServices _branchServices;
         private readonly CategoryConfigService _categoryServices;
         private readonly CustomerService _customerService;
 
 
-        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService)
+        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService,ChequeRequestService chequeRequestService1)
         {
             _chequeRequestService = chequeRequestService;
             _branchServices = branchServices;
             _categoryServices = categoryConfigService;
             _customerService = customerService;
+            _chequeRequestService1 = chequeRequestService1;
         }
 
         // The main container page.
@@ -52,20 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             var categories = await _categoryServices.GetCategories();
             ViewBag.Categories = categories;
 
-            // Mock data for the category dropdown in the create form
-            //ViewBag.Categories = new List<SelectListItem>
-            //{
-            //    new SelectListItem { Value = "CAT01", Text = "Standard - 25 Leaves" },
-            //    new SelectListItem { Value = "CAT02", Text = "Business Gold - 100 Leaves" }
-            //};
-
-            // Mock data for a customer dropdown
-            ViewBag.Customers = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "CUST01", Text = "John Doe" },
-                new SelectListItem { Value = "CUST02", Text = "Jane Smith" }
-            };
-
+          
             // Keep method async-friendly — replace this with real awaited calls later
             await Task.CompletedTask;
         }
@@ -121,31 +113,76 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         }
         // In ChequeRequestController.cs
 
+
         [HttpPost]
-        public async Task<ActionResult> LoadRequestsForDataTable(ChequeRequestQuery query)
+        public async Task<ActionResult> LoadRequestsForDataTable()
         {
             try
             {
-                // IMPORTANT: You will need a new service method that accepts the query object
+                string json;
+                using (var reader = new StreamReader(Request.InputStream))
+                {
+                    json = reader.ReadToEnd();
+                }
+
+                var query = JsonConvert.DeserializeObject<ChequeRequestQuery>(json) ?? new ChequeRequestQuery();
+
                 var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
 
                 return Json(new
                 {
-                    draw = dataTable.draw,
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
                     data = dataTable.data
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(500, "Error loading request data.");
+                // log ex
+                return Json(new
+                {
+                    draw = 1,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<ChequeBookRequest>()
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 
 
+
+        //[HttpPost]
+        //public async Task<ActionResult> LoadRequestsForDataTable(ChequeRequestQuery query)
+        //{
+        //    try
+        //    {
+        //        var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
+
+        //        return Json(new
+        //        {
+        //            draw = query?.Options?.draw ?? "1",
+        //            recordsTotal = dataTable.recordsTotal,
+        //            recordsFiltered = dataTable.recordsFiltered,
+        //            data = dataTable.data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception
+        //        return Json(new
+        //        {
+        //            draw = query?.Options?.draw ?? "1",
+        //            recordsTotal = 0,
+        //            recordsFiltered = 0,
+        //            data = new List<ChequeBookRequest>()
+        //        });
+        //    }
+        //}
+
         [HttpGet]
         public async Task<JsonResult> GetCustomerDetails(string customerId)
+        
         {
             try
             {
@@ -195,7 +232,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             if (string.IsNullOrWhiteSpace(model.Id))
             {
                 // --- CREATE PATH ---
-                result = await _chequeRequestService.CreateRequestAsync(model);
+                result = await _chequeRequestService1.CreateRequestAsync(model);
                 operationType = "Insert";
             }
             else

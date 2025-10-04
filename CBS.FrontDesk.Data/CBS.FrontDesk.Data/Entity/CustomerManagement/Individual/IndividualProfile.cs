@@ -253,22 +253,26 @@ namespace CBS.FrontDesk.Data.Entity.CustomerManagement
         public string Gender { get; set; } = "Male";
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string CountryId { get; set; }
-        public string RegionId { get; set; }
+        
         public string CustomerCode { get; set; }
         public string ProfileType { get; set; }
-        public string TownId { get; set; }
+       
         public int MobileOrOnLineBankingLoginFailedAttempts { get; set; }
         public int NumberOfAttemptsOfMobileOrOnLineBankingLogin { get; set; }
         public bool IsUseOnLineMobileBanking { get; set; }
         public string CustomerPackageId { get; set; }
-        public string DivisionId { get; set; }
+        
         public string BranchId { get; set; }
         public string EconomicActivitiesId { get; set; }
         public string BankId { get; set; }
         public string OrganizationId { get; set; }
-        public string Language { get; set; }
+        
         public string SubDivisionId { get; set; }
+        public string CountryId { get; set; }
+        public string RegionId { get; set; }
+        public string TownId { get; set; }
+        public string DivisionId { get; set; }
+        public string Language { get; set; }
         public string TaxIdentificationNumber { get; set; }
         public bool IsBelongToGroup { get; set; }
         public bool Active { get; set; }
