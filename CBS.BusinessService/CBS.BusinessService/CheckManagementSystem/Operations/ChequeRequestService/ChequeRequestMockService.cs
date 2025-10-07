@@ -141,133 +141,144 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
 
         public Task<CustomDataTable> GetRequestsForDataTableAsync(ChequeRequestQuery query)
         {
-            // Start with all data ordered by most recent first (default sort)
-            var data = _mockRequests
-                .OrderByDescending(r => r.requestDate)
-                .AsQueryable();
+            // C# 7.3 friendly null-check (no ??=)
+            if (query == null) query = new ChequeRequestQuery();
+
+            int start = query.Options != null ? query.Options.start : 0;
+            int pageSize = (query.Options != null && query.Options.pageSize > 0) ? query.Options.pageSize : 10;
+
+            // Start with IQueryable (avoid typing to IOrderedQueryable to prevent assignment problems)
+            IQueryable<ChequeBookRequest> data = _mockRequests.AsQueryable();
+
+            // Default sort first (so recordsTotal counts the total set in a known order)
+            data = data.OrderByDescending(r => r.requestDate);
 
             int recordsTotal = data.Count();
 
-            // Apply filters from query - using null-conditional and null-coalescing operators
-            if (!string.IsNullOrWhiteSpace(query?.CustomerName))
+            // -----------------------
+            // Filters
+            // -----------------------
+            if (!string.IsNullOrWhiteSpace(query.CustomerName))
             {
-                data = data.Where(r =>
-                    (r.customerName ?? "").IndexOf(query.CustomerName, StringComparison.OrdinalIgnoreCase) >= 0);
+                var nameFilter = query.CustomerName.Trim();
+                data = data.Where(r => (r.customerName ?? "").IndexOf(nameFilter, StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            if (!string.IsNullOrWhiteSpace(query?.CategoryName))
+            if (!string.IsNullOrWhiteSpace(query.CategoryName))
             {
-                data = data.Where(r =>
-                    (r.categoryName ?? "").Equals(query.CategoryName, StringComparison.OrdinalIgnoreCase));
+                var cat = query.CategoryName.Trim();
+                data = data.Where(r => string.Equals(r.categoryName ?? "", cat, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrWhiteSpace(query?.Status))
+            if (!string.IsNullOrWhiteSpace(query.Status))
             {
-                data = data.Where(r =>
-                    (r.status ?? "").Equals(query.Status, StringComparison.OrdinalIgnoreCase));
+                var st = query.Status.Trim();
+                data = data.Where(r => string.Equals(r.status ?? "", st, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrWhiteSpace(query?.BranchId))
+            if (!string.IsNullOrWhiteSpace(query.BranchId))
             {
-                data = data.Where(r =>
-                    (r.branchId ?? "").Equals(query.BranchId, StringComparison.OrdinalIgnoreCase));
+                var bid = query.BranchId.Trim();
+                data = data.Where(r => string.Equals(r.branchId ?? "", bid, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrWhiteSpace(query?.BankId))
+            if (!string.IsNullOrWhiteSpace(query.BankId))
             {
-                data = data.Where(r =>
-                    (r.bankId ?? "").Equals(query.BankId, StringComparison.OrdinalIgnoreCase));
+                var bk = query.BankId.Trim();
+                data = data.Where(r => string.Equals(r.bankId ?? "", bk, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Apply date filters
-            if (query?.StartDate.HasValue == true)
+            if (query.StartDate.HasValue)
             {
-                data = data.Where(r => r.requestDate >= query.StartDate.Value);
+                var s = query.StartDate.Value;
+                data = data.Where(r => r.requestDate >= s);
             }
 
-            if (query?.EndDate.HasValue == true)
+            if (query.EndDate.HasValue)
             {
-                data = data.Where(r => r.requestDate <= query.EndDate.Value);
+                var e = query.EndDate.Value;
+                data = data.Where(r => r.requestDate <= e);
             }
 
-            // Boolean filters - uncommented and fixed
-            if (query?.NotifyOnRejection.HasValue == true)
-            {
+            if (query.NotifyOnRejection.HasValue)
                 data = data.Where(r => r.notifyOnRejection == query.NotifyOnRejection.Value);
-            }
 
-            if (query?.AutomaticRenewal.HasValue == true)
-            {
+            if (query.AutomaticRenewal.HasValue)
                 data = data.Where(r => r.automaticRenewal == query.AutomaticRenewal.Value);
-            }
 
-            // Additional boolean filters for other notification options
-            if (query?.NotifyOnAnyTransaction.HasValue == true)
-            {
+            if (query.NotifyOnAnyTransaction.HasValue)
                 data = data.Where(r => r.notifyOnAnyTransaction == query.NotifyOnAnyTransaction.Value);
-            }
 
-            if (query?.NotifyOnClearance.HasValue == true)
-            {
+            if (query.NotifyOnClearance.HasValue)
                 data = data.Where(r => r.notifyOnClearance == query.NotifyOnClearance.Value);
-            }
 
             int recordsFiltered = data.Count();
 
-            // Apply sorting if specified
-            if (query?.Options != null && !string.IsNullOrEmpty(query.Options.sortColumnName))
-            {
-                bool isAscending = (query.Options.sortDirection?.ToLower() == "asc");
+            // -----------------------
+            // Sorting - use IOrderedQueryable locally to avoid type issues
+            // -----------------------
+            IOrderedQueryable<ChequeBookRequest> ordered = null;
 
-                switch (query.Options.sortColumnName.ToLower())
+            if (query.Options != null && !string.IsNullOrWhiteSpace(query.Options.sortColumnName))
+            {
+                bool asc = string.Equals(query.Options.sortDirection, "asc", StringComparison.OrdinalIgnoreCase);
+                switch (query.Options.sortColumnName.Trim().ToLower())
                 {
                     case "customername":
-                        data = isAscending ?
-                            data.OrderBy(r => r.customerName) :
-                            data.OrderByDescending(r => r.customerName);
+                        ordered = asc ? data.OrderBy(r => r.customerName) : data.OrderByDescending(r => r.customerName);
                         break;
                     case "categoryname":
-                        data = isAscending ?
-                            data.OrderBy(r => r.categoryName) :
-                            data.OrderByDescending(r => r.categoryName);
+                        ordered = asc ? data.OrderBy(r => r.categoryName) : data.OrderByDescending(r => r.categoryName);
                         break;
                     case "requestdate":
-                        data = isAscending ?
-                            data.OrderBy(r => r.requestDate) :
-                            data.OrderByDescending(r => r.requestDate);
+                        ordered = asc ? data.OrderBy(r => r.requestDate) : data.OrderByDescending(r => r.requestDate);
                         break;
                     case "status":
-                        data = isAscending ?
-                            data.OrderBy(r => r.status) :
-                            data.OrderByDescending(r => r.status);
+                        ordered = asc ? data.OrderBy(r => r.status) : data.OrderByDescending(r => r.status);
                         break;
                     default:
-                        // Keep default sort by request date descending
-                        data = data.OrderByDescending(r => r.requestDate);
+                        ordered = data.OrderByDescending(r => r.requestDate);
                         break;
                 }
             }
 
-            // Apply pagination
-            var pagedData = data.ToList();
+            // If no explicit ordered was created, apply default ordering
+            var finalQuery = (ordered != null) ? (IQueryable<ChequeBookRequest>)ordered : data.OrderByDescending(r => r.requestDate);
+
+            // -----------------------
+            // Pagination
+            // -----------------------
+            var paged = finalQuery.Skip(start).Take(pageSize).ToList();
+
+            // -----------------------
+            // draw handling - query.Options.draw might be string or int depending on your DTO
+            // Ensure we return an int draw
+            // -----------------------
+            int draw = 1;
             if (query?.Options != null)
             {
-                pagedData = data
-                    .Skip(query.Options.start)
-                    .Take(query.Options.pageSize > 0 ? query.Options.pageSize : 10) // Default page size
-                    .ToList();
+                // Try to parse safely whether draw is int or string
+                object rawDraw = query.Options.draw as object;
+                if (rawDraw != null)
+                {
+                    int parsed;
+                    if (rawDraw is int) draw = (int)rawDraw;
+                    else if (int.TryParse(rawDraw.ToString(), out parsed)) draw = parsed;
+                }
             }
 
-            var dataTable = new CustomDataTable
+            var result = new CustomDataTable
             {
-                draw = Convert.ToInt32(query?.Options?.draw ?? "1"),
+                draw = draw,
                 recordsTotal = recordsTotal,
                 recordsFiltered = recordsFiltered,
-                data = pagedData
+                data = paged
             };
 
-            return Task.FromResult(dataTable);
+            return Task.FromResult(result);
         }
+
+
 
         public Task<List<ChequeBookRequest>> GetAllRequestsAsync()
         {

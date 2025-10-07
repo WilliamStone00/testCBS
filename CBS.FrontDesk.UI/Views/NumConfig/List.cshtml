@@ -1,0 +1,148 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Number Config Overview";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-format-list-numbered me-2"></i> Number Configuration
+                </h1>
+                <p class="card-text">
+                    Manage serial/number configuration per branch and date range.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Number Configuration</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Branch:</strong> Select the branch to apply this numbering scheme.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Dates:</strong> Use date range to enable/disable configuration across time.</li>
+                <li><i class="mdi mdi-numeric text-secondary me-2"></i> <strong>Positions:</strong> Bank/branch/year/serial positions control how numbers are built.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Number Config Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Number Config Filters</h5>
+
+    <form id="numconfigFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches (Branch / Dates) -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Name</label>
+                    <input type="text" id="name" name="Name" class="form-control" placeholder="Configuration name" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Serial Number Position</label>
+                    <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
+                </div>
+            </div>
+
+            <!-- Branch Filter (togglable) -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Position Settings -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Bank Code Position</label>
+                    <input type="number" id="bankCodePosition" name="BankCodePosition" class="form-control" min="0" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Branch Code Position</label>
+                    <input type="number" id="branchCodePosition" name="BranchCodePosition" class="form-control" min="0" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Year Position</label>
+                    <input type="number" id="yearPosition" name="YearPosition" class="form-control" min="0" />
+                </div>
+            </div>
+
+            <!-- Flags -->
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="acceptSerialNumber" name="AcceptSerialNumber" />
+                        <label class="form-check-label fw-bold" for="acceptSerialNumber">Accept Serial Number</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters (togglable) -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" id="startDate" name="StartDate" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" id="endDate" name="EndDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_NumconfogData")
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
+}

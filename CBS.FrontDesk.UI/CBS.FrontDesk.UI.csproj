@@ -283,7 +283,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -3314,6 +3314,7 @@
     <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\datatable-manager.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\form-manager.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\ChequeRequest\search-manager.js" />
+    <Content Include="Scripts\Js\Crud\ChequeManagement\numconfig\Numconfog.js" />
     <Content Include="Scripts\Js\Crud\CustomerAdjustment\Customer\MemberAdjustmentConsole.js" />
     <Compile Include="WAF\Middleware\Core\StaticPathHelper.cs" />
     <Compile Include="WAF\Middleware\Correlation\CorrelationIdMiddleware.cs" />
@@ -10631,7 +10632,7 @@
     <Content Include="Views\NotificationConfig\_ConfigForm.cshtml" />
     <Content Include="Views\NumConfig\Index.cshtml" />
     <Content Include="Views\NumConfig\_Create.cshtml" />
-    <Content Include="Views\NumConfig\_DataTable.cshtml" />
+    <Content Include="Views\NumConfig\List.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\MemberAdjustment.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_IndividualData.cshtml" />
@@ -10708,6 +10709,9 @@
     <Content Include="Views\SalaryProcessed\_RegisterNonMemberPv.cshtml" />
     <Content Include="Views\SalaryProcessed\_RevokeTempPayCodePv.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
+    <Content Include="Views\ChequeBook\_CheckBookData.cshtml" />
+    <Content Include="Views\ChequeBook\List.cshtml" />
+    <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
     <Content Include="Views\CashDesk\NonMemberSalaryPayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -10738,6 +10742,7 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">

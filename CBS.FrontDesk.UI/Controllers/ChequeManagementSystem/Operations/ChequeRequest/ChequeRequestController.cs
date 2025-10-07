@@ -7,11 +7,14 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeRequest
@@ -109,11 +112,20 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         }
         // In ChequeRequestController.cs
 
+
         [HttpPost]
-        public async Task<ActionResult> LoadRequestsForDataTable(ChequeRequestQuery query)
+        public async Task<ActionResult> LoadRequestsForDataTable()
         {
             try
             {
+                string json;
+                using (var reader = new StreamReader(Request.InputStream))
+                {
+                    json = reader.ReadToEnd();
+                }
+
+                var query = JsonConvert.DeserializeObject<ChequeRequestQuery>(json) ?? new ChequeRequestQuery();
+
                 var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
 
                 return Json(new
@@ -122,20 +134,50 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
                     data = dataTable.data
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // Log the exception
+                // log ex
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
+                    draw = 1,
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<ChequeBookRequest>()
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+
+        //[HttpPost]
+        //public async Task<ActionResult> LoadRequestsForDataTable(ChequeRequestQuery query)
+        //{
+        //    try
+        //    {
+        //        var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
+
+        //        return Json(new
+        //        {
+        //            draw = query?.Options?.draw ?? "1",
+        //            recordsTotal = dataTable.recordsTotal,
+        //            recordsFiltered = dataTable.recordsFiltered,
+        //            data = dataTable.data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception
+        //        return Json(new
+        //        {
+        //            draw = query?.Options?.draw ?? "1",
+        //            recordsTotal = 0,
+        //            recordsFiltered = 0,
+        //            data = new List<ChequeBookRequest>()
+        //        });
+        //    }
+        //}
 
         [HttpGet]
         public async Task<JsonResult> GetCustomerDetails(string customerId)

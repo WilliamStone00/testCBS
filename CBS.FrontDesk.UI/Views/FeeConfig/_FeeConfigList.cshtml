@@ -3,60 +3,72 @@
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Configuration</h5>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <label class="form-label fw-bold">Fee Type</label>
-            @*<select id="feeTypeFilter" class="form-control">
-                <option value="">All Fee Types</option>
-                @if (ViewBag.FeeTypes != null)
-                {
-                    foreach (var feeType in ViewBag.FeeTypes as IEnumerable<Microsoft.Extensions.Primitives.StringValues>)
+    <div class="card shadow p-3 mb-4">
+      
+
+        <!-- Filter Row -->
+        <div class="row g-3 mb-3 bg-light p-3 rounded">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Fee Type</label>
+                <select id="feeTypeFilter" class="form-control">
+                    <option value="">All Fee Types</option>
+                    @if (ViewBag.FeeTypes != null)
                     {
-                        <option value="@feeType">@feeType</option>
+                        foreach (var feeType in ViewBag.FeeTypes as IEnumerable<dynamic>)
+                        {
+                            <option value="@feeType">@feeType</option>
+                        }
                     }
-                }
-            </select>*@
-        </div>
+                </select>
+            </div>
 
-        <div class="col-md-3">
-            <label class="form-label fw-bold">Branch</label>
-            <select id="branchFilter" class="form-control">
-                <option value="">All Branches</option>
-                @if (ViewBag.Branches != null)
-                {
-                    foreach (var branch in ViewBag.Branches as IEnumerable<dynamic>)
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Branch</label>
+                <select id="branchFilter" class="form-control">
+                    <option value="">All Branches</option>
+                    @if (ViewBag.Branches != null)
                     {
-                        <option value="@branch.Id">@branch.Name</option>
+                        foreach (var branch in ViewBag.Branches as IEnumerable<dynamic>)
+                        {
+                            <option value="@branch.Id">@branch.Name</option>
+                        }
                     }
-                }
-            </select>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Configuration Type</label>
+                <select id="centralizedFilter" class="form-control">
+                    <option value="">All Types</option>
+                    <option value="true">Centralized</option>
+                    <option value="false">Branch Specific</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Status</label>
+                <select id="statusFilter" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
         </div>
 
-        <div class="col-md-3">
-            <label class="form-label fw-bold">Configuration Type</label>
-            <select id="centralizedFilter" class="form-control">
-                <option value="">All Types</option>
-                <option value="true">Centralized</option>
-                <option value="false">Branch Specific</option>
-            </select>
+        <!-- Action Buttons Row -->
+        <div class="row g-2">
+            <div class="col-md-6">
+                <button id="applyFilterBtn" class="btn btn-primary w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button id="resetFilterBtn" class="btn btn-secondary w-100">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
         </div>
-
-        <div class="col-md-3">
-            <label class="form-label fw-bold">Status</label>
-            <select id="statusFilter" class="form-control">
-                <option value="">All Status</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
-            <button id="resetFilterBtn" class="btn btn-secondary w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-        </div>
-    </div>
+    </div>   
 </div>
 
 <div class="card">

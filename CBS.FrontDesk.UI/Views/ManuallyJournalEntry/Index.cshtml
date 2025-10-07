@@ -117,7 +117,9 @@
                     <table id="DataEntrybasketTable" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>@GlobalManuallyJournalEntry.AccountDescription</th>
+                                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                                <th>@GlobalManuallyJournalEntry.AccountName</th>
+                                <th>@GlobalManuallyJournalEntry.Description</th>
                                 <th>@GlobalManuallyJournalEntry.Debit</th>
                                 <th>@GlobalManuallyJournalEntry.Credit</th>
                                 <th>@GlobalShared.Action</th>
@@ -126,10 +128,10 @@
                         <tbody></tbody>
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
-                                <th>@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
-                                <th>@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
+                     
+                                <th colspan="2">@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
+                                <th colspan="2">@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
+                                <th colspan="2">@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
                             </tr>
                         </thead>
                     </table>
