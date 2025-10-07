@@ -7,7 +7,6 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
