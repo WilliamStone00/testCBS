@@ -1,4 +1,6 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.ReportDataSetDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,47 @@ using System.Web.UI.WebControls;
 
 namespace CBS.FrontDesk.Data.Entity.SalaryManagement
 {
+    public class TempPayCode
+    {
+        public string Id { get; set; }
+
+        // Store only the hash; plaintext will be shown once by the handler to the user
+        public string CodeHash { get; set; }
+        public string Salt { get; set; }
+
+        public string SalaryExtractId { get; set; }
+
+        // "NonMember" | "Member" (future-proof)
+        public string BeneficiaryType { get; set; } = "NonMember";
+        public string BeneficiaryId { get; set; }
+        public string BeneficiaryReference { get; set; }
+        public string BeneficiaryName { get; set; }
+        public string CNI { get; set; }
+        public decimal Amount { get; set; }
+        public string Currency { get; set; } = "XAF";
+
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+
+        public DateTime ExpiresAt { get; set; }
+        public string Status { get; set; }
+
+        public int AttemptCount { get; set; }
+        public int MaxAttempts { get; set; } = 5;
+
+        public string GeneratedByUserId { get; set; }
+        public string GeneratedByUserName { get; set; }
+        public string Channel { get; set; } = "BackOffice"; // BackOffice|API|CashDesk
+
+        public DateTime? RedeemedAt { get; set; }
+        public string RedeemedByUserId { get; set; }
+        public string RedeemedByUserName { get; set; }
+    }
+    public sealed class GetTempPayCodeByCodeQuery
+    {
+        public string PlainCode { get; set; }
+    }
     public class SalaryExtract
     {
         public string Id { get; set; }
@@ -158,42 +201,6 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         /// <summary>Detailed summary message describing the outcome of the operation.</summary>
         public string Message { get; set; }
     }
-    public class TempPayCode
-    {
-        public string Id { get; set; }
-
-        // Store only the hash; plaintext will be shown once by the handler to the user
-        public string CodeHash { get; set; }
-        public string Salt { get; set; } 
-
-        public string SalaryExtractId { get; set; }
-
-        // "NonMember" | "Member" (future-proof)
-        public string BeneficiaryType { get; set; } = "NonMember";
-        public string BeneficiaryId { get; set; }
-        public string BeneficiaryReference { get; set; }
-
-        public decimal Amount { get; set; }
-        public string Currency { get; set; } = "XAF";
-
-        public string BranchId { get; set; }
-        public string BranchCode { get; set; }
-        public string BranchName { get; set; }
-
-        public DateTime ExpiresAt { get; set; }
-        public string Status { get; set; }
-
-        public int AttemptCount { get; set; }
-        public int MaxAttempts { get; set; } = 5;
-
-        public string GeneratedByUserId { get; set; }
-        public string GeneratedByUserName { get; set; }
-        public string Channel { get; set; } = "BackOffice"; // BackOffice|API|CashDesk
-
-        public DateTime? RedeemedAt { get; set; }
-        public string RedeemedByUserId { get; set; }
-        public string RedeemedByUserName { get; set; }
-    }
     public class RevokeTempPayCodesByIdList
     {
         /// <summary>Branch context to enforce branch-level ownership.</summary>
@@ -205,6 +212,22 @@ namespace CBS.FrontDesk.Data.Entity.SalaryManagement
         /// <summary>Optional reason for audit trail.</summary>
         public string Reason { get; set; }
 
+    }
+    public class RedeemTempPayCodeCommand
+    {
+        public string TempPayCodeId { get; set; }
+        // NEW: cash denominations for the cash-out
+        public CurrencyNotesRequest CurrencyNotes { get; set; } =new CurrencyNotesRequest();
+        public string PlainCode { get; internal set; }
+        public decimal Amount { get; set; }
+        public string Naration { get; set; }
+        public string CNI { get; set; }
+        public string Telephone { get; set; }
+        public string NoneMeberName { get; set; }
+        public string SourceChartOfAccountId { get; set; }
+        public string CustomerId { get; set; }
+        public string SourceType { get; set; }
+        public string TransactionType { get; set; }
     }
     public class GenerateTempPayCodeForKnownBeneficiary
     {

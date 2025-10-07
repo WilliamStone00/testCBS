@@ -346,38 +346,68 @@ function openSalaryDetail(id, name, memberRef, statusBool, branchText) {
         });
 }
 
-/* Registration (kept as fallback if global showInPopup exists) */
-// Activate (always use the same salary modal)
-// Make sure this runs once (e.g., after your DataTable init)
-$(document)
-    .off('click.nmopen', '#myDataTable .js-nonmember-activate')
-    .on('click.nmopen', '#myDataTable .js-nonmember-activate', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+// -------- one-time delegated handlers for table action buttons --------
+(function wireSalaryActionsOnce() {
+    if (window.__wiredSalaryActions) return; // avoid double binding
+    window.__wiredSalaryActions = true;
 
+    // tiny safe helper
+    const enc = encodeURIComponent;
+
+    // Activate (first-time non-member registration)
+    $(document).on('click', '.js-nonmember-activate', function () {
         const $b = $(this);
         const id = $b.data('id');
         const name = $b.data('name') || '—';
         const ref = $b.data('ref') || '—';
         const branchText = $b.data('branch') || '—';
-        const branchId = $b.data('branchId') || '';     // <-- camelCase
-        const branchCode = $b.data('branchCode') || '';   // <-- camelCase
+        const branchId = $b.data('branch-id') || '';
+        const branchCode = $b.data('branch-code') || '';
 
-        openRegisterNonMember(id, { name, ref, branchText, branchId, branchCode });
+        // Build URL expected by Registration PV
+        const url = `/SalaryProcessed/RegistrationPv?salaryExtractId=${enc(id)}&branchId=${enc(branchId)}&branchCode=${enc(branchCode)}`;
+
+        // Header meta for the modal
+        const headerMeta = { name, ref, branchText, statusBadgeClass: 'badge bg-warning text-dark', statusText: 'Pending' };
+
+        loadIntoSalaryModal(url, 'activate', headerMeta, /*showErrorInModal*/ true);
     });
 
-// Revoke (from table)
-$(document).on('click', '.js-salary-revoke', function () {
-    const $b = $(this);
-    openRevokeTempCode({
-        tempId: $b.data('temp-id'),
-        branchId: $b.data('branch-id'),
-        name: $b.data('name'),
-        ref: $b.data('ref'),
-        branchText: $b.data('branch')
+    // Generate payment code again (already registered; no active code)
+    $(document).on('click', '.js-generate-paycode', function () {
+        const $b = $(this);
+        const id = $b.data('id');
+        const name = $b.data('name') || '—';
+        const ref = $b.data('ref') || '—';
+        const branchText = $b.data('branch') || '—';
+        const branchId = $b.data('branch-id') || '';
+        const branchCode = $b.data('branch-code') || '';
+
+        // Same PV — the server will prefill KYC from the existing non-member
+        const url = `/SalaryProcessed/RegistrationPv?salaryExtractId=${enc(id)}&branchId=${enc(branchId)}&branchCode=${enc(branchCode)}`;
+
+        const headerMeta = { name, ref, branchText, statusBadgeClass: 'badge bg-secondary', statusText: 'Registered' };
+
+        loadIntoSalaryModal(url, 'activate', headerMeta, true);
     });
-});
-// Load the registration PV inside #salaryDetailModal
+
+    // Revoke active TempPayCode
+    $(document).on('click', '.js-salary-revoke', function () {
+        const $b = $(this);
+        const tempId = $b.data('temp-id') || '';
+        const branchId = $b.data('branch-id') || '';
+        const name = $b.data('name') || '—';
+        const ref = $b.data('ref') || '—';
+        const branchText = $b.data('branch') || '—';
+
+        const url = `/SalaryProcessed/RevokePv?tempPayCodeId=${enc(tempId)}&branchId=${enc(branchId)}`;
+
+        const headerMeta = { name, ref, branchText, statusBadgeClass: 'badge bg-info', statusText: 'TempCode Active' };
+
+        loadIntoSalaryModal(url, 'revoke', headerMeta, true);
+    });
+})();
+
 
 
 /* Delegated buttons inside table */

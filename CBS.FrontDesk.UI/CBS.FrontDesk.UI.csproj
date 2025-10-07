@@ -10708,6 +10708,7 @@
     <Content Include="Views\SalaryProcessed\_RegisterNonMemberPv.cshtml" />
     <Content Include="Views\SalaryProcessed\_RevokeTempPayCodePv.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
+    <Content Include="Views\CashDesk\NonMemberSalaryPayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

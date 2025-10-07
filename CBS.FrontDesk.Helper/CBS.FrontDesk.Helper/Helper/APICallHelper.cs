@@ -169,7 +169,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetTempPayCodeId = "/api/v1/ProcessedSalary/temp-code/{0}";
         public static string RedeemTempCode = "/api/v1/ProcessedSalary/temp-code/redeem";
         public static string NoneMemberPendingPayOut = "/api/v1/ProcessedSalary/nonmember-pending";
-
+        public static string GetProcessedSalaryByTempCode = "/api/v1/ProcessedSalary/temp-paycode/by-code";
 
         //SalaryExecution
         public static string ExecuteSalary = "/api/v1/SalaryExecution/execute-salary";
