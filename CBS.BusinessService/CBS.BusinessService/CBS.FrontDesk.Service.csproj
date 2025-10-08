@@ -250,20 +250,19 @@
     <Compile Include="Accounting\ProductAccountingHelper.cs" />
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
-
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
+    <Compile Include="CheckManagementSystem\ChequeCertificationServices\GetChequeCertificationsDataTableQuery.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\ChequeClearanceService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\MockCheckClearanceService.cs" />
-
     <Compile Include="Accounts\SalaryProcessedServices.cs" />
-
     <Compile Include="CheckManagementSystem\Configurations\Category\CategoryConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\MockFeeConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
+    <Compile Include="CheckManagementSystem\LossManagementServices\DataTableResult.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\LossManagementService.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\MockLossManagementService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryService.cs" />

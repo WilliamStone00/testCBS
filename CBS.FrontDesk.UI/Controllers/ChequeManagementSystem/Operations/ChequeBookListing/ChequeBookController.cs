@@ -80,7 +80,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 {
                     return Json(new
                     {
-                        draw = query.DataTableOptions.draw,
+                        draw = query.Options.draw,
                         recordsTotal = 0,
                         recordsFiltered = 0,
                         data = new List<object>(),
@@ -149,7 +149,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                     return HttpNotFound("Cheque book not found");
                 }
 
-                var leaf = chequeBook.ChequeLeaves.Find(l => l.id == leafId);
+                var leaf = chequeBook.ChequeLeaves.Find(l => l.Id == leafId);
                 if (leaf == null)
                 {
                     return HttpNotFound("Leaf not found");

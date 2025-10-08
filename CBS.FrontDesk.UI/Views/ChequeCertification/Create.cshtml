@@ -6,193 +6,72 @@
 @model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
 
 <div class="card-header">
-    <h5 class="card-title mb-0 text-success text-start">
-        <i class="mdi mdi-plus-circle me-2 text-success"></i> Certification Details
-    </h5>
+    <h5 class="card-title mb-0 text-success">Create Cheque Certification</h5>
 </div>
 
-
 <div class="card-body">
-    @using (Html.BeginForm("Create", "ChequeCertification", FormMethod.Post, new { id = "createCertificationForm", @class = "needs-validation", novalidate = "novalidate" }))
+    @using (Html.BeginForm("Create", "ChequeCertification", FormMethod.Post, 
+        new { id = "createCertificationForm", @class = "needs-validation", novalidate = "novalidate" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                @Html.LabelFor(model => model.ChequeCertificationID, new { @class = "form-label required" })
-                <div class="input-group">
-                    <span class="input-group-text"><i class="mdi mdi-account"></i></span>
-                    @Html.TextBoxFor(model => model.ChequeCertificationID, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Enter Cheque Certification ID",
-                        maxlength = "50"
-                    })
-                </div>
-                @Html.ValidationMessageFor(model => model.ChequeCertificationID, "", new { @class = "text-danger" })
-                <small class="form-text text-muted">Unique identifier for the member</small>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="mb-3">
-                @Html.LabelFor(model => model.MemberReference, new { @class = "form-label required" })
-                <div class="input-group">
-                    <span class="input-group-text"><i class="mdi mdi-account"></i></span>
-                    @Html.TextBoxFor(model => model.MemberReference, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Enter member reference",
-                        maxlength = "50"
-                    })
-                </div>
-                @Html.ValidationMessageFor(model => model.MemberReference, "", new { @class = "text-danger" })
-                <small class="form-text text-muted"> identifier for the member</small>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="mb-3">
-                @Html.LabelFor(model => model.BranchId, new { @class = "form-label required" })
-                <div class="input-group">
-                    <span class="input-group-text"><i class="mdi mdi-bank"></i></span>
-                    @Html.TextBoxFor(model => model.BranchId, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Enter branch ID",
-                        maxlength = "20"
-                    })
-                </div>
-                @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-                <small class="form-text text-muted">Branch where cheque was issued</small>
-            </div>
-        </div>
-    </div>
-
         <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.ChequeBookId, new { @class = "form-label required" })
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="mdi mdi-book-open"></i></span>
-                        @Html.TextBoxFor(model => model.ChequeBookId, new
-                        {
-                            @class = "form-control",
-                            required = "required",
-                            placeholder = "Enter cheque book ID",
-                            maxlength = "30"
-                        })
-                    </div>
-                    @Html.ValidationMessageFor(model => model.ChequeBookId, "", new { @class = "text-danger" })
-                    <small class="form-text text-muted">Cheque book identifier</small>
-                </div>
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeCertificationID, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeCertificationID, new { @class = "form-control", required = "required", maxlength = "50", placeholder = "Cheque Certification ID" })
+                @Html.ValidationMessageFor(m => m.ChequeCertificationID, "", new { @class = "text-danger" })
             </div>
 
-            <div class="col-md-6">
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.ChequeleafId, new { @class = "form-label required" })
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="mdi mdi-file-document"></i></span>
-                        @Html.TextBoxFor(model => model.ChequeleafId, new
-                        {
-                            @class = "form-control",
-                            required = "required",
-                            placeholder = "Enter cheque leaf ID",
-                            maxlength = "30"
-                        })
-                    </div>
-                    @Html.ValidationMessageFor(model => model.ChequeleafId, "", new { @class = "text-danger" })
-                    <small class="form-text text-muted">Specific leaf identifier</small>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.AccountNumber, new { @class = "form-label required" })
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="mdi mdi-credit-card"></i></span>
-                        @Html.TextBoxFor(model => model.AccountNumber, new
-                        {
-                            @class = "form-control",
-                            required = "required",
-                            placeholder = "Enter account number",
-                            maxlength = "20"
-                        })
-                    </div>
-                    @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
-                    <small class="form-text text-muted">Account associated with the cheque</small>
-                </div>
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.MemberReference, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", required = "required", maxlength = "50", placeholder = "Member Reference" })
+                @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
             </div>
 
-            <div class="col-md-6">
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.Amount, new { @class = "form-label required" })
-                    <div class="input-group">
-                        <span class="input-group-text">₦</span>
-                        @Html.TextBoxFor(model => model.Amount, new
-                        {
-                            @class = "form-control",
-                            type = "number",
-                            step = "0.01",
-                            required = "required",
-                            placeholder = "0.00",
-                            min = "0.01"
-                        })
-                    </div>
-                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
-                    <small class="form-text text-muted">Cheque amount (must be greater than 0)</small>
-                </div>
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.BranchId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", required = "required", maxlength = "20", placeholder = "Branch ID" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeBookId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", required = "required", maxlength = "30", placeholder = "Cheque Book ID" })
+                @Html.ValidationMessageFor(m => m.ChequeBookId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeleafId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeleafId, new { @class = "form-control", required = "required", maxlength = "30", placeholder = "Cheque Leaf ID" })
+                @Html.ValidationMessageFor(m => m.ChequeleafId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.AccountNumber, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", required = "required", maxlength = "20", placeholder = "Account Number" })
+                @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.Amount, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", step = "0.01", min = "0.01", required = "required", placeholder = "Amount" })
+                @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="mb-3">
-            @Html.LabelFor(model => model.Description, new { @class = "form-label" })
-            <div class="input-group">
-                <span class="input-group-text"><i class="mdi mdi-text"></i></span>
-                @Html.TextAreaFor(model => model.Description, new
-                {
-                    @class = "form-control",
-                    rows = 4,
-                    placeholder = "Enter certification description or notes",
-                    maxlength = "500"
-                })
-            </div>
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            <small class="form-text text-muted">Optional description or additional notes (max 500 characters)</small>
+            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4, maxlength = "500", placeholder = "Description (optional)" })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
         </div>
 
-        <div class="alert alert-warning">
-            <i class="mdi mdi-alert-circle-outline me-2"></i>
-            <strong>Please verify all information</strong> before submitting. Once created, the certification will be set to "Pending" status.
+        <div class="d-flex justify-content-between">
+            <button type="reset" form="createCertificationForm" class="btn btn-light">Reset</button>
+            <button type="submit" form="createCertificationForm" class="btn btn-primary">Create Certification</button>
         </div>
     }
 </div>
-
-
-    <div class="d-flex justify-content-between align-items-center">
-
-        @*<a href="@Url.Action("Index", "ChequeCertification")" class="btn btn-secondary">
-            <i class="mdi mdi-arrow-left me-1"></i> Back to List
-        </a>*@
-
-
-        <div>
-            <button type="reset" form="createCertificationForm" class="btn btn-light me-2">
-                <i class="mdi mdi-refresh me-1"></i> Reset
-            </button>
-            <button type="submit" form="createCertificationForm" class="btn btn-primary">
-                <i class="mdi mdi-content-save me-1"></i> Create Certification
-            </button>
-        </div>
-    </div>
-
 
 
 @section Scripts {
