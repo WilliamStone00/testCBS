@@ -1,0 +1,95 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
+
+@{
+    ViewBag.Title = "Loss Declaration Request";
+   
+}
+
+<div class="row">
+    @Html.Partial("_Header")
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    Loss Declaration Request
+                </h5>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SubmitLossRequest", "LossManagement", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.CheckBookID)
+                    @Html.HiddenFor(model => model.CheckLeafID)
+                    @Html.HiddenFor(model => model.CustomerID)
+                    @Html.HiddenFor(model => model.CreatedDate, new { Value = DateTime.Now.ToString("yyyy-MM-dd") })
+
+                    <!-- ✅ keep all your sections exactly as before -->
+                    @* Basic Information, Loss Details, Client Suggestion, Reported By, Status *@
+
+                    <!-- Submit Buttons -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="mdi mdi-send me-1"></i> Submit Loss Declaration
+                            </button>
+                            <a href="@Url.Action("Index","LossManagement")" class="btn btn-label-secondary">
+                                <i class="mdi mdi-close me-1"></i> Cancel
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Toggle Third Party Section
+        function toggleThirdPartySection() {
+            var reportedBy = document.getElementById('LossReportedBy').value;
+            var thirdPartySection = document.getElementById('thirdPartySection');
+
+            if (reportedBy === 'ThirdParty') {
+                thirdPartySection.style.display = 'block';
+                document.getElementById('ThirdPartyName').required = true;
+                document.getElementById('ThirdPartyNationalID').required = true;
+            } else {
+                thirdPartySection.style.display = 'none';
+                document.getElementById('ThirdPartyName').required = false;
+                document.getElementById('ThirdPartyNationalID').required = false;
+            }
+        }
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function () {
+            var lossDateField = document.getElementById('LossDate');
+            if (lossDateField && !lossDateField.value) {
+                var today = new Date().toISOString().split('T')[0];
+                lossDateField.value = today;
+            }
+            toggleThirdPartySection();
+        });
+    </script>
+}

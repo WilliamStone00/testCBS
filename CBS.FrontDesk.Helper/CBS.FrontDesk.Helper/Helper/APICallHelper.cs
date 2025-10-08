@@ -1366,12 +1366,13 @@ namespace CBS.FrontDesk.Helper
         public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
 
-        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
-    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    public static string GetCheckbookDetails = "/api/v1/checkbooks/{checkbookId}/checkleaves";
-    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
-    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
-    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+        public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
+        public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
+        public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
+        public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
+        public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        public static string SubmitLossRequest = "/api/v1/loss-requests";
 
         
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 

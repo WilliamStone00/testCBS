@@ -1,0 +1,65 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckbookDetailDto
+
+@{
+    ViewBag.Title = "Checkbook Details";
+}
+
+<div class="row">
+    @Html.Partial("_Header")
+</div>
+
+<div class="container mt-4">
+    <h3 class="mb-4 text-primary">
+        <i class="mdi mdi-book-information-variant me-2"></i>
+        Checkbook Details
+    </h3>
+
+    <!-- Checkbook Information -->
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">Checkbook Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Checkbook ID:</dt>
+                            <dd class="col-sm-8">@Model.CheckBookId</dd>
+
+                            <dt class="col-sm-4">Category:</dt>
+                            <dd class="col-sm-8">@Model.Category</dd>
+
+                            <dt class="col-sm-4">Status:</dt>
+                            <dd class="col-sm-8">@Model.Status</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Customer ID:</dt>
+                            <dd class="col-sm-8">@Model.CustomerId</dd>
+
+                            <dt class="col-sm-4">Account Number:</dt>
+                            <dd class="col-sm-8">@Model.AccountNumber</dd>
+
+                            <dt class="col-sm-4">Branch Code:</dt>
+                            <dd class="col-sm-8">@Model.BranchCode</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        @Html.Partial("_Filters")
+                    </div>
+                </div>
+    <!-- Check Leaves Table - Updated to match checkbooks table design -->
+  
+         
+                <div id="userTableView">
+                    @Html.Partial("_CheckLeavesTable")
+                </div>
+            
+  
+</div>  

@@ -251,6 +251,7 @@
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
+    <Compile Include="CheckManagementSystem\ChequeCertificationServices\GetChequeCertificationsDataTableQuery.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\ChequeClearanceService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\MockCheckClearanceService.cs" />

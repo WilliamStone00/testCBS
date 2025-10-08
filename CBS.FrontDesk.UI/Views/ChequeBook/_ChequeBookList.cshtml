@@ -16,14 +16,14 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.customerName</td>
-                <td>@item.accountNumber</td>
-                <td>@item.branchName</td>
-                <td>@item.numberOfLeaves</td>
+                <td>@item.CustomerName</td>
+                <td>@item.AccountNumber</td>
+                <td>@item.BranchName</td>
+                <td>@item.NumberOfLeaves</td>
                 <td>
                     @{
                         var badgeClass = "bg-secondary";
-                        switch (item.status)
+                        switch (item.Status)
                         {
                             case "Active": badgeClass = "bg-success"; break;
                             case "Used": badgeClass = "bg-primary"; break;
@@ -31,15 +31,15 @@
                             case "Blocked": badgeClass = "bg-warning"; break;
                         }
                     }
-                    <span class="badge @badgeClass">@item.status</span>
+                    <span class="badge @badgeClass">@item.Status</span>
                 </td>
-                <td>@item.issueDate.ToShortDateString()</td>
+                <td>@item.IssueDate.ToShortDateString()</td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <button class="btn btn-info" onclick="showChequeBookDetails('@item.id')" title="View Details">
+                        <button class="btn btn-info" onclick="showChequeBookDetails('@item.Id')" title="View Details">
                             <i class="mdi mdi-eye"></i>
                         </button>
-                        <button class="btn btn-danger" onclick="showCancelForm('@item.id')" title="Cancel Cheque Book">
+                        <button class="btn btn-danger" onclick="showCancelForm('@item.Id')" title="Cancel Cheque Book">
                             <i class="mdi mdi-cancel"></i>
                         </button>
                     </div>

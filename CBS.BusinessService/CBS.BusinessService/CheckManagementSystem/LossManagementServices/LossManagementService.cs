@@ -13,6 +13,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBookQuery;
 
 namespace CBS.BusinessService.Config
 {
@@ -73,12 +74,12 @@ namespace CBS.BusinessService.Config
 
      
 
-        public async Task<CustomDataTable> GetChequeleavesDataTableAsync(ChequeBookQuery query)
+        public async Task<CustomDataTable> GetChequeleavesDataTableAsync(CheckLeafQuery query)
         {
             try
             {
                 var response = await _lossManagementApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.GetChequeBooksDataTableloss, query);
+                    APICallHelper.GetCheckLeavesByCheckbook, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
@@ -102,12 +103,126 @@ namespace CBS.BusinessService.Config
                 throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
             }
         }
-        public async Task<CheckbookDetailDto> GetCheckLeavesByCheckbook(int checkBookId)
+        public async Task<CheckbookDetailDto> GetCheckLeavesByCheckbook(string KEY)
+        {
+            return await GetCheckbookDetails(KEY);
+
+            //    try
+            //    {
+            //        var response = await _lossManagementApiHelper.GetAsync<ResponseObject<CheckbookDetailDto>>(
+            //            string.Format(APICallHelper.GetCheckLeavesByCheckbook, KEY));
+
+            //        return response.IsSuccess ? response.ApiResponseData.Data : null;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        // Log exception
+            //        throw ex;
+            //    }
+        }
+
+        public async Task<CheckbookDetailDto> GetCheckbookDetails(string KEY)
         {
             try
             {
+
                 var response = await _lossManagementApiHelper.GetAsync<ResponseObject<CheckbookDetailDto>>(
-                    string.Format(APICallHelper.GetCheckLeavesByCheckbook, checkBookId));
+                   string.Format(APICallHelper.GetCheckbookDetails, KEY));
+                return response.IsSuccess ? response.ApiResponseData.Data : null;
+                //    var response = new ResponseObject<CheckbookDetailDto>(
+                //                        data: new CheckbookDetailDto
+                //                        {
+                //                            CheckBookId = KEY,
+                //                            Category = "Personal",
+                //                            Status = "Active",
+                //                            CustomerId = "0030005128",
+                //                            AccountNumber = "703935936432828",
+                //                            BranchCode = "003",
+                //                            CheckLeaves = new List<CheckLeafDto>
+                //                            {
+                //                                new CheckLeafDto
+                //                                {
+                //                                    CheckLeafId = KEY+"001",
+                //                                    Status = "Unused",
+                //                                    CheckBookId = KEY
+                //                                },
+                //                                new CheckLeafDto
+                //                                {
+                //                                    CheckLeafId = KEY+"002",
+                //                                    Status = "Issued",
+                //                                    CheckBookId = KEY
+                //                                },
+                //                                new CheckLeafDto
+                //                                {
+                //                                    CheckLeafId = KEY+"003",
+                //                                    Status = "Cleared",
+                //                                    CheckBookId = KEY
+                //                                }
+                //                            }
+                //                        },
+                //                        statusCode: 200,
+                //                        description: "Request processed successfully",
+                //                        message: "Checkbook details retrieved",
+                //                        status: "Success",
+                //                        errors: new List<string>() // no errors
+                //                    );
+
+
+                //    return response.StatusCode==200 ? response.Data : null;
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw ex;
+            }
+            
+        }
+
+        public async Task<CheckLeafDetailDto> GetCheckLeafDetails(string KEY)
+        {
+            try
+            {
+
+                var response = await _lossManagementApiHelper.GetAsync<ResponseObject<CheckLeafDetailDto>>(
+                   string.Format(APICallHelper.GetCheckbookDetails, KEY));
+                //var response = new ResponseObject<CheckbookDetailDto>(
+                //                    data: new CheckbookDetailDto
+                //                    {
+                //                        CheckBookId = KEY,
+                //                        Category = "Personal",
+                //                        Status = "Active",
+                //                        CustomerId = "0030005128",
+                //                        AccountNumber = "703935936432828",
+                //                        BranchCode = "003",
+                //                        CheckLeaves = new List<CheckLeafDto>
+                //                        {
+                //                            new CheckLeafDto
+                //                            {
+                //                                CheckLeafId = KEY+"001",
+                //                                Status = "Unused",
+                //                                CheckBookId = KEY
+                //                            },
+                //                            new CheckLeafDto
+                //                            {
+                //                                CheckLeafId = KEY+"002",
+                //                                Status = "Issued",
+                //                                CheckBookId = KEY
+                //                            },
+                //                            new CheckLeafDto
+                //                            {
+                //                                CheckLeafId = KEY+"003",
+                //                                Status = "Cleared",
+                //                                CheckBookId = KEY
+                //                            }
+                //                        }
+                //                    },
+                //                    statusCode: 200,
+                //                    description: "Request processed successfully",
+                //                    message: "Checkbook details retrieved",
+                //                    status: "Success",
+                //                    errors: new List<string>() // no errors
+                //                );
+
 
                 return response.IsSuccess ? response.ApiResponseData.Data : null;
             }
@@ -118,44 +233,29 @@ namespace CBS.BusinessService.Config
             }
         }
 
-        public async Task<CheckbookDetailDto> GetCheckbookDetails(string checkBookId)
-        {
-            try
-            {
-                var response = await _lossManagementApiHelper.GetAsync<ResponseObject<CheckbookDetailDto>>(
-                    string.Format(APICallHelper.GetCheckbookDetails, checkBookId));
-
-                return response.IsSuccess ? response.ApiResponseData.Data : null;
-            }
-            catch (Exception ex)
-            {
-                // Log exception
-                throw ex;
-            }
-        }
-
-        public async Task<LossRequestDto> RequestLossForCheckbook(int checkBookId)
+        public async Task<LossRequestDto> RequestLossForCheckbook(string KEY)
         {
             try
             {
                 var response = await _lossManagementApiHelper.GetAsync<ResponseObject<LossRequestDto>>(
-                    string.Format(APICallHelper.RequestLossForCheckbook, checkBookId));
+                    string.Format(APICallHelper.RequestLossForCheckbook, KEY));
 
                 return response.IsSuccess ? response.ApiResponseData.Data : null;
             }
             catch (Exception ex)
             {
-                // Log exception
-                throw ex;
+                // log error
+                throw;
             }
         }
 
-        public async Task<LossRequestDto> RequestLossForCheckLeaf(int checkLeafId)
+
+        public async Task<LossRequestDto> RequestLossForCheckLeaf(string KEY)
         {
             try
             {
                 var response = await _lossManagementApiHelper.GetAsync<ResponseObject<LossRequestDto>>(
-                    string.Format(APICallHelper.RequestLossForCheckLeaf, checkLeafId));
+                    string.Format(APICallHelper.RequestLossForCheckLeaf, KEY));
 
                 return response.IsSuccess ? response.ApiResponseData.Data : null;
             }
