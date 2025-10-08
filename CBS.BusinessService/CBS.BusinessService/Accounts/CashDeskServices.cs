@@ -1,35 +1,35 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Application;
+using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
-using CBS.FrontDesk.Data.Entity.Config;
-
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Irony.Parsing;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
-using CBS.FrontDesk.Data.ReportDataSetDto;
-using CBS.FrontDesk.Data.UserManagement;
 using System.Web;
-using CBS.BusinessService.UserManagement;
-using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using Irony.Parsing;
 using System.Web.Mvc;
-using CBS.BusinessService.Application;
-using DocumentFormat.OpenXml.Bibliography;
-using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
-using Microsoft.Owin.Logging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -387,6 +387,49 @@ namespace CBS.BusinessService.Accounts
                 a.CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account")) ? a.CustomerId
              : "N/A";
                 var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, a);
+                if (response.ApiResponseData != null)
+                {
+                    Branch branch = RetrieveBranchFromSession();
+                    var rpt = MapToDto(branch, response.ApiResponseData.Data);
+                    var rptSource = new List<OtherTransactionDto>();
+                    rptSource.Add(rpt);
+                    HttpContext.Current.Session["rptSource"] = rptSource;
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> RedeemNonMemberSalaryAsync(RedeemTempPayCodeCommand a)
+        {
+            //OtherCashIn
+            try
+            {
+                var (isValid, discrepancyMessage) = ValidateDenominations(a.CurrencyNotes, a.Amount);
+                if (!isValid)
+                {
+                    string errorMessage = $"Other cashIn has a discrepancy. {discrepancyMessage}";
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                    return ExecutionMessage;
+                }
+                
+                a.Naration = string.IsNullOrEmpty(a.Naration) ? "N/A" : a.Naration;
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.RedeemTempCode, a);
                 if (response.ApiResponseData != null)
                 {
                     Branch branch = RetrieveBranchFromSession();

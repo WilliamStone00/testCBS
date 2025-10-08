@@ -295,7 +295,7 @@ namespace CBS.BusinessService
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, $"Disbursement", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.Message);
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                     return ExecutionMessage;
                 }
                 else

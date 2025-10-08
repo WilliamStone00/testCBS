@@ -10712,6 +10712,7 @@
     <Content Include="Views\ChequeBook\_CheckBookData.cshtml" />
     <Content Include="Views\ChequeBook\List.cshtml" />
     <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
+    <Content Include="Views\CashDesk\NonMemberSalaryPayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

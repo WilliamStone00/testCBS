@@ -207,30 +207,37 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterNonMemberAndGenerateTempCode(RegisterNonMemberAndGenerateTempCode cmd)
         {
-            // Wrap in the SalaryExtract the PV expects (so we can re-render on validation errors)
             var vm = new SalaryExtract { RegisterNonMemberAndGenerateTempCode = cmd };
 
             if (!ModelState.IsValid)
             {
-                // Re-render the PV so client can replace the modal body (keeps validation messages)
                 Response.StatusCode = 400;
                 return PartialView("_RegisterNonMemberPv", vm);
             }
 
             try
             {
-                var rsp = await _salaryProcessedServices.Register(cmd);
+                var rsp = await _salaryProcessedServices.Register(cmd); // ExecutionMessages
 
-                return Json(new { success = rsp.Result, status = rsp.MessageStatus, message = Messaging.MessageResult(rsp),data=rsp.Data });
+                if (rsp == null)
+                    return Json(new { success = false, message = "No response." });
 
+                // ✅ make sure we pass the DTO back
+                return Json(new
+                {
+                    success = rsp.Result,                 // bool
+                    status = rsp.MessageStatus,          // optional
+                    message = Messaging.MessageResult(rsp),
+                    data = rsp.Data as TempPayCodeResultDto
+                });
             }
             catch (Exception ex)
             {
-                // Hard error: return JSON error envelope (so client can close dialog and show alert in modal)
                 Response.StatusCode = 500;
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
 
 

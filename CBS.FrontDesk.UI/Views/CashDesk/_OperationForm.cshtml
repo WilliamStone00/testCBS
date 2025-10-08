@@ -138,7 +138,7 @@
                                     <tr>
                                         <td style="display: none;">@d.AccountNumber</td>
                                         <td>@d.AccountType</td>
-                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>@d.Balance.ToString("N2")</td>
                                         <td>
                                             <input type="number"
                                                    class="form-control amount-input shadow-input-boxes"
@@ -349,7 +349,7 @@ else if (ViewBag.Operation == "cashout")
                                     <tr>
                                         <td style="display:none;">@d.AccountNumber</td>
                                         <td>@d.AccountType</td>
-                                        <td>@d.Balance.ToString("#,##0.0")</td>
+                                        <td>@d.Balance.ToString("N2")</td>
                                         <td>
                                             <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
                                         </td>
@@ -363,8 +363,10 @@ else if (ViewBag.Operation == "cashout")
                                             <input type="checkbox" class="form-check-input">
                                         </td>
                                         <td>
-                                            <input type="checkbox" class="form-check-input check-inclussive">
+                                            <input type="checkbox" class="form-check-input check-inclussive" checked disabled>
+                                            <input type="hidden" name="Inclusive" value="true" />
                                         </td>
+
                                     </tr>
                                 }
                             </tbody>
@@ -381,13 +383,7 @@ else if (ViewBag.Operation == "cashout")
                             </tfoot>
                         </table>
                     </div>
-                    @*<div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                                <label for="formValidationDob">Reasons for cash out</label>
-                            </div>
-                        </div>*@
+                   
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
@@ -474,7 +470,7 @@ else if (ViewBag.Operation == "cashoutsws")
                                         <tr>
                                             <td style="display:none;">@d.AccountNumber</td>
                                             <td>@d.AccountType</td>
-                                            <td>@d.Balance.ToString("#,##0.0")</td>
+                                            <td>@d.Balance.ToString("N2")</td>
                                             <td>
                                                 <input type="number" class="form-control amount-input shadow-input-boxes" value="@d.Amount">
                                             </td>
@@ -488,7 +484,8 @@ else if (ViewBag.Operation == "cashoutsws")
                                                 <input type="checkbox" class="form-check-input">
                                             </td>
                                             <td>
-                                                <input type="checkbox" class="form-check-input check-inclussive">
+                                                <input type="checkbox" class="form-check-input check-inclussive" checked disabled>
+                                                <input type="hidden" name="Inclusive" value="true" />
                                             </td>
                                         </tr>
                                     }
@@ -508,13 +505,7 @@ else if (ViewBag.Operation == "cashoutsws")
 
                         </div>
                     </div>
-                    @*<div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                @Html.TextAreaFor(m => m.BulkDeposit.Note, new { @class = "form-control", @style = "height: 75px;", @id = "Note" })
-                                @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                                <label for="formValidationDob">Reasons for cash out</label>
-                            </div>
-                        </div>*@
+                   
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="WithdrawalSWS" id="OperationType" />
@@ -581,11 +572,11 @@ else if (ViewBag.Operation == "repayment")
                                     <tr id="row-@d.Id">
                                         <td style="display:none;">@d.Id</td>
                                         <td>@d.LoanDate.ToString("dd/MM/yy")</td>
-                                        <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
-                                        <td>@d.Balance.ToString("#,##0.0")</td>
-                                        <td>@d.AccrualInterest.ToString("#,##0.0")</td>
-                                        <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
-                                        <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
+                                        <td style="display:none;">@d.LoanAmount.ToString("N2")</td> <!-- Hide Amount column -->
+                                        <td>@d.Balance.ToString("N2")</td>
+                                        <td>@d.AccrualInterest.ToString("N2")</td>
+                                        <td style="display:none;">@d.VatRate.ToString("N20")</td> <!-- Hide V.Rate column -->
+                                        <td style="display:none;">@d.DueAmount.ToString("N2")</td> <!-- Hide Due A column -->
                                         <td>
                                             <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
                                         </td>
@@ -982,7 +973,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                                 }
                                 <tr class="period-total">
                                     <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td style="color:blue"><b>@periodTotal.ToString("#,##0.0")</b></td>
+                                    <td style="color:blue"><b>@periodTotal.ToString("N2")</b></td>
                                     <td></td>
                                 </tr>
                             }
@@ -991,7 +982,7 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
                             <tr>
                                 <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
                                 <td id="tableTotal">0</td>
-                                <td style="color:blue"><b>G.T: @Model.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("#,##0.0")</b></td>
+                                <td style="color:blue"><b>G.T: @Model.LoanApplicationFees.Sum(x => x.FeeAmount).ToString("N2")</b></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>

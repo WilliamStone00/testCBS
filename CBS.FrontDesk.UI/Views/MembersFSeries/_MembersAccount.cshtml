@@ -48,9 +48,9 @@
                             <tr>
                                 <td style="width: 15%">@d.accountNumber</td>
                                 <td style="width: 37%">@d.product.Name</td>
-                                <td style="width: 10%" class="text-end">@d.balance.ToString("#,##0.0")</td>
-                                <td style="width: 10%" class="text-end">@d.blockedAmount.ToString("#,##0.0")</td>
-                                <td style="width: 10%" class="text-end">@ActualBalance.ToString("#,##0.0")</td>
+                                <td style="width: 10%" class="text-end">@d.balance.ToString("N2")</td>
+                                <td style="width: 10%" class="text-end">@d.blockedAmount.ToString("N2")</td>
+                                <td style="width: 10%" class="text-end">@ActualBalance.ToString("N2")</td>
 
                                 <!-- Hidden fields for calculations or scripts -->
                                 <td style="display:none">
@@ -75,9 +75,9 @@
                     <tfoot>
                         <tr class="table-light fw-bold text-end">
                             <td colspan="2" class="text-end">Total:</td>
-                            <td class="text-black text-end">@totalBalance.ToString("#,##0.0")</td>
-                            <td class="text-warning text-end">@totalBlocked.ToString("#,##0.0")</td>
-                            <td class="text-info text-end">@totalActual.ToString("#,##0.0")</td>
+                            <td class="text-black text-end">@totalBalance.ToString("N2")</td>
+                            <td class="text-warning text-end">@totalBlocked.ToString("N2")</td>
+                            <td class="text-info text-end">@totalActual.ToString("N2")</td>
                             <td></td>
                             <td class="text-center">
                                 <button class="btn btn-outline-primary btn-sm" onclick="ModalShowUp()" title="Print all account statements">

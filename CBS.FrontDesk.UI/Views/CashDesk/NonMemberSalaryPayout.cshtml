@@ -1,0 +1,907 @@
+﻿@{
+    ViewBag.Title = "Non-Member Salary Payout";
+    var gls = (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>();
+}
+
+<style>
+    /* ===== Layout polish & readability ===== */
+    .mini {
+        font-size: .95rem
+    }
+
+    .badge-pill {
+        border-radius: 999px;
+        padding: .25rem .65rem
+    }
+
+    .ash {
+        background: #f5f5f7;
+        border: 1px solid #e6e6ea;
+        border-radius: .5rem
+    }
+
+    /* header & cards tighter */
+    .card-header, .card-body {
+        padding: .65rem 1rem
+    }
+
+    .tight .row > [class*="col-"] {
+        margin: .35rem 0
+    }
+
+    /* header band */
+    .page-band {
+        background: #f7fafc;
+        border: 1px solid #e6ecf1;
+        border-radius: .75rem;
+    }
+
+    .page-title {
+        font-weight: 700;
+        letter-spacing: .2px;
+    }
+
+    /* Accounting date chip */
+    .acc-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        font-weight: 600;
+        color: #2d3748;
+        background: #fff;
+        border: 1px solid #d7dde4;
+        border-radius: .5rem;
+        padding: .25rem .5rem;
+    }
+
+        .acc-chip input {
+            width: 165px;
+            text-align: center;
+            font-weight: 700;
+            border: 0;
+            background: transparent
+        }
+
+    /* total badge on the right of search row */
+    .total-badge {
+        display: inline-block;
+        background: #f6f7f9;
+        border: 1px solid #dfe3e8;
+        color: #111;
+        font-weight: 700;
+        border-radius: .5rem;
+        padding: .35rem .6rem
+    }
+
+    /* Summary dashboard rows */
+    .sum-row {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        margin: .125rem 0
+    }
+
+        .sum-row i {
+            color: #6b7280
+        }
+
+    /* Select2 inside floating group & table cells */
+    .alloc-cell {
+        position: relative;
+        overflow: visible
+    }
+
+        .alloc-cell .select2-container {
+            width: 100% !important
+        }
+
+        .alloc-cell .select2-selection--single {
+            max-width: 100%
+        }
+
+        .alloc-cell .select2-selection__rendered {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .alloc-cell .select2-dropdown {
+            width: 100% !important;
+            max-width: 100% !important
+        }
+
+    .select2-container--open .select2-dropdown {
+        z-index: 9999 !important
+    }
+
+    .select2-results__option {
+        white-space: normal
+    }
+
+    /* floating fields height */
+    .form-floating > .form-control {
+        min-height: 2.6rem
+    }
+
+    .form-floating > label {
+        padding: .25rem .75rem
+    }
+</style>
+
+<!-- ===== Page Header (short & readable) ===== -->
+<div class="page-band p-3 mb-2 text-center">
+    <h2 class="page-title text-primary mb-2">
+        <i class="mdi mdi-cash me-2"></i> Non-Member Salary Payout
+        <span class="badge bg-danger ms-2">Expense</span>
+    </h2>
+    <div class="text-muted">Cash-out posted directly to the branch chart of accounts.</div>
+    <div class="text-muted small">Use only for non-member salary payouts from petty cash/teller vault.</div>
+</div>
+
+<!-- ===== Tips (compact, collapsible) ===== -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i>Tips for Non-Member Salary Payout</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapsePayoutTips" aria-expanded="false" aria-controls="collapsePayoutTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapsePayoutTips" class="collapse">
+        <div class="card-body mini">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-key-outline text-primary me-2"></i> Enter the <b>salary code</b> then click <b>Find</b>.</li>
+                <li><i class="mdi mdi-account-edit text-primary me-2"></i> Verify/edit <b>Name, CNI, Telephone</b> and add a clear <b>Narration</b>.</li>
+                <li><i class="mdi mdi-cash-multiple text-success me-2"></i> Denominations (left) must equal the payout amount.</li>
+                <li><i class="mdi mdi-bank text-primary me-2"></i> Select the <b>Source GL</b> the cash leaves from (petty cash, vault…).</li>
+                <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> Confirm details carefully in the dialog before posting.</li>
+                <li><i class="mdi mdi-printer-check text-secondary me-2"></i> After posting, use <b>Re-Print</b> in the receipt view to print.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Main: Denominations + Payout ===== -->
+<div class="row g-3">
+    <!-- Left: Denominations -->
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-header text-dark fw-semibold">Denomination</div>
+            <div class="card-body p-2">
+                @Html.Partial("_DenominationBreakDown")
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Payout -->
+    <div class="col-md-9">
+        <div class="card shadow-sm tight">
+            <!-- Header with clear Accounting Date -->
+            <div class="card-header d-flex align-items-center justify-content-between bg-light border-bottom">
+                <div class="fw-bold text-dark d-flex align-items-center">
+                    <i class="mdi mdi-cash text-danger me-2"></i> Non-Member Salary Payout
+                </div>
+                <div class="acc-chip">
+                    <span>Accounting Date</span>
+                    <input id="AccountingDate" type="date" readonly
+                           value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+
+            <div class="card-body pt-3 pb-3">
+                <!-- Salary code search -->
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-7">
+                        <div class="form-floating input-group">
+                            <input id="PlainCode" class="form-control" placeholder="Enter salary code…" autocomplete="off" />
+                            <label for="PlainCode">Salary Temp Pay Code</label>
+                            <button type="button" id="btnFindPayCode" class="btn btn-outline-primary" onclick="SalaryPay.search()">
+                                <i class="mdi mdi-magnify me-1"></i> Find
+                            </button>
+                        </div>
+                        <div class="form-text">Type the salary temp pay code and click <b>Find</b>.</div>
+                    </div>
+
+                    <div class="col-md-5 text-md-end">
+                        @*<span class="total-badge">
+                    Total amount:&nbsp;<span id="totalNoteAmount" data-amt="0">0</span>
+                </span>*@
+                        <span class="total-badge formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
+                            Total : <b>0.0</b>
+                        </span>
+                        <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
+                    </div>
+                </div>
+
+                <!-- Summary dashboard (appears after search) -->
+                <div id="CodeSummary" class="ash p-3 mt-3" style="display:none;">
+                    <input type="hidden" id="TempPayCodeId" />
+                    <div class="row mini g-3">
+                        <div class="col-md-6">
+                            <div class="sum-row">
+                                <i class="mdi mdi-account-outline"></i>
+                                <div><b>Name:</b> <span id="Sum_Name">-</span></div>
+                            </div>
+                            <div class="sum-row">
+                                <i class="mdi mdi-card-account-details-outline"></i>
+                                <div><b>CNI:</b> <span id="Sum_Cni">-</span></div>
+                            </div>
+                            <div class="sum-row">
+                                <i class="mdi mdi-domain"></i>
+                                <div><b>Branch:</b> <span id="Sum_Branch">-</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="sum-row">
+                                <i class="mdi mdi-cash-multiple"></i>
+                                <div><b>Amount:</b> <span id="Sum_Amount">0</span> <span id="Sum_Currency"></span></div>
+                            </div>
+                            <div class="sum-row">
+                                <i class="mdi mdi-timer-sand"></i>
+                                <div><b>Expires:</b> <span id="Sum_Expires">-</span></div>
+                            </div>
+                            <div class="sum-row">
+                                <i class="mdi mdi-shield-check-outline"></i>
+                                <div>
+                                    <b>Status:</b> <span id="Sum_Status" class="badge badge-pill bg-secondary">-</span>
+                                    <span class="text-muted"> (Attempts left: <span id="Sum_Attempts">-</span>)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beneficiary details -->
+                <div class="row g-3 mt-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input id="Name" class="form-control" placeholder="Beneficiary Name" />
+                            <label for="Name">Beneficiary Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating">
+                            <input id="CustomerId" class="form-control" placeholder="Customer ID" readonly />
+                            <label for="CustomerId">Member</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input id="CNI" class="form-control" placeholder="CNI" />
+                            <label for="CNI">CNI</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input id="TelephoneNumber" class="form-control" inputmode="tel" placeholder="Telephone" />
+                            <label for="TelephoneNumber">Telephone</label>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+
+                <!-- Narration -->
+                <div class="row g-3 mt-1">
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <textarea id="DepositerNote" class="form-control" style="height:72px;" placeholder="Narration"></textarea>
+                            <label for="DepositerNote">Narration / Description</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Source GL -->
+                <div class="row g-3 mt-2">
+                    <div class="col-md-12">
+                        <div class="form-floating alloc-cell">
+                            <select id="SourceChartOfAccountId" class="form-control select2" data-placeholder="Select source GL">
+                                <option value=""></option>
+                                @foreach (var acc in (IEnumerable<dynamic>)ViewBag.AccountIds ?? new List<dynamic>())
+                                {
+                                    <option value="@acc.Value">@acc.Text</option>
+                                }
+                            </select>
+                            <label for="SourceChartOfAccountId">Source GL (cash box)</label>
+                        </div>
+                        <div class="form-text">Where the payout leaves from (e.g, Salary Payable GL, Other Selected GL).</div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button id="btnPostSalary" class="btn btn-primary" onclick="SalaryPay.submit()">
+                        <i class="mdi mdi-send me-1"></i> Post
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                        <i class="mdi mdi-refresh me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        /* =======================================================================
+           Non-Member Salary Payout (Redeem TempPayCode) – Full JS (updated)
+           Depends on: jQuery, alertify, select2, your collectCurrencyNotes()
+           HTML ids used:
+             #PlainCode, #TempPayCodeId, #SourceChartOfAccountId, #Name, #CNI,
+             #TelephoneNumber, #DepositerNote, #totalNoteAmount, #AccountingDate,
+             #lblDepositRequest_amount, #CodeSummary
+        ======================================================================= */
+
+        (function salaryPayoutModule() {
+            // ---------- Utils ----------
+            function money(n) {
+                const v = parseFloat(n || 0);
+                return v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
+            function getVal(sel) { return ($(sel).val() || '').trim(); }
+            function denomTotal() { return parseFloat($('#totalNoteAmount').val() || '0') || 0; }
+            function isPosting($btn) { return $btn && $btn.prop('disabled'); }
+
+            // Default to Payout_Cash for this page
+            function getSourceType() {
+                const v = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
+                return v ? v : 'Payout_Cash';
+            }
+
+            // ---------- Getters ----------
+            function getPlainCode() { return getVal('#PlainCode'); }
+            function getTempPayCodeId() { return getVal('#TempPayCodeId'); }
+            function getSourceGL() { return getVal('#SourceChartOfAccountId'); }
+            function getNarration() { return getVal('#DepositerNote'); }
+            function getName() { return getVal('#Name'); }
+            function getCNI() { return getVal('#CNI'); }
+            function getTelephone() { return getVal('#TelephoneNumber'); }
+            function getCustomerId() { return getVal('#CustomerId'); }
+            function getAccountingDate() { return $('#AccountingDate').val() || new Date().toISOString().slice(0, 10); }
+            function getCurrencyNotesSafe() { try { return (typeof collectCurrencyNotes === 'function') ? collectCurrencyNotes() : {}; } catch { return {}; } }
+
+            // ---------- State ----------
+            let found = null; // populated by search
+
+            function setHeaderTotal(amount) {
+                $('#lblDepositRequest_amount').html('Total amount: <b>' + money(amount || 0) + '</b>');
+            }
+
+            // ---------- Fill summary ----------
+            function fillSummaryCard(data) {
+                found = data || null;
+
+                if (!found) {
+                    $('#CodeSummary').hide();
+                    $('#TempPayCodeId').val('');
+                    setHeaderTotal(0);
+                    return;
+                }
+
+                // Core state
+                $('#TempPayCodeId').val(found.id || '');
+                $('#CustomerId').val(found.beneficiaryReference || '');
+                setHeaderTotal(found.amount || 0);
+
+                // Labels
+                $('#Sum_Name').text(found.beneficiaryName || '-');
+                $('#Sum_Cni').text(found.cni || '-');
+                $('#Sum_Branch').text(found.branchName || found.branch || '-');
+                $('#Sum_Amount').text(money(found.amount || 0));
+                $('#Sum_Currency').text(found.currency || '');
+                $('#Sum_Expires').text(found.expiresAt ? new Date(found.expiresAt).toLocaleString() : '-');
+                $('#Sum_Attempts').text(typeof found.attemptsLeft === 'number' ? found.attemptsLeft : '-');
+
+                // Status badge
+                const status = (found.status || '').toLowerCase();
+                const $st = $('#Sum_Status').text(found.status || '-').removeClass('bg-secondary bg-success bg-danger');
+                if (status === 'active') $st.addClass('bg-success');
+                else if (status === 'redeemed' || status === 'expired') $st.addClass('bg-danger');
+                else $st.addClass('bg-secondary');
+
+                // Pre-fill fields if empty
+                if (!$('#Name').val()) $('#Name').val(found.beneficiaryName || '');
+                if (!$('#CNI').val()) $('#CNI').val(found.cni || '');
+                if (!$('#TelephoneNumber').val()) $('#TelephoneNumber').val(found.telephone || found.phone || '');
+
+                // --- Detailed default narration (with date) ---
+                if (!$('#DepositerNote').val()) {
+                    const name = (found.beneficiaryName || '').trim() || 'beneficiary';
+                    const cni = (found.cni || '').trim();
+                    const plain = ($('#PlainCode').val() || '').trim();
+                    const branch = (found.branchName || found.branch || 'Branch').trim();
+                    const amt = money(found.amount || 0);
+                    const cur = (found.currency || 'FCFA').trim();
+
+                    // Today’s date formatted dd/MM/yyyy
+                    const today = new Date();
+                    const dateStr = today.toLocaleDateString('fr-FR'); // e.g., 30/09/2025
+
+                    const narration = [
+                        `Salary payout for ${name}`,
+                        cni ? `(CNI ${cni})` : null,
+                        plain ? `via TempPayCode ${plain}` : null,
+                        `— ${branch}.`,
+                        `Amount: ${amt} ${cur}.`,
+                        `Date: ${dateStr}`
+                    ].filter(Boolean).join(' ');
+
+                    $('#DepositerNote').val(narration);
+                }
+
+                $('#CodeSummary').slideDown(120);
+            }
+
+            // ---------- Build Command ----------
+            function buildCommand() {
+                return {
+                    TempPayCodeId: getTempPayCodeId() || '',
+                    PlainCode: getPlainCode() || '',
+                    Amount: parseFloat((found && found.amount) || 0) || 0,
+                    Naration: getNarration() || '',
+
+                    NoneMeberName: getName() || (found && found.beneficiaryName) || '',
+                    CNI: getCNI() || (found && found.cni) || '',
+                    Telephone: getTelephone() || (found && found.telephone) || '',
+
+                    SourceChartOfAccountId: getSourceGL() || '',
+                    SourceType: getSourceType() || 'Payout_Cash',
+                    TransactionType: 'Salary_Payout',
+
+                    CustomerId: getCustomerId() || '0',
+                    CurrencyNotes: getCurrencyNotesSafe() || {}
+                };
+            }
+
+            // ---------- Validation ----------
+            function validateBeforePost(cmd) {
+                if (!found) { appalert('Find a salary code first.', 3, 1); return false; }
+                if (!cmd.PlainCode) { appalert('Enter salary code.', 3, 1); return false; }
+                if (!cmd.TempPayCodeId) { appalert('Invalid salary code reference.', 3, 1); return false; }
+                if (!cmd.NoneMeberName) { appalert('Enter beneficiary name.', 3, 1); return false; }
+                if (!cmd.CNI) { appalert('Enter CNI number.', 3, 1); return false; }
+                if (!cmd.Telephone) { appalert('Enter telephone number.', 3, 1); return false; }
+                if (!cmd.SourceChartOfAccountId) { appalert('Select a Source GL account.', 3, 1); return false; }
+
+                const notes = denomTotal();
+                if (!(notes > 0)) { appalert('Enter cash denominations.', 3, 1); return false; }
+
+                if (Math.abs(notes - cmd.Amount) > 0.0001) {
+                    appalert(`Amount mismatch!\nExpected: ${money(cmd.Amount)}\nDenominations: ${money(notes)}\nDifference: ${money(notes - cmd.Amount)}`, 3, 1);
+                    return false;
+                }
+                return true;
+            }
+
+            // ---------- Confirm UI ----------
+            function esc(s) { return (s == null ? '' : String(s)).replace(/[<&>]/g, m => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[m])); }
+
+            function buildConfirmHtml(cmd) {
+                const $sel = $('#SourceChartOfAccountId');
+                const srcGlText = ($sel.find('option:selected').text() || '').trim();
+                const srcGlVal = ($sel.val() || '').trim();
+                const srcGlLabel = srcGlText || srcGlVal || '-';
+                const postingStr = `Debit ${srcGlLabel} → Credit Cash 57102`;
+
+                const notes = denomTotal();
+                const diff = notes - cmd.Amount;
+
+                return `
+                <div style="background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:12px">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:0.95rem">
+                    <div><b>Operation:</b> Non-Member Salary Payout</div>
+                    <div><b>Accounting Date:</b> ${getAccountingDate()}</div>
+                    <div><b>Salary Code:</b> ${esc(cmd.PlainCode)}</div>
+                    <div><b>Status:</b> ${(found?.status) || '-'} &nbsp; <span class="text-muted">(Attempts left: ${(found?.attemptsLeft ?? '-')})</span></div>
+                    <div><b>Beneficiary:</b> ${esc(cmd.NoneMeberName)}</div>
+                    <div><b>CNI:</b> ${esc(cmd.CNI)}</div>
+                    <div><b>Telephone:</b> ${esc(cmd.Telephone)}</div>
+                    <div><b>Source GL:</b> ${esc(srcGlLabel)}</div>
+                    ${cmd.Naration ? `<div style="grid-column:1/-1"><b>Narration:</b> ${esc(cmd.Naration)}</div>` : ''}
+                    <div style="grid-column:1/-1"><b>Posting (double–entry):</b> ${postingStr}</div>
+                  </div>
+                </div>
+                <div style="border:1px solid #ddd;border-radius:6px;overflow:hidden;margin-top:8px">
+                  <table style="width:100%;border-collapse:collapse">
+                    <thead>
+                      <tr style="background:#f0f0f0">
+                        <th style="padding:8px;text-align:left">Item</th>
+                        <th style="padding:8px;text-align:right;width:160px">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td style="padding:8px">Salary Amount</td><td style="padding:8px;text-align:right"><b>${money(cmd.Amount)}</b></td></tr>
+                      <tr><td style="padding:8px">Total Notes (Denominations)</td><td style="padding:8px;text-align:right">${money(notes)}</td></tr>
+                      <tr><td style="padding:8px">Difference</td><td style="padding:8px;text-align:right">${money(diff)}</td></tr>
+                    </tbody>
+                  </table>
+                </div>`;
+                    }
+
+            // ---------- Submit ----------
+            function submitPayout($btn) {
+                const cmd = buildCommand();
+                if (!validateBeforePost(cmd)) return;
+
+                const html = buildConfirmHtml(cmd);
+                alertify.confirm('Confirm Salary Payout', html,
+                    function onOk() {
+                        if ($btn) $btn.prop('disabled', true);
+                        $.ajax({
+                            url: '/CashDesk/RedeemNonMemberSalary',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(cmd),
+                            success: function (r) {
+                                if (r && r.success) {
+                                    appalert(r.message || 'Payout posted successfully.', 1, 1);
+                                    if (r.redirectUrl) window.open(r.redirectUrl, '_blank');
+                                    if (window.PageReload) PageReload();
+                                } else {
+                                    appalert((r && r.message) || 'Failed to post payout.', 3, 1);
+                                }
+                            },
+                            error: function () { appalert('Server error while posting.', 0, 1); }
+                        }).always(function () {
+                            if ($btn) $btn.prop('disabled', false);
+                        });
+                    },
+                    function onCancel() { appalert('Operation cancelled.', 3, 1); }
+                );
+            }
+
+            // ---------- Lookup ----------
+            let _lookupBusy = false;
+            function lookupPlainCode(ev) {
+                if (ev && ev.preventDefault) ev.preventDefault();
+                if (_lookupBusy) return;
+                _lookupBusy = true;
+
+                const code = getPlainCode();
+                if (!code) { appalert('Enter a salary code.', 3, 1); _lookupBusy = false; return; }
+
+                const $btn = $('#btnFindPayCode');
+                const oldHtml = $btn.html();
+                if ($btn.length) $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Find');
+
+                $.getJSON('/CashDesk/LookupTempPayCode', { plainCode: code })
+                    .done(r => { if (r && r.ok && r.data) fillSummaryCard(r.data); else { fillSummaryCard(null); appalert(r?.msg || 'Code not found.', 3, 1); } })
+                    .fail(() => { fillSummaryCard(null); appalert('Lookup failed. Please try again.', 0, 1); })
+                    .always(() => { _lookupBusy = false; if ($btn.length) $btn.prop('disabled', false).html(oldHtml); });
+            }
+
+            // ---------- Public API ----------
+            window.SalaryPay = {
+                search: lookupPlainCode,
+                submit: function () { submitPayout($('#btnPostSalary')); }
+            };
+
+            // ---------- Init ----------
+            $(function () {
+                if ($ && $.fn.select2) {
+                    $('#SourceChartOfAccountId').not('.select2-hidden-accessible').select2({
+                        width: 'resolve',
+                        dropdownAutoWidth: true,
+                        placeholder: 'Select Source GL',
+                        allowClear: true
+                    });
+                }
+
+                $(document).off('keydown.salaryFind', '#PlainCode').on('keydown.salaryFind', '#PlainCode', function (e) {
+                    if (e.key === 'Enter') { e.preventDefault(); lookupPlainCode(e); }
+                });
+
+                $(document).off('click.salaryFind', '#btnFindPayCode').on('click.salaryFind', '#btnFindPayCode', function (e) { lookupPlainCode(e); });
+
+                $(document).off('click.salaryPost', '#btnPostSalary').on('click.salaryPost', '#btnPostSalary', function () {
+                    const $btn = $(this); if (isPosting($btn)) return; submitPayout($btn);
+                });
+            });
+
+        })();
+
+
+        //(function salaryPayoutModule() {
+        //    // ---------- Utils ----------
+        //    function money(n) {
+        //        const v = parseFloat(n || 0);
+        //        return v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        //    }
+        //    function getVal(sel) { return ($(sel).val() || '').trim(); }
+        //    function denomTotal() { return parseFloat($('#totalNoteAmount').val() || '0') || 0; }
+        //    function isPosting($btn) { return $btn && $btn.prop('disabled'); }
+
+        //    // Default to Payout_Cash for this page
+        //    function getSourceType() {
+        //        const v = $("input[name='BulkDeposit.OtherTransaction.SourceType']:checked").val();
+        //        return v ? v : 'Payout_Cash';
+        //    }
+
+        //    // ---------- Getters ----------
+        //    function getPlainCode() { return getVal('#PlainCode'); }
+        //    function getTempPayCodeId() { return getVal('#TempPayCodeId'); }
+        //    function getSourceGL() { return getVal('#SourceChartOfAccountId'); }
+        //    function getNarration() { return getVal('#DepositerNote'); }
+        //    function getName() { return getVal('#Name'); }
+        //    function getCNI() { return getVal('#CNI'); }
+        //    function getTelephone() { return getVal('#TelephoneNumber'); }
+        //    function getCustomerId() { return getVal('#customerId'); } // optional
+        //    function getAccountingDate() { return $('#AccountingDate').val() || new Date().toISOString().slice(0, 10); }
+        //    function getCurrencyNotesSafe() { try { return (typeof collectCurrencyNotes === 'function') ? collectCurrencyNotes() : {}; } catch { return {}; } }
+
+        //    // ---------- State ----------
+        //    let found = null; // populated by search
+
+        //    // Update “TotalAmount …” pill in header
+        //    function setHeaderTotal(amount) {
+        //        $('#lblDepositRequest_amount').html('Total amount: <b>' + money(amount || 0) + '</b>');
+        //    }
+
+        //    // Fill summary & map fields
+        //    function fillSummaryCard(data) {
+        //        found = data || null;
+
+        //        if (!found) {
+        //            $('#CodeSummary').hide();
+        //            $('#TempPayCodeId').val('');
+        //            setHeaderTotal(0);
+        //            return;
+        //        }
+
+        //        // Map core state/amount
+        //        $('#TempPayCodeId').val(found.id || '');
+        //        setHeaderTotal(found.amount || 0);
+
+        //        // Map labels
+        //        $('#Sum_Name').text(found.beneficiaryName || '-');
+        //        $('#Sum_Cni').text(found.cni || '-');
+        //        $('#Sum_Branch').text(found.branchName || found.branch || '-');
+        //        $('#Sum_Amount').text(money(found.amount || 0));
+        //        $('#Sum_Currency').text(found.currency || '');
+        //        $('#Sum_Expires').text(found.expiresAt ? new Date(found.expiresAt).toLocaleString() : '-');
+        //        $('#Sum_Attempts').text(typeof found.attemptsLeft === 'number' ? found.attemptsLeft : '-');
+
+        //        // Status badge coloring
+        //        const status = (found.status || '').toLowerCase();
+        //        const $st = $('#Sum_Status').text(found.status || '-').removeClass('bg-secondary bg-success bg-danger');
+        //        if (status === 'active') $st.addClass('bg-success');
+        //        else if (status === 'redeemed' || status === 'expired') $st.addClass('bg-danger');
+        //        else $st.addClass('bg-secondary');
+
+        //        // Pre-fill editable inputs (only overwrite if empty or same person)
+        //        const currentName = $('#Name').val();
+        //        if (!currentName || currentName.trim().length < 2) $('#Name').val(found.beneficiaryName || '');
+        //        const currentCni = $('#CNI').val();
+        //        if (!currentCni) $('#CNI').val(found.cni || '');
+
+        //        // Show summary
+        //        $('#CodeSummary').slideDown(120);
+        //    }
+
+        //    // ---------- Build Command ----------
+        //    function buildCommand() {
+        //        // prefer UI; fall back to found for person fields
+        //        const name = getName() || (found && (found.beneficiaryName || found.name)) || '';
+        //        const cni = getCNI() || (found && found.cni) || '';
+        //        const tel = getTelephone() || (found && (found.telephone || found.phone || found.msisdn)) || '';
+
+        //        return {
+        //            TempPayCodeId: (getTempPayCodeId() || ''),
+        //            PlainCode: (getPlainCode() || ''),
+        //            Amount: parseFloat((found && found.amount) || 0) || 0, // lookup is source of truth
+        //            Naration: (getNarration() || ''),
+
+        //            NoneMeberName: name,
+        //            CNI: cni,
+        //            Telephone: tel,
+
+        //            SourceChartOfAccountId: (getSourceGL() || ''),
+        //            SourceType: (getSourceType() || 'Payout_Cash'),
+        //            TransactionType: 'Expenses',
+
+        //            CustomerId: (getCustomerId() || '0'),      // never null (API shows it as nullable)
+        //            CurrencyNotes: (getCurrencyNotesSafe() || {}) // never null object
+        //        };
+        //    }
+
+        //    // ---------- Validation ----------
+        //    function validateBeforePost(cmd) {
+        //        if (!found) { appalert('Find a salary code first.', 3, 1); return false; }
+        //        if (!cmd.PlainCode) { appalert('Enter salary code.', 3, 1); return false; }
+        //        if (!cmd.TempPayCodeId) { appalert('Invalid salary code reference.', 3, 1); return false; }
+        //        if (!cmd.NoneMeberName) { appalert('Enter beneficiary name.', 3, 1); return false; }
+        //        if (!cmd.CNI) { appalert('Enter CNI number.', 3, 1); return false; }
+        //        if (!cmd.Telephone) { appalert('Enter telephone number.', 3, 1); return false; }
+        //        if (!cmd.SourceChartOfAccountId) { appalert('Select a Source GL account.', 3, 1); return false; }
+
+        //        const notes = denomTotal();
+        //        if (!(notes > 0)) { appalert('Enter cash denominations.', 3, 1); return false; }
+
+        //        if (Math.abs(notes - cmd.Amount) > 0.0001) {
+        //            appalert(`Amount mismatch!\nExpected: ${money(cmd.Amount)}\nDenominations: ${money(notes)}\nDifference: ${money(notes - cmd.Amount)}`, 3, 1);
+        //            return false;
+        //        }
+        //        return true;
+        //    }
+
+        //    // ---------- Confirmation (detailed & readable) ----------
+        //    // keep your other functions as-is
+
+        //    // tiny safe-text helper (local to this file; no globals changed)
+        //    function esc(s) { return (s == null ? '' : String(s)).replace(/[<&>]/g, m => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[m])); }
+
+        //    // ---------- Confirmation (detailed & readable) ----------
+        //    function buildConfirmHtml(cmd) {
+        //        // Source GL (label + value)
+        //        const $sel = $('#SourceChartOfAccountId');
+        //        const srcGlText = ($sel.find('option:selected').text() || '').trim();
+        //        const srcGlVal = ($sel.val() || '').trim();
+
+        //        // Friendly label + posting line
+        //        const srcGlLabel = srcGlText || srcGlVal || '-';
+        //        const postingStr = `Debit ${srcGlLabel} &nbsp;→&nbsp; Credit Cash 57102`;
+
+        //        const notes = denomTotal();
+        //        const diff = notes - cmd.Amount;
+
+        //        const grid = `
+        //            <div style="background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:12px">
+        //              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:0.95rem">
+        //                <div><b>Operation:</b> Non-Member Salary Payout</div>
+        //                <div><b>Accounting Date:</b> ${getAccountingDate()}</div>
+        //                <div><b>Salary Code:</b> ${esc(cmd.PlainCode)}</div>
+        //                <div><b>Status:</b> ${(found?.status) || '-'} &nbsp; <span class="text-muted">(Attempts left: ${(found?.attemptsLeft ?? '-')})</span></div>
+        //                <div><b>Beneficiary:</b> ${esc(cmd.NoneMeberName)}</div>
+        //                <div><b>CNI:</b> ${esc(cmd.CNI)}</div>
+        //                <div><b>Telephone:</b> ${esc(cmd.Telephone)}</div>
+        //                <div><b>Source GL:</b> ${esc(srcGlLabel)}</div>
+        //                ${cmd.Naration ? `<div style="grid-column:1/-1"><b>Narration:</b> ${esc(cmd.Naration)}</div>` : ''}
+        //                <div style="grid-column:1/-1"><b>Posting (double–entry):</b> ${postingStr}</div>
+        //              </div>
+        //            </div>`;
+
+        //                        const table = `
+        //            <div style="border:1px solid #ddd;border-radius:6px;overflow:hidden;margin-top:8px">
+        //              <table style="width:100%;border-collapse:collapse">
+        //                <thead>
+        //                  <tr style="background:#f0f0f0">
+        //                    <th style="padding:8px;text-align:left">Item</th>
+        //                    <th style="padding:8px;text-align:right;width:160px">Amount</th>
+        //                  </tr>
+        //                </thead>
+        //                <tbody>
+        //                  <tr>
+        //                    <td style="padding:8px">Salary Amount</td>
+        //                    <td style="padding:8px;text-align:right"><b>${money(cmd.Amount)}</b></td>
+        //                  </tr>
+        //                  <tr>
+        //                    <td style="padding:8px">Total Notes (Denominations)</td>
+        //                    <td style="padding:8px;text-align:right">${money(notes)}</td>
+        //                  </tr>
+        //                  <tr>
+        //                    <td style="padding:8px">Difference</td>
+        //                    <td style="padding:8px;text-align:right">${money(diff)}</td>
+        //                  </tr>
+        //                </tbody>
+        //              </table>
+        //            </div>`;
+
+        //        return grid + table;
+        //    }
+
+        //    function submitPayout($btn) {
+        //        const cmd = buildCommand();
+        //        if (!validateBeforePost(cmd)) return;
+
+        //        const html = buildConfirmHtml(cmd);
+        //        alertify.confirm(
+        //            'Confirm Salary Payout',
+        //            html,
+        //            function onOk() {
+        //                if ($btn) $btn.prop('disabled', true);
+        //                $.ajax({
+        //                    url: '/CashDesk/RedeemNonMemberSalary',
+        //                    type: 'POST',
+        //                    contentType: 'application/json',
+        //                    data: JSON.stringify(cmd),
+        //                    success: function (r) {
+        //                        if (r && r.success) {
+        //                            appalert(r.message || 'Payout posted successfully.', 1, 1);
+        //                            if (r.redirectUrl) window.open(r.redirectUrl, '_blank'); // receipt / re-print
+        //                            if (window.PageReload) PageReload();
+        //                        } else {
+        //                            appalert((r && r.message) || 'Failed to post payout.', 3, 1);
+        //                        }
+        //                    },
+        //                    error: function () { appalert('Server error while posting.', 0, 1); }
+        //                }).always(function () {
+        //                    if ($btn) $btn.prop('disabled', false);
+        //                });
+        //            },
+        //            function onCancel() { appalert('Operation cancelled.', 3, 1); }
+        //        );
+        //    }
+
+        //    // --- re-entry lock for search ---
+        //    let _lookupBusy = false;
+
+        //    // call once, even if both inline and delegated fire
+        //    function lookupPlainCode(ev) {
+        //        if (ev && ev.preventDefault) ev.preventDefault();
+        //        if (_lookupBusy) return;                 // 🔒 prevent double call
+        //        _lookupBusy = true;
+
+        //        const code = (getPlainCode() || '').trim();
+        //        if (!code) { appalert('Enter a salary code.', 3, 1); _lookupBusy = false; return; }
+
+        //        const $btn = $('#btnFindPayCode');
+        //        const oldHtml = $btn.html();
+        //        if ($btn.length) $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Find');
+
+        //        $.getJSON('/CashDesk/LookupTempPayCode', { plainCode: code })
+        //            .done(function (r) {
+        //                if (!r || !r.ok || !r.data) {
+        //                    fillSummaryCard(null);
+        //                    appalert((r && r.msg) || 'Code not found or not available.', 3, 1);
+        //                    return;
+        //                }
+        //                fillSummaryCard(r.data);
+        //            })
+        //            .fail(function () {
+        //                fillSummaryCard(null);
+        //                appalert('Lookup failed. Please try again.', 0, 1);
+        //            })
+        //            .always(function () {
+        //                _lookupBusy = false;                 // 🔓 unlock
+        //                if ($btn.length) $btn.prop('disabled', false).html(oldHtml);
+        //            });
+        //    }
+
+        //    // ---------- Public API ----------
+        //    window.SalaryPay = {
+        //        search: lookupPlainCode,
+        //        submit: function () { submitPayout($('#btnPostSalary')); }
+        //    };
+
+        //    // ---------- Init ----------
+        //    $(function () {
+        //        // Select2 for GL
+        //        if ($ && $.fn.select2) {
+        //            $('#SourceChartOfAccountId').not('.select2-hidden-accessible').select2({
+        //                width: 'resolve',
+        //                dropdownAutoWidth: true,
+        //                placeholder: 'Select Source GL',
+        //                allowClear: true
+        //            });
+        //        }
+
+        //        // Enter triggers search (deduped)
+        //        $(document)
+        //            .off('keydown.salaryFind', '#PlainCode')
+        //            .on('keydown.salaryFind', '#PlainCode', function (e) {
+        //                if (e.key === 'Enter') { e.preventDefault(); lookupPlainCode(e); }
+        //            });
+
+        //        // Button click (deduped). Keep this even if you also have inline onclick.
+        //        $(document)
+        //            .off('click.salaryFind', '#btnFindPayCode')
+        //            .on('click.salaryFind', '#btnFindPayCode', function (e) { lookupPlainCode(e); });
+
+        //        // Post button
+        //        $(document)
+        //            .off('click.salaryPost', '#btnPostSalary')
+        //            .on('click.salaryPost', '#btnPostSalary', function () {
+        //                const $btn = $(this);
+        //                if (isPosting($btn)) return;
+        //                submitPayout($btn);
+        //            });
+        //    });
+
+        //})();
+    </script>
+}
