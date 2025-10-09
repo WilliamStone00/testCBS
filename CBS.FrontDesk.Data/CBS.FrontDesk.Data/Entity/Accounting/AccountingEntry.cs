@@ -279,7 +279,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
                     EntityType = "BranchId",          // Debit or Credit
 
                     // Description or narration (prefer dto.Naration if available)
-                    Description = dto.Description,
+                    Description = item.Description,
                     // Reference IDs
                     Reference = item.ReferenceId,
                     PrintersName= printersName
@@ -288,7 +288,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
                 };
                 entry.AccountNumber =  item.AccountNumber;
-                entry.Description = dto.Description;
+ 
                 entry.AccountName = item.AccountName;
                 entry.Address = dto.Address;
              
