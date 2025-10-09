@@ -150,6 +150,7 @@
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CustomerCheckbooksDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\LossRequestDto.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationHistory\NotificationHistoryDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\SubmitLossRequestCommand.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeBookListing\ChequeBook.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeRequest\ChequeBookRequest.cs" />

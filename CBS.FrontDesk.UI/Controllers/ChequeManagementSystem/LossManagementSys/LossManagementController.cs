@@ -147,16 +147,18 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
 
 
 
+        //[HttpGet]
         [HttpGet]
-        public async Task<ActionResult> GetCheckLeavesByCheckbook(string KEY)
+        public async Task<ActionResult> GetCheckLeavesByCheckbookId(string checkbookId)
         {
-            var result = await _lossManagementService.GetCheckLeavesByCheckbook(KEY);
-            if (result != null && result.CheckLeaves.Any())
+            var leaves = await _lossManagementService.GetCheckLeavesByCheckbookId(checkbookId);
+
+            if (leaves == null || !leaves.Any())
             {
-                return PartialView("_CheckLeavesTable", result);
+                return PartialView("_Error", "No check leaves found for this checkbook.");
             }
 
-            return PartialView("_NoCheckLeavesFound");
+            return PartialView("_CheckLeavesTable", leaves);
         }
 
         // This should return a partial view for the modal
@@ -236,32 +238,22 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
         //    var options = await _lossManagementService.GetReportedByOptions();
         //    return Json(options, JsonRequestBehavior.AllowGet);
         //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitLossRequest(LossRequestDto request)
         {
             if (ModelState.IsValid)
             {
-                var result = await _lossManagementService.SubmitLossRequest(request);
-                if (result.Result)
+                // Service handles conversion and business logic
+                var command = _lossManagementService.ConvertToLossRequestCommand(request);
+                var result = await _lossManagementService.SubmitLossRequestAsync(command);
+
+                return Json(new
                 {
-                    return Json(new
-                    {
-                        success = true,
-                        status = result.MessageStatus,
-                        message = Messaging.MessageResult(result)
-                    });
-                }
-                else
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        status = result.MessageStatus,
-                        message = Messaging.MessageResult(result)
-                    });
-                }
+                    success = result.Result,
+                    status = result.MessageStatus,
+                    message = Messaging.MessageResult(result)
+                });
             }
 
             return Json(new
@@ -270,8 +262,70 @@ namespace CBS.FrontDesk.UI.Controllers.CheckManagementSystem.LossManagementSyste
                 status = false,
                 message = "Please fill all required fields correctly."
             });
+        }
 
+        [HttpPost]
+        public async Task<ActionResult> ApproveLossRequest(ApproveLossRequestCommand command)
+        {
+            var result = await _lossManagementService.ApproveLossRequestAsync(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
+        }
 
+        // NEW: Rejection endpoint following Member Adjustment pattern
+        [HttpPost]
+        public async Task<ActionResult> RejectLossRequest(RejectLossRequestCommand command)
+        {
+            var result = await _lossManagementService.RejectLossRequestAsync(command);
+            return Json(new
+            {
+                success = result.Result,
+                status = result.MessageStatus,
+                message = Messaging.MessageResult(result)
+            });
+        }
+
+        // NEW: DataTable endpoint for loss requests
+        [HttpPost]
+        public async Task<ActionResult> LoadLossRequestsDataTable(LossRequestQuery query)
+        {
+            try
+            {
+                var dataTable = await _lossManagementService.GetLossRequestsDataTableAsync(query);
+                var requestList = JsonConvert.DeserializeObject<List<LossRequestDto>>(
+                    JsonConvert.SerializeObject(dataTable.data));
+
+                return Json(new
+                {
+                    draw = query.Options.draw,
+                    recordsTotal = dataTable.recordsTotal,
+                    recordsFiltered = dataTable.recordsFiltered,
+                    data = requestList
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        // NEW: Get loss request details (like Member Adjustment)
+        [HttpGet]
+        public async Task<ActionResult> GetLossRequestDetailPartial(string id)
+        {
+            var model = await _lossManagementService.GetLossRequestDetails(id);
+            return PartialView("_LossRequestDetailBody", model);
         }
     }
 }
