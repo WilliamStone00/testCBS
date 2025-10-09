@@ -7,11 +7,13 @@
 
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
-        <h1 class="card-title text-primary"><i class="mdi mdi-currency-usd-circle-outline me-2"></i> Clearance Request</h1>
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> Clearance Request
+        </h1>
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Always choose either Cheque is from MFI or Not.
+            Always choose either Cheque is Internal  or External .
         </div>
     </div>
 </div>
@@ -19,156 +21,91 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CLEARANCE</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="true">
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClearanceTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseClearanceTips" class="collapse show">
         <div class="card-body">
             <ul>
-                <li><strong>Configuration Scope:</strong> Use 'is Not  from MFI (Not from Micro-Finance)' if the cheque is found in the system check the text box.</li>
-                <li><strong>Load Configuration:</strong> After Filling the information click 'Load' to fetch existing settings.</li>
-
+                <li><strong>Verify Cheque Details:</strong> Ensure the cheque number, amount, and account match the customer’s information before processing.</li>
+                <li><strong>Check Account Balance:</strong> Confirm that the issuing account has sufficient funds to avoid rejection.</li>
+                <li><strong>Endorsements:</strong> Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</li>
+                <li><strong>External vs Internal:</strong> Use <em>External</em> if the cheque originates from another Microfinance ; select <em>Internal</em> if it’s from the same branch/system.</li>
+                <li><strong>Load Configuration:</strong> Use the <em>Load</em> button to fetch and validate existing cheque details before clearance.</li>
+                <li><strong>Hold Period:</strong> Be aware of clearance/hold periods for external cheques before confirming availability of funds.</li>
+                <li><strong>Final Approval:</strong> Some clearances may require supervisor authorization; check workflow rules before confirming.</li>
             </ul>
-        </div>
-    </div>
-</div>
-
-<!-- Configuration Selection Area -->
-<div id="configCard" class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Configuration Scope</h5>
-    <div class="row align-items-end">
-        <!-- Is Centralized Checkbox -->
-        <div class="col-md-12">
-            <div class="form-group ps-2">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IsNotfromMFI, new { @class = "form-check-input", id = "IsNotfromMFI" })
-                    <label class="form-check-label" for="IsfromMFI">Is Not From MFI( Not from Micro-Finance)</label>
-                </div>
-                @Html.ValidationMessageFor(m => m.IsNotfromMFI, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="col-md-6 mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "---" + @GlobalUserManagement.SelectBranch + "---",
-                    new { @class = "form-control select2" })
-                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                <label>@GlobalUserManagement.Branch</label>
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.CheckBookPageNumber, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CheckBookPageNumber, "", new { @class = "text-danger" })
-                <label>CheckBookPageNumber</label>
-            </div>
-        </div>
-
-
-        <div class="col-md-6 mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.CheckBookNumber, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.CheckBookNumber, "", new { @class = "text-danger" })
-                <label>CheckBookNumber</label>
-            </div>
-        </div>
-
-
-        <!-- Load Button -->
-        <div class="col-md-1">
-            <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
         </div>
     </div>
 </div>
 
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <a href="javascript:;" class="btn btn-label-primary btn-sm me-2" onclick="loadClearanceList()">
+
+        <a type="button" onclick=" LoadDataGen('ChequeClearance', 'myDataTable', '_ChequeClearanceDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
 
-        <a type="button" onclick="AddORUpdateGen(null,'createViewContainer','_Create','new','ChequeClearance')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MainForm','new','ChequeClearance')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
             <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
         </a>
-    </div>
-</div>
-
-
-
-<!-- Placeholder for dynamic form -->
-<div class="card mb-1">
-    <div id="createViewContainer">
 
     </div>
 </div>
 
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_MainForm")
+</div>
 
+<div id="createViewContainer"></div>
+
+@Html.Partial("_DiscountModal", new CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.Discount())
 
 @section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
 $(document).ready(function () {
-    // toggle input fields based on checkbox
-    $("#IsNotfromMFI").change(function () {
+
+    // toggle fields when External changes
+    $(document).on("change", "#External", function () {
         if ($(this).is(":checked")) {
-            // hide branch, page number, CheckBookNumber
             $("#BranchId").closest(".col-md-6").hide();
-            $("#CheckBookPageNumber").closest(".col-md-6").hide();
             $("#CheckBookNumber").closest(".col-md-6").hide();
+            $("#CheckBookPageNumber").closest(".col-md-6").hide();
         } else {
             $("#BranchId").closest(".col-md-6").show();
-            $("#CheckBookPageNumber").closest(".col-md-6").show();
             $("#CheckBookNumber").closest(".col-md-6").show();
+            $("#CheckBookPageNumber").closest(".col-md-6").show();
         }
-    }).trigger("change"); // run once on page load
+    }).trigger("change");
 
-    // Load button click with conditional validation
+    // Load button click
     $("#loadConfigBtn").click(function (e) {
         e.preventDefault();
 
-        var isNotFromMFI = $("#IsNotfromMFI").is(":checked"); // checkbox id is still IsfromMFI
-        var branchId = $("#BranchId").val();
-        var checkBookNumber = $("#CheckBookNumber").val();
-        var pageNumber = $("#CheckBookPageNumber").val();
 
-        // validation only if NOT from MFI is unchecked
-        if (!isNotFromMFI) {
-            if (!branchId || !checkBookNumber || !pageNumber) {
-                alert("Please fill all required fields before loading!");
-                return;
-            }
-        }
 
-        //var payload = {
-        //    serviceOption: JSON.stringify({
-        //        IsNotfromMFI: isNotFromMFI, // ✅ send correct property name
-        //        BranchId: branchId,
-        //        CheckBookNumber: CheckBookNumber,
-        //        CheckBookPageNumber: pageNumber
-        //    }),
-        //    partialView: "_Create"
-        //};
         var payload = {
             serviceOption: JSON.stringify({
-                IsNotfromMFI: isNotFromMFI,
-                BranchId: branchId,
-                CheckBookNumber: checkBookNumber,   // must match property in C# model
-                CheckBookPageNumber: pageNumber
+                External: $("#External").is(":checked"),
+                BranchId: $("#BranchId").val(),
+                CheckBookNumber: $("#CheckBookNumber").val(),
+                CheckBookPageNumber: $("#CheckBookPageNumber").val()
             }),
             partialView: "_Create",
             path: "new"
         };
-
 
         $.ajax({
             url: '@Url.Action("InitializeData", "ChequeClearance")',
             type: "POST",
             data: payload,
             success: function (result) {
-                $("#createViewContainer").html(result);
+                $("#datalistingview").html(result);
                 initClearanceForm();
             },
             error: function (xhr) {
@@ -180,20 +117,14 @@ $(document).ready(function () {
     function initClearanceForm() {
         $("#clearanceDetailsForm").removeClass("d-none");
 
+        // toggle account number field
         $(document).off("change.clearanceAccount").on("change.clearanceAccount", "#DepositToAccount", function () {
             if ($(this).is(":checked")) {
                 $("#AccountNumberWrapper").removeClass("d-none");
-            } else {
-                $("#AccountNumberWrapper").addClass("d-none");
-                $("#AccountNumber").val("");
-            }
-        });
-
-        $(document).off("change.clearanceRequired").on("change.clearanceRequired", "#DepositToAccount", function () {
-            if ($(this).is(":checked")) {
                 $("#AccountNumber").attr("required", "required");
             } else {
-                $("#AccountNumber").removeAttr("required");
+                $("#AccountNumberWrapper").addClass("d-none");
+                $("#AccountNumber").removeAttr("required").val("");
             }
         });
 
@@ -201,54 +132,69 @@ $(document).ready(function () {
     }
 });
 
-        function loadClearanceList() {
-    // Hide the config card
-    $("#configCard").hide();
 
-    // Show the container (in case it was hidden before)
-    $("#createViewContainer").show();
 
+
+// load list
+
+
+
+
+        window.clearanceSubmitAjax = function (form) {
+            var $form = $(form);
+            if (!$form.length) return false;
+
+            // Basic client-side validation
+            try { $.validator.unobtrusive.parse($form); } catch (e) { }
+            if (!$form.valid()) return false;
+
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.html();
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+            var ajaxOptions = {
+                url: $form.attr('action'),
+                type: $form.attr('method') || 'POST',
+                data: isMultipart ? new FormData(form) : $form.serialize(),
+                contentType: isMultipart ? false : 'application/x-www-form-urlencoded; charset=UTF-8',
+                processData: !isMultipart,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (res) {
+                    if (res.success) {
+                        appalert(res.message, 1, 1);
+                        if (typeof cancellationTable !== 'undefined') cancellationTable.ajax.reload();
+                    } else {
+                        appalert(res.message, 2, 1);
+                    }
+                },
+                error: function () {
+                    appalert('An error occurred while processing your request.', 4, 1);
+                },
+                complete: function () {
+                    $submit.prop('disabled', false).html(origHtml);
+                }
+            };
+
+            $.ajax(ajaxOptions);
+            return false; // prevent default form submission
+        };
+
+
+// details
+function ViewDetails(id) {
     $.ajax({
-        url: '@Url.Action("InitializeData", "ChequeClearance")',
-        method: 'POST',
-        data: {
-            path: 'list',
-            partialView: '_ChequeClearanceDataTable'
-        },
+        url: '@Url.Action("Details", "ChequeClearance")',
+        type: 'GET',
+        data: { id: id },
         success: function (html) {
-            $("#createViewContainer").html(html);
-
-            if (window.jQuery && $.fn.DataTable) {
-                $('#myDataTable').DataTable();
-            }
+            $("#detailsContainer").html(html);
         },
-        error: function (xhr, status, err) {
-            console.error("InitializeData(list) error:", status, err);
-            alert("Failed to load list: " + (xhr.statusText || status));
+        error: function () {
+            alert("Could not load details.");
         }
     });
-}
-
-    function ViewDetails(id) {
-        $.ajax({
-            url: '@Url.Action("Details", "ChequeClearance")',
-            type: 'GET',
-            data: { id: id },
-            success: function (html) {
-                // replace a container with the details partial
-                $("#detailsContainer").html(html);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error loading details:", error);
-                alert("Could not load details.");
-            }
-        });
         }
-
-        
-
-
-
     </script>
 }
-

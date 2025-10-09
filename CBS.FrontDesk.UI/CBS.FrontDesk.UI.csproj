@@ -10670,11 +10670,12 @@
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
     <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
     <Content Include="Views\ManualDailyCollection\_listingFilesdatatable.cshtml" />
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
@@ -10707,6 +10708,9 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
+    <Content Include="Views\ChequeCancellation\_Edit.cshtml" />
+    <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
     <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
     <Content Include="Views\LossManagement\_Header.cshtml" />

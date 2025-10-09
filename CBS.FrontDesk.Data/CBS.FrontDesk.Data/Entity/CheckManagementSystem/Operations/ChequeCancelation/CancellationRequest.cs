@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,23 +56,28 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCance
     }
 
     // DTOs for API
-    public class CreateCancellationRequestDto
-    {
-        public string RequestType { get; set; }
-        public string ChequeBookId { get; set; }
-        public string ChequeLeafId { get; set; }
-        public string ChequeNumber { get; set; }
-        public string PageNumber { get; set; }
-        public string Reason { get; set; }
-        public string AdditionalNotes { get; set; }
-    }
+    //public class CreateCancellationRequestDto
+    //{
+    //    public string RequestType { get; set; }
+    //    public string ChequeBookId { get; set; }
+    //    public string ChequeLeafId { get; set; }
+    //    public string ChequeNumber { get; set; }
+    //    public string PageNumber { get; set; }
+    //    public string Reason { get; set; }
+    //    public string AdditionalNotes { get; set; }
+    //}
 
-    public class ReviewRequestDto
-    {
-        public string RequestId { get; set; }
-        public bool IsApproved { get; set; }
-        public string Comments { get; set; }
-    }
+    //public class ReviewRequestDto
+    //{
+    //    public string RequestId { get; set; }
+    //    public bool IsApproved { get; set; }
+       
+
+    //    [Required]
+    //    public string Comment { get; set; }
+    //    [Required]
+    //    public string Status { get; set; }
+    //}
 
     public class CancellationRequestQuery
     {

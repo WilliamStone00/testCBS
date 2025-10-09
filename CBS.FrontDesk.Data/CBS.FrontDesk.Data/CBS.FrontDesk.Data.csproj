@@ -133,6 +133,7 @@
     <Compile Include="Entity\CashChangeManagement\CashChangeHistory.cs" />
     <Compile Include="Entity\ChangeNumber\PhoneNumberChangeHistory.cs" />
     <Compile Include="Entity\CheckManagementSystem\ChequeCertification\ChequeCertificationDto.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceQuery.cs" />
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\ClearanceValidation.cs" />
     <Compile Include="Entity\CheckManagementSystem\Clearance\ClearanceRequest\OptionRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\Category\CategoryConfig.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\SubmitLossRequestCommand.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeBookListing\ChequeBook.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationRequest.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Operations\ChequeCancelation\CancellationValidatiion.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\ChequeRequest\ChequeBookRequest.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\CounterCheque\CounterCheque.cs" />
     <Compile Include="Entity\CheckManagementSystem\Operations\CustomerDataDto.cs" />

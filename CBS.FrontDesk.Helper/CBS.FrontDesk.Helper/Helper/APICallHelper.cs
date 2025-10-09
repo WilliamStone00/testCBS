@@ -1288,10 +1288,14 @@ namespace CBS.FrontDesk.Helper
         //--------------------------------------TEST--------------------------------------//
         public static string GetAllChequeClearance = "/api/v1/counter-clearance";
         public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
+        public static string GetClearanceDataTable = "/api/v1/counter-clearance";
+
 
         
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
         
+       
+
         
         //---------------------Notification History -----------------------
         public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
@@ -1365,6 +1369,14 @@ namespace CBS.FrontDesk.Helper
         public static string ValidateChequeCertification = "api/ChequeCertification/Validate/{0}";
         public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
+
+        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+
 
         public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
         public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";

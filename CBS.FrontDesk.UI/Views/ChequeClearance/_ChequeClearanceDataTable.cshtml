@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>
-@using System
-@using System.Linq
-
+@using Resources;
 @functions {
     // Accepts either DateTime or DateTime? or string; returns "-" for default/empty
     private string FmtDate(object o)
@@ -29,68 +27,136 @@
     }
 
     private string FmtString(string s) => string.IsNullOrWhiteSpace(s) ? "-" : s;
+    private string FmtBool(bool? b) => b.HasValue ? (b.Value ? "External" : "Internal") : "-";
+
 }
 
-<fieldset class="fieldset-custom">
-    <div class="table-responsive">
-        <table class="table table-hover" id="myDataTable">
-            <colgroup>
-                <col style="width: 13%;">
-                <col style="width: 13%;">
-                <col style="width: 13%;">
-                <col style="width: 13%;">
-                <col style="width: 13%;">
-                <col style="width: 16%;">
-                <col style="width: 19%;"> <!-- Actions -->
-            </colgroup>
-            <thead class="table-light">
-                <tr>
-                    <th>ChequeClearanceId</th>
-                    <th>Member Reference</th>
-                    <th>Cheque Branch Id (Created)</th>
-                    <th>Cheque Amount</th>
-                    <th>Cheque Creation Date</th>
-                    <th>Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
+<div class="card shadow p-3 mb-4 ">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Clearance Requests</h5>
+    <div class="bg-light">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Branch</label>
+                @Html.DropDownList(
+                    "BranchId",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "name"),
+                    "--- All Branches ---",
+                    new { @class = "form-control select2", id = "branchFilter" }
+                )
+            </div>
 
-            <tbody>
-                @{
-                    var list = (Model ?? Enumerable.Empty<CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest>()).ToList();
 
-                    if (list.Any())
+            <!-- Start Date -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" id="startDateFilter" class="form-control" />
+            </div>
+
+            <!-- End Date -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" id="endDateFilter" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <!-- Operation Type -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Operation Type</label>
+                <select id="operationFilter" class="form-control">
+                    <option value="">All Types</option>
+                    <option value="External">External</option>
+                    <option value="Internal">Internal</option>
+                </select>
+            </div>
+
+
+
+            <!-- Status -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Status</label>
+                <select id="statusFilter" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Reviewed">Reviewed</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Disbursed">Disbursed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-9 d-flex align-items-end">
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify"></i> Apply Filters
+            </button>
+            <button id="resetFilterBtn" class="btn btn-secondary w-100">
+                <i class="mdi mdi-refresh"></i> Reset
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="myDataTable" class="table table-hover table-bordered" style="width:100%">
+
+                <!-- Column widths -->
+                <colgroup>
+                    <col style="width: 13%;"> <!-- Cheque Creation Date -->
+                    <col style="width: 13%;"> <!-- Member Reference -->
+                    <col style="width: 13%;"> <!-- Operation Type -->
+                    <col style="width: 13%;"> <!-- Cheque Amount -->
+                    <col style="width: 13%;"> <!-- Cheque Expiration Date -->
+                    <col style="width: 13%;"> <!-- Branch -->
+                    <col style="width: 16%;"> <!-- Status -->
+                    <col style="width: 19%;"> <!-- Actions -->
+                </colgroup>
+                <thead class="table-light">
+                    <tr>
+                        <th>Cheque Creation Date</th>
+                        <th>Member Reference</th>
+                        <th>Operation Type</th>
+                        <th>Cheque Amount</th>
+                        <th>Cheque Expiration Date</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
                     {
                         var idx = 0;
-                        foreach (var c in list)
+                        foreach (var c in Model)
                         {
-                            var key = !string.IsNullOrWhiteSpace(c.ChequeClearanceId)
-                                ? c.ChequeClearanceId
-                                : ("row" + idx);
-
                             <tr>
-                                <td>@FmtString(c.ChequeClearanceId)</td>
-                                <td>@FmtString(c.MemberReference)</td>
-                                <td>@FmtString(c.ChequeBranchId)</td>
-                                <td>@FmtDecimalObj(c.ChequeAmount)</td>
                                 <td>@FmtDate(c.ChequeCreationDate)</td>
+                                <td>@FmtString(c.MemberReference)</td>
+                                <td>@FmtBool(c.External)</td>
+                                <td>@FmtDecimalObj(c.ChequeAmount)</td>
+                                <td>@FmtDate(c.ChequeExpirationDate)</td>
+                                <td>@FmtString(c.BranchId)</td>
+
                                 <td>
                                     @switch (c.Status)
                                     {
                                         case "Pending":
                                             <span class="badge bg-warning text-dark">Pending</span>
                                             break;
-                                        case "Disbursed":
-                                            <span class="badge bg-info text-dark">Disbursed</span>
+                                        case "Reviewed":
+                                            <span class="badge bg-primary">Reviewed</span>
                                             break;
                                         case "Approved":
                                             <span class="badge bg-success">Approved</span>
                                             break;
+                                        case "Disbursed":
+                                            <span class="badge bg-info text-dark">Disbursed</span>
+                                            break;
                                         case "Rejected":
                                             <span class="badge bg-danger">Rejected</span>
-                                            break;
-                                        case "Reviewed":
-                                            <span class="badge bg-primary">Reviewed</span>
                                             break;
                                         default:
                                             <span class="badge bg-secondary">-</span>
@@ -99,105 +165,87 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="actionDropdown_@idx" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
+                                        <!-- Dropdown toggle -->
+                                        <button class="btn btn-sm dropdown-toggle text-white"
+                                                type="button"
+                                                id="actionDropdown_@idx"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                style="background-color:#0dcaf0; border:none;">
+                                            <i class="mdi mdi-cog-outline me-1"></i> Actions
                                         </button>
-                                        <ul class="dropdown-menu p-2" aria-labelledby="actionDropdown_@idx" style="min-width: 180px;">
-                                            @switch (c.Status)
+
+                                        <!-- Dropdown menu -->
+                                        <ul class="dropdown-menu p-2 bg-white" aria-labelledby="actionDropdown_@idx" style="min-width: 180px;">
+
+                                            @* Pending *@
+                                            @if (c.Status == "Pending")
                                             {
-                                                case "Pending":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-primary w-100 mb-1"
-                                                                    onclick="AddORUpdateGen('@c.ChequeClearanceId','createViewContainer','_Edit','get','ChequeClearance')">
-
-                                                                Edit
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button"
-                                                                    class="btn btn-sm btn-warning w-100 mb-1"
-                                                                    onclick="ReviewClearance('@c.ChequeClearanceId')">
-
-                                                                Review
-                                                            </button>
-                                                        </li>
-
-
-                                                        <li>
-                                                            <button class="btn btn-sm btn-danger w-100 mb-1"
-                                                                    onclick="RejectClearance('@c.ChequeClearanceId')">
-                                                                Reject
-                                                            </button>
-                                                        </li>
-
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Disbursed":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Reviewed":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-success w-100 mb-1"
-                                                                    onclick="ApproveClearance('@c.ChequeClearanceId')">
-                                                                Approve
-                                                            </button>
-                                                        </li>
-
-                                                    </text>
-                                                    break;
-                                                case "Approved":
-                                                    <text>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-warning w-100 mb-1"
-                                                                    onclick="DisburseClearance('@c.ChequeClearanceId')">
-                                                                Disburse
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="btn btn-sm btn-info w-100"
-                                                                    onclick="ViewDetails('@c.ChequeClearanceId')">
-                                                                Details
-                                                            </button>
-                                                        </li>
-                                                    </text>
-                                                    break;
-                                                case "Rejected":
-                                                    <text>
-                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
-                                                    </text>
-                                                    break;
-                                                default:
-                                                    <text>
-                                                        <li><button class="btn btn-sm btn-info w-100" onclick="ViewDetails('@c.ChequeClearanceId')">Details</button></li>
-                                                    </text>
-                                                    break;
+                                                <li>
+                                                    <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                            onclick="AddORUpdateGen('@c.ChequeClearanceId','datalistingview','_Edit',null,'ChequeClearance')">
+                                                        <i class="mdi mdi-pencil me-1 text-primary"></i> Edit
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                            onclick="ReviewClearance('@c.ChequeClearanceId')">
+                                                        <i class="mdi mdi-eye-check-outline me-1 text-warning"></i> Review
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                            onclick="RejectClearance('@c.ChequeClearanceId')">
+                                                        <i class="mdi mdi-close-circle-outline me-1 text-danger"></i> Reject
+                                                    </button>
+                                                </li>
                                             }
+
+                                            @* Reviewed *@
+                                            else if (c.Status == "Reviewed")
+                                            {
+                                                <li>
+                                                    <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                            onclick="ApproveClearance('@c.ChequeClearanceId')">
+                                                        <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
+                                                    </button>
+                                                </li>
+                                            }
+
+                                            @* Approved *@
+                                            else if (c.Status == "Approved")
+                                            {
+                                                <li>
+                                                    <button class="btn w-100 mb-1 bg-transparent text-dark"
+                                                            onclick="DisburseClearance('@c.ChequeClearanceId')">
+                                                        <i class="mdi mdi-cash-multiple me-1 text-warning"></i> Disburse
+                                                    </button>
+                                                </li>
+                                            }
+
+                                            @* Default action: Details always available *@
+                                            <li>
+                                                @*<button class="btn w-100 bg-transparent text-dark"
+                                                            onclick="viewClearanceDetails('@c.ChequeClearanceId')">
+                                                        <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                    </button>*@
+
+                                                <button class="btn w-100 bg-transparent text-dark"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#clearanceDetailsModal"
+                                                        data-url="@Url.Action("Details", "ChequeClearance", new { id = c.ChequeClearanceId })">
+                                                    <i class="mdi mdi-file-document-outline me-1 text-info"></i> Details
+                                                </button>
+
+                                            </li>
+
+
+
                                         </ul>
                                     </div>
                                 </td>
-                            </tr>
 
+                            </tr>
                             idx++;
                         }
                     }
@@ -209,47 +257,83 @@
                             </td>
                         </tr>
                     }
-                }
-            </tbody>
-
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</fieldset>
+</div>
+
+
+
+<div class="modal fade" id="clearanceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<!--<div class="modal fade" id="clearanceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg  pt-4">-->
+<!-- ✅ New Header Viewer -->
+<!--<div class="header-viewer bg-light mb-4">
+    <h6 class="fw-bold"><i class="mdi mdi-file-eye-outline"></i> CHEQUE CLEARANCE VIEWER</h6>
+    <p>
+        You are viewing a detailed summary of the selected cheque clearance request.
+        Use the information below to guide your validation process.
+    </p>
+</div>
+
+
+
+<div class="modal-body">-->
+<!-- Dynamic Details will load here -->
+<!--<div id="clearanceDetailsBody">
+                    <div class="text-center text-muted p-4">
+                        <i class="mdi mdi-loading mdi-spin me-1"></i> Loading details...
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
 
 <div id="detailsContainer"></div>
 
 
 
 <script>
-    (function () {
-        if (window.jQuery && $.fn.DataTable) {
-            try {
-                if ($('#myDataTable').hasClass('dataTable')) {
-                    $('#myDataTable').DataTable().destroy();
-                }
-            } catch (e) { /* ignore */ }
+    $(document).ready(function () {
+        $('#clearanceDetailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var url = button.data('url'); // Extract info from data-url attribute
+            var modal = $(this);
 
-            $('#myDataTable').DataTable({
-                pageLength: 10,
-                lengthChange: true,
-                ordering: true,
-                searching: true
-            });
-        }
-    })();
+            // Load the content from the controller
+            modal.find('.modal-content').load(url);
+        });
+    });
 
 
 
-
-
-
-
-
-
-
-
-    (function ($) {
-    var getActionFormUrl = '@Url.Action("GetActionForm", "ChequeClearance")'; // server-generated endpoint
+(function ($) {
+    var getActionFormUrl = '@Url.Action("GetActionForm", "ChequeClearance")';
 
     function appalert(msg) {
         if (window.appalert) return window.appalert(msg, 4, 3);
@@ -259,14 +343,13 @@
     function ensureModal() {
         var $modal = $('#actionModal');
         if ($modal.length === 0) {
-            // create a minimal modal if not present
             var m = `
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="actionModalLabel">Action</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+
       </div>
       <div class="modal-body" id="actionModalBody"></div>
     </div>
@@ -286,80 +369,40 @@
         var $body = $modal.find('#actionModalBody');
         $('#actionModalLabel').text((mode.charAt(0).toUpperCase() + mode.slice(1)) + ' Clearance');
 
-        $body.html('<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-primary">Loading form...</p></div>');
-        // show modal now (so user sees loader)
+
         $modal.modal('show');
 
         $.ajax({
             url: getActionFormUrl,
             type: 'GET',
             data: { fileUploadId: chequeClearanceId, mode: mode },
-            dataType: 'html',   // expect HTML
+            dataType: 'html',
             timeout: 20000
         })
-        .done(function (response, textStatus, xhr) {
-            // Log some info
-            console.log('GetActionForm response: content-type=', xhr.getResponseHeader('content-type'));
-            // Heuristic: response might actually be JSON (e.g. auth redirect). Try parse JSON safely.
+        .done(function (response) {
             var trimmed = (response || '').trim();
-            var looksLikeJson = trimmed && (trimmed[0] === '{' || trimmed[0] === '[');
-            if (looksLikeJson) {
-                try {
-                    var j = JSON.parse(trimmed);
-                    console.warn('Server returned JSON instead of HTML:', j);
-                    // Show readable JSON in modal for debugging
-                    $body.html('<pre class="p-3 bg-light small" style="white-space:pre-wrap;">' +
-                               $('<div>').text(JSON.stringify(j, null, 2)).html() + '</pre>');
-                    return;
-                } catch (e) {
-                    // not JSON, continue
-                    console.warn('Response looked like JSON but failed parse', e);
-                }
-            }
-
-            // Basic sanity: empty response -> show debug
             if (!trimmed) {
-                $body.html('<div class="alert alert-warning">Server returned empty HTML. Check the partial is returned (PartialView) and not a full View or redirect.</div>');
+                $body.html('<div class="alert alert-warning">Empty response received.</div>');
                 return;
             }
-
-            // If the returned HTML contains "<form", we assume it's our partial and insert it.
-            if (trimmed.indexOf('<form') !== -1 || trimmed.indexOf('name="Statement"') !== -1) {
+            if (trimmed.indexOf('<form') !== -1) {
                 $body.html(response);
-                // ensure we set expected hidden fields in case they were not set server-side
                 $body.find('[name="ChequeClearanceId"]').val(chequeClearanceId);
                 $body.find('[name="Mode"]').val(mode);
-                // Execute scripts embedded in response (if any)
                 $body.find('script').each(function () {
-                    try {
-                        $.globalEval(this.innerHTML || this.text || '');
-                    } catch (e) { console.warn('Script eval error', e); }
+                    try { $.globalEval(this.innerHTML || this.text || ''); } catch (e) {}
                 });
             } else {
-                // Not the expected partial: dump HTML into modal so you can see what arrived
-                $body.html('<div class="alert alert-info">Received unexpected HTML (preview below):</div><div class="border p-2 small" style="max-height:400px; overflow:auto;">' +
-                    $('<div>').text(response).html() +
-                    '</div>');
-                console.warn('Unexpected HTML received for GetActionForm:', response);
+                $body.html('<div class="alert alert-info">Unexpected HTML received:</div><div class="border p-2 small">' +
+                           $('<div>').text(response).html() + '</div>');
             }
         })
         .fail(function (xhr, status, err) {
-            console.error('GetActionForm failed', status, err, xhr);
-            // If server returns HTML error page, show it inside modal for debugging
-            var ct = xhr && xhr.getResponseHeader ? xhr.getResponseHeader('content-type') : '';
-            if (xhr.responseText && ct && ct.indexOf('text/html') !== -1) {
-                $('#actionModalBody').html('<div class="alert alert-danger">Server returned an error page (see below):</div><div class="border p-2 small" style="max-height:400px; overflow:auto;">' +
-                    $('<div>').text(xhr.responseText).html() +
-                    '</div>');
-            } else if (xhr.responseJSON) {
-                $('#actionModalBody').html('<div class="alert alert-danger">Error: ' + (xhr.responseJSON.message || JSON.stringify(xhr.responseJSON)) + '</div>');
-            } else {
-                $('#actionModalBody').html('<div class="alert alert-danger">Could not load form. ' + (err || status) + '</div>');
-            }
+            $('#actionModalBody').html('<div class="alert alert-danger">Could not load form. ' + (err || status) + '</div>');
         });
     }
 
-    // expose
+    // expose actions globally
     window.ReviewClearance = function (id) { openClearanceAction(id, 'review'); };
     window.ApproveClearance = function (id) { openClearanceAction(id, 'approve'); };
     window.RejectClearance = function (id) { openClearanceAction(id, 'reject'); };
@@ -367,6 +410,96 @@
 
 })(jQuery);
 
+function loadClearanceData() {
+    $('#myDataTable').DataTable({
+        serverSide: true,
+        destroy: true,
+        order: [[0, 'asc']],
+        ajax: {
+            url: '@Url.Action("LoadClearanceData", "ChequeClearance")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
+                const filters = collectClearanceFilterParams();
+                filters.Options = {   // must match C# property name in ClearanceQuery
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    skip: d.start,
+                    pageSize: d.length,
+                    sortColumnName: d.columns[d.order[0].column].data,
+                    sortColumnDirection: d.order[0].dir
+                };
+                return JSON.stringify(filters);
+            }
+        },
+        columns: [
+            { data: 'ChequeCreationDate', name: 'ChequeCreationDate' },
+            { data: 'MemberReference', name: 'MemberReference' },
+            { data: 'OperationType', name: 'OperationType' },
+            { data: 'ChequeAmount', name: 'ChequeAmount' },
+            { data: 'ChequeExpirationDate', name: 'ChequeExpirationDate' },
+            { data: 'Branch', name: 'Branch' },
+            { data: 'Status', name: 'Status' },
+            {
+                data: null,
+                orderable: false,
+                render: function (data, type, row) {
+                    return `
+                        <div class="dropdown">
+                            <button class="btn btn-sm dropdown-toggle text-white"
+                                    style="background-color:#0dcaf0;"
+                                    data-bs-toggle="dropdown">
+                                <i class="mdi mdi-cog-outline me-1"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button class="dropdown-item" onclick="ReviewClearance('${row.ChequeClearanceId}')">
+                                        <i class="mdi mdi-eye me-1 text-info"></i> Review
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" onclick="ApproveClearance('${row.ChequeClearanceId}')">
+                                        <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Approve
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>`;
+                }
+            }
+        ],
+        language: {
+            emptyTable: "No clearance records found",
+            zeroRecords: "No matching records"
+        }
+    });
+}
 
+function collectClearanceFilterParams() {
+    return {
+        BranchId: $('#branchFilter').val(),
+        StartDate: $('#startDateFilter').val(),
+        EndDate: $('#endDateFilter').val(),
+        OperationType: $('#operationFilter').val(),
+        Status: $('#statusFilter').val(),
+        Options: {}   // matches C# ClearanceQuery.Options
+    };
+}
+
+// Button events
+$('#applyFilterBtn').on('click', function (e) {
+    e.preventDefault();
+    if ($.fn.DataTable.isDataTable('#myDataTable')) {
+        $('#myDataTable').DataTable().destroy();
+    }
+    loadClearanceData();
+});
+
+$('#resetFilterBtn').on('click', function (e) {
+    e.preventDefault();
+    $('#branchFilter, #operationFilter, #statusFilter, #startDateFilter, #endDateFilter').val('');
+    if ($.fn.DataTable.isDataTable('#myDataTable')) {
+        $('#myDataTable').DataTable().destroy();
+    }
+});
 </script>
-
