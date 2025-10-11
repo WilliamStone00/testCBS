@@ -242,17 +242,17 @@
            📘 2. DataTable Loaders
         ================================= */
 
-        function collectCheckbookFilterParams() {
-            return {
-                CustomerId: $('#customerId').val(),
-                CheckbookId: $('#checkbookId').val(),
-                Status: $('#status').val(),
-                Category: $('#category').val(),
-                IssueDateFrom: $('#issueDateFrom').val(),
-                IssueDateTo: $('#issueDateTo').val(),
-                options: {}
-            };
-        }
+    function collectCheckbookFilterParams() {
+        return {
+            customerId: $('#customerId').val(),
+            branchId: $('#branchId').val(),
+            checkBookCategoryId: $('#category').val(),
+            status: $('#status').val(),
+            startDate: $('#issueDateFrom').val(),
+            endDate: $('#issueDateTo').val(),
+            options: {}
+        };
+    }
 
         function loadCheckbooksData() {
             initDataTable('#myDataTable', '@Url.Action("LoadCheckbooksData", "LossManagement")', [
@@ -270,37 +270,15 @@
                                <i class="mdi mdi-book-information-variant me-1"></i> Details
                             </a>
                            <a href="@Url.Action("RequestLossForCheckBook", "LossManagement")?KEY=${id}"
-                                   class="btn btn-outline-primary">
-                                   <i class="mdi mdi-book-information-variant me-1"></i> Req. Lost
+                                   class="btn btn-sm btn-outline-warning">
+                                   <i class="mdi mdi-alert-outline me-1"></i> Req. Lost
                                 </a>
                         </div>`
                 }
             ], collectCheckbookFilterParams);
         }
 
-        function loadCheckleavesData() {
-            initDataTable('#myDataTable', '@Url.Action("LoadCheckleavesData", "LossManagement")', [
-                { data: 'CreatedDate', render: d => d ? moment(d).format('DD/MM/YYYY HH:mm:ss') : '' },
-                { data: 'ChequeBookId' },
-                { data: 'CategoryName' },
-                { data: 'Status' },
-                {
-                    data: 'CheckleavesId', orderable: false,
-                    render: id => `
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary"
-                                onclick="loadModal('Check Leaf Details', '@Url.Action("CheckLeafDetails", "LossManagement")', {KEY: '${id}'})">
-                                <i class="mdi mdi-eye-outline me-1"></i> Details
-                            </button>
-                            <button class="btn btn-outline-warning"
-                                onclick="loadModal('Report Loss for Check Leaf', '@Url.Action("RequestLossForCheckLeaf", "LossManagement")', {KEY: '${id}'})">
-                                <i class="mdi mdi-alert-outline me-1"></i> Req. Lost
-                            </button>
-                        </div>`
-                }
-            ], () => ({ options: {} }));
-        }
-
+      
         /* ================================
            🧾 3. Loss Request Handlers
         ================================= */
