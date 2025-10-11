@@ -10712,6 +10712,7 @@
     <Content Include="Views\ChequeBook\_CheckBookData.cshtml" />
     <Content Include="Views\ChequeBook\List.cshtml" />
     <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
+    <Content Include="Views\CashDesk\NonMemberSalaryPayout.cshtml" />
     <Content Include="Views\CounterCheque\_CounterChequeDetails.cshtml" />
     <Content Include="Views\Categoryconfic\List.cshtml" />
     <Content Include="Views\Categoryconfic\_CategoryDetailsPartial.cshtml" />

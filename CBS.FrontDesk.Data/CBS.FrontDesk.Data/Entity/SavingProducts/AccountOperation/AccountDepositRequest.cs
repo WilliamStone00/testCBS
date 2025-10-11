@@ -166,6 +166,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     {
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
+        public List<BulkOperation> BulkOperationsForLoanRepayments { get; set; }
+        public bool IncludeLoanRepayment { get; set; }
         public DateTime? AccountingDate { get; set; }
         public string AccountNumber { get; set; }
         public string MobileMoneyPath { get; set; }

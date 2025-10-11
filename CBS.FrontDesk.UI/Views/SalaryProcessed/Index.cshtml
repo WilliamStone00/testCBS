@@ -432,248 +432,226 @@
             // =================================================================================
             // REGISTER / ACTIVATE SUBMIT (delegated) - FIXED to show TempPayCodeResultDto
             // =================================================================================
-            $(document)
-                .off('submit.nm', `${MODAL_BODY} #nmForm`)
-                .on('submit.nm', `${MODAL_BODY} #nmForm`, function (e) {
-                    e.preventDefault();
-                    clearModalAlert();
+         $(document)
+  .off('submit.nm', `${MODAL_BODY} #nmForm`)
+  .on('submit.nm', `${MODAL_BODY} #nmForm`, function (e) {
+    e.preventDefault();
+    clearModalAlert();
 
-                    const $form = $(this);
-                    const $btn = $form.find('#nmSubmit');
+    const $form = $(this);
+    const $btn  = $form.find('#nmSubmit');
 
-                    // Build readable summary for confirm dialog (unchanged from yours)
-                    const payload = $form.serializeArray().reduce((o, x) => (o[x.name] = x.value, o), {});
-                    const fullName = `${payload['Kyc.FirstName'] || ''} ${payload['Kyc.LastName'] || ''}`.trim() || '—';
+    // Build readable summary for confirm dialog
+    const payload  = $form.serializeArray().reduce((o, x) => (o[x.name] = x.value, o), {});
+    const fullName = `${payload['Kyc.FirstName'] || ''} ${payload['Kyc.LastName'] || ''}`.trim() || '—';
 
-                    const readFieldText = (name) => {
-                        const $el = $form.find(`[name="${name}"]`);
-                        if (!$el.length) return '';
-                        if ($el.is('select')) {
-                            const t = ($el.find('option:selected').text() || '').trim();
-                            return t && !/^---\s*select/i.test(t) ? t : ($el.val() || '');
-                        }
-                        return $el.val() || '';
-                    };
+    const readFieldText = (name) => {
+      const $el = $form.find(`[name="${name}"]`);
+      if (!$el.length) return '';
+      if ($el.is('select')) {
+        const t = ($el.find('option:selected').text() || '').trim();
+        return t && !/^---\s*select/i.test(t) ? t : ($el.val() || '');
+      }
+      return $el.val() || '';
+    };
 
-                    const country = readFieldText('Kyc.CountryId');
-                    const region = readFieldText('Kyc.RegionId');
-                    const division = readFieldText('Kyc.DivisionId');
-                    const subDiv = readFieldText('Kyc.SubDivisionId');
-                    const town = readFieldText('Kyc.TownId');
-                    const language = readFieldText('Kyc.Language');
+    const country   = readFieldText('Kyc.CountryId');
+    const region    = readFieldText('Kyc.RegionId');
+    const division  = readFieldText('Kyc.DivisionId');
+    const subDiv    = readFieldText('Kyc.SubDivisionId');
+    const town      = readFieldText('Kyc.TownId');
+    const language  = readFieldText('Kyc.Language');
 
-                    const confirmHtml = `
-                  <div style="text-align:left;">
-                    <div style="border-left:4px solid #0d6efd; background:#eef6ff; padding:10px 12px; margin-bottom:10px;">
-                      <strong>Confirm Non-Member Activation</strong><br/>
-                      A TempPayCode will be generated and communicated to the beneficiary.
-                    </div>
+    const confirmHtml = `
+      <div style="text-align:left;">
+        <div style="border-left:4px solid #0d6efd; background:#eef6ff; padding:10px 12px; margin-bottom:10px;">
+          <strong>Confirm Non-Member Activation</strong><br/>
+          A TempPayCode will be generated and communicated to the beneficiary.
+        </div>
 
-                    <div class="mb-2"><strong>SalaryExtract Id:</strong> <span class="mono">${payload['SalaryExtractId'] || '—'}</span></div>
+        <div class="mb-2"><strong>SalaryExtract Id:</strong> <span class="mono">${payload['SalaryExtractId'] || '—'}</span></div>
 
-                    <div class="row g-2">
-                      <div class="col-6"><strong>Name:</strong> ${fullName}</div>
-                      <div class="col-6"><strong>Phone:</strong> ${payload['Kyc.Phone'] || '—'}</div>
-                      <div class="col-6"><strong>CNI/ID:</strong> ${payload['Kyc.CNI'] || '—'}</div>
-                      <div class="col-6"><strong>DOB:</strong> ${payload['Kyc.DOB'] || '—'}</div>
-                      <div class="col-6"><strong>Issued:</strong> ${payload['Kyc.IssuedDate'] || '—'}</div>
-                      <div class="col-6"><strong>Expiry:</strong> ${payload['Kyc.ExpiryDate'] || '—'}</div>
-                      <div class="col-12"><strong>Address:</strong> ${payload['Kyc.Address'] || '—'}</div>
-                      <div class="col-6"><strong>Place of Issue:</strong> ${payload['Kyc.PlaceOfIssued'] || '—'}</div>
-                      <div class="col-6"><strong>Place of Birth:</strong> ${payload['Kyc.PlaceOfBirth'] || '—'}</div>
+        <div class="row g-2">
+          <div class="col-6"><strong>Name:</strong> ${fullName}</div>
+          <div class="col-6"><strong>Phone:</strong> ${payload['Kyc.Phone'] || '—'}</div>
+          <div class="col-6"><strong>CNI/ID:</strong> ${payload['Kyc.CNI'] || '—'}</div>
+          <div class="col-6"><strong>DOB:</strong> ${payload['Kyc.DOB'] || '—'}</div>
+          <div class="col-6"><strong>Issued:</strong> ${payload['Kyc.IssuedDate'] || '—'}</div>
+          <div class="col-6"><strong>Expiry:</strong> ${payload['Kyc.ExpiryDate'] || '—'}</div>
+          <div class="col-12"><strong>Address:</strong> ${payload['Kyc.Address'] || '—'}</div>
+          <div class="col-6"><strong>Place of Issue:</strong> ${payload['Kyc.PlaceOfIssued'] || '—'}</div>
+          <div class="col-6"><strong>Place of Birth:</strong> ${payload['Kyc.PlaceOfBirth'] || '—'}</div>
 
-                      <div class="col-6"><strong>Country:</strong> ${country || '—'}</div>
-                      <div class="col-6"><strong>Region:</strong> ${region || '—'}</div>
-                      <div class="col-6"><strong>Division:</strong> ${division || '—'}</div>
-                      <div class="col-6"><strong>Sub-Division:</strong> ${subDiv || '—'}</div>
-                      <div class="col-6"><strong>Town:</strong> ${town || '—'}</div>
-                      <div class="col-6"><strong>Language:</strong> ${language || '—'}</div>
+          <div class="col-6"><strong>Country:</strong> ${country || '—'}</div>
+          <div class="col-6"><strong>Region:</strong> ${region || '—'}</div>
+          <div class="col-6"><strong>Division:</strong> ${division || '—'}</div>
+          <div class="col-6"><strong>Sub-Division:</strong> ${subDiv || '—'}</div>
+          <div class="col-6"><strong>Town:</strong> ${town || '—'}</div>
+          <div class="col-6"><strong>Language:</strong> ${language || '—'}</div>
 
-                      <div class="col-6"><strong>Branch:</strong> ${(payload['Kyc.BranchCode'] || '')} / ${(payload['Kyc.BranchId'] || '')}</div>
-                      <div class="col-6"><strong>TempPayCode Expires (UTC):</strong> ${payload['ExpiresAt'] || '(server default: now + 48h UTC)'}</div>
-                    </div>
+          <div class="col-6"><strong>Branch:</strong> ${(payload['Kyc.BranchCode'] || '')} / ${(payload['Kyc.BranchId'] || '')}</div>
+          <div class="col-6"><strong>TempPayCode Expires (UTC):</strong> ${payload['ExpiresAt'] || '(server default: now + 48h UTC)'}</div>
+        </div>
 
-                    <hr/>
-                    <div id="ackNmWrapper" class="form-check">
-                      <input class="form-check-input" type="checkbox" id="ackNm">
-                      <label class="form-check-label" for="ackNm">I confirm the KYC information is correct and I want to generate a TempPayCode.</label>
-                      <div id="ackNmError" class="text-danger small d-none">Please confirm to proceed.</div>
-                    </div>
-                  </div>`;
+        <hr/>
+        <div id="ackNmWrapper" class="form-check">
+          <input class="form-check-input" type="checkbox" id="ackNm">
+          <label class="form-check-label" for="ackNm">I confirm the KYC information is correct and I want to generate a TempPayCode.</label>
+          <div id="ackNmError" class="text-danger small d-none">Please confirm to proceed.</div>
+        </div>
+      </div>`;
 
-                    const dlg = alertify
-                        .confirm("Final Confirmation – Activate Non-Member", confirmHtml, null, null)
-                        .set({ labels: { ok: 'Generate', cancel: 'Back' }, transition: 'zoom', closable: false });
+    const dlg = alertify
+      .confirm("Final Confirmation – Activate Non-Member", confirmHtml, null, null)
+      .set({ labels: { ok: 'Generate', cancel: 'Back' }, transition: 'zoom', closable: false });
 
-                    dlg.set('onok', function (ev) {
-                        const ok = $('#ackNm').is(':checked');
-                        if (!ok) {
-                            ev.cancel = true;
-                            $('#ackNmError').removeClass('d-none');
-                            $('#ackNmWrapper').addClass('border border-danger rounded-2 p-2');
-                            $('#ackNm').trigger('focus');
-                            return;
-                        }
+    dlg.set('onok', function (ev) {
+      const acknowledged = $('#ackNm').is(':checked');
+      if (!acknowledged) {
+        ev.cancel = true;
+        $('#ackNmError').removeClass('d-none');
+        $('#ackNmWrapper').addClass('border border-danger rounded-2 p-2');
+        $('#ackNm').trigger('focus');
+        return;
+      }
 
-                        // keep dialog open while posting
-                        ev.cancel = true;
+      // keep dialog open while posting
+      ev.cancel = true;
 
-                        const $root = $('.ajs-modal:visible').last();
-                        const $okBtn = $root.find('.ajs-footer .ajs-buttons .ajs-ok');
-                        const $canBtn = $root.find('.ajs-footer .ajs-buttons .ajs-cancel');
-                        if ($root.data('processing')) return;
-                        $root.data('processing', true);
+      const $root   = $('.ajs-modal:visible').last();
+      const $okBtn  = $root.find('.ajs-footer .ajs-buttons .ajs-ok');
+      const $canBtn = $root.find('.ajs-footer .ajs-buttons .ajs-cancel');
+      if ($root.data('processing')) return;
+      $root.data('processing', true);
 
-                        const okHtml = $okBtn.html();
-                        if ($okBtn.length) $okBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span> Processing...');
-                        if ($canBtn.length) $canBtn.prop('disabled', true);
+      const okHtml = $okBtn.html();
+      $okBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span> Processing...');
+      $canBtn.prop('disabled', true);
+      busyBtn($btn, true);
 
-                        busyBtn($btn, true);
+      $.ajax({
+        url: $form.attr('action'),
+        type: 'POST',
+        data: $form.serialize(),      // keep MVC validation & PV re-render
+        dataType: 'json',             // expect JSON on success
+        headers: tokenHeader($form)
+      })
+      .done(function (res) {
+    // Expect: { success, status, message, data }
+    if (!res || res.success !== true || !res.data) {
+        alertify.closeAll();
+        modalAlert('danger',
+          '<i class="mdi mdi-alert-octagon-outline me-1"></i>' + ((res && res.message) || 'Registration failed.'));
+        return;
+    }
 
-                        $.ajax({
-                            url: $form.attr('action'),
-                            type: 'POST',
-                            data: $form.serialize(),    // keep MVC validation & PV re-render
-                            dataType: 'text',           // may be HTML or JSON
-                            headers: tokenHeader($form),
-                        })
-                            .done(function (data, _t, xhr) {
-                                const ct = (xhr.getResponseHeader('content-type') || '').toLowerCase();
+    const dto = res.data;
+    const expiresAtStr = dto.expiresAt
+      ? (window.moment ? moment(dto.expiresAt).format('DD/MM/YYYY HH:mm') : new Date(dto.expiresAt).toLocaleString())
+      : '—';
 
-                                // 1) Validation errors → render PartialView back into modal
-                                if (ct.indexOf('text/html') >= 0 || (typeof data === 'string' && data.trim().charAt(0) === '<')) {
-                                    alertify.closeAll();
-                                    $(MODAL_BODY).html(data);
-                                    if (typeof initSelect2InSalaryModal === 'function') initSelect2InSalaryModal();
-                                    return;
-                                }
+    alertify.closeAll();
 
-                                // 2) Parse JSON (envelope or raw DTO)
-                                let res = null; try { res = (typeof data === 'string') ? JSON.parse(data) : data; } catch (_) { }
+    // 🔑 Ensure Bootstrap modal is still open
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('salaryDetailModal'));
+    modal.show();
 
-                                // helper: pick prop from camelCase or PascalCase
-                                const pick = (o, keys) => {
-                                    if (!o) return undefined;
-                                    for (let k of keys) if (Object.prototype.hasOwnProperty.call(o, k)) return o[k];
-                                    return undefined;
-                                };
+    // 🔑 Ensure result container exists
+    let $result = $('#nmResult');
+    if (!$result.length) {
+        $result = $('<div id="nmResult" class="mt-2"></div>');
+        $('#salaryDetailBody').append($result);
+    }
 
-                                const isEnvelope = res && (typeof res.success !== 'undefined' || typeof res.message !== 'undefined' || typeof res.status !== 'undefined');
-                                const ok = isEnvelope ? (res.success === true || String(res.status || '').toLowerCase() === 'ok') : true;
-                                const dto = isEnvelope ? res.data : res;
+    $form.find(':input').prop('disabled', true);
+    $result.removeClass('d-none').html(`
+      <div class="card border-success">
+        <div class="card-header bg-success bg-opacity-10 text-success fw-bold">
+          <i class="mdi mdi-check-circle-outline me-1"></i> Activation Successful
+        </div>
+        <div class="card-body">
+          <div><strong>TempPayCode Id:</strong> <span class="mono">${dto.tempPayCodeId || '—'}</span></div>
+          <div><strong>Non-Member Reference:</strong> <span class="mono">${dto.nonMemberReference || '—'}</span></div>
+          <div><strong>Beneficiary Type:</strong> ${dto.beneficiaryType || '—'}</div>
+          <div><strong>Amount:</strong> ${Number(dto.amount || 0).toLocaleString()} FCFA</div>
+          <div><strong>Expires:</strong> ${expiresAtStr}</div>
 
-                                if (!ok || !dto) {
-                                    alertify.closeAll();
-                                    modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i>${(res && res.message) || 'Registration failed.'}`);
-                                    return;
-                                }
+          <div class="mt-3">
+            <label class="form-label fw-semibold">Temp Code (share with beneficiary):</label>
+            <div class="input-group">
+              <input id="tempCodeDisplay" type="text" class="form-control form-control-sm mono" readonly value="${dto.tempCode || '—'}">
+              <button id="copyTempCodeBtn" type="button" class="btn btn-outline-secondary btn-sm" data-code="${dto.tempCode || ''}">
+                <i class="mdi mdi-content-copy me-1"></i> Copy
+              </button>
+            </div>
+            <div class="text-muted small mt-1">
+              <i class="mdi mdi-shield-key-outline me-1"></i> Store/communicate this code securely — it may be shown only once in plaintext.
+            </div>
+          </div>
+        </div>
+      </div>
+    `);
 
-                                // 3) Extract fields from TempPayCodeResultDto (handle both casings)
-                                const tempPayCodeId = pick(dto, ['tempPayCodeId', 'TempPayCodeId']) || '—';
-                                const tempCodePlaintext = pick(dto, ['tempCode', 'TempCode']) || '—';
-                                const expiresAt = pick(dto, ['expiresAt', 'ExpiresAt']);
-                                const salaryExtractId = pick(dto, ['salaryExtractId', 'SalaryExtractId']) || '—';
-                                const nonMemberReference = pick(dto, ['nonMemberReference', 'NonMemberReference']) || '—';
-                                const amount = pick(dto, ['amount', 'Amount']) ?? 0;
-                                const beneficiaryType = pick(dto, ['beneficiaryType', 'BeneficiaryType']) || '—';
+    // Copy handler
+    $(document).off('click.copyTempCode').on('click.copyTempCode', '#copyTempCodeBtn', function () {
+        const code = $(this).data('code') || '';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(() => {
+                $(this).html('<i class="mdi mdi-check me-1"></i> Copied').prop('disabled', true);
+                setTimeout(() => $(this).prop('disabled', false).html('<i class="mdi mdi-content-copy me-1"></i> Copy'), 1500);
+            });
+        } else {
+            const $inp = $('#tempCodeDisplay');
+            $inp.trigger('select');
+            document.execCommand && document.execCommand('copy');
+        }
+    });
 
-                                const expiresAtStr = expiresAt ? (window.moment ? moment(expiresAt).format('DD/MM/YYYY HH:mm') : new Date(expiresAt).toLocaleString()) : '—';
+    // Update status & refresh table
+    $('#salaryDetailStatus').attr('class', 'badge bg-info').text('TempCode Issued');
+    if (window.salaryTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+        window.salaryTable.ajax.reload(null, false);
+    }
+})
 
-                                // 4) Success UI: show plaintext code immediately for beneficiary
-                                alertify.closeAll();
-                                $form.find(':input').prop('disabled', true);
+      .fail(function (xhr) {
+        // MVC validation PV (HTML) or JSON error envelope
+        const ct = (xhr.getResponseHeader('content-type') || '').toLowerCase();
+        if (ct.indexOf('text/html') >= 0 && xhr.responseText) {
+          alertify.closeAll();
+          $(MODAL_BODY).html(xhr.responseText);
+          if (typeof initSelect2InSalaryModal === 'function') initSelect2InSalaryModal();
+          return;
+        }
+        var res = null; try { res = JSON.parse(xhr.responseText || '{}'); } catch (e) { /* ignore */ }
+        alertify.closeAll();
+        modalAlert('danger', '<i class="mdi mdi-alert-octagon-outline me-1"></i>' + ((res && res.message) || 'Request failed.'));
+      })
+      .always(function () {
+        busyBtn($btn, false);
+        $okBtn.prop('disabled', false).html(okHtml);
+        $canBtn.prop('disabled', false);
+        $root.removeData('processing');
+      });
+    });
 
-                                const codeCard = `
-                              <div class="card border-success">
-                                <div class="card-header bg-success bg-opacity-10 text-success fw-bold">
-                                  <i class="mdi mdi-check-circle-outline me-1"></i> Activation Successful
-                                </div>
-                                <div class="card-body">
-                                  <div class="mb-2"><strong>TempPayCode Id:</strong> <span class="mono">${tempPayCodeId}</span></div>
-                                  <div class="mb-2"><strong>Non-Member Reference:</strong> <span class="mono">${nonMemberReference}</span></div>
-                                  <div class="mb-2"><strong>Beneficiary Type:</strong> ${beneficiaryType}</div>
-                                  <div class="mb-2"><strong>Amount:</strong> ${typeof money === 'function' ? money(amount) : amount} FCFA</div>
-                                  <div class="mb-2"><strong>Expires:</strong> ${expiresAtStr}</div>
+    // live validation/focus in confirm
+    dlg.set('onshow', function () {
+      const gate = () => {
+        const ok = $('#ackNm').is(':checked');
+        $('#ackNmError').toggleClass('d-none', ok);
+        $('#ackNmWrapper').toggleClass('border border-danger rounded-2 p-2', !ok);
+      };
+      $(dlg.elements.content).on('change input', '#ackNm', gate);
+      setTimeout(() => $('#ackNm').trigger('focus'), 0);
+      gate();
+    });
 
-                                  <div class="mt-3">
-                                    <label class="form-label fw-semibold">Temp Code (share with beneficiary):</label>
-                                    <div class="input-group">
-                                      <input id="tempCodeDisplay" type="text" class="form-control form-control-sm mono" readonly value="${tempCodePlaintext}">
-                                      <button id="copyTempCodeBtn" type="button" class="btn btn-outline-secondary btn-sm" data-code="${tempCodePlaintext}">
-                                        <i class="mdi mdi-content-copy me-1"></i> Copy
-                                      </button>
-                                    </div>
-                                    <div class="text-muted small mt-1">
-                                      <i class="mdi mdi-shield-key-outline me-1"></i> Store/communicate this code securely — it may be shown only once in plaintext.
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>`;
+    dlg.set('oncancel', function () {
+      setTimeout(() => $(MODAL_ID).modal('show'), 150);
+    });
+  });
 
-                                // Ensure a result container exists
-                                const $result = $('#nmResult').length ? $('#nmResult') : $('<div id="nmResult" class="mt-2"></div>').insertAfter($form);
-                                $result.removeClass('d-none').html(codeCard);
-
-                                // Copy handler (delegated once)
-                                $(document).off('click.copyTempCode').on('click.copyTempCode', '#copyTempCodeBtn', function () {
-                                    const code = $(this).data('code') || '';
-                                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                                        navigator.clipboard.writeText(code).then(() => {
-                                            $(this).html('<i class="mdi mdi-check me-1"></i> Copied').prop('disabled', true);
-                                            setTimeout(() => $(this).prop('disabled', false).html('<i class="mdi mdi-content-copy me-1"></i> Copy'), 1500);
-                                        }).catch(() => alert('Copy failed. Select and copy the code manually.'));
-                                    } else {
-                                        // Fallback
-                                        const $inp = $('#tempCodeDisplay');
-                                        $inp.trigger('select');
-                                        document.execCommand && document.execCommand('copy');
-                                    }
-                                });
-
-                                // Update status & refresh table
-                                $('#salaryDetailStatus').attr('class', 'badge bg-info').text('TempCode Issued');
-                                if (window.salaryTable && $.fn.dataTable.isDataTable('#myDataTable')) {
-                                    window.salaryTable.ajax.reload(null, false);
-                                }
-                            })
-                            .fail(function (xhr) {
-                                const ct = (xhr.getResponseHeader('content-type') || '').toLowerCase();
-
-                                if (ct.indexOf('text/html') >= 0 && xhr.responseText) {
-                                    alertify.closeAll();
-                                    $(MODAL_BODY).html(xhr.responseText);
-                                    if (typeof initSelect2InSalaryModal === 'function') initSelect2InSalaryModal();
-                                    return;
-                                }
-
-                                let res = null; try { res = JSON.parse(xhr.responseText || '{}'); } catch (_) { }
-                                alertify.closeAll();
-                                modalAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i>${(res && res.message) || 'Request failed.'}`);
-                            })
-                            .always(function () {
-                                busyBtn($btn, false);
-                                if ($okBtn.length) $okBtn.prop('disabled', false).html(okHtml);
-                                if ($canBtn.length) $canBtn.prop('disabled', false);
-                                $root.removeData('processing');
-                            });
-                    });
-
-                    // live validation/focus in confirm
-                    dlg.set('onshow', function () {
-                        const gate = () => {
-                            const ok = $('#ackNm').is(':checked');
-                            $('#ackNmError').toggleClass('d-none', ok);
-                            $('#ackNmWrapper').toggleClass('border border-danger rounded-2 p-2', !ok);
-                        };
-                        $(dlg.elements.content).on('change input', '#ackNm', gate);
-                        setTimeout(() => $('#ackNm').trigger('focus'), 0);
-                        gate();
-                    });
-
-                    dlg.set('oncancel', function () {
-                        setTimeout(() => $(MODAL_ID).modal('show'), 150);
-                    });
-                });
 
             // =================================================================================
             // REVOKE SUBMIT (delegated)
