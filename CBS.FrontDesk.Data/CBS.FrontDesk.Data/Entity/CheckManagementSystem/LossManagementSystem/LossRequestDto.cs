@@ -14,6 +14,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem
         public DateTime LossDate { get; set; }
         public string LossReportedBy { get; set; }
         public string LossReason { get; set; }
+        public string RequestedBy { get; set; }
 
         // New properties
         public string Status { get; set; }
