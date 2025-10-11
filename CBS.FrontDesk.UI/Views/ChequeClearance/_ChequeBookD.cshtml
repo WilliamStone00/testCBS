@@ -1,0 +1,66 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.CheckbookDetail
+
+@{
+    ViewBag.Title = "Checkbook Details";
+}
+
+<div class="container mt-4">
+    <h3 class="mb-4 text-primary">
+        <i class="mdi mdi-book-information-variant me-2"></i> Checkbook Details
+    </h3>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light">
+            <h6 class="mb-0">Checkbook Information</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Checkbook ID:</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+                        <dt class="col-sm-4">Category:</dt>
+                        <dd class="col-sm-8">@Model.CheckBookCategoryId</dd>
+                        <dt class="col-sm-4">Status:</dt>
+                        <dd class="col-sm-8">@Model.Status</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Customer ID:</dt>
+                        <dd class="col-sm-8">@Model.CustomerId</dd>
+                        <dt class="col-sm-4">Account Number:</dt>
+                        <dd class="col-sm-8">@Model.AccountNumber</dd>
+                        <dt class="col-sm-4">Branch Code:</dt>
+                        <dd class="col-sm-8">@Model.BranchId</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-md-6 mb-3">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.PageNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PageNumber, "", new { @class = "text-danger" })
+            <label>Check book Page Number</label>
+        </div>
+    </div>*@
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Check Book Page Number</label>
+        <div class="input-group shadow-sm">
+            @Html.TextBoxFor(m => m.PageNumber, new { @class = "form-control", @placeholder = "Enter Page Number" })
+            <button type="button" class="btn btn-primary" id="searchPageNumberBtn">
+                <i class="mdi mdi-magnify"></i> Search
+            </button>
+        </div>
+        @Html.ValidationMessageFor(m => m.PageNumber, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+
+<div id="detailsSection" class="mt-4">
+    @Html.Partial("_ChequeBookD")
+</div>
+

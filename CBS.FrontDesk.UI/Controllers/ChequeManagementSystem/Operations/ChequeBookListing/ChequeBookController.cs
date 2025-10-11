@@ -65,7 +65,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             catch (Exception ex)
             {
                 // Fall back to mock service
-                try
+               /* try
                 {
                     var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
                     return Json(new
@@ -77,7 +77,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                     });
                 }
                 catch (Exception mockEx)
-                {
+                {*/
                     return Json(new
                     {
                         draw = query.Options.draw,
@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                         data = new List<object>(),
                         error = "Failed to load cheque books data"
                     });
-                }
+                /*}*/
             }
         }
 
@@ -149,7 +149,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                     return HttpNotFound("Cheque book not found");
                 }
 
-                var leaf = chequeBook.ChequeLeaves.Find(l => l.Id == leafId);
+                var leaf = chequeBook.Leaves.Find(l => l.Id == leafId);
                 if (leaf == null)
                 {
                     return HttpNotFound("Leaf not found");

@@ -1333,6 +1333,11 @@ namespace CBS.FrontDesk.Helper
         public const string DeactivateCancellationRequest = "/api/v1/Cheque-Book/{0}";
         public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
 
+        //-------------------- Cheque Cleance ---------------
+        public const string clearanceData = "/api/v1/cheque-clearance/data-table";
+        public const string ChequebookDetail = "/api/v1/checkbook/{0}";
+
+
         //************************** END CHEQUE BOOK *******************************
 
         //*************************** MANUAL DAILLY COLLECTIONS ************************ 
@@ -1377,14 +1382,14 @@ namespace CBS.FrontDesk.Helper
     public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
     public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-
-        public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
-        public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
-        public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
+       
+        //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
+        //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
+        //public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
         public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
-        public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
-        public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
-        public static string SubmitLossRequest = "/api/v1/loss-requests";
+        //public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        //public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        //public static string SubmitLossRequest = "/api/v1/loss-requests";
 
         
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
