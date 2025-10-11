@@ -8,10 +8,10 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Management
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @ChequeManagements.ChequeBookRequestManagement
         </h1>
         <p class="card-text text-muted mb-1">
-            Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.
+            @ChequeManagements.chequerequesttext1
         </p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
@@ -32,7 +32,7 @@
         </button>
     </h6>
 
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseTips" class="collapse">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -137,17 +137,6 @@
     </div>
 </div>
 
-@*<div class="card mb-1">
-    <div class="card-body d-flex justify-content-end align-items-center">
-        <a type="button" onclick=" LoadDataGen('ChequeRequest', 'requestFormSection', '_RequestDataTable', 0, 'requestFormSection', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-        </a>
-        <a type="button" onclick="AddORUpdateGen(null,'requestFormSection','_RequestDataTable','new','ChequeRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
-        </a>
-    </div>
-</div>*@
-
 <!-- Main Content Area -->
 <div class="card shadow p-3 mb-4">
     <!-- Search Section (Initially Visible) -->
@@ -155,13 +144,8 @@
         @Html.Partial("_CustomerSearch")
     </div>
 
-    <!-- Request Form Section (Initially Hidden) -->
-    <div id="requestFormSection" style="display: none;">
-        <!-- Form will be loaded here dynamically -->
-    </div>
-
     <!-- DataTable Section (Initially Hidden) -->
-    <div id="requestFormSection" style="display: none;">
+    <div id="dataTableSection" style="display: none;">
         <!-- DataTable will be loaded here dynamically -->
     </div>
 </div>
@@ -196,33 +180,23 @@
     </div>
 </div>
 
-<!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Request Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="detailsModalBody">
-                <!-- Details will be loaded here -->
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script>
+        const getCustomerDetailsUrl = '@Url.Action("GetCustomerDetails", "ChequeRequest")';
+        const getRequestFormUrl = '@Url.Action("GetRequestForm", "ChequeRequest")';
+    </script>
     <!-- Corrected Script Paths -->
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
- @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
+    @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
 
     <script>
         // Global section management functions
         function showSearchSection() {
-            $('#requestFormSection').hide();
+            $('#dataTableSection').hide();
             $('#requestFormSection').hide();
             $('#searchSection').show();
 
@@ -234,13 +208,10 @@
 
         function showrequestFormSection() {
             $('#searchSection').hide();
-            $('#requestFormSection').hide();
+            $('#dataTableSection').hide();
             $('#dataTablrequestFormSectioneSection').show();
 
-            // Load data table content if not already loaded
-            if (!$('#requestFormSection').html().trim()) {
-                loadDataTableContent();
-            }
+            
 
             // Refresh data table if already initialized
             if (window.dataTableManager && window.dataTableManager.dataTable) {
@@ -250,30 +221,18 @@
 
         function showRequestFormSection() {
             $('#searchSection').hide();
-            $('#requestFormSection').hide();
+            $('#dataTableSection').hide();
             $('#requestFormSection').show();
         }
 
-        function loadDataTableContent() {
-            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
-                partialView: '_RequestDataTable',
-                path: 'list'
-            }, function(html) {
-                $('#requestFormSection').html(html);
-
-                // Re-initialize DataTable after content is loaded
-                if (window.dataTableManager) {
-                    window.dataTableManager.initializeDataTable();
-                }
-            });
-        }
+       
 
         function loadRequestForm() {
             $.get('@Url.Action("InitializeData", "ChequeRequest")', {
                 partialView: '_ChequeRequestForm',
                 path: 'new'
             }, function(html) {
-                $('#requestFormSection').html(html);
+                $('#dataTableSection').html(html);
 
                 // Re-initialize form manager after content is loaded
                 if (window.formManager) {
@@ -288,17 +247,17 @@
             $('#emptyState').hide();
 
             // Show and load data table section
-            $('#requestFormSection').show();
+                 $('#dataTableSection').show();
 
             // Load the DataTable partial view
             $.get('/ChequeRequest/InitializeData', {
                 partialView: '_RequestDataTable',
                 path: 'list'
             }, function(html) {
-                $('#requestFormSection').html(html);
+                $('#dataTableSection').html(html);
 
                 // Initialize DataTable after content is loaded
-                initializeDataTable();
+               /* initializeDataTable();*/
             });
         }
 
@@ -316,74 +275,7 @@
             }
         }
 
-                function initializeDataTable() {
-                    // Wait a brief moment for the table to be rendered
-                    setTimeout(function() {
-                        if ($.fn.DataTable && $('#myDataTable').length) {
-                            // Destroy existing DataTable if it exists
-                            if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                                $('#myDataTable').DataTable().destroy();
-                            }
-
-                            // Initialize new DataTable
-                            $('#myDataTable').DataTable({
-                                processing: false,
-                                serverSide: true,
-                                ajax: {
-                                    url: '/ChequeRequest/LoadRequestsForDataTable',
-                                    type: 'POST',
-                                    data: function(d) {
-                                        return {
-                                            query: {
-                                                Options: {
-                                                    draw: d.draw,
-                                                    start: d.start,
-                                                    pageSize: d.length,
-                                                    sortColumnName: d.columns[d.order[0]?.column]?.data,
-                                                    sortDirection: d.order[0]?.dir || 'asc'
-                                                },
-                                                CustomerFilter: $('#customerFilter')?.val() || '',
-                                                CategoryFilter: $('#categoryFilter')?.val() || '',
-                                                StatusFilter: $('#statusFilter')?.val() || ''
-                                            }
-                                        };
-                                    }
-                                },
-                                columns: [
-                                    { data: 'customerName', name: 'customerName' },
-                                    { data: 'categoryName', name: 'categoryName' },
-                                    {
-                                        data: 'requestDate',
-                                        name: 'requestDate',
-                                        render: function(data) {
-                                            return data ? new Date(data).toLocaleDateString() : 'N/A';
-                                        }
-                                    },
-                                    {
-                                        data: 'status',
-                                        name: 'status',
-                                        render: function(data) {
-                                            // Your status badge rendering logic
-                                            return data;
-                                        }
-                                    },
-                                    {
-                                        data: null,
-                                        orderable: false,
-                                        className: 'text-center',
-                                        render: function(data, type, row) {
-                                            // Your action buttons rendering logic
-                                            return '<div class="dropdown">...</div>';
-                                        }
-                                    }
-                                ]
-                            });
-                        }
-                    }, 100);
-                      }
-
-             
-
+                
 
 
             function submitChequeRequestForm(form) {
@@ -444,20 +336,20 @@
 
                                 if (response && response.success) {
                                     // Use the actual properties your controller returns
-                                    const messageType = response.status === "Exist" ? 3 : 
+                                    const messageType = response.status === "Exist" ? 3 :
                                                       response.status === "Failed" ? 2 : 1;
-                        
+
                                     appalert(response.message, messageType, 1);
 
                                     // Simple success handling
                                     $('#chequeRequestModal').modal('hide');
-                        
+
                                     if (window.dataTableManager) {
                                         window.dataTableManager.refresh();
                                     }
-                        
+
                                     form.reset();
-                        
+
                                 } else {
                                     // Handle failure
                                     const msg = response && response.message ? response.message : 'Operation failed';
@@ -470,8 +362,8 @@
                                 if (err && err.status === 401) {
                                     window.location.href = '/Authentication/Login';
                                 } else {
-                                    const errorMsg = err.responseJSON && err.responseJSON.message ? 
-                                                   err.responseJSON.message : 
+                                    const errorMsg = err.responseJSON && err.responseJSON.message ?
+                                                   err.responseJSON.message :
                                                    (err.statusText || 'An error occurred');
                                     appalert(errorMsg, 4, 1);
                                 }
@@ -495,7 +387,7 @@
 
         $(document).ready(function() {
             // Initialize managers
-            window.searchManager = new SearchManager();
+           window.searchManager = new SearchManager();
             window.formManager = new FormManager();
             window.dataTableManager = new DataTableManager();
             loadChequeRequests();

@@ -125,6 +125,33 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         //        return new HttpStatusCodeResult(500, "An error occurred while loading data.");
         //    }
         //}
+        [HttpGet]
+        public async Task<ActionResult> GetCounterChequeDetails(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    // return an empty model fragment if id missing
+                    return PartialView("_CounterChequeDetails", new CounterCheques());
+                }
+
+                var counterCheque = await _counterChequeService.GetCounterChequeDetailsAsync(id);
+
+                // If null, return empty model to avoid Razor null refs
+                if (counterCheque == null) counterCheque = new CounterCheques();
+
+                return PartialView("_CounterChequeDetails", counterCheque);
+            }
+            catch (Exception ex)
+            {
+                // log (keep your logging approach)
+                System.Diagnostics.Debug.WriteLine($"Error in GetCounterChequeDetails: {ex.Message}");
+                ViewBag.ErrorMessage = "Failed to load counter cheque details. Please try again.";
+                return PartialView("_CounterChequeDetails", new CounterCheques());
+            }
+        }
+
 
         [HttpPost]
         public async Task<JsonResult> LoadCounterCheques(CounterChequeQuery query)

@@ -1,0 +1,126 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfigDto
+    @using System.Globalization
+
+    <div class="card bg-light mb-3 shadow-sm">
+        <div class="card-body text-center">
+            <h3 class="card-title text-primary fw-bold mb-1">
+                <i class="mdi mdi-bell-outline me-2"></i> Notification Configuration Details
+            </h3>
+            <p class="card-text text-muted small mb-0">Read-only view of the notification configuration.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><td class="fw-bold">ID</td><td>@Html.Encode(Model?.Id)</td></tr>
+                    <tr><td class="fw-bold">Name</td><td>@Html.Encode(Model?.Name)</td></tr>
+                    <tr><td class="fw-bold">Notification Type</td><td>@Html.Encode(Model?.NotificationType)</td></tr>
+                    <tr><td class="fw-bold">Channel</td><td>@Html.Encode(Model?.Channel)</td></tr>
+                    <tr><td class="fw-bold">Audience</td><td>@Html.Encode(Model?.Audience)</td></tr>
+                    <tr><td class="fw-bold">Target Role</td><td>@Html.Encode(Model?.TargetRole)</td></tr>
+                    <tr><td class="fw-bold">Priority</td><td>@(Model?.Priority.ToString() ?? "0")</td></tr>
+                    <tr>
+                        <td class="fw-bold">Is Default</td>
+                        <td>
+                            @if (Model?.IsDefault == true)
+                            {
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Is Active</td>
+                        <td>
+                            @if (Model?.IsActive == true)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-map-marker-radius-outline me-2"></i> Routing & Branches</h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><td class="fw-bold">Is Centralised</td><td>@(Model?.IsCentralised == true ? "Yes" : "No")</td></tr>
+                    <tr><td class="fw-bold">Branch ID</td><td>@Html.Encode(Model?.BranchId)</td></tr>
+                    <tr><td class="fw-bold">Branch Name</td><td>@Html.Encode(Model?.BranchName)</td></tr>
+                    <tr><td class="fw-bold">Channel</td><td>@Html.Encode(Model?.Channel)</td></tr>
+                    <tr><td class="fw-bold">Schedule (Cron)</td><td>@Html.Encode(Model?.ScheduleCron)</td></tr>
+                    <tr><td class="fw-bold">Delay (mins)</td><td>@(Model?.DelayInMinutes.ToString() ?? "0")</td></tr>
+                    <tr><td class="fw-bold">Max / Day</td><td>@(Model?.MaxNotificationsPerDay.ToString() ?? "0")</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-file-document-outline me-2"></i> Template & Localization</h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><td class="fw-bold">Notification Template</td><td><pre class="mb-0">@Html.Encode(Model?.NotificationTemplate ?? "-")</pre></td></tr>
+                    <tr><td class="fw-bold">Email Subject</td><td>@Html.Encode(Model?.EmailSubject)</td></tr>
+                    <tr><td class="fw-bold">Language</td><td>@Html.Encode(Model?.Language)</td></tr>
+                    <tr><td class="fw-bold">Localized Templates</td><td><pre class="mb-0">@Html.Encode(Model?.LocalizedTemplates ?? "-")</pre></td></tr>
+                    <tr><td class="fw-bold">Available Placeholders</td><td><pre class="mb-0">@Html.Encode(Model?.AvailablePlaceholders ?? "-")</pre></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> Rules & Monitoring</h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><td class="fw-bold">Trigger Event</td><td>@Html.Encode(Model?.TriggerEvent)</td></tr>
+                    <tr><td class="fw-bold">Condition Expression</td><td><pre class="mb-0">@Html.Encode(Model?.ConditionExpression ?? "-")</pre></td></tr>
+                    <tr><td class="fw-bold">Days Before Expiry</td><td>@(Model?.DaysBeforeExpiry.ToString() ?? "0")</td></tr>
+                    <tr><td class="fw-bold">Cooldown (hrs)</td><td>@(Model?.CooldownPeriodInHours.ToString() ?? "0")</td></tr>
+                    <tr><td class="fw-bold">Allow Duplicate</td><td>@(Model?.AllowDuplicate )</td></tr>
+                    <tr><td class="fw-bold">Requires Approval</td><td>@(Model?.RequiresApproval )</td></tr>
+                    <tr><td class="fw-bold">Approved By</td><td>@Html.Encode(Model?.ApprovedBy)</td></tr>
+                    <tr>
+                        <td class="fw-bold">Approval Date</td>
+                        <td>@(Model.ApprovalDate.Value.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) )</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-chart-areaspline me-2"></i> Delivery Stats</h6>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr><td class="fw-bold">Total Sent</td><td>@(Model?.TotalSent.ToString()  )</td></tr>
+                    <tr><td class="fw-bold">Success Count</td><td>@(Model?.SuccessCount.ToString()  )</td></tr>
+                    <tr><td class="fw-bold">Failure Count</td><td>@(Model?.FailureCount.ToString()  )</td></tr>
+                    <tr>
+                        <td class="fw-bold">Last Sent Date</td>
+                        <td>@(Model.LastSentDate.Value.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) )</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12 text-end">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>

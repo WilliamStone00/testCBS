@@ -903,7 +903,7 @@ namespace CBS.BusinessService
                         .Where(x => !string.IsNullOrEmpty(x.LoanTarget))
                         .OrderBy(x => x.LoanDate)
                         .ToList();
-                case "loanbystatus":
+                case "loanbyStatus":
                     return loanPortfolioDtos
                         .Where(x => !string.IsNullOrEmpty(x.LoanStatus))
                         .OrderBy(x => x.LoanDate)
@@ -955,7 +955,7 @@ namespace CBS.BusinessService
                 case "loanbytarget":
                     return new List<string> { "Salary Earners", "Business Owners", "Farmers", "Traders", "Others" };
 
-                case "loanbystatus":
+                case "loanbyStatus":
                     return new List<string> { "Active", "Closed", "In Default", "Pending" };
 
                 case "loanbyproduct":

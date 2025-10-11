@@ -33,7 +33,7 @@
                     }
                     <span class="badge @badgeClass">@item.status</span>
                 </td>
-                <td>@item.issueDate.ToShortDateString()</td>
+                <td>@item.issueDate?.ToShortDateString()</td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-info" onclick="showChequeBookDetails('@item.id')" title="View Details">

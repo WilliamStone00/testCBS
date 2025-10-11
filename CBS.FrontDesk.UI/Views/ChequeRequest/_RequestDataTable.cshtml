@@ -3,7 +3,7 @@
     ViewBag.Title = "Cheque Requests";
 }
 <fieldset class="fieldset-custom">
-    <div class="card shadow p-3 mb-4">
+
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-filter-outline me-1"></i> Advanced Request Filters
         </h5>
@@ -76,21 +76,6 @@
                         </div>
                     </div>
 
-                    <!-- Bank -->
-                    <div class="col-md-2">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="byBankToggle" />
-                            <label class="form-check-label" for="byBankToggle">Filter by Bank</label>
-                        </div>
-
-                        <div id="bankFilterSection" class="mt-2" style="display:none;">
-                            @Html.DropDownList(
-                                "BankId",                                                // maps to ChequeRequestQuery.BankId
-                                new SelectList(ViewBag.Banks ?? new List<object>(), "Id", "name"),
-                                "All Banks",
-                                new { @class = "form-select", id = "BankId" })
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row g-3 mb-2">
@@ -195,7 +180,7 @@
                 </div>
             </form>
         </div>
-    </div>
+   
 
 
     <hr />
@@ -203,11 +188,11 @@
     <table id="myDataTable" class="table table-bordered table-striped" width="100%">
 
         <colgroup>
-            <col style="width:30%;"> <!-- Customer Name -->
-            <col style="width:20%;"> <!-- Category -->
-            <col style="width:20%;"> <!-- Branch Name -->
-            <col style="width:15%;"> <!-- Status -->
-            <col style="width:15%;"> <!-- Actions -->
+            <col style="width:30%;">
+            <col style="width:20%;"> 
+            <col style="width:20%;"> 
+            <col style="width:15%;">
+            <col style="width:15%;"> 
         </colgroup>
 
         <thead class="table-light">
@@ -228,11 +213,8 @@
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-white">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id="detailsModalBody" class="modal-body p-3">
-                <div class="text-center text-muted py-4" id="detailsLoading"><i class="mdi mdi-loading mdi-spin"></i> Loading…</div>
+           <div id="detailsModalBody" class="modal-body p-3">
+                
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -322,15 +304,15 @@
                 }
             },
             columns: [
-                { data: 'customerName', name: 'customerName' },
-                { data: 'categoryName', name: 'categoryName' },
+                { data: 'CustomerName', name: 'customerName' },
+                { data: 'CheckBookCategoryName', name: 'categoryName' },
                 {
-                    data: 'branchName',
+                    data: 'BranchName',
                     name: 'branchName',
                     render: function (data) { return data ? data : '—'; }
                 },
                 {
-                    data: 'status',
+                    data: 'Status',
                     name: 'status',
                     className: 'text-center',
                     orderable: false,
@@ -342,14 +324,16 @@
                     className: 'text-center',
                     render: function (_, __, row) {
                         var id = row.Id || row.id || '';
-                        var customerId = row.customerId || row.CustomerId || '';
-                        var name = (row.customerName || '').replace(/'/g, "\\'");
-                        var status = (row.status || '').toLowerCase();
+                        var customerId = row.CustomerId || row.CustomerId || '';
+                        var name = (row.CustomerName || '').replace(/'/g, "\\'");
+                        var status = (row.Status || '').toLowerCase();
 
                         var items = '';
                         if (status === 'pending') {
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Review', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-magnify me-2 text-primary"></i> Review</button></li>`;
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Approve', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Reject', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-close me-2 text-danger"></i> Reject</button></li>`;
+
                         }
                         if (status === 'reviewed') {
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Approve', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
@@ -577,24 +561,34 @@
         });
 
         if (!$.fn.DataTable.isDataTable('#myDataTable')) {
-            $('#myDataTable').DataTable({
-                paging: true,
-                searching: false,
-                info: false,
-                data: [],
-                columns: [
-                    { data: 'customerName' },
-                    { data: 'categoryName' },
-                    { data: 'branchName' },
-                    { data: 'status' },
-                    { data: null }
-                ],
-                columnDefs: [
-                    { targets: [0,1,2,3,4], defaultContent: '' }
-                ]
-            });
-            $('#myDataTable').DataTable().clear().draw();
+           
         }
+
+        function toggleFilterSection(checkboxId, sectionId) {
+            const checkbox = document.getElementById(checkboxId);
+            const section = document.getElementById(sectionId);
+
+            if (checkbox && section) {
+                // Set initial state
+                section.style.display = checkbox.checked ? 'block' : 'none';
+
+                // Add change event listener
+                checkbox.addEventListener('change', function () {
+                    section.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+        }
+
+        // Initialize all filter toggles
+        toggleFilterSection('byCustomerToggle', 'customerFilterSection');
+        toggleFilterSection('byCategoryToggle', 'categoryFilterSection');
+        toggleFilterSection('byStatusToggle', 'statusFilterSection');
+        toggleFilterSection('byBranchToggle', 'branchFilterSection');
+        toggleFilterSection('byBankToggle', 'bankFilterSection');
+        toggleFilterSection('byApprovalDateToggle', 'approvalDateFilterSection');
+        toggleFilterSection('byNotifyToggle', 'notifyFilterSection');
+        toggleFilterSection('byDateToggle', 'dateFilterSection');
+
     });
 
 })();

@@ -32,30 +32,30 @@
 
             <hr />
 
-            <h5 class="mb-2">Number Components & Positions</h5>
+            <h5 class="mb-2">  @ChequeManagements.NumberComponentsPositions</h5>
 
             <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" id="toggleNumericPositions" />
                 <label class="form-check-label fw-bold" for="toggleNumericPositions">
-                    Show numeric position inputs
+                    @ChequeManagements.Shownumericpositioninputs
                 </label>
             </div>
 
             <div id="numericPositions" class="row g-2 mb-2" style="display:none;">
                 <div class="col-md-3">
-                    <label class="form-label">Bank Code Position</label>
+                    <label class="form-label">   @ChequeManagements.BankCodePosition</label>
                     @Html.TextBoxFor(m => m.BankCodePosition, new { type = "number", @class = "form-control", id = "bankCodePosition", min = "0" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Branch Code Position</label>
+                    <label class="form-label">   @ChequeManagements.BranchCodePosition</label>
                     @Html.TextBoxFor(m => m.BranchCodePosition, new { type = "number", @class = "form-control", id = "branchCodePosition", min = "0" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Year Position</label>
+                    <label class="form-label">  @ChequeManagements.YearPosition</label>
                     @Html.TextBoxFor(m => m.YearPosition, new { type = "number", @class = "form-control", id = "yearPosition", min = "0" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Serial Number Position</label>
+                    <label class="form-label">  @ChequeManagements.SerialNumberPosition</label>
                     @Html.TextBoxFor(m => m.SeriaNumberPosition, new { type = "number", @class = "form-control", id = "seriaNumberPosition", min = "0" })
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.AcceptSerialNumber, new { @class = "form-check-input", id = "acceptSerialNumber" })
-                        <label class="form-check-label fw-bold ms-2" for="acceptSerialNumber">Accept Serial Number</label>
+                        <label class="form-check-label fw-bold ms-2" for="acceptSerialNumber">  @ChequeManagements.AcceptSerialNumber</label>
                     </div>
                 </div>
             </div>
@@ -72,10 +72,10 @@
             <p class="mb-1">Arrange components visually (drag to reorder). Drag-and-drop overrides numeric inputs automatically.</p>
 
             <div id="dragZone" class="drag-zone mb-3">
-                <div class="draggable" data-variable="BankCode">🏦 Bank Code</div>
-                <div class="draggable" data-variable="BranchCode">🏢 Branch Code</div>
-                <div class="draggable" data-variable="Year">📅 Year</div>
-                <div class="draggable" data-variable="SerialNumber">#️⃣ Serial Number</div>
+                <div class="draggable" data-variable="BankCode"> 🏦   @ChequeManagements.BankCode</div>
+                <div class="draggable" data-variable="BranchCode">🏢   @ChequeManagements.BranchCode</div>
+                <div class="draggable" data-variable="Year">📅   @ChequeManagements.Year</div>
+                <div class="draggable" data-variable="SerialNumber">#️⃣   @ChequeManagements.SerialNumber</div>
             </div>
 
             <div class="text-end">

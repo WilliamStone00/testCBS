@@ -1,61 +1,103 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.CheckManagementSystem.CategoryConfig>
+﻿@*@model List<CBS.FrontDesk.Data.Entity.CheckManagementSystem.CategoryConfig>
+    @using Resources
+
+    <fieldset class="fieldset-custom">
+        <h6 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>  Advanced Category Filters </h6>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>@ChequeManagements.Name</th>
+                        <th>@ChequeManagements.Price</th>
+                        <th>@ChequeManagements.Numberofpages</th>
+                        <th>@ChequeManagements.isactive</th>
+                        <th>@ChequeManagements.validity</th>
+                        <th>@ChequeManagements.isc</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model)
+                    {
+                        <tr>
+                            <td style="width:15%">@category.name</td>
+                            <td style="width:15%">@category.basePrice</td>
+                            <td style="width:15%">@category.numberOfPages</td>
+                            <td style="width:15%">
+                                @if (category.isActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                            </td>
+                            <td style="width:15%">@category.validityPeriodInMonths</td>
+                            <td style="width:15%">@category.issuanceLimitPerCustomerType</td>
+                            <td style="width:10%" class="text-center">
+                                <a href="#"
+                                   onclick="AddORUpdateGen('@category.Id', 'datalistingview', '_Categories', 'get', 'Categoryconfic')"
+                                   class="mr-2"
+                                   data-toggle="tooltip"
+                                   title="Edit @category.name">Edits</a>
+
+                                <a href="#"
+                                   onclick="DeleteRecordDataTable('Categoryconfic', '@category.Id', 'myDataTable', '_DataTable', 0, 'datalistingview', null,'list')"
+                                   class="mr-2 text-danger"
+                                   data-toggle="tooltip"
+                                   title="Delete @category.name">Delete</a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>*@
+
+
 @using Resources
-
-<fieldset class="fieldset-custom">
-    <h6 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>  Advanced Category Filters </h6>
-
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@ChequeManagements.CheckBooks</h5>
     <div class="table-responsive">
-        <table class="table table-hover" id="myDataTable">
+        <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>@ChequeManagements.Name</th>
-                    <th>@ChequeManagements.Price</th>
-                    <th>@ChequeManagements.Numberofpages</th>
-                    <th>@ChequeManagements.isactive</th>
-                    <th>@ChequeManagements.validity</th>
-                    <th>@ChequeManagements.isc</th>
-                    <th class="text-center">Action</th>
+                    <th>@ChequeManagements.CreatedDate</th>
+                    <th>@ChequeManagements.CategoryName</th>
+                    <th>@ChequeManagements.IsCentralised</th>
+                    <th>@ChequeManagements.BasePrice</th>
+                    <th>@ChequeManagements.NumOfLeaves</th>
+                    <th>@ChequeManagements.Status</th>
+                    <th>@ChequeManagements.Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var category in Model)
-                {
-                    <tr>
-                        <td style="width:15%">@category.name</td>
-                        <td style="width:15%">@category.basePrice</td>
-                        <td style="width:15%">@category.numberOfPages</td>
-                        <td style="width:15%">
-                            @if (category.isActive)
-                            {
-                                <span class="badge bg-success">Active</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">Inactive</span>
-                            }
-                        </td>
-                        <td style="width:15%">@category.validityPeriodInMonths</td>
-                        <td style="width:15%">@category.issuanceLimitPerCustomerType</td>
-                        <td style="width:10%" class="text-center">
-                            <a href="#"
-                               onclick="AddORUpdateGen('@category.Id', 'datalistingview', '_Categories', 'get', 'Categoryconfic')"
-                               class="mr-2"
-                               data-toggle="tooltip"
-                               title="Edit @category.name">Edits</a>
-
-                            <a href="#"
-                               onclick="DeleteRecordDataTable('Categoryconfic', '@category.Id', 'myDataTable', '_DataTable', 0, 'datalistingview', null,'list')"
-                               class="mr-2 text-danger"
-                               data-toggle="tooltip"
-                               title="Delete @category.name">Delete</a>
-                        </td>
-                    </tr>
-
-                }
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
-</fieldset>
+</div>
 
+<!-- Category Details Modal (shell) -->
+<div class="modal fade" id="categoryDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="mdi mdi-book-open-page-variant-outline me-1"></i> @ChequeManagements.CategoryDetails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <div class="modal-body">
+                <!-- server partial will be injected here -->
+                <div class="text-center">
+                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@ChequeManagements.Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -61,6 +61,15 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept Serial Number.
+        /// </summary>
+        internal static string AcceptSerialNumber {
+            get {
+                return ResourceManager.GetString("AcceptSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ACCOUNT NUMBER.
         /// </summary>
         internal static string accNum {
@@ -70,11 +79,29 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        internal static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ADD  NEW.
         /// </summary>
         internal static string addbutton {
             get {
                 return ResourceManager.GetString("addbutton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Configuration.
+        /// </summary>
+        internal static string AddConfiguration {
+            get {
+                return ResourceManager.GetString("AddConfiguration", resourceCulture);
             }
         }
         
@@ -97,11 +124,92 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply Filter.
+        /// </summary>
+        internal static string ApplyFilter {
+            get {
+                return ResourceManager.GetString("ApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Code.
+        /// </summary>
+        internal static string BankCode {
+            get {
+                return ResourceManager.GetString("BankCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Code Position.
+        /// </summary>
+        internal static string BankCodePosition {
+            get {
+                return ResourceManager.GetString("BankCodePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Id:.
+        /// </summary>
+        internal static string BankId {
+            get {
+                return ResourceManager.GetString("BankId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base Price:.
+        /// </summary>
+        internal static string BasePrice {
+            get {
+                return ResourceManager.GetString("BasePrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic Information.
+        /// </summary>
+        internal static string BasicInformation {
+            get {
+                return ResourceManager.GetString("BasicInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Branch Name.
         /// </summary>
         internal static string Branch {
             get {
                 return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch Code.
+        /// </summary>
+        internal static string BranchCode {
+            get {
+                return ResourceManager.GetString("BranchCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {BranchCode}.
+        /// </summary>
+        internal static string BranchCodenumtip {
+            get {
+                return ResourceManager.GetString("BranchCodenumtip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch Code Position.
+        /// </summary>
+        internal static string BranchCodePosition {
+            get {
+                return ResourceManager.GetString("BranchCodePosition", resourceCulture);
             }
         }
         
@@ -115,11 +223,173 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        internal static string Branchtip {
+            get {
+                return ResourceManager.GetString("Branchtip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Category by organizational branch. .
+        /// </summary>
+        internal static string Branchtiptext {
+            get {
+                return ResourceManager.GetString("Branchtiptext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Narrow results by organizational branch to check category distribution..
+        /// </summary>
+        internal static string Branchtiptext2 {
+            get {
+                return ResourceManager.GetString("Branchtiptext2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Details.
+        /// </summary>
+        internal static string CategoryDetails {
+            get {
+                return ResourceManager.GetString("CategoryDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category ID:.
+        /// </summary>
+        internal static string CategoryID {
+            get {
+                return ResourceManager.GetString("CategoryID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Name.
+        /// </summary>
+        internal static string CategoryName {
+            get {
+                return ResourceManager.GetString("CategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque Book Filters.
+        /// </summary>
+        internal static string catfilters {
+            get {
+                return ResourceManager.GetString("catfilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Listing.
+        /// </summary>
+        internal static string catlisting {
+            get {
+                return ResourceManager.GetString("catlisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to for cheque categories using full or partial name..
+        /// </summary>
+        internal static string catlistingSearch {
+            get {
+                return ResourceManager.GetString("catlistingSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage cheque book categories, view existing records, and use advanced filters.
+        /// </summary>
+        internal static string catlistingtext {
+            get {
+                return ResourceManager.GetString("catlistingtext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cheque Category Configuration.
         /// </summary>
         internal static string ccc {
             get {
                 return ResourceManager.GetString("ccc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Centralisation.
+        /// </summary>
+        internal static string Centralisation {
+            get {
+                return ResourceManager.GetString("Centralisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter categories based on whether they are centralised or branch-specific..
+        /// </summary>
+        internal static string Centralisationtext {
+            get {
+                return ResourceManager.GetString("Centralisationtext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque Books.
+        /// </summary>
+        internal static string CheckBooks {
+            get {
+                return ResourceManager.GetString("CheckBooks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque Number Configuration.
+        /// </summary>
+        internal static string chequeNumberConfiguration {
+            get {
+                return ResourceManager.GetString("chequeNumberConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheque Number Configuration Listing .
+        /// </summary>
+        internal static string chequeNumberConfigurationlist {
+            get {
+                return ResourceManager.GetString("chequeNumberConfigurationlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Define and manage the structure of cheque number identifiers by arranging variables.
+        /// </summary>
+        internal static string chequeNumberConfigurationtext {
+            get {
+                return ResourceManager.GetString("chequeNumberConfigurationtext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage serial/number configuration per branch and date range..
+        /// </summary>
+        internal static string chequenumheadertext {
+            get {
+                return ResourceManager.GetString("chequenumheadertext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -142,11 +412,47 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created By:.
+        /// </summary>
+        internal static string Createdby {
+            get {
+                return ResourceManager.GetString("Createdby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created Date.
+        /// </summary>
+        internal static string CreatedDate {
+            get {
+                return ResourceManager.GetString("CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Narrow results by category creation period for audit purposes..
+        /// </summary>
+        internal static string createddatetiptext {
+            get {
+                return ResourceManager.GetString("createddatetiptext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE NEW CATEGORY.
         /// </summary>
         internal static string createnewcat {
             get {
                 return ResourceManager.GetString("createnewcat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dates.
+        /// </summary>
+        internal static string Dates {
+            get {
+                return ResourceManager.GetString("Dates", resourceCulture);
             }
         }
         
@@ -187,6 +493,15 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Template.
         /// </summary>
         internal static string DownloadTemplate {
@@ -210,6 +525,60 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string DownloadTemplatetext {
             get {
                 return ResourceManager.GetString("DownloadTemplatetext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag &amp; Drop.
+        /// </summary>
+        internal static string DragDrop {
+            get {
+                return ResourceManager.GetString("DragDrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag placeholders (e.g..
+        /// </summary>
+        internal static string Dragplaceholders {
+            get {
+                return ResourceManager.GetString("Dragplaceholders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. Cheque book name.
+        /// </summary>
+        internal static string egChequebookname {
+            get {
+                return ResourceManager.GetString("egChequebookname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Status Fee.
+        /// </summary>
+        internal static string EnableStatusFee {
+            get {
+                return ResourceManager.GetString("EnableStatusFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        internal static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example.
+        /// </summary>
+        internal static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
             }
         }
         
@@ -295,6 +664,24 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to   Manage cheque categories Manage system users and apply filters to search by branch  details, user name..
+        /// </summary>
+        internal static string headtextconf {
+            get {
+                return ResourceManager.GetString("headtextconf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use filters like branch, and  to manage and audit user access effectively..
+        /// </summary>
+        internal static string ImportantTextcat {
+            get {
+                return ResourceManager.GetString("ImportantTextcat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Always choose Branch Id,Custome ID while sending a file and ensure the file format is correct..
         /// </summary>
         internal static string importanttextindex {
@@ -318,6 +705,33 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string isc {
             get {
                 return ResourceManager.GetString("isc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsCentralised.
+        /// </summary>
+        internal static string IsCentralised {
+            get {
+                return ResourceManager.GetString("IsCentralised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issuance Fee.
+        /// </summary>
+        internal static string IssuanceFee {
+            get {
+                return ResourceManager.GetString("IssuanceFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issuance Limit Per Customer Type:.
+        /// </summary>
+        internal static string limit {
+            get {
+                return ResourceManager.GetString("limit", resourceCulture);
             }
         }
         
@@ -349,11 +763,29 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Configuration for.
+        /// </summary>
+        internal static string ManageConfigurationfor {
+            get {
+                return ResourceManager.GetString("ManageConfigurationfor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual Daily Collection File Upload.
         /// </summary>
         internal static string ManualDailyCollectionFileUpload {
             get {
                 return ResourceManager.GetString("ManualDailyCollectionFileUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Issuance Per Year:.
+        /// </summary>
+        internal static string MaxIssuancePerYear {
+            get {
+                return ResourceManager.GetString("MaxIssuancePerYear", resourceCulture);
             }
         }
         
@@ -376,6 +808,24 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modified By:.
+        /// </summary>
+        internal static string ModifiedBy {
+            get {
+                return ResourceManager.GetString("ModifiedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modified Date:.
+        /// </summary>
+        internal static string ModifiedDate {
+            get {
+                return ResourceManager.GetString("ModifiedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string Name {
@@ -394,11 +844,164 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number Components &amp; Positions.
+        /// </summary>
+        internal static string NumberComponentsPositions {
+            get {
+                return ResourceManager.GetString("NumberComponentsPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Number Config Filters.
+        /// </summary>
+        internal static string NumberConfigFilters {
+            get {
+                return ResourceManager.GetString("NumberConfigFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number Of Check Books.
+        /// </summary>
+        internal static string NumberOfCheckBooks {
+            get {
+                return ResourceManager.GetString("NumberOfCheckBooks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of Pages.
         /// </summary>
         internal static string Numberofpages {
             get {
                 return ResourceManager.GetString("Numberofpages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the branch to apply this numbering scheme.
+        /// </summary>
+        internal static string numbranchtip {
+            get {
+                return ResourceManager.GetString("numbranchtip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use date range to enable/disable configuration across time..
+        /// </summary>
+        internal static string numdatestip {
+            get {
+                return ResourceManager.GetString("numdatestip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Use drag-and-drop or dropdowns to control the order of variables in cheque numbers..
+        /// </summary>
+        internal static string numimp {
+            get {
+                return ResourceManager.GetString("numimp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Num. Of Leaves.
+        /// </summary>
+        internal static string NumOfLeaves {
+            get {
+                return ResourceManager.GetString("NumOfLeaves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  in the template area to build your cheque number format..
+        /// </summary>
+        internal static string numtiptext1 {
+            get {
+                return ResourceManager.GetString("numtiptext1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is included at least once .
+        /// </summary>
+        internal static string numtiptext2 {
+            get {
+                return ResourceManager.GetString("numtiptext2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Click &quot;Save&quot; to store your template. You can also.
+        /// </summary>
+        internal static string numtiptext3 {
+            get {
+                return ResourceManager.GetString("numtiptext3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to clear and start fresh..
+        /// </summary>
+        internal static string numtiptext4 {
+            get {
+                return ResourceManager.GetString("numtiptext4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Drag placeholders horizontally to adjust the order of fields in your cheque number..
+        /// </summary>
+        internal static string numtiptext5 {
+            get {
+                return ResourceManager.GetString("numtiptext5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure each required placeholder (like .
+        /// </summary>
+        internal static string numvaltext {
+            get {
+                return ResourceManager.GetString("numvaltext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positions.
+        /// </summary>
+        internal static string Positions {
+            get {
+                return ResourceManager.GetString("Positions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank/branch/year/serial positions control how numbers are built.
+        /// </summary>
+        internal static string Positionstips {
+            get {
+                return ResourceManager.GetString("Positionstips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The template area shows your current format in real time..
+        /// </summary>
+        internal static string previewtext {
+            get {
+                return ResourceManager.GetString("previewtext", resourceCulture);
             }
         }
         
@@ -448,11 +1051,56 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        internal static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Always refresh data to make sure your results are up-to-date..
+        /// </summary>
+        internal static string Refreshtext {
+            get {
+                return ResourceManager.GetString("Refreshtext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renewal Fee.
+        /// </summary>
+        internal static string RenewalFee {
+            get {
+                return ResourceManager.GetString("RenewalFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reorder.
+        /// </summary>
+        internal static string Reorder {
+            get {
+                return ResourceManager.GetString("Reorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required.
         /// </summary>
         internal static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
         
@@ -471,6 +1119,96 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string sellectdailyCollector {
             get {
                 return ResourceManager.GetString("sellectdailyCollector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sequence.
+        /// </summary>
+        internal static string Sequence {
+            get {
+                return ResourceManager.GetString("Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        internal static string SerialNumber {
+            get {
+                return ResourceManager.GetString("SerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number Position.
+        /// </summary>
+        internal static string SerialNumberPosition {
+            get {
+                return ResourceManager.GetString("SerialNumberPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Branch.
+        /// </summary>
+        internal static string ShowBranch {
+            get {
+                return ResourceManager.GetString("ShowBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Branch Filter.
+        /// </summary>
+        internal static string ShowBranchFilter {
+            get {
+                return ResourceManager.GetString("ShowBranchFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Date Filters.
+        /// </summary>
+        internal static string ShowDateFilters {
+            get {
+                return ResourceManager.GetString("ShowDateFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show numeric position inputs.
+        /// </summary>
+        internal static string Shownumericpositioninputs {
+            get {
+                return ResourceManager.GetString("Shownumericpositioninputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        internal static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Static Config.
+        /// </summary>
+        internal static string StaticConfig {
+            get {
+                return ResourceManager.GetString("StaticConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         
@@ -498,6 +1236,15 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string TA {
             get {
                 return ResourceManager.GetString("TA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Here are the details of the selected cheque book category with all relevant information..
+        /// </summary>
+        internal static string text {
+            get {
+                return ResourceManager.GetString("text", resourceCulture);
             }
         }
         
@@ -552,6 +1299,33 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string tip5 {
             get {
                 return ResourceManager.GetString("tip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Cheque Number Configuration.
+        /// </summary>
+        internal static string tipCnum {
+            get {
+                return ResourceManager.GetString("tipCnum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Number Configuration.
+        /// </summary>
+        internal static string TipsNumber {
+            get {
+                return ResourceManager.GetString("TipsNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make sure category was actually created if not create one first.
+        /// </summary>
+        internal static string tiptext {
+            get {
+                return ResourceManager.GetString("tiptext", resourceCulture);
             }
         }
         
@@ -637,7 +1411,16 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validity Period in months.
+        ///   Looks up a localized string similar to Validation.
+        /// </summary>
+        internal static string Validation {
+            get {
+                return ResourceManager.GetString("Validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validity Period(Months):.
         /// </summary>
         internal static string validity {
             get {
@@ -687,6 +1470,33 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.ChequeManagementSystem {
         internal static string viewcategory {
             get {
                 return ResourceManager.GetString("viewcategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ViewList.
+        /// </summary>
+        internal static string ViewList {
+            get {
+                return ResourceManager.GetString("ViewList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        internal static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year Position.
+        /// </summary>
+        internal static string YearPosition {
+            get {
+                return ResourceManager.GetString("YearPosition", resourceCulture);
             }
         }
     }

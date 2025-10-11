@@ -12,7 +12,9 @@
         </div>
     </div>
 
+    <!-- Action Modal Structure -->
    
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="actionModalTitle">
@@ -51,10 +53,10 @@
                         </div>
                     </div>
 
-                    <!-- Action Form (only field user fills is "approvalNote") -->
+                    <!-- Action Form -->
                     <form id="actionForm">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" id="actionType" name="actionType" value=""> <!-- e.g. "approve" or "reject" -->
+                        <input type="hidden" id="actionType" name="actionType" value="">
                         <input type="hidden" id="hiddenRequestId" name="requestId" value="">
 
                         <div class="mb-3">
@@ -73,7 +75,6 @@
                                 </small>
                             </div>
                         </div>
-
                     </form>
                 </div>
 
@@ -87,111 +88,120 @@
                     </button>
                 </div>
             </div>
-    
+        </div>
+</fieldset>
 
-    </fieldset>
-    <script>
-/*
-  showActionModal(action, requestId, customerName, customerId, currentStatus)
-  - action (string): e.g. "approve" | "reject" | "review" — we derive isApprove from it
-  - requestId (string)
-  - customerName, customerId, currentStatus are optional for display
-*/
-function showActionModal(action, requestId, customerName, customerId, currentStatus) {
-    // normalize action text for display
-    var displayAction = (action || 'Process').toString().replace(/^\w/, function (c) { return c.toUpperCase(); });
+<script>
+// Action Modal functionality - completely self-contained
+(function() {
+    'use strict';
 
-    // set visible fields
-    $('#actionTypeText').text(displayAction +'For'+ customerName);
-    $('#actionCustomerName').text(customerName || '-');
-    $('#actionCustomerId').text(customerId || '-');
-    $('#actionRequestIdDisplay').text(requestId || '-');
-    $('#actionCurrentStatus').text(currentStatus || '-');
+    /*
+      showActionModal(action, requestId, customerName, customerId, currentStatus)
+      - action (string): e.g. "approve" | "reject" | "review" — we derive isApprove from it
+      - requestId (string)
+      - customerName, customerId, currentStatus are optional for display
+    */
+    window.showActionModal = function(action, requestId, customerName, customerId, currentStatus) {
+        // normalize action text for display
+        var displayAction = (action || 'Process').toString().replace(/^\w/, function (c) { return c.toUpperCase(); });
 
-    // set hidden form values
-    $('#actionType').val((action || '').toString().toLowerCase());
-    $('#hiddenRequestId').val(requestId || '');
+        // set visible fields
+        $('#actionTypeText').text(displayAction + ' For ' + customerName);
+        $('#actionCustomerName').text(customerName || '-');
+        $('#actionCustomerId').text(customerId || '-');
+        $('#actionRequestIdDisplay').text(requestId || '-');
+        $('#actionCurrentStatus').text(currentStatus || '-');
 
-    // update summary text to reflect the chosen action
-    $('#summaryAction').text(displayAction + ' Summary');
-    $('#summaryDescription').text('You are about to ' + displayAction.toLowerCase() + ' this request. Please provide a short statement and confirm.');
+        // set hidden form values
+        $('#actionType').val((action || '').toString().toLowerCase());
+        $('#hiddenRequestId').val(requestId || '');
 
-    // reset comment field
-    $('#actionNote').val('').removeClass('is-invalid');
+        // set submit button text
+        $('#submitButtonText').text(displayAction + ' Request');
 
-    // set submit button text
-    $('#submitButtonText').text(displayAction + ' Request');
+        // reset comment field
+        $('#actionNote').val('').removeClass('is-invalid');
 
-    // show modal
-    var modalEl = document.getElementById('actionModal');
-    var modal = new bootstrap.Modal(modalEl);
-    modal.show();
-}
-
-// Submit handler: builds the required JSON object and POSTs as application/json
-$(document).on('click', '#actionSubmitBtn', function (e) {
-    e.preventDefault();
-
-    // basic validation
-    var note = $('#actionNote').val() ? $('#actionNote').val().trim() : '';
-    if (!note || note.length < 10) {
-        $('#actionNote').addClass('is-invalid');
-        // scroll into view so user sees validation (helpful on small screens)
-        $('#actionNote').get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-    }
-
-    var requestId = $('#hiddenRequestId').val();
-    if (!requestId) {
-        alert('Missing request identifier. Cannot proceed.');
-        return;
-    }
-
-    // Decide isApprove: only 'approve' is true; everything else false
-    var actionType = ($('#actionType').val() || '').toLowerCase();
-    var isApprove = (actionType === 'approve');
-
-    // Build payload matching specified schema
-    var payload = {
-        id: requestId,
-        isApprove: isApprove,
-        approvalNote: note,
-        approvalDate: new Date().toISOString()
+        // show modal
+        var modalEl = document.getElementById('actionModal');
+        var modal = new bootstrap.Modal(modalEl);
+        modal.show();
     };
 
-    // anti-forgery token
-    var token = $('#actionForm input[name="__RequestVerificationToken"]').val();
+    // Submit handler: builds the required JSON object and POSTs as application/json
+    function setupActionSubmitHandler() {
+        $(document).on('click', '#actionSubmitBtn', function (e) {
+            e.preventDefault();
 
-    // POST JSON to server - adjust URL if your controller expects a different route
-    $.ajax({
-        url: '@Url.Action("TakeAction", "ChequeRequest")', // adjust if needed
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(payload),
-        headers: token ? { 'RequestVerificationToken': token } : {},
-        success: function (res) {
-            // hide modal and refresh table if present
-            var modalEl = document.getElementById('actionModal');
-            bootstrap.Modal.getInstance(modalEl)?.hide();
-
-            // reload datatable if present
-            if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                $('#myDataTable').DataTable().ajax.reload(null, false);
+            // basic validation
+            var note = $('#actionNote').val() ? $('#actionNote').val().trim() : '';
+            if (!note || note.length < 10) {
+                $('#actionNote').addClass('is-invalid');
+                // scroll into view so user sees validation (helpful on small screens)
+                $('#actionNote').get(0).scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
             }
 
-            // success feedback (you can change to your appalert)
-            if (res && res.message) {
-                alert(res.message);
-            } else {
-                alert('Action processed successfully.');
+            var requestId = $('#hiddenRequestId').val();
+            if (!requestId) {
+                alert('Missing request identifier. Cannot proceed.');
+                return;
             }
-        },
-        error: function (xhr) {
-            console.error('Action submission failed', xhr);
-            var msg = 'Error performing action.';
-            if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
-            alert(msg);
-        }
+
+            // Decide isApprove: only 'approve' is true; everything else false
+            var actionType = ($('#actionType').val() || '').toLowerCase();
+            var isApprove = (actionType === 'approve');
+
+            // Build payload matching specified schema
+            var payload = {
+                id: requestId,
+                isApprove: isApprove,
+                approvalNote: note,
+                approvalDate: new Date().toISOString()
+            };
+
+            // anti-forgery token
+            var token = $('#actionForm input[name="__RequestVerificationToken"]').val();
+
+            // POST JSON to server
+            $.ajax({
+                url: '@Url.Action("TakeAction", "ChequeRequest")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (res) {
+                    // hide modal and refresh table if present
+                    var modalEl = document.getElementById('actionModal');
+                    bootstrap.Modal.getInstance(modalEl)?.hide();
+
+                    // reload datatable if present
+                    if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                        $('#myDataTable').DataTable().ajax.reload(null, false);
+                    }
+
+                    // success feedback
+                    if (res && res.message) {
+                        appalert(res.message, 1, 1);
+                    } else {
+                        appalert('Action processed successfully.', 1, 1);
+                    }
+                },
+                error: function (xhr) {
+                    console.error('Action submission failed', xhr);
+                    var msg = 'Error performing action.';
+                    if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                    appalert(msg, 2, 1);
+                }
+            });
+        });
+    }
+
+    // Initialize when document is ready
+    $(document).ready(function() {
+        setupActionSubmitHandler();
     });
-});
-    </script>
+
+})();
+</script>

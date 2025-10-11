@@ -7,6 +7,7 @@ using CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Message;
@@ -28,15 +29,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
     {
        
         private readonly ChequeRequestService _chequeRequestService1;   
-        private readonly ChequeRequestMockService _chequeRequestService;
+      //  private readonly ChequeRequestMockService _chequeRequestService;
         private readonly BranchServices _branchServices;
         private readonly CategoryConfigService _categoryServices;
         private readonly CustomerService _customerService;
 
 
-        public ChequeRequestController(ChequeRequestMockService chequeRequestService,BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService,ChequeRequestService chequeRequestService1)
+        public ChequeRequestController(BranchServices branchServices,CategoryConfigService categoryConfigService,CustomerService customerService,ChequeRequestService chequeRequestService1)
         {
-            _chequeRequestService = chequeRequestService;
+            //_chequeRequestService = chequeRequestService;
             _branchServices = branchServices;
             _categoryServices = categoryConfigService;
             _customerService = customerService;
@@ -90,10 +91,71 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             return PartialView("_Error");
         }
 
-        [HttpPost]
-        public async Task<ActionResult> TakeAction(string requestId, string note, string action)
+        //[HttpGet]
+        //public async Task<ActionResult> GetCustomerAccounts(string customerId)
+        //{
+        //    try
+        //    {
+        //        // Use IsNullOrWhiteSpace like your existing pattern
+        //        if (string.IsNullOrWhiteSpace(customerId))
+        //            return Json(new { success = false, message = "Customer ID is required." });
+
+        //        var customerData = await _customerService.GetCustomerAccountDropdownAsync(customerId);
+
+        //        if (customerData?.AccountSelectList?.Any() != true)
+        //            return Json(new { success = false, message = "No accounts found for this customer." });
+
+        //        return Json(new { success = true, data = customerData });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log exception here if you have logging
+        //        // _logger.LogError(ex, "Error fetching customer accounts for {CustomerId}", customerId);
+
+        //        return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult> GetRequestForm(string customerId)
         {
-            if (note == null)
+            await Loader();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(customerId))
+                    return PartialView("_ChequeRequestForm", new ChequeBookRequest());
+
+                // Get customer data to populate ViewBag
+                var customerData = await _customerService.GetCustomerAccountDropdownAsync(customerId);
+
+                if (customerData?.AccountSelectList?.Any() == true)
+                {
+                    // Pass accounts to ViewBag for the form
+                    ViewBag.CustomerAccounts = customerData.AccountSelectList;
+
+                    // Pre-populate the model with customer info
+                    var model = new ChequeBookRequest
+                    {
+                        CustomerId = customerId,
+                        CustomerName = $"{customerData.CustomerDto.FirstName} {customerData.CustomerDto.LastName}"
+                    };
+
+                    return PartialView("_ChequeRequestForm", model);
+                }
+
+                return PartialView("_ChequeRequestForm", new ChequeBookRequest());
+            }
+            catch (Exception )
+            {
+                // Log error
+                return PartialView("_ChequeRequestForm", new ChequeBookRequest());
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> TakeAction(Approval approval, string action)
+        {
+            if (approval.approvalNote == null)
                 return Json(new { success = false, message = "Please Enter a value ." });
 
 
@@ -102,18 +164,18 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             switch (action?.ToLower())
             {
                 case "approve":
-                    result = await _chequeRequestService1.ApproveRequestAsync(requestId, note);
+                    result = await _chequeRequestService1.ApproveRequestAsync(approval);
                     break;
                 case "reject":
-                    result = await _chequeRequestService1.RejectRequestAsync(requestId, note);
+                    result = await _chequeRequestService1.RejectRequestAsync(approval);
                     break;
                 //case "review":
                 //    // Add review logic to your service
                 //    result = await _chequeRequestService1.ReviewRequestAsync(requestId, note);
                 //    break;
                 case "delivered":
-                    // Add review logic to your service
-                    result = await _chequeRequestService1.ReviewRequestAsync(requestId, note);
+                    // change to correct method when endpoint provided
+                    result = await _chequeRequestService1.RejectRequestAsync(approval);
                     break;
                 default:
                     result = new ExecutionMessages { Result = false, MessageString = "Invalid action" };
@@ -155,66 +217,35 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             }
         }
 
-
-
-
-        //[HttpPost]
-        //public async Task<ActionResult> LoadRequestsForDataTable(ChequeRequestQuery query)
+       //[HttpGet]
+        //public async Task<JsonResult> GetCustomerDetails(string customerId)
+        
         //{
         //    try
         //    {
-        //        var dataTable = await _chequeRequestService.GetRequestsForDataTableAsync(query);
-
-        //        return Json(new
+        //        if (string.IsNullOrWhiteSpace(customerId))
         //        {
-        //            draw = query?.Options?.draw ?? "1",
-        //            recordsTotal = dataTable.recordsTotal,
-        //            recordsFiltered = dataTable.recordsFiltered,
-        //            data = dataTable.data
-        //        });
+        //            return Json(new { success = false, message = "Customer ID is required" }, JsonRequestBehavior.AllowGet);
+        //        }
+
+        //        // Get customer data using the refactored service method
+        //        var customerData = await _customerService.GetCustomerAccountDropdownAsync(customerId);
+
+        //        if (customerData != null)
+        //        {
+        //            return Json(new { success = true, data = customerData }, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, message = "Customer not found" }, JsonRequestBehavior.AllowGet);
+        //        }
         //    }
         //    catch (Exception ex)
         //    {
-        //        // Log the exception
-        //        return Json(new
-        //        {
-        //            draw = query?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<ChequeBookRequest>()
-        //        });
+        //        // Log the exception (you might want to add logging here)
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
         //    }
         //}
-
-        [HttpGet]
-        public async Task<JsonResult> GetCustomerDetails(string customerId)
-        
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(customerId))
-                {
-                    return Json(new { success = false, message = "Customer ID is required" }, JsonRequestBehavior.AllowGet);
-                }
-
-                // Get customer data using the refactored service method
-                var customerData = await _customerService.GetCustomerByIdAsync(customerId);
-
-                if (customerData != null)
-                {
-                    return Json(new { success = true, data = customerData }, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Customer not found" }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (you might want to add logging here)
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -244,7 +275,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             else
             {
                 // --- UPDATE PATH ---
-                result = await _chequeRequestService.UpdateRequestAsync(model);
+                result = await _chequeRequestService1.CreateRequestAsync(model);
                 operationType = "Update";
             }
 

@@ -9292,7 +9292,7 @@
     </Content>
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ChequeManagements.designer.cs</LastGenOutput>
+      <LastGenOutput>ChequeManagements1.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\ChequeManagementSystem\ChequeManagements.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -10712,12 +10712,22 @@
     <Content Include="Views\ChequeBook\_CheckBookData.cshtml" />
     <Content Include="Views\ChequeBook\List.cshtml" />
     <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
+    <Content Include="Views\CounterCheque\_CounterChequeDetails.cshtml" />
+    <Content Include="Views\Categoryconfic\List.cshtml" />
+    <Content Include="Views\Categoryconfic\_CategoryDetailsPartial.cshtml" />
+    <Content Include="Views\FeeConfig\List.cshtml" />
+    <Content Include="Views\FeeConfig\_feeconfigData.cshtml" />
+    <Content Include="Views\FeeConfig\_FeeConfigDetails.cshtml" />
+    <Content Include="Views\NotificationConfig\List.cshtml" />
+    <Content Include="Views\NotificationConfig\_notifBookData.cshtml" />
+    <Content Include="Views\NotificationConfig\__NotificationConfigDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\AccountingV2\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />

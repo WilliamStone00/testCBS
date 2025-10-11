@@ -85,6 +85,16 @@
     ================================================== -->
     <div class="table-responsive">
         <table id="myDataTable" class="table table-hover" style="width:100%;">
+            <colgroup>
+                <col style="width:20%;"> <!-- Cheque Number -->
+                <col style="width:20%;"> <!-- Client Name -->
+                <col style="width:15%;"> <!-- Branch -->
+                <col style="width:10%;"> <!-- Amount -->
+                <col style="width:15%;"> <!-- Issued On -->
+                <col style="width:10%;"> <!-- Status -->
+                <col style="width:10%;"> <!-- Actions -->
+            </colgroup>
+
             <thead class="table-light">
                 <tr>
                     <th>Cheque Number</th>
@@ -101,6 +111,7 @@
             </tbody>
         </table>
     </div>
+
 </fieldset>
 
 <script>
@@ -172,6 +183,15 @@ $(document).ready(function () {
             searching: false,
             destroy: true,
             order: [[4, 'desc']],
+            columnDefs: [
+                { targets: 0, width: '15%' }, // Cheque Number
+                { targets: 1, width: '20%' }, // Client Name
+                { targets: 2, width: '15%' }, // Branch
+                { targets: 3, width: '10%', className: 'text-end' }, // Amount
+                { targets: 4, width: '15%' }, // Issued On
+                { targets: 5, width: '10%', className: 'text-center' }, // Status
+                { targets: 6, width: '15%', className: 'text-center' } // Actions
+            ],
             ajax: {
                 url: '@Url.Action("LoadCounterCheques", "CounterCheque")',
                 type: 'POST',
@@ -207,6 +227,7 @@ $(document).ready(function () {
                     render: function (data, type, row) {
                         // Use data-* attrs to avoid JS string-escaping issues
                         var detailsBtn = `<button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-details" data-id="${encodeURIComponent(row.Id)}">Details</button>`;
+                        var actionBtnss = `<button type="button" class="btn btn-sm btn-outline-success btn-action ms-1" data-action="Validate" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Validate</button>`;
                         var actionBtns = '';
                         var status = (row.Status || '').toLowerCase();
                         if (status === 'pending') {
@@ -216,7 +237,7 @@ $(document).ready(function () {
                             actionBtns += `<button type="button" class="btn btn-sm btn-outline-success btn-action ms-1" data-action="Validate" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Validate</button>`;
                             actionBtns += `<button type="button" class="btn btn-sm btn-outline-danger btn-action ms-1" data-action="Reject" data-id="${encodeURIComponent(row.Id)}" data-client="${encodeURIComponent(row.ClientName || '')}">Reject</button>`;
                         }
-                        return `<div class="btn-group">${detailsBtn}${actionBtns}</div>`;
+                        return `<div class="btn-group">${detailsBtn}${actionBtns}${actionBtnss}</div>`;
                     }
                 }
             ]
@@ -235,14 +256,11 @@ $(document).ready(function () {
         return `<span class="badge ${cls}">${status}</span>`;
     }
 
-    // --- Delegated click handlers (safer than inline onclick) ---
-    // Details
     $(document).on('click', '#myDataTable .btn-details', function (e) {
-        e.preventDefault();
-        var id = decodeURIComponent($(this).data('id'));
-        if (!id) { appalert('Missing record id', 0, 1); return; }
-        // Use AddORUpdateGen or your existing detail loader
-        AddORUpdateGen(id, 'datalistingview', '_Details', 'get', 'CounterCheque');
+    e.preventDefault();
+    var id = decodeURIComponent($(this).data('id') || '');
+    if (!id) { appalert('Missing record id', 0, 1); return; }
+    viewCounterCheque(id);
     });
 
     // Action buttons (Review/Validate/Reject)
@@ -257,21 +275,79 @@ $(document).ready(function () {
         showActionModal(action, id, client);
     });
 
-    // --- viewCounterCheque uses appalert and a safe url build ---
-    window.viewCounterCheque = function (id) {
-        if (!id) { appalert('Missing id', 0, 1); return; }
-        var url = '@Url.Action("ViewCounterCheque", "CounterCheque")';
-        $.get(url, { id: id })
-            .done(function (html) {
-                $('#receiptModalContainer').html(html);
-                $('#viewReceiptModal').modal('show');
-            })
-            .fail(function (xhr) {
-                var msg = 'Failed to load details.';
-                if (xhr && xhr.responseText) msg += ' ' + (xhr.status === 401 ? 'Authentication required.' : 'Server error.');
-                appalert(msg, 0, 1);
-            });
-    };
+  // Robust function to load and show details partial
+     window.viewCounterCheque = function (id, opts) {
+            opts = opts || {};
+            var modalSelector = opts.modalSelector || '#viewReceiptModal';
+            var containerSelector = opts.containerSelector || '#receiptModalContainer';
+            var url = '@Url.Action("GetCounterChequeDetails", "CounterCheque")';
+
+            if (!id) { appalert('Missing id', 0, 1); return; }
+
+            // quick safety checks
+            if ($(modalSelector).length === 0) {
+                console.error('Modal shell not found:', modalSelector);
+                appalert('Unable to show details: modal container missing.', 0, 1);
+                return;
+            }
+            if ($(containerSelector).length === 0) {
+                console.error('Modal content container not found:', containerSelector);
+                appalert('Unable to show details: modal content container missing.', 0, 1);
+                return;
+            }
+
+            // show loader
+            $(containerSelector).html(
+                '<div class="p-4 text-center">' +
+                    '<div class="spinner-border text-primary" role="status"></div>' +
+                    '<div class="mt-2 text-muted">Loading cheque details...</div>' +
+                '</div>'
+            );
+            // show modal shell
+            $(modalSelector).modal('show');
+
+            // request partial
+            $.get(url, { id: id })
+                .done(function (html, status, xhr) {
+                    // If server returned a full layout (e.g. login page), detect it quickly:
+                    var looksLikeFullPage = /<!doctype|<html[\s>]/i.test(html);
+                    if (looksLikeFullPage) {
+                        // show brief error and dump full content to console for debugging
+                        $(containerSelector).html(
+                            '<div class="p-4"><div class="alert alert-danger">Failed to load details. Server returned an unexpected response.</div></div>'
+                        );
+                        console.error('Expected partial HTML but received full page. Response length:', html.length, xhr.status, xhr.getAllResponseHeaders());
+                        return;
+                    }
+
+                    // Replace container with partial
+                    $(containerSelector).html(html);
+
+                    // Optional: update modal title if the partial includes a data attribute or element
+                    // If your partial exposes <div id="partialTitle" data-title="..."></div>, use that:
+                    var newTitle = $(containerSelector).find('[data-partial-title]').data('partial-title');
+                    if (newTitle) {
+                        $(modalSelector).find('.modal-title').text(newTitle);
+                    }
+
+                    // Re-init any controls inside the partial, e.g. select2, tooltips, validation
+                    if (typeof initControls === 'function') initControls();
+                    try {
+                        // re-parse unobtrusive validation if needed
+                        if (typeof $.validator !== 'undefined' && $.validator.unobtrusive) {
+                            $.validator.unobtrusive.parse($(containerSelector));
+                        }
+                    } catch (ex) { /* ignore */ }
+                })
+                .fail(function (xhr, status, err) {
+                    var msg = 'Failed to load details.';
+                    if (xhr.status === 401 || xhr.status === 403) msg = 'Authentication required.';
+                    else if (xhr.status >= 500) msg = 'Server error while loading details.';
+                    $(containerSelector).html('<div class="p-4"><div class="alert alert-danger">' + msg + '</div></div>');
+                    console.error('Error loading details:', xhr.status, status, err, xhr.responseText);
+                });
+        };
+
 
     // --- Hook buttons ---
     $('#applyCounterChequeFilterBtn').off('click').on('click', function () {

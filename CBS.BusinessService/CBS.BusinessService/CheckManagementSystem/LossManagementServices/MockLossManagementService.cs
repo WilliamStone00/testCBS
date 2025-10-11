@@ -225,7 +225,7 @@ namespace CBS.BusinessService.CheckManagementSystem.LossManagementSystem
             // Simulate processing delay
             System.Threading.Thread.Sleep(1000);
 
-            // Update check leaf status to "Lost" if a specific leaf was reported
+            // Update check leaf Status to "Lost" if a specific leaf was reported
             if (!string.IsNullOrEmpty(request.CheckLeafID))
             {
                 lock (_mockLock)

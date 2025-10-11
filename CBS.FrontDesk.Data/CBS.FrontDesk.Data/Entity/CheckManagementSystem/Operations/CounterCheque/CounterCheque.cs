@@ -18,6 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         [Required]
         public decimal Amount { get; set; }
         public string BranchId { get; set; }
+        public string CustomerId { get; set; }
         // For displaying in the list
         public string CheckLeafId { get; set; }
         public string Id { get; set; }

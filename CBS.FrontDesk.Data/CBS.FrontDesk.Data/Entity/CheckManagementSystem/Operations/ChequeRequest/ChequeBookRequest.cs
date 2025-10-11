@@ -5,51 +5,51 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest
 {
+    // DTO the UI / API sends (matches your "match" object exactly)
     public class ChequeBookRequest
     {
-        // Properties for Creating/Updating a Request
-        [Required]
-        public string customerId { get; set; } = null;
-        public string bankId { get; set; }
-        public string branchId { get; set; } = null;
-        public string customerName { get; set; } = null;
-        public string branchName { get; set; } = null;
+        public string CustomerId { get; set; }
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string BankId { get; set; }
+        public string SubscriptionPaymentAccount { get; set; }
+        public string CheckBookAccount { get; set; }
+        public string CheckBookCategoryId { get; set; }   // maps to CategoryId on entity
+        public string CheckBookCategoryName { get; set; }   // maps to CategoryId on entity
+        public string RequestNote { get; set; }
 
-        [Required]
-        public string subscriptionPaymentAccount { get; set; } = null;
+        // Notifications
+        public bool NotifyOnApproval { get; set; }
+        public bool NotifyOnClearance { get; set; }
+        public bool NotifyOnRejection { get; set; }
+        public bool NotifyOnPayment { get; set; }
+        public bool NotifyOnAnyTransaction { get; set; }
+        public bool SubscriptionAmount { get; set; }
+        public bool RecurentAmount { get; set; }
 
-        [Required]
-        public string checkBookAccount { get; set; } = null;
-        [Required]
-        public string categoryId { get; set; }
-        public string categoryName { get; set; } // Often populated for display
-        public string requestNote { get; set; }
+        // Pricing & Books
+        public decimal BasePrice { get; set; }
+        public int NumberOfPages { get; set; }
+        public bool AutomaticRenewal { get; set; }
 
-        // Notification options
-        public bool notifyOnApproval { get; set; }
-        public bool notifyOnClearance { get; set; }
-        public bool notifyOnRejection { get; set; }
-        public bool notifyOnPayment { get; set; }
-        public bool notifyOnAnyTransaction { get; set; }
+        // Subscription
+        public int SubscriptionDurationInMonths { get; set; }
+        public bool IsRecurringSubscription { get; set; }
+        public decimal? RecurringAmount { get; set; }
 
-        public bool automaticRenewal { get; set; }
-        public decimal transactionAmount { get; set; }
-        public decimal feeAmount { get; set; }
-        public int numberofCheckBooks { get; set; }
-        public int numberOfPages { get; set; }
-
-        // Properties for Displaying/Listing Requests (populated by the backend)
-        public string Id { get; set; } = null;
-        public string status { get; set; }
-        //  public DateTime? requestDate { get; set; }
-        public DateTime? approvalDate { get; set; }
-          public string approvalNote { get; set; }
+        // additional values when sent ack
+        public string Id { get; set; }
+        public string Status { get; set; }
+        public DateTime? ApprovalDate { get; set; }
+        public string ApprovalNote { get; set; }
     }
 
-    // In your Data/Entity folder
+
 
 
     public class ChequeRequestQuery
@@ -57,10 +57,10 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public DataTableOptions Options { get; set; }
         public ChequeRequestQuery() { Options = new DataTableOptions(); }
         public string CustomerId { get; set; }
-   
+
         // Category
         public string CategoryId { get; set; }
-      
+
 
         // Location / bank
         public string BranchId { get; set; }
@@ -77,10 +77,16 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
         public bool NotifyOnPayment { get; set; }
         public bool NotifyOnAnyTransaction { get; set; }
 
-           // Renewal & validity
+        // Renewal & validity
         public bool AutomaticRenewal { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+    }
+
+    public class Approval
+    {
+        public string id { get; set; }
+        public string approvalNote { get; set; }
     }
 
 }

@@ -30,7 +30,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         Task<FileUploadResponse> GetFileDetailsByIdAsync(string fileUploadId);
 
         /// <summary>
-        /// Gets a list (summaries) of files filtered by processing status (Pending/Processed/Failed).
+        /// Gets a list (summaries) of files filtered by processing Status (Pending/Processed/Failed).
         /// </summary>
         Task<List<FileUploadResponse>> GetFilesByProcessingStatusAsync(string processingStatus);
 

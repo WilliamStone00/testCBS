@@ -1,0 +1,375 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Notification Config Overview";
+}
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Notification Filters</h5>
+
+    <form id="notificationConfigQueryForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for optional filter groups -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" />
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleNotificationType" />
+                        <label class="form-check-label fw-bold" for="toggleNotificationType">Use Notification Type Filter</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Always visible: BranchName and IsCentralised -->
+            <div class="row mb-3">
+
+                <div class="col-md-4 d-flex align-items-center">
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="IsCentralised" name="IsCentralised" />
+                        <label class="form-check-label fw-bold" for="IsCentralised">Is Centralised</label>
+                    </div>
+                </div>
+
+                <!-- Notification Type (togglable) -->
+                <div id="notificationTypeContainer" class="d-none col-md-4">
+                    <label class="form-label fw-bold">Select Notification Type</label>
+                    @Html.DropDownList("NotificationType", new SelectList(ViewBag.NotificationTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-control select2", id = "notificationType" })
+                </div>
+
+            </div>
+
+            <!-- Branch Filter (togglable) -->
+            <div id="branchFilter" class="d-none mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters (togglable) -->
+            <div id="dateFilters" class="d-none mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" id="StartDate" name="StartDate" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_notifBookData")
+</div>
+
+@section Scripts {
+    <script>
+(function () {
+    const loadUrl = '@Url.Action("LoadNotificationData", "NotificationConfig")';
+    const initUrl = '@Url.Action("InitializeData", "NotificationConfig")';
+    const deleteUrl = '@Url.Action("Delete", "NotificationConfig")';
+    const antiToken = $('input[name="__RequestVerificationToken"]').val();
+
+    let notifTable = null;
+    let tableInitialized = false;
+
+    function emptyToNull(v) { return (v === undefined || v === null || v === '') ? null : v; }
+    function esc(s) { return (s===null||s===undefined)?'':String(s).replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+    function escapeHtml(unsafe) {
+        if (unsafe === null || unsafe === undefined) return '';
+        return String(unsafe).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function collectFilters(dTableRequest) {
+        return {
+            BranchName: emptyToNull($('#BranchName').val()),
+            BranchId: ($('#branchFilter').hasClass('d-none') ? null : emptyToNull($('#branchId').val())),
+            IsCentralised: $('#IsCentralised').is(':checked') ? true : null,
+            NotificationType: ($('#notificationTypeContainer').hasClass('d-none') ? null : emptyToNull($('#notificationType').val())),
+            StartDate: ($('#dateFilters').hasClass('d-none') ? null : emptyToNull($('#StartDate').val())),
+            EndDate: ($('#dateFilters').hasClass('d-none') ? null : emptyToNull($('#EndDate').val())),
+            Options: dTableRequest || {}
+        };
+    }
+
+    // actions used by dropdown buttons (wired to window for inline onclick)
+    window.showDetails = function (id) {
+        if (!id) return;
+        $.get(initUrl, { KEY: id, path: 'get', partialView: '_NotificationConfigDetails' })
+            .done(function (html) { $('#detailsModalBody').html(html); new bootstrap.Modal(document.getElementById('detailsModal')).show(); })
+            .fail(function () { if (typeof appalert === 'function') appalert('Failed loading details', 0, 1); });
+    };
+
+    window.editItem = function (id) {
+        if (!id) return;
+        $.get(initUrl, { KEY: id, path: '_Create', partialView: '_Create' })
+            .done(function (html) { $('#detailsModalBody').html(html); new bootstrap.Modal(document.getElementById('detailsModal')).show(); })
+            .fail(function () { if (typeof appalert === 'function') appalert('Failed loading edit form', 0, 1); });
+    };
+
+    //window.deleteItem = function (id) {
+    //    if (!id) return;
+    //    if (!confirm('Delete this configuration?')) return;
+    //    $.ajax({
+    //        url: deleteUrl,
+    //        type: 'GET',
+    //        data: { KEY: id, __RequestVerificationToken: antiToken },
+    //        success: function (resp) {
+    //            if (resp && resp.success) {
+    //                if (notifTable) notifTable.ajax.reload(null, false);
+    //                if (typeof appalert === 'function') appalert(resp.message || 'Deleted', 1, 1);
+    //            } else {
+    //                if (typeof appalert === 'function') appalert(resp.message || 'Delete failed', 0, 1);
+    //            }
+    //        },
+    //        error: function () { if (typeof appalert === 'function') appalert('Delete failed', 0, 1); }
+    //    });
+    //};
+
+    window.deleteItem = function (id) {
+        if (!id) return;
+
+        // Function to perform the AJAX delete
+        function doDelete() {
+            $.ajax({
+                url: deleteUrl,
+                type: 'GET',
+                data: { KEY: id, __RequestVerificationToken: antiToken },
+                success: function (resp) {
+                    if (resp && resp.success) {
+                        if (notifTable) notifTable.ajax.reload(null, false);
+                        if (typeof appalert === 'function') appalert(resp.message || 'Deleted', 1, 1);
+                    } else {
+                        if (typeof appalert === 'function') appalert(resp.message || 'Delete failed', 4, 1);
+                    }
+                },
+                error: function (xhr) {
+                    if (typeof appalert === 'function') appalert('Delete failed. See console.', 4, 1);
+                    console.error('Delete error', xhr && xhr.responseText ? xhr.responseText : xhr);
+                }
+            });
+        }
+
+        // If alertify is available, use it
+        if (window.alertify && typeof window.alertify.confirm === 'function') {
+            alertify.confirm(
+                'Confirm delete',
+                'Delete this configuration?',
+                function () { doDelete(); },   // OK callback
+                function () { /* Cancelled */ } // Cancel callback
+            );
+            return;
+        }
+
+        // If appalert exists, use a confirm fallback
+        if (typeof appalert === 'function') {
+            if (!confirm('Delete this configuration?')) return;
+            doDelete();
+            return;
+        }
+
+        // If neither alertify nor appalert, fall back to default confirm
+        if (!confirm('Delete this configuration?')) return;
+        doDelete();
+    };
+
+
+
+    // show/hide helpers
+    function safeInitSelect2(selector) {
+        if ($.fn.select2 && $(selector).length && !$(selector).data('select2')) {
+            try { $(selector).select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+        }
+    }
+
+    function attachToggleHandlers() {
+        $('#toggleBranch').off('change').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#branchFilter').removeClass('d-none');
+                safeInitSelect2('#branchId');
+            } else {
+                $('#branchFilter').addClass('d-none');
+                if ($.fn.select2 && $('#branchId').data('select2')) $('#branchId').val(null).trigger('change');
+            }
+        });
+
+        $('#toggleDates').off('change').on('change', function () {
+            if ($(this).is(':checked')) $('#dateFilters').removeClass('d-none');
+            else { $('#dateFilters').addClass('d-none'); $('#StartDate, #EndDate').val(''); }
+        });
+
+        $('#toggleNotificationType').off('change').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#notificationTypeContainer').removeClass('d-none');
+                safeInitSelect2('#notificationType');
+            } else {
+                $('#notificationTypeContainer').addClass('d-none');
+                $('#notificationType').val('');
+                if ($.fn.select2 && $('#notificationType').data('select2')) $('#notificationType').val(null).trigger('change');
+            }
+        });
+
+        // initial state
+        if (!$('#toggleBranch').is(':checked')) $('#branchFilter').addClass('d-none');
+        if (!$('#toggleDates').is(':checked')) $('#dateFilters').addClass('d-none');
+        if (!$('#toggleNotificationType').is(':checked')) $('#notificationTypeContainer').addClass('d-none');
+    }
+
+    // build the actions dropdown HTML (your supplied render function integrated)
+    function actionCellHtml(row) {
+        var rawId = String(row.id || row.Id || '');
+        var recordId = encodeURIComponent(rawId);
+        var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+        var btnId = 'actionDropdown_' + safeId;
+
+        var name = escapeHtml(row.name || row.Name || '');
+        var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
+
+        var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}" onclick="showDetails('${recordId}')">
+                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                          </button>`;
+
+        var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}" onclick="editItem('${recordId}')">
+                                       <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                     </button>` : '';
+
+        var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}" onclick="deleteItem('${recordId}')">
+                                         <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                       </button>` : '';
+
+        return `
+            <div class="dropdown text-center">
+                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                        type="button" id="${btnId}"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-cog-outline"></i> Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                    <li>${detailsBtn}</li>
+                    ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                    ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                    ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
+                </ul>
+            </div>`.trim();
+    }
+
+    // create the DataTable (called on Apply click)
+    function createTable() {
+        // destroy if exists
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            try { $('#myDataTable').DataTable().destroy(); } catch (e) {}
+            $('#myDataTable tbody').empty();
+        }
+
+        notifTable = $('#myDataTable').DataTable({
+            serverSide: true,
+            responsive: true,
+            pageLength: 10,
+            ajax: {
+                url: loadUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                headers: (antiToken ? { 'RequestVerificationToken': antiToken } : undefined),
+                data: function (d) {
+                    // build server-side payload
+                    const filters = collectFilters({
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        sortColumnName: (d.order && d.order.length) ? (d.columns[d.order[0].column].data) : null,
+                        sortColumnDirection: (d.order && d.order.length) ? d.order[0].dir : null
+                    });
+                    return JSON.stringify(filters);
+                },
+                error: function () { if (typeof appalert === 'function') appalert('Failed to load data', 0, 1); }
+            },
+            columns: [
+                { data: 'Name' },
+                { data: 'IsCentralised',
+                  render: function (d) { return d ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>'; }
+                },
+                { data: 'NotificationType' },
+                { data: 'Language' },
+                { data: 'Audience' },
+                { data: 'IsActive',
+                  render: function (d) { return d ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'; }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        return actionCellHtml(row);
+                    }
+                }
+            ],
+            language: { emptyTable: 'No notification configurations found' }
+        });
+
+        tableInitialized = true;
+    }
+
+    // apply & reset bindings
+    $(function () {
+        // wire toggles
+        attachToggleHandlers();
+
+        // Apply: create table if needed or reload
+        $('#applyFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            if (!tableInitialized) createTable();
+            else if (notifTable) notifTable.ajax.reload(null, false);
+        });
+
+        // Reset
+        $('#resetFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            const form = document.getElementById('notificationConfigQueryForm');
+            if (form) form.reset();
+            $('#branchFilter, #dateFilters, #notificationTypeContainer').addClass('d-none');
+            $('#toggleBranch, #toggleDates, #toggleNotificationType').prop('checked', false);
+            if ($.fn.select2) {
+                if ($('#branchId').data('select2')) $('#branchId').val(null).trigger('change');
+                if ($('#notificationType').data('select2')) $('#notificationType').val(null).trigger('change');
+            }
+            if (notifTable) notifTable.clear().draw();
+            tableInitialized = false;
+        });
+    });
+})();
+    </script>
+}

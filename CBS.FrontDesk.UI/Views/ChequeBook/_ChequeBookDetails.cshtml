@@ -11,8 +11,8 @@
                 <p><strong>Number of Leaves:</strong> @Model.numberOfLeaves</p>
                 <p><strong>Status:</strong> @Model.status</p>
                 <p><strong>Branch:</strong> @Model.branchName</p>
-                <p><strong>Issue Date:</strong> @Model.issueDate.ToShortDateString()</p>
-                <p><strong>Expiry Date:</strong> @Model.expiryDate.ToShortDateString()</p>
+                <p><strong>Issue Date:</strong> @Model.issueDate?.ToShortDateString()</p>
+                <p><strong>Expiry Date:</strong> @Model.expiryDate?.ToShortDateString()</p>
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
                     <tr>
                         <td>@leaf.leafNumber</td>
                         <td>@leaf.status</td>
-                        <td>@leaf.issueDate.ToShortDateString()</td>
-                        <td>@leaf.expiryDate.ToShortDateString()</td>
+                        <td>@leaf.issueDate?.ToShortDateString()</td>
+                        <td>@leaf.expiryDate?.ToShortDateString()</td>
                         <td>
                             <button class="btn btn-info btn-sm" onclick="showLeafDetails('@leaf.id')">Details</button>
                             <button class="btn btn-warning btn-sm" onclick="markLeafAsUsed('@leaf.id')">Mark as Used</button>

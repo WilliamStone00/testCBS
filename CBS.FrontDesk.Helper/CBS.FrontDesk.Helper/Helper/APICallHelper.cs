@@ -1258,6 +1258,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateChequeBookCategory = "/api/v1/checkbook-category";
         public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
         public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string categorydatatable = "/api/v1/checkbook-category/data-table";
 
         // ---------------- cheque number position CRUD ----------------
         public static string GetAll = "/api/v1/check-configs";
@@ -1274,14 +1275,18 @@ namespace CBS.FrontDesk.Helper
         public static string CreateFeeConfig = "/api/v1/fee-config";
         public static string UpdateFeeConfig = "/api/v1/fee-config/{0}";
         public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
+        public static string FeeDatatable = "/api/v1/FeeConfig/data-table";
 
         // ---------------- NOTIFICATIONS ----------------
 
         public static string GetAllnot = "/api/v1/Notification/types";
+        public static string GetNotificationConfigById = "/api/v1/Notification/types";
         public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
         public static string Createnot = "/api/v1/Notification/Config";
         public static string Updatenot = "/api/v1/update-notification-config/{0}";
         public static string Deletenot = "/api/v1/delete-notification-config/{0}";
+        public static string notdata = "/api/v1/data-table";
+
 
         //------------------- CounterCheque ----------------
         public static string CreateCounterCheque = "/api/v1/counter-checks";
@@ -1305,12 +1310,11 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------- Cheque Request -------------------------
         public const string CreateChequeRequest = "/api/v1/CheckRequest";
-        public const string GetAllChequeRequests = "/api/v1/cheque-requests";
-        public const string GetChequeRequestById = "/api/v1/cheque-request/{0}";
-        public const string ApproveChequeRequest = "/api/v1/approval-request";
-        public const string RejectChequeRequest = "/api/v1/approval-request";
+         public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
+        public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
+        public const string RejectChequeRequest = "not yet provided by backend";
         public const string ReviewChequeRequest = "not yet provided by backend";
-        public const string datatableforrequest = "/api/v1/checkbook-request/data-table";
+        public const string datatableforrequest = "/api/v1/CheckRequest/DataTable";
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";
@@ -1318,6 +1322,8 @@ namespace CBS.FrontDesk.Helper
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
+
+        public const string GetCounterChequeDetails = "/api/v1/counter-checks";
 
         public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
 

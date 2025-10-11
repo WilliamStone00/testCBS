@@ -174,7 +174,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeCertification
                     existing.AccountNumber = model.AccountNumber;
                     existing.Amount = model.Amount;
                     existing.Description = model.Description;
-                    // Allow manual status update if provided (but typically status flows through Review/Validate/Reject)
+                    // Allow manual Status update if provided (but typically Status flows through Review/Validate/Reject)
                     if (!string.IsNullOrWhiteSpace(model.CertificationStatus))
                         existing.CertificationStatus = model.CertificationStatus;
                 }

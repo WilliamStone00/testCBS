@@ -444,7 +444,9 @@
 using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -492,6 +494,36 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
             }
         }
 
+        public async Task<CustomDataTable> GetFeeDataTableAsync(FeeConfigQuery query)
+        {
+            try
+            {
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.FeeDatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
+
         public async Task<IEnumerable<StringValues>> GetFeeTypesAsync()
         {
             try
@@ -529,10 +561,11 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             try
             {
-               
-                model.branchName = GetBranchName();
-                model.branchCode = GetBankCode();
-               
+                if (model.isCentralized == false)
+                {
+                    model.branchName = GetBranchName();
+                    model.branchCode = GetBankCode();
+                }
 
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<FeeConfig>>(APICallHelper.CreateFeeConfig, model);
                 if (response != null && (response.IsSuccess))

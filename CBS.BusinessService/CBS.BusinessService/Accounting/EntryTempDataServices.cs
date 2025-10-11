@@ -395,7 +395,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                //Status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
                 string url = APICallHelper.Url_Get_AllPostedEntriesStatus;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
                 var cusResponseObject = await _accountingApiCallerHelper.PostServicesEntryAsync<ResponseObject<List<PostedEntry>>>(url, model);
                 if (cusResponseObject.ApiResponseData!=null)

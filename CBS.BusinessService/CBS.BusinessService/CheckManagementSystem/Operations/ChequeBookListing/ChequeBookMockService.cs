@@ -23,9 +23,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 branchId = "BR001",
                 branchName = "Main Branch",
                 categoryId = "CAT001",
-                categoryName = "Standard 25 Leaves",
+                CheckBookCategoryName = "Standard 25 Leaves",
                 numberOfLeaves = 25,
-                status = "Active",
+                Status = "Active",
                 issueDate = DateTime.Now.AddMonths(-1),
                 expiryDate = DateTime.Now.AddMonths(11),
                 feeAmount = 5000,
@@ -42,9 +42,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 branchId = "BR002",
                 branchName = "Downtown Branch",
                 categoryId = "CAT002",
-                categoryName = "Premium 50 Leaves",
+                CheckBookCategoryName = "Premium 50 Leaves",
                 numberOfLeaves = 50,
-                status = "Active",
+                Status = "Active",
                 issueDate = DateTime.Now.AddMonths(-2),
                 expiryDate = DateTime.Now.AddMonths(10),
                 feeAmount = 8000,
@@ -61,9 +61,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 branchId = "BR001",
                 branchName = "Main Branch",
                 categoryId = "CAT001",
-                categoryName = "Standard 25 Leaves",
+                CheckBookCategoryName = "Standard 25 Leaves",
                 numberOfLeaves = 25,
-                status = "Cancelled",
+                Status = "Cancelled",
                 issueDate = DateTime.Now.AddMonths(-3),
                 expiryDate = DateTime.Now.AddMonths(9),
                 feeAmount = 5000,
@@ -81,8 +81,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
             for (int i = 1; i <= count; i++)
             {
                 var leafNumber = int.Parse(startSeries) + i - 1;
-                var statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
-                var status = statuses[random.Next(statuses.Length)];
+                var Statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
+                var Status = Statuses[random.Next(Statuses.Length)];
 
                 leaves.Add(new ChequeLeaf
                 {
@@ -90,11 +90,11 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                     chequeBookId = chequeBookId,
                     leafNumber = i,
                     chequeNumber = leafNumber.ToString("D6"),
-                    status = status,
-                    usedDate = status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
-                    amount = status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
-                    beneficiary = status == "Used" ? "Test Beneficiary" : null,
-                    remarks = status == "Blocked" ? "Reported lost" : null,
+                    status = Status,
+                    usedDate = Status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
+                    amount = Status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
+                    beneficiary = Status == "Used" ? "Test Beneficiary" : null,
+                    remarks = Status == "Blocked" ? "Reported lost" : null,
                     createdDate = DateTime.Now.AddMonths(-random.Next(1, 3))
                 });
             }
@@ -118,9 +118,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 data = data.Where(cb => cb.branchId == query.branchId);
             }
 
-            if (!string.IsNullOrEmpty(query.status))
+            if (!string.IsNullOrEmpty(query.Status))
             {
-                data = data.Where(cb => cb.status == query.status);
+                data = data.Where(cb => cb.Status == query.Status);
             }
 
             if (query.fromDate.HasValue)
@@ -148,10 +148,10 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                             ? data.OrderBy(cb => cb.numberOfLeaves)
                             : data.OrderByDescending(cb => cb.numberOfLeaves);
                         break;
-                    case "status":
+                    case "Status":
                         data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.status)
-                            : data.OrderByDescending(cb => cb.status);
+                            ? data.OrderBy(cb => cb.Status)
+                            : data.OrderByDescending(cb => cb.Status);
                         break;
                     case "issuedate":
                         data = query.DataTableOptions.sortDirection == "asc"

@@ -2,92 +2,101 @@
 
 <fieldset class="fieldset-custom">
 
+    <!-- Header -->
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
                 <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Details
             </h1>
             <p class="card-text text-muted mb-1">
-               Here we have the details of a cheque request with all the informations required 
+                Complete details of the cheque book request.
             </p>
-                   <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+            <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
         </div>
     </div>
 
-    @*<legend class="legend-custom d-flex justify-content-between align-items-center">
-        <span>
-            <i class="mdi mdi-information-outline me-2"></i>Cheque Request Details
-        </span>
-        <small class="text-muted">Request ID: @Model.Id</small>
-    </legend>*@
-
-    <div class="row">
-        <h5 class="text-muted">Request ID: @Model.Id</h5>
-        <!-- Left Column: Key Details -->
-        <div class="col-md-7">
-            <div class="card h-100">
+    <!-- Request Basic Info -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Request Information</h5>
+                    <h5 class="card-title text-primary">Customer & Request Info</h5>
                     <hr />
-                    <dl class="row">
-                        <dt class="col-sm-4">Customer Name</dt>
-                        <dd class="col-sm-8">@Model.customerName (@Model.customerId)</dd>
-
-                        <dt class="col-sm-4">Category</dt>
-                        <dd class="col-sm-8">@Model.categoryName</dd>
-
-                        <dt class="col-sm-4">Cheque Book Account</dt>
-                        <dd class="col-sm-8"><code>@Model.checkBookAccount</code></dd>
-
-                        <dt class="col-sm-4">Fee Payment Account</dt>
-                        <dd class="col-sm-8"><code>@Model.subscriptionPaymentAccount</code></dd>
-
-                        <dt class="col-sm-4">Request Note</dt>
-                        <dd class="col-sm-8">@Model.requestNote</dd>
-                    </dl>
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>Customer Name</th><td>@Model.CustomerName (@Model.CustomerId)</td></tr>
+                            <tr><th>Branch</th><td>@Model.BranchName (@Model.BranchId)</td></tr>
+                            <tr><th>Bank ID</th><td>@Model.BankId</td></tr>
+                            <tr><th>Cheque Book Category</th><td>@Model.CheckBookCategoryName (@Model.CheckBookCategoryId)</td></tr>
+                            <tr><th>Cheque Book Account</th><td><code>@Model.CheckBookAccount</code></td></tr>
+                            <tr><th>Fee Payment Account</th><td><code>@Model.SubscriptionPaymentAccount</code></td></tr>
+                            <tr><th>Request Note</th><td>@Model.RequestNote</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Status & Timeline -->
-        <div class="col-md-5">
-            <div class="card h-100">
+        <!-- Status & Notifications -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3 h-50">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Status & Timeline</h5>
                     <hr />
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Current Status:</span>
-                            <span class="badge bg-info">@Model.status</span>
-                        </li>
-
-                        @if (Model.approvalDate.HasValue)
-                        {
-                            <li class="list-group-item"><strong>Approval/Rejection Date:</strong> @Model.approvalDate?.ToString("f")</li>
-                        }
-                        <li class="list-group-item"><strong>Approval/Rejection Note:</strong> @Model.approvalNote</li>
-                    </ul>
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr>
+                                <th>Current Status</th>
+                                <td><span class="badge bg-info">@Model.Status</span></td>
+                            </tr>
+                            @if (Model.ApprovalDate.HasValue)
+                            {
+                                <tr><th>Approval/Rejection Date</th><td>@Model.ApprovalDate?.ToString("f")</td></tr>
+                            }
+                            <tr><th>Approval/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Notification Preferences -->
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
+            <div class="card shadow-sm h-50">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Notification Preferences</h5>
                     <hr />
-                    <div class="d-flex flex-wrap gap-3">
-                        <div class="form-check"><input type="checkbox" disabled @(Model.notifyOnApproval ? "checked" : "") /> <label>On Approval</label></div>
-                        <div class="form-check"><input type="checkbox" disabled @(Model.notifyOnRejection ? "checked" : "") /> <label>On Rejection</label></div>
-                        <div class="form-check"><input type="checkbox" disabled @(Model.notifyOnClearance ? "checked" : "") /> <label>On Clearance</label></div>
-                        <div class="form-check"><input type="checkbox" disabled @(Model.notifyOnPayment ? "checked" : "") /> <label>On Payment</label></div>
-                        <div class="form-check"><input type="checkbox" disabled @(Model.notifyOnAnyTransaction ? "checked" : "") /> <label>On Any Transaction</label></div>
-                    </div>
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>On Approval</th><td>@(Model.NotifyOnApproval ? "Yes" : "No")</td></tr>
+                            <tr><th>On Rejection</th><td>@(Model.NotifyOnRejection ? "Yes" : "No")</td></tr>
+                            <tr><th>On Clearance</th><td>@(Model.NotifyOnClearance ? "Yes" : "No")</td></tr>
+                            <tr><th>On Payment</th><td>@(Model.NotifyOnPayment ? "Yes" : "No")</td></tr>
+                            <tr><th>On Any Transaction</th><td>@(Model.NotifyOnAnyTransaction ? "Yes" : "No")</td></tr>
+                            <tr><th>Automatic Renewal</th><td>@(Model.AutomaticRenewal ? "Yes" : "No")</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Pricing & Subscription Details -->
+    <div class="row g-3">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Pricing & Subscription</h5>
+                    <hr />
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>Base Price</th><td>@Model.BasePrice.ToString("C")</td></tr>
+                            <tr><th>Number of Pages</th><td>@Model.NumberOfPages</td></tr>
+                            <tr><th>Subscription Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
+                            <tr><th>Recurring Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
+                            <tr><th>Recurring Amount</th><td>@Model.RecurringAmount?.ToString("C") ?? "-" </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </fieldset>

@@ -10,13 +10,12 @@
                     <i class="mdi mdi-account-group me-2"></i> @ChequeManagements.header
                 </h1>
                 <p class="card-text">
-                    @*@GlobalUserManagement.ManageSystemUsersTrackRolesAndStatuses.*@
-                    Manage cheque categories Manage system users and apply filters to search by branch  details, user name.
+                    @ChequeManagements.headtextconf
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    @*@GlobalDailyCollectorManagement.ImportantText.*@
-                    Use filters like branch, and  to manage and audit user access effectively.
+                    @ChequeManagements.ImportantTextcat.
+                    
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -34,9 +33,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Branch:</strong> View Category by organizational branch. </li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalUserManagement.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Make sure category was actually created if not create one first</strong> </li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@ChequeManagements.Branchtip:</strong>@ChequeManagements.Branchtiptext </li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@ChequeManagements.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@ChequeManagements.tiptext</strong> </li>
                 <li><i class="mdi mdi-refresh text-info me-2"></i><strong>@GlobalUserManagement.Refresh:</strong> @GlobalUserManagement.EnsureDataIsUpToDate.</li>
             </ul>
         </div>
@@ -45,21 +44,11 @@
 
 <div class="card shadow p-3 mb-4">
     @*<h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalUserManagement.AdvancedUserFilters</h5>*@
-
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button" onclick=" LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Categories','new','Categoryconfic')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-                <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
-            </a>
-        </div>
-    </div>
+ 
 
     @Html.Partial("_model")
     <!-- DataTable Partial -->
-    <div id="datalistingview">
+    <div id="datalistingview1">
         @Html.Partial("_Categories")
     </div>
 </div>

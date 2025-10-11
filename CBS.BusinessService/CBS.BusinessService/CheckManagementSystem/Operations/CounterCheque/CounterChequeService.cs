@@ -56,7 +56,30 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             return ExecutionMessage;
         }
 
-   
+        public async Task<CounterCheques> GetCounterChequeDetailsAsync(string id)
+        {
+            try
+            {
+                var response = await _apiHelper.GetAsync<ServiceResponse<CounterCheques>>($"{APICallHelper.GetCounterChequeDetails}/{Uri.EscapeDataString(id)}");
+
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                else
+                {
+                    throw new Exception(response.ApiResponseData?.Message ?? response.Message ?? "Failed to fetch counter cheque details");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error fetching counter cheque details: {ex.Message}");
+                throw new Exception($"Unable to retrieve counter cheque details: {ex.Message}", ex);
+            }
+        }
+
+
+
         public async Task<CustomDataTable> GetCounterChequesForDataTableAsync(CounterChequeQuery query)
         {
             try
