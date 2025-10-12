@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public string Status { get; set; }
         //public string DepositToAccount { get; set; }
         public string ChequeImagePath { get; set; }
+        public Discount Discount { get; set; }
 
 
 
@@ -53,5 +55,17 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
         public double Fees { get; set; }
 
 
+    }
+
+    public class CheckbookDetail
+    {
+        public string PageNumber { get; set; }
+        public string BranchId { get; set; }
+        public string AccountNumber { get; set; }
+        public string CustomerId { get; set; }
+        public string Status { get; set; }
+        public string CheckBookCategoryId { get; set; }
+        public string Id { get; set; }
+        
     }
 }

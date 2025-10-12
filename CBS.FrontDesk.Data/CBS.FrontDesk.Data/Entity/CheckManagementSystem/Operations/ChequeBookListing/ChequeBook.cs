@@ -48,20 +48,41 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public string Id { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
+         public string BranchName { get; set; }
+        public DateTime? IssueDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string AccountId { get; set; }
         public string AccountNumber { get; set; }
         public string BranchId { get; set; }
-        public string BranchName { get; set; }
-        public string CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public string BankId { get; set; }
         public int NumberOfLeaves { get; set; }
-        public string Status { get; set; } // Active, Used, Cancelled, Blocked
-        public DateTime IssueDate { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public decimal FeeAmount { get; set; }
-        public string ChequeSeriesStart { get; set; }
-        public string ChequeSeriesEnd { get; set; }
-        public List<ChequeLeaf> ChequeLeaves { get; set; } = new List<ChequeLeaf>();
+        public int StartSerialNumber { get; set; }
+        public int EndSerialNumber { get; set; }
+        public int CurrentSerialNumber { get; set; }
+        public int Current { get; set; }
+        public string Status { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? IssuedDate { get; set; }
+        public string IssuedBy { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
+        public DateTime? ExpiratryDate { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public string BlockedBy { get; set; }
+        public bool IsBlocked { get; set; }
+        public string ApproveBy { get; set; }
+        public string BlockReasons { get; set; }
+        public DateTime? BlockedDate { get; set; }
+        public string CheckBookCategoryId { get; set; }
+        public string CheckBookCategoryName { get; set; }
+        public bool IsReissued { get; set; }
+        public string ReplacementCheckBookId { get; set; }
+        public bool NotifyOnClearance { get; set; }
+        public bool NotifyOnPayment { get; set; }
+        public bool NotifyOnAnyTransaction { get; set; }
+        public bool IsPrinted { get; set; }
+        public bool IsIssued { get; set; }
+        public string StatusDescription { get; set; }
+        public List<ChequeLeaf> Leaves { get; set; } = new List<ChequeLeaf>();
     }
 
     public class ChequeLeaf
@@ -85,11 +106,16 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
     public class ChequeBookQuery
     {
         public DataTableOptions Options { get; set; }
-        public string customerName { get; set; }
-        public string branchId { get; set; }
-        public string status { get; set; }
-        public DateTime? fromDate { get; set; }
-        public DateTime? toDate { get; set; }
+        public int? NumberOfLeaves { get; set; }
+        public string BranchId { get; set; }
+        public string CheckBookCategoryId { get; set; }
+        public string BankId { get; set; }
+        public string Status { get; set; }
+        public string CustomerId { get; set; }
+        //public bool? IsBlocked { get; set; }
+        //public DateTime? CreatedDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public ChequeBookQuery()
         {

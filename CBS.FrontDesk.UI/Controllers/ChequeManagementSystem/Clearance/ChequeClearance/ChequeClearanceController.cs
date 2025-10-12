@@ -5,6 +5,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
@@ -21,6 +22,7 @@ using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeClearance
 {
+    
     public class ChequeClearanceController : Controller
     {
 
@@ -28,21 +30,21 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
         private readonly BranchServices _branchServices;
        private readonly MockCheckClearanceService _mockCheckClearanceService;
         private readonly FeeConfigService _feeConfigService;
+        private readonly CategoryConfigService _categoryServices;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, FeeConfigService feeConfigService, MockCheckClearanceService mockCheckClearanceService)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService,CategoryConfigService categoryConfigService, BranchServices branchServices, FeeConfigService feeConfigService, MockCheckClearanceService mockCheckClearanceService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
            _mockCheckClearanceService = mockCheckClearanceService;
             _feeConfigService = feeConfigService;
-
-
+            _categoryServices = categoryConfigService;
         }
 
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View(new OptionRequest()); // pass categories as model
+            return View(new OptionRequest() { Discount= new Discount()}); // pass categories as model
         }
         public async Task<bool> loader()
         {
@@ -52,10 +54,13 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             var feeConfigure = await _feeConfigService.GetFeeTypesAsync();
             ViewBag.FeeTypes = feeConfigure;
 
+            var categories = await _categoryServices.GetCategories();
+            ViewBag.Categories = categories;
+
             return true;
         }
         // Ajax entry point
-        public async Task<ActionResult> InitializeData(string KEY = null,string partialView = null, string path = null,string serviceOption = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await loader();
 
@@ -63,10 +68,10 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 // ✅ When loading list view
                 var data = await _mockCheckClearanceService.GetAllAsync();
-                return PartialView(partialView?? "_ChequeClearanceDataTable", data);
+                return PartialView(partialView ?? "_ChequeClearanceDataTable", data);
             }
             else if (path == "new")
-            {               
+            {
 
                 OptionRequest model = null;
                 OptionRequest options = new OptionRequest(); // ✅ always initialized
@@ -118,6 +123,61 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 var data = await _mockCheckClearanceService.GetByIdAsync(KEY);
                 return PartialView(partialView ?? "_Edit", data);
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadcheckbookData(ChequeBookQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.GetchequebokDataTableAsync(query);
+
+                var chequeBook = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = chequeBook
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ChequebookDetail(string KEY)
+        {
+            var ChequebookDetail = await _chequeClearanceService.GetChequebookDetail(KEY);
+            if (ChequebookDetail != null)
+            {
+                // You can either:
+                // 1️⃣ return a PartialView (if embedded somewhere)
+                // 2️⃣ return a View if standalone
+
+                return PartialView("_ChequeBookD", ChequebookDetail);
+            }
+
+            return PartialView("_Error", "Checkbook details not found.");
         }
 
 

@@ -11,8 +11,8 @@
                 <p><strong>Number of Leaves:</strong> @Model.NumberOfLeaves</p>
                 <p><strong>Status:</strong> @Model.Status</p>
                 <p><strong>Branch:</strong> @Model.BranchName</p>
-                <p><strong>Issue Date:</strong> @Model.IssueDate.ToShortDateString()</p>
-                <p><strong>Expiry Date:</strong> @Model.ExpiryDate.ToShortDateString()</p>
+                <p><strong>Issue Date:</strong> @Model.IssueDate</p>
+                <p><strong>Expiry Date:</strong> @Model.ExpiryDate</p>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var leaf in Model.ChequeLeaves)
+                @foreach (var leaf in Model.Leaves)
                 {
                     <tr>
                         <td>@leaf.LeafNumber</td>
