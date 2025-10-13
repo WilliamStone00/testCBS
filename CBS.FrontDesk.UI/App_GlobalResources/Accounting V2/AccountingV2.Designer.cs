@@ -59,5 +59,239 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Code.
+        /// </summary>
+        internal static string AccountCode {
+            get {
+                return ResourceManager.GetString("AccountCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Codes.
+        /// </summary>
+        internal static string AccountCodes {
+            get {
+                return ResourceManager.GetString("AccountCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow the established numbering system for consistent account identification..
+        /// </summary>
+        internal static string AccountCodestext {
+            get {
+                return ResourceManager.GetString("AccountCodestext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Hierarchy.
+        /// </summary>
+        internal static string AccountHierarchy {
+            get {
+                return ResourceManager.GetString("AccountHierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintain proper parent-child relationships for accurate financial reporting..
+        /// </summary>
+        internal static string AccountHierarchytext {
+            get {
+                return ResourceManager.GetString("AccountHierarchytext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account updated successfully.
+        /// </summary>
+        internal static string Accountupdatedsuccessfully {
+            get {
+                return ResourceManager.GetString("Accountupdatedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Chart of Accounts Management.
+        /// </summary>
+        internal static string ChartofAccountsManagement {
+            get {
+                return ResourceManager.GetString("ChartofAccountsManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        internal static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure..
+        /// </summary>
+        internal static string COAtext1 {
+            get {
+                return ResourceManager.GetString("COAtext1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Important: Changes to account structure may affect financial reporting and transactions..
+        /// </summary>
+        internal static string COAtext2 {
+            get {
+                return ResourceManager.GetString("COAtext2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        internal static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name (English).
+        /// </summary>
+        internal static string Nameen {
+            get {
+                return ResourceManager.GetString("Nameen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name (French).
+        /// </summary>
+        internal static string namefr {
+            get {
+                return ResourceManager.GetString("namefr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naming Convention.
+        /// </summary>
+        internal static string NamingConvention {
+            get {
+                return ResourceManager.GetString("NamingConvention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Use clear and consistent naming in both English and French for all accounts..
+        /// </summary>
+        internal static string NamingConventiontext {
+            get {
+                return ResourceManager.GetString("NamingConventiontext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PCMF CAMCULL Details.
+        /// </summary>
+        internal static string PCMFCAMCULLDetails {
+            get {
+                return ResourceManager.GetString("PCMFCAMCULLDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posting Allowed.
+        /// </summary>
+        internal static string PostingAllowed {
+            get {
+                return ResourceManager.GetString("PostingAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posting Rights.
+        /// </summary>
+        internal static string PostingRights {
+            get {
+                return ResourceManager.GetString("PostingRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only leaf-level accounts (with no children) should allow transaction posting..
+        /// </summary>
+        internal static string PostingRightstext {
+            get {
+                return ResourceManager.GetString("PostingRightstext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        internal static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Data.
+        /// </summary>
+        internal static string RefreshData {
+            get {
+                return ResourceManager.GetString("RefreshData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the refresh button to ensure you&apos;re viewing the latest account structure.
+        /// </summary>
+        internal static string RefreshDataText {
+            get {
+                return ResourceManager.GetString("RefreshDataText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        internal static string SaveChanges {
+            get {
+                return ResourceManager.GetString("SaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Remember to save after making any modifications to account details..
+        /// </summary>
+        internal static string SaveChangestext {
+            get {
+                return ResourceManager.GetString("SaveChangestext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an account to view details.
+        /// </summary>
+        internal static string Selectanaccounttoviewdetails {
+            get {
+                return ResourceManager.GetString("Selectanaccounttoviewdetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips.
+        /// </summary>
+        internal static string Tips {
+            get {
+                return ResourceManager.GetString("Tips", resourceCulture);
+            }
+        }
     }
 }

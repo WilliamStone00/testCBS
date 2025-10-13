@@ -22,6 +22,7 @@ namespace CBS.BusinessService.Accounting_V2
 
         public ChartOfAccountsV2Service()
         {
+            //change the base url to the actual base url
             var baseUrl = ConfigurationManager.AppSettings["AccountingBaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
         }

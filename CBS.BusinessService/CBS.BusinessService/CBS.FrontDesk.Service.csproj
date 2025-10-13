@@ -242,8 +242,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounting V2\ChartOfAccountV2mockService.cs" />
-    <Compile Include="Accounting V2\ChartOfAccountV2Service.cs" />
+    <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
+    <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
+    <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />

@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Chart of Accounts";
 }
-
+@using Resources
 
 <!-- Header Section -->
 <div class="row">
@@ -10,14 +10,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="fas fa-sitemap me-2"></i> Chart of Accounts Management
+                    <i class="fas fa-sitemap me-2"></i> @AccountingV2.ChartofAccountsManagement
                 </h1>
                 <p class="card-text">
-                    Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure.
+                    @AccountingV2.COAtext1
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="fas fa-info-circle me-1"></i>
-                    Important: Changes to account structure may affect financial reporting and transactions.
+                    @AccountingV2.COAtext2 
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="fas fa-lightbulb me-2"></i> Tips & Guidelines</span>
+        <span><i class="fas fa-lightbulb me-2"></i>@AccountingV2.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="fas fa-chevron-down"></i>
         </button>
@@ -36,12 +36,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>Account Hierarchy:</strong> Maintain proper parent-child relationships for accurate financial reporting.</li>
-                <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>Naming Convention:</strong> Use clear and consistent naming in both English and French for all accounts.</li>
-                <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>Posting Rights:</strong> Only leaf-level accounts (with no children) should allow transaction posting.</li>
-                <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>Refresh Data:</strong> Use the refresh button to ensure you're viewing the latest account structure.</li>
-                <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>Account Codes:</strong> Follow the established numbering system for consistent account identification.</li>
-                <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>Save Changes:</strong> Remember to save after making any modifications to account details.</li>
+                <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>@AccountingV2.AccountHierarchy:</strong> @AccountingV2.AccountHierarchytext</li>
+                <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>@AccountingV2.NamingConvention:</strong>@AccountingV2.NamingConventiontext</li>
+                <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>@AccountingV2.PostingRights:</strong> @AccountingV2.PostingRightstext</li>
+                <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>@AccountingV2.RefreshData:</strong> @AccountingV2.RefreshDataText</li>
+                <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>@AccountingV2.AccountCodes:</strong> @AccountingV2.AccountCodestext</li>
+                <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>@AccountingV2.SaveChanges:</strong>@AccountingV2.SaveChangestext</li>
             </ul>
         </div>
     </div>
@@ -97,14 +97,14 @@
                     <div class="d-flex align-items-center">
                         <div class="me-2">
                             <button id="refreshTree" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i> Refresh
+                                <i class="fas fa-sync-alt"></i>@AccountingV2.Refresh
                             </button>
                         </div>
 
                         <div class="form-check form-switch mb-0">
                             <input class="form-check-input" type="checkbox" id="languageToggle">
                             <label class="form-check-label small ms-2" for="languageToggle">
-                                <span id="languageLabel">English</span>
+                                <span id="languageLabel">@AccountingV2.English</span>
                             </label>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
             <!-- right card: Details -->
             <div id="accountDetails" class="card h-100 shadow-sm">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">PCMF CAMCULL Details</h6>
+                    <h6 class="card-title mb-0"> @AccountingV2.PCMFCAMCULLDetails</h6>
 
                     <!-- close button -->
                     <button type="button"
@@ -137,7 +137,7 @@
                 <div class="card-body">
                     <div id="noSelection" class="text-muted text-center py-5">
                         <i class="fas fa-mouse-pointer fa-2x mb-0"></i>
-                        <p>Select an account to view details</p>
+                        <p>@AccountingV2.Selectanaccounttoviewdetails</p>
                     </div>
 
                     <div id="accountInfo" style="display: none;">
@@ -146,22 +146,22 @@
                             <input type="hidden" id="accountId" name="Id" />
 
                             <div class="mb-3">
-                                <label for="accountCode" class="form-label">Account Code</label>
+                                <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
                                 <input type="text" class="form-control" id="accountCode" readonly>
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountNameEn" class="form-label">Name (English)</label>
+                                <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
                                 <input type="text" class="form-control" id="accountNameEn" name="NameEn">
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountNameFr" class="form-label">Name (French)</label>
+                                <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
                                 <input type="text" class="form-control" id="accountNameFr" name="NameFr">
                             </div>
 
                             <div class="mb-3">
-                                <label for="accountClass" class="form-label">Class</label>
+                                <label for="accountClass" class="form-label">@AccountingV2.Class</label>
                                 <input type="text" class="form-control" id="accountClass" readonly>
                             </div>
 
@@ -169,7 +169,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="postingAllowed" disabled>
                                     <label class="form-check-label" for="postingAllowed">
-                                        Posting Allowed
+                                        @AccountingV2.PostingAllowed
                                     </label>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                             <div class="mt-auto">
                                 <!-- keeps button at bottom of card-body -->
                                 <button type="submit" class="btn btn-primary w-100" id="saveButton">
-                                    <i class="fas fa-save me-2"></i>Save Changes
+                                    <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
                                 </button>
                             </div>
                         </form>
@@ -195,7 +195,7 @@
             <div class="modal-body text-center py-4">
                 <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
                 <h5>Success!</h5>
-                <p class="mb-0">Account updated successfully</p>
+                <p class="mb-0">@AccountingV2.Accountupdatedsuccessfully</p>
             </div>
         </div>
     </div>

@@ -2011,7 +2011,8 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
-    <Compile Include="Controllers\Accounting V2\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
@@ -10650,9 +10651,6 @@
     <Content Include="Views\ManualDailyCollection\_UploadForm.cshtml" />
     <Content Include="Views\NotificationConfig\Index.cshtml" />
     <Content Include="Views\NotificationConfig\_ConfigForm.cshtml" />
-    <Content Include="Views\NumConfig\Index.cshtml" />
-    <Content Include="Views\NumConfig\_Create.cshtml" />
-    <Content Include="Views\NumConfig\List.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\Index.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\MemberAdjustment.cshtml" />
     <Content Include="Views\MemberAdjustmentConsole\_IndividualData.cshtml" />
@@ -10731,7 +10729,6 @@
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
     <Content Include="Views\ChequeBook\_CheckBookData.cshtml" />
     <Content Include="Views\ChequeBook\List.cshtml" />
-    <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
     <Content Include="Views\CashDesk\NonMemberSalaryPayout.cshtml" />
     <Content Include="Views\CounterCheque\_CounterChequeDetails.cshtml" />
     <Content Include="Views\Categoryconfic\List.cshtml" />
@@ -10769,10 +10766,12 @@
     <Folder Include="bin\zh\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\Affiliate\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\NumConfig\" />
     <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>
