@@ -33,7 +33,7 @@
 
                         <div id="categoryFilterSection" class="mt-2" style="display:none;">
                             @Html.DropDownList(
-                                "CategoryId",                                              // maps to ChequeRequestQuery.CategoryId
+                                "CategoryId",                                             
                                 new SelectList(ViewBag.Categories ?? new List<object>(), "Id", "name"),
                                 "All Categories",
                                 new { @class = "form-select", id = "CategoryId" })
@@ -69,7 +69,7 @@
 
                         <div id="branchFilterSection" class="mt-2" style="display:none;">
                             @Html.DropDownList(
-                                "BranchId",                                              // maps to ChequeRequestQuery.BranchId
+                                "BranchId",                                            
                                 new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "name"),
                                 "All Branches",
                                 new { @class = "form-select", id = "BranchId" })

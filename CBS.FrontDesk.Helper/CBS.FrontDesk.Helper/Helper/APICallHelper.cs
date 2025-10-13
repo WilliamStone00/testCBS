@@ -320,7 +320,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
         public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
-        
+
 
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
@@ -1298,7 +1298,7 @@ namespace CBS.FrontDesk.Helper
 
         //public static string GetAllnot = "/api/v1/verify-notification-config";
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
-        
+
         //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
         //public static string Createnot = "/api/v1/Notification/Config";
         //public static string Updatenot = "/api/NotificationConfig/{0}";
@@ -1310,7 +1310,8 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------- Cheque Request -------------------------
         public const string CreateChequeRequest = "/api/v1/CheckRequest";
-         public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
+        public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
+        public const string GetAllChequeRequests = "not yet provided by backend";
         public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
         public const string RejectChequeRequest = "not yet provided by backend";
         public const string ReviewChequeRequest = "not yet provided by backend";
@@ -1382,15 +1383,19 @@ namespace CBS.FrontDesk.Helper
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
 
         public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
-    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
-    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
-    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
-    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+        public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+        public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+        public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+        public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+        public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-        //public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
-       // public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
-        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 1
+
+        //*************************** Accounting V2 **************************************
+        public static string GetAllAccountsEndpoint = "this endpoint is not yet availlable";
+        public static string GetAccountByIdEndpoint = "this endpoint is not yet availlable";
+        public static string UpdateAccountNameEndpoint = "this endpoint is not yet availlable";
+        
     }
 }

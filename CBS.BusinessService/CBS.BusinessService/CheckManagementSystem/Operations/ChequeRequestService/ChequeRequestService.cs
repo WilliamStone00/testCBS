@@ -82,11 +82,11 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeRequestServ
             }
         }
 
-        //public async Task<List<ChequeBookRequest>> GetAllRequestsAsync()
-        //{
-        //    var response = await _apiHelper.GetAsync<ResponseObject<List<ChequeBookRequest>>>(APICallHelper.GetAllChequeRequests);
-        //    return response?.ApiResponseData?.Data ?? new List<ChequeBookRequest>();
-        //}
+        public async Task<List<ChequeBookRequest>> GetAllRequestsAsync()
+        {
+            var response = await _apiHelper.GetAsync<ResponseObject<List<ChequeBookRequest>>>(APICallHelper.GetAllChequeRequests);
+            return response?.ApiResponseData?.Data ?? new List<ChequeBookRequest>();
+        }
 
         public async Task<ChequeBookRequest> GetRequestByIdAsync(string requestId)
         {

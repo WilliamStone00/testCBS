@@ -601,6 +601,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalAccountClass_Update.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Accounting V2\AccountingV2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingV2.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Accounting V2\AccountingV2.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingV2.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2001,6 +2011,7 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
@@ -3308,6 +3319,7 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Crud\AccountingV2\Accountingv2chart.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Notification\NotificationConfig.js" />
@@ -9303,6 +9315,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingV2.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingV2.fr.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -10722,6 +10742,7 @@
     <Content Include="Views\NotificationConfig\List.cshtml" />
     <Content Include="Views\NotificationConfig\_notifBookData.cshtml" />
     <Content Include="Views\NotificationConfig\__NotificationConfigDetails.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

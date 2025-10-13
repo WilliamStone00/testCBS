@@ -1,0 +1,405 @@
+﻿@* Views/ChartOfAccounts/Index.cshtml *@
+@{
+    ViewData["Title"] = "Chart of Accounts";
+}
+
+
+<!-- Header Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="fas fa-sitemap me-2"></i> Chart of Accounts Management
+                </h1>
+                <p class="card-text">
+                    Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Important: Changes to account structure may affect financial reporting and transactions.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="fas fa-lightbulb me-2"></i> Tips & Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>Account Hierarchy:</strong> Maintain proper parent-child relationships for accurate financial reporting.</li>
+                <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>Naming Convention:</strong> Use clear and consistent naming in both English and French for all accounts.</li>
+                <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>Posting Rights:</strong> Only leaf-level accounts (with no children) should allow transaction posting.</li>
+                <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>Refresh Data:</strong> Use the refresh button to ensure you're viewing the latest account structure.</li>
+                <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>Account Codes:</strong> Follow the established numbering system for consistent account identification.</li>
+                <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>Save Changes:</strong> Remember to save after making any modifications to account details.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- small layout helpers: make cards equal-height and nice slide animation -->
+<style>
+    /* full height card pattern: card behaves as column and card-body grows */
+    .card.h-100 {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .card.h-100 .card-body {
+            flex: 1 1 auto;
+            min-height: 0; /* allow overflow auto inside */
+        }
+
+    /* make the accounts tree area scroll inside card-body */
+    #accountsTree {
+        min-height: 420px; /* reasonable min so both cards look balanced */
+        max-height: 70vh;
+        overflow: auto;
+    }
+
+    /* smooth slide animation for details column */
+    #detailsCol {
+        transition: all 180ms ease-in-out;
+    }
+
+    /* consistent header height so titles align precisely */
+    .card .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row align-items-stretch g-3">
+        <!-- align-items-stretch makes columns same height -->
+        <div class="col-md-8">
+            <!-- left card: Chart of Accounts -->
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-sitemap me-2 text-primary"></i>
+                        <h5 class="mb-0">Chart of Accounts</h5>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">
+                            <button id="refreshTree" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox" id="languageToggle">
+                            <label class="form-check-label small ms-2" for="languageToggle">
+                                <span id="languageLabel">English</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-3 d-flex flex-column">
+                    <!-- the tree container will scroll inside this area -->
+                    <div id="accountsTree" class="w-100 border rounded p-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="detailsCol" class="col-md-4" style="display: none;">
+            <!-- hidden initially -->
+            <!-- right card: Details -->
+            <div id="accountDetails" class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">PCMF CAMCULL Details</h6>
+
+                    <!-- close button -->
+                    <button type="button"
+                            id="hideDetailsBtn"
+                            class="btn btn-sm btn-light ms-2"
+                            title="Close details"
+                            aria-label="Close details">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <div id="noSelection" class="text-muted text-center py-5">
+                        <i class="fas fa-mouse-pointer fa-2x mb-0"></i>
+                        <p>Select an account to view details</p>
+                    </div>
+
+                    <div id="accountInfo" style="display: none;">
+                        <form id="editAccountForm" class="d-flex flex-column" autocomplete="off">
+                            <input type="hidden" id="selectedID" />
+                            <input type="hidden" id="accountId" name="Id" />
+
+                            <div class="mb-3">
+                                <label for="accountCode" class="form-label">Account Code</label>
+                                <input type="text" class="form-control" id="accountCode" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="accountNameEn" class="form-label">Name (English)</label>
+                                <input type="text" class="form-control" id="accountNameEn" name="NameEn">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="accountNameFr" class="form-label">Name (French)</label>
+                                <input type="text" class="form-control" id="accountNameFr" name="NameFr">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="accountClass" class="form-label">Class</label>
+                                <input type="text" class="form-control" id="accountClass" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="postingAllowed" disabled>
+                                    <label class="form-check-label" for="postingAllowed">
+                                        Posting Allowed
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <!-- keeps button at bottom of card-body -->
+                                <button type="submit" class="btn btn-primary w-100" id="saveButton">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- card-body -->
+            </div> <!-- card -->
+        </div> <!-- details col -->
+
+    </div> <!-- row -->
+</div> <!-- container -->
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                <h5>Success!</h5>
+                <p class="mb-0">Account updated successfully</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- jQuery is required by jsTree (assumed present in layout). jsTree JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js" crossorigin="anonymous"></script>
+
+    <script>
+    (function () {
+        const treeContainer = '#accountsTree';
+        const loadBtn = '#refreshTree';
+        const loadTopBtn = '#refreshTreeTop';
+        const formSelector = '#editAccountForm';
+        const noSelection = '#noSelection';
+        const detailsPane = '#accountInfo';
+        const detailsCol = '#detailsCol';
+        const hideBtn = '#hideDetailsBtn';
+
+        const treeUrl = '@Url.Action("GetTreeData", "ChartOfAccountV2")';
+        const updateUrl = '@Url.Action("UpdateAccountName", "ChartOfAccountV2")';
+
+        // top refresh (same as bottom)
+        $(document).on('click', loadTopBtn, function (e) {
+            e.preventDefault();
+            loadChartOfAccounts();
+        });
+
+        // click refresh to load
+        $(document).on('click', loadBtn, function (e) {
+            e.preventDefault();
+            loadChartOfAccounts();
+        });
+
+        // normalize server data for jsTree
+        function normalizeNodes(nodes) {
+            if (!Array.isArray(nodes)) return;
+            nodes.forEach(function (n) {
+                n.li_attr = n.li_attr || {};
+                n.state = n.state || {};
+                n.state.opened = false;
+
+                const posting = (n.li_attr['data-postingallowed'] !== undefined)
+                    ? (n.li_attr['data-postingallowed'] === true || n.li_attr['data-postingallowed'] === 'True' || n.li_attr['data-postingallowed'] === 'true')
+                    : (n.postingAllowed === true);
+
+                n.type = n.type || (posting ? 'file' : 'folder');
+
+                if (posting) {
+                    n.children = false;
+                } else {
+                    if (!Array.isArray(n.children)) n.children = [];
+                    else normalizeNodes(n.children);
+                }
+            });
+        }
+
+        function loadChartOfAccounts() {
+            $.ajax({
+                url: treeUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    normalizeNodes(data);
+
+                    if ($.jstree && $(treeContainer).data('jstree')) {
+                        $(treeContainer).jstree(true).settings.core.data = data;
+                        $(treeContainer).jstree(true).refresh();
+                    } else {
+                        $(treeContainer).jstree({
+                            core: {
+                                data: data,
+                                multiple: false,
+                                themes: { responsive: true, stripes: false }
+                            },
+                            plugins: ['wholerow', 'types'],
+                            types: {
+                                "default": { "icon": "fas fa-folder" },
+                                "folder":  { "icon": "fas fa-folder" },
+                                "file":    { "icon": "fas fa-file" }
+                            }
+                        });
+
+                        // ensure details column hidden initially
+                        $(detailsCol).hide();
+
+                        // node select -> populate and slide down details column
+                        $(treeContainer).on('select_node.jstree', function (e, obj) {
+                            const node = obj.node;
+                            if (!node) return;
+
+                            const nodeId = node.id;
+                            const nodeText = node.text || '';
+                            const code = nodeText.split(' - ')[0] || '';
+
+                            // prefer li_attr['data-name-en']
+                            let nameEn = nodeText;
+                            if (node.original && node.original.li_attr && node.original.li_attr['data-name-en']) {
+                                nameEn = node.original.li_attr['data-name-en'];
+                            } else if (node.original && node.original.Name) {
+                                nameEn = node.original.Name;
+                            }
+
+                            $('#selectedID').val(nodeId);
+                            $('#accountId').val(nodeId);
+                            $('#accountCode').val(code);
+                            $('#accountNameEn').val(nameEn);
+                            $('#accountNameFr').val((node.original && node.original.li_attr && node.original.li_attr['data-name-fr']) || '');
+                            $('#accountClass').val((node.original && node.original.Class) || '');
+
+                            const posting = (node.original && node.original.li_attr && (node.original.li_attr['data-postingallowed'] === true || node.original.li_attr['data-postingallowed'] === 'True' || node.original.li_attr['data-postingallowed'] === 'true'))
+                                            || (node.original && node.original.postingAllowed === true);
+                            $('#postingAllowed').prop('checked', !!posting);
+
+                            // animate show (keeps left and right card tops aligned)
+                            $(noSelection).hide();
+                            $(detailsPane).show();
+                            $(detailsCol).stop(true, true).slideDown(200);
+                        });
+
+                        // hide details when deselect_all
+                        $(treeContainer).on('deselect_all.jstree', function () {
+                            $(detailsCol).stop(true, true).slideUp(150, function () {
+                                $(detailsPane).hide();
+                                $(noSelection).show();
+                            });
+                        });
+                    }
+                },
+                error: function (xhr, status, err) {
+                    console.error('LoadChartOfAccounts error:', err);
+                    alert('Failed to load chart of accounts. See console.');
+                }
+            });
+        }
+
+        // hide button: slide up, deselect node and clear form
+        $(document).on('click', hideBtn, function (e) {
+            e.preventDefault();
+
+            $(detailsCol).stop(true, true).slideUp(200, function () {
+                $(detailsPane).hide();
+                $(noSelection).show();
+            });
+
+            if ($.jstree && $(treeContainer).data('jstree')) {
+                try {
+                    $(treeContainer).jstree('deselect_all');
+                } catch (err) {
+                    console.warn('deselect_all failed', err);
+                }
+            }
+
+            // clear fields
+            $('#selectedID, #accountId, #accountCode, #accountNameEn, #accountNameFr, #accountClass').val('');
+            $('#postingAllowed').prop('checked', false);
+        });
+
+        // submit update
+        $(document).on('submit', formSelector, function (e) {
+            e.preventDefault();
+            const id = $('#accountId').val() || $('#selectedID').val();
+            if (!id) { alert('No account selected.'); return false; }
+
+            const payload = { Id: id, NameEn: $('#accountNameEn').val(), NameFr: $('#accountNameFr').val(), Language: 'en' };
+
+            $.ajax({
+                url: updateUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (resp) {
+                    if (resp && resp.success) {
+                        // update label in tree if selected
+                        if ($.jstree && $(treeContainer).data('jstree')) {
+                            const selected = $(treeContainer).jstree('get_selected', true)[0];
+                            if (selected) {
+                                const codePart = (selected.text && selected.text.split(' - ')[0]) || '';
+                                const newText = codePart ? (codePart + ' - ' + (payload.NameEn || payload.NameFr)) : (payload.NameEn || payload.NameFr);
+                                $(treeContainer).jstree('rename_node', selected.id, newText);
+                            } else {
+                                loadChartOfAccounts();
+                            }
+                        }
+                        $('#successModal').modal('show');
+                    } else {
+                        alert(resp && resp.message ? resp.message : 'Update failed');
+                    }
+                },
+                error: function (xhr) {
+                    console.error('Update error', xhr);
+                    alert('Error updating account (see console).');
+                }
+            });
+
+            return false;
+        });
+
+        // auto-load on ready
+        $(function () {
+            loadChartOfAccounts();
+        });
+
+    })();
+    </script>
+}
