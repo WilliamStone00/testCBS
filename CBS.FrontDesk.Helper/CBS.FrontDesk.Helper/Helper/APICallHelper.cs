@@ -1393,9 +1393,36 @@ namespace CBS.FrontDesk.Helper
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 1
 
         //*************************** Accounting V2 **************************************
+        //-------------------------- Chat of account ------------------------------------
         public static string GetAllAccountsEndpoint = "this endpoint is not yet availlable";
         public static string GetAccountByIdEndpoint = "this endpoint is not yet availlable";
         public static string UpdateAccountNameEndpoint = "this endpoint is not yet availlable";
-        
+
+        //-------------------------- Affiliate ------------------------------------------
+        public static string GetAllAffiliate = "this endpoint is not yet availlable";
+        public static string Affiliatedatatable = "this endpoint is not yet availlable";
+        public static string GetAffiliateById = "this endpoint is not yet availlable";
+        public static string CreateAffiliate = "this endpoint is not yet availlable";
+        public static string UpdateAffiliate = "this endpoint is not yet availlable";
+        public static string DeactivateAffiliate = "this endpoint is not yet availlable";
+
+
+        //-------------------------- Affiliate Account ------------------------------------------
+        public static string GetAllAffiliateAccount = "this endpoint is not yet availlable";
+        public static string AffiliateAccountdatatable = "this endpoint is not yet availlable";
+        public static string GetAffiliateAccountById = "this endpoint is not yet availlable";
+        public static string CreateAffiliateAccount = "this endpoint is not yet availlable";
+        public static string UpdateAffiliateAccount = "this endpoint is not yet availlable";
+        public static string DeactivateAffiliateAccount = "this endpoint is not yet availlable";
+        public static string GetAllAccountDropAffiliate = "this endpoint is not yet availlable";
+
+        //-------------------------- Branch Account ------------------------------------------
+        public static string DeactivatBranchAccount = "this endpoint is not yet availlable";
+        public static string UpdateBranchAccount = "this endpoint is not yet availlable";
+        public static string CreateBranchAccount = "this endpoint is not yet availlable";
+        public static string GetAllBranchAccountDropAffiliate = "this endpoint is not yet availlable";
+        public static string GetBranchAccountById = "this endpoint is not yet availlable";
+        public static string BranchAccountdatatable = "this endpoint is not yet availlable";
+        public static string GetAllBranchAccount = "this endpoint is not yet availlable";
     }
 }

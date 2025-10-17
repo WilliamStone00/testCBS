@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -15,17 +16,17 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.Affiliate
 {
-    public class AffiliateService : BaseService     
+    public class AffiliateService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
 
         public AffiliateService()
         {
             //change the base url to the actual base url
-            string baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
+            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'CheckbookServiceBaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
@@ -35,7 +36,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             try
             {
                 // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<Affiliateresponse>>>(APICallHelper.GetAllChequeBookCategories);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<Affiliateresponse>>>(APICallHelper.GetAllAffiliate);
 
                 // CORRECTED: Access the final payload via .ApiResponseData.Data
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
@@ -51,12 +52,12 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
         }
 
-        public async Task<CustomDataTable> GetcategoryDataTableAsync(AffiliateQuery query)
+        public async Task<CustomDataTable> GetcategoryDataTableAsync(AffiliateAccountQuery query)
         {
             try
             {
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.categorydatatable, query);
+                    APICallHelper.Affiliatedatatable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess)
@@ -89,15 +90,10 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                     throw new ArgumentException("id is required", nameof(id));
 
                 var encodedId = Uri.EscapeDataString(id);
-                string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, encodedId);
-                // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
+                string formattedUrl = string.Format(APICallHelper.GetAffiliateById, encodedId);
 
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<Affiliateresponse>>(formattedUrl);
 
-                //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
-                //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
-
-                // CORRECTED: Access the final payload via .ApiResponseData.Data
                 if (response.IsSuccess)
                 {
                     return response.ApiResponseData?.Data;
@@ -106,21 +102,19 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
             catch (Exception ex)
             {
-                // In a real scenario, log 'ex'
-                throw;
+                  throw;
             }
         }
 
-       
+
 
 
         public async Task<ExecutionMessages> CreateAsync(AffiliateCommand model)
         {
             try
             {
-                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateChequeBookCategory, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateAffiliate, model);
 
-                // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
@@ -145,7 +139,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             try
             {
                 var catid = model.Id;
-                string formattedUrl = string.Format(APICallHelper.UpdateChequeBookCategory, catid);
+                string formattedUrl = string.Format(APICallHelper.UpdateAffiliate, catid);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<AffiliateCommand>>(formattedUrl, model);
 
                 if (response.IsSuccess)
@@ -171,7 +165,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.DeactivateChequeBookCategory, categoryId);
+                string formattedUrl = string.Format(APICallHelper.DeactivateAffiliate, categoryId);
                 var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
 
                 if (response.IsSuccess)
@@ -194,6 +188,46 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
 
             return ExecutionMessage;
+        }
+
+        public async Task<IEnumerable<Affiliateresponse>> GetAffiliatesAsync()
+        {
+            try
+            {
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(APICallHelper.GetAllAffiliate);
+                var affiliates = response?.ApiResponseData?.Data ?? new List<Affiliateresponse>();
+
+                if (!IsHeadOffice())
+                {
+                    string currentBranchId = GetBranchID();
+                    affiliates = affiliates.Where(a => a.Id == currentBranchId).ToList();
+                }
+                else
+                {
+                    var defaultAffiliate = new Affiliateresponse
+                    {
+                        Id = "All",
+                        Name = "All Affiliates",
+                        Code = "ALL",
+                        IsActive = true
+                    };
+                    affiliates.Insert(0, defaultAffiliate);
+                }
+
+                // Optional: format name for display and order by Code
+                return affiliates
+                    .Select(a =>
+                    {
+                        a.Name = $"[{a.Code}] - {a.Name} {(a.IsHeadOffice ? "(Head Office)" : string.Empty)}";
+                        return a;
+                    })
+                    .OrderBy(a => a.Code)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+               throw;
+            }
         }
 
     }

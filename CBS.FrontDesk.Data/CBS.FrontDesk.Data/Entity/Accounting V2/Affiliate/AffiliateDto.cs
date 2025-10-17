@@ -11,7 +11,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
     {
         public string Id { get; set; }
         public string Code { get; set; }
+
+        //added for mock data
+
+        public string Class { get; set; }
+        public string ParentId { get; set; }
+        public string Path { get; set; }
+        public int Depth { get; set; }
+        public bool PostingAllowed { get; set; }
+
+        //
         public string Name { get; set; }
+        public string NameFr { get; set; }
+        public string NameEn { get; set; }
         public bool IsActive { get; set; }
         public bool IsHeadOffice { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -22,8 +34,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
     public class AffiliateCommand
     {
         public string Id { get; set; }
-        public string Code { get; set; } 
-        public string Name { get; set; } 
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string NameFr { get; set; }
+        public string NameEn { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsHeadOffice { get; set; }
     }
@@ -40,5 +54,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
 
+    }
+
+    public class AffiliateTreeViewModel
+    {
+        public Affiliateresponse Node { get; set; }
+        public List<Affiliateresponse> ParentChain { get; set; } = new List<Affiliateresponse>();
+        public TreeNode Children { get; set; }
+    }
+
+    public class TreeNode
+    {
+        public Affiliateresponse Item { get; set; }
+        public int Count { get; set; }
+        public List<TreeNode> Children { get; set; } = new List<TreeNode>();
     }
 }

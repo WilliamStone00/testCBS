@@ -111,8 +111,7 @@ namespace CBS.BusinessService.CheckManagementSystem
             }
         }
 
-        // using System.Web.Mvc; // for SelectListItem in classic ASP.NET MVC
-        // If you're on ASP.NET Core, use Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+       
 
         public async Task<IEnumerable<CategoryConfig>> GetCategories()
         {

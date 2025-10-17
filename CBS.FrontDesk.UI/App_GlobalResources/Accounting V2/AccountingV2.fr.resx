@@ -135,11 +135,56 @@
   <data name="Accountupdatedsuccessfully" xml:space="preserve">
     <value>Compte mis à jour avec succès</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>active</value>
+  </data>
+  <data name="AffiliateAccountManagement" xml:space="preserve">
+    <value>Gestion des comptes affiliés</value>
+  </data>
+  <data name="AffiliateFilters" xml:space="preserve">
+    <value>Filtres d'affiliation</value>
+  </data>
+  <data name="AffiliateManagement" xml:space="preserve">
+    <value>Gestion des affiliés</value>
+  </data>
+  <data name="AffiliateManagementtext" xml:space="preserve">
+    <value>Filtrer et gérer les affiliés (rechercher par code, nom, statut et date de création).</value>
+  </data>
+  <data name="affiliatetext" xml:space="preserve">
+    <value>Créez et gérez des filiales au sein de votre organisation. Chaque filiale possède un code unique, un nom et des indicateurs de configuration qui déterminent son statut et son rôle (par exemple, siège social ou succursale).</value>
+  </data>
+  <data name="Affiliatetext1" xml:space="preserve">
+    <value>Les dates sont traitées en UTC (CreatedFromUtc / CreatedToUtc)</value>
+  </data>
+  <data name="affiliatetext3" xml:space="preserve">
+    <value>modifier les détails existants.</value>
+  </data>
+  <data name="affilliatetext2" xml:space="preserve">
+    <value>Utilisez cette section pour définir et mettre à jour les informations sur les affiliés telles que le nom, le code et le type de bureau.</value>
+  </data>
+  <data name="affoiliatetext4" xml:space="preserve">
+    <value>créer un nouvel affilié ou</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tout</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Appliquer le filtre</value>
+  </data>
+  <data name="CentralBranch" xml:space="preserve">
+    <value>Agence centrale</value>
+  </data>
   <data name="ChartofAccountsManagement" xml:space="preserve">
     <value>Gestion du Plan Comptable</value>
   </data>
   <data name="Class" xml:space="preserve">
     <value>Classe</value>
+  </data>
+  <data name="Click" xml:space="preserve">
+    <value>Cliquez</value>
   </data>
   <data name="COAtext1" xml:space="preserve">
     <value>Gérez et organisez la hiérarchie de vos comptes financiers en toute simplicité. Affichez, modifiez et maintenez la structure de votre plan comptable.</value>
@@ -147,8 +192,68 @@
   <data name="COAtext2" xml:space="preserve">
     <value>Important : Les modifications de la structure du compte peuvent affecter les rapports financiers et les transactions.</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="codetext" xml:space="preserve">
+    <value>Utilisez le code d'affiliation complet ou partiel pour une recherche rapide.</value>
+  </data>
+  <data name="codetext1" xml:space="preserve">
+    <value>Entrez un identifiant court unique (par exemple,</value>
+  </data>
+  <data name="codetext2" xml:space="preserve">
+    <value>pour chaque affilié</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Date de création</value>
+  </data>
+  <data name="CreatedDates" xml:space="preserve">
+    <value>Dates Créées</value>
+  </data>
+  <data name="CreatedDatestext" xml:space="preserve">
+    <value>Basculer les filtres de date pour limiter par plage de création (UTC)</value>
+  </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Créé à partir de</value>
+  </data>
+  <data name="CreatedTo" xml:space="preserve">
+    <value>Créé le</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Supprimé</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Profondeur</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>Anglais</value>
+  </data>
+  <data name="HeadOffice" xml:space="preserve">
+    <value>Siège social</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactif</value>
+  </data>
+  <data name="IncludeDeleted" xml:space="preserve">
+    <value>Inclure supprimé</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>EstActif</value>
+  </data>
+  <data name="IsActivetext" xml:space="preserve">
+    <value>Activez cette option si l'affilié est actuellement opérationnel.</value>
+  </data>
+  <data name="IsHeadOffice" xml:space="preserve">
+    <value>Est le siège</value>
+  </data>
+  <data name="IsHeadOfficetext" xml:space="preserve">
+    <value>Cochez cette case pour désigner l'affilié comme le bureau administratif principal ou le siège.</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Date modifiée</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
   </data>
   <data name="Nameen" xml:space="preserve">
     <value>Nom (anglais)</value>
@@ -156,14 +261,32 @@
   <data name="namefr" xml:space="preserve">
     <value>Nom (français)</value>
   </data>
+  <data name="Nametext" xml:space="preserve">
+    <value>Correspond aux noms des affiliés.</value>
+  </data>
+  <data name="Nametext1" xml:space="preserve">
+    <value>Fournir un nom descriptif (par ex.</value>
+  </data>
   <data name="NamingConvention" xml:space="preserve">
     <value>Convention de nommage</value>
   </data>
   <data name="NamingConventiontext" xml:space="preserve">
     <value>Utilisez des noms clairs et cohérents en anglais et en français pour tous les comptes.</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="ParentId" xml:space="preserve">
+    <value>ID du parent</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Chemin</value>
+  </data>
   <data name="PCMFCAMCULLDetails" xml:space="preserve">
     <value>Détails PCMF CAMCULL</value>
+  </data>
+  <data name="placeholdercodetext" xml:space="preserve">
+    <value>Code d'affiliation</value>
   </data>
   <data name="PostingAllowed" xml:space="preserve">
     <value>Publication autorisée</value>
@@ -183,16 +306,46 @@
   <data name="RefreshDataText" xml:space="preserve">
     <value>Utilisez le bouton de rafraîchissement pour vous assurer que vous consultez la structure de compte la plus récente</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="resettext" xml:space="preserve">
+    <value>Utilisez le bouton de réinitialisation pour effacer toutes les entrées et recommencer à zéro.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
   <data name="SaveChanges" xml:space="preserve">
     <value>Enregistrer les modifications</value>
   </data>
   <data name="SaveChangestext" xml:space="preserve">
     <value>N'oubliez pas d'enregistrer après avoir apporté des modifications aux informations du compte.</value>
   </data>
+  <data name="SaveorUpdate" xml:space="preserve">
+    <value>Enregistrer ou Mettre à jour</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
   <data name="Selectanaccounttoviewdetails" xml:space="preserve">
     <value>Sélectionnez un compte pour voir les détails</value>
   </data>
+  <data name="ShowCreatedDateFilters" xml:space="preserve">
+    <value>Afficher les filtres de date de création</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Statustext" xml:space="preserve">
+    <value>Choisir Tout/Actif/Inactif — `Tout` ne filtrera pas par état actif.</value>
+  </data>
   <data name="Tips" xml:space="preserve">
     <value>Conseils</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
   </data>
 </root>

@@ -1,88 +1,59 @@
-﻿@* Views/ChartOfAccounts/Index.cshtml *@
+﻿@* Views/ChartOfAccounts/Index.cshtml (patched) *@
 @{
     ViewData["Title"] = "Chart of Accounts";
 }
 @using Resources
 
-<!-- Header Section -->
-<div class="row">
-    <div class="col-12">
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="fas fa-sitemap me-2"></i> @AccountingV2.ChartofAccountsManagement
-                </h1>
-                <p class="card-text">
-                    @AccountingV2.COAtext1
-                </p>
-                <div class="alert alert-info mt-3 py-2">
-                    <i class="fas fa-info-circle me-1"></i>
-                    @AccountingV2.COAtext2 
+<!-- Wrap everything in the same container so edges align -->
+<div class="container-fluid">
+    <!-- Header Section (moved inside container-fluid to align with grid below) -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="fas fa-sitemap me-2"></i> @AccountingV2.ChartofAccountsManagement
+                    </h1>
+                    <p class="card-text">
+                        @AccountingV2.COAtext1
+                    </p>
+                    <div class="alert alert-info mt-3 py-2">
+                        <i class="fas fa-info-circle me-1"></i>
+                        @AccountingV2.COAtext2
+                    </div>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
-</div>
 
-<!-- Tips Section -->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="fas fa-lightbulb me-2"></i>@AccountingV2.Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
-            <i class="fas fa-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseTips" class="collapse">
-        <div class="card-body">
-            <ul class="mb-0">
-                <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>@AccountingV2.AccountHierarchy:</strong> @AccountingV2.AccountHierarchytext</li>
-                <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>@AccountingV2.NamingConvention:</strong>@AccountingV2.NamingConventiontext</li>
-                <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>@AccountingV2.PostingRights:</strong> @AccountingV2.PostingRightstext</li>
-                <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>@AccountingV2.RefreshData:</strong> @AccountingV2.RefreshDataText</li>
-                <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>@AccountingV2.AccountCodes:</strong> @AccountingV2.AccountCodestext</li>
-                <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>@AccountingV2.SaveChanges:</strong>@AccountingV2.SaveChangestext</li>
-            </ul>
+    <!-- Tips Section (also inside same container) -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-3">
+                <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                    <span><i class="fas fa-lightbulb me-2"></i>@AccountingV2.Tips</span>
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </h6>
+                <div id="collapseTips" class="collapse">
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li class="mb-2"><i class="fas fa-project-diagram text-success me-2"></i><strong>@AccountingV2.AccountHierarchy:</strong> @AccountingV2.AccountHierarchytext</li>
+                            <li class="mb-2"><i class="fas fa-edit text-info me-2"></i><strong>@AccountingV2.NamingConvention:</strong>@AccountingV2.NamingConventiontext</li>
+                            <li class="mb-2"><i class="fas fa-exchange-alt text-warning me-2"></i><strong>@AccountingV2.PostingRights:</strong> @AccountingV2.PostingRightstext</li>
+                            <li class="mb-2"><i class="fas fa-sync-alt text-info me-2"></i><strong>@AccountingV2.RefreshData:</strong> @AccountingV2.RefreshDataText</li>
+                            <li class="mb-2"><i class="fas fa-code text-primary me-2"></i><strong>@AccountingV2.AccountCodes:</strong> @AccountingV2.AccountCodestext</li>
+                            <li class="mb-2"><i class="fas fa-save text-success me-2"></i><strong>@AccountingV2.SaveChanges:</strong>@AccountingV2.SaveChangestext</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-
-<!-- small layout helpers: make cards equal-height and nice slide animation -->
-<style>
-    /* full height card pattern: card behaves as column and card-body grows */
-    .card.h-100 {
-        display: flex;
-        flex-direction: column;
-    }
-
-        .card.h-100 .card-body {
-            flex: 1 1 auto;
-            min-height: 0; /* allow overflow auto inside */
-        }
-
-    /* make the accounts tree area scroll inside card-body */
-    #accountsTree {
-        min-height: 420px; /* reasonable min so both cards look balanced */
-        max-height: 70vh;
-        overflow: auto;
-    }
-
-    /* smooth slide animation for details column */
-    #detailsCol {
-        transition: all 180ms ease-in-out;
-    }
-
-    /* consistent header height so titles align precisely */
-    .card .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: .5rem;
-    }
-</style>
-
-<div class="container-fluid">
+    @* --- main content row (unchanged mostly) --- *@
     <div class="row align-items-stretch g-3">
         <!-- align-items-stretch makes columns same height -->
         <div class="col-md-8">
@@ -118,13 +89,10 @@
         </div>
 
         <div id="detailsCol" class="col-md-4" style="display: none;">
-            <!-- hidden initially -->
             <!-- right card: Details -->
             <div id="accountDetails" class="card h-100 shadow-sm">
                 <div class="card-header">
                     <h6 class="card-title mb-0"> @AccountingV2.PCMFCAMCULLDetails</h6>
-
-                    <!-- close button -->
                     <button type="button"
                             id="hideDetailsBtn"
                             class="btn btn-sm btn-light ms-2"
@@ -185,10 +153,9 @@
                 </div> <!-- card-body -->
             </div> <!-- card -->
         </div> <!-- details col -->
-
     </div> <!-- row -->
-</div> <!-- container -->
-<!-- Success Modal -->
+</div> <!-- container-fluid -->
+<!-- Success Modal unchanged -->
 <div class="modal fade" id="successModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -201,9 +168,42 @@
     </div>
 </div>
 
+@section Styles {
+    <style>
+        /* full height card pattern: card behaves as column and card-body grows */
+        .card.h-100 {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .card.h-100 .card-body {
+                flex: 1 1 auto;
+                min-height: 0; /* allow overflow auto inside */
+            }
+
+        /* make the accounts tree area scroll inside card-body */
+        #accountsTree {
+            min-height: 420px; /* reasonable min so both cards look balanced */
+            max-height: 70vh;
+            overflow: auto;
+        }
+
+        /* smooth slide animation for details column */
+        #detailsCol {
+            transition: all 180ms ease-in-out;
+        }
+
+        /* consistent card-header layout */
+        .card .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+        }
+    </style>
+}
+
 @section Scripts {
-    <!-- jQuery is required by jsTree (assumed present in layout). jsTree JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js" crossorigin="anonymous"></script>
 
     <script>
     (function () {

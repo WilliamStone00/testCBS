@@ -2011,7 +2011,9 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccount.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
@@ -10740,6 +10742,20 @@
     <Content Include="Views\NotificationConfig\_notifBookData.cshtml" />
     <Content Include="Views\NotificationConfig\__NotificationConfigDetails.cshtml" />
     <Content Include="Views\ChartOfAccountV2\Index.cshtml" />
+    <Content Include="Views\NumConfig\Index.cshtml" />
+    <Content Include="Views\NumConfig\List.cshtml" />
+    <Content Include="Views\NumConfig\_NumconfogData.cshtml" />
+    <Content Include="Views\NumConfig\_Create.cshtml" />
+    <Content Include="Views\Affiliate\List.cshtml" />
+    <Content Include="Views\Affiliate\Index.cshtml" />
+    <Content Include="Views\Affiliate\_Data.cshtml" />
+    <Content Include="Views\Affiliate\_CreateAffiliate.cshtml" />
+    <Content Include="Views\AffiliateAccount\List.cshtml" />
+    <Content Include="Views\AffiliateAccount\_Data.cshtml" />
+    <Content Include="Views\AffiliateAccount\_AffiliateModals.cshtml" />
+    <Content Include="Views\AffiliateAccount\_CreateAffiliate.cshtml" />
+    <Content Include="Views\BranchAccount\List.cshtml" />
+    <Content Include="Views\BranchAccount\_Data.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10766,12 +10782,10 @@
     <Folder Include="bin\zh\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
-    <Folder Include="Views\Affiliate\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
-    <Folder Include="Views\NumConfig\" />
     <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>

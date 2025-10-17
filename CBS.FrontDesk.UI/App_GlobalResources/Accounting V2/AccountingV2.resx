@@ -135,11 +135,56 @@
   <data name="Accountupdatedsuccessfully" xml:space="preserve">
     <value>Account updated successfully</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AffiliateAccountManagement" xml:space="preserve">
+    <value>Affiliate Account Management</value>
+  </data>
+  <data name="AffiliateFilters" xml:space="preserve">
+    <value>Affiliate Filters</value>
+  </data>
+  <data name="AffiliateManagement" xml:space="preserve">
+    <value>Affiliate Management</value>
+  </data>
+  <data name="AffiliateManagementtext" xml:space="preserve">
+    <value>Filter and manage affiliates (search by code, name, status and creation date).</value>
+  </data>
+  <data name="affiliatetext" xml:space="preserve">
+    <value>Create and manage affiliates within your organization. Each affiliate has a unique</value>
+  </data>
+  <data name="Affiliatetext1" xml:space="preserve">
+    <value>Dates are treated as UTC (CreatedFromUtc / CreatedToUtc)</value>
+  </data>
+  <data name="affiliatetext3" xml:space="preserve">
+    <value>to modify existing details.</value>
+  </data>
+  <data name="affilliatetext2" xml:space="preserve">
+    <value>Use this section to define and update affiliate details such as name, code, and office type.</value>
+  </data>
+  <data name="affoiliatetext4" xml:space="preserve">
+    <value>to create a new affiliate or</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply Filter</value>
+  </data>
+  <data name="CentralBranch" xml:space="preserve">
+    <value>Central Branch</value>
+  </data>
   <data name="ChartofAccountsManagement" xml:space="preserve">
     <value> Chart of Accounts Management</value>
   </data>
   <data name="Class" xml:space="preserve">
     <value>Class</value>
+  </data>
+  <data name="Click" xml:space="preserve">
+    <value>Click</value>
   </data>
   <data name="COAtext1" xml:space="preserve">
     <value> Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure.</value>
@@ -147,8 +192,68 @@
   <data name="COAtext2" xml:space="preserve">
     <value> Important: Changes to account structure may affect financial reporting and transactions.</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="codetext" xml:space="preserve">
+    <value>Use full or partial affiliate code for quick lookup.</value>
+  </data>
+  <data name="codetext1" xml:space="preserve">
+    <value>Enter a short unique identifier (e.g.,</value>
+  </data>
+  <data name="codetext2" xml:space="preserve">
+    <value>for each affiliate</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="CreatedDates" xml:space="preserve">
+    <value>Created Dates </value>
+  </data>
+  <data name="CreatedDatestext" xml:space="preserve">
+    <value>Toggle date filters to limit by creation range (UTC)</value>
+  </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Created From</value>
+  </data>
+  <data name="CreatedTo" xml:space="preserve">
+    <value>Created To</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="HeadOffice" xml:space="preserve">
+    <value>Head Office</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="IncludeDeleted" xml:space="preserve">
+    <value>Include Deleted</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>IsActive</value>
+  </data>
+  <data name="IsActivetext" xml:space="preserve">
+    <value>Enable this option if the affiliate is currently operational.</value>
+  </data>
+  <data name="IsHeadOffice" xml:space="preserve">
+    <value>Is Head Office</value>
+  </data>
+  <data name="IsHeadOfficetext" xml:space="preserve">
+    <value> Check this box to mark the affiliate as the main administrative or head office.</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="Nameen" xml:space="preserve">
     <value>Name (English)</value>
@@ -156,14 +261,32 @@
   <data name="namefr" xml:space="preserve">
     <value>Name (French)</value>
   </data>
+  <data name="Nametext" xml:space="preserve">
+    <value>Matches against affiliate name.</value>
+  </data>
+  <data name="Nametext1" xml:space="preserve">
+    <value>Provide a descriptive name (e.g.</value>
+  </data>
   <data name="NamingConvention" xml:space="preserve">
     <value>Naming Convention</value>
   </data>
   <data name="NamingConventiontext" xml:space="preserve">
     <value> Use clear and consistent naming in both English and French for all accounts.</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ParentId" xml:space="preserve">
+    <value>Parent Id</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
   <data name="PCMFCAMCULLDetails" xml:space="preserve">
     <value>PCMF CAMCULL Details</value>
+  </data>
+  <data name="placeholdercodetext" xml:space="preserve">
+    <value>Affiliate code</value>
   </data>
   <data name="PostingAllowed" xml:space="preserve">
     <value>Posting Allowed</value>
@@ -183,16 +306,46 @@
   <data name="RefreshDataText" xml:space="preserve">
     <value>Use the refresh button to ensure you're viewing the latest account structure</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="resettext" xml:space="preserve">
+    <value>Use the reset button to clear all inputs and start fresh.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="SaveChanges" xml:space="preserve">
     <value>Save Changes</value>
   </data>
   <data name="SaveChangestext" xml:space="preserve">
     <value> Remember to save after making any modifications to account details.</value>
   </data>
+  <data name="SaveorUpdate" xml:space="preserve">
+    <value>Save or Update</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Selectanaccounttoviewdetails" xml:space="preserve">
     <value>Select an account to view details</value>
   </data>
+  <data name="ShowCreatedDateFilters" xml:space="preserve">
+    <value>Show Created Date Filters</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Statustext" xml:space="preserve">
+    <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
+  </data>
   <data name="Tips" xml:space="preserve">
     <value>Tips</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

@@ -1,10 +1,10 @@
 ﻿using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
-using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
@@ -14,45 +14,64 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
+namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 {
-    [CheckSessionTimeOut]
-    public class AffiliateController : Controller
+    public class BranchAccountController : Controller
     {
-        private readonly AffiliateService _AffiliateController;
-         private readonly BranchServices _branchServices;
+        private readonly AffiliateAccountService _AffiliateAccountService;
+        private readonly AffiliateAccountMockService _affiliateAccountMockService;
+        private readonly AffiliateService _AffiliateService;
+        private readonly BranchServices _branchServices;
+        private readonly BranchAccountService _branchAccountService;
+
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public AffiliateController(AffiliateService affiliateService, BranchServices branchServices)
+        public BranchAccountController(AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService, BranchAccountService branchAccountService)
         {
-            _AffiliateController = affiliateService;
+            _AffiliateAccountService = affiliateaccountService;
             _branchServices = branchServices;
+            _AffiliateService = affiliateService;
+            _affiliateAccountMockService = affiliateAccountMockService;
+            _branchAccountService = branchAccountService;
         }
 
-        public async Task<ActionResult> Index()
-        {
-           return View(); 
-        }
-        
+
+
 
         [HttpGet]
         public async Task<ActionResult> List()
         {
-                return View();
+            //await loader();
+            return View();
+
         }
 
-        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
-        [HttpPost]
-        public async Task<JsonResult> LoadAffiliateData(AffiliateAccountQuery query)
+        public async Task<bool> loader()
         {
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
+
+            var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            ViewBag.Affiliates = affiliate;
+
+            var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            ViewBag.HoPcmfAccountId = Chartofaccount;
+            return true;
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadAffiliateData(BranchAccountQuery query)
+        {
+            //await loader();
             try
             {
-                var data = await _AffiliateController.GetcategoryDataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List< Data.Entity.Accounting_V2.Affiliate.Affiliateresponse>> (JsonConvert.SerializeObject(data.data));
+                var data = await _branchAccountService.GetcategoryDataTableAsync(query);
+
+                var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
@@ -79,29 +98,36 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            //await loader();
+            await loader();
             if (path == "list")
             {
-                var data = await _AffiliateController.GetAsync();
+                var data = await _branchAccountService.GetAsync();
                 return PartialView(partialView, data);
 
             }
             //GetRolePermissions
             else if (path == "new")
             {
-                return PartialView(partialView, new AffiliateCommand());
+                var model = new BranchAccountCommand();
+
+                if (!string.IsNullOrWhiteSpace(KEY))
+                {
+                    // set ParentId so the view receives it in the hidden field
+                    model.ParentId = KEY;
+                }
+                return PartialView(partialView, model);
             }
 
             else
             {
-                var data = await _AffiliateController.GetByIdAsync(KEY);
-                return PartialView(partialView ?? "_CategoryDetailsPartial", data);
+                var data = await _branchAccountService.GetByIdAsync(KEY);
+                return PartialView(partialView, data);
 
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(AffiliateCommand model)
+        public async Task<ActionResult> CreateOrUpdate(BranchAccountCommand model)
         {
             // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
             if (string.IsNullOrWhiteSpace(model.Id))
@@ -109,7 +135,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
                 if (!ModelState.IsValid)
                     return Json(new { success = false, message = "Validation failed." });
 
-                var result = await _AffiliateController.CreateAsync(model);
+                var result = await _branchAccountService.CreateAsync(model);
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
             else
@@ -124,12 +150,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(AffiliateCommand model)
+        public async Task<ActionResult> Update(BranchAccountCommand model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _AffiliateController.UpdateAsync(model);
+            var result = await _branchAccountService.UpdateAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
@@ -140,7 +166,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
             if (string.IsNullOrEmpty(KEY))
                 return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
 
-            var result = await _AffiliateController.DeleteAsync(KEY);
+            var result = await _branchAccountService.DeleteAsync(KEY);
 
             // Map to simple JSON shape the client expects. Adjust if result has different property names.
             bool success = result?.Result ?? false;
