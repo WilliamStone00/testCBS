@@ -1,0 +1,508 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.AccountwaitingCorrespondanceQuery
+@using Resources
+@{
+    ViewBag.Title = "Affiliate Overview - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                </h1>
+                <p class="card-text">@AccountingV2.AffiliateManagementtext</p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters</h5>
+
+    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+                <!-- BranchId (always visible) -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        new { @class = "form-control select2", id = "BranchId" })
+                </div>
+
+                <!-- AffiliateId (always visible) -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Affiliate</label>
+                    @Html.DropDownListFor(m => m.AffiliateId,
+                        new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- @AccountingV2.All ---",
+                        new { @class = "form-control select2", id = "AffiliateId" })
+                </div>
+            </div>
+
+            <!-- Individual filter toggles -->
+            <div class="row g-2">
+                <!-- Scope -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkScope" data-target="#fldScope" />
+                        <label class="form-check-label fw-bold" for="chkScope">Scope</label>
+                    </div>
+                    <input type="text" id="fldScope" name="Scope" class="form-control mt-1 filter-field d-none" value="@Model?.Scope" placeholder="Scope" />
+                </div>
+
+                <!-- Code -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkCode" data-target="#fldCode" />
+                        <label class="form-check-label fw-bold" for="chkCode">@AccountingV2.Code</label>
+                    </div>
+                    <input type="text" id="fldCode" name="Code" class="form-control mt-1 filter-field d-none" value="@Model?.Code" placeholder="Affiliate code" />
+                </div>
+
+                <!-- Class -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkClass" data-target="#fldClass" />
+                        <label class="form-check-label fw-bold" for="chkClass">Class</label>
+                    </div>
+                    <input type="text" id="fldClass" name="Class" class="form-control mt-1 filter-field d-none" value="@Model?.Class" placeholder="Account class (e.g. Asset, Liability)" />
+                </div>
+
+                <!-- CreatedFromUtc -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkCreatedFrom" data-target="#fldCreatedFrom" />
+                        <label class="form-check-label fw-bold" for="chkCreatedFrom">@AccountingV2.CreatedFrom (UTC)</label>
+                    </div>
+                    <input type="date" id="fldCreatedFrom" name="CreatedFromUtc" class="form-control mt-1 filter-field d-none" value="@(Model?.CreatedFromUtc?.ToString("yyyy-MM-dd"))" />
+                </div>
+
+                <!-- CreatedToUtc -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkCreatedTo" data-target="#fldCreatedTo" />
+                        <label class="form-check-label fw-bold" for="chkCreatedTo">@AccountingV2.CreatedTo (UTC)</label>
+                    </div>
+                    <input type="date" id="fldCreatedTo" name="CreatedToUtc" class="form-control mt-1 filter-field d-none" value="@(Model?.CreatedToUtc?.ToString("yyyy-MM-dd"))" />
+                </div>
+
+                <!-- Language -->
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input filter-toggle" type="checkbox" id="chkLanguage" data-target="#fldLanguage" />
+                        <label class="form-check-label fw-bold" for="chkLanguage">Language</label>
+                    </div>
+                    <select id="fldLanguage" name="Language" class="form-control mt-1 filter-field d-none">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="en" @(Model?.Language == "en" ? "selected" : "")>English</option>
+                        <option value="fr" @(Model?.Language == "fr" ? "selected" : "")>Français</option>
+                    </select>
+                </div>
+
+                <!-- IncludeDeleted -->
+                <div class="col-md-6 d-flex align-items-start">
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-toggle" type="checkbox" id="chkIncludeDeleted" data-target="#fldIncludeDeleted" />
+                            <label class="form-check-label fw-bold" for="chkIncludeDeleted">@AccountingV2.IncludeDeleted</label>
+                        </div>
+                        <div class="mt-1 d-none filter-field" id="fldIncludeDeleted">
+                            <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" @(Model?.IncludeDeleted == true ? "checked" : "") />
+                            <label class="form-check-label" for="IncludeDeleted"> Include deleted</label>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end toggles -->
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="affiliateListingView">
+    @Html.Partial("_Data")
+</div>
+
+<!--------------------------------------------------Modals---------------------------------------------------->
+<!-- Details Modal -->
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Affiliate Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- server-rendered details partial will be injected here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Modal - used for Add & Update -->
+<div class="modal fade" id="affiliateFormModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="affiliateFormModalTitle">Correspondance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- server-rendered add/update partial will be injected here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <!-- Save button inside partial will handle submit; keep this as fallback -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------------------------------------End of Modals---------------------------------------------------->
+
+@section Scripts {
+    <script>
+        (function () {
+            var affiliateTable = null;
+
+            function emptyToNull(v) {
+                return (v === undefined || v === null || v === '') ? null : v;
+            }
+
+            function collectAffiliateFilters() {
+                // Build an object matching AffiliateFilterRequest
+                return {
+                    Scope: emptyToNull($('#fldScope').val()),
+                    BranchId: emptyToNull($('#BranchId').val()),
+                    AffiliateId: emptyToNull($('#AffiliateId').val()),
+                    Code: emptyToNull($('#fldCode').val()),
+                    Class: emptyToNull($('#fldClass').val()),
+                    CreatedFromUtc: emptyToNull($('#fldCreatedFrom').val()),
+                    CreatedToUtc: emptyToNull($('#fldCreatedTo').val()),
+                    IncludeDeleted: ($('#IncludeDeleted').is(':checked') ? true : null),
+                    Language: emptyToNull($('#fldLanguage').val()),
+                    options: {}
+                };
+            }
+
+            function escapeHtml(str) {
+                if (!str && str !== 0) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function initDataTableIfNeeded() {
+                if ($.fn.DataTable.isDataTable('#myDataTable') && affiliateTable) return;
+
+                if (!$('#myDataTable').length) {
+                    console.warn('Table element #myDataTable not found');
+                    return;
+                }
+
+                affiliateTable = $('#myDataTable').DataTable({
+                    serverSide: true,
+                    searching: false,
+                    responsive: true,
+                    destroy: false,
+                    order: [[0, 'desc']], // createdDate desc
+                    ajax: {
+                        url: '/FileUpload/LoadAccountwaitingData',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: function (d) {
+                            var filters = collectAffiliateFilters();
+                            filters.options = {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: d.search?.value || '',
+                                // default sort: createdDate descending — if you have server-driven sort, send column/direction here
+                                sortColumnName: 'createdDate',
+                                sortColumnDirection: 'desc'
+                            };
+                            return JSON.stringify(filters);
+                        },
+                        error: function (jqXHR) {
+                            var msg = 'Failed to load data. Please try again.';
+                            try { msg = jqXHR.responseJSON?.message || msg; } catch (e) { }
+                            if (typeof appalert === 'function') appalert(msg, 0, 1);
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'createdDate',
+                            render: function (data) {
+                                return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                            }
+                        },
+                        { data: 'name', name: 'name', defaultContent: '-' },
+                        { data: 'class', name: 'class', defaultContent: '-' },
+                        { data: 'reason', name: 'reason', defaultContent: '-' },
+                        {
+                            data: 'postingAllowed',
+                            render: function (val) {
+                                return (val === true || val === 'true')
+                                    ? '<span class="badge bg-success">Yes</span>'
+                                    : '<span class="badge bg-secondary">No</span>';
+                            }
+                        },
+                        { data: 'scope', name: 'scope', defaultContent: '-' },
+                        {
+                            data: 'id',
+                            orderable: false,
+                            searchable: false,
+                            render: function (data, type, row) {
+                                var rawId = String(row.id || row.Id || data || '');
+                                var recordId = encodeURIComponent(rawId);
+                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                var btnId = 'actionDropdown_' + safeId;
+                                var name = escapeHtml(row.name || row.Name || '');
+
+                                var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
+
+                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
+                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                      </button>`;
+
+                                // Add Correspondance always available
+                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name}">
+                                                        <i class="mdi mdi-plus-box-outline me-1 text-success"></i> Correspondance request
+                                                      </button>`;
+
+                                var updateBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-update" data-id="${recordId}" data-name="${name}">
+                                                                  <i class="mdi mdi-pencil-outline me-1 text-success"></i> Update Correspondance
+                                                                </button>` : '';
+
+                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
+                                                                     <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                                                   </button>` : '';
+
+                                return `
+                                        <div class="dropdown text-center">
+                                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                    type="button" id="${btnId}"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-cog-outline"></i> Actions
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                <li>${detailsBtn}</li>
+                                                <li>${addCorrBtn}</li>
+                                                ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                ${!isDeleted ? `<li>${updateBtn}</li>` : ''}
+                                                ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
+                                            </ul>
+                                        </div>
+                                    `.trim();
+                            }
+                        }
+                    ],
+                    language: { emptyTable: 'No affiliate records found' },
+                    lengthMenu: [10, 25, 50],
+                    pageLength: 10,
+                    initComplete: function () {
+                        try {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                    new bootstrap.Tooltip(el);
+                                });
+                            }
+                        } catch (e) { /* ignore */ }
+                    }
+                });
+            }
+
+            function loadAffiliateData() {
+                initDataTableIfNeeded();
+                if (affiliateTable) {
+                    affiliateTable.ajax.reload(null, false);
+                } else {
+                    console.warn('affiliateTable not initialized');
+                }
+            }
+
+            // Toggle logic for each checkbox -> shows/hides its target (and clears values when hidden)
+            function initFilterToggles() {
+                document.querySelectorAll('.filter-toggle').forEach(function (chk) {
+                    chk.addEventListener('change', function () {
+                        var target = document.querySelector(this.dataset.target);
+                        if (!target) return;
+                        if (this.checked) {
+                            target.classList.remove('d-none');
+                        } else {
+                            target.classList.add('d-none');
+                            // clear inputs inside
+                            target.querySelectorAll('input, select, textarea').forEach(function (el) {
+                                if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                                else el.value = '';
+                            });
+                        }
+                    });
+
+                    // if pre-checked on load, ensure visible
+                    if (chk.checked) {
+                        var t = document.querySelector(chk.dataset.target);
+                        if (t) t.classList.remove('d-none');
+                    }
+                });
+            }
+
+            function resetAffiliateFilters() {
+                var form = document.getElementById('affiliateFilterForm');
+                if (form) form.reset();
+
+                // hide optional filter fields and uncheck toggles
+                document.querySelectorAll('.filter-toggle').forEach(function (chk) {
+                    var t = document.querySelector(chk.dataset.target);
+                    if (t) {
+                        t.classList.add('d-none');
+                        t.querySelectorAll('input, select, textarea').forEach(function (el) {
+                            if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                            else el.value = '';
+                        });
+                    }
+                    chk.checked = false;
+                });
+
+                // Keep BranchId & AffiliateId visible; clear them if you want:
+                // $('#BranchId').val(null).trigger('change'); $('#AffiliateId').val(null).trigger('change');
+
+                // reload table
+                if (affiliateTable) affiliateTable.ajax.reload(null, false);
+
+                if (typeof appalert === 'function') appalert('Filters reset', 3, 1);
+            }
+
+            // Delegated button handlers (Details, Add, Update, Delete)
+            function bindDelegatedActions() {
+                // Details
+                $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return (typeof appalert === 'function') ? appalert('Missing id for details', 0, 1) : null;
+
+                    // Load details into modal or a side panel
+                    $('#affiliateDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"></div></div>');
+                    var bsModal = null;
+                    try { if (typeof bootstrap !== 'undefined' && bootstrap.Modal) bsModal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal')); } catch (e) { }
+                    if (bsModal) bsModal.show();
+
+                    $.get('/FileUpload/InitializeData', { id: id })
+                        .done(function (html) {
+                            $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-muted">No details available.</div>');
+                        })
+                        .fail(function () {
+                            $('#affiliateDetailsModal .modal-body').html('<div class="text-danger">Error loading details.</div>');
+                            if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
+                        });
+                });
+
+                // Add Correspondance
+                $(document).off('click', '.btn-addcorr').on('click', '.btn-addcorr', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return (typeof appalert === 'function') ? appalert('Missing id to add correspondance', 0, 1) : null;
+
+                    // Open add correspondance form - adjust AddORUpdateGen args to your helper
+                    AddORUpdateGen(id, 'datalistingview', '_AddCorrespondance', 'new', 'FileUpload');
+                });
+
+                // Update Correspondance (edit)
+                $(document).off('click', '.btn-update').on('click', '.btn-update', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return (typeof appalert === 'function') ? appalert('Missing id to update correspondance', 0, 1) : null;
+
+                    // enter edit mode and load edit partial
+                    enterEditMode(); // re-use function from your sample, ensure it exists
+                    AddORUpdateGen(id, 'datalistingview', '_UpdateCorrespondance', 'get', 'FileUpload');
+                });
+
+                // Delete
+                $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return (typeof appalert === 'function') ? appalert('Missing id for delete', 0, 1) : null;
+
+                    // Use your helper to delete and reload table — adjust param names as needed
+                    DeleteRecordDataTable('Affiliate', id, 'myDataTable', '_Data', 0, 'affiliateListingView', null, 'list');
+                });
+            }
+
+            // Document ready wiring
+            $(document).ready(function () {
+                // safe init select2 for branch & affiliate
+                if ($.fn.select2) {
+                    try {
+                        $('#BranchId').select2 && $('#BranchId').select2({ width: '100%', placeholder: 'Select Branch' });
+                        $('#AffiliateId').select2 && $('#AffiliateId').select2({ width: '100%', placeholder: 'Select Affiliate' });
+                    } catch (e) { console.warn('select2 init failed', e); }
+                }
+
+                // init toggles and delegated handlers
+                initFilterToggles();
+                bindDelegatedActions();
+
+                // init datatable (first load)
+                initDataTableIfNeeded();
+
+                // Apply button
+                $('#applyAffiliateFilterBtn').off('click').on('click', function (e) {
+                    // If button is inside <form type="submit"> default, prevent double submit and use ajax reload
+                    e.preventDefault();
+                    loadAffiliateData();
+                });
+
+                // Reset button
+                $('#resetAffiliateFilterBtn').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    resetAffiliateFilters();
+                });
+
+                // Allow Enter to trigger apply on visible inputs
+                $('#affiliateFilterForm').on('keypress', 'input', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        loadAffiliateData();
+                    }
+                });
+
+                // Re-bind when new content loaded if your AddORUpdateGen replaces content
+                $(document).on('content:loadedIntoDatalistingview', function () {
+                    bindDelegatedActions();
+                    // optionally re-init other UI bits inside newly loaded content
+                });
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,321 @@
+﻿@model HoPcmfAccountTreeDto
+@using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
+@using System.Text.RegularExpressions
+@using Resources;
+
+@{
+    // helper to make a safe HTML id from any node id
+    Func<string, string> safeId = id =>
+    {
+        if (string.IsNullOrEmpty(id)) return "node_unknown";
+        return "node_" + Regex.Replace(id, @"[^\w\-]", "_");
+    };
+
+    // Helper to render breadcrumb from Path (e.g. "/1/10/100/" -> ["1","10","100"])
+    Func<HoPcmfAccountTreeDto, IEnumerable<string>> breadcrumbParts = dto =>
+    {
+        if (dto == null || string.IsNullOrWhiteSpace(dto.Path)) return Enumerable.Empty<string>();
+        return dto.Path.Trim('/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+    };
+}
+
+<style>
+    .coa-tree {
+        font-family: system-ui, "Segoe UI", Roboto, Arial;
+    }
+
+    .coa-node {
+        padding: 6px 8px;
+        margin: 2px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .coa-children {
+        margin-left: 18px;
+        border-left: 1px dashed rgba(0,0,0,0.06);
+        padding-left: 12px;
+    }
+
+    .coa-code {
+        font-weight: 700;
+        margin-right: 8px;
+        color: #0d6efd;
+    }
+
+    .coa-name {
+        color: #333;
+    }
+
+    .coa-toggle {
+        background: transparent;
+        border: none;
+        padding: 0;
+        line-height: 1;
+    }
+
+        .coa-toggle:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+    .coa-node .meta {
+        font-size: .85rem;
+        color: #666;
+        margin-left: 6px;
+    }
+
+    .tree-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .card-tree {
+        max-height: 65vh;
+        overflow: auto;
+    }
+
+    .coa-breadcrumb .coa-code {
+        font-weight: 600;
+        color: #0b5ed7;
+    }
+</style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light mb-2">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-account-group me-2"></i>Affiliate Account Details
+                        </h1>
+                        <p class="text-muted mb-0">Details &amp; hierarchical structure for the selected node</p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="card mb-3">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+
+            <div id="collapseAffiliateTips" class="collapse">
+                <div class="card-body">
+                    <ul>
+                        <li>Click the caret to expand or collapse child nodes.</li>
+                        <li>Use <em>Expand</em> and <em>Collapse</em> to open/close all nodes quickly.</li>
+                        <li>Posting nodes are labelled with a <span class="badge bg-info">Posting</span> badge.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-tree">
+            <div class="text-end">
+                <div class="tree-actions">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnExpandAll" title="Expand all">
+                        <i class="mdi mdi-arrow-expand-all"></i> Expand
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCollapseAll" title="Collapse all">
+                        <i class="mdi mdi-arrow-collapse-all"></i> Collapse
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                @if (Model == null)
+                {
+                    <div class="text-muted">No details available.</div>
+                }
+                else
+                {
+                    <!-- breadcrumb (simple representation from Path) -->
+                    <div class="mb-2 coa-breadcrumb">
+                        <small class="text-muted">Chart of Accounts</small>
+                        <div class="mt-2">
+                            @{
+                                var parts = breadcrumbParts(Model).ToList();
+                                for (int i = 0; i < parts.Count; i++)
+                                {
+                                    <div class="d-inline-block me-2">
+                                        <span class="coa-code">@parts[i]</span>
+                                        @if (i < parts.Count - 1)
+                                        {<span class="text-muted">/</span>;
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- selected node header -->
+                    <div class="mb-3">
+                        <h5 class="mb-1">
+                            <i class="mdi mdi-account-box-outline me-1"></i>
+                            @(!string.IsNullOrEmpty(Model.NameEn) ? Model.NameEn : Model.Name) <small class="text-muted">(@Model.Code)</small>
+                        </h5>
+                        <small class="text-muted">
+                            Id: @Model.Id • Depth: @Model.Depth • PostingAllowed: @(Model.PostingAllowed ? "Yes" : "No")
+                        </small>
+                    </div>
+
+                    <!-- children tree (collapsible) -->
+                    <div class="mt-3 coa-tree-root">
+                        @{
+                            var rootCollapseId = safeId(Model.Id) + "_children";
+                            var hasRootChildren = Model.Children != null && Model.Children.Count > 0;
+                        }
+
+                        <div class="coa-node mb-1">
+                            <div class="d-flex align-items-center w-100">
+                                @if (hasRootChildren)
+                                {
+                                    <button class="coa-toggle me-2" data-bs-toggle="collapse" data-bs-target="#@rootCollapseId" aria-expanded="true" aria-controls="@rootCollapseId" title="Toggle children">
+                                        <i class="mdi mdi-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="me-3" style="width:1.25rem; display:inline-block;"></span>
+                                }
+
+                                <div>
+                                    <div>
+                                        <span class="coa-code">@Model.Code</span>
+                                        <span class="coa-name">@(!string.IsNullOrEmpty(Model.NameEn) ? Model.NameEn : Model.Name)</span>
+                                        @if (Model.PostingAllowed)
+                                        {
+                                            <span class="badge bg-info ms-2">Posting</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="@rootCollapseId" class="coa-children collapse @(hasRootChildren ? "show" : "")" data-node="@Model.Id">
+                            @if (hasRootChildren)
+                            {
+                                @RenderTreeNode(Model, safeId)
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+@helper RenderTreeNode(HoPcmfAccountTreeDto node, Func<string, string> safeId)
+{
+    if (node == null) { return; }
+
+    // Render the current node itself (first level uses the same node passed in)
+    var nodeId = node.Id ?? Guid.NewGuid().ToString();
+    var collapseId = safeId(nodeId) + "_children";
+
+    <div class="coa-node" role="treeitem" aria-expanded="false" data-id="@nodeId">
+        <div class="d-flex align-items-center w-100">
+            @if (node.Children != null && node.Children.Count > 0)
+            {
+                <button class="coa-toggle me-2" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId" title="Toggle children">
+                    <i class="mdi mdi-chevron-right" aria-hidden="true"></i>
+                </button>
+            }
+            else
+            {
+                <span class="me-3" style="width:1.25rem; display:inline-block;"></span>
+            }
+
+            <div class="flex-grow-1">
+                <div>
+                    <span class="coa-code">@node.Code</span>
+                    <span class="coa-name">@(!string.IsNullOrEmpty(node.NameEn) ? node.NameEn : node.Name)</span>
+                    @if (node.PostingAllowed)
+                    {
+                        <span class="badge bg-info ms-2">Posting</span>
+                    }
+                </div>
+                <div class="meta">
+                    <small class="text-muted">Id: @node.Id • Depth: @node.Depth</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (node.Children != null && node.Children.Count > 0)
+    {
+        <div id="@collapseId" class="coa-children collapse" data-node="@nodeId">
+            @foreach (var child in node.Children)
+            {
+                @RenderTreeNode(child, safeId)
+            }
+        </div>
+    }
+}
+
+<script>
+    (function () {
+        // toggle caret direction on collapse show/hide events
+        function updateCaret(button, expanded) {
+            var icon = button.querySelector('i');
+            if (!icon) return;
+            if (expanded) {
+                icon.classList.remove('mdi-chevron-right');
+                icon.classList.add('mdi-chevron-down');
+            } else {
+                icon.classList.remove('mdi-chevron-down');
+                icon.classList.add('mdi-chevron-right');
+            }
+        }
+
+        // Initialize caret states for buttons that exist on DOM load
+        document.querySelectorAll('.coa-toggle').forEach(function (btn) {
+            var targetSelector = btn.getAttribute('data-bs-target');
+            if (!targetSelector) return;
+            var targetEl = document.querySelector(targetSelector);
+            if (!targetEl) return;
+
+            // set initial icon based on whether the collapse is shown
+            var isShown = targetEl.classList.contains('show');
+            updateCaret(btn, isShown);
+
+            // Listen to bootstrap collapse events
+            targetEl.addEventListener('shown.bs.collapse', function () { updateCaret(btn, true); });
+            targetEl.addEventListener('hidden.bs.collapse', function () { updateCaret(btn, false); });
+        });
+
+        // Expand all
+        document.getElementById('btnExpandAll')?.addEventListener('click', function () {
+            document.querySelectorAll('.coa-children').forEach(function (el) {
+                var bs = bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
+                bs.show();
+            });
+        });
+
+        // Collapse all
+        document.getElementById('btnCollapseAll')?.addEventListener('click', function () {
+            document.querySelectorAll('.coa-children').forEach(function (el) {
+                var bs = bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
+                bs.hide();
+            });
+        });
+
+        // Node click highlight (avoid triggering when clicking the toggle itself)
+        document.querySelectorAll('.coa-node').forEach(function (n) {
+            n.addEventListener('click', function (e) {
+                if (e.target.closest('.coa-toggle')) return;
+                document.querySelectorAll('.coa-node').forEach(x => x.classList.remove('bg-light'));
+                this.classList.add('bg-light');
+            });
+        });
+    })();
+</script>

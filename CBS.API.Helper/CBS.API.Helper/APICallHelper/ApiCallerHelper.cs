@@ -1288,6 +1288,37 @@ Dictionary<string, string> additionalFields = null)
                 throw;
             }
         }
+        public async Task<ApiResponse<T>> UploadBulkCashPaymentFileAsync<T>(HttpPostedFileBase file,string branchId,string apiUrl)
+        {
+            try
+            {
+                // Ensure URL is clean and valid
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                var formData = new MultipartFormDataContent();
+
+                // Add file content
+                var streamContent = new StreamContent(file.InputStream);
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                formData.Add(streamContent, "File", file.FileName);
+                formData.Add(streamContent, "BranchId", branchId);
+
+                // Add authorization headers
+                AddAuthorizationHeader(_httpClient);
+
+                // Send the request
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, formData);
+
+                // Handle the response
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow the exception
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
 
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile, string loanApplicationId)
         {

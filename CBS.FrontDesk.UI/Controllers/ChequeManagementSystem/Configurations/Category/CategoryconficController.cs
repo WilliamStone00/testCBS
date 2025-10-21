@@ -214,44 +214,5 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
 
             return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
-
-
-
-        //[HttpGet]
-        //public async Task<ActionResult> Delete(string KEY)
-        //{
-        //    var result = await _CategoryConfigService.DeactivateCategoryAsync(KEY);
-
-        //    // Your DeleteRecordDataTable script expects a full response object
-        //    // so it knows what/how to reload.
-        //    if (result.Result)
-        //    {
-        //        // On success, return a message AND instructions to reload the data.
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            status = result.MessageStatus,
-        //            message = Messaging.MessageResult(result),
-        //            // The reload instructions:
-        //            controller = "Categoryconfic",
-        //            datatable = "myDataTable",
-        //            PartialView = "_CategoryDataTable",
-        //            pr = 0,
-        //            div = "datalistingview",
-        //            id = (string)null,
-        //            path = "list"
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-
-        //    // On failure, just return the error message.
-        //    return Json(new
-        //    {
-        //        success = false,
-        //        status = result.MessageStatus,
-        //        message = Messaging.MessageResult(result)
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
-
     }
 }

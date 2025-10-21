@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -174,7 +175,79 @@ namespace CBS.BusinessService.Accounting_V2
             };
 
             return jsNode;
+        }/// <summary>
+         /// Returns a HoPcmfAccountTreeDto representing the node with the given id
+         /// and its recursive children (built from the in-memory mock list).
+         /// </summary>
+        public async Task<HoPcmfAccountTreeDto> GetAccountTreeDtoByIdAsync(string accountId)
+        {
+            // simulate a small async delay similar to other methods
+            await Task.Delay(50);
+
+            if (string.IsNullOrWhiteSpace(accountId))
+                return null;
+
+            // make a defensive snapshot of the in-memory data
+            var flat = _mockAccountData.ToList();
+
+            // quick lookup dictionary
+            var dict = flat.ToDictionary(a => a.Id, a => a);
+
+            if (!dict.ContainsKey(accountId))
+                return null;
+
+            // To prevent infinite recursion on malformed data, keep a visited set
+            var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            HoPcmfAccountTreeDto Build(string id)
+            {
+                if (string.IsNullOrWhiteSpace(id)) return null;
+                if (!dict.TryGetValue(id, out var acc)) return null;
+
+                // if we've already visited this id, stop to prevent cycles
+                if (!visited.Add(id)) return null;
+
+                var dto = new HoPcmfAccountTreeDto
+                {
+                    Id = acc.Id,
+                    Code = acc.Code,
+                    Name = acc.NameEn,       // choose NameEn as primary display name; adjust if needed
+                    NameEn = acc.NameEn,
+                    NameFr = acc.NameFr,
+                    Class = acc.Class,
+                    ParentId = acc.ParentId,
+                    PostingAllowed = acc.PostingAllowed,
+                    Depth = acc.Depth,
+                    Path = acc.Path,
+                    CreatedDate = acc.CreatedDate,
+                    ModifiedDate = acc.ModifiedDate,
+                    IsDeleted = acc.IsDeleted,
+                    Children = new List<HoPcmfAccountTreeDto>()
+                };
+
+                // find children (direct descendants where ParentId == this id), ordered by code
+                var children = flat
+                    .Where(x => string.Equals(x.ParentId, id, StringComparison.OrdinalIgnoreCase))
+                    .OrderBy(x => x.Code)
+                    .ToList();
+
+                foreach (var child in children)
+                {
+                    var childDto = Build(child.Id);
+                    if (childDto != null)
+                        dto.Children.Add(childDto);
+                }
+
+                return dto;
+            }
+
+            // build and return the DTO for requested id
+            var result = Build(accountId);
+
+            return result;
         }
+
+
 
         private string GetIconForNode(HoPcmfAccountTreeDto node)
         {
@@ -189,6 +262,81 @@ namespace CBS.BusinessService.Accounting_V2
         {
             return Task.FromResult(_mockAccountData.ToList());
         }
+
+        public async Task<CustomDataTable> GetDataTableAsync(COADATATABLE_Query query)
+        {
+            try
+            {
+                // seed fixed UTC time exactly as you provided
+                var seedNowUtc = new DateTime(2025, 10, 12, 0, 0, 0, DateTimeKind.Utc);
+
+                // in-memory seed data
+                var mockAccountData = new List<HoPcmfAccount>
+        {
+            new HoPcmfAccount { Id = "86326916", Code = "0", NameEn = "ROOT_ACCOUNT", NameFr = "ROOT_ACCOUNTkk", Class = "0", ParentId = null, Path = "/0/", Depth = 0, PostingAllowed = true, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false },
+            new HoPcmfAccount { Id = "01589560", Code = "1", NameEn = "CAPITAL FUNDS ACCOUNTS", NameFr = "CAPITAL FUNDS ACCOUNTS", Class = "1", ParentId = null, Path = "/1/", Depth = 0, PostingAllowed = false, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false },
+            new HoPcmfAccount { Id = "54231400", Code = "10", NameEn = "CAPITAL, SHARES AND ALLOTMENTS", NameFr = "CAPITAL, PARTS SOCIALES ET DOTATIONS", Class = "1", ParentId = "01589560", Path = "/1/10/", Depth = 1, PostingAllowed = false, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false },
+            new HoPcmfAccount { Id = "70781597", Code = "100", NameEn = "Subscribed shares called", NameFr = "Parts sociales souscrites appelées", Class = "1", ParentId = "54231400", Path = "/1/10/100/", Depth = 2, PostingAllowed = false, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false },
+            new HoPcmfAccount { Id = "47390320", Code = "1000", NameEn = "Subscribed shares called paid in", NameFr = "Parts sociales souscrites appelées versées", Class = "1", ParentId = "70781597", Path = "/1/10/100/1000/", Depth = 3, PostingAllowed = false, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false },
+            new HoPcmfAccount { Id = "90858811", Code = "26929", NameEn = "Attached claims on other permanent financial investment network", NameFr = "Créances rattachées sur autres immobilisations financières réseau", Class = "2", ParentId = "16590310", Path = "/2/26/269/2692/26929/", Depth = 4, PostingAllowed = true, CreatedDate = seedNowUtc, ModifiedDate = seedNowUtc, IsDeleted = false }
+        };
+
+                // Basic server-side processing behavior:
+                var totalCount = mockAccountData.Count;
+
+                // read DataTables options safely
+                var opts = query?.Options;
+                var draw = opts?.draw ?? "1";
+                var start = opts?.start ?? 0;
+                var length = opts?.length ?? 10;
+                var searchValue = opts?.searchValue?.ToString()?.Trim();
+
+                // filtering (simple global search across Code, NameEn, NameFr, Path)
+                IEnumerable<HoPcmfAccount> filtered = mockAccountData;
+                if (!string.IsNullOrWhiteSpace(searchValue))
+                {
+                    var s = searchValue.ToLowerInvariant();
+                    filtered = filtered.Where(a =>
+                        (a.Code ?? string.Empty).ToLowerInvariant().Contains(s)
+                        || (a.NameEn ?? string.Empty).ToLowerInvariant().Contains(s)
+                        || (a.NameFr ?? string.Empty).ToLowerInvariant().Contains(s)
+                        || (a.Path ?? string.Empty).ToLowerInvariant().Contains(s)
+                    );
+                }
+
+                var filteredCount = filtered.Count();
+
+                // simple sorting: default createdDate desc if requested; else no-op
+                // you can expand sorting using opts.sortColumnName / sortColumnDirection if desired
+                filtered = filtered.OrderByDescending(a => a.CreatedDate);
+
+                // paging: ensure safe bounds
+                if (start < 0) start = 0;
+                if (length <= 0) length = 10;
+
+                var page = filtered.Skip(start).Take(length).ToList();
+
+                // Build the CustomDataTable result.
+                // IMPORTANT: adapt property names if your CustomDataTable uses PascalCase (Draw / RecordsTotal / etc.)
+                var result = new CustomDataTable
+                {
+                    // assume CustomDataTable has these properties matching what the controller expects:
+                    draw = Convert.ToInt32(query.Options.draw),
+                    recordsTotal = totalCount,
+                    recordsFiltered = filteredCount,
+                    data = page // the controller does: JsonConvert.SerializeObject(data.data)
+                };
+
+                return await Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                // keep your logging behavior; rethrow a friendly message if you want
+                System.Diagnostics.Debug.WriteLine($"Mock GetDataTable Error: {ex.Message}");
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
+
     }
 
 }

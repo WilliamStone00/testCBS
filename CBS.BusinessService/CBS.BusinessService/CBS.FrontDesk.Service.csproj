@@ -248,6 +248,7 @@
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
+    <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />

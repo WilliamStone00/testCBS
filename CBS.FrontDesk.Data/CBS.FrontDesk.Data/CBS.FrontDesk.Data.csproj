@@ -107,6 +107,7 @@
     <Compile Include="Entity\Accounting V2\AffiliateAccount\AffiliateAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\Affiliate\AffiliateDto.cs" />
     <Compile Include="Entity\Accounting V2\BranchAccount\BranchAccountCommand.cs" />
+    <Compile Include="Entity\Accounting V2\FileUpload\AffiliateUpload.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />

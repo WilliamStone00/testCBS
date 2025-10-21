@@ -1,8 +1,16 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -12,11 +20,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
     public class ChartOfAccountV2Controller : BaseController
     {
         private readonly ChartOfAccountsV2mockService _accountsService;
+        private readonly ChartOfAccountsV2Service _accountsService2;
+        private readonly BranchServices _branchServices;
+        private readonly AffiliateAccountMockService _affiliateAccountMockService;
 
         // Constructor DI: make sure you register ChartOfAccountsV2Service in your DI container
-        public ChartOfAccountV2Controller(ChartOfAccountsV2mockService accountsService)
+        public ChartOfAccountV2Controller(ChartOfAccountsV2mockService accountsService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService, ChartOfAccountsV2Service chartOfAccountsV2Service)
         {
-            _accountsService = accountsService ?? throw new ArgumentNullException(nameof(accountsService));
+            _accountsService = accountsService;
+            _branchServices = branchServices;
+            _affiliateAccountMockService = affiliateAccountMockService;
+            _accountsService2 = chartOfAccountsV2Service;
         }
 
         // GET: /Accounting_V2/ChartOfAccounts
@@ -31,10 +45,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         // Returns jsTree-compatible JSON nodes
         [HttpGet]
         public async Task<ActionResult> GetTreeData(string branchId = null)
-        {
+       {
             try
             {
-                var nodes = await _accountsService.GetAccountTreeForJsTreeAsync(branchId);
+                var nodes = await _accountsService2.GetAccountTreeForJsTreeAsync(branchId);
                 return Json(nodes, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -42,6 +56,54 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
                 // keep the response simple and non-technical like your other controllers
                 System.Diagnostics.Debug.WriteLine("GetTreeData error: " + ex);
                 return Json(new { success = false, message = "Failed to load chart of accounts." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<bool> loader()
+        {
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
+
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadData(COADATATABLE_Query query)
+        {
+            try
+            {
+              //  var data = await _accountsService.GetDataTableAsync(query);
+              var data = await _accountsService2.GetDataTableAsync(query);
+
+                var response = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
             }
         }
 
@@ -78,7 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             try
             {
                 // I previously provided UpdateAccountNameAsync(accountId, newNameEn, newNameFr)
-                var result = await _accountsService.UpdateAccountNameAsync(request.Id, request.NameEn, request.NameFr);
+                var result = await _accountsService2.UpdateAccountNameAsync(request.Id, request.NameEn, request.NameFr);
 
                 // ExecutionMessages is your standard response wrapper used across services
                 return Json(new
@@ -92,6 +154,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             {
                 System.Diagnostics.Debug.WriteLine("UpdateAccountName error: " + ex);
                 return Json(new { success = false, message = "Failed to update account name." });
+            }
+        }
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await loader();
+
+            if (path == "list")
+            {
+                var data = await _affiliateAccountMockService.GetAsync();
+                return PartialView(partialView, data);
+            }
+            else if (path == "new")
+            {
+                var model = new AddAffiliateAccountCommand();
+                if (!string.IsNullOrWhiteSpace(KEY))
+                {
+                    model.ParentId = KEY;
+                }
+                return PartialView(partialView, model);
+            }
+            else // This handles the "get" path for editing
+            {
+                // Get the Affiliateresponse from service
+                var entity = await _accountsService.GetAccountTreeDtoByIdAsync(KEY);
+
+                if (entity == null)
+                {
+                    // Handle not found case
+                    return Content("Affiliate not found");
+                }                
+
+                return PartialView(partialView, entity);
             }
         }
 

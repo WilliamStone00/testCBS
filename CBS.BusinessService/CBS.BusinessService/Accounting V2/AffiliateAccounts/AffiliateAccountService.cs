@@ -154,7 +154,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                         a.Name = $"[{a.Code}] - {a.Name} {(a.IsHeadOffice ? "(Head Office)" : string.Empty)}".Trim();
                         return a;
                     })
-                    .OrderBy(a => a.Code)
+                    .OrderBy(a => a.Id)
                     .ToList();
             }
             catch (Exception)

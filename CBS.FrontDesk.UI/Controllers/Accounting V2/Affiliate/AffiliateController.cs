@@ -95,7 +95,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
             else
             {
                 var data = await _AffiliateController.GetByIdAsync(KEY);
-                return PartialView(partialView ?? "_CategoryDetailsPartial", data);
+                return PartialView(partialView , data);
 
             }
         }

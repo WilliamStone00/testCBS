@@ -1394,35 +1394,56 @@ namespace CBS.FrontDesk.Helper
 
         //*************************** Accounting V2 **************************************
         //-------------------------- Chat of account ------------------------------------
-        public static string GetAllAccountsEndpoint = "this endpoint is not yet availlable";
-        public static string GetAccountByIdEndpoint = "this endpoint is not yet availlable";
-        public static string UpdateAccountNameEndpoint = "this endpoint is not yet availlable";
+        public static string GetAllAccountsEndpoint = "/api/v1/HoPcmfAccount/tree";
+        public static string GetAccountByIdEndpoint = "/api/v1/HoPcmfAccount/{0}/{1}";
+        public static string UpdateAccountNameEndpoint = "/api/v1/HoPcmfAccount/{0}";
+        public static string COAdatatable = "/api/v1/HoPcmfAccount/datatable";
 
         //-------------------------- Affiliate ------------------------------------------
-        public static string GetAllAffiliate = "this endpoint is not yet availlable";
-        public static string Affiliatedatatable = "this endpoint is not yet availlable";
-        public static string GetAffiliateById = "this endpoint is not yet availlable";
-        public static string CreateAffiliate = "this endpoint is not yet availlable";
-        public static string UpdateAffiliate = "this endpoint is not yet availlable";
-        public static string DeactivateAffiliate = "this endpoint is not yet availlable";
+        public static string GetAllAffiliate = "/api/v1/Affiliate/simple?isActive=true&includeDeleted=false";
+        public static string Affiliatedatatable = "/api/v1/Affiliate/datatable";
+        public static string GetAffiliateById = "/api/v1/Affiliate/{0}";
+        public static string CreateAffiliate = "/api/v1/Affiliate";
+        public static string UpdateAffiliate = "/api/v1/Affiliate/{0}/update";
+        public static string DeactivateAffiliate = "/api/v1/Affiliate/{0}/soft-delete?force=true";
 
 
         //-------------------------- Affiliate Account ------------------------------------------
-        public static string GetAllAffiliateAccount = "this endpoint is not yet availlable";
-        public static string AffiliateAccountdatatable = "this endpoint is not yet availlable";
-        public static string GetAffiliateAccountById = "this endpoint is not yet availlable";
-        public static string CreateAffiliateAccount = "this endpoint is not yet availlable";
-        public static string UpdateAffiliateAccount = "this endpoint is not yet availlable";
-        public static string DeactivateAffiliateAccount = "this endpoint is not yet availlable";
-        public static string GetAllAccountDropAffiliate = "this endpoint is not yet availlable";
+        public static string GetAllAffiliateAccount = "/api/v1/Affiliate/simple?isActive=true&includeDeleted=false";
+        public static string AffiliateAccountdatatable = "/api/v1/AffiliateAccount/datatable";
+        public static string GetAffiliateAccountById = "/api/v1/AffiliateAccount/{0}?lang=string";
+        public static string CreateAffiliateAccount = "/api/v1/AffiliateAccount";
+        public static string UpdateAffiliateAccount = "/api/v1/AffiliateAccount/{0}";
+        public static string DeactivateAffiliateAccount = "/api/v1/AffiliateAccount/{0}?force=true";
+        public static string GetAllAccountDropAffiliate = "/api/v1/AffiliateAccount/:id?force=true";
 
         //-------------------------- Branch Account ------------------------------------------
-        public static string DeactivatBranchAccount = "this endpoint is not yet availlable";
-        public static string UpdateBranchAccount = "this endpoint is not yet availlable";
-        public static string CreateBranchAccount = "this endpoint is not yet availlable";
-        public static string GetAllBranchAccountDropAffiliate = "this endpoint is not yet availlable";
-        public static string GetBranchAccountById = "this endpoint is not yet availlable";
-        public static string BranchAccountdatatable = "this endpoint is not yet availlable";
-        public static string GetAllBranchAccount = "this endpoint is not yet availlable";
+        public static string DeactivatBranchAccount = "/api/v1/BranchAccount/{0}";
+        public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
+        public static string CreateBranchAccount = "/api/v1/BranchAccount";
+        public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{branchId}/tree";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{id}";
+        public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
+        public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
+
+        //-------------------------- FileUpload ------------------------------------------
+        public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
+        public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
+
+        //-------------------------- FileUpload ------------------------------------------
+        public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string Updateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string GetawaitingcorrespondanceById = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string GetAllawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/list";
+        public static string awaitingcorrespondancedatatable = "/api/v1/AccountAwaitingCorrespondence/datatable";
+        public static string createCorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
+       
+        public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
+        public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
+        public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
+
+
+        //*************************** End of Accounting V2 **************************************
+
     }
 }

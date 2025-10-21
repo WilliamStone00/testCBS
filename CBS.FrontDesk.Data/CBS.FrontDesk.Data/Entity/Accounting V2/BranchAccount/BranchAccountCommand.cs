@@ -32,6 +32,27 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public string PostingAllowed { get; set; }
     }
 
+    public class BRANCHTreeDto
+    {
+        public string Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string NameEn { get; set; }
+        public string BranchId { get; set; }
+        public string AffiliateAccountId { get; set; }
+        public string AffiliateAccountName { get; set; }
+        public string NameFr { get; set; }
+        public string Class { get; set; }
+        public string ParentId { get; set; }
+        public bool PostingAllowed { get; set; }
+        public int Depth { get; set; }
+        public string Path { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public List<BRANCHTreeDto> Children { get; set; } = new List<BRANCHTreeDto>();
+    }
+
     public class BranchAccountResponse
     {
         public string Id { get; set; }

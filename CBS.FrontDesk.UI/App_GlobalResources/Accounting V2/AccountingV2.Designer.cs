@@ -133,6 +133,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Affiliate.
+        /// </summary>
+        internal static string Affiliate {
+            get {
+                return ResourceManager.GetString("Affiliate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Affiliate Account Management.
         /// </summary>
         internal static string AffiliateAccountManagement {
@@ -214,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to After clicking.
+        /// </summary>
+        internal static string Afterclicking {
+            get {
+                return ResourceManager.GetString("Afterclicking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         internal static string All {
@@ -228,6 +246,24 @@ namespace Resources {
         internal static string ApplyFilter {
             get {
                 return ResourceManager.GetString("ApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        internal static string Branch {
+            get {
+                return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch And Affiliate File Upload.
+        /// </summary>
+        internal static string BranchAndAffiliateFileUpload {
+            get {
+                return ResourceManager.GetString("BranchAndAffiliateFileUpload", resourceCulture);
             }
         }
         
@@ -250,6 +286,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to checkbox to choose the upload type:.
+        /// </summary>
+        internal static string checkboxtochoosetheuploadtype {
+            get {
+                return ResourceManager.GetString("checkboxtochoosetheuploadtype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checked.
+        /// </summary>
+        internal static string Checked {
+            get {
+                return ResourceManager.GetString("Checked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         internal static string Class {
@@ -264,6 +318,15 @@ namespace Resources {
         internal static string Click {
             get {
                 return ResourceManager.GetString("Click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the.
+        /// </summary>
+        internal static string Clickthe {
+            get {
+                return ResourceManager.GetString("Clickthe", resourceCulture);
             }
         }
         
@@ -286,7 +349,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code.
+        ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string Code {
             get {
@@ -394,6 +457,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sellect checkbox choice, if is Affiliate then choose affeliate account if not choose branch.
+        /// </summary>
+        internal static string fileuploadtext1 {
+            get {
+                return ResourceManager.GetString("fileuploadtext1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always check the Is Affiliate check box before uploading to tuckle between Affiliate Accounts file upload and Branch Accounts file upload.
+        /// </summary>
+        internal static string fileuploadtext2 {
+            get {
+                return ResourceManager.GetString("fileuploadtext2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. Choose which kind of file to upload.
+        /// </summary>
+        internal static string fileuploadtext3 {
+            get {
+                return ResourceManager.GetString("fileuploadtext3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Head Office.
         /// </summary>
         internal static string HeadOffice {
@@ -435,6 +525,15 @@ namespace Resources {
         internal static string IsActivetext {
             get {
                 return ResourceManager.GetString("IsActivetext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Affiliate?.
+        /// </summary>
+        internal static string IsAffiliate {
+            get {
+                return ResourceManager.GetString("IsAffiliate", resourceCulture);
             }
         }
         
@@ -691,11 +790,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search Affiliate.
+        /// </summary>
+        internal static string SearchAffiliate {
+            get {
+                return ResourceManager.GetString("SearchAffiliate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Affiliate.
+        /// </summary>
+        internal static string SelectAffiliate {
+            get {
+                return ResourceManager.GetString("SelectAffiliate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select an account to view details.
         /// </summary>
         internal static string Selectanaccounttoviewdetails {
             get {
                 return ResourceManager.GetString("Selectanaccounttoviewdetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select file.
+        /// </summary>
+        internal static string Selectfile {
+            get {
+                return ResourceManager.GetString("Selectfile", resourceCulture);
             }
         }
         
@@ -727,6 +853,114 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The dropdown is searchable. Start typing the branch or affiliate name to quickly find it..
+        /// </summary>
+        internal static string tesxt6 {
+            get {
+                return ResourceManager.GetString("tesxt6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — you&apos;re uploading a .
+        /// </summary>
+        internal static string text1 {
+            get {
+                return ResourceManager.GetString("text1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to you will be asked to confirm the action. Results (success/errors) will appear on this page..
+        /// </summary>
+        internal static string text10 {
+            get {
+                return ResourceManager.GetString("text10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Affiliate and Branch File Upload.
+        /// </summary>
+        internal static string text11 {
+            get {
+                return ResourceManager.GetString("text11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Please ensure Branch or Affiliate as well file to be uploaded are correctly set before uploading..
+        /// </summary>
+        internal static string text12 {
+            get {
+                return ResourceManager.GetString("text12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  file (Branch selector is shown)..
+        /// </summary>
+        internal static string text2 {
+            get {
+                return ResourceManager.GetString("text2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — you&apos;re uploading an.
+        /// </summary>
+        internal static string text3 {
+            get {
+                return ResourceManager.GetString("text3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to file (Affiliate selector is shown)..
+        /// </summary>
+        internal static string text4 {
+            get {
+                return ResourceManager.GetString("text4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2. Use the dropdown.
+        /// </summary>
+        internal static string text5 {
+            get {
+                return ResourceManager.GetString("text5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3. Double-check required fields.
+        /// </summary>
+        internal static string text7 {
+            get {
+                return ResourceManager.GetString("text7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensure Branch/Affiliate is selected and the file input is not empty. The form will validate before upload..
+        /// </summary>
+        internal static string text8 {
+            get {
+                return ResourceManager.GetString("text8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4. Confirmation &amp; result.
+        /// </summary>
+        internal static string text9 {
+            get {
+                return ResourceManager.GetString("text9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tips.
         /// </summary>
         internal static string Tips {
@@ -736,11 +970,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unchecked.
+        /// </summary>
+        internal static string Unchecked {
+            get {
+                return ResourceManager.GetString("Unchecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         internal static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        internal static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
             }
         }
         

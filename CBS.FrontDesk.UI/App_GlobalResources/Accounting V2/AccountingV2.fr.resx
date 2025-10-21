@@ -141,6 +141,9 @@
   <data name="Active" xml:space="preserve">
     <value>active</value>
   </data>
+  <data name="Affiliate" xml:space="preserve">
+    <value>affilié</value>
+  </data>
   <data name="AffiliateAccountManagement" xml:space="preserve">
     <value>Gestion des comptes affiliés</value>
   </data>
@@ -168,11 +171,20 @@
   <data name="affoiliatetext4" xml:space="preserve">
     <value>créer un nouvel affilié ou</value>
   </data>
+  <data name="Afterclicking" xml:space="preserve">
+    <value>Après avoir cliqué </value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>Tout</value>
   </data>
   <data name="ApplyFilter" xml:space="preserve">
     <value>Appliquer le filtre</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branche</value>
+  </data>
+  <data name="BranchAndAffiliateFileUpload" xml:space="preserve">
+    <value>Téléversement de fichier de succursale et d'affilié</value>
   </data>
   <data name="CentralBranch" xml:space="preserve">
     <value>Agence centrale</value>
@@ -180,11 +192,20 @@
   <data name="ChartofAccountsManagement" xml:space="preserve">
     <value>Gestion du Plan Comptable</value>
   </data>
+  <data name="checkboxtochoosetheuploadtype" xml:space="preserve">
+    <value>case à cocher pour choisir le type de téléchargement :</value>
+  </data>
+  <data name="Checked" xml:space="preserve">
+    <value>Coché</value>
+  </data>
   <data name="Class" xml:space="preserve">
     <value>Classe</value>
   </data>
   <data name="Click" xml:space="preserve">
     <value>Cliquez</value>
+  </data>
+  <data name="Clickthe" xml:space="preserve">
+    <value>Cliquez sur le</value>
   </data>
   <data name="COAtext1" xml:space="preserve">
     <value>Gérez et organisez la hiérarchie de vos comptes financiers en toute simplicité. Affichez, modifiez et maintenez la structure de votre plan comptable.</value>
@@ -193,7 +214,7 @@
     <value>Important : Les modifications de la structure du compte peuvent affecter les rapports financiers et les transactions.</value>
   </data>
   <data name="Code" xml:space="preserve">
-    <value>Code</value>
+    <value>Numero De Compte</value>
   </data>
   <data name="codetext" xml:space="preserve">
     <value>Utilisez le code d'affiliation complet ou partiel pour une recherche rapide.</value>
@@ -228,6 +249,15 @@
   <data name="English" xml:space="preserve">
     <value>Anglais</value>
   </data>
+  <data name="fileuploadtext1" xml:space="preserve">
+    <value>Sélectionnez le choix de la case à cocher, si c'est un affilié, choisissez un compte affilié, sinon choisissez une succursale.</value>
+  </data>
+  <data name="fileuploadtext2" xml:space="preserve">
+    <value>Vérifiez toujours la case « Est affilié » avant de télécharger entre le téléchargement de fichiers pour les comptes affiliés et le téléchargement de fichiers pour les comptes de succursales.</value>
+  </data>
+  <data name="fileuploadtext3" xml:space="preserve">
+    <value>1. Choisissez le type de fichier à télécharger</value>
+  </data>
   <data name="HeadOffice" xml:space="preserve">
     <value>Siège social</value>
   </data>
@@ -242,6 +272,9 @@
   </data>
   <data name="IsActivetext" xml:space="preserve">
     <value>Activez cette option si l'affilié est actuellement opérationnel.</value>
+  </data>
+  <data name="IsAffiliate" xml:space="preserve">
+    <value>Est-ce un affilié ?</value>
   </data>
   <data name="IsHeadOffice" xml:space="preserve">
     <value>Est le siège</value>
@@ -327,8 +360,17 @@
   <data name="Search" xml:space="preserve">
     <value>Rechercher</value>
   </data>
+  <data name="SearchAffiliate" xml:space="preserve">
+    <value>Rechercher un affilié</value>
+  </data>
+  <data name="SelectAffiliate" xml:space="preserve">
+    <value>Sélectionner un affilié</value>
+  </data>
   <data name="Selectanaccounttoviewdetails" xml:space="preserve">
     <value>Sélectionnez un compte pour voir les détails</value>
+  </data>
+  <data name="Selectfile" xml:space="preserve">
+    <value>Sélectionner le fichier</value>
   </data>
   <data name="ShowCreatedDateFilters" xml:space="preserve">
     <value>Afficher les filtres de date de création</value>
@@ -339,11 +381,53 @@
   <data name="Statustext" xml:space="preserve">
     <value>Choisir Tout/Actif/Inactif — `Tout` ne filtrera pas par état actif.</value>
   </data>
+  <data name="tesxt6" xml:space="preserve">
+    <value>Le menu déroulant est consultable. Commencez à taper le nom de la succursale ou de l'affilié pour le trouver rapidement.</value>
+  </data>
+  <data name="text1" xml:space="preserve">
+    <value>— vous téléchargez un</value>
+  </data>
+  <data name="text2" xml:space="preserve">
+    <value>fichier (Le sélecteur de branche est affiché).</value>
+  </data>
+  <data name="text3" xml:space="preserve">
+    <value>— vous téléchargez un</value>
+  </data>
+  <data name="text4" xml:space="preserve">
+    <value>fichier (Le sélecteur d'affilié est affiché).</value>
+  </data>
+  <data name="text5" xml:space="preserve">
+    <value>2. Utilisez le menu déroulant</value>
+  </data>
+  <data name="text7" xml:space="preserve">
+    <value>3. Vérifiez à nouveau les champs obligatoire</value>
+  </data>
+  <data name="text8" xml:space="preserve">
+    <value>Assurez-vous que la succursale/filiale est sélectionnée et que le champ de fichier n'est pas vide. Le formulaire sera validé avant le téléchargement.</value>
+  </data>
+  <data name="text9" xml:space="preserve">
+    <value>4. Confirmation et résulta</value>
+  </data>
+  <data name="text10" xml:space="preserve">
+    <value>Il vous sera demandé de confirmer l'action. Les résultats (succès/erreurs) apparaîtront sur cette page.</value>
+  </data>
+  <data name="text11" xml:space="preserve">
+    <value>Téléversement de fichier d'affilié et de succursale</value>
+  </data>
+  <data name="text12" xml:space="preserve">
+    <value>Veuillez vous assurer que la succursale ou l'affilié ainsi que le fichier à télécharger sont correctement définis avant le téléchargement.</value>
+  </data>
   <data name="Tips" xml:space="preserve">
     <value>Conseils</value>
   </data>
+  <data name="Unchecked" xml:space="preserve">
+    <value>Non vérifié</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Mettre à jour</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value />
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>

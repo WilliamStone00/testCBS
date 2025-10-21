@@ -1,10 +1,12 @@
-﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+﻿using CBS.BusinessService.Accounting_V2;
+using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
@@ -23,19 +25,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
         private readonly AffiliateService _AffiliateService;
         private readonly BranchServices _branchServices;
         private readonly BranchAccountService _branchAccountService;
-
+        private readonly ChartOfAccountsV2mockService _accountsService;
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public BranchAccountController(AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService, BranchAccountService branchAccountService)
+        public BranchAccountController(ChartOfAccountsV2mockService chartOfAccountsV2MockService, AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService, BranchAccountService branchAccountService)
         {
             _AffiliateAccountService = affiliateaccountService;
             _branchServices = branchServices;
             _AffiliateService = affiliateService;
             _affiliateAccountMockService = affiliateAccountMockService;
             _branchAccountService = branchAccountService;
+            _accountsService = chartOfAccountsV2MockService;
         }
 
 
@@ -44,7 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
         [HttpGet]
         public async Task<ActionResult> List()
         {
-            //await loader();
+            await loader();
             return View();
 
         }
@@ -69,7 +72,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             try
             {
 
-                var data = await _branchAccountService.GetcategoryDataTableAsync(query);
+                var data = await _branchAccountService.GetcategoryDataTableAsync2(query);
+               // var data = await _accountsService.GetDataTableAsync(query);
 
                 var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
 
@@ -94,8 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                 });
             }
         }
-
-
+       
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await loader();

@@ -114,6 +114,23 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                     CreatedDate = _seedNowUtc,
                     ModifiedDate = _seedNowUtc
                 },
+                new Affiliateresponse
+                {
+                    Id = "70869153",
+                    Code = "14",
+                    Class = "1",
+                    PostingAllowed = false,
+                    Path = "/1/11/",
+                    Depth = 2,
+                    ParentId = "01589560",
+                    Name = "REGULATED PROVISIONS AND RESERVES",
+                    NameEn = "REGULATED PROVISIONS AND RESERVES",
+                    NameFr = "PROVISIONS ET RESERVES REGLEMENTEES",
+                    IsActive = false,
+                    IsHeadOffice = false,
+                    CreatedDate = _seedNowUtc,
+                    ModifiedDate = _seedNowUtc
+                },
 
             };
         }
@@ -399,7 +416,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                         a.Name = $"[{a.Code}] - {a.Name} {(a.IsHeadOffice ? "(Head Office)" : string.Empty)}";
                         return a;
                     })
-                    .OrderBy(a => a.Code)
+                    .OrderBy(a => a.Id)
                     .ToList();
             }
             catch (Exception ex)
@@ -409,19 +426,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
             }
         }
 
-        // Helper methods for branch simulation
-        private bool IsHeadOffice()
-        {
-            // Simulate Head Office check - you can modify this for different test scenarios
-            return true;
-        }
-
-        private string GetBranchID()
-        {
-            // Simulate branch ID - you can modify this for different test scenarios
-            return "01589560";
-        }
-
+       
         // Additional helper methods for testing
         public List<HoPcmfAccount> GetMockAccounts() => _mockAccounts;
         public List<Affiliateresponse> GetMockAffiliates() => _mockAffiliates;
@@ -466,7 +471,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                         a.Name = $"[{a.Code}] - {a.Name} {(a.IsHeadOffice ? "(Head Office)" : string.Empty)}".Trim();
                         return a;
                     })
-                    .OrderBy(a => a.Code)
+                    .OrderBy(a => a.Id)
                     .ToList();
             }
             catch (Exception)

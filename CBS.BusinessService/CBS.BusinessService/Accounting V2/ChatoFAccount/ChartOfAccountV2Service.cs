@@ -1,5 +1,7 @@
 ﻿using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
@@ -97,11 +99,18 @@ namespace CBS.BusinessService.Accounting_V2
         public async Task<HoPcmfAccount> GetAccountByIdAsync(string accountId)
         {
             if (string.IsNullOrWhiteSpace(accountId)) return null;
-
+            var lang = GetLanguage();
             try
             {
-                // If your APICallHelper endpoint is formatted like Get_Update_Delete_ChartOfAccount (id placeholder), use string.Format
-                var url = string.Format(APICallHelper.GetAccountByIdEndpoint, accountId);
+                if (string.IsNullOrWhiteSpace(accountId)) throw new ArgumentNullException(nameof(accountId));
+                lang = string.IsNullOrWhiteSpace(lang) ? "en" : lang;
+
+                // URL-encode path segments to be safe
+                var idEscaped = Uri.EscapeDataString(accountId);
+                var langEscaped = Uri.EscapeDataString(lang);
+
+                var url = string.Format(APICallHelper.GetAccountByIdEndpoint, idEscaped, langEscaped);
+
                 var response = await _apiHelper.GetAsync<ResponseObject<HoPcmfAccount>>(url);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData != null)
@@ -113,6 +122,36 @@ namespace CBS.BusinessService.Accounting_V2
             {
                 System.Diagnostics.Debug.WriteLine($"GetAccountByIdAsync error: {ex}");
                 throw;
+            }
+        }
+
+        public async Task<CustomDataTable> GetDataTableAsync(COADATATABLE_Query query)
+        {
+            try
+            {
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.COAdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
             }
         }
 

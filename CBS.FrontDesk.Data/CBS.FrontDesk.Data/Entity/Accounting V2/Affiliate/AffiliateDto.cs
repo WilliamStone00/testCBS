@@ -50,7 +50,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
         public string Code { get; set; } = null;
         public string Name { get; set; } = null;
         public bool? IsActive { get; set; }
-        public bool? IncludeDeleted { get; set; }
+        public bool? IncludeDeleted { get; set; } = false;
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
 

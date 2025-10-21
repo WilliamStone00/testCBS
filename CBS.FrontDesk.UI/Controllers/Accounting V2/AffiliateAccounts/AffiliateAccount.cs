@@ -197,27 +197,94 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
         }
 
+
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(AddAffiliateAccountCommand model)
         {
-            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
             if (string.IsNullOrWhiteSpace(model.Id))
             {
+                // If modelstate invalid -> return JSON with structured errors so client can show appalert + inline message
                 if (!ModelState.IsValid)
-                    return Json(new { success = false, message = "Validation failed." });
+                {
+                    var errors = GetModelStateErrors();
+                    var errorsHtml = BuildErrorsHtml(errors);
+
+                    return Json(new
+                    {
+                        success = false,
+                        validation = true,
+                        message = "Validation failed.",
+                        errors,
+                        errorsHtml
+                    });
+                }
 
                 var result = await _AffiliateAccountService.CreateAsync(model);
-                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+
+                // Map your ExecutionMessages -> JSON. Adjust field names as needed based on your ExecutionMessages.
+                // Here I assume result.Result is a bool indicating success and result may carry messages.
+                if (result.Result)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = Messaging.MessageResult(result),
+                        // optionally instruct client to reload the listing:
+                        reloadDataView = "Yes"
+                    });
+                }
+                else
+                {
+                    // If your ExecutionMessages contain field-level validation info, add it to the JSON here.
+                    // For now return a structured failure so client can decide (validation=false means keep form open)
+                    return Json(new
+                    {
+                        success = false,
+                        validation = false,
+                        message = Messaging.MessageResult(result)
+                        // optionally: errors = ..., errorsHtml = ...
+                    });
+                }
             }
             else
             {
-                // IMPORTANT: return the ActionResult from Update
                 return await Update(model);
             }
-
-            // unreachable now but keep for safety (or remove)
-            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
         }
+
+        // Collect ModelState errors into a dictionary
+        private IDictionary<string, string[]> GetModelStateErrors()
+        {
+            return ModelState
+                .Where(kvp => kvp.Value.Errors != null && kvp.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? (e.Exception?.Message ?? "Invalid value") : e.ErrorMessage).ToArray()
+                );
+        }
+
+        // Build a small HTML unordered list for display inside appalert / inline summary
+        private string BuildErrorsHtml(IDictionary<string, string[]> errors)
+        {
+            if (errors == null || errors.Count == 0) return string.Empty;
+
+            var sb = new System.Text.StringBuilder();
+            sb.Append("<ul style=\"margin:0;padding-left:18px;\">");
+            foreach (var kv in errors)
+            {
+                // take last path part as friendly name (e.g. "Code" from "model.Code")
+                var keyParts = kv.Key.Split('.');
+                var friendlyKey = keyParts.Length > 0 ? keyParts.Last() : kv.Key;
+
+                foreach (var msg in kv.Value)
+                {
+                    sb.AppendFormat("<li><strong>{0}:</strong> {1}</li>", System.Net.WebUtility.HtmlEncode(friendlyKey), System.Net.WebUtility.HtmlEncode(msg));
+                }
+            }
+            sb.Append("</ul>");
+            return sb.ToString();
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

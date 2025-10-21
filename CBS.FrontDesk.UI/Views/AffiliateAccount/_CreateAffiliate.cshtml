@@ -64,7 +64,7 @@
 
 <div class="card shadow p-3 mb-4">
     <div class="modal-body">
-        @using (Html.BeginForm("CreateOrUpdate", "AffiliateAccount", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        @using (Html.BeginForm("CreateOrUpdate", "AffiliateAccount", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Id)
@@ -72,105 +72,108 @@
             @Html.HiddenFor(m => m.ParentId)
             @Html.HiddenFor(m => m.HoPcmfAccountId)
 
-        <div class="mt-2">
-            @* Validation summary (optional) *@
-            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+            <div class="mt-2">
+                @* Validation summary (optional) *@
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label small text-muted">Parent Account Id</label>
-                    <input type="text" class="form-control-plaintext" readonly value="@Model.ParentId" />
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted"> Parent Account Reference </label>
+                        <input type="text" class="form-control-plaintext" readonly value="@Model.ParentId" />
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = AccountingV2.placeholdercodetext ?? "Code", id = "code", maxlength = "50" })
+                            <label for="code">@AccountingV2.Code</label>
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class (e.g. Asset, Liability)", id = "class", maxlength = "50" })
+                            <label for="class">@AccountingV2.Class</label>
+                            @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-2 mt-2">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (English)", id = "nameEn", maxlength = "150" })
+                            <label for="nameEn">Account Name (English)</label>
+                            @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (Français)", id = "nameFr", maxlength = "150" })
+                            <label for="nameFr">Account Name (Français)</label>
+                            @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
+                            <label class="form-check-label fw-bold ms-2" for="isActive">Is active</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "postingAllowed" })
+                            <label class="form-check-label fw-bold ms-2" for="postingAllowed">@AccountingV2.PostingAllowed</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"), "--- " + "HoPcmfAccountId" + " ---",
+                                new { @class = "form-select select2", @aria_label = "HoPcmfAccountId" }
+                            )
+                            @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                            <label>HoPcmfAccountId</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.AffiliateId, new SelectList(ViewBag.Affiliates, "Id", "Name"), "--- " + "Select Affiliate" + " ---", new { @class = "form-select select2", @aria_label = "Affiliate" })
+                            @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
+                            <label>AffiliateId</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-end">
+                    @if (string.IsNullOrWhiteSpace(Model?.Id))
+                    {
+                        <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    }
                 </div>
             </div>
-
-            <div class="row g-2">
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = AccountingV2.placeholdercodetext ?? "Code", id = "code", maxlength = "50" })
-                        <label for="code">@AccountingV2.Code</label>
-                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class (e.g. Asset, Liability)", id = "class", maxlength = "50" })
-                        <label for="class">@AccountingV2.Class</label>
-                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-2 mt-2">
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (English)", id = "nameEn", maxlength = "150" })
-                        <label for="nameEn">@AccountingV2.Name</label>
-                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (Français)", id = "nameFr", maxlength = "150" })
-                        <label for="nameFr">Name (Français)</label>
-                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <hr />
-
-            <div class="row mb-3">
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label fw-bold ms-2" for="isActive">@AccountingV2.IsActive</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "postingAllowed" })
-                        <label class="form-check-label fw-bold ms-2" for="postingAllowed">@AccountingV2.PostingAllowed</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.AffiliateId, new SelectList(ViewBag.Affiliates, "Id", "Name"), "--- " + "Select Affiliate" + " ---",new { @class = "form-control select2", @aria_label = "Affiliate" })
-                        @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
-                        <label>AffiliateId</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"), "--- " + "HoPcmfAccountId" + " ---",
-                            new { @class = "form-control select2", @aria_label = "HoPcmfAccountId" }
-                        )
-                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                        <label>HoPcmfAccountId</label>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="text-end">
-                @if (string.IsNullOrWhiteSpace(Model?.Id))
-                {
-                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                }
-            </div>
-        </div>
         }
     </div>
-    </div>
+</div>
+

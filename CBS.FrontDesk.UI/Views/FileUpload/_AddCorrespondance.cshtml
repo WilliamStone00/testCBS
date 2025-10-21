@@ -1,0 +1,136 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.AddCORRESPONDANCE
+@using Resources
+
+<div class="modal-body">
+    @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <!-- If you still need AccountWaitingId from your original model, keep a hidden for it -->
+        @* Example: @Html.HiddenFor(m => m.AccountWaitingId) *@
+
+        <div class="mt-2">
+            <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
+                        <label for="Type">Correspondence Type</label>
+                        @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.CorrelationId, new { @class = "form-control", placeholder = "Correlation Id", id = "CorrelationId", maxlength = "50" })
+                        <label for="CorrelationId">Correlation Id</label>
+                        @Html.ValidationMessageFor(m => m.CorrelationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
+                        <label for="Rationale">Rationale</label>
+                        @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.RequestedByUserId, new { @class = "form-control", placeholder = "Requested by (User Id)", id = "RequestedByUserId", maxlength = "50" })
+                        <label for="RequestedByUserId">Requested By (User Id)</label>
+                        @Html.ValidationMessageFor(m => m.RequestedByUserId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.RequestedByName, new { @class = "form-control", placeholder = "Requested by (Name)", id = "RequestedByName", maxlength = "50" })
+                        <label for="RequestedByName">Requested By (Name)</label>
+                        @Html.ValidationMessageFor(m => m.RequestedByName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", placeholder = "Branch Id", id = "BranchId", maxlength = "50" })
+                        <label for="BranchId">Branch Id</label>
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.BranchAccountId, new { @class = "form-control", placeholder = "Branch Account Id", id = "BranchAccountId", maxlength = "50" })
+                        <label for="BranchAccountId">Branch Account Id</label>
+                        @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.AffiliateAccountId, new { @class = "form-control", placeholder = "Affiliate Account Id", id = "AffiliateAccountId", maxlength = "50" })
+                        <label for="AffiliateAccountId">Affiliate Account Id</label>
+                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.SourceAffiliateAccountId, new { @class = "form-control", placeholder = "Source Affiliate Account Id", id = "SourceAffiliateAccountId", maxlength = "50" })
+                        <label for="SourceAffiliateAccountId">Source Affiliate Account Id</label>
+                        @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.HoPcmfAccountId, new { @class = "form-control", placeholder = "HoPcmf Account Id", id = "HoPcmfAccountId", maxlength = "50" })
+                        <label for="HoPcmfAccountId">HoPcmf Account Id</label>
+                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Language", id = "Language", maxlength = "20" })
+                        <label for="Language">Language</label>
+                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="text-end">
+                @* Use CorrelationId presence to determine Save vs Update; change to whichever identifier your domain uses *@
+                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+

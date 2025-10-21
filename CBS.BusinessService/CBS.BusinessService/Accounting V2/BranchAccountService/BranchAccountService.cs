@@ -164,9 +164,217 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                 }
             }
 
+        //***************************************** MOCK *********************************************
+        public async Task<CustomDataTable> GetcategoryDataTableAsync2(BranchAccountQuery query)
+        {
+            // Simulate latency
+            await Task.Delay(10);
+
+            try
+            {
+                // --- SAMPLE IN-MEMORY DATA (based on the JSON you posted) ---
+                var seedDate = DateTime.UtcNow;
+                var all = new List<BRANCHTreeDto>
+        {
+            new BRANCHTreeDto
+            {
+                Id = "BR0011000000",
+                BranchId = "BR001",
+                Code = "1000000",
+                Name = "",
+                Class = "EQUITY",
+                AffiliateAccountId = "AFF-1000000",
+                AffiliateAccountName = "Affiliate GL 1000000",
+                ParentId = null,
+                Path = "/",
+                Depth = 0,
+                PostingAllowed = true,
+                CreatedDate = seedDate,
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            new BRANCHTreeDto
+            {
+                Id = "BR0021000000",
+                BranchId = "BR002",
+                Code = "1000000",
+                Name = "",
+                Class = "EQUITY",
+                AffiliateAccountId = "AFF-1000000",
+                AffiliateAccountName = "Affiliate GL 1000000",
+                ParentId = null,
+                Path = "/",
+                Depth = 0,
+                PostingAllowed = true,
+                CreatedDate = seedDate,
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            new BRANCHTreeDto
+            {
+                Id = "888628649802897",
+                BranchId = "BR001",
+                Code = "100000000000",
+                Name = "FULLY PAID SHARES",
+                Class = "EQUITY",
+                AffiliateAccountId = "010872885313163",
+                AffiliateAccountName = "FULLY PAID SHARES",
+                ParentId = null,
+                Path = "/10/00/00/00/00/00/",
+                Depth = 6,
+                PostingAllowed = true,
+                CreatedDate = DateTime.Parse("2025-10-21T11:56:41.6288479+01:00"),
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            new BRANCHTreeDto
+            {
+                Id = "744532399970759",
+                BranchId = "BR001",
+                Code = "113000000000",
+                Name = "GENERAL RESERVES",
+                Class = "EQUITY",
+                AffiliateAccountId = "122676332422043",
+                AffiliateAccountName = "GENERAL RESERVES",
+                ParentId = null,
+                Path = "/11/30/00/00/00/00/",
+                Depth = 6,
+                PostingAllowed = true,
+                CreatedDate = DateTime.Parse("2025-10-21T11:56:41.6291028+01:00"),
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            new BRANCHTreeDto
+            {
+                Id = "922161461361713",
+                BranchId = "BR001",
+                Code = "114000000000",
+                Name = "114000000000",
+                Class = "EQUITY",
+                AffiliateAccountId = null,
+                AffiliateAccountName = null,
+                ParentId = null,
+                Path = "/11/40/00/00/00/00/",
+                Depth = 6,
+                PostingAllowed = true,
+                CreatedDate = DateTime.Parse("2025-10-21T11:56:41.6291251+01:00"),
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            new BRANCHTreeDto
+            {
+                Id = "915531390038003",
+                BranchId = "BR001",
+                Code = "114000000110",
+                Name = "BUILDING CONTRIBUTION",
+                Class = "EQUITY",
+                AffiliateAccountId = "537589946130068",
+                AffiliateAccountName = "BUILDING CONTRIBUTION",
+                ParentId = "922161461361713",
+                Path = "/11/40/00/00/01/10/",
+                Depth = 6,
+                PostingAllowed = true,
+                CreatedDate = DateTime.Parse("2025-10-21T11:56:41.6293741+01:00"),
+                IsDeleted = false,
+                Children = new List<BRANCHTreeDto>()
+            },
+            // add as many mock items as needed...
+        };
+
+                // --- Filtering based on BranchAccountQuery (defensive checks) ---
+                var items = all.AsQueryable();
+
+                if (query != null)
+                {
+                    // Example fields - adjust names if your BranchAccountQuery uses different property names
+                    if (!string.IsNullOrWhiteSpace(query.BranchId))
+                        items = items.Where(x => string.Equals(x.BranchId ?? string.Empty, query.BranchId, StringComparison.OrdinalIgnoreCase));
+
+                    if (!string.IsNullOrWhiteSpace(query.Code))                      
+
+                    if (!string.IsNullOrWhiteSpace(query.Name))
+                        items = items.Where(x => ((x.Name ?? x.NameEn ?? x.AffiliateAccountName) ?? string.Empty).IndexOf(query.Name, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    if (!string.IsNullOrWhiteSpace(query.Class))
+                        items = items.Where(x => (x.Class ?? string.Empty).IndexOf(query.Class, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    if (!string.IsNullOrWhiteSpace(query.AffiliateAccountId))
+                        items = items.Where(x => string.Equals(x.AffiliateAccountId ?? string.Empty, query.AffiliateAccountId, StringComparison.OrdinalIgnoreCase));
+
+                    if (!string.IsNullOrWhiteSpace(query.ParentId))
+                        items = items.Where(x => string.Equals(x.ParentId ?? string.Empty, query.ParentId, StringComparison.OrdinalIgnoreCase));
+
+                    if (!string.IsNullOrWhiteSpace(query.PathContains))
+                        items = items.Where(x => (x.Path ?? string.Empty).IndexOf(query.PathContains, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    if (query.DepthFrom.HasValue)
+                        items = items.Where(x => x.Depth >= query.DepthFrom.Value);
+
+                    if (query.DepthTo.HasValue)
+                        items = items.Where(x => x.Depth <= query.DepthTo.Value);
+
+                    if (query.PostingAllowed.HasValue)
+                        items = items.Where(x => x.PostingAllowed == query.PostingAllowed.Value);
+
+                    
+                }
+                else
+                {
+                    // if query null, exclude deleted by default
+                    items = items.Where(x => !x.IsDeleted);
+                }
+
+                // Global search coming from DataTable options (if provided)
+                var opts = query?.Options;
+                var globalSearch = opts?.searchValue?.ToString()?.Trim();
+                if (!string.IsNullOrWhiteSpace(globalSearch))
+                {
+                    var s = globalSearch.ToLowerInvariant();
+                    items = items.Where(x =>
+                        ((x.Code ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.Name ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.NameEn ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.AffiliateAccountName ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.AffiliateAccountId ?? string.Empty).ToLowerInvariant().Contains(s))
+                    );
+                }
+
+                // Sorting: default CreatedDate desc
+                items = items.OrderByDescending(x => x.CreatedDate);
+
+                var total = all.Count;
+                var filteredCount = items.Count();
+
+                // Paging (DataTables style)
+                var start = opts?.start ?? 0;
+                var length = opts?.length ?? 10;
+                if (start < 0) start = 0;
+                if (length <= 0) length = 10;
+
+                var page = items.Skip(start).Take(length).ToList();
+
+                // Build CustomDataTable result
+                var result = new CustomDataTable
+                {
+                    draw = Convert.ToInt32(opts?.draw ?? "1"),
+                    recordsTotal = total,
+                    recordsFiltered = filteredCount,
+                    data = page
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Bubble up to caller - controller will catch and return DataTables-safe response.
+                throw new Exception($"Mock GetcategoryDataTableAsync failed: {ex.Message}", ex);
+            }
+        }
+
+        //***************************************** END MOCK *********************************************
 
 
-            public async Task<ExecutionMessages> CreateAsync(BranchAccountCommand model)
+        public async Task<ExecutionMessages> CreateAsync(BranchAccountCommand model)
             {
                 try
                 {

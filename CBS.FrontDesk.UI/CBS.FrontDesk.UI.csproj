@@ -2015,6 +2015,7 @@
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
@@ -10756,6 +10757,21 @@
     <Content Include="Views\AffiliateAccount\_CreateAffiliate.cshtml" />
     <Content Include="Views\BranchAccount\List.cshtml" />
     <Content Include="Views\BranchAccount\_Data.cshtml" />
+    <Content Include="Views\FileUpload\Index.cshtml" />
+    <Content Include="Views\FileUpload\List.cshtml" />
+    <Content Include="Views\FileUpload\_Data.cshtml" />
+    <Content Include="Views\FileUpload\_Details.cshtml" />
+    <Content Include="Views\FileUpload\_AddCorrespondance.cshtml" />
+    <Content Include="Views\FileUpload\_UpdateCorrespondance.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\List.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_Data.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_DetailsPartial.cshtml" />
+    <Content Include="Views\ChartOfAccountV2\_EditPartial.cshtml" />
+    <Content Include="Views\BranchAccount\_DetailsPartial.cshtml" />
+    <Content Include="Views\BranchAccount\_EditPartial.cshtml" />
+    <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

@@ -125,219 +125,336 @@
     @Html.Partial("_Data")
 </div>
 
-@section Scripts {
-    <script>
-        (function () {
-            const ajaxUrl = '@Url.Action("LoadAffiliateData", "Affiliate")';
+    @section Scripts {
+        <script>
+            (function () {
+                // Config
+                const ajaxLoadUrl = '/ChartOfAccountV2/LoadData';           // server action that accepts COADATATABLE_Query
+                const ajaxInitializeUrl = '/ChartOfAccountV2/InitializeData'; // action that returns partials
 
-            var affiliateTable = null;
+                var affiliateTable = null;
 
-            function emptyToNull(v) {
-                return (v === undefined || v === null || v === '') ? null : v;
-            }
-
-            function collectAffiliateFilters() {
-                var isActiveVal = $('#isActive').val();
-                var isActive = isActiveVal === '' ? null : (isActiveVal === 'true');
-
-                return {
-                    Code: emptyToNull($('#code').val()),
-                    Name: emptyToNull($('#name').val()),
-                    IsActive: isActive,
-                    IncludeDeleted: $('#includeDeleted').is(':checked'),
-                    CreatedFromUtc: emptyToNull($('#createdFromUtc').val()),
-                    CreatedToUtc: emptyToNull($('#createdToUtc').val())
-                };
-            }
-
-            // Initialize or reload DataTable
-            function loadAffiliateData() {
-                if (affiliateTable) {
-                    affiliateTable.destroy();
+                // utility
+                function emptyToNull(v) {
+                    return (v === undefined || v === null || v === '') ? null : v;
+                }
+                function escapeHtml(str) {
+                    if (!str && str !== 0) return '';
+                    return String(str)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
                 }
 
-                affiliateTable = $('#myDataTable').DataTable({
-                    serverSide: true,
-                     destroy: true,
-                    searching: false,
-                    responsive: true,
-                    order: [[0, 'desc']],
-                    ajax: {
-                        url: ajaxUrl,
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: function (d) {
-                            var filters = collectAffiliateFilters();
+                // Build server-side COADATATABLE_Query payload
+                function collectAffiliateFilters(dtOptions) {
+                    // dtOptions is the DataTables request object (d) - optional
+                    var opts = dtOptions || { draw: 0, start: 0, length: 10 };
 
-                            // Create the payload that matches your controller's expected model
-                            var payload = {
-                                Code: filters.Code,
-                                Name: filters.Name,
-                                IsActive: filters.IsActive,
-                                IncludeDeleted: filters.IncludeDeleted,
-                                CreatedFromUtc: filters.CreatedFromUtc,
-                                CreatedToUtc: filters.CreatedToUtc,
-                                Draw: d.draw,
-                                Start: d.start,
-                                Length: d.length,
-                                SearchValue: d.search.value,
-                                SortColumnName: d.columns[d.order[0].column].data,
-                                SortColumnDirection: d.order[0].dir
-                            };
+                    return {
+                        Code: emptyToNull($('#code').val() || $('#Code').val()),
+                        Name: emptyToNull($('#name').val() || $('#Name').val()),
+                        Class: emptyToNull($('#Class').val()),
+                        ParentId: emptyToNull($('#ParentId').val()),
+                        PathContains: emptyToNull($('#PathContains').val()),
+                        DepthFrom: ($('#DepthFrom').val() === '' ? null : parseInt($('#DepthFrom').val(), 10)),
+                        DepthTo: ($('#DepthTo').val() === '' ? null : parseInt($('#DepthTo').val(), 10)),
+                        PostingAllowed: (function () {
+                            var v = ($('#PostingAllowed').length ? $('#PostingAllowed').val() : $('#isActive').val());
+                            if (v === undefined || v === '') return null;
+                            if (v === 'true' || v === true) return true;
+                            if (v === 'false' || v === false) return false;
+                            return null;
+                        })(),
+                        CreatedFromUtc: emptyToNull($('#createdFromUtc').val() || $('#CreatedFromUtc').val()),
+                        CreatedToUtc: emptyToNull($('#createdToUtc').val() || $('#CreatedToUtc').val()),
+                        IncludeDeleted: $('#includeDeleted').is(':checked') === true
+                    };
+                }
 
-                            console.log('Sending payload:', payload); // Debug log
-                            return JSON.stringify(payload);
-                        },
-                        dataSrc: function (json) {
-                            console.log('Received response:', json); // Debug log
+                function initAffiliateDataTableIfNeeded() {
+                    // if already initialized, do nothing
+                    if ($.fn.DataTable.isDataTable('#myDataTable') && affiliateTable) return;
 
-                            if (json && json.data) {
-                                json.recordsTotal = json.recordsTotal;
-                                json.recordsFiltered = json.recordsFiltered;
-                                return json.data;
-                            }
-                            return [];
-                        },
-                        error: function (xhr, error, thrown) {
-                            console.error('AJAX Error:', error, thrown);
-                            alert('Failed to load affiliate data. Please check console for details.');
-                        }
-                    },
-                    columns: [
-                        {
-                            data: 'CreatedDate',
-                            name: 'CreatedDate',
-                            render: function (data, type) {
-                                if (type === 'display' || type === 'filter') {
-                                    return data ? new Date(data).toLocaleDateString() : '';
-                                }
-                                return data;
-                            }
-                        },
-                        { data: 'Code', name: 'Code' },
-                        { data: 'Name', name: 'Name' },
-                        {
-                            data: 'IsActive',
-                            name: 'IsActive',
-                            className: 'text-center',
-                            orderable: true,
-                            render: function (data) {
-                                return data
-                                    ? '<span class="badge bg-success">Active</span>'
-                                    : '<span class="badge bg-secondary">Inactive</span>';
-                            }
-                        },
-                        {
-                            data: 'IsHeadOffice',
-                            name: 'IsHeadOffice',
-                            className: 'text-center',
-                            render: function (data) {
-                                return data
-                                    ? '<span class="badge bg-info">Head Office</span>'
-                                    : '<span class="badge bg-light text-dark">Branch</span>';
-                            }
-                        },
-                        {
-                            data: 'IsDeleted',
-                            name: 'IsDeleted',
-                            className: 'text-center',
-                            render: function (data) {
-                                return data ? '<span class="badge bg-danger">Deleted</span>' : '<span class="badge bg-success">Live</span>';
-                            }
-                        },
-                        {
-                            data: 'ModifiedDate',
-                            name: 'ModifiedDate',
-                            render: function (data, type) {
-                                if (type === 'display' || type === 'filter') {
-                                    return data ? new Date(data).toLocaleDateString() : '';
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            data: 'Id',
-                            orderable: false,
-                            searchable: false,
-                            className: 'text-center',
-                          render: function (id, type, row) {
-                                        // row.Id and row.Name assumed to exist
-                                        var recId = row.Id || '';
-                                        var name = (row.Name || '').replace(/'/g, "\\'"); // escape single quotes for titles
-
-                                        return `
-                                            <div style="width:100%; display:flex; justify-content:center; gap:.5rem;">
-                                                <a href="#"
-                                                   onclick="AddORUpdateGen('${recId}', 'datalistingview', '_CreateAffiliate', 'get', 'Affiliate')"
-                                                   class="btn btn-sm btn-outline-primary"
-                                                   data-toggle="tooltip"
-                                                   title="Edit ${name}">Edit</a>
-
-                                                <a href="#"
-                                                   onclick="DeleteRecordDataTable('Affiliate', '${recId}', 'myDataTable', '_Data', 0, 'datalistingview', null, 'list')"
-                                                   class="btn btn-sm btn-outline-danger"
-                                                   data-toggle="tooltip"
-                                                   title="Delete ${name}">Delete</a>
-                                            </div>
-                             `;
-                           }
-                        }
-                    ],
-                    language: {
-                        emptyTable: 'No affiliates found'
+                    // ensure element exists
+                    if (!$('#myDataTable').length) {
+                        if (typeof appalert === 'function') appalert('Table element #myDataTable not found', 0, 1);
+                        console.warn('#myDataTable missing');
+                        return;
                     }
-                });
-            }
 
-            // Wire Apply / Reset buttons
-            $('#applyAffiliateFilterBtn').on('click', function () {
-                if (affiliateTable) {
-                    affiliateTable.ajax.reload();
-                } else {
-                    loadAffiliateData();
-                }
-            });
+                    affiliateTable = $('#myDataTable').DataTable({
+                        serverSide: true,
+                        searching: false,
+                        responsive: true,
+                        destroy: false,
+                        order: [[0, 'desc']],
+                        ajax: {
+                            url: ajaxLoadUrl,
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: function (d) {
+                                // collect filters and attach datatable options
+                                const payload = collectAffiliateFilters(d);
+                                return JSON.stringify(payload);
+                            },
+                            dataSrc: function (json) {
+                                // DataTables expects { draw, recordsTotal, recordsFiltered, data }
+                                if (!json) return [];
+                                // keep defensive defaults
+                                json.recordsTotal = Number(json.recordsTotal || 0);
+                                json.recordsFiltered = Number(json.recordsFiltered || json.recordsTotal || 0);
+                                return Array.isArray(json.data) ? json.data : [];
+                            },
+                            error: function (xhr, status, err) {
+                                var msg = 'Failed to load data. Please try again.';
+                                try { msg = xhr.responseJSON?.message || msg; } catch (e) { }
+                                if (typeof appalert === 'function') appalert(msg, 0, 1);
+                                console.error('Affiliate load error', xhr, status, err);
+                            }
+                        },
+                        columns: [
+                            {
+                                data: 'CreatedDate',
+                                name: 'CreatedDate',
+                                render: function (data, type) {
+                                    if (type === 'display' || type === 'filter') {
+                                        if (!data) return '-';
+                                        try {
+                                            // Use moment if available
+                                            if (window.moment) return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                                            return new Date(data).toLocaleString();
+                                        } catch (e) { return data; }
+                                    }
+                                    return data;
+                                }
+                            },
+                            { data: 'Code', name: 'Code', defaultContent: '-' },
+                            { data: 'NameEn', name: 'NameEn', defaultContent: '-' },
+                            { data: 'Class', name: 'Class', defaultContent: '-' },
+                            { data: 'ParentId', name: 'ParentId', defaultContent: '-' },
+                            { data: 'Path', name: 'Path', defaultContent: '-' },
+                            {
+                                data: 'Id',
+                                orderable: false,
+                                searchable: false,
+                                className: 'text-center',
+                                render: function (data, type, row) {
+                                    var rawId = String(row.Id || row.id || data || '');
+                                    var recordId = encodeURIComponent(rawId);
+                                    var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                    var btnId = 'actionDropdown_' + safeId;
 
-            $('#resetAffiliateFilterBtn').on('click', function () {
-                // Reset form
-                document.getElementById('affiliateFilterForm').reset();
+                                    var name = escapeHtml(row.NameEn || row.Name || '');
+                                    var isDeleted = row.IsDeleted === true || row.isDeleted === 1 || row.isDeleted === 'true';
 
-                // Hide created date filters
-                $('#createdDateFilters').addClass('d-none');
-                $('#toggleCreatedDates').prop('checked', false);
+                                    var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button>`;
+                                    var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit</button>` : '';
+                                    var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button>` : '';
 
-                // Reload table with reset filters
-                if (affiliateTable) {
-                    affiliateTable.ajax.reload();
-                }
-            });
-
-            // Delegated action handlers
-            $(document).on('click', '.edit-affiliate', function (e) {
-                e.preventDefault();
-                const id = $(this).data('id');
-                window.location = '@Url.Action("Edit", "Affiliate")/' + id;
-            });
-
-            $(document).on('click', '.delete-affiliate', function (e) {
-                e.preventDefault();
-                const id = $(this).data('id');
-                if (!confirm('Are you sure you want to delete this affiliate?')) return;
-
-                $.post('@Url.Action("Delete", "Affiliate")/' + id)
-                    .done(function() {
-                        if (affiliateTable) affiliateTable.ajax.reload();
-                    })
-                    .fail(function(err) {
-                        console.error(err);
-                        alert('Failed to delete affiliate.');
+                                    return `
+                                            <div class="dropdown text-center">
+                                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                    <li>${detailsBtn}</li>
+                                                    ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                    ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                                                    ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
+                                                </ul>
+                                            </div>
+                                        `.trim();
+                                }
+                            }
+                        ],
+                        lengthMenu: [10, 25, 50],
+                        pageLength: 10,
+                        language: { emptyTable: 'No affiliate records found' },
+                        initComplete: function () {
+                            // initialize tooltips if present
+                            try {
+                                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                        new bootstrap.Tooltip(el);
+                                    });
+                                }
+                            } catch (e) { /* ignore */ }
+                        }
                     });
-            });
+                }
 
-            // Auto-load on page load
-            $(document).ready(function () {
-                loadAffiliateData();
-            });
-        })();
-    </script>
-}
+                // load table (initializes if needed)
+                function loadAffiliateData() {
+                    initAffiliateDataTableIfNeeded();
+                    if (affiliateTable) affiliateTable.ajax.reload(null, false);
+                }
+
+                // reset filters
+                function resetAffiliateFilters() {
+                    var form = document.getElementById('affiliateFilterForm');
+                    if (form) form.reset();
+
+                    // hide created date filters if any toggle exists
+                    $('#createdDateFilters').addClass('d-none');
+                    $('#toggleCreatedDates').prop('checked', false);
+
+                    if (affiliateTable) affiliateTable.ajax.reload(null, false);
+                    else initAffiliateDataTableIfNeeded();
+
+                    if (typeof appalert === 'function') appalert('Filters reset', 3, 1);
+                }
+
+                // ---------- Modal focus helpers (avoid aria-hidden + focused descendant) ----------
+                function showModalAndFocus(modalEl) {
+                    if (!modalEl) return null;
+                    var bs = null;
+                    try { bs = new bootstrap.Modal(modalEl); } catch (e) { bs = null; }
+                    // show a11y safe: set spinner then show
+                    if (bs) bs.show();
+                    $(modalEl).off('shown.bs.modal.focusFix').on('shown.bs.modal.focusFix', function () {
+                        try {
+                            var focusTarget = modalEl.querySelector('.btn-close, .modal-footer .btn[data-bs-dismiss="modal"]');
+                            if (focusTarget) {
+                                focusTarget.focus();
+                            } else {
+                                var dialog = modalEl.querySelector('.modal-dialog');
+                                if (dialog) { dialog.setAttribute('tabindex', '-1'); dialog.focus(); }
+                            }
+                        } catch (err) { /* ignore */ }
+                    });
+                    $(modalEl).off('hide.bs.modal.blurFix').on('hide.bs.modal.blurFix', function () {
+                        try {
+                            var active = document.activeElement;
+                            if (modalEl.contains(active)) active.blur();
+                        } catch (err) { /* ignore */ }
+                    });
+                    return bs;
+                }
+
+                // ---------- Delegated actions: details / edit / delete ----------
+                $(document).on('click', '#applyAffiliateFilterBtn', function (e) {
+                    e.preventDefault();
+                    // initialize + load
+                    loadAffiliateData();
+                });
+
+                $(document).on('click', '#resetAffiliateFilterBtn', function (e) {
+                    e.preventDefault();
+                    resetAffiliateFilters();
+                });
+
+                // Details
+                $(document).on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) { if (typeof appalert === 'function') appalert('Missing id for details', 0, 1); return; }
+
+                    var modalEl = document.getElementById('affiliateDetailsModal');
+                    if (!modalEl) { if (typeof appalert === 'function') appalert('Details modal not found', 0, 1); return; }
+
+                    // spinner and show modal
+                    $('#affiliateDetailsModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>');
+                    var bs = showModalAndFocus(modalEl);
+
+                    // call InitializeData -> controller will return the partial (ensure it returns the correct model for partial)
+                    $.get(ajaxInitializeUrl, {
+                        KEY: id,
+                        partialView: '_DetailsPartial',
+                        path: 'get'
+                    })
+                        .done(function (html) {
+                            $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+                            try {
+                                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                    document.querySelectorAll('#affiliateDetailsModal [data-bs-toggle="tooltip"]').forEach(function (el) {
+                                        new bootstrap.Tooltip(el);
+                                    });
+                                }
+                            } catch (e) { /* ignore */ }
+                        })
+                        .fail(function (xhr) {
+                            $('#affiliateDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                            if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
+                            console.error('Details load failed', xhr);
+                        });
+                });
+
+                // Edit
+                $(document).on('click', '.btn-edit', function (e) {
+                    e.preventDefault();
+
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) { if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1); return; }
+
+                    // If you have AddORUpdateGen helper (client-side partial loader), prefer it:
+                    if (typeof AddORUpdateGen === 'function') {
+                        // load edit partial into the listing container (or a specific container you use)
+                        AddORUpdateGen(id, 'affiliateListingView', '_EditPartial', 'get', 'ChartOfAccountV2');
+                        return;
+                    }
+
+                    // fallback: load into modal (same accessibility pattern)
+                    var modalEl = document.getElementById('affiliateEditModal');
+                    if (!modalEl) { if (typeof appalert === 'function') appalert('Edit modal not found', 0, 1); return; }
+
+                    $('#affiliateEditModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>');
+                    var bs = showModalAndFocus(modalEl);
+
+                    // request edit partial - ensure controller returns AddAffiliateAccountCommand model for _EditPartial
+                    $.get(ajaxInitializeUrl, {
+                        KEY: id,
+                        partialView: '_EditPartial',
+                        path: 'get'
+                    })
+                        .done(function (html) {
+                            $('#affiliateEditModal .modal-body').html(html || '<div class="text-center text-muted">No edit form available.</div>');
+                        })
+                        .fail(function (xhr) {
+                            $('#affiliateEditModal .modal-body').html('<div class="text-center text-danger">Error loading edit form</div>');
+                            if (typeof appalert === 'function') appalert('Failed to load edit form', 0, 1);
+                            console.error('Edit load failed', xhr);
+                        });
+                });
+
+                // Delete (example using DeleteRecordDataTable helper if present)
+                $(document).on('click', '.btn-delete', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) { if (typeof appalert === 'function') appalert('Missing id for delete', 0, 1); return; }
+
+                    if (typeof DeleteRecordDataTable === 'function') {
+                        DeleteRecordDataTable('ChartOfAccountV2', id, 'myDataTable', '_DataTable', 0, 'affiliateListingView', null, 'list');
+                        return;
+                    }
+
+                    if (!confirm('Are you sure you want to delete this record?')) return;
+
+                    $.post('/ChartOfAccountV2/Delete', { id: id })
+                        .done(function (res) {
+                            if (res && res.success) {
+                                if (affiliateTable) affiliateTable.ajax.reload(null, false);
+                                if (typeof appalert === 'function') appalert('Deleted', 3, 1);
+                            } else {
+                                if (typeof appalert === 'function') appalert(res?.message || 'Delete failed', 0, 1);
+                            }
+                        })
+                        .fail(function (xhr) {
+                            if (typeof appalert === 'function') appalert('Delete request failed', 0, 1);
+                            console.error('Delete failed', xhr);
+                        });
+                });
+
+                // Optional: automatically initialize table on page load if you want
+                // but per your earlier note, we load on Apply so we won't init here automatically.
+                // If you prefer auto-load on page load, uncomment:
+                // $(document).ready(function() { loadAffiliateData(); });
+
+            })();
+        </script>
+    }
