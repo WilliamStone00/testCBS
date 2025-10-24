@@ -876,6 +876,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfig.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2002,6 +2012,10 @@
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
+    <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
+    <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
+    <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -9302,6 +9316,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -10720,6 +10742,20 @@
     <Content Include="Views\ChequeClearance\List.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeBookDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeBookD.cshtml" />
+    <Content Include="Views\BranchCashConfig\Index.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Create.cshtml" />
+    <Content Include="Views\BranchCashConfig\_BranchCashConfigDataTable.cshtml" />
+    <Content Include="Views\BranchCashConfig\List.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Details.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\Index.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\_Data.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\_Create.cshtml" />
+    <Content Include="Views\LiaisonMapping\Index.cshtml" />
+    <Content Include="Views\LiaisonMapping\_LiaisonMappingForm.cshtml" />
+    <Content Include="Views\LiaisonMapping\_LiaisonMappingData.cshtml" />
+    <Content Include="Views\RoleGlResolution\Index.cshtml" />
+    <Content Include="Views\RoleGlResolution\_RoleGlResolutionData.cshtml" />
+    <Content Include="Views\RoleGlResolution\_RoleGlResolutionForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10745,6 +10781,7 @@
     <Folder Include="bin\zh\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />

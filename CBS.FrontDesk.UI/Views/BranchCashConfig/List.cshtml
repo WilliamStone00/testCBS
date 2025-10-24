@@ -1,0 +1,45 @@
+﻿@using Resources
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto>
+
+@{
+    ViewBag.Title = "Branch GL Mapping List";
+}
+
+<div class="card shadow-sm p-3" id="branchCashConfigTableContainer">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Branch Cash GL Mappings</h5>
+
+    <!-- Filters -->
+    <div class="row mb-3">
+        {{-- Row 1 --}}
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Branch</label>
+            @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Value", "Text"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchIdFilter" })
+        </div>
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Real-Time Posting</label>
+            {{-- Map to: RealTimeCashPosting (bool?) --}}
+            <select id="realTimePostingFilter" name="RealTimeCashPosting" class="form-control select2">
+                <option value="">--- All Statuses ---</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Cash In Hand Account</label>
+            {{-- Map to: CashInHandAccountId (string) --}}
+            <input type="text" id="cashInHandAccountFilter" name="CashInHandAccountId" class="form-control" placeholder="GL Account ID..." />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Vault Account</label>
+            {{-- Map to: VaultAccountId (string) --}}
+            <input type="text" id="vaultAccountFilter" name="VaultAccountId" class="form-control" placeholder="GL Account ID..." />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        {{-- Row 2 (for actions and potential secondary filters) --}}
+        <div class="col-md-12 d-flex justify-content-start">
+            <button id="applyBranchConfigFilterBtn" class="btn btn-primary me-2"><i class="mdi mdi-filter"></i> Apply Filter</button>
+            <a href="@Url.Action("Create", "BranchCashConfig")" class="btn btn-success"><i class="mdi mdi-plus-circle-outline"></i> New Configuration</a>
+        </div>
+    </div>

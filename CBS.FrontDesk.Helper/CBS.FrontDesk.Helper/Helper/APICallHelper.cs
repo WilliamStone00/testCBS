@@ -1396,7 +1396,34 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitLossRequest = "/api/v1/loss-requests";
 
 
-        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 
+
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+        //******************** BRANCH CASH CONFIG *********************************//
+
+        public static string GetAllBranchCashConfigs = "/api/v1/BranchCashConfig";
+        public static string GetBranchCashConfigById = "/api/v1/BranchCashConfig/{0}";
+        public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
+        public static string CreateBranchCashConfig = "/api/v1/BranchCashConfig";
+        public static string UpdateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string DeactivateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
+        public static string ValidateBranchConfig = "api/branchcashconfig/validate";
+
+
+        public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
+        public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
+        public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string GetLiaisonMappingsDataTable = "/api/v1/LiaisonMapping/datatable";
+
+        //************************************Role Gl Resolution Endpoints  ********************************************////
+
+        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string GetRoleGlResolutionsDataTable = "/api/v1/RoleGlResolution/datatable";
     }
 }

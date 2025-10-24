@@ -1,0 +1,73 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.RoleGlResolution.RoleGlResolutionModel
+@using Resources
+
+@using (Html.BeginForm("CreateOrUpdate", "RoleGlResolution", FormMethod.Post,
+    new { id = "roleGlResolutionForm", onsubmit = "return submitRoleGlResolutionForm(this);" }))
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.Scope, "Scope Level", new { @class = "form-label fw-bold" })
+            @Html.DropDownListFor(m => m.Scope,
+                new SelectList(ViewBag.Scopes, "Value", "Text"),
+                "--- Select Scope ---",
+                new
+                     {
+                    @class = "form-control select2",
+                    required = "required",
+                    data_placeholder = "Select Scope Level"
+                })
+            @Html.ValidationMessageFor(m => m.Scope, "", new { @class = "text-danger small" })
+            <small class="form-text text-muted">Determines the applicability level of this resolution</small>
+        </div>
+
+        <div class="col-md-6 mb-3" id="ScopeIdGroup" style="display: none;">
+            @Html.LabelFor(m => m.ScopeId, "Scope Reference", new { @class = "form-label fw-bold" })
+            <select id="BranchScopeId" name="ScopeId" class="form-control select2" data-placeholder="Select Scope Reference">
+                <option value="">--- Select Scope Reference ---</option>
+            </select>
+            @Html.ValidationMessageFor(m => m.ScopeId, "", new { @class = "text-danger small" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.RoleId, "Transaction Role", new { @class = "form-label fw-bold" })
+            <select id="RoleId" name="RoleId" class="form-control select2" required data-placeholder="Select Transaction Role">
+                <option value="">--- Select Role ---</option>
+            </select>
+            @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger small" })
+            <small class="form-text text-muted">The functional role in transaction processing</small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.BranchAccountId, "GL Account", new { @class = "form-label fw-bold" })
+            @Html.DropDownListFor(m => m.BranchAccountId,
+                Enumerable.Empty<SelectListItem>(),
+                "--- Select GL Account ---",
+                new
+                     {
+                    @class = "form-control select2",
+                    required = "required",
+                    data_placeholder = "Select GL Account"
+                })
+            @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger small" })
+            <small class="form-text text-muted">The GL account to use for this role</small>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="mdi mdi-content-save-check me-1"></i>
+                    @(string.IsNullOrEmpty(Model.Id) ? "Create Resolution" : "Update Resolution")
+                </button>
+            </div>
+        </div>
+    </div>
+}
