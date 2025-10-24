@@ -1386,17 +1386,52 @@ namespace CBS.FrontDesk.Helper
         //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
         //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
         //public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
-
-        public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
-        public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
-        public static string GetCheckbookDetails = "/api/v1/checkbook/{0}";
         public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
-        public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
-        public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
-        public static string SubmitLossRequest = "/api/v1/loss-requests";
+        //public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        //public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        //public static string SubmitLossRequest = "/api/v1/loss-requests";
+
+
+        //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
+        //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
+        //public static string GetCheckbookDetails = "/api/v1/checkbook/{0}";
+        //public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
+        //public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        //public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        //public static string SubmitLossRequest = "/api/v1/loss-requests";
+        public static string LossRequestDataTable = "api/lossmanagement/requests/datatable";
+        public static string ApproveLossRequest = "api/lossmanagement/requests/approve";
+        public static string RejectLossRequest = "api/lossmanagement/requests/reject";
+
+        public static string LossRequestDetails = "api/lossmanagement/requests/details";
+
 
 
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+
+        //-------------------Interbranch Configuration -----------------------------------//
+        public static string GetAllConfigurationManualEntry = "api/v1/InterBranchConfig";
+
+        public static string GetConfigurationManualEntryById = "api/v1/InterBranchConfig/get/{0}";
+
+        public const string UpdateConfigurationManualEntryById = "api/v1/InterBranchConfig/update/{0}";
+
+        //----------------------------_manualJournalEntry--------------------------------//
+
+        public static string GetAccountsByBranch = "/api/v1/BranchAccount/{branchId}/{lang}/tree";
+        public static string PostJournalEntry = "/api/v1/ManualEntries";
+        //---------------------------Journal Head--------------------------------------//
+
+
+        public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
+        public static string ApproveJournalEntry = "api/manualjournalentry/id";
+        public static string RejectJournalEntry = "api/manualjournalentry/post";
+        
+        public static string GetJournalEntryById = "api/WorkFlowTicket/workticketflow/{0}/{operationCode}";
+
+
+
+
 
     }
 }
