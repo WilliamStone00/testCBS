@@ -246,6 +246,9 @@
     <Compile Include="AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationService.cs" />
     <Compile Include="AccountingV2\LiaisonAccountConfiguration\MockLiaisonAccountConfiguration.cs" />
     <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
+    <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
+    <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />
+    <Compile Include="AccountingV2\ManualJournalEntry\ManualJournalEntryService.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />

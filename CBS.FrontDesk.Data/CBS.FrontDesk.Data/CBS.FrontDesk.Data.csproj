@@ -130,6 +130,8 @@
     <Compile Include="Entity\Accounting\FinancialDocumentReference.cs" />
     <Compile Include="Entity\Accounting\Enumeration.cs" />
     <Compile Include="Entity\Accounting\TrialBalanceDt.cs" />
+    <Compile Include="Entity\AccountongV2\ConfigurationManualEntries.cs" />
+    <Compile Include="Entity\AccountongV2\JournalEntry.cs" />
     <Compile Include="Entity\AccountOpeningRulePerBranchP\AccountOpeningRulePerBranch.cs" />
     <Compile Include="Entity\AndriodApp\AndriodVersionConfiguration.cs" />
     <Compile Include="Entity\AuditTralP\AuditTrailDto.cs" />
