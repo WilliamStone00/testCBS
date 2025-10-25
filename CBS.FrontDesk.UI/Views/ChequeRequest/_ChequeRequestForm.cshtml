@@ -1,0 +1,213 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest.ChequeBookRequest
+@using Resources
+
+<div class="card shadow p-3 mb-4">
+    @using (Html.BeginForm("CreateOrUpdate", "ChequeRequest", FormMethod.Post, new { id = "chequeRequestForm", onsubmit = "return submitChequeRequestForm(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CustomerId, new { id = "formCustomerId" })
+        @Html.HiddenFor(m => m.CustomerName)
+        @Html.HiddenFor(m => m.BranchName)
+        @Html.HiddenFor(m => m.CheckBookCategoryName)
+
+        <!-- preserve client-side hook for customer name even if model doesn't have it -->
+        <input type="hidden" id="formCustomerName" name="CustomerName" value="@Model.CustomerName" />
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-primary mb-0">
+                <i class="mdi mdi-plus-circle-outline me-2"></i>
+                <span id="formTitle">Create Cheque Book Request</span>
+            </h5>
+        </div>
+
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pb-1 mb-3">
+                <i class="mdi mdi-account-outline me-2"></i> Client Info
+            </h6>
+        </div>
+
+        <div class="alert alert-info py-2 mb-4">
+            <i class="mdi mdi-account-outline me-2"></i>
+
+            <div class="row g-2">
+                <div class="col-auto">
+                    <span class="small text-muted">Customer Ref</span>
+                    <div class="fw-medium">@(!string.IsNullOrEmpty(Model.CustomerId) ? Model.CustomerId : "N/A")</div>
+                </div>
+                <div class="col-auto">
+                    <span class="small text-muted">Customer</span>
+                    <div class="fw-medium">@(!string.IsNullOrEmpty(Model.CustomerName) ? Model.CustomerName : "N/A")</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pb-1 mb-3">
+                <i class="mdi mdi-credit-card-outline me-1"></i> Branch
+            </h6>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label for="BranchId" class="form-label fw-bold">Branch</label>
+                @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+            </div>
+
+
+            <!-- Cheque Book Details -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pb-1 mb-3 mt-2">
+                    <i class="mdi mdi-credit-card-outline me-1"></i> Cheque Book Details
+                </h6>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Account for Cheque Book <small class="text-muted">(linked with check leave)</small></label>
+                @Html.DropDownListFor(m => m.CheckBookAccount, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "--- Select Accounts ---", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(m => m.CheckBookAccount, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Account for Fees</label>
+                @Html.DropDownListFor(m => m.SubscriptionPaymentAccount, new SelectList(ViewBag.CustomerAccounts, "Value", "Text"), "--- Select Accounts ---", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(m => m.SubscriptionPaymentAccount, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Cheque Book Category</label>
+                @Html.DropDownListFor(m => m.CheckBookCategoryId, new SelectList(ViewBag.Categories, "Id", "name"), "--- Select Category ---", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(m => m.CheckBookCategoryId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Number of Pages</label>
+                @Html.TextBoxFor(m => m.NumberOfPages, new { @class = "form-control", type = "number", min = "1", placeholder = "e.g. 50" })
+                @Html.ValidationMessageFor(m => m.NumberOfPages, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Base Price</label>
+                @Html.TextBoxFor(m => m.BasePrice, new { @class = "form-control", type = "number", step = "0.01", placeholder = "0.00" })
+                @Html.ValidationMessageFor(m => m.BasePrice, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Subscription Duration (months)</label>
+                @Html.TextBoxFor(m => m.SubscriptionDurationInMonths, new { @class = "form-control", type = "number", min = "0" })
+                @Html.ValidationMessageFor(m => m.SubscriptionDurationInMonths, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Recurring Amount (if recurring)</label>
+                @Html.TextBoxFor(m => m.RecurringAmount, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Optional" })
+                @Html.ValidationMessageFor(m => m.RecurringAmount, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Request Note</label>
+                @Html.TextAreaFor(m => m.RequestNote, new { @class = "form-control", rows = "3", placeholder = "Optional notes..." })
+            </div>
+
+            <!-- Notification & Other Options - compact two-column -->
+            <div class="col-12 mt-3">
+                <h6 class="text-primary border-bottom pb-1 mb-3">
+                    <i class="mdi mdi-bell-ring-outline me-1"></i> Notification Options
+                </h6>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.NotifyOnApproval, new { @class = "form-check-input", id = "NotifyOnApproval" })
+                            <label class="form-check-label fw-medium" for="NotifyOnApproval">
+                                <i class="mdi mdi-check-circle-outline me-1 text-success"></i>Notify on Approval
+                            </label>
+                            @Html.ValidationMessageFor(m => m.NotifyOnApproval, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.NotifyOnRejection, new { @class = "form-check-input", id = "NotifyOnRejection" })
+                            <label class="form-check-label fw-medium" for="NotifyOnRejection">
+                                <i class="mdi mdi-close-circle-outline me-1 text-danger"></i>Notify on Rejection
+                            </label>
+                            @Html.ValidationMessageFor(m => m.NotifyOnRejection, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.NotifyOnClearance, new { @class = "form-check-input", id = "NotifyOnClearance" })
+                            <label class="form-check-label fw-medium" for="NotifyOnClearance">
+                                <i class="mdi mdi-shield-check-outline me-1 text-info"></i>Notify on Cheque Clearance
+                            </label>
+                            @Html.ValidationMessageFor(m => m.NotifyOnClearance, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.NotifyOnPayment, new { @class = "form-check-input", id = "NotifyOnPayment" })
+                            <label class="form-check-label fw-medium" for="NotifyOnPayment">
+                                <i class="mdi mdi-cash-check me-1 text-warning"></i>Notify on Fee Payment
+                            </label>
+                            @Html.ValidationMessageFor(m => m.NotifyOnPayment, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.NotifyOnAnyTransaction, new { @class = "form-check-input", id = "NotifyOnAnyTransaction" })
+                            <label class="form-check-label fw-medium" for="NotifyOnAnyTransaction">
+                                <i class="mdi mdi-alert-circle-outline me-1 text-primary"></i>Notify on Any Transaction
+                            </label>
+                            @Html.ValidationMessageFor(m => m.NotifyOnAnyTransaction, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.SubscriptionAmount, new { @class = "form-check-input", id = "SubscriptionAmount" })
+                            <label class="form-check-label fw-medium" for="SubscriptionAmount">Subscription Amount Required</label>
+                            @Html.ValidationMessageFor(m => m.SubscriptionAmount, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.RecurentAmount, new { @class = "form-check-input", id = "RecurentAmount" })
+                            <label class="form-check-label fw-medium" for="RecurentAmount">Recurrent Amount</label>
+                            @Html.ValidationMessageFor(m => m.RecurentAmount, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            @Html.CheckBoxFor(m => m.IsRecurringSubscription, new { @class = "form-check-input", id = "IsRecurringSubscription" })
+                            <label class="form-check-label fw-medium" for="IsRecurringSubscription">Recurring Subscription</label>
+                        </div>
+                        <div class="form-check form-switch mb-0">
+                            @Html.CheckBoxFor(m => m.AutomaticRenewal, new { @class = "form-check-input", id = "AutomaticRenewalSmall" })
+                            <label class="form-check-label fw-medium" for="AutomaticRenewalSmall">Automatic Renewal</label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="alert alert-light mt-3">
+                    <small class="text-muted">
+                        <i class="mdi mdi-information-outline me-1"></i>
+                        Notification preferences will be applied to both the customer and relevant staff members.
+                        Automatic renewal will process cheque book requests automatically upon expiration.
+                    </small>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-12 text-end mt-4 pt-3 border-top">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="mdi mdi-send-check-outline me-1"></i>
+                    <span id="submitButtonText">Submit Request</span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary px-4" onclick="window.formManager.resetForm()">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+            </div>
+        </div>
+    }
+</div>

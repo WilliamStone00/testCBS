@@ -1,0 +1,161 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto
+@using Resources
+
+@{
+    var isEditMode = !string.IsNullOrEmpty(Model?.Id);
+    var formTitle = isEditMode ? "Edit GL Configuration for " + ViewBag.CurrentBranchName : "Create GL Configuration for " + ViewBag.CurrentBranchName;
+    var formTitle2 = isEditMode ? "Edit GL Configuration for " + ViewBag.CurrentBranchName : "Create GL Configuration for " + ViewBag.CurrentBranchName;
+}
+
+<div class="row mb-3">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+            <div class="accordion-item active">
+                <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOne">
+                    <button type="button"
+                            class="accordion-button text-primary"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-1"
+                            aria-expanded="true"
+                            aria-controls="accordionPopoutIcon-1">
+                        <i class="mdi mdi-bank-outline me-2"></i> @formTitle
+                    </button>
+                </h2>
+
+                <div id="accordionPopoutIcon-1" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                    <div class="accordion-body">
+
+                        <!-- Info Alert -->
+                        <div class="alert alert-info mb-4">
+                            <div class="d-flex align-items-center">
+                                <i class="mdi mdi-office-building me-2 mdi-24px"></i>
+                                <div>
+                                    <h6 class="alert-heading mb-1">Configuring for: @ViewBag.CurrentBranchName</h6>
+                                    <p class="mb-0">This configuration will apply to all cash operations for the selected branch.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FORM START -->
+                        <form asp-action="CreateOrUpdate" method="post" id="branchCashConfigForm">
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.Id)
+                            @Html.HiddenFor(m => m.BranchId)
+                            @Html.HiddenFor(m => m.RequestedBy)
+
+                            <!-- Primary Cash Configuration -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Cash in Hand Account <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.CashInHandAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Cash in Hand Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.CashInHandAccountId, "", new { @class = "text-danger small" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Vault Account <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.VaultAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Vault Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.VaultAccountId, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <!-- Surplus and Shortage -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Surplus Income Account <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.SurplusIncomeAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Surplus Income Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.SurplusIncomeAccountId, "", new { @class = "text-danger small" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Shortage Expense Account <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.ShortageExpenseAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Shortage Expense Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.ShortageExpenseAccountId, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <!-- Optional Accounts -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Revenue Account (Optional)</label>
+                                    @Html.DropDownListFor(m => m.RevenueAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Revenue Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Form Fee Income Account (Optional)</label>
+                                    @Html.DropDownListFor(m => m.FormFeeIncomeAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Form Fee Income Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <!-- Inter-Branch and Liaison Accounts -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Source Branch Commission Account</label>
+                                    @Html.DropDownListFor(m => m.SourceBranchAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Source Branch Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Destination Commission Branch Account</label>
+                                    @Html.DropDownListFor(m => m.DestinationBranchAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Destination Branch Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Head Office Commission Account</label>
+                                    @Html.DropDownListFor(m => m.HeadOfficeAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Head Office Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Partner Commission Account</label>
+                                    @Html.DropDownListFor(m => m.PartnerAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Partner Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Camccul Commission Account</label>
+                                    @Html.DropDownListFor(m => m.CamcculAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Camccul Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Head Office Commission Liaison Account</label>
+                                    @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.GLAccounts, "Id", "AccountName"), "-- Select Head Office Liaison Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <!-- Real-Time Posting -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold text-dark">Enable Real-Time Cash Posting?</label>
+                                    <div class="form-check form-switch mt-2">
+                                        @Html.CheckBoxFor(m => m.RealTimeCashPosting, new { @class = "form-check-input" })
+                                        <label class="form-check-label">Activate automatic posting during transactions</label>
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        When enabled, cash transactions post automatically to GL upon execution.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="mdi mdi-content-save-outline me-1"></i>
+                                    @(isEditMode ? "Update Configuration" : "Save Configuration")
+                                </button>
+
+                                <button type="reset" class="btn btn-outline-secondary">
+                                    <i class="mdi mdi-refresh me-1"></i> Reset
+                                </button>
+                            </div>
+
+                        </form>
+                        <!-- FORM END -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

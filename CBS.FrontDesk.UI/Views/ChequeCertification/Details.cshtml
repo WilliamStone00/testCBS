@@ -1,0 +1,149 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
+
+<style>
+    .section-header {
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 200px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="px-3 py-2">
+
+    <!-- 🔷 Cheque Certification Header -->
+    <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
+        <i class="mdi mdi-checkbook me-1"></i> Cheque Certification Details
+    </h5>
+
+    <!-- 🔷 Certification Information -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-certificate me-1"></i> Certification Information
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr>
+                <th class="bg-light" style="width: 220px;">Certification ID</th>
+                <td>@Model.ChequeCertificationID</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Member Reference</th>
+                <td>@Model.MemberReference</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Certification Status</th>
+                <td>
+                    @{
+                        var statusBadgeClass = "badge bg-secondary";
+                        switch (Model.CertificationStatus?.ToLower())
+                        {
+                            case "approved": statusBadgeClass = "badge bg-success"; break;
+                            case "rejected": statusBadgeClass = "badge bg-danger"; break;
+                            case "pending": statusBadgeClass = "badge bg-warning"; break;
+                            case "reviewed": statusBadgeClass = "badge bg-info"; break;
+                            default: statusBadgeClass = "badge bg-secondary"; break;
+                        }
+                    }
+                    <span class="@statusBadgeClass">@Model.CertificationStatus</span>
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-light">Created Date</th>
+                <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Cheque Details -->
+    <h6 class="fw-bold border-bottom text-primary">
+        <i class="mdi mdi-checkbook-outline me-1"></i> Cheque Details
+    </h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr>
+                <th class="bg-light" style="width: 220px;">Branch ID</th>
+                <td>@Model.BranchId</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Cheque Book ID</th>
+                <td>@Model.ChequeBookId</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Cheque Leaf ID</th>
+                <td>@Model.ChequeleafId</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Account Number</th>
+                <td>@Model.AccountNumber</td>
+            </tr>
+            <tr>
+                <th class="bg-light">Amount</th>
+                <td><strong>@Model.Amount.ToString("N2") FCFA</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 🔷 Description (if available) -->
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <h6 class="fw-bold border-bottom text-primary">
+            <i class="mdi mdi-text-box-outline me-1"></i> Description
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <tbody>
+                <tr>
+                    <th class="bg-light" style="width: 220px;">Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+</div>
+
+<!-- 🔷 Action Buttons (Optional - you can uncomment if needed) -->
+@*
+<div class="card-footer bg-light mt-3">
+    <div class="d-flex justify-content-between">
+        <button type="button" onclick="LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list')"
+                class="btn btn-secondary">
+            <i class="mdi mdi-arrow-left me-1"></i> Back to List
+        </button>
+        <div>
+            @if (Model.CertificationStatus?.ToLower() == "pending")
+            {
+                <button type="button" onclick="ReviewCertification('@Model.ChequeCertificationID')"
+                        class="btn btn-warning me-2">
+                    <i class="mdi mdi-file-search me-1"></i> Review
+                </button>
+            }
+
+            @if (Model.CertificationStatus?.ToLower() == "reviewed")
+            {
+                <button type="button" onclick="ValidateCertification('@Model.ChequeCertificationID')"
+                        class="btn btn-success me-2">
+                    <i class="mdi mdi-check-circle me-1"></i> Validate
+                </button>
+                <button type="button" onclick="RejectCertification('@Model.ChequeCertificationID')"
+                        class="btn btn-danger me-2">
+                    <i class="mdi mdi-close-circle me-1"></i> Reject
+                </button>
+            }
+        </div>
+    </div>
+</div>
+*@

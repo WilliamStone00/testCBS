@@ -227,10 +227,10 @@ namespace CBS.FrontDesk.UI.Controllers
 
             try
             {
-                var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                //var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-                var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
-                ViewBag.Accounts = CreditAccounts;
+                //var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
+                //ViewBag.Accounts = CreditAccounts;
                 ViewBag.BookingDirections = await GetBookingDirections();
                 ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
                 ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
@@ -251,10 +251,10 @@ namespace CBS.FrontDesk.UI.Controllers
         {
 
 
-            var listAccounts = await _AccountServices.GetAllAccounting();
+            //var listAccounts = await _AccountServices.GetAllAccounting();
 
-            var CreditAccounts = BuildMenuViewBag(listAccounts);
-            ViewBag.Accounts = CreditAccounts;
+            //var CreditAccounts = BuildMenuViewBag(listAccounts);
+            //ViewBag.Accounts = CreditAccounts;
             ViewBag.ListOfEligibleBranch = BuildBranchViewBag((await _branchService.GetBranches()).ToList());
             ViewBag.BookingDirections = await GetBookingDirections();
 
@@ -309,21 +309,13 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        public async Task<ActionResult> GetBranchAccount(string branchId)
         {
-            if (_AccountServices.IsHeadOffice())
-            {
-                var ListOfData = await _AccountServices.GetAllAccounting();
-                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+             
+                var ListOfData = await _AccountServices.GetAllBranchAccount(branchId);
+      
                 return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                //   var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
-                var ListOfData = await _AccountServices.GetAllAccounting();
-                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
-                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
-            }
+           
 
         }
         private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)
@@ -332,7 +324,7 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in ListOfData)
             {
 
-                list.Add(new StringValues { Text = $"{item.AccountNumberCU}-{item.AccountName}", Value = item.Id });
+                list.Add(new StringValues { Text = $"{item.AccountNumberNetwork}-{item.AccountName}", Value = item.Id });
 
             }
 
@@ -503,7 +495,7 @@ namespace CBS.FrontDesk.UI.Controllers
             foreach (var item in debitAccounts)
             {
 
-                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.TempData.PadRight(12,'0') + "-" + item.AccountName });
+                list.Add(new System.Web.WebPages.Html.SelectListItem { Text = item.Id, Value = item.AccountNumberNetwork.PadRight(12,'0') + "-" + item.AccountName });
 
             }
 
@@ -522,9 +514,19 @@ namespace CBS.FrontDesk.UI.Controllers
 
             try
             {
-                var AccountData = await _AccountServices.GetAccountWithAccountCartegorieStatus(accountId);
-                var data = new ManuallyJournalEntryDataSet { Account = AccountData };
-                return Json(data, JsonRequestBehavior.AllowGet);
+                var AccountData = await _AccountServices.GetAccount(accountId);
+                if (AccountData==null)
+                {
+                    return Json(AccountData, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    AccountData.AccountNumberCU = AccountData.AccountNumberNetwork;
+                    AccountData.TempData = AccountData.AccountNumberNetwork;
+                    var data = new ManuallyJournalEntryDataSet { Account = AccountData };
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+              
             }
             catch (Exception ex)
             {
@@ -649,8 +651,8 @@ namespace CBS.FrontDesk.UI.Controllers
 
                 if (results.AccountingRules.Remove(data))
                 {
-                    data.Id = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id; ;
-                    data.MFI_ChartOfAccountId = Modelreturn.Description + "-" + Modelreturn.AccountNumber + Modelreturn.PositionNumber + "-" + Modelreturn.Id;
+                    data.Id = Modelreturn.Description + "-" + Modelreturn.Old_AccountNumber + "-" + Modelreturn.Id; ;
+                    data.MFI_ChartOfAccountId = Modelreturn.Description + "-" + Modelreturn.Old_AccountNumber + "-" + Modelreturn.Id;
                     results.AccountingRules.Add(data);
                 }
                 this.HttpContext.Session["EventEntrySystemInfo" + _AccountServices.GetUserID()] = results;

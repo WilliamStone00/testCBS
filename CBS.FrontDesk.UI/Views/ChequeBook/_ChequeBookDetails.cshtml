@@ -1,0 +1,52 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Cheque Book Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+                <p><strong>Number of Leaves:</strong> @Model.NumberOfLeaves</p>
+                <p><strong>Status:</strong> @Model.Status</p>
+                <p><strong>Branch:</strong> @Model.BranchName</p>
+                <p><strong>Issue Date:</strong> @Model.IssueDate</p>
+                <p><strong>Expiry Date:</strong> @Model.ExpiryDate</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <h5>Cheque Leaves</h5>
+        <table id="chequeLeavesTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Leaf Number</th>
+                    <th>Status</th>
+                    <th>Issue Date</th>
+                    <th>Expiry Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var leaf in Model.Leaves)
+                {
+                    <tr>
+                        <td>@leaf.LeafNumber</td>
+                        <td>@leaf.Status</td>
+                        <td>@leaf.IssueDate.ToShortDateString()</td>
+                        <td>@leaf.ExpiryDate.ToShortDateString()</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="showLeafDetails('@leaf.Id')">Details</button>
+                            <button class="btn btn-warning btn-sm" onclick="markLeafAsUsed('@leaf.Id')">Mark as Used</button>
+                            <button class="btn btn-danger btn-sm" onclick="blockLeaf('@leaf.Id')">Block</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

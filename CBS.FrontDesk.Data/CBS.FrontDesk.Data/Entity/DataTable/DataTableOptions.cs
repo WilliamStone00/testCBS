@@ -11,18 +11,19 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
     public class DataTableOptions
     {
         public int start { get; set; }
-        public string draw { get; set; }
-        public int length { get; set; }
+        public string draw { get; set; } 
+        public int length { get; set; }  
         public string sortColumnName { get; set; } // Change type to int?
         public string sortColumnDirection { get; set; }
         public string searchValue { get; set; }
-        public int pageSize { get; set; } = 30000;
+        public int pageSize { get; set; } = 3000;
         public int skip { get; set; }
         public int recordsTotal { get; set; }
         public int recordsFiltered { get; set; }
         public string search { get; set; }
         public string sortDirection { get; set; }
     }
+
     public class CustomDataTable : ICustomDataTable
     {
         public int draw { get; set; }

@@ -114,45 +114,45 @@
             });
 
             // Enforce digits 0–7 only, max length 7 on DailySaverId
-            $('#DailySaverId').on('input', function () {
-                // keep only digits 0–7
-                let v = this.value.replace(/[^0-7]/g, '');
-                if (v.length > 7) {
-                    v = v.slice(0, 7);
-                    $('#DailySaverIdError').text('Daily saver account number must be exactly 7 digits (0–7). Extra digits were removed.');
-                } else {
-                    // clear message if back within bounds
-                    $('#DailySaverIdError').text('');
-                }
-                this.value = v;
-            });
+            //$('#DailySaverId').on('input', function () {
+            //    // keep only digits 0–7
+            //    let v = this.value.replace(/[^0-7]/g, '');
+            //    if (v.length > 7) {
+            //        v = v.slice(0, 7);
+            //        $('#DailySaverIdError').text('Daily saver account number must be exactly 7 digits (0–7). Extra digits were removed.');
+            //    } else {
+            //        // clear message if back within bounds
+            //        $('#DailySaverIdError').text('');
+            //    }
+            //    this.value = v;
+            //});
 
             // Final guard on submit
-            $('#memberForm').on('submit', function (e) {
-                const isExisting = $('#rbExisting').is(':checked');
-                if (!isExisting) {
-                    const val = ($('#DailySaverId').val() || '').trim();
-                    if (!/^[0-7]{7}$/.test(val)) {
-                        e.preventDefault();
-                        const len = val.length;
-                        $('#DailySaverIdError').text(
-                            len !== 7
-                                ? `Daily saver account number must be exactly 7 digits. You entered ${len} character(s).`
-                                : 'Only digits 0–7 are allowed (no 8 or 9).'
-                        );
-                        $('#DailySaverId').focus();
-                    }
-                } else {
-                    const cid = ($('#CustomerId').val() || '').trim();
-                    if (!/^\d{10}$/.test(cid)) {
-                        e.preventDefault();
-                        // Use the existing validation span next to CustomerId
-                        $('#CustomerId').closest('.form-floating').next('.text-danger')
-                            .text('CustomerId must be exactly 10 digits (0–9).');
-                        $('#CustomerId').focus();
-                    }
-                }
-            });
+            //$('#memberForm').on('submit', function (e) {
+            //    const isExisting = $('#rbExisting').is(':checked');
+            //    if (!isExisting) {
+            //        const val = ($('#DailySaverId').val() || '').trim();
+            //        if (!/^[0-7]{7}$/.test(val)) {
+            //            e.preventDefault();
+            //            const len = val.length;
+            //            $('#DailySaverIdError').text(
+            //                len !== 7
+            //                    ? `Daily saver account number must be exactly 7 digits. You entered ${len} character(s).`
+            //                    : 'Only digits 0–7 are allowed (no 8 or 9).'
+            //            );
+            //            $('#DailySaverId').focus();
+            //        }
+            //    } else {
+            //        const cid = ($('#CustomerId').val() || '').trim();
+            //        if (!/^\d{10}$/.test(cid)) {
+            //            e.preventDefault();
+            //            // Use the existing validation span next to CustomerId
+            //            $('#CustomerId').closest('.form-floating').next('.text-danger')
+            //                .text('CustomerId must be exactly 10 digits (0–9).');
+            //            $('#CustomerId').focus();
+            //        }
+            //    }
+            //});
 
             $('#rbNew, #rbExisting').on('change', toggleBlocks);
             toggleBlocks(); // initial

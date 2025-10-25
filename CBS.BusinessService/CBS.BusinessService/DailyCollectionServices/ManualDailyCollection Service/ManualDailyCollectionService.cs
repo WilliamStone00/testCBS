@@ -193,21 +193,21 @@
 //        // In ManualDailyCollectionService.cs
 
 //        /// <summary>
-//        /// Gets a list of uploaded files filtered by their processing status.
+//        /// Gets a list of uploaded files filtered by their processing Status.
 //        /// </summary>
-//        /// <param name="status">The status to filter by (e.g., "Pending", "Approved").</param>
-//        public async Task<IEnumerable<FileUploadSummary>> GetFilesByStatusAsync(string status)
+//        /// <param name="Status">The Status to filter by (e.g., "Pending", "Approved").</param>
+//        public async Task<IEnumerable<FileUploadSummary>> GetFilesByStatusAsync(string Status)
 //        {
 //            try
 //            {
-//                if (string.IsNullOrWhiteSpace(status))
+//                if (string.IsNullOrWhiteSpace(Status))
 //                {
-//                    // Return empty list if no status is provided
+//                    // Return empty list if no Status is provided
 //                    return Enumerable.Empty<FileUploadSummary>();
 //                }
 
-//                // Assumes your APICallHelper has a constant like: GetFilesByStatus = "api/files/status/{0}"
-//                string url = string.Format(APICallHelper.GetFilesByStatus, status);
+//                // Assumes your APICallHelper has a constant like: GetFilesByStatus = "api/files/Status/{0}"
+//                string url = string.Format(APICallHelper.GetFilesByStatus, Status);
 
 //                var response = await _apiHelper.GetAsync<ResponseObject<List<FileUploadSummary>>>(url);
 
@@ -290,12 +290,17 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
     {
         private readonly ApiCallerHelper _apiHelper;
         private readonly ApiCallerHelper _customerApiHelper;
+        private readonly ApiCallerHelper _ExtractedDetails;
+
 
 
         public ManualDailyCollectionService()
         {
             var baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
+
+            var ExtractedbaseUrl = ConfigurationManager.AppSettings["ExtractedDetailsBaseUrl"];
+            _ExtractedDetails = new ApiCallerHelper(ExtractedbaseUrl);
 
             var cusbaseurl = ConfigurationManager.AppSettings["CustomerBaseUrl"];
             _customerApiHelper = new ApiCallerHelper(cusbaseurl);
@@ -780,39 +785,86 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
         #endregion
         ////////// ***************************** get extracted details data trable ************************
 
+        //public async Task<CustomDataTable> GetManualEntryDetailsForDataTableAsync(GetManualEntryDailyCollectionDetailDataTableQuery query)
+        //{
+        //    try
+        //    {
+        //        var url = APICallHelper.GetManualEntryCollectorDetailsDataTable;
+        //        var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+
+        //        if (response.IsSuccess && response.ApiResponseData != null)
+        //        {
+        //            return response.ApiResponseData.Data;
+        //        }
+
+        //        return new CustomDataTable(
+        //            draw: Convert.ToInt32(query.Options.draw),
+        //            recordsTotal: 0,
+        //            recordsFiltered: 0,
+        //            data: new List<object>(),
+        //            dataTableOptions: query.Options
+        //        );
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return new CustomDataTable(
+        //            draw: Convert.ToInt32(query.Options.draw),
+        //            recordsTotal: 0,
+        //            recordsFiltered: 0,
+        //            data: new List<object>(),
+        //            dataTableOptions: query.Options
+        //        );
+        //    }
+        //}
+
+        /// <summary>
+        /// Gets a server-side processed and filtered list of ALL transaction details.
+        /// </summary>
+        /// <param name="query">The query object containing all filters and DataTable options.</param>
+        /// <returns>A CustomDataTable object ready for the controller to use.</returns>
         public async Task<CustomDataTable> GetManualEntryDetailsForDataTableAsync(GetManualEntryDailyCollectionDetailDataTableQuery query)
         {
             try
             {
-                var url = APICallHelper.GetManualEntryCollectorDetailsDataTable; 
-                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+                if (string.IsNullOrWhiteSpace(APICallHelper.GetManualEntryCollectorDetailsDataTable))
+                    throw new InvalidOperationException("API endpoint for GetManualEntryCollectorDetailsDataTable is not configured.");
 
-                if (response.IsSuccess && response.ApiResponseData != null)
+                var url = APICallHelper.GetManualEntryCollectorDetailsDataTable;
+
+                // Post query to API; API should return ResponseObject<CustomDataTable>
+                var response = await _ExtractedDetails.PostAsync<ResponseObject<CustomDataTable>>(url, query);
+
+                if (response != null && response.IsSuccess && response.ApiResponseData != null)
                 {
-                    return response.ApiResponseData.Data;
+                    return response.ApiResponseData.Data ?? new CustomDataTable(
+                        draw: Convert.ToInt32(query.Options?.draw ?? "1"),
+                        recordsTotal: 0,
+                        recordsFiltered: 0,
+                        data: new List<object>(),
+                        dataTableOptions: query.Options);
                 }
 
+                // If API returned non-success, return an empty structure with draw preserved
                 return new CustomDataTable(
-                    draw: Convert.ToInt32(query.Options.draw),
+                    draw: Convert.ToInt32(query.Options?.draw ?? "1"),
                     recordsTotal: 0,
                     recordsFiltered: 0,
                     data: new List<object>(),
-                    dataTableOptions: query.Options
-                );
+                    dataTableOptions: query.Options);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the exception: ex.Message / stacktrace
+                System.Diagnostics.Trace.TraceError("GetManualEntryDetailsForDataTableAsync error: " + ex);
+
+                // Return an empty table, preserving draw if present
                 return new CustomDataTable(
-                    draw: Convert.ToInt32(query.Options.draw),
+                    draw: Convert.ToInt32(query?.Options?.draw ?? "1"),
                     recordsTotal: 0,
                     recordsFiltered: 0,
                     data: new List<object>(),
-                    dataTableOptions: query.Options
-                );
+                    dataTableOptions: query?.Options);
             }
         }
-
-
-
     }
 }

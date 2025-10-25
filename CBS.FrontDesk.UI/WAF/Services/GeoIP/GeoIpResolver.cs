@@ -79,10 +79,17 @@ namespace CBS.FrontDesk.UI.WAF.Services.GeoIP
                     return geoData;
                 }
             }
+            catch (System.Net.WebException wex)
+            {
+                // SSL / TLS issues or network errors → return default response
+                System.Diagnostics.Debug.WriteLine($"⚠️ GeoIP SSL/Network lookup failed for {ip}: {wex.Message}");
+                return (ip, "Unknown", "", "", "", "", "SSLFailure");
+            }
             catch (Exception ex)
             {
+                // Any other unexpected error
                 System.Diagnostics.Debug.WriteLine($"⚠️ GeoIP lookup failed for {ip}: {ex.Message}");
-                return (ip, "Unknown", "", "", "", "", "");
+                return (ip, "Unknown", "", "", "", "", "Error");
             }
         }
 

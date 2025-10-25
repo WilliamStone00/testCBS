@@ -476,7 +476,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             {
                 ManualEntryDailyCollectorId = fileUploadId,
                 ApprovedBy = Session["FullName"]?.ToString(),
-                Mode = mode // "approve", "review", or "reject"
+                Mode = mode 
             };
             return PartialView("_ActionForm", model);
         }
@@ -519,13 +519,14 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> LoadDetailsDataTable(GetManualEntryDailyCollectionDetailDataTableQuery query)
-        {
-            var result = await _manualService.GetManualEntryDetailsForDataTableAsync(query);
-            return Json(result);
-        }     
+        //[HttpPost]
+        //public async Task<ActionResult> LoadDetailsDataTable(GetManualEntryDailyCollectionDetailDataTableQuery query)
+        //{
+        //    var result = await _manualService.GetManualEntryDetailsForDataTableAsync(query);
+        //    return Json(result);
+        //}     
 
+        
 
     }
 }

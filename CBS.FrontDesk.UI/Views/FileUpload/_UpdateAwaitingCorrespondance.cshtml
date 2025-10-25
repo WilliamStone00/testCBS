@@ -1,0 +1,204 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.Accountwaiting
+@using Resources
+
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Update Awaiting Correspondance
+        </h1>
+        <p class="card-text text-muted mb-1">
+            here we have the existing request and the possibility to update each of its fileds
+        </p>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+
+    <div class="modal-body">
+        @using (Html.BeginForm("CreateOrUpdate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+
+            <div class="row gy-3">
+                <div class="col-12">
+                    <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> </h6>
+                </div>
+
+                <!-- Scope -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Scope, new { @class = "form-control", placeholder = "Scope" })
+                        @Html.ValidationMessageFor(m => m.Scope, "", new { @class = "text-danger" })
+                        <label>Scope</label>
+                    </div>
+                </div>
+
+                <!-- BranchId (dropdown) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>Branch</label>
+                    </div>
+                </div>
+
+                <!-- AffiliateId (dropdown) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.AffiliateId, new SelectList(ViewBag.Affiliates ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Affiliate ---", new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
+                        <label>Affiliate</label>
+                    </div>
+                </div>
+
+                <!-- Code -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Code" })
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        <label>Code</label>
+                    </div>
+                </div>
+
+                <!-- Name (English) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (EN)" })
+                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                        <label>Name (EN)</label>
+                    </div>
+                </div>
+
+                <!-- Name (French) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (FR)" })
+                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                        <label>Name (FR)</label>
+                    </div>
+                </div>
+
+                <!-- Class -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class" })
+                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                        <label>Class</label>
+                    </div>
+                </div>
+
+                <!-- hoPcmfAccountId (dropdown) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select HO PCMF Account ---", new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                        <label>HO PCMF Account</label>
+                    </div>
+                </div>
+
+                <!-- affiliateToHoCorrespondenceId -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.AffiliateToHoCorrespondenceId, new { @class = "form-control", placeholder = "Affiliate To HO Correspondence Id" })
+                        @Html.ValidationMessageFor(m => m.AffiliateToHoCorrespondenceId, "", new { @class = "text-danger" })
+                        <label>Affiliate To HO Correspondence Id</label>
+                    </div>
+                </div>
+
+
+
+                <!-- AffiliateAccountId (dropdown) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.AffiliateAccountId, new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                        <label>Affiliate Account</label>
+                    </div>
+                </div>
+
+                <!-- BranchAccountId (dropdown) -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchAccountId, new SelectList(ViewBag.BranchAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "name"), "--- Select Branch Account ---", new { @class = "form-control select2" })
+                        @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                        <label>Branch Account</label>
+                    </div>
+                </div>
+
+                <!-- Path -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Path, new { @class = "form-control", placeholder = "Path" })
+                        @Html.ValidationMessageFor(m => m.Path, "", new { @class = "text-danger" })
+                        <label>Path</label>
+                    </div>
+                </div>
+
+                <!-- Depth -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", placeholder = "Depth", type = "number", step = "1", min = "0" })
+                        @Html.ValidationMessageFor(m => m.Depth, "", new { @class = "text-danger" })
+                        <label>Depth</label>
+                    </div>
+                </div>
+
+
+
+                <!-- Reason -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Reason, new { @class = "form-control", placeholder = "Reason" })
+                        @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger" })
+                        <label>Reason</label>
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Language" })
+                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                        <label>Language</label>
+                    </div>
+                </div>
+
+                <!-- requiresMapping (checkbox) -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check ps-2">
+                        @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input", id = "RequiresMapping" })
+                        <label class="form-check-label" for="RequiresMapping">Requires Mapping</label>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.RequiresMapping, "", new { @class = "text-danger ms-2" })
+                </div>
+
+                <!-- postingAllowed (checkbox) -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check ps-2">
+                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "PostingAllowed" })
+                        <label class="form-check-label" for="PostingAllowed">Posting Allowed</label>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.PostingAllowed, "", new { @class = "text-danger ms-2" })
+                </div>
+
+                <div class="col-12 text-end mt-3">
+                    @if (string.IsNullOrEmpty(Model?.Id))
+                    {
+                        <button type="submit" class="btn btn-primary shadow-sm px-4">
+                            <i class="fas fa-save me-1"></i> Create
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                            Reset
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <a href="@Url.Action("List", "FileUpload")" class="btn btn-outline-secondary">Back to List</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

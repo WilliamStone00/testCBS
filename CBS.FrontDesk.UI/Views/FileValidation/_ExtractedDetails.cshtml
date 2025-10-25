@@ -1,0 +1,224 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.ManualDailycollection.TransactionDetailDto>
+@using System.Globalization
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="text-primary"><i class="mdi mdi-file-document-outline me-1"></i> Manual Entry - File Details</h3>
+            <p class="text-muted mb-0">Review, filter and inspect the extracted manual daily collection rows below.</p>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-info small mb-0">
+                <strong>Tips:</strong>
+                <ul class="mb-0 ms-3">
+                    <li>Use the filters below to narrow results. Submit will call the server and re-render this partial.</li>
+                    <li>Click <em>Details</em> to open row-level information (controller action returns a partial view).</li>
+                    <li>Amounts display with two decimals; dates are shown in yyyy-MM-dd format.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters (one input per property = 16 filters) -->
+    <form method="get" class="card card-body mb-3" novalidate>
+        <div class="row gx-2 gy-2">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">memberBranchCode</label>
+                <input type="text" name="memberBranchCode" id="memberBranchCode" class="form-control"
+                       value="@(Request.QueryString["memberBranchCode"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">memberBranchId</label>
+                <input type="text" name="memberBranchId" id="memberBranchId" class="form-control"
+                       value="@(Request.QueryString["memberBranchId"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">memberBranchName</label>
+                <input type="text" name="memberBranchName" id="memberBranchName" class="form-control"
+                       value="@(Request.QueryString["memberBranchName"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">amount</label>
+                <input type="number" step="0.01" name="amount" id="amount" class="form-control"
+                       value="@(Request.QueryString["amount"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">memberName</label>
+                <input type="text" name="memberName" id="memberName" class="form-control"
+                       value="@(Request.QueryString["memberName"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">memberReference</label>
+                <input type="text" name="memberReference" id="memberReference" class="form-control"
+                       value="@(Request.QueryString["memberReference"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">accountNumber</label>
+                <input type="text" name="accountNumber" id="accountNumber" class="form-control"
+                       value="@(Request.QueryString["accountNumber"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">dailyCollectorName</label>
+                <input type="text" name="dailyCollectorName" id="dailyCollectorName" class="form-control"
+                       value="@(Request.QueryString["dailyCollectorName"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">uploadBy</label>
+                <input type="text" name="uploadBy" id="uploadBy" class="form-control"
+                       value="@(Request.QueryString["uploadBy"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">manualEntryDailyCollectorId</label>
+                <input type="text" name="manualEntryDailyCollectorId" id="manualEntryDailyCollectorId" class="form-control"
+                       value="@(Request.QueryString["manualEntryDailyCollectorId"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">processingStatus</label>
+                <input type="text" name="processingStatus" id="processingStatus" class="form-control"
+                       value="@(Request.QueryString["processingStatus"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">treatementStatus</label>
+                <input type="text" name="treatementStatus" id="treatementStatus" class="form-control"
+                       value="@(Request.QueryString["treatementStatus"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">treatementDate</label>
+                <input type="date" name="treatementDate" id="treatementDate" class="form-control"
+                       value="@(Request.QueryString["treatementDate"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">accountingDate</label>
+                <input type="date" name="accountingDate" id="accountingDate" class="form-control"
+                       value="@(Request.QueryString["accountingDate"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">startDate</label>
+                <input type="date" name="startDate" id="startDate" class="form-control"
+                       value="@(Request.QueryString["startDate"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">endDate</label>
+                <input type="date" name="endDate" id="endDate" class="form-control"
+                       value="@(Request.QueryString["endDate"] ?? String.Empty)" />
+            </div>
+
+            <div class="col-12 mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                <a class="btn btn-light border" href="@Url.Action(null)">Clear & Reload</a>
+                <div class="ms-auto text-muted align-self-center small">Showing @(Model?.Count() ?? 0) rows</div>
+            </div>
+        </div>
+    </form>
+
+
+    <!-- Results table -->
+    <div class="card">
+        <div class="card-body p-2">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mb-0" style="width:100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Member Ref</th>
+                            <th>Member Name</th>
+                            <th>Account Number</th>
+                            <th>Branch Name</th>
+                            <th class="text-end">Amount</th>
+                            <th>Collector</th>
+                            <th>Uploaded By</th>
+                            <th>Processing Status</th>
+                            <th>Treatement Status</th>
+                            <th>Treatement Date</th>
+                            <th>Accounting Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(item.memberReference ?? "-")</td>
+                                    <td>@(item.memberName ?? "-")</td>
+                                    <td>@(item.accountNumber ?? "-")</td>
+                                    <td>@(item.memberBranchName ?? "-")</td>
+                                    <td class="text-end">@String.Format(CultureInfo.InvariantCulture, "{0:N2}", item.amount)</td>
+                                    <td>@(item.dailyCollectorName ?? "-")</td>
+                                    <td>@(item.uploadBy ?? "-")</td>
+                                    <td>
+                                        @* Simple status badge (no JS) *@
+                                        @if (!string.IsNullOrWhiteSpace(item.processingStatus))
+                                        {
+                                            <span class="badge bg-secondary">@item.processingStatus</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(item.treatementStatus))
+                                        {
+                                            <span class="badge bg-secondary">@item.treatementStatus</span>
+                                        }
+                                        else
+                                        { <span class="text-muted small">-</span>}
+                                    </td>
+                                    <td>
+                                        @(item.treatementDate == default(DateTime) ? "-" : item.treatementDate.ToString("yyyy-MM-dd"))
+                                    </td>
+                                    <td>
+                                        @(item.accountingDate == default(DateTime) ? "-" : item.accountingDate.ToString("yyyy-MM-dd"))
+                                    </td>
+                                    <td>
+                                        @(item.startDate == default(DateTime) ? "-" : item.startDate.ToString("yyyy-MM-dd"))
+                                    </td>
+
+                                    <td>@(item.endDate == default(DateTime) ? "-" : item.endDate.ToString("yyyy-MM-dd"))</td>
+                                    <td>
+                                        @* Details link - controller should handle and return a partial view for that entry *@
+                                        <a class="btn btn-sm btn-outline-primary"
+                                           href="@Url.Action("GetFileDetailsById", "ManualDailyCollection", new { KEY = item.manualEntryDailyCollectorId })">
+                                            Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="14" class="text-center small text-muted">No records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

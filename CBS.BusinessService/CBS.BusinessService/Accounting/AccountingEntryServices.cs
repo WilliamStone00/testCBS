@@ -625,6 +625,32 @@ namespace CBS.BusinessService
                 throw (ex);
             }
         }
+        public async Task<AccountingEntryReportDto> GetAccountingEntriesDtoByReferceId(string reference)
+        {
+            try
+            {
+                string url = string.Format(APICallHelper.AccountingEntry_Report_reference_Id, reference);
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<AccountingEntryReportDto>>(url);
+                if (couApiResponse.IsSuccess)
+                {
+                    if (couApiResponse.ApiResponseData == null)
+                    {
+                        return new AccountingEntryReportDto();
+                    }
+                    else
+                    {
+                        return couApiResponse.ApiResponseData.Data;
+                    }
+
+                }
+                return new AccountingEntryReportDto();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw (ex);
+            }
+        }
         public async Task<List<AccountingEntry>> GetAllAccountingEntriesForAnAccountPerBranch(string branchId, string accountId)
         {
             try
@@ -1810,7 +1836,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                //Status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
                 string url = APICallHelper.Url_Get_AllCashRelenishmentRequest;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
                 var cusResponseObject = await _accountingApiCallerHelper.PostCashReplenishmentEntriesAsync<ResponseObject<List<CashReplenimentRequestDto>>>(url, model);
                 if (cusResponseObject.ApiResponseData != null)
@@ -1830,7 +1856,7 @@ namespace CBS.BusinessService
         {
             try
             {
-                //status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
+                //Status={0}&fromDate={1}&toDate={2}&branchId={3}&issuedBy={4}&approvedBy={5}
                 string url = APICallHelper.Url_Get_AllBankDepositeRequest;//, model.Status, model.FromDate,model.ToDate,model.BranchId,model.IssuedBy,model.ApprovedBy);
                 var cusResponseObject = await _accountingApiCallerHelper.PostDepositNotificationAsync<ApiResponse<List<DepositNotificationDto>>>(url, model);
                 if (cusResponseObject.ApiResponseData != null)
@@ -1844,6 +1870,23 @@ namespace CBS.BusinessService
                 // Log and handle exception
                 throw ex;
             }
+        }
+
+
+
+        public List<AccountingEntryDto> ConvertToAccountingEntryDto(List<AccountingEntry> collection)
+        {
+            List<AccountingEntryDto> listDto = new List<AccountingEntryDto>();
+            foreach (var item in collection)
+            {
+                listDto.Add(AccountingEntryDto.ConvertToEntity(item));
+            }
+            return listDto;
+        }
+
+        Task<List<AccountingEntry>> IAccountingEntryServices.GetAccountingEntriesByReferceId(string reference)
+        {
+            throw new NotImplementedException();
         }
     }
 

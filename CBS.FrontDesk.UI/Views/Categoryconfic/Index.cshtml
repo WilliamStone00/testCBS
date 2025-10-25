@@ -1,4 +1,4 @@
-﻿@{
+﻿n@{
     ViewBag.Title = "Cheque Management ";
 }
 @using Resources
@@ -10,13 +10,12 @@
                     <i class="mdi mdi-account-group me-2"></i> @ChequeManagements.header
                 </h1>
                 <p class="card-text">
-                    @*@GlobalUserManagement.ManageSystemUsersTrackRolesAndStatuses.*@
-                    Manage cheque categories Manage system users and apply filters to search by branch  details, user name.
+                    @ChequeManagements.headtextconf
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    @*@GlobalDailyCollectorManagement.ImportantText.*@
-                    Use filters like branch, and  to manage and audit user access effectively.
+                    @ChequeManagements.ImportantTextcat.
+                    
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -34,9 +33,9 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Branch:</strong> View Category by organizational branch. </li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalUserManagement.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
-                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>Make sure category was actually created if not create one first</strong> </li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@ChequeManagements.Branchtip:</strong>@ChequeManagements.Branchtiptext </li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@ChequeManagements.CreatedDate:</strong> @GlobalUserManagement.NarrowByRegistrationPeriod.</li>
+                <li><i class="mdi mdi-toggle-switch text-warning me-2"></i><strong>@ChequeManagements.tiptext</strong> </li>
                 <li><i class="mdi mdi-refresh text-info me-2"></i><strong>@GlobalUserManagement.Refresh:</strong> @GlobalUserManagement.EnsureDataIsUpToDate.</li>
             </ul>
         </div>
@@ -44,30 +43,194 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalUserManagement.AdvancedUserFilters</h5>
-   
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button" onclick=" LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-            </a>
-            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Categories','new','Categoryconfic')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-                <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
-            </a>
-        </div>
-    </div>
+    @*<h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalUserManagement.AdvancedUserFilters</h5>*@
+ 
 
     @Html.Partial("_model")
     <!-- DataTable Partial -->
-    <div id="datalistingview">
+    <div id="datalistingview1">
         @Html.Partial("_Categories")
     </div>
 </div>
 
 
-@*C:\Users\DELL\source\repos\final pull\CBS.FrontDesk.UI\Scripts\Js\Crud\ChequeManagement\Category.js*@
-
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
+
+@*<script src="~/Scripts/Js/Crud/ChequeManagement/CategoryConfig/Category.js"></script>*@
+
+<script>
+(function ($) {
+    'use strict';
+
+    // ---------- Utilities ----------
+    function normalizeResponse(raw) {
+        // Accept JSON object, JSON string, or HTML that contains JSON
+        if (!raw) return { success: false, message: 'Empty response' };
+        if (typeof raw === 'object') return raw;
+        if (typeof raw === 'string') {
+            var t = raw.trim();
+            try {
+                return JSON.parse(t);
+            } catch (e) {
+                // try to locate a JSON object inside HTML (very defensive)
+                var start = t.indexOf('{'), end = t.lastIndexOf('}');
+                if (start >= 0 && end > start) {
+                    try { return JSON.parse(t.substring(start, end + 1)); } catch (e2) { /* fallthrough */ }
+                }
+            }
+        }
+        return { success: false, message: 'Unexpected server response' };
+    }
+
+    function showMsg(msg, level) {
+        // 1=success, 2=warning, 3=info, 4=error
+        if (typeof appalert === 'function') appalert(msg || 'No message', level || 1, 1);
+        else if (level && level <= 2) console.log((level === 1 ? 'OK: ' : 'WARN: ') + (msg || ''));
+        else alert(msg || 'No message');
+    }
+
+    function getAntiForgeryToken() {
+        return $('input[name="__RequestVerificationToken"]').first().val() || null;
+    }
+
+    function reloadListing(response) {
+        // Try to keep current behavior (LoadDataGen preferred)
+        try {
+            if (typeof LoadDataGen === 'function') {
+                LoadDataGen(response.controller || response.controllerName || 'Categoryconfic',
+                            response.datatable || response.tableName || 'myDataTable',
+                            response.PartialView || response.dataLoaderActionName || '_CategoryDataTable',
+                            0,
+                            response.div || response.divLoaderList || 'datalistingview',
+                            null,
+                            response.path || 'list');
+                return;
+            }
+        } catch (e) {
+            console.warn('LoadDataGen call failed, falling back to partial reload', e);
+        }
+
+        // Fallback: load InitializeData partial (server supports it)
+        if ($('#datalistingview').length) {
+            $.get('/Categoryconfic/InitializeData', { path: 'list', partialView: '_Categories' })
+                .done(function (html) { $('#datalistingview').html(html); })
+                .fail(function () { location.reload(); });
+            return;
+        }
+
+        location.reload();
+    }
+
+    // ---------- Create/Update AJAX (form submit) ----------
+    window.categorySubmitAjax = function (form) {
+        try { $.validator.unobtrusive.parse(form); } catch (e) {}
+        var $form = $(form);
+        if ($form.length && !$form.valid()) return false;
+
+        var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+        var token = getAntiForgeryToken();
+        var $submit = $form.find('[type="submit"]').first();
+        var origHtml = $submit.data('orig-html') || $submit.html();
+        $submit.data('orig-html', origHtml);
+        $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+        var doAjax = function () {
+            var ajaxOptions = {
+                url: $form.attr('action'),
+                type: ($form.attr('method') || 'POST').toUpperCase(),
+                dataType: 'text', // defensive - we'll normalize
+                success: function (raw) {
+                    var res = normalizeResponse(raw);
+                    if (res && res.success) {
+                        var lvl = 1;
+                        if (res.status === 'Exist') lvl = 3;
+                        if (res.status === 'Failed') lvl = 2;
+                        showMsg(res.message || 'Operation successful', lvl);
+
+                        if (res.reloadDataView === "Yes" || res.reload === true) reloadListing(res);
+                    } else {
+                        var lvl = (res && res.status === 'Exist') ? 3 : 2;
+                        showMsg((res && res.message) ? res.message : 'Operation failed', lvl);
+                    }
+                },
+                error: function (xhr) {
+                    var parsed = normalizeResponse(xhr.responseText);
+                    if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
+                    else if (xhr.status === 401) window.location.href = '/Authentication/Login';
+                    else {
+                        showMsg(xhr.statusText || 'Network error', 4);
+                        console.error('categorySubmitAjax error', xhr.status, xhr.responseText);
+                    }
+                },
+                complete: function () {
+                    $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                }
+            };
+
+            if (isMultipart) {
+                ajaxOptions.data = new FormData(form);
+                ajaxOptions.processData = false;
+                ajaxOptions.contentType = false;
+                if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+            } else {
+                ajaxOptions.data = $form.serialize();
+                if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+            }
+
+            $.ajax(ajaxOptions);
+        };
+
+        // confirmation (prefer alertify if present)
+        if (window.alertify && typeof alertify.confirm === 'function') {
+            try {
+                alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
+            } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
+        } else {
+            if (confirm('Are you sure you want to perform this action?')) doAjax(); else showMsg('Transaction cancelled', 3);
+        }
+
+        return false; // prevent normal form submit
+    };
+
+    // Auto-bind forms that target CreateOrUpdate/Categoryconfic (keeps compatibility)
+    $(document).on('submit', 'form[action*="CreateOrUpdate"][action*="Categoryconfic"]', function (e) {
+        e.preventDefault();
+        return window.categorySubmitAjax(this);
+    });
+
+    function confirmAndDeleteCategory(categoryId, categoryName) {
+        alertify.confirm('Confirm Deletion', `Are you sure you want to delete the category "${categoryName}"?`,
+            function() { // onOk
+                const token = $('input[name="__RequestVerificationToken"]').first().val();
+                $.ajax({
+                    url: '@Url.Action("Delete", "Categoryconfic")',
+                    type: 'POST', // Use POST for security
+                    data: {
+                        __RequestVerificationToken: token,
+                        KEY: categoryId
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, 1, 1);
+                            // On success, simply reload the list view
+                            LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list');
+                        } else {
+                            appalert(response.message, 4, 1);
+                        }
+                    },
+                    error: function() {
+                        appalert("An error occurred during deletion.", 4, 1);
+                    }
+                });
+            },
+            function() { // onCancel
+                appalert("Delete operation cancelled.", 3, 1);
+            }
+        );
+    }
+
+})(jQuery);
+</script>
 
 }
 

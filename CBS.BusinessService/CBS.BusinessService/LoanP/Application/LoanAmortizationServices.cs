@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -17,7 +18,6 @@ namespace CBS.BusinessService
     public class LoanAmortizationServices : BaseService
     {
         private readonly ApiCallerHelper _loanConfigApiHelper;
-
         public LoanAmortizationServices()
         {
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
@@ -46,6 +46,8 @@ namespace CBS.BusinessService
         {
             try
             {
+              
+
                 var cusResponseObject = await _loanConfigApiHelper.GetAsync<ResponseObject<LoanAmortization>>(string.Format(APICallHelper.GetLoanAmortizationByID, id));
                 if (cusResponseObject.IsSuccess)
                 {
@@ -63,6 +65,7 @@ namespace CBS.BusinessService
         {
             try
             {
+                
                 // Assuming loanParameter is an instance of LoanParameters class
 
                 // Use unary expression to assign RepaymentStartDate based on StrRepaymentStartDate

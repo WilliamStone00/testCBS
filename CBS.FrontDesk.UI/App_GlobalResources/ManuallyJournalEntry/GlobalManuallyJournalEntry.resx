@@ -145,7 +145,7 @@
     <value>Purpose</value>
   </data>
   <data name="Account_Number" xml:space="preserve">
-    <value>Account number</value>
+    <value>Acc .number</value>
   </data>
   <data name="Debit" xml:space="preserve">
     <value>Debit</value>
@@ -166,7 +166,7 @@
     <value>Reference Id</value>
   </data>
   <data name="AccountName" xml:space="preserve">
-    <value>Account name</value>
+    <value>Acc. name</value>
   </data>
   <data name="AccountBalance" xml:space="preserve">
     <value>Account balance</value>
@@ -289,7 +289,7 @@
     <value>Transaction reference</value>
   </data>
   <data name="AccountDescription" xml:space="preserve">
-    <value>Account description</value>
+    <value>Account Description</value>
   </data>
   <data name="TOTAL" xml:space="preserve">
     <value>TOTAL</value>

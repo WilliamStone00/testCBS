@@ -1,0 +1,399 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto>
+
+@{
+    ViewBag.Title = "Cheque Certification Management";
+}
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank-check me-2"></i> Cheque Certification System
+                </h1>
+                <p class="card-text">
+                    Manage and track all cheque certification requests across the organization.
+                </p>
+                <p class="card-text fw-bold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to find specific certifications by status, date, or member reference.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Certification Management Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGuidelines" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseGuidelines" class="collapse show">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Member Reference:</strong> Unique identifier for the member requesting certification.</li>
+                <li><i class="mdi mdi-bank text-info me-2"></i><strong>Branch ID:</strong> The branch where the cheque was issued.</li>
+                <li><i class="mdi mdi-book text-warning me-2"></i><strong>Cheque Book/Leaf ID:</strong> Specific identifiers from the cheque book.</li>
+                <li><i class="mdi mdi-account-box text-primary me-2"></i><strong>Account Number:</strong> The account associated with the cheque.</li>
+                <li><i class="mdi mdi-cash text-success me-2"></i><strong>Amount:</strong> The exact amount on the cheque.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Certification Filters</h5>
+    <form id="certificationFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for additional filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleStatus" onclick="document.getElementById('statusFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleStatus">Show Status Filter</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleAmount" onclick="document.getElementById('amountFilters').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleAmount">Show Amount Range</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Member Reference</label>
+                    <input type="text" id="memberReference" name="MemberReference" class="form-control" placeholder="Enter member reference" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Cheque Certification ID</label>
+                    <input type="text" id="chequeCertificationId" name="ChequeCertificationID" class="form-control" placeholder="Enter certification ID" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Account Number</label>
+                    <input type="text" id="accountNumber" name="AccountNumber" class="form-control" placeholder="Enter account number" />
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div id="statusFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Certification Status</label>
+                        <select id="certificationStatus" name="CertificationStatus" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created Date From</label>
+                        <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created Date To</label>
+                        <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Filters -->
+            <div id="amountFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Minimum Amount</label>
+                        <input type="number" id="minAmount" name="MinAmount" class="form-control" placeholder="0.00" step="0.01" min="0" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Maximum Amount</label>
+                        <input type="number" id="maxAmount" name="MaxAmount" class="form-control" placeholder="0.00" step="0.01" min="0" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filters</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                <button type="button" onclick="showFullPageForm()" class="btn btn-success w-100">
+                    <i class="mdi mdi-plus"></i> New Certification
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_ChequeCertificationDataTable", Model)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        // Load Certifications into DataTable
+        function loadCertificationData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: true,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/ChequeCertification/LoadCertificationsData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectCertificationFilters();
+
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search.value,
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    { data: 'ChequeCertificationID', name: 'ChequeCertificationID' },
+                    { data: 'MemberReference', name: 'MemberReference' },
+                    { data: 'BranchId', name: 'BranchId' },
+                    { data: 'AccountNumber', name: 'AccountNumber' },
+                    {
+                        data: 'Amount',
+                        name: 'Amount',
+                        render: function (data) {
+                            return parseFloat(data).toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                        }
+                    },
+                    {
+                        data: 'CertificationStatus',
+                        name: 'CertificationStatus',
+                        render: function (data) {
+                            const statusBadgeClass = {
+                                'approved': 'bg-success',
+                                'rejected': 'bg-danger',
+                                'pending': 'bg-warning',
+                                'reviewed': 'bg-info'
+                            }[data?.toLowerCase()] || 'bg-secondary';
+
+                            return `<span class="badge ${statusBadgeClass}">${data}</span>`;
+                        }
+                    },
+                    {
+                        data: 'CreatedDate',
+                        name: 'CreatedDate',
+                        render: function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (_, __, row) {
+                            const status = (row.CertificationStatus || '').toLowerCase();
+                            return `
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" 
+                                    class="btn btn-outline-primary"
+                                    onclick="ViewDetails('${row.ChequeCertificationID}')"
+                                    title="View Details">
+                                <i class="mdi mdi-eye"></i>
+                            </button>
+                            
+                            ${status === 'pending' ? `
+                                <button type="button" 
+                                        class="btn btn-outline-warning"
+                                        onclick="reviewCertification('${row.ChequeCertificationID}')"
+                                        title="Mark as Reviewed">
+                                    <i class="mdi mdi-file-search"></i>
+                                </button>
+                            ` : ''}
+                            
+                            ${status === 'reviewed' ? `
+                                <button type="button" 
+                                        class="btn btn-outline-success"
+                                        onclick="validateCertification('${row.ChequeCertificationID}')"
+                                        title="Validate/Approve">
+                                    <i class="mdi mdi-check-circle"></i>
+                                </button>
+                                <button type="button" 
+                                        class="btn btn-outline-danger"
+                                        onclick="rejectCertification('${row.ChequeCertificationID}')"
+                                        title="Reject">
+                                    <i class="mdi mdi-close-circle"></i>
+                                </button>
+                            ` : ''}
+                            
+                            <button type="button" 
+                                    class="btn btn-outline-danger"
+                                    onclick="confirmDelete('${row.ChequeCertificationID}')"
+                                    title="Delete">
+                                <i class="mdi mdi-delete"></i>
+                            </button>
+                        </div>`;
+                        }
+                    }
+                ]
+            });
+        }
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+
+        function collectCertificationFilters() {
+            return {
+                MemberReference: $('#memberReference').val(),
+                ChequeCertificationID: $('#chequeCertificationId').val(),
+                AccountNumber: $('#accountNumber').val(),
+                CertificationStatus: $('#certificationStatus').val(),
+                CreatedFrom: $('#createdFrom').val(),
+                CreatedTo: $('#createdTo').val(),
+                MinAmount: $('#minAmount').val(),
+                MaxAmount: $('#maxAmount').val()
+            };
+        }
+
+        function applyCertificationFilters() {
+            const filters = collectCertificationFilters();
+            
+            // Show loading state
+            $('#datalistingview').html('<div class="text-center py-4"><i class="mdi mdi-loading mdi-spin" style="font-size:24px"></i> Loading certifications...</div>');
+
+            // In a real implementation, you would make an AJAX call here
+            // For now, we'll reload the data table with current data
+            setTimeout(function() {
+                LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
+            }, 500);
+        }
+
+        function showFullPageForm() {
+            // Hide filter section and data table
+            $('.card.shadow.p-3.mb-4').hide(); // Filter card
+            $('#datalistingview').hide(); // Data table
+
+            // Load the form
+            AddORUpdateGen(null, 'datalistingview', '_ChequeCertificationForm', 'new', 'ChequeCertification');
+
+            // Show the form container and make it full width
+            $('#datalistingview').show().addClass('full-page-form');
+        }
+
+        // Function to go back to list view
+        function goBackToList() {
+            // Show filter section and data table
+            $('.card.shadow.p-3.mb-4').show(); // Filter card
+
+            // Remove full-page class and reload data
+            $('#datalistingview').removeClass('full-page-form');
+            LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
+        }
+
+
+        function resetCertificationFilters() {
+            $('#certificationFilterForm').trigger('reset');
+            $('#statusFilters, #dateFilters, #amountFilters').addClass('d-none');
+            applyCertificationFilters();
+        }
+
+        // View Details function
+        function ViewDetails(chequeCertificationID) {
+            if (!chequeCertificationID) {
+                toastr.error('Invalid ID');
+                return;
+            }
+
+            $('#datalistingview').html('<div class="text-center py-4"><i class="mdi mdi-loading mdi-spin" style="font-size:24px"></i> Loading details...</div>');
+
+            $.ajax({
+                url: '@Url.Action("Details", "ChequeCertification")',
+                type: 'GET',
+                data: { chequeCertificationID: chequeCertificationID },
+                dataType: 'html',
+                success: function (data) {
+                    $('#datalistingview').html(data);
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                    var top = $('#datalistingview').offset();
+                    if (top) window.scrollTo({ top: top.top - 10, behavior: 'smooth' });
+                },
+                error: function () {
+                    toastr.error('Error loading details');
+                }
+            });
+        }
+
+        // Delete function
+        function DeleteCertification(chequeCertificationID) {
+            if (confirm('Are you sure you want to delete this certification?')) {
+                PerformAction('Delete', chequeCertificationID);
+            }
+        }
+
+        function PerformAction(action, chequeCertificationID) {
+            $.ajax({
+                url: '@Url.Action("Action", "ChequeCertification")' + '?action=' + action + '&chequeCertificationID=' + encodeURIComponent(chequeCertificationID),
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
+                    } else {
+                        toastr.error(response.message || 'Operation failed');
+                    }
+                },
+                error: function () {
+                    toastr.error('Error performing action');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Initialize DataTable on page load
+            loadCertificationData();
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                applyCertificationFilters();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetCertificationFilters();
+            });
+
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

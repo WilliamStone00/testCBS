@@ -23,6 +23,7 @@ namespace CBS.BusinessService
         Task<ExecutionMessages> DepositNotificationApprovalRequest(Approval model);
         Task<ExecutionMessages> DepositNotificationApprovalRequest(DepositNotificationApproval model);
         Task<ExecutionMessages> DepositNotificationRequest(DepositNotification model);
+        Task<AccountingEntryReportDto> GetAccountingEntriesDtoByReferceId(string reference);
         Task<List<AccountingEntry>> GetAccountingEntriesByReferceId(string reference);
         Task<List<AccountingEntry>> GetAllAccountingEntries();
         Task<List<AccountingEntry>> GetAllAccountingEntriesForAnAccountPerBranch(string branchId, string accountId);

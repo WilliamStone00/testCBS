@@ -81,32 +81,32 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
                 reason = r;
                 return true;
             }
-            
+
             // 3️⃣ Validate IP format and perform GeoIP country filtering
-            if (!_geoResolver.IsValidIPv4(ctx.Ip))
-            {
-                var r = $"Blocked: Invalid IP format; IP: {ctx.Ip}";
-                reason = r;
-                Task.Run(() => _suspiciousHandler.Handle("GeoIP-Invalid-IP", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Filter")).GetAwaiter().GetResult();
-                return true;
-            }
+            //if (!_geoResolver.IsValidIPv4(ctx.Ip))
+            //{
+            //    var r = $"Blocked: Invalid IP format; IP: {ctx.Ip}";
+            //    reason = r;
+            //    Task.Run(() => _suspiciousHandler.Handle("GeoIP-Invalid-IP", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Filter")).GetAwaiter().GetResult();
+            //    return true;
+            //}
 
-            if (!_geoResolver.IsWhitelistedCountry(ctx.Country, config.WhitelistedCountriesCode))
-            {
-                var r = $"Blocked: Non-whitelisted country ({ctx.Country})";
-                reason = r;
-                Task.Run(() => _suspiciousHandler.Handle("GeoIP-Country", r, ctx, ctx.FullUrl, "GeoIP-Country-Restriction")).GetAwaiter().GetResult();
-                return true;
-            }
+            //if (!_geoResolver.IsWhitelistedCountry(ctx.Country, config.WhitelistedCountriesCode))
+            //{
+            //    var r = $"Blocked: Non-whitelisted country ({ctx.Country})";
+            //    reason = r;
+            //    Task.Run(() => _suspiciousHandler.Handle("GeoIP-Country", r, ctx, ctx.FullUrl, "GeoIP-Country-Restriction")).GetAwaiter().GetResult();
+            //    return true;
+            //}
 
-            if (!_geoResolver.IsIpInCidr(ctx.Ip, config.WhitelistedCidrs))
-            {
-                var r = $"Blocked: IP not in whitelisted CIDR range: {ctx.Ip}";
-                reason = r;
-                Task.Run(() => _suspiciousHandler.Handle("GeoIP-CIDR", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Restriction")).GetAwaiter().GetResult();
-                return true;
-            }
-         
+            //if (!_geoResolver.IsIpInCidr(ctx.Ip, config.WhitelistedCidrs))
+            //{
+            //    var r = $"Blocked: IP not in whitelisted CIDR range: {ctx.Ip}";
+            //    reason = r;
+            //    Task.Run(() => _suspiciousHandler.Handle("GeoIP-CIDR", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Restriction")).GetAwaiter().GetResult();
+            //    return true;
+            //}
+
             // ✅ Whitelisted static resources (e.g., .css, .jpg)
             if (_pathValidator.IsExcludedStaticAssetPath(ctx.Path))
             {

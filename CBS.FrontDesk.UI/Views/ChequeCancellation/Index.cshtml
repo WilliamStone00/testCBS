@@ -1,0 +1,75 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
+@using Resources
+@{
+    ViewBag.Title = "Cheque Cancellation Requests";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> Cheque Cancellation Request
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Always Verify Credentials
+        </div>
+    </div>
+</div>
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CANCELLATION</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse show">
+        <div class="card-body">
+            <ul>
+                <li><strong>Verify Cheque Details:</strong> Double-check the cheque number, book ID, and leaf ID before submitting.</li>
+                <li><strong>Select Correct Request Type:</strong> Choose <em>Cheque Book</em>, <em>Cheque Leaf</em>, or <em>Cheque Number</em> according to what you are cancelling.</li>
+                <li><strong>Provide a Valid Reason:</strong> Clearly state why the cheque is being cancelled (e.g., lost, stolen, error, duplicate).</li>
+                <li><strong>Mandatory Fields:</strong> Branch, Account Number, and Customer Name must be filled before submission.</li>
+                <li><strong>Authorization:</strong> Some cancellations may require approval from a supervisor/manager before they take effect.</li>
+                <li><strong>Irreversibility:</strong> Once approved, a cancelled cheque cannot be reinstated — ensure accuracy before confirming.</li>
+                <li><strong>Additional Notes:</strong> Use the notes field to add any special remarks that may help reviewers.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+       
+        <a type="button" onclick=" LoadDataGen('ChequeCancellation', 'myDataTable', '_CancellationDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_CreateCancellationRequestForm','new','ChequeCancellation')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+    </div>
+</div>
+
+
+<!-- Data Table Container -->
+<div id="datalistingview">
+    <!-- Partial view will be loaded here -->
+    @Html.Partial("_CreateCancellationRequestForm")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+    // Reset button handler
+    $('#resetFormBtn').click(function () {
+        $('#cancellationRequestForm')[0].reset();
+    });
+});
+
+    </script>
+
+}

@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "Create Cheque Certification";
+}
+@using Resources
+
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto
+
+<div class="card-header">
+    <h5 class="card-title mb-0 text-success">Create Cheque Certification</h5>
+</div>
+
+<div class="card-body">
+    @using (Html.BeginForm("Create", "ChequeCertification", FormMethod.Post, 
+        new { id = "createCertificationForm", @class = "needs-validation", novalidate = "novalidate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeCertificationID, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeCertificationID, new { @class = "form-control", required = "required", maxlength = "50", placeholder = "Cheque Certification ID" })
+                @Html.ValidationMessageFor(m => m.ChequeCertificationID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.MemberReference, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", required = "required", maxlength = "50", placeholder = "Member Reference" })
+                @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.BranchId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", required = "required", maxlength = "20", placeholder = "Branch ID" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeBookId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", required = "required", maxlength = "30", placeholder = "Cheque Book ID" })
+                @Html.ValidationMessageFor(m => m.ChequeBookId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.ChequeleafId, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.ChequeleafId, new { @class = "form-control", required = "required", maxlength = "30", placeholder = "Cheque Leaf ID" })
+                @Html.ValidationMessageFor(m => m.ChequeleafId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.AccountNumber, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", required = "required", maxlength = "20", placeholder = "Account Number" })
+                @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.Amount, new { @class = "form-label required" })
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", step = "0.01", min = "0.01", required = "required", placeholder = "Amount" })
+                @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4, maxlength = "500", placeholder = "Description (optional)" })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="reset" form="createCertificationForm" class="btn btn-light">Reset</button>
+            <button type="submit" form="createCertificationForm" class="btn btn-primary">Create Certification</button>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            // Form validation
+            $('#createCertificationForm').on('submit', function (e) {
+                e.preventDefault();
+
+                if (this.checkValidity() === false) {
+                    e.stopPropagation();
+                    this.classList.add('was-validated');
+                    return;
+                }
+
+                // Show loading state
+                var submitBtn = $(this).find('button[type="submit"]');
+                var originalText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Creating...');
+
+                // Submit form via AJAX
+                $.ajax({
+                    url: '@Url.Action("Create", "ChequeCertification")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            // Redirect to index page after successful creation
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("Index", "ChequeCertification")';
+                            }, 1500);
+                        } else {
+                            toastr.error(response.message);
+                            submitBtn.prop('disabled', false).html(originalText);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error('An error occurred while creating the certification: ' + error);
+                        submitBtn.prop('disabled', false).html(originalText);
+                    }
+                });
+            });
+
+            // Real-time validation
+            $('input, textarea').on('blur', function () {
+                $(this).addClass('validated');
+            });
+
+            // Amount formatting
+            $('#Amount').on('change', function () {
+                var value = parseFloat($(this).val());
+                if (value && !isNaN(value)) {
+                    $(this).val(value.toFixed(2));
+                }
+            });
+        });
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all fields?')) {
+                $('#createCertificationForm')[0].reset();
+                $('#createCertificationForm').removeClass('was-validated');
+                toastr.info('Form has been reset');
+            }
+        }
+
+        // Input restrictions
+        $('#Amount').on('input', function () {
+            var value = $(this).val();
+            if (value && parseFloat(value) <= 0) {
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+    </script>
+}
+
+<style>
+    .required::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+    .form-control.validated:invalid {
+        border-color: #dc3545;
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3cpath d='M6 7v2'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .form-control.validated:valid {
+        border-color: #198754;
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-color: #ced4da;
+    }
+</style>

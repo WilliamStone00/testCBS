@@ -15,7 +15,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
     public class LoanProductController : BaseController
     {
         // GET: LoanProduct
@@ -154,7 +154,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                         });
                     }
 
-                    // Validate that minimum is not greater than maximum
+                    // Validate that minimum is not greater than maximum   ML Commercial Real Estate Loan E
                     if (model.UpdateLoanProductCommand.MinimumDurationPeriod > model.UpdateLoanProductCommand.MaximumDurationPeriod)
                     {
                         return Json(new

@@ -1,12 +1,15 @@
 ﻿using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.UI.Helper;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +24,7 @@ using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
 {
-    //[CheckSessionTimeOut]
+    [CheckSessionTimeOut]
     public class CategoryconficController : BaseController
     {
         private readonly CategoryConfigService _CategoryConfigService;
@@ -45,30 +48,73 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
-             ViewBag.Branches = branches;
+            ViewBag.Branches = branches;
 
             return true;
         }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadCategoryData(CategoryConfigQuery query)
+         {
+            try
+            {
+                var data = await _CategoryConfigService.GetcategoryDataTableAsync(query);
+
+                var chequeBookscat = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.CategoryConfig>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = chequeBookscat
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        // using Microsoft.AspNetCore.Mvc;
+        // inject ICategoryConfigService in constructor (example)
+
+        
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
+            await loader();
             if (path == "list")
             {
-                var data = await _CategoryConfigService.GetCategoriesAsync();
+                 var data = await _CategoryConfigService.GetCategoriesAsync();
                 return PartialView(partialView, data);
 
             }
             //GetRolePermissions
             else if (path == "new")
             {
-                await loader();
-                return PartialView(partialView, new CategoryConfig());
+                      return PartialView(partialView, new CategoryConfig());
             }
 
             else
             {
-                await loader();
-                var data = await _CategoryConfigService.GetCategoryByIdAsync(KEY);
-                return PartialView(partialView, data);
+               var data = await _CategoryConfigService.GetCategoryByIdAsync(KEY);
+                return PartialView(partialView ?? "_CategoryDetailsPartial", data);
 
             }
         }
@@ -76,38 +122,97 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(CategoryConfig model)
         {
-            if (model.Id == null)
+            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
+            if (string.IsNullOrWhiteSpace(model.id))
             {
-                if (ModelState.IsValid)
-                {
-                    var data = await _CategoryConfigService.CreateCategoryAsync(model);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                }
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, message = "Validation failed." });
+
+                var result = await _CategoryConfigService.CreateCategoryAsync(model);
+                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
             else
             {
-                await Update(model);
+                // IMPORTANT: return the ActionResult from Update
+                return await Update(model);
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            // unreachable now but keep for safety (or remove)
+            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult> CreateOrUpdate(CategoryConfig model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        // For a validation failure, success should definitely be false.
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            status = "ValidationError", // Provide a more specific status
+        //            message = "Validation failed. Please check the form for errors."
+        //        });
+        //    }
+
+        //    ExecutionMessages result;
+        //    string operationType;
+
+        //    if (string.IsNullOrWhiteSpace(model.Id))
+        //    {
+        //        result = await _CategoryConfigService.CreateCategoryAsync(model);
+        //        operationType = "Insert";
+        //    }
+        //    else
+        //    {
+        //        result = await _CategoryConfigService.UpdateCategoryAsync(model);
+        //        operationType = "Update";
+        //    }
+
+        //    bool isAjaxSuccess = result.Result ||
+        //                         (result.MessageStatus == SystemMessageStatus.Exist.ToString());
+
+        //     return Json(new
+        //    {
+        //        success = isAjaxSuccess,
+        //        status = result.MessageStatus,
+        //        message = Messaging.MessageResult(result),
+        //        optype = operationType,
+        //        reloadDataView = "Yes",
+        //        controllerName = "Categoryconfic",
+        //        divLoaderList = "datalistingview",
+        //        tableName = "myDataTable",
+        //        dataLoaderActionName = "_CategoryDataTable",
+        //        divLoaderCreator = "datalistingview",
+        //        reinitializedActionName = "_Categories"
+        //    });
+        //}
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(CategoryConfig model)
         {
-            if (ModelState.IsValid)
-            {
-                var data = await _CategoryConfigService.UpdateCategoryAsync(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-            }
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            var result = await _CategoryConfigService.UpdateCategoryAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpGet]
+        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
             var result = await _CategoryConfigService.DeactivateCategoryAsync(KEY);
-            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
+
+            // Map to simple JSON shape the client expects. Adjust if result has different property names.
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
     }
 }

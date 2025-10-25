@@ -1,0 +1,302 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
+
+@{
+    ViewBag.Title = "Loss Declaration Request";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    Loss Declaration Request
+                </h5>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SubmitLossRequest", "LossManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);", @class = "needs-validation" }))
+                {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.CheckBookID)
+                @Html.HiddenFor(model => model.CheckLeafID)
+                @Html.HiddenFor(model => model.CustomerID)
+                @Html.HiddenFor(model => model.CreatedDate, new { Value = DateTime.Now.ToString("yyyy-MM-dd") })
+
+ <!-- Basic Information Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="mdi mdi-information-outline me-2"></i>
+                            Basic Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="CustomerID">Customer ID</label>
+                                    @Html.TextBoxFor(model => model.CustomerID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="CheckBookID">Checkbook ID</label>
+                                    @Html.TextBoxFor(model => model.CheckBookID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label" for="CheckLeafID">Check Leaf ID</label>
+                                    @Html.TextBoxFor(model => model.CheckLeafID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Loss Details Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="mdi mdi-alert-circle-outline me-2"></i>
+                            Loss Details
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="BranchID">Branch</label>
+                                    <select class="form-select" id="BranchID" name="BranchID" required>
+                                        <option value="">Select Branch</option>
+                                        <option value="BR001">Main Branch - BR001</option>
+                                        <option value="BR002">Downtown Branch - BR002</option>
+                                        <option value="BR003">Westside Branch - BR003</option>
+                                        <option value="BR004">Eastside Branch - BR004</option>
+                                        <option value="BR005">North Branch - BR005</option>
+                                        <option value="BR006">South Branch - BR006</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a branch.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="LossReason">Loss Reason</label>
+                                    <select class="form-select" id="LossReason" name="LossReason" required>
+                                        <option value="">Select Loss Reason</option>
+                                        <option value="Misplaced or Lost">Misplaced or Lost</option>
+                                        <option value="Stolen">Stolen</option>
+                                        <option value="Damaged/Destroyed">Damaged/Destroyed</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select loss reason.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="LossDate">Loss Date</label>
+                                    @Html.TextBoxFor(model => model.LossDate, new { @class = "form-control", type = "date", required = "required" })
+                                    <div class="invalid-feedback">Please select loss date.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="LossLocation">Loss Location</label>
+                                    @Html.TextBoxFor(model => model.LossLocation, new { @class = "form-control", required = "required", placeholder = "Enter location where loss occurred" })
+                                    <div class="invalid-feedback">Please enter loss location.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="Description">Description</label>
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", required = "required", placeholder = "Provide detailed description of the loss incident..." })
+                            <div class="invalid-feedback">Please enter description.</div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Client Suggestion Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="mdi mdi-lightbulb-on-outline me-2"></i>
+                            Client Suggestion
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="ClientSuggestion">Client Suggestion</label>
+                            <select class="form-select" id="ClientSuggestion" name="ClientSuggestion" required>
+                                <option value="">Select Action</option>
+                                <option value="Cancel">Cancel</option>
+                                <option value="Block">Block</option>
+                                <option value="Reprint">Reprint</option>
+                            </select>
+                            <div class="invalid-feedback">Please select client suggestion.</div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Reported By Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="mdi mdi-account-outline me-2"></i>
+                            Reported By
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="LossReportedBy">Reported By</label>
+                            <select class="form-select" id="LossReportedBy" name="LossReportedBy" required onchange="toggleThirdPartySection()">
+                                <option value="">Select Reporter</option>
+                                <option value="Owner">Owner</option>
+                                <option value="ThirdParty">Third Party</option>
+                            </select>
+                            <div class="invalid-feedback">Please select who reported the loss.</div>
+                        </div>
+
+                        <!-- Third Party Information Section (Initially Hidden) -->
+                        <div id="thirdPartySection" style="display: none;">
+                            <hr>
+                            <h6 class="mb-3">
+                                <i class="mdi mdi-account-details-outline me-2"></i>
+                                Third Party Information
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ThirdPartyName">Third Party Name</label>
+                                        @Html.TextBoxFor(model => model.ThirdPartyName, new { @class = "form-control", placeholder = "Enter full name" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ThirdPartyNationalID">National ID Number</label>
+                                        @Html.TextBoxFor(model => model.ThirdPartyNationalID, new { @class = "form-control", placeholder = "Enter national ID number" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ThirdPartyIDExpiry">ID Expiry Date</label>
+                                        @Html.TextBoxFor(model => model.ThirdPartyIDExpiry, new { @class = "form-control", type = "date" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ThirdPartyDeliveryDate">Delivered Date</label>
+                                        @Html.TextBoxFor(model => model.ThirdPartyDeliveryDate, new { @class = "form-control", type = "date" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ThirdPartyIssueLocation">Issued Location</label>
+                                        @Html.TextBoxFor(model => model.ThirdPartyIssueLocation, new { @class = "form-control", placeholder = "Enter issue location" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Status Information (Read-only) -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="mdi mdi-status me-2"></i>
+                            Status Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Current Status</label>
+                                    <input type="text" class="form-control" value="Pending" readonly>
+                                    <small class="text-muted">Loss declaration will be reviewed by the branch</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Created Date</label>
+                                    <input type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+ <!-- Submit Buttons -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-send me-1"></i> Submit Loss Declaration
+                        </button>
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                            <i class="mdi mdi-close me-1"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Toggle Third Party Section
+        function toggleThirdPartySection() {
+            var reportedBy = document.getElementById('LossReportedBy').value;
+            var thirdPartySection = document.getElementById('thirdPartySection');
+
+            if (reportedBy === 'ThirdParty') {
+                thirdPartySection.style.display = 'block';
+                // Make third party fields required
+                document.getElementById('ThirdPartyName').required = true;
+                document.getElementById('ThirdPartyNationalID').required = true;
+            } else {
+                thirdPartySection.style.display = 'none';
+                // Remove required attribute from third party fields
+                document.getElementById('ThirdPartyName').required = false;
+                document.getElementById('ThirdPartyNationalID').required = false;
+            }
+        }
+
+        // Initialize form when modal loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set today's date as default for LossDate if empty
+            var lossDateField = document.getElementById('LossDate');
+            if (!lossDateField.value) {
+                var today = new Date().toISOString().split('T')[0];
+                lossDateField.value = today;
+            }
+
+            // Initialize third party section visibility
+            toggleThirdPartySection();
+        });
+    </script>
+}

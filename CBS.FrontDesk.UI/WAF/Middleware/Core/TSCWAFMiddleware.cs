@@ -118,7 +118,6 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
             // ✅ Compile-time and runtime DEV bypass (skip all WAF work)
             #if DEBUG
             System.Diagnostics.Debug.WriteLine("🟢 WAF bypassed: DEBUG build.");
-            return;
             #endif
             if (IsDevEnvironment)
             {

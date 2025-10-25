@@ -8,7 +8,7 @@ namespace CBS.BusinessService.Accounting
 
     public class ConnectionHub : Hub
     {
-        // This method will be called by the client to check the connection status
+        // This method will be called by the client to check the connection Status
         public bool CheckConnection()
         {
             bool isConnected = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();

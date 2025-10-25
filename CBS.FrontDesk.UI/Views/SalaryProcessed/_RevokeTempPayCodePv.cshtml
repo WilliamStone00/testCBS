@@ -1,0 +1,132 @@
+﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
+@using CBS.FrontDesk.Data.Entity.SalaryManagement
+@{
+    // convenience
+    var revoke = Model?.RevokeTempPayCodesByIdList ?? new RevokeTempPayCodesByIdList();
+    var tempId = (revoke.TempPayCodeIds != null && revoke.TempPayCodeIds.Any())
+        ? revoke.TempPayCodeIds.First()
+        : (Model?.LastTempPayCodeId ?? "");
+
+    // optional info (Amount, Status, ExpiresAt, NonMemberReference, Branch) you set in the controller
+    var codeInfo = ViewBag.TempInfo;
+    string Safe(object v) => v?.ToString() ?? "—";
+}
+
+<div class="px-3 pb-2">
+    <h5 class="fw-bold text-danger mb-2">
+        <i class="mdi mdi-block-helper me-1"></i> Revoke TempPayCode
+    </h5>
+
+    <div id="revokeAlert" class="d-none"></div>
+
+    <div class="alert alert-warning py-2">
+        <i class="mdi mdi-alert-decagram-outline me-1"></i>
+        Revoking will immediately invalidate the code. This action is logged.
+    </div>
+
+    <div class="row g-3 mb-2">
+        <div class="col-md-6">
+            <table class="table table-sm table-bordered kv mb-0">
+                <tbody>
+                    <tr><th>TempPayCode Id</th><td class="mono">@Safe(tempId)</td></tr>
+                    <tr><th>Status</th><td>@Safe(codeInfo?.Status)</td></tr>
+                    <tr><th>Expires</th><td>@Safe(codeInfo?.ExpiresAt)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-sm table-bordered kv mb-0">
+                <tbody>
+                    <tr><th>Non-Member Ref</th><td class="mono">@Safe(codeInfo?.NonMemberReference)</td></tr>
+                    <tr><th>Amount</th><td>@Safe(codeInfo?.Amount)</td></tr>
+                    <tr><th>Branch</th><td>@Safe(codeInfo?.Branch ?? Model?.BranchName)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* Bind through SalaryExtract.RevokeTempPayCodesByIdList.*@
+    @using (Html.BeginForm("RevokeTempPayCodes", "SalaryProcessed", FormMethod.Post, new { id = "revokeForm", autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @* Hidden: BranchId *@
+        <input type="hidden"
+               name="RevokeTempPayCodesByIdList.BranchId"
+               value="@(revoke.BranchId ?? Model?.BranchId ?? "")" />
+
+        @* Hidden: single id in the list *@
+        <input type="hidden"
+               name="RevokeTempPayCodesByIdList.TempPayCodeIds[0]"
+               value="@tempId" />
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Reason (for audit)</label>
+            <textarea class="form-control"
+                      name="RevokeTempPayCodesByIdList.Reason"
+                      rows="3"
+                      placeholder="Why are you revoking this code?">@revoke.Reason</textarea>
+        </div>
+
+        <div class="d-flex">
+            <button type="submit" id="revokeBtn" class="btn btn-danger">
+                <span class="btn-text"><i class="mdi mdi-block-helper"></i> Revoke</span>
+                <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
+                <i class="mdi mdi-close"></i> Close
+            </button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const $f = $('#revokeForm');
+            const $btn = $('#revokeBtn'),
+                $spin = $('#revokeBtn .spinner-border'),
+                $txt = $('#revokeBtn .btn-text');
+            const $alert = $('#revokeAlert');
+
+            const setBusy = b => { $btn.prop('disabled', b); $spin.toggleClass('d-none', !b); $txt.toggleClass('opacity-50', b); };
+            const showAlert = (type, html) => $alert.removeClass('d-none alert-success alert-danger alert-warning')
+                .addClass('alert alert-' + type).html(html);
+            const clearAlert = () => $alert.addClass('d-none').empty();
+
+            $f.on('submit', function (e) {
+                e.preventDefault();
+                clearAlert();
+                setBusy(true);
+
+                $.ajax({
+                    url: $f.attr('action'),
+                    type: 'POST',
+                    data: $f.serialize(),           // form-encoded; matches nested names
+                    dataType: 'json',
+                    timeout: 30000
+                })
+                    .done(function (res) {
+                        if (!res || res.success === false) {
+                            showAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i> ${res?.message || 'Revoke failed.'}`);
+                            return;
+                        }
+
+                        showAlert('success', `<i class="mdi mdi-check-circle-outline me-1"></i> Code revoked successfully.`);
+                        // update header chip in the shared modal
+                        $('#salaryDetailStatus').attr('class', 'badge bg-secondary').text('Revoked');
+
+                        // refresh the main table (keep page)
+                        if (window.salaryTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                            window.salaryTable.ajax.reload(null, false);
+                        }
+                    })
+                    .fail(function (xhr) {
+                        const safe = $('<div>').text(xhr.responseText || '').html();
+                        showAlert('danger', `<i class="mdi mdi-alert-octagon-outline me-1"></i> Request failed<br><span class="small">${safe}</span>`);
+                    })
+                    .always(function () { setBusy(false); });
+            });
+        })();
+    </script>
+}

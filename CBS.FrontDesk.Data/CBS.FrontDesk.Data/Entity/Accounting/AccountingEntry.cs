@@ -47,7 +47,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
  
                 JournalEntryDto dto = new JournalEntryDto();
                 dto.AccountNumber = account.AccountNumber;
-                dto.Description = account.Naration;
+                dto.Description = account.Description;
                 dto.ValueDate = account.ValueDate.ToString("dd-MM-yyyy HH:mm:ss");
                 dto.Reference = account.ReferenceID.ToString();
                 dto.EntryDate = account.EntryDate.ToString("dd-MM-yyyy HH:mm:ss");
@@ -139,6 +139,251 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
             }
         }
     }
+    // ReportHeader
+
+  
+  public class AccountingEntryReport  
+    {
+       
+            // Basic entity information
+            public string EntityType { get; set; }
+            public string Name { get; set; }
+            public DateTime FromDate { get; set; }
+            public string Address { get; set; }
+
+            // Entry information
+            public DateTime EntryDate { get; set; }
+            public string Reference { get; set; }
+            public string AccountNumber { get; set; }
+            public string AccountName { get; set; }
+
+            // Transaction amounts
+            public decimal Debit { get; set; }
+            public decimal Credit { get; set; }
+
+            // Branch information
+            public string BranchName { get; set; }
+            public DateTime ToDate { get; set; }
+            public string BranchAddress { get; set; }
+            public decimal Capital { get; set; }
+            public string ImmatriculationNumber { get; set; }
+            public string WebSite { get; set; }
+            public string BranchTelephone { get; set; }
+            public string HeadOfficeTelephone { get; set; }
+            public string LogoPath { get; set; }
+            public string Description { get; set; }
+            public string BranchCode { get; set; }
+
+            // Printing and audit
+            public string PrintersName { get; set; }
+
+            // Flags
+            public bool Auxiliary { get; set; }
+
+            // Summaries
+            public decimal SumDebit { get; set; }
+            public decimal SumCredit { get; set; }
+
+            // Dates
+            public DateTime ValueDate { get; set; }
+            public string BookingDirection { get; set; }
+            public string TempData { get; set; }
+
+            // Users
+            public string UsersInvolve { get; set; }
+         
+
+        /// <summary>
+        /// Converts an AccountingEntryDto object into an AccountingEntry object.
+        /// </summary>
+        /// <param name="dto">The source AccountingEntryDto object.</param>
+        /// <returns>A new AccountingEntry populated with values from the DTO.</returns>
+        public static AccountingEntryReport ConvertToEntity(AccountingEntryDto dto, Branch branch , Account dataAccount,string name,string branchname, string postedBy)
+        {
+            if (dto == null)
+                return null;
+
+            // Create a new AccountingEntry instance and map fields
+            var entry = new AccountingEntryReport
+            {
+
+                // Copy identifiers
+           
+                BranchAddress = branch.Address,
+           
+        
+                Name = name,
+                BranchName = branch.DisplayName,
+                BranchTelephone= branch.Telephone,
+                BranchCode = branch.BranchCode,
+                
+                // Map date fields
+                EntryDate = dto.EntryDate,          // Original entry date
+                ValueDate = dto.ValueDate,          // Effective posting date
+
+                // Entry classification
+                EntityType = dto.EntryType,          // Debit or Credit
+           
+                // Description or narration (prefer dto.Naration if available)
+                Description = string.IsNullOrWhiteSpace(dto.Naration)
+                                ? dto.Naration
+                                : dto.Naration,
+
+                // Reference IDs
+                Reference = dto.ReferenceID,
+       
+ 
+           
+       
+            };
+            entry.AccountNumber = dataAccount.TempData + "-" + dataAccount.AccountName;
+            entry.Description = dto.Naration;
+            entry.BranchName = branchname;
+            entry.Name = name;
+            entry.BranchTelephone= branch.Telephone;
+            entry.BranchAddress = branch.Address;
+            entry.Address = branch.HeadOfficeAddress;
+            entry.BranchCode = branch.BranchCode;
+            entry.Credit = dto.CrAmount;
+            entry.Debit = dto.DrAmount;
+            entry.PrintersName = postedBy;
+            return entry;
+        }
+
+
+        public static List<AccountingEntryReport> ConvertToAccountingEntryReportDto(AccountingEntryReportDto dto, string printersName)
+        {
+            List<AccountingEntryReport> accountingEntries = new List<AccountingEntryReport>(); 
+            if (dto == null)
+                return null;
+            foreach (var item in dto.EntryReportDtos)
+            {
+                var entry = new AccountingEntryReport
+                {
+
+                    // Copy identifiers
+
+                    BranchAddress = dto.BranchAddress,
+
+
+                    Name = dto.Name,
+                    BranchName = dto.BranchName,
+                    BranchTelephone = dto.BranchTelephone,
+                    BranchCode = dto.BranchCode,
+
+                    // Map date fields
+                    EntryDate = dto.EntryDate,          // Original entry date
+                    ValueDate = item.ValueDate,          // Effective posting date
+
+                    // Entry classification
+                    EntityType = "BranchId",          // Debit or Credit
+
+                    // Description or narration (prefer dto.Naration if available)
+                    Description = item.Description,
+                    // Reference IDs
+                    Reference = item.ReferenceId,
+                    PrintersName= printersName
+
+
+
+                };
+                entry.AccountNumber =  item.AccountNumber;
+ 
+                entry.AccountName = item.AccountName;
+                entry.Address = dto.Address;
+             
+                entry.Credit = item.Credit;
+                entry.Debit = item.Debit;
+                entry.UsersInvolve = dto.EntryReportDtos.FirstOrDefault().UsersInvolve;
+                entry.SumCredit = dto.SumCredit;
+                entry.SumDebit = dto.SumDebit;
+                    accountingEntries.Add(entry);
+            }
+            // Create a new AccountingEntry instance and map fields
+           
+ 
+            return accountingEntries;
+        }
+
+
+    }
+
+    public class AccountingEntryReportDto
+    {
+
+        // Basic entity information
+        public string EntityType { get; set; }
+        public string Name { get; set; }
+        public DateTime FromDate { get; set; }
+        public string Address { get; set; }
+
+        // Entry information
+        public DateTime EntryDate { get; set; }
+
+
+        // Branch information
+        public string BranchName { get; set; }
+        public DateTime ToDate { get; set; }
+        public string BranchAddress { get; set; }
+        public string Capital { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string WebSite { get; set; }
+        public string BranchTelephone { get; set; }
+        public string HeadOfficeTelephone { get; set; }
+        public string LogoPath { get; set; }
+        public string Description { get; set; }
+        public string BranchCode { get; set; }
+        public List<EntryReportDto> EntryReportDtos { get; set; }
+        public decimal SumCredit { get; internal set; }
+        public decimal SumDebit { get; internal set; }
+
+        public List<AccountingEntryDto> GetEntries()
+        {
+            List<AccountingEntryDto> entries = new List<AccountingEntryDto>();
+            foreach (var item in EntryReportDtos)
+            {
+                entries.Add(new AccountingEntryDto
+                {
+                    AccountName = item.AccountName,
+                    AccountNumber = item.AccountNumber,
+                    Description = item.Description,
+                    DrAmount = item.Debit,
+                    CrAmount = item.Credit,
+                });
+            }
+            return entries;
+        }
+    }
+
+
+    public class EntryReportDto
+    {
+
+
+
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+
+        // Transaction amounts
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+
+        public string Direction { get; set; }
+
+
+        // Summaries
+        public decimal SumDebit { get; set; }
+        public decimal SumCredit { get; set; }
+
+        // Dates
+        public DateTime ValueDate { get; set; }
+        public string BookingDirection { get; set; }
+
+        // Users
+        public string UsersInvolve { get; set; }
+        public string ReferenceId { get; set; }
+        public string Description { get; set; }
+    }
     public class AccountingEntryServiceResponse
     {
         public List<AccountingEntry > Data { get; set; }
@@ -151,6 +396,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
     public class AccountingEntryQuery
     {
         public AccountingEntryDto AccountingEntry { get; set; }
+        public List<AccountingEntryDto> AccountingEntryDtos { get; set; }
         public List<Branch> Branchs { get; set; }
         public SystemQuery SystemQuery { get; set; } = new SystemQuery();
  
@@ -184,6 +430,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string Currency { get; set; }
         // Text description explaining the purpose of the transaction
         public string Description { get; set; }
+        public string Naration { get; set; }
         // ID linking to source documents related to transaction
         public string ReferenceID { get; set; }
         // Status of workflow ( Posted,  Reversed)
@@ -246,7 +493,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
 
         // Text description explaining the purpose of the transaction
         public string Description { get; set; }
-
+     
         // ID linking to source documents related to transaction
         public string ReferenceID { get; set; }
 
@@ -284,6 +531,75 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string EntryDateTime { get; set; }
         public string Representative { get; set; }
         public string Naration { get; set; }
+
+
+        /// <summary>
+        /// Converts an AccountingEntryDto object into an AccountingEntry object.
+        /// </summary>
+        /// <param name="dto">The source AccountingEntryDto object.</param>
+        /// <returns>A new AccountingEntry populated with values from the DTO.</returns>
+        public static AccountingEntryDto ConvertToEntity(AccountingEntry dto)
+        {
+            if (dto == null)
+                return null;
+
+            // Create a new AccountingEntry instance and map fields
+            var entry = new AccountingEntryDto
+            {
+                // Copy identifiers
+                Id = dto.Id,
+
+                // Map date fields
+                EntryDate = dto.EntryDate,          // Original entry date
+                ValueDate = dto.ValueDate,          // Effective posting date
+
+                // Entry classification
+                EntryType = dto.EntryType,          // Debit or Credit
+                Currency = dto.Currency,            // Transaction currency
+
+                // Description or narration (prefer dto.Naration if available)
+                Description = string.IsNullOrWhiteSpace(dto.Naration)
+                                ? dto.Description
+                                : dto.Description,
+
+                // Reference IDs
+                ReferenceID = dto.ReferenceID,
+                Status = dto.Status,
+
+                // Source information
+                Source = dto.Source,
+                BankId = dto.BankId,
+                BranchId = dto.BranchId,
+
+                // Debit side information
+                DrAccountId = dto.DrAccountId,
+                DrAccountNumber = dto.DrAccountNumber,
+                DrAmount = dto.DrAmount,
+                DrCurrentBalance =Convert.ToDecimal(  dto.DrCurrentBalance),  // Convert decimal to string
+
+                // Credit side information
+                CrAccountId = dto.CrAccountId,
+                CrAccountNumber = dto.CrAccountNumber,
+                CrAmount = dto.CrAmount,
+                CrCurrentBalance = Convert.ToDecimal(dto.CrCurrentBalance),  // Convert decimal to string
+
+                // Account related info
+                AccountId = dto.AccountId,
+                AccountNumber = dto.AccountNumber,
+                AccountNumberReference = dto.AccountNumberReference,
+                CurrentBalance = dto.CurrentBalance,
+
+                // Additional classification
+                OperationType = dto.OperationType,
+
+                // Audit fields
+                CreatedBy = dto.CreatedBy,
+                CreatedDate = dto.CreatedDate
+            };
+
+            return entry;
+        }
+
     }
 
 

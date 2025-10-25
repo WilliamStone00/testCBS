@@ -1,0 +1,218 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+
+<style>
+    .header-viewer {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #555;
+        border-left: 4px solid #198754;
+    }
+
+        .header-viewer h6 {
+            font-weight: 700;
+            color: #198754;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+    .card-body-tight {
+        padding: 0; /* Table touches edges */
+        border: 1px solid #dee2e6;
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr td {
+        vertical-align: middle;
+        color: #555;
+    }
+
+    .table thead th {
+        background-color: #f1f1f1;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
+    }
+</style>
+
+<!-- ===================== SOURCE DETAILS MODAL ===================== -->
+<div class="modal fade" id="sourceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <!-- Source Header -->
+                <div class="header-viewer">
+                    <h6>
+                        <i class="mdi mdi-file-document-outline me-1"></i> SOURCE INFORMATION
+                    </h6>
+                    <p class="mb-0">
+                        You are viewing detailed information for the selected Source Entry.
+                        You can choose to <strong>Approve</strong> or <strong>Reject</strong> this source.
+                    </p>
+                </div>
+
+                <!-- Source Info Table -->
+                @*<div class="card border-0 mb-3">
+                    <div class="card-body card-body-tight">
+                        <table class="table table-sm table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <th>Source Reference</th>
+                                    <td>@(Model?.Reference ?? "")</td>
+                                </tr>
+                                <tr>
+                                    <th>Initiated By</th>
+                                    <td>@(Model?.CreatedBy ?? "")</td>
+                                    <th>Created Date</th>
+                                    <td>@(Model?.CreatedDate.ToString("yyyy-MM-dd HH:mm") ?? "")</td>
+                                    <th>Accounting Date</th>
+                                    <td>@(Model?.AccountingDate.ToString("yyyy-MM-dd HH:mm") ?? "")</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>@(Model?.State ?? "")</td>
+                                    <th>Branch</th>
+                                    <td>@(Model?.BranchId ?? "")</td>
+                                    <th>CounterpartyBranchId</th>
+                                    <td>@(Model?.CounterpartyBranchId ?? "")</td>
+                                </tr>
+                                <tr>
+                                    <th>Narration</th>
+                                    <td colspan="3">@Html.Raw(Model?.Narration ?? "")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>*@
+
+                <!-- Source Line Entries -->
+                <div class="header-viewer">
+                    <h6>
+                        <i class="mdi mdi-table me-1"></i> SOURCE LINE ENTRIES
+                    </h6>
+                    <p class="mb-0">All source line entries are listed below for your review.</p>
+                </div>
+
+                <div class="card border-0">
+                    <div class="card-body card-body-tight">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Narration</th>
+                                    <th>Debit (XAF)</th>
+                                    <th>Credit (XAF)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model?.Payload?.Entries != null && Model.Payload.Entries.Any())
+                                {
+                                    foreach (var line in Model.Payload.Entries)
+                                    {
+                                        var dr = line.Dr;
+                                        var cr = line.Cr;
+                                        var amountText = line.Amount.ToString("N0");
+                                        <tr>
+                                            <td>@(line.AffiliateAccountId ?? "")</td>
+                                            <td>@(line.Naration ?? "")</td>
+                                            <td>@(dr ? amountText : "")</td>
+                                            <td>@(cr ? amountText : "")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="4" class="text-center">No entries found</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close"></i> Close
+                </button>
+                <div>
+                    <button type="button" id="btnRejectSource" class="btn btn-danger me-2">
+                        <i class="mdi mdi-close-circle-outline"></i> Reject
+                    </button>
+                    <button type="button" id="btnApproveSource" class="btn btn-success">
+                        <i class="mdi mdi-check-circle-outline"></i> Approve
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ===================== Optional Script ===================== -->
+<script>
+    $(document).ready(function () {
+        // Approve button click
+        $('#btnApproveSource').on('click', function () {
+            let id = '@Model?.Id';
+            $.ajax({
+                url: '/JournalHead/Approve',
+                type: 'POST',
+                data: { id: id },
+                success: function (res) {
+                    if (res.success) {
+                        toastr.success('Source approved successfully!');
+                        $('#sourceDetailsModal').modal('hide');
+                        // Refresh table or page if needed
+                    } else {
+                        toastr.error(res.message || 'Approval failed.');
+                    }
+                }
+            });
+        });
+
+        // Reject button click
+        $('#btnRejectSource').on('click', function () {
+            let id = '@Model?.Id';
+            $.ajax({
+                url: '/JournalHead/Reject',
+                type: 'POST',
+                data: { id: id },
+                success: function (res) {
+                    if (res.success) {
+                        toastr.warning('Source rejected.');
+                        $('#sourceDetailsModal').modal('hide');
+                    } else {
+                        toastr.error(res.message || 'Rejection failed.');
+                    }
+                }
+            });
+        });
+    });
+</script>
+

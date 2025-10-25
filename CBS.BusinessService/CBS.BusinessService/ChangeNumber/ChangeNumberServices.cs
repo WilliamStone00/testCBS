@@ -55,12 +55,12 @@ namespace CBS.BusinessService.ChangeNumber
             }
             return ExecutionMessage;
         }
-        public async Task<IEnumerable<PhoneNumberChangeHistory>> GetChangePhonumberHistory(string status)
+        public async Task<IEnumerable<PhoneNumberChangeHistory>> GetChangePhonumberHistory(string Status)
         {
             try
             {
 
-                var couApiResponse = await _customerConfigApiHelper.GetAsync<ResponseObject<List<PhoneNumberChangeHistory>>>(string.Format(APICallHelper.GetPendingPhoneNumberChangeRequest, status));
+                var couApiResponse = await _customerConfigApiHelper.GetAsync<ResponseObject<List<PhoneNumberChangeHistory>>>(string.Format(APICallHelper.GetPendingPhoneNumberChangeRequest, Status));
                 if (couApiResponse.ApiResponseData != null)
                 {
                     return couApiResponse.ApiResponseData.Data;

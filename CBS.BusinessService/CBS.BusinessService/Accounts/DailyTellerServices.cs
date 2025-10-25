@@ -70,41 +70,6 @@ namespace CBS.BusinessService.Accounts
             return ExecutionMessage;
         }
 
-        //
-        //public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
-        //{
-        //    try
-        //    {
-        //        var apiUrl = APICallHelper.TellerOpenningAndClossingQuery;
-
-        //        var couApiResponse = await _transactionBaseConfigApiHelper.PostAsync<ResponseObject<List<OpenningAnclClossingTillDto>>>(apiUrl, getTellerOpenning);
-
-        //        if (couApiResponse.IsSuccess && couApiResponse.ApiResponseData!=null)
-        //        {
-
-
-        //            if (getTellerOpenning.ByBracnch)
-        //            {
-        //                var branch = _branchServices.GetBranch(getTellerOpenning.BranchId);
-        //                return couApiResponse.ApiResponseData.Data;
-        //            }
-        //            else
-        //            {
-        //                var branches = _branchServices.GetBranches();
-        //                return couApiResponse.ApiResponseData.Data;
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            return Enumerable.Empty<OpenningAnclClossingTillDto>();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
 
         public async Task<IEnumerable<OpenningAnclClossingTillDto>> TellerOpenningAndClossingOfDay(GetTellerOpenningAndClossingQuery getTellerOpenning)
         {
@@ -391,7 +356,7 @@ namespace CBS.BusinessService.Accounts
         {
             List<ExportTellerGL> exportTellerGLList = new List<ExportTellerGL>();
 
-            decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.BalanceBF ?? 0;
+            decimal openingBalance = tellerOperationGLList.FirstOrDefault()?.OpeningBalance ?? 0;
             decimal totalCredit = tellerOperationGLList.Sum(item => item.Credit);
             decimal totalDebit = tellerOperationGLList.Sum(item => item.Debit);
             decimal closingBalance = openingBalance + totalCredit - totalDebit;
@@ -408,7 +373,7 @@ namespace CBS.BusinessService.Accounts
                 {
                     Date = tellerOperationGL.Date,
                     Naration = tellerOperationGL.Naration ?? "",
-                    BalanceBF = tellerOperationGL.BalanceBF,
+                    BalanceBF = openingBalance,
                     Debit = tellerOperationGL.Debit,
                     Credit = tellerOperationGL.Credit,
                     Balance = tellerOperationGL.Balance,

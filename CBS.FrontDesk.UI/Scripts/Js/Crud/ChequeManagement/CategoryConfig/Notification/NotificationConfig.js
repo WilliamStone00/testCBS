@@ -1,133 +1,161 @@
-﻿// Location: ~/Scripts/Js/YourPath/NotificationConfig.js
+﻿
+(function ($) {
+    'use strict';
 
-$(document).ready(function () {
-    // Set up the initial event listeners on the static parts of the page.
-    setupNotificationConfigToggles();
-    $('#loadConfigBtn').on('click', loadConfiguration);
+    // --- Configuration for your global appalert function ---
+    const ALERT_STATE = { SUCCESS: 1, WARNING: 2, INFO: 3, DANGER: 4 };
+    const ALERT_TYPE = { TOASTR: 1 };
 
-    // Set up delegated event handlers for the dynamic form.
-    setupDynamicFormHandlers();
-});
+    // --- Read URLs from the main page's container once ---
+    const workspace = $('#notificationConfigWorkspace');
+    const URLS = {
+        init: workspace.data('init-url'),
+        delete: workspace.data('delete-url')
+        // The save URL will be read from the form's 'action' attribute
+    };
 
+    /**
+     * This is the single entry point. It runs when the page is ready.
+     */
+    $(document).ready(function () {
+        // 1. Initialize static UI elements (like select2 plugins)
+        $('.select2').select2({ width: '100%' });
 
-function setupNotificationConfigToggles() {
-    $('#isCentralized').on('change', function () {
-        if (this.checked) {
-            $('#branch-selection-container').slideUp();
-            $('#branchId').val('').trigger('change');
-        } else {
-            $('#branch-selection-container').slideDown();
-        }
+        // 2. Wire up all event handlers for the page
+        setupStaticEventHandlers();
+        setupDelegatedEventHandlers();
     });
-}
 
+    /**
+     * Wires up event handlers for static elements that exist on page load.
+     */
+    function setupStaticEventHandlers() {
+        $('#isCentralized').on('change', function () {
+            $('#branch-selection-container').toggle(!this.checked);
+            if (this.checked) {
+                $('#branchId').val('').trigger('change');
+            }
+        });
 
-function loadConfiguration() {
-    var isCentralized = $('#isCentralized').is(':checked');
-    var branchId = isCentralized ? null : $('#branchId').val();
-    var notificationType = $('#notificationType').val();
-
-    // Validation
-    if (!isCentralized && !branchId) {
-        appalert('Please select a branch for non-centralized configuration.', 2, 1);
-        return;
-    }
-    if (!notificationType) {
-        appalert('Please select a notification type.', 2, 1);
-        return;
+        $('#loadConfigBtn').on('click', loadConfiguration);
     }
 
-    // Use jQuery's .load() to call the InitializeData action and inject the HTML.
-    $('#config-form-container').load(
-        '/NotificationConfig/InitializeData',
-        {
+    /**
+     * Wires up DELEGATED event handlers for dynamic content that will be loaded into the container.
+     */
+    function setupDelegatedEventHandlers() {
+        const container = $('#config-form-container');
+
+        // Handles the SAVE action via form submission
+        container.on('submit', '#notificationConfigForm', function (e) {
+            e.preventDefault();
+            handleSave(this);
+        });
+
+        // Handles DELETE and RESET buttons by their specific IDs
+        container.on('click', '#deleteConfigBtn', handleDelete);
+        container.on('click', '#resetConfigBtn', loadConfiguration);
+
+        // Handles clicking on placeholder tags
+        container.on('click', '.placeholder-tag', insertPlaceholder);
+    }
+
+    // --- WORKFLOW FUNCTIONS ---
+
+    function loadConfiguration() {
+        const isCentralized = $('#isCentralized').is(':checked');
+        const branchId = isCentralized ? null : $('#branchId').val();
+        const notificationType = $('#notificationType').val();
+
+        if (!isCentralized && !branchId) { appalert('Please select a branch.', ALERT_STATE.WARNING, ALERT_TYPE.TOASTR); return; }
+        if (!notificationType) { appalert('Please select a notification type.', ALERT_STATE.WARNING, ALERT_TYPE.TOASTR); return; }
+
+        const container = $('#config-form-container');
+
+
+        container.load(URLS.init, {
             partialView: '_ConfigForm',
             isCentralized: isCentralized,
             branchId: branchId,
             notificationType: notificationType
-        }
-    );
-}
-
-
-function setupDynamicFormHandlers() {
-    var container = $('#config-form-container');
-
-    // Handle the "Reset" button click by simply re-loading the original data.
-    container.on('click', '#resetConfigBtn', function () {
-        loadConfiguration();
-    });
-
-    // Handle the "Save" button click.
-    container.on('click', '#saveConfigBtn', function () {
-        saveConfiguration();
-    });
-
-    // Handle the "Delete" button click.
-    container.on('click', '#deleteConfigBtn', function () {
-        deleteConfiguration();
-    });
-}
-
-
-function saveConfiguration() {
-    var form = $('#notificationConfigForm');
-    if (form.length === 0 || !form.valid()) {
-        // Ensure form exists and is valid (if using jQuery validation).
-        return;
-    }
-
-    var formData = form.serialize();
-    var token = $('input[name="__RequestVerificationToken"]').val();
-
-    $.ajax({
-        url: '/NotificationConfig/CreateOrUpdate',
-        type: 'POST',
-        data: formData + "&__RequestVerificationToken=" + token,
-        success: function (response) {
-            if (response.success) {
-                appalert(response.message, 1, 1);
-                // On success, reload the configuration to get the updated state.
-                loadConfiguration();
-            } else {
-                appalert(response.message, 2, 1);
-            }
-        },
-        error: function (err) {
-            appalert('An error occurred while saving: ' + err.statusText, 0, 1);
-        }
-    });
-}
-
-
-function deleteConfiguration() {
-    var configId = $('#Id').val(); // The ID is in a hidden field in the form.
-    if (!configId) {
-        appalert('This template has not been saved yet.', 3, 1);
-        return;
-    }
-
-    if (confirm('Are you sure you want to delete this notification template?')) {
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        $.ajax({
-            url: '/NotificationConfig/Delete',
-            type: 'POST',
-            data: {
-                KEY: configId,
-                __RequestVerificationToken: token
-            },
-            success: function (response) {
-                if (response.success) {
-                    appalert(response.message, 1, 1);
-                    // On successful deletion, clear the form from the page.
-                    $('#config-form-container').empty();
-                } else {
-                    appalert(response.message, 2, 1);
-                }
-            },
-            error: function (err) {
-                appalert('An error occurred during deletion: ' + err.statusText, 0, 1);
-            }
         });
     }
-}
+
+    function handleSave(form) {
+        const $form = $(form);
+        if ($.validator && $.validator.unobtrusive && !$form.valid()) {
+            return;
+        }
+
+        const $submitBtn = $form.find('button[type="submit"]');
+        const originalHtml = $submitBtn.html();
+
+        alertify.confirm("Confirm Save", "Are you sure you want to save these changes?",
+            function () { 
+                $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'POST',
+                    data: $form.serialize(), // Reliably collects all form data
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, ALERT_STATE.SUCCESS, ALERT_TYPE.TOASTR);
+                            loadConfiguration(); // Reload the form on success
+                        } else {
+                            appalert(response.message, ALERT_STATE.DANGER, ALERT_TYPE.TOASTR);
+                        }
+                    },
+                    error: function () { appalert('An unexpected server error occurred.', ALERT_STATE.DANGER, ALERT_TYPE.TOASTR); },
+                    complete: function () { $submitBtn.prop('disabled', false).html(originalHtml); }
+                });
+            },
+            function () { appalert('Save cancelled.', ALERT_STATE.INFO, ALERT_TYPE.TOASTR); }
+        );
+    }
+
+    function handleDelete() {
+        const configId = $('#Id').val();
+        if (!configId) {
+            appalert('This template has not been saved yet.', ALERT_STATE.INFO, ALERT_TYPE.TOASTR);
+            return;
+        }
+        alertify.confirm('Confirm Deletion', 'This action is permanent. Are you sure?',
+            function () { // onOk
+                const token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: URLS.delete,
+                    type: 'POST', // Use POST for secure deletion
+                    data: { __RequestVerificationToken: token, KEY: configId },
+                    success: function (response) {
+                        if (response.success) {
+                            appalert(response.message, ALERT_STATE.SUCCESS, ALERT_TYPE.TOASTR);
+                            $('#config-form-container').empty(); // Clear the form on success
+                        } else {
+                            appalert(response.message, ALERT_STATE.DANGER, ALERT_TYPE.TOASTR);
+                        }
+                    },
+                    error: function () { appalert('An unexpected error occurred during deletion.', ALERT_STATE.DANGER, ALERT_TYPE.TOASTR); }
+                });
+            },
+            function () { appalert('Deletion cancelled.', ALERT_STATE.INFO, ALERT_TYPE.TOASTR); }
+        );
+    }
+
+    function insertPlaceholder() {
+        const textarea = document.getElementById('templateBody');
+        const placeholderText = $(this).text();
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+
+        // Add $ before the placeholder text
+        const textToInsert = `$${placeholderText}`;
+
+        textarea.value = text.substring(0, start) + textToInsert + text.substring(end);
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + textToInsert.length;
+    }
+
+
+}(jQuery));

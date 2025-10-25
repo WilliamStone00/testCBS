@@ -306,5 +306,35 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
+
+            ////////*****************************************************************************//////
+            // Simple temporary methods for liaison mapping
+        public async Task<IEnumerable<ChartOfAccount>> GetAssetAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var allAccounts = await GetAllChartOfAccounts();
+                return allAccounts.Where(a => a.AccountNumber.StartsWith("1")).ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<ChartOfAccount>();
+            }
+        }
+
+        public async Task<IEnumerable<ChartOfAccount>> GetLiabilityAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var allAccounts = await GetAllChartOfAccounts();
+                return allAccounts.Where(a => a.AccountNumber.StartsWith("2")).ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<ChartOfAccount>();
+            }
+        }
+
     }
 }
+

@@ -120,7 +120,7 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                model.AccountNumberNetwok = "xxxxx";
+                model.AccountNumberNetwork = "xxxxx";
                 model.AccountTypeId = model.AccountNumber.Equals("45100") ? model.AccountCounterPartId : "NO-LIAISONID";
                 model.AccountNumberManagementPosition = "0";
                 model.AccountCategoryId="CCCC";
@@ -157,7 +157,7 @@ namespace CBS.BusinessService.Accounting
             AccountResponseDto responseDto = new AccountResponseDto();
             try
             {
-                model.AccountNumberNetwok = "xxxxx";
+                model.AccountNumberNetwork = "xxxxx";
                 model.AccountTypeId = model.AccountNumber.Equals("45100") ? model.AccountCounterPartId : "YYYYYY";
                 model.AccountNumberManagementPosition = "0";
 
@@ -257,8 +257,8 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
-                var account = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
+                //var listOfCategories = (await accountCartegorieService.GetAccountCategory()).ToList();
+                var account = await GetAccount(id);
          
                 return account;
             }
@@ -268,12 +268,13 @@ namespace CBS.BusinessService.Accounting
                 throw ex;
             }
         }
-        public async Task<FrontDesk.Data.Account> GetAccount(string id)
+        public async Task<FrontDesk.Data.Account> GetAccount(string accountId)
         {
             try
             {
-                var cusResponseObject = (await GetAllAccounting()).Where(i => i.Id.Equals(id)).FirstOrDefault();
-                return cusResponseObject;
+                 var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Account>>(string.Format(APICallHelper.GetAccount, accountId));
+                return couApiResponse.IsSuccess ? couApiResponse.ApiResponseData.Data : null;
+              
             }
             catch (Exception ex)
             {
@@ -367,7 +368,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -390,7 +391,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -403,7 +404,7 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-        public async Task<List<FrontDesk.Data.Account>> GetAllBranch(string BranchId)
+        public async Task<List<FrontDesk.Data.Account>> GetAllBranchAccount(string BranchId)
         {
             try
             {
@@ -412,7 +413,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -434,7 +435,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -447,7 +448,7 @@ namespace CBS.BusinessService.Accounting
             }
         }
 
-
+    
         public async Task<List<FrontDesk.Data.Account>> GetAllAccounting()
         {
             try
@@ -458,7 +459,7 @@ namespace CBS.BusinessService.Accounting
                     if (couApiResponse.ApiResponseData != null)
                     {
                         
-                            return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberCU).ToList();
+                            return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberNetwork).ToList();
                        
                         
                     }
@@ -481,7 +482,7 @@ namespace CBS.BusinessService.Accounting
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x => x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -497,13 +498,13 @@ namespace CBS.BusinessService.Accounting
         {
             try
             {
-                branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id : branchId;
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
+               // branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id : branchId;
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAccountByBranchIdUrl, branchId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)
                     {
-                        return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberCU).ToList();
+                        return couApiResponse.ApiResponseData.Data.OrderBy(x=>x.AccountNumberNetwork).ToList();
                     }
 
                 }
@@ -977,9 +978,9 @@ namespace CBS.BusinessService.Accounting
                 {
                     AccountNumberManagementPosition = modell.PositionNumber,
                     AccountName = modell.Description + " " + GetBranchName(),// .BranchName,
-                    AccountNumber = modell.AccountNumber,
+                    AccountNumber = modell.GetOldAccountNumber(),
 
-                    AccountNumberNetwok = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode() + GetBranchCode()).PadRight(6, '0'),
+                    AccountNumberNetwork = modell.GetOldAccountNumber(),
                     AccountNumberCU = (modell.AccountNumber.PadRight(6, '0') + modell.PositionNumber.PadRight(3, '0') + GetBranchCode()).PadRight(9, '0'),
                     AccountCategoryId = "XXX",
                     AccountTypeId = "",
@@ -1008,6 +1009,8 @@ namespace CBS.BusinessService.Accounting
         {
             return item.BookingDirection.ToUpper() == OperationTypes.CREDIT.ToString() ? OperationTypes.CREDIT : OperationTypes.DEBIT;
         }
+
+     
     }
 
   

@@ -3,12 +3,15 @@ using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.ReportDataSetDto.LoanPortFolioDataSet;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +19,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.Spreadsheet;
 using ZXing.Common;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
@@ -29,13 +31,18 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly AccountingServices _accountingServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
         private readonly BranchServices _branchServices;
+        private readonly SalaryProcessedServices _salaryProcessedServices;
+        private readonly LoanServices _loanServices;
 
-        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null)
+
+        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null, SalaryProcessedServices salaryProcessedServices = null, LoanServices loanServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
-            this.chartOfAccountServices=chartOfAccountServices;
-            _branchServices=branchServices;
+            this.chartOfAccountServices = chartOfAccountServices;
+            _branchServices = branchServices;
+            _salaryProcessedServices = salaryProcessedServices;
+            _loanServices = loanServices;
         }
         // GET: CashDesk
         //public ActionResult Index()
@@ -62,41 +69,100 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
+        // Public, parameterless endpoints for your dynamic menu URLs
+        [HttpGet]
+        public Task<ActionResult> OtherCashIn() => LoadOtherCash(mode: "cashin");
 
-        public async Task<ActionResult> OtherCashTransactions()
+        [HttpGet]
+        public Task<ActionResult> OtherCashOut() => LoadOtherCash(mode: "cashout");
+
+        // One unified loader that prepares data for the same view
+        private async Task<ActionResult> LoadOtherCash(string mode)
         {
+            mode = (mode ?? "cashin").Trim().ToLowerInvariant();
+            bool isCashIn = mode == "cashin";
+            ViewBag.Branches = await _branchServices.GetLiaison();
+            ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch();
             ViewBag.Operation = "income_expense";
-            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
-            ViewBag.Branches=await _branchServices.GetLiaison();
-            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
-            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            ViewBag.OperationType = "cashin";
-            await GetEventNames("FEE");
-            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
-            return View(cashDesk);
+            ViewBag.OperationType = isCashIn ? "cashin" : "cashout";
+            ViewBag.FormContext = isCashIn ? "OtherCashIn" : "OtherCashOut";
+            return View(new CashDesk());
         }
+
+
+        // CashDeskController.cs
+
+        [HttpGet]
+        public async Task<ActionResult> NonMemberSalaryPayout()
+        {
+            ViewBag.FormContext = "SalaryCashOut";
+            ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch(); // source GLs (cash boxes etc.)
+            return View(); // Razor view below
+        }
+
+        // AJAX lookup of a pay code by PlainCode (server should do hash verify, expiry, attempts etc.)
+        [HttpGet]
+        public async Task<JsonResult> LookupTempPayCode(string plainCode)
+        {
+            if (string.IsNullOrWhiteSpace(plainCode))
+                return Json(new { ok = false, msg = "Enter a salary code." }, JsonRequestBehavior.AllowGet);
+
+            var code = await _salaryProcessedServices.GetSalaryTempCode(plainCode); // implement
+            if (code == null) return Json(new { ok = false, msg = "Code not found." }, JsonRequestBehavior.AllowGet);
+
+            // Only send what the UI needs (no hashes)
+            return Json(new
+            {
+                ok = true,
+                data = new
+                {
+                    id = code.Id,
+                    beneficiaryName = code.BeneficiaryName,
+                    cni = code.CNI,
+                    amount = code.Amount,
+                    currency = code.Currency,
+                    branch = code.BranchName,
+                    expiresAt = code.ExpiresAt.ToString(),
+                    status = code.Status,
+                    beneficiaryReference = code.BeneficiaryReference,
+                    attemptsLeft = code.MaxAttempts - code.AttemptCount
+                }
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Redeem & pay
+        [HttpPost]
+        public async Task<ActionResult> RedeemNonMemberSalary(RedeemTempPayCodeCommand cmd)
+        {
+            try
+            {
+                if (cmd != null)
+                {
+                    var data = await _cashDeskService.RedeemNonMemberSalaryAsync(cmd);
+                    if (data.Result)
+                    {
+                        string operationtype = cmd.TransactionType.ToLower();
+                        string viewerUrl = PrepareReport(operationtype);
+                        return Json(new { success = data.Result, redirectUrl = viewerUrl, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                }
+                return Json(new { success = false, status = false, message = $"No data was submitted." });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
         public async Task<ActionResult> OtherCashMobileMoney()
         {
             var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
             return View(cashDesk);
         }
-        //OtherCashMobileMoney
-        public async Task<ActionResult> ExpenseOtherPayment()
-        {
-            ViewBag.Operation = "income_expense";
-            var cashDesk = await _cashDeskService.GetOtherCashDeskTransactions();
-            //ViewBag.Members = _cashDeskService.LoadMembersToList(cashDesk.Customers);
-            ViewBag.MemberAccounts = new SelectList(new List<StringValues>(), "None", "No-Account-Loaded");
-            ViewBag.Branches=await _branchServices.GetLiaison();
-            await GetEventNames("EXPENSE");
-            //ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
-            return View(cashDesk);
-        }
-        private async Task GetEventNames(string operationType)
-        {
-            ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn(operationType);
-
-        }
+        
         public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
             if (path== "getmember")
@@ -110,6 +176,41 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 var listing = await _cashDeskService.LoadMembersAccountByMemberReference(Key);
                 return Json(listing, JsonRequestBehavior.AllowGet);
 
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetMemberLoans(string memberId)
+        {
+            if (string.IsNullOrWhiteSpace(memberId))
+                return Json(new { success = false, message = "❌ Member ID is required." }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                // Call service/repo to get loans for this member
+                var loans = await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId=memberId, QueryParameter= "Open" });
+
+                if (loans == null || !loans.Any())
+                    return Json(new { success = false, message = "⚠️ No active loans found for this member." }, JsonRequestBehavior.AllowGet);
+
+                // Send only what UI needs
+                return Json(new
+                {
+                    success = true,
+                    data = loans.Select(l => new
+                    {
+                        l.Id,
+                        LoanDate = l.LoanDate.ToString("dd/MM/yyyy"),
+                        Balance = l.Balance,
+                        AccrualInterest = l.AccrualInterest,
+                        VatRate = l.VatRate,
+                        LoanAmount = l.LoanAmount,
+                        DueAmount = l.DueAmount
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"🚨 Error: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -239,6 +340,33 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> OtherCashinPosting(AddOtherTransactionCommand otherTransactionCommand)
+        {
+            try
+            {
+                if (otherTransactionCommand != null)
+                {
+                    var data = await _cashDeskService.OtherCashin(otherTransactionCommand);
+                    if (data.Result)
+                    {
+                        string operationtype = otherTransactionCommand.TransactionType.ToLower();
+                        string viewerUrl = PrepareReport(operationtype);
+                        return Json(new { success = data.Result, redirectUrl = viewerUrl, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                    }
+                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+                }
+                return Json(new { success = false, status = false, message = $"No data was submitted." });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, status = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
 
         public string PrepareReport(string mainReportType)
         {

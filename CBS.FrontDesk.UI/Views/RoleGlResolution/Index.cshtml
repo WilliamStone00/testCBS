@@ -1,0 +1,359 @@
+﻿@{
+    ViewBag.Title = "Role GL Resolution Management";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-account-cog-outline me-2"></i> Role GL Resolution Management
+                </h1>
+                <p class="card-text text-muted mb-1">
+                    Configure GL account mappings for different roles in transaction processing.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensures automated posting to correct GL accounts based on transaction roles.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Understanding Role GL Resolution</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-account-cash text-primary me-2"></i> <strong>Teller Role:</strong> Maps to cash handling GL accounts for teller transactions.</li>
+                <li><i class="mdi mdi-safe text-success me-2"></i> <strong>Vault Role:</strong> Maps to vault GL accounts for cash storage and movement.</li>
+                <li><i class="mdi mdi-account-switch text-warning me-2"></i> <strong>Liaison Role:</strong> Maps to inter-branch GL accounts for fund transfers.</li>
+                <li><i class="mdi mdi-bank text-info me-2"></i> <strong>Branch Role:</strong> Maps to internal branch ledger accounts.</li>
+                <li><i class="mdi mdi-shuffle-variant text-danger me-2"></i> <strong>Scope Levels:</strong> Configure at Global, Affiliate, or Branch level for granular control.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card shadow p-3 mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <h5 class="text-primary mb-0"><i class="mdi mdi-cog-outline me-1"></i> Role GL Resolution Configuration</h5>
+        <div>
+            <button type="button" class="btn btn-primary" onclick="openRoleGlResolutionForm()">
+                <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Resolution
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="loadRoleGlResolutions()">
+                <i class="mdi mdi-refresh me-1"></i> Refresh
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_RoleGlResolutionData")
+</div>
+
+<!-- Role GL Resolution Modal -->
+<div class="modal fade" id="roleGlResolutionModal" tabindex="-1" aria-labelledby="roleGlResolutionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content position-relative">
+
+            <!-- Loader Overlay -->
+            <div id="roleGlResolutionLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="fw-semibold text-primary">Loading, please wait...</p>
+                </div>
+            </div>
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="roleGlResolutionModalLabel">
+                    <i class="mdi mdi-account-cog-outline me-2"></i> Role GL Resolution
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" id="roleGlResolutionFormContainer">
+                <!-- Form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadRoleGlResolutions();
+        });
+
+        function loadRoleGlResolutions() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: true,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/RoleGlResolution/LoadRoleGlResolutionsData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = {
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                sortColumnName: d.columns[d.order[0]?.column]?.data || "CreatedAt",
+                                sortColumnDirection: d.order[0]?.dir || "desc"
+                            }
+                        };
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'Scope',
+                        render: function (data) {
+                            const badgeClass = {
+                                'GLOBAL': 'bg-primary',
+                                'AFFILIATE': 'bg-success',
+                                'BRANCH': 'bg-info'
+                            }[data] || 'bg-secondary';
+                            return `<span class="badge ${badgeClass}">${data}</span>`;
+                        }
+                    },
+                    { data: 'ScopeName', title: 'Scope Name' },
+                    { data: 'RoleName', title: 'Role' },
+                    { data: 'BranchAccountName', title: 'GL Account' },
+                    {
+                        data: 'CreatedAt',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm') : '';
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                onclick="editRoleGlResolution('${row.Id}')"
+                                                title="Edit Resolution">
+                                            <i class="mdi mdi-pencil-outline"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                onclick="deleteRoleGlResolution('${row.Id}', '${row.RoleName} → ${row.BranchAccountName}')"
+                                                title="Delete Resolution">
+                                            <i class="mdi mdi-delete-outline"></i>
+                                        </button>
+                                    </div>
+                                `;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function openRoleGlResolutionForm(id = null) {
+            $('#roleGlResolutionLoader').removeClass('d-none');
+
+            const url = id ?
+                `/RoleGlResolution/GetRoleGlResolutionFormPartial?id=${id}` :
+                '/RoleGlResolution/GetRoleGlResolutionFormPartial';
+
+            $.get(url)
+                .done(function (html) {
+                    $('#roleGlResolutionFormContainer').html(html);
+                    initializeRoleGlResolutionForm();
+                    $('#roleGlResolutionModal').modal('show');
+                })
+                .fail(function () {
+                    appAlertError("Failed to load form. Please try again.");
+                })
+                .always(function () {
+                    $('#roleGlResolutionLoader').addClass('d-none');
+                });
+        }
+
+        function initializeRoleGlResolutionForm() {
+            // Initialize select2 dropdowns
+            $('.select2').select2({
+                width: '100%',
+                dropdownParent: $('#roleGlResolutionModal'),
+                placeholder: "Select an option...",
+                allowClear: true
+            });
+
+            // Handle scope change
+            $('#Scope').on('change', function () {
+                handleScopeChange();
+            });
+
+            // Load roles dropdown
+            loadRoles();
+
+            // Handle initial scope state
+            handleScopeChange();
+        }
+
+        function handleScopeChange() {
+            const scope = $('#Scope').val();
+            const $scopeIdGroup = $('#ScopeIdGroup');
+            const $branchScopeId = $('#BranchScopeId');
+
+            if (scope === 'BRANCH') {
+                $scopeIdGroup.show();
+                loadBranches();
+            } else if (scope === 'AFFILIATE') {
+                $scopeIdGroup.show();
+                // You would load affiliates here
+                $branchScopeId.html('<option value="">Loading affiliates...</option>');
+            } else {
+                $scopeIdGroup.hide();
+            }
+        }
+
+        function loadBranches() {
+            $.get('/RoleGlResolution/GetBranches')
+                .done(function (branches) {
+                    const $select = $('#BranchScopeId');
+                    $select.empty().append('<option value="">--- Select Branch ---</option>');
+
+                    if (branches && branches.length > 0) {
+                        branches.forEach(function (branch) {
+                            $select.append($('<option>', {
+                                value: branch.Id,
+                                text: branch.Name
+                            }));
+                        });
+                    }
+                })
+                .fail(function () {
+                    $('#BranchScopeId').html('<option value="">Error loading branches</option>');
+                });
+        }
+
+        function loadRoles() {
+            $.get('/RoleGlResolution/GetRoles')
+                .done(function (roles) {
+                    const $select = $('#RoleId');
+                    $select.empty().append('<option value="">--- Select Role ---</option>');
+
+                    if (roles && roles.length > 0) {
+                        roles.forEach(function (role) {
+                            $select.append($('<option>', {
+                                value: role.Id,
+                                text: role.Name
+                            }));
+                        });
+                    }
+                })
+                .fail(function () {
+                    $('#RoleId').html('<option value="">Error loading roles</option>');
+                });
+        }
+
+        function editRoleGlResolution(id) {
+            openRoleGlResolutionForm(id);
+        }
+
+        function deleteRoleGlResolution(id, resolutionName) {
+            alertify.confirm(
+                'Confirm Deletion',
+                `Are you sure you want to delete the Role GL Resolution:<br><strong>${resolutionName}</strong>?`,
+                function () {
+                    $.post('/RoleGlResolution/Delete', { id: id })
+                        .done(function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                loadRoleGlResolutions();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        })
+                        .fail(function () {
+                            appalert("Error deleting Role GL Resolution.", 4, 1);
+                        });
+                },
+                function () {
+                    appalert("Deletion cancelled.", 3, 1);
+                }
+            ).set({
+                labels: { ok: 'Yes, Delete', cancel: 'Cancel' },
+                padding: true
+            });
+        }
+
+        // Form submission handler
+        function submitRoleGlResolutionForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if (!$(form).valid()) {
+                return false;
+            }
+
+            const formData = new FormData(form);
+
+            alertify.confirm(
+                "Confirm Role GL Resolution",
+                "Are you sure you want to save this Role GL Resolution configuration?",
+                function () {
+                    $.ajax({
+                        url: form.action,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                $('#roleGlResolutionModal').modal('hide');
+                                loadRoleGlResolutions();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        },
+                        error: function (err) {
+                            appalert("Error saving Role GL Resolution.", 4, 1);
+                        }
+                    });
+                },
+                function () {
+                    appalert("Operation cancelled.", 3, 1);
+                }
+            ).set('labels', { ok: 'Yes, Save', cancel: 'Cancel' });
+
+            return false;
+        }
+
+        // Modal event handlers for Select2
+        $('#roleGlResolutionModal').on('shown.bs.modal', function () {
+            $('.select2').each(function () {
+                if ($(this).hasClass('select2-hidden-accessible')) {
+                    $(this).select2('destroy');
+                }
+                $(this).select2({
+                    dropdownParent: $('#roleGlResolutionModal'),
+                    width: '100%'
+                });
+            });
+        });
+
+        $('#roleGlResolutionModal').on('hidden.bs.modal', function () {
+            $('.select2').select2('destroy');
+        });
+    </script>
+}

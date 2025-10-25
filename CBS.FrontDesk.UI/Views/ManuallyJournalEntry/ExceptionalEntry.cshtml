@@ -10,10 +10,11 @@
         <h5 class="card-title mb-0">@GlobalManuallyJournalEntry.INITIATEEXCEPTIONALJOURNALENTRY</h5>
     </div>
     <div class="card-body">
+    </div>
         <div class="row">
 
             <!-- Navigation -->
-            <div class="col-12 col-md-4  card-separator">
+            <div class="col-12 col-md-3  card-separator">
 
                 <div id="datalistingview_AddEntry">
 
@@ -27,7 +28,7 @@
                                         <h5 class="card-title">
                                             Reference: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control shadow-input-boxes" })
                                             @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
-                                    </h5>
+                                        </h5>
                                     </div>
 
                                     <div class="row card-body">
@@ -104,13 +105,11 @@
                             </div>
                         </div>
                     }
-
-
                 </div>
 
             </div>
             <!-- Navigation Body -->
-            <div class="col-12 col-md-8 ">
+            <div class="col-12 col-md-9 ">
                 <div class="col-12 col-md-8 ">
 
 
@@ -122,7 +121,9 @@
                     <table id="DataEntrybasketTable" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>@GlobalManuallyJournalEntry.AccountDescription</th>
+                                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
+                                <th>@GlobalManuallyJournalEntry.AccountName</th>
+                                <th>@GlobalManuallyJournalEntry.Description</th>
                                 <th>@GlobalManuallyJournalEntry.Debit</th>
                                 <th>@GlobalManuallyJournalEntry.Credit</th>
                                 <th>@GlobalShared.Action</th>
@@ -131,10 +132,10 @@
                         <tbody></tbody>
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
-                                <th>@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
-                                <th>@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
+
+                                <th colspan="2">@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
+                                <th colspan="2">@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
+                                <th colspan="2">@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
                             </tr>
                         </thead>
                     </table>
@@ -151,8 +152,9 @@
 
             </div>
         </div>
+ 
     </div>
-</div>
+ 
     @section Scripts { @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/main.js/ManualJournalEntries.js"></script>
     <!-- Confirmation Modal -->

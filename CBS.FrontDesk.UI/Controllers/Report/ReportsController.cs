@@ -4,7 +4,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using ClosedXML.Excel;
-using CrystalDecisions.CrystalReports.Engine;
+using   CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using DocumentFormat.OpenXml.EMMA;
 //using Microsoft.Identity.Client;
@@ -703,7 +703,7 @@ namespace CBS.FrontDesk.UI.Controllers
             {
 
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                //string strtitle = System.Web.HttpContext.Current.Session["rpttitle"].ToString();
+                 
                 string fileType = System.Web.HttpContext.Current.Session["fileType"].ToString();
                 string rptpath = System.Web.HttpContext.Current.Session["rptpath"].ToString();
 
@@ -764,7 +764,16 @@ namespace CBS.FrontDesk.UI.Controllers
                         rd.SetDataSource(listData);
 
                     }
-                    string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
+                    else if (fileType.Contains("JournalEntryReference"))
+                    {
+                        var journalEntries = (List<AccountingEntryReport>)rptSource;
+
+                        string strRptPath = Server.MapPath(rptpath);
+                        rd.Load(strRptPath);
+                        var listData = journalEntries;//<<accountingGeneralLedgerDetails.ConvertToGeneralLedgerDto(accountingGeneralLedgerDetails);
+                        rd.SetDataSource(listData);
+                    }
+                        string SavedFileName = string.Format($"{rptType}-{DateTime.UtcNow.Date.ToString("dd_mm_yyyy_hhmmss")}");
                     //Export the report to a byte array
                     Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
                     byte[] bytes = new byte[stream.Length];

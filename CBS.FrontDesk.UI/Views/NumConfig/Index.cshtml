@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
+
+@{
     ViewBag.Title = "Cheque Number Configuration";
 }
 @using Resources
@@ -66,7 +68,7 @@
     <div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">
             <a type="button"
-               onclick="LoadDataGen('NumConfig', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')"
+               onclick="LoadDataGen('NumConfig', 'myDataTable', 'List', 0, 'datalistingview', null, 'list')"
                class="btn btn-label-primary btn-sm me-2"
                data-bs-toggle="tooltip" title="View List">
                 <i class="mdi mdi-view-list mdi-18px"></i> View List
@@ -85,10 +87,81 @@
 
     <!-- DataTable Partial -->
     <div id="datalistingview">
-        @Html.Partial("_Create")
+        @Html.Partial("_Create",Model)
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
+
+    <script>
+
+        // Toggle numeric inputs
+        document.getElementById('toggleNumericPositions').addEventListener('change', function () {
+            document.getElementById('numericPositions').style.display = this.checked ? 'flex' : 'none';
+        });
+
+        // Drag-and-drop logic
+        const dragZone = document.getElementById('dragZone');
+        let draggedItem = null;
+
+        function updateNumericPositionsFromDrag() {
+            const items = [...dragZone.querySelectorAll('.draggable')];
+            items.forEach((item, index) => {
+                const varName = item.dataset.variable;
+                switch (varName) {
+                    case 'BankCode': document.getElementById('bankCodePosition').value = index + 1; break;
+                    case 'BranchCode': document.getElementById('branchCodePosition').value = index + 1; break;
+                    case 'Year': document.getElementById('yearPosition').value = index + 1; break;
+                    case 'SerialNumber': document.getElementById('seriaNumberPosition').value = index + 1; break;
+                }
+            });
+        }
+
+        dragZone.querySelectorAll('.draggable').forEach(item => {
+            item.setAttribute('draggable', true);
+
+            item.addEventListener('dragstart', () => {
+                draggedItem = item;
+                setTimeout(() => item.style.opacity = '0.4', 0);
+            });
+
+            item.addEventListener('dragend', () => {
+                draggedItem.style.opacity = '1';
+                draggedItem = null;
+                updateNumericPositionsFromDrag(); // update numeric positions on drag end
+            });
+        });
+
+        dragZone.addEventListener('dragover', e => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(dragZone, e.clientX);
+            if (!afterElement) dragZone.appendChild(draggedItem);
+            else dragZone.insertBefore(draggedItem, afterElement);
+        });
+
+        function getDragAfterElement(container, x) {
+            const draggableElements = [...container.querySelectorAll('.draggable')].filter(el => el !== draggedItem);
+            let closest = null;
+            let offset = Number.NEGATIVE_INFINITY;
+            draggableElements.forEach(child => {
+                const box = child.getBoundingClientRect();
+                const off = x - box.left - box.width / 2;
+                if (off < 0 && off > offset) { offset = off; closest = child; }
+            });
+            return closest;
+        }
+
+        function NumconfogSyncBeforeSubmit(form) {
+            updateNumericPositionsFromDrag(); // ensure numeric positions always reflect drag order
+            return true;
+        }
+
+        // Initial sync in case editing an existing config
+        updateNumericPositionsFromDrag();
+    </script>
+
 }
+

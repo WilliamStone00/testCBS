@@ -143,7 +143,7 @@ namespace CBS.API.Helper
 
                 return HandleResponse<T>(response).GetAwaiter().GetResult();
             }
-            catch (Exception ex)
+            catch (Exception qaaq22ex)
             {
 
             }
@@ -1288,6 +1288,79 @@ Dictionary<string, string> additionalFields = null)
                 throw;
             }
         }
+        public async Task<ApiResponse<T>> UploadBulkCashPaymentFileAsync<T>(HttpPostedFileBase file,string branchId,string apiUrl)
+        {
+            try
+            {
+                // Ensure URL is clean and valid
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                var formData = new MultipartFormDataContent();
+
+                // Add file content
+                var streamContent = new StreamContent(file.InputStream);
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+                formData.Add(streamContent, "File", file.FileName);
+                formData.Add(streamContent, "BranchId", branchId);
+
+                // Add authorization headers
+                AddAuthorizationHeader(_httpClient);
+
+                // Send the request
+                HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, formData);
+
+                // Handle the response
+                return await HandleResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow the exception
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<ApiResponse<T>> UploadAccountingV2FileAsync<T>(HttpPostedFileBase file, string branchId, string apiUrl)
+        {
+            if (file == null) throw new ArgumentNullException(nameof(file));
+
+            try
+            {
+                apiUrl = RemoveDuplicateSlashes($"{GetEndpoint(_newbaseURL)}{apiUrl}");
+
+                using (var formData = new MultipartFormDataContent())
+                {
+                    // Ensure the stream is at the start
+                    if (file.InputStream.CanSeek) file.InputStream.Position = 0;
+
+                    // File content (separate StreamContent)
+                    var fileContent = new StreamContent(file.InputStream);
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType ?? "application/octet-stream");
+                    var fileName = Path.GetFileName(file.FileName ?? "upload.bin");
+
+                    // The name "file" should match your controller parameter (IFormFile file)
+                    formData.Add(fileContent, "file", fileName);
+
+                    // BranchId as string content (do not reuse streamContent)
+                    var branchContent = new StringContent(branchId ?? string.Empty, Encoding.UTF8);
+                    // Use "branchId" to match the controller's [FromForm] parameter name
+                    formData.Add(branchContent, "branchId");
+
+                    // Add authorization header before sending
+                    AddAuthorizationHeader(_httpClient);
+
+                    var response = await _httpClient.PostAsync(apiUrl, formData).ConfigureAwait(false);
+                    return await HandleResponse<T>(response).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Prefer ILogger in real code
+                Console.WriteLine($"An error occurred: {ex}");
+                throw;
+            }
+        }
+
 
         public async Task<ApiResponse<T>> PostImageAsync<T>(string apiUrl, HttpPostedFileBase imageFile, string loanApplicationId)
         {
@@ -1975,8 +2048,9 @@ Dictionary<string, string> additionalFields = null)
 
                         }
 
-                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden)
+                        else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.Forbidden|| response.StatusCode == HttpStatusCode.InternalServerError)
                         {
+
 
                             T data;
                             try

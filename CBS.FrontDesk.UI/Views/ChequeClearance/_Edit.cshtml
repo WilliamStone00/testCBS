@@ -1,0 +1,147 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h6 class="text-success border-bottom pb-2 mb-3">
+            <i class="mdi mdi-file-document-outline me-1"></i> Cheque Clearance Details
+        </h6>
+
+        @using (Html.BeginForm("CreateOrUpdate", "ChequeClearance", FormMethod.Post,
+            new { enctype = "multipart/form-data", id = "editClearanceForm", onsubmit = "return clearanceSubmitAjax(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ChequeClearanceId)
+
+    <div class="row gy-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.MemberReference, new { @class = "form-control", placeholder = "Member Reference" })
+                <label>Member Reference</label>
+                @Html.ValidationMessageFor(m => m.MemberReference, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.ChequeAmount, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Amount" })
+                <label>Cheque Amount</label>
+                @Html.ValidationMessageFor(m => m.ChequeAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.DropDownListFor(m => m.ChequeBranchId,
+                    ViewBag.Branches != null
+                        ? new SelectList(ViewBag.Branches, "Id", "Name", Model.ChequeBranchId)
+                        : Enumerable.Empty<SelectListItem>(),
+                    "--- Select Branch ---",
+                    new { @class = "form-select" })
+                <label>Cheque Branch</label>
+                @Html.ValidationMessageFor(m => m.ChequeBranchId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.DropDownListFor(m => m.ReceivingBranchId,
+                    ViewBag.Branches != null
+                        ? new SelectList(ViewBag.Branches, "Id", "Name", Model.ReceivingBranchId)
+                        : Enumerable.Empty<SelectListItem>(),
+                    "--- Select Branch ---",
+                    new { @class = "form-select" })
+                <label>Receiving Branch</label>
+                @Html.ValidationMessageFor(m => m.ReceivingBranchId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Status, new { @class = "form-control", @readonly = "readonly", placeholder = "Status" })
+                <label>Status</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.NationalIdNumber, new { @class = "form-control", placeholder = "National ID Number" })
+                <label>National ID Number</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.ChequeCreationDate, new { @class = "form-control", type = "datetime-local" })
+                <label>Cheque Creation Date</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.ChequeExpirationDate, new { @class = "form-control", type = "datetime-local" })
+                <label>Cheque Expiration Date</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.NationalIdCreationDate, new { @class = "form-control", type = "date" })
+                <label>National ID Creation Date</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.NationalIdExpirationDate, new { @class = "form-control", type = "date" })
+                <label>National ID Expiration Date</label>
+            </div>
+        </div>
+    </div>
+
+            <div class="mt-4 text-end">
+                
+                    <button type="submit" class="btn btn-success px-4 me-2">
+                        <i class="fas fa-save me-1"></i> Update
+                    </button>
+                
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+    function AddORUpdateGen(chequeClearanceId, formId, mode, method, controller) {
+        // Make an AJAX GET request to your controller action
+        $.ajax({
+            url: '/' + controller + '/' + method,  // Example: /ChequeClearance/get
+            type: 'GET',
+            data: { id: chequeClearanceId },
+            success: function (data) {
+                // Assuming 'data' is JSON containing your ClearanceRequest.OptionRequest fields
+                var form = $('#' + formId);
+
+                // Populate each input by matching 'name' with the model property
+                form.find('[name="ChequeClearanceId"]').val(data.ChequeClearanceId);
+                form.find('[name="MemberReference"]').val(data.MemberReference);
+                form.find('[name="ChequeAmount"]').val(data.ChequeAmount);
+                form.find('[name="ChequeBranchId"]').val(data.ChequeBranchId);
+                form.find('[name="Status"]').val(data.Status);
+                form.find('[name="ChequeCreationDate"]').val(data.ChequeCreationDate);
+                form.find('[name="ChequeExpirationDate"]').val(data.ChequeExpirationDate);
+                form.find('[name="NationalIdCreationDate"]').val(data.NationalIdCreationDate);
+                form.find('[name="NationalIdExpirationDate"]').val(data.NationalIdExpirationDate);
+
+                // Optional: show the form modal if you're using Bootstrap
+                $('#editClearanceModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                alert('Error fetching data: ' + error);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,435 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.FileUpload
+@using Resources
+@{
+    ViewBag.Title = "Affiliate And Branch File Upload";
+    var isAffiliate = Model?.isAffiliate == true;
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-bank-outline me-2"></i>@AccountingV2.BranchAndAffiliateFileUpload
+                </h1>
+                <p class="card-text text-muted mb-1">@AccountingV2.fileuploadtext1</p>
+                <p class="card-text text-info fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @AccountingV2.fileuploadtext2
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanTips" class="collapse">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>@AccountingV2.fileuploadtext3</strong>
+                    <div class="small text-muted mt-1">
+                        @AccountingV2.Clickthe <strong>@AccountingV2.IsAffiliate</strong> @AccountingV2.checkboxtochoosetheuploadtype
+                        <ul class="mb-0">
+                            <li><strong>@AccountingV2.Unchecked</strong> @AccountingV2.text1 <em>@AccountingV2.Branch</em> @AccountingV2.text2</li>
+                            <li><strong>@AccountingV2.Checked</strong> @AccountingV2.text3 <em>@AccountingV2.Affiliate</em> @AccountingV2.text4</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>@AccountingV2.text5</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.tesxt6</div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>@AccountingV2.text7</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.text8</div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>@AccountingV2.text9</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.Afterclicking <em>@AccountingV2.Upload</em> @AccountingV2.text10</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Workspace Card -->
+<div class="card shadow-sm border-0 mb-4">
+    <div id="mainWorkspace" data-is-affiliate="@(isAffiliate ? "true" : "false")">
+        @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 text-primary d-flex align-items-center">
+                        <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                        @AccountingV2.text11
+                        <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                        <i class="mdi mdi-information-outline me-2"></i>
+                        <div>@ChequeManagements.headertext <strong>10MB</strong>.</div>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                    <div class="row g-3">
+                        <!-- IS AFFILIATE CHECKBOX -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
+                                <label class="form-check-label" for="IsAffiliateCheckbox">@AccountingV2.IsAffiliate</label>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH DROPDOWN -->
+                        <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
+                            <label for="BranchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
+                            @Html.DropDownListFor(m => m.branchId,
+                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                                new
+                                     {
+                                    @class = "form-control select2",
+                                    id = "BranchId",
+                                    disabled = isAffiliate ? "disabled" : null
+                                })
+                            @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- AFFILIATE DROPDOWN -->
+                        <div class="col-12 affiliate-dropdown @(isAffiliate ? "" : "d-none")">
+                            <label for="AffiliateId" class="form-label fw-semibold">👤 @AccountingV2.SelectAffiliate</label>
+                            @Html.DropDownListFor(m => m.affiliateId,
+                                new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
+                                "--- " + @AccountingV2.SearchAffiliate + " ---",
+                                new
+                                     {
+                                    @class = "form-control select2",
+                                    id = "AffiliateId",
+                                    disabled = isAffiliate ? null : "disabled"
+                                })
+                            @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">@AccountingV2.Selectfile</label>
+                            <div class="input-group">
+
+                                <input type="file" name="file" id="file" class="form-control" required />
+                                <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
+                        <div class="col-12 text-end mt-3">
+                            <div class="d-flex justify-content-end gap-2">
+                                @* Render initial visible button server-side, keep the other hidden with d-none so JS can toggle immediately *@
+                                @if (isAffiliate)
+                                {
+                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    </a>
+
+                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    </a>
+
+                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }  <!-- using block closed -->
+    </div>
+
+    <div class="card-footer bg-light text-muted text-end">
+        <small>
+            <i class="mdi mdi-information-outline me-1 text-info"></i>
+            @AccountingV2.text12
+        </small>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            'use strict';
+
+            function ensureSelect2Init(selector) {
+                var $el = $(selector);
+                if (!$el || $el.length === 0) return;
+                if ($el.data('select2')) return;
+                try {
+                    if ($.fn.select2) $el.select2({ width: '100%' });
+                } catch (ex) {
+                    console.warn('select2 init failed for', selector, ex);
+                }
+            }
+
+            function toggleAffiliateUI(isAffiliate) {
+                try {
+                    if (isAffiliate) {
+                        $('.affiliate-dropdown').removeClass('d-none').show();
+                        $('.branch-dropdown').addClass('d-none').hide();
+
+                        $('#BranchId').prop('disabled', true);
+                        $('#AffiliateId').prop('disabled', false);
+
+                        $('#affiliateTemplateLink').removeClass('d-none').show();
+                        $('#branchTemplateLink').addClass('d-none').hide();
+                    } else {
+                        $('.affiliate-dropdown').addClass('d-none').hide();
+                        $('.branch-dropdown').removeClass('d-none').show();
+
+                        $('#BranchId').prop('disabled', false);
+                        $('#AffiliateId').prop('disabled', true);
+
+                        $('#affiliateTemplateLink').addClass('d-none').hide();
+                        $('#branchTemplateLink').removeClass('d-none').show();
+                    }
+                } catch (ex) {
+                    console.error('toggleAffiliateUI error', ex);
+                }
+            }
+
+            function safeParseUnobtrusive($context) {
+                try {
+                    if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
+                        $.validator.unobtrusive.parse($context);
+                        return true;
+                    }
+                } catch (ex) {
+                    console.warn('unobtrusive parse failed', ex);
+                }
+                return false;
+            }
+
+            function safeValidateForm($form) {
+                if ($.validator && typeof $form.valid === 'function') {
+                    return $form.valid();
+                }
+                return true;
+            }
+
+            window.fileupload = function (form) {
+                try {
+                    var $form = $(form);
+                    if (!$form || $form.length === 0) {
+                        console.warn('fileupload called without a valid form element.');
+                        return false;
+                    }
+
+                    safeParseUnobtrusive($form);
+
+                    if (!safeValidateForm($form)) {
+                        console.warn('Form validation failed on client.');
+                        return false;
+                    }
+
+                    var confirmFn = function (onOk, onCancel) {
+                        if (window.alertify && typeof alertify.confirm === 'function') {
+                            alertify.confirm("Confirmation", "Are you sure you want to perform this action?", onOk, onCancel);
+                        } else {
+                            if (confirm("Are you sure you want to perform this action?")) onOk(); else onCancel();
+                        }
+                    };
+
+                    confirmFn(function () {
+                        var fd;
+                        try {
+                            fd = new FormData(form);
+                        } catch (ex) {
+                            alert('Your browser does not support file upload via FormData.');
+                            return;
+                        }
+
+                        var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                        if (anti && !fd.has('__RequestVerificationToken')) {
+                            fd.append('__RequestVerificationToken', anti);
+                        }
+
+                        var $btn = $form.find('#btnSubmitUpload');
+                        if ($btn.length === 0) $btn = $('#btnSubmitUpload');
+                        $btn.prop('disabled', true).addClass('disabled');
+
+                        var ajaxConfig = {
+                            type: 'POST',
+                            url: $form.attr('action'),
+                            data: fd,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                // Try to handle HTML partials or JSON responses
+                                if (typeof response === 'string' && response.trim().charAt(0) === '<') {
+                                    $('#mainWorkspace').html(response);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                    return;
+                                }
+
+                                var json = response;
+                                if (typeof response === 'string') {
+                                    try { json = JSON.parse(response); } catch (e) { /* not JSON */ }
+                                }
+
+                                if (json && typeof json === 'object') {
+                                    if (json.success) {
+                                        if (json.status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
+                                        } else if (json.status === "Failed") {
+                                            if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Upload succeeded.');
+                                        }
+
+                                        // NEW: Check for conditions and redirect automatically
+                                        if (json.data) {
+                                            // For Affiliate Upload - Check AutoMatchedAccounts
+                                            if (json.data.AutoMatchedAccounts > 0) {
+                                                setTimeout(function () {
+                                                    if (typeof appalert === 'function') {
+                                                        appalert(`Auto matched accounts: ${json.data.AutoMatchedAccounts}. Redirecting to Awaiting Correspondence...`, 1, 1);
+                                                    } else {
+                                                        alert(`Auto matched accounts: ${json.data.AutoMatchedAccounts}. Redirecting to Awaiting Correspondence...`);
+                                                    }
+
+                                                    // Automatic redirection after showing message
+                                                    setTimeout(function () {
+                                                        window.open('/FileUpload/AwaitingCorrespondence', '_blank');
+                                                    }, 2000);
+
+                                                }, 1000);
+                                            }
+
+                                            // For Branch Upload - Check awaitingCorrespondenceCreated
+                                            else if (json.data.awaitingCorrespondenceCreated > 0) {
+                                                setTimeout(function () {
+                                                    if (typeof appalert === 'function') {
+                                                        appalert(`Awaiting correspondence created: ${json.data.awaitingCorrespondenceCreated}. Redirecting to Awaiting Correspondence...`, 1, 1);
+                                                    } else {
+                                                        alert(`Awaiting correspondence created: ${json.data.awaitingCorrespondenceCreated}. Redirecting to Awaiting Correspondence...`);
+                                                    }
+
+                                                    // Automatic redirection after showing message
+                                                    setTimeout(function () {
+                                                        window.open('/FileUpload/List', '_blank');
+                                                    }, 2000);
+
+                                                }, 1000);
+                                            }
+
+                                            // Keep existing conditions for other redirects
+                                            if (json.data.requiresMappingAccounts > 0) {
+                                                var listUrl = '@Url.Action("List", "FileUpload")';
+                                                window.open(listUrl, '_blank');
+                                            }
+
+                                            // Note: Removed duplicate awaitingCorrespondenceCreated condition to avoid double redirect
+                                        }
+
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    } else {
+                                        var status = json.Status || json.status;
+                                        if (status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message || 'Operation failed.');
+                                        }
+
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    }
+                                } else {
+                                    $('#mainWorkspace').html(response);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                }
+                            },
+                            error: function (err) {
+                                console.error('fileupload error:', err);
+                                if (err && err.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                    return;
+                                }
+
+                                var errMsg = (err && err.statusText) ? err.statusText : 'Server error';
+                                if (err && err.responseText && err.responseText.trim().charAt(0) === '<') {
+                                    $('#mainWorkspace').html(err.responseText);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                } else {
+                                    if (typeof appalert === 'function') appalert(errMsg, 0, 1); else alert(errMsg);
+                                }
+                            },
+                            complete: function () {
+                                $btn.prop('disabled', false).removeClass('disabled');
+                            }
+                        };
+
+                        $.ajax(ajaxConfig);
+                    }, function () {
+                        if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
+                    });
+
+                } catch (ex) {
+                    console.error('fileupload top-level error', ex);
+                    if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+                    return false;
+                }
+
+                return false;
+            };
+
+            $(function () {
+                ensureSelect2Init('#BranchId');
+                ensureSelect2Init('#AffiliateId');
+
+                // get checkbox reliably
+                var $chk = $('#IsAffiliateCheckbox');
+                if ($chk.length === 0) {
+                    $chk = $('input[name="isAffiliate"][type="checkbox"]');
+                }
+
+                // initialize UI from checkbox or data attribute fallback
+                var initialIsAffiliate = false;
+                if ($chk.length) initialIsAffiliate = $chk.is(':checked');
+                else initialIsAffiliate = ($('#mainWorkspace').data('is-affiliate') === true || $('#mainWorkspace').data('is-affiliate') === 'true');
+
+                toggleAffiliateUI(initialIsAffiliate);
+
+                $chk.on('change', function () {
+                    toggleAffiliateUI($(this).is(':checked'));
+                });
+            });
+        })(jQuery);
+    </script>
+}

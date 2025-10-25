@@ -1,0 +1,329 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
+@using Resources
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> JOURNAL HEAD
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Use the filters below to search and review journal entries efficiently.
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="journalHeaderFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Main Filters Card -->
+        <div class="card p-3 mb-3 bg-light">
+
+            <!-- 🔹 Branch & Date Toggles -->
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDateFilters">
+                            Show Accounting / Created Date Filters
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔹 Hidden Branch Dropdown -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔹 Hidden Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Start Accounting Date</label>
+                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">End Accounting Date</label>
+                        <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="startDate">Start Date</label>
+                        <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="endDate">End Date</label>
+                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                    </div>
+
+
+                </div>
+            </div>
+
+            @*<hr class="my-3" />*@
+
+            <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
+            <div class="row mb-1">
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Reference</label>
+                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Operation Type</label>
+                    @Html.DropDownList("OperationType",
+                        new SelectList(ViewBag.OperationTypes, "Value", "Text"),
+                        "Select Operation Type",
+                        new { @class = "form-control select2 mb-1", @id = "OperationType" })
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Reconciliation Status</label>
+                    @Html.DropDownList("WorkTicket",
+                        new SelectList(ViewBag.WorkTickets, "Value", "Text"),
+                        "Select Work Ticket",
+                        new { @class = "form-control select2 mb-1", @id = "WorkTicket" })
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filters
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
+                        onclick="document.getElementById('journalHeaderFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> Reset Filters
+                </button>
+            </div>
+        </div>
+
+        
+    </form>
+</div>
+
+
+<hr />
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_JournalHeadDataTable")
+</div>
+
+
+<!-- Modal container (no body content yet) -->
+<div class="modal fade" id="journalDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" id="journalDetailsModalContent">
+            <!-- Full content (modal body + footer) will be injected by AJAX -->
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    
+    <script>
+        $(document).ready(function () {
+
+            let tableInitialized = false;
+            let table;
+
+
+
+            // ==========================
+            // 🔹 APPLY FILTERS & INIT DATATABLE
+            // ==========================
+            $("#journalHeaderFilterForm").on("submit", function (e) {
+                e.preventDefault();
+
+                const getFilterData = () => ({
+
+                    BranchId: $("#branchId").val(),
+                    OperationType: $("#OperationType").val(),
+                    WorkTicket: $("#WorkTicket").val(),
+                    Reference: $("#reference").val(),
+                    StartDate: $("#startDate").val(),
+                    EndDate: $("#endDate").val(),
+                    StartAccountingDate: $("#startaccountingDate").val(),
+                    EndAccountingDate: $("#endaccountingDate").val()
+                });
+
+                if (!tableInitialized) {
+                    table = $("#myDataTable").DataTable({
+                        serverSide: true,
+                        responsive: true,
+                        ajax: {
+                            url: "/JournalHead/LoadJournalHeaderData",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: function () {
+                                return JSON.stringify(getFilterData());
+                            },
+                            error: function (xhr, status, err) {
+                                console.error("❌ Error loading journal headers:", status, err);
+                                appalert('❌ Failed to load journal headers. Status: ' + xhr.status, 4, 1);
+                            }
+                        },
+                        columns: [
+                            { data: "CreatedAt", render: d => d ? new Date(d).toLocaleDateString() : "" },
+                            { data: "Reference" },
+                            { data: "Narrative" },
+                            { data: "BranchName" },
+                            { data: "AccountingDate", render: d => d ? new Date(d).toLocaleDateString() : "" },
+                            { data: "PostMode" },
+                            {
+                                data: "Id",
+                                orderable: false,
+                                searchable: false,
+                                render: data => `
+                                                <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
+                                                    <i class="mdi mdi-eye"></i> View
+                                                </button>`
+                            }
+                        ],
+                        initComplete: function () {
+                            appalert('✅ Journal headers table loaded successfully!', 1, 1);
+                        },
+                        drawCallback: function () {
+                            const api = this.api();
+                            if (api.rows({ page: 'current' }).data().length === 0) {
+                                appalert('⚠️ No journal headers found on this page.', 2, 1);
+                            }
+                        }
+                    });
+                    tableInitialized = true;
+                } else {
+                    table.ajax.reload(() => appalert('🔄 Table reloaded successfully!', 1, 1), false);
+                }
+            });
+
+            // ==========================
+            // 🔹 RESET FILTERS
+            // ==========================
+            $("#resetFilterBtn").on("click", function (e) {
+                e.preventDefault();
+                $("#journalHeaderFilterForm")[0].reset();
+                $(".select2").val(null).trigger("change");
+                if (tableInitialized) {
+                    table.clear().draw();
+                    appalert('🧹 Filters reset and table cleared.', 1, 1);
+                }
+            });
+
+            // ==========================
+            // 🔹 VIEW DETAILS (Dynamic Modal)
+            // ==========================
+            $(document).on("click", ".view-details", function () {
+                const id = $(this).data("id");
+                if (!id) return;
+
+                $.ajax({
+                    url: `/JournalHead/GetDetails/${encodeURIComponent(id)}`,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (html) {
+                        $("#journalDetailsModalContent").html(html);
+                        const modalEl = document.getElementById('journalDetailsModal');
+                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                        bsModal.show();
+                    },
+                    error: function (xhr, status, err) {
+                        console.error("❌ Error loading details:", status, err);
+                        $("#journalDetailsModalContent").html(`
+                                                <div class="modal-body">
+                                                    <div class="alert alert-danger">
+                                                        Failed to load details. Status: ${xhr.status}
+                                                    </div>
+                                                </div>
+                                            `);
+                        const modalEl = document.getElementById('journalDetailsModal');
+                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                        bsModal.show();
+
+                        appalert('❌ Failed to load journal details. Status: ' + xhr.status, 4, 1);
+                    }
+                });
+            });
+
+            // ==========================
+            // 🔹 PRINT MODAL CONTENT
+            // ==========================
+            $(document).on('click', '#printJournalBtn', function () {
+                const modalContent = document.querySelector("#journalDetailsModal .modal-content");
+                const printWindow = window.open("", "_blank", "width=900,height=700");
+                printWindow.document.write("<html><head><title>Journal Entry Details</title></head><body>");
+                printWindow.document.write(modalContent.innerHTML);
+                printWindow.document.write("</body></html>");
+                printWindow.document.close();
+                printWindow.print();
+
+                appalert('🖨️ Journal details sent to printer.', 1, 1);
+            });
+
+        });
+    </script>
+
+ }

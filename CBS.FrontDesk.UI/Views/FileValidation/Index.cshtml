@@ -150,6 +150,7 @@
         function printD3C() {
             const src = document.getElementById('dashboardPrint');
             if (!src) { window.print(); return; }
+            
 
             // --- Build a temporary print canvas and move content into it ---
             const parent = src.parentNode;
@@ -485,52 +486,52 @@
 
 // ---------------------------
 // Details loader: fetch first, then reveal on success
-// ---------------------------
-       function viewDetails(fileId) {
-    const $detailsContainer = $('#detailsContainer');   // panel to reveal on success
-    const $detailsBody = $('#detailsBody');             // content target
-    const $detailsHeader = $('#detailsHeader');         // header text
-    const $errorBox = $('#detailsError');               // error placeholder (separate from details)
+        // ---------------------------
+        function viewDetails(fileId) {
+            const $detailsContainer = $('#detailsContainer');   // panel to reveal on success
+            const $detailsBody = $('#detailsBody');             // content target
+            const $detailsHeader = $('#detailsHeader');         // header text
+            const $errorBox = $('#detailsError');               // error placeholder (separate from details)
 
-    // Always start hidden and clear previous content/errors
-    $detailsContainer.hide();
-    $detailsBody.empty();
-    $detailsHeader.text('');
-    if ($errorBox.length) $errorBox.addClass('d-none').empty();
+            // Always start hidden and clear previous content/errors
+            $detailsContainer.hide();
+            $detailsBody.empty();
+            $detailsHeader.text('');
+            if ($errorBox.length) $errorBox.addClass('d-none').empty();
 
-    const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
+            const url = `@Url.Action("GetextractedFileDetails", "FileValidation")?id=${fileId}`;
 
-    $.get(url)
-        .done(function (response) {
-            // Guard: empty/whitespace response -> treat as error
-            if (!response || (typeof response === 'string' && response.trim().length === 0)) {
-                if ($errorBox.length) {
-                    $errorBox
-                        .removeClass('d-none')
-                        .html('No details were returned for this file.');
-                }
-                return; // do NOT show details container
-            }
+            $.get(url)
+                .done(function (response) {
+                    // Guard: empty/whitespace response -> treat as error
+                    if (!response || (typeof response === 'string' && response.trim().length === 0)) {
+                        if ($errorBox.length) {
+                            $errorBox
+                                .removeClass('d-none')
+                                .html('No details were returned for this file.');
+                        }
+                        return; // do NOT show details container
+                    }
 
-            // Success: inject and reveal
-            $detailsHeader.text(`File Details: ${fileId}`);
-            $detailsBody.html(response);
-            $detailsContainer.slideDown();
+                    // Success: inject and reveal
+                    $detailsHeader.text(`File Details: ${fileId}`);
+                    $detailsBody.html(response);
+                    $detailsContainer.slideDown();
 
-            // Scroll into view
-            document.getElementById('detailsContainer')
-                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        })
-        .fail(function (xhr) {
-            // Show error only (do not open details panel)
-            if ($errorBox.length) {
-                const msg = xhr?.responseText
-                    ? xhr.responseText
-                    : `Error loading details. Status: ${xhr.status} ${xhr.statusText}`;
-                $errorBox.removeClass('d-none').html(msg);
-            }
-        });
-}
+                    // Scroll into view
+                    document.getElementById('detailsContainer')
+                        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                })
+                .fail(function (xhr) {
+                    // Show error only (do not open details panel)
+                    if ($errorBox.length) {
+                        const msg = xhr?.responseText
+                            ? xhr.responseText
+                            : `Error loading details. Status: ${xhr.status} ${xhr.statusText}`;
+                        $errorBox.removeClass('d-none').html(msg);
+                    }
+                });
+        }
 
         // Delegate action button clicks
         // Note: bind to document if table not present at ready or created later

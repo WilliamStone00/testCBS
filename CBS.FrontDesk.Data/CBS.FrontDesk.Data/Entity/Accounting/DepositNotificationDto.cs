@@ -66,6 +66,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public string BranchId { get; set; }
         public bool IsOwner { get; set; }
         public bool HasAccount56 { get; set; }
+        public string BankAccountOwner { get; set; }
+
     }
     public class RedirectedForBankCashOut 
     {

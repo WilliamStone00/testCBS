@@ -1,0 +1,339 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.OptionRequest
+@using Resources
+@{
+    ViewBag.Title = "Cheque Clearance Request";
+}
+@Html.AntiForgeryToken()
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-currency-usd-circle-outline me-2"></i> Clearance Request
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Always choose either Cheque is Internal  or External .
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CHEQUE CLEARANCE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClearanceTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseClearanceTips" class="collapse ">
+        <div class="card-body">
+            <ul>
+                <li><strong>Verify Cheque Details:</strong> Ensure the cheque number, amount, and account match the customer’s information before processing.</li>
+                <li><strong>Check Account Balance:</strong> Confirm that the issuing account has sufficient funds to avoid rejection.</li>
+                <li><strong>Endorsements:</strong> Verify that the cheque is properly signed and endorsed according to Microfinance  policy.</li>
+                <li><strong>External vs Internal:</strong> Use <em>External</em> if the cheque originates from another Microfinance ; select <em>Internal</em> if it’s from the same branch/system.</li>
+                <li><strong>Load Configuration:</strong> Use the <em>Load</em> button to fetch and validate existing cheque details before clearance.</li>
+                <li><strong>Hold Period:</strong> Be aware of clearance/hold periods for external cheques before confirming availability of funds.</li>
+                <li><strong>Final Approval:</strong> Some clearances may require supervisor authorization; check workflow rules before confirming.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+
+        <a type="button" onclick=" LoadDataGen('ChequeClearance', 'myDataTable', '_ChequeClearanceDataTable', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+
+
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_MainForm','new','ChequeClearance')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light shadow-sm mb-4">
+            <div class="card-body">
+
+                <!-- Title -->
+                <h1 class="card-title text-primary fw-bold text-center mb-4">
+                    <i class="mdi mdi-book-open-variant me-2"></i> CHEQUE BOOK FILTERS
+                </h1>
+
+                <form id="chequeBookFilterForm" autocomplete="off">
+                    <div class="row g-3">
+
+                        <!-- Toggle Filters -->
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="toggleCategory" data-toggle-target="#categoryContainer" />
+                                <label for="toggleCategory" class="form-check-label fw-bold">Filter by Category</label>
+                            </div>
+                            <div id="categoryContainer" class="d-none">
+                                <label class="form-label fw-bold">Category</label>
+                                @Html.DropDownList("CheckBookCategoryId",
+                                    new SelectList(ViewBag.Categories ?? new List<object>(), "Id", "Name"),
+                                    "--- Select Category ---",
+                                    new { @class = "form-control select2", @id = "checkBookCategoryId" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="toggleBranch" data-toggle-target="#branchContainer" />
+                                <label for="toggleBranch" class="form-check-label fw-bold">Filter by Branch</label>
+                            </div>
+                            <div id="branchContainer" class="d-none">
+                                <label class="form-label fw-bold">Branch</label>
+                                @Html.DropDownList("BranchId",
+                                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                                    "--- Select Branch ---",
+                                    new { @class = "form-control select2", @id = "branchId" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="toggleCustomer" data-toggle-target="#customerContainer" />
+                                <label for="toggleCustomer" class="form-check-label fw-bold">Filter by Customer</label>
+                            </div>
+                            <div id="customerContainer" class="d-none">
+                                <label class="form-label fw-bold">Customer ID</label>
+                                <input type="text" id="customerId" name="customerId" class="form-control" placeholder="Enter Customer ID" />
+                            </div>
+                        </div>
+
+                        <!-- Other Filters -->
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Number of Leaves</label>
+                            <input type="number" id="numberOfLeaves" class="form-control" placeholder="0" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Status</label>
+                            <select id="status" class="form-control select2">
+                                <option value="">--- Select Status ---</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Blocked">Blocked</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="isBlocked" name="IsBlocked" value="true" />
+                                <label class="form-check-label fw-bold" for="isBlocked">Is Blocked</label>
+                            </div>
+                        </div>
+
+                        <!-- Date Filters -->
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Created Date</label>
+                            <input type="date" id="createdDate" class="form-control" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Start Date</label>
+                            <input type="date" id="startDate" class="form-control" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">End Date</label>
+                            <input type="date" id="endDate" class="form-control" />
+                        </div>
+
+                    </div>
+
+                    <!-- Buttons -->
+                    @*<div class="d-flex justify-content-center mt-4 gap-2">
+                            <button id="applyFilterBtn" class="btn btn-primary">
+                                <i class="mdi mdi-filter-outline me-1"></i> Apply Filters
+                            </button>
+                            <button id="resetFilterBtn" type="button" class="btn btn-secondary">
+                                <i class="mdi mdi-refresh me-1"></i> Reset
+                            </button>
+                        </div>*@
+                    <div class="row mt-2">
+                        <div class="col-md-12 d-flex">
+                            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Search Checkbooks</button>
+                            <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset Filters</button>
+                            @* <button id="clearResultsBtn" class="btn btn-label-secondary w-100"><i class="mdi mdi-close"></i> Clear Results</button>*@
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_MainForm")
+</div>
+
+@*<div id="createViewContainer"></div>*@
+
+@Html.Partial("_DiscountModal", Model.Discount)
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+
+  $(document).ready(function () {
+
+    // ✅ Initialize Select2 if available
+    if ($.fn.select2) $('.select2').select2({ width: '100%' });
+
+    // ✅ Toggle visibility for filter sections
+    $('[type="checkbox"][data-toggle-target]').on('change', function () {
+        const target = $(this).data('toggle-target');
+        $(target)[$(this).is(':checked') ? 'removeClass' : 'addClass']('d-none');
+    });
+
+    // ✅ Build query object
+    function buildQueryObject() {
+        return {
+            numberOfLeaves: parseInt($('#numberOfLeaves').val()) || 0,
+            branchId: $('#branchId').val() || "",
+            checkBookCategoryId: $('#checkBookCategoryId').val() || "",
+            bankId: $('#bankId').val() || "",
+            status: $('#status').val() || "",
+            customerId: $('#customerId').val() || "",
+            isBlocked: $('#isBlocked').is(':checked'),
+            createdDate: $('#createdDate').val() || null,
+            startDate: $('#startDate').val() || null,
+            endDate: $('#endDate').val() || null
+        };
+    }
+
+    // ✅ DataTable initialization
+    const ajaxUrl = '@Url.Action("LoadcheckbookData", "ChequeClearance")';
+    let table = $('#myDataTable').DataTable({
+        searching: false,
+        ordering: false,
+        paging: true,
+        columns: [
+            {   data: 'CreatedDate',
+                render: (data) => data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : 'N/A'
+            },
+            { data: 'ApproveBy' },
+            { data: 'isPrinted', render: d => d ? 'Yes' : 'No' },
+            { data: 'checkBookCategory' },
+            { data: 'NumberOfLeaves' },
+            { data: 'Status', render: d => statusColor(d) },
+            {
+   
+                data: null,
+                orderable: false,
+                className: '',
+                render: function (_, __, row) {
+                    var id = row.Id || ''; // <-- matches your C# property
+
+                    return `
+            <button class="btn btn-sm btn-outline-primary"
+                onclick="ViewChequeBookDetails('${id}')">
+                <i class="mdi mdi-eye-outline me-1"></i> Details
+            </button>`;
+                }
+            }
+
+
+
+
+
+
+        ]
+    });
+
+    // ✅ Format date
+    function formatDate(date) {
+        if (!date) return "";
+        const d = new Date(date);
+        return d.toLocaleDateString();
+    }
+
+    // ✅ Status color label
+    function statusColor(status) {
+        const map = {
+            Active: 'success',
+            Inactive: 'secondary',
+            Blocked: 'danger'
+        };
+        const color = map[status] || 'info';
+        return `<span class="badge bg-${color}">${status}</span>`;
+    }
+
+    // ✅ Apply filters
+    $('#applyFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        const query = buildQueryObject();
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(query),
+            success: function (response) {
+                table.clear().rows.add(response.data || []).draw();
+            },
+            error: function () {
+                alert('Error fetching data.');
+            }
+        });
+    });
+
+    // ✅ Reset filters
+    $('#resetFilterBtn').on('click', function () {
+        $('#chequeBookFilterForm')[0].reset();
+        $('.select2').val(null).trigger('change');
+        table.clear().draw();
+    });
+
+});
+
+
+    function ViewChequeBookDetails(id) {
+    $.ajax({
+        url: '@Url.Action("ChequebookDetail", "ChequeClearance")',
+        type: 'GET',
+        data: { KEY: id },
+        success: function (html) {
+            $("#detailsSection").html(html);
+        },
+        error: function () {
+            alert("Could not load details.");
+        }
+    });
+}
+
+
+
+// details
+        function ViewDetails(id) {
+            $.ajax({
+                url: '@Url.Action("Details", "ChequeClearance")',
+                type: 'GET',
+                data: { id: id },
+                success: function (html) {
+                    $("#detailsContainer").html(html);
+                },
+                error: function () {
+                    alert("Could not load details.");
+                }
+            });
+        }
+
+</script>
+}
