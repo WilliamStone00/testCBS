@@ -70,10 +70,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
                 return Json(new
                 {
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = journalHeaders
+                    draw = data.Options.draw,
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = journalHeaders,
+                    success = true,
+                    message = "Display DataTable for Journal Head  successfully"
                 });
             }
             catch (Exception ex)
@@ -154,9 +156,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 return Json(new
                 {
                     
-                    draw = data.DataTableOptions.draw??"1",
-                    recordsTotal = data.DataTableOptions.recordsTotal,
-                    recordsFiltered = data.DataTableOptions.recordsFiltered,
+                    draw = data.Options.draw??"1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
                     data = journalHeaders,
                     success = true,
                     message = "Display DataTable for Journal Head  successfully"

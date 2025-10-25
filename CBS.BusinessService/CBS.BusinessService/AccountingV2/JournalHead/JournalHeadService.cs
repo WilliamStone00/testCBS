@@ -27,7 +27,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
         }
 
-        public async Task<CustomDataTable> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
+        public async Task<CustomDataTable2> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 var journalHeaders = (
                    JsonConvert.SerializeObject(query));
 
-                var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetJournalHeaderDataTable, query);
 
                 // If API call fails or response unsuccessful
