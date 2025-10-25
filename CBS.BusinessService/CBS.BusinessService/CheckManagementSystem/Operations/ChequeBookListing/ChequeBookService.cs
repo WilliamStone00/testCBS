@@ -52,7 +52,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         //        throw new Exception($"Error fetching cheque books data: {ex.Message}");
         //    }
         //}
-
+      
         public async Task<CustomDataTable> GetChequeBooksDataTableAsync(ChequeBookQuery query)
         {
             try

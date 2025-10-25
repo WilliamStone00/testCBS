@@ -1,0 +1,65 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount.HoPcmfAccountTreeDto
+@using Resources
+
+<div class="card mb-1">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-account-group me-2"></i>Edit Chart Of Account Management
+                    </h1>
+                   @* <p class="card-text">@AccountingV2.AffiliateManagementtext</p>*@
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="card mb-1">
+        <div class="card-body">
+            <!-- When the partial is rendered server-side with a model, we show accountInfo -->
+            <div id="accountInfo">
+                <form id="editAccountForm" class="d-flex flex-column" autocomplete="off">
+                    @* server-bound hidden id *@
+                    <input type="hidden" id="accountId" name="Id" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
+                        <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.Code" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
+                        <input type="text" class="form-control" id="accountNameEn" name="NameEn" value="@Model.NameEn" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
+                        <input type="text" class="form-control" id="accountNameFr" name="NameFr" value="@Model.NameFr" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                        <input type="text" class="form-control" id="accountClass" readonly value="@Model.Class" />
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="postingAllowed" name="PostingAllowed" @(Model.PostingAllowed == true ? "checked" : "") disabled />
+                            <label class="form-check-label" for="postingAllowed">@AccountingV2.PostingAllowed</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button type="submit" class="btn btn-primary w-100" id="saveButton">
+                            <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

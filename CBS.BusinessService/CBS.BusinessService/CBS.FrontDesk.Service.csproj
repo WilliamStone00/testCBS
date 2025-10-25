@@ -70,6 +70,10 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CBS.FrontDesk.UI\Bin\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
@@ -98,7 +102,7 @@
       <HintPath>..\..\packages\MongoDB.Driver.3.2.1\lib\net472\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -238,6 +242,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountMockService.cs" />
+    <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
+    <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
+    <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
+    <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
+    <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
+    <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />

@@ -3,12 +3,14 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+
 using System.Web.Mvc;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeBookListing
 {
@@ -64,6 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
             catch (Exception ex)
             {
+                return Json(new { success = false, message = ex.Message });
                 // Fall back to mock service
                /* try
                 {
@@ -89,6 +92,17 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 /*}*/
             }
         }
+
+            // Example Download endpoint (GET) receives querystring params for export
+            //[HttpGet]
+            //public async Task<IActionResult> DownloadChequeBooks(ChequeBookQuery query)
+            //{
+            //    // implement export using the query (server will bind from query string)
+            //    var fileBytes = await _chequeBookService.GenerateChequeBookExportAsync(query);
+            //    return File(fileBytes, "application/octet-stream", "chequebooks.csv");
+            //}
+        
+
 
         public async Task<ActionResult> GetChequeBookDetails(string id)
         {

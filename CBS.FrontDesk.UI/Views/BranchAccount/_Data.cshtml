@@ -1,0 +1,30 @@
+﻿@* _AffiliateData.cshtml *@
+@using Resources
+@{
+    // optional: set title or other view data here
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="myDataTable" class="table table-striped table-hover table-bordered nowrap" style="width:100%">
+                <thead class="table-light">
+                    <tr>
+                        <th style="min-width:150px">@AccountingV2.CreatedDate</th>
+                        <th style="min-width:110px">Branch</th>
+                        <th style="min-width:90px">@AccountingV2.Code</th>
+                        <th>@AccountingV2.Name</th>
+                        <th style="min-width:110px">Class</th>
+                        <th style="min-width:140px">AffiliateAccountId</th>
+                        <th style="width:160px">@AccountingV2.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* DataTables will populate tbody via AJAX *@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

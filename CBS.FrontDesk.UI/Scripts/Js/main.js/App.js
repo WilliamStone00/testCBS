@@ -1301,6 +1301,189 @@ function PageReload() {
 
 
 
+function submitChequeRequestForm(form) {
+    // Validate form first
+    if (!$(form).valid()) {
+        return false;
+    }
+
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
+
+    // Build FormData manually so we control checkbox values and avoid MVC duplicate hidden fields
+    const formData = new FormData();
+
+    // Add non-checkbox fields from serializeArray() (skips MVC's checkbox hidden duplicates)
+    $(form).serializeArray().forEach(function (field) {
+        if (!field.name.endsWith("_false")) {
+            formData.append(field.name, field.value);
+        }
+    });
+
+    // Add checkboxes explicitly as "true"/"false"
+    $(form).find('input[type="checkbox"]').each(function () {
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked');
+        const fieldName = checkbox.attr('name');
+
+        // Ensure no previous value remains
+        formData.delete(fieldName);
+        formData.append(fieldName, isChecked.toString());
+    });
+
+    // Add file inputs (if any) with proper keys (keeps FormData semantics)
+    $(form).find('input[type="file"]').each(function () {
+        const input = this;
+        const name = $(input).attr('name') || $(input).attr('id') || 'file';
+        // If multiple files allowed, append each; otherwise append first file
+        if (input.files && input.files.length) {
+            for (let i = 0; i < input.files.length; i++) {
+                // use name (for server it may be "files" or specific field name). If multiple, include index.
+                formData.append(name, input.files[i]);
+            }
+        }
+    });
+
+    // Optional debug logging (comment out in production)
+    console.log('Form Data (preview):');
+    for (let [key, value] of formData.entries()) {
+        // If value is a File show its name
+        if (value instanceof File) {
+            console.log(`${key}: [File] ${value.name}`);
+        } else {
+            console.log(`${key}: ${value}`);
+        }
+    }
+
+    // Re-parse unobtrusive validation (if you rely on it)
+    if ($.validator && $.validator.unobtrusive) {
+        $.validator.unobtrusive.parse(form);
+    }
+
+    if (!$(form).valid()) {
+        submitBtn.prop('disabled', false).html(originalText);
+        return false;
+    }
+
+    // --- Build dynamic confirmation message ---
+    // Helper to pick first existing key from an array of keys
+    function pick(formData, keys) {
+        for (let k of keys) {
+            if (formData.get(k) !== null && formData.get(k) !== undefined && formData.get(k) !== '') {
+                return formData.get(k);
+            }
+        }
+        return null;
+    }
+
+    const idValue = pick(formData, ['Id', 'id', 'RequestId', 'requestId']);
+    const customerName = pick(formData, ['customerName', 'CustomerName', 'customer', 'customerId']);
+    const customerId = pick(formData, ['customerId', 'CustomerId']);
+    const branchId = pick(formData, ['branchId', 'BranchId', 'branch']);
+    const note = pick(formData, ['requestNote', 'note', 'RequestNote']);
+    const operation = idValue ? 'Update' : 'Create';
+
+    // collect filenames if any files exist
+    const fileNames = [];
+    for (let [key, val] of formData.entries()) {
+        if (val instanceof File) {
+            fileNames.push(val.name);
+        }
+    }
+
+    // Build readable summary lines
+    const summaryParts = [];
+    summaryParts.push(`Action: ${operation}`);
+    if (idValue) summaryParts.push(`Id: ${idValue}`);
+    if (customerName && customerName !== customerId) summaryParts.push(`Customer: ${customerName}`);
+    if (customerId) summaryParts.push(`Customer ID: ${customerId}`);
+    if (branchId) summaryParts.push(`Branch: ${branchId}`);
+    if (note) summaryParts.push(`Note: ${note}`);
+    if (fileNames.length) summaryParts.push(`Files: ${fileNames.join(', ')}`);
+
+    const summary = summaryParts.join('\n');
+
+    const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Submission';
+    const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
+
+    // --- Show confirmation using alertify (styled) ---
+    alertify.confirm(confirmTitle, confirmMessage,
+        function () { // OK callback -> perform AJAX
+            const ajaxConfig = {
+                type: 'POST',
+                url: form.action,
+                data: formData,
+                success: function (response) {
+                    console.log("Response:", response);
+
+                    if (response && response.success) {
+                        if (response.status === "Exist") {
+                            appalert(response.message, 3, 1);
+                        } else if (response.status === "Failed") {
+                            appalert(response.message, 2, 1);
+                        } else {
+                            appalert(response.message, 1, 1);
+                        }
+
+                        // Refresh logic (keeps behavior you already used)
+                        if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                            LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                        } else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                            EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                        } else if (response.reloadDataView === "Yes") {
+                            LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                        }
+
+                        // UI cleanup
+                        $('#chequeRequestModal').modal('hide');
+                        if (window.dataTableManager) {
+                            window.dataTableManager.refresh();
+                        }
+                        form.reset();
+                    } else {
+                        // Non-success response handling
+                        if (response && (response.Status === "Exist" || response.status === "Exist")) {
+                            appalert(response.message, 3, 1);
+                        } else {
+                            const msg = response && response.message ? response.message : 'Operation failed';
+                            appalert(msg, 2, 1);
+                        }
+                    }
+                },
+                error: function (err) {
+                    console.error('AJAX Error:', err);
+                    if (err && err.status === 401) {
+                        window.location.href = '/Authentication/Login';
+                    } else {
+                        const text = err && err.statusText ? err.statusText : 'An error occurred';
+                        appalert(text, 0, 1);
+                    }
+                },
+                complete: function () {
+                    // always restore the submit button
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            };
+
+            // If multipart/form-data (has files), tell jQuery not to process
+            if ($(form).attr('enctype') === "multipart/form-data" || fileNames.length > 0) {
+                ajaxConfig.contentType = false;
+                ajaxConfig.processData = false;
+            }
+
+            console.log('AJAX Config:', ajaxConfig);
+            $.ajax(ajaxConfig);
+        },
+        function () { // Cancel callback
+            submitBtn.prop('disabled', false).html(originalText);
+            appalert('Transaction cancelled', 3, 1);
+        }
+    ).set('labels', { ok: 'Yes', cancel: 'No' });
+
+    return false;
+}
+
 function AjaxPostAndUpdate(form) {
     console.log("Form Action:", form.action);
     console.log("Form Method:", form.method);
@@ -1375,7 +1558,6 @@ function AjaxPostAndUpdate(form) {
     }
     return false;
 }
-
 
 function AjaxPostAndUpdateValidationDecision(form) {
 
@@ -1627,6 +1809,82 @@ function DetailPage(url) {
 //    }
 
 //}
+
+function AjaxPostAndUpdate(form) {
+    console.log("Form Action:", form.action);
+    console.log("Form Method:", form.method);
+
+    var formData = new FormData(form);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
+            function () {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    success: function (response) {
+                        console.log("Response:", response);
+                        if (response.success) {
+                            if (response.status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            }
+                            else if (response.status === "Failed") {
+                                appalert(response.message, 2, 1);
+                            }
+                            else {
+                                appalert(response.message, 1, 1);
+                            }
+
+                            if (response.option === 'Update' && response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                            else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
+                                EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
+                            }
+                            else if (response.reloadDataView === "Yes") {
+                                LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
+                            }
+                        } else {
+                            if (response.Status === "Exist") {
+                                appalert(response.message, 3, 1);
+                            } else {
+                                appalert(response.message, 2, 1);
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log("Error:", err);
+
+                        if (err.status === 401) { // Unauthorized
+                            // Session has expired, redirect to the login page
+                            window.location.href = '/Authentication/Login'; // Adjust the URL as needed
+                        } else {
+                            appalert(err.statusText, 0, 1);
+                        }
+                    }
+                };
+
+                if ($(form).attr('enctype') === "multipart/form-data") {
+                    ajaxConfig.contentType = false;
+                    ajaxConfig.processData = false;
+                }
+
+                console.log("AJAX Config:", ajaxConfig);
+                $.ajax(ajaxConfig);
+            },
+            function () {
+                appalert('Transaction cancelled', 3, 1);
+            }
+        );
+    }
+    return false;
+}
+
 function appalert(message, state, alertType) {
 
     if (alertType === 1) {

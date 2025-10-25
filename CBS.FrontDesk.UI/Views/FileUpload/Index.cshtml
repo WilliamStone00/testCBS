@@ -1,0 +1,414 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.FileUpload
+@using Resources
+@{
+    ViewBag.Title = "Affiliate And Branch File Upload";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-bank-outline me-2"></i>@AccountingV2.BranchAndAffiliateFileUpload
+                </h1>
+                <p class="card-text text-muted mb-1"> @AccountingV2.fileuploadtext1  </p>
+                <p class="card-text text-info fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @AccountingV2.fileuploadtext2
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i>  @AccountingV2.Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLoanTips" class="collapse">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">
+                    <strong> @AccountingV2.fileuploadtext3</strong>
+                    <div class="small text-muted mt-1">
+                        @AccountingV2.Clickthe<strong> @AccountingV2.IsAffiliate</strong> @AccountingV2.checkboxtochoosetheuploadtype                        <ul class="mb-0">
+                            <li><strong> @AccountingV2.Unchecked</strong> @AccountingV2.text1 <em> @AccountingV2.Branch</em> @AccountingV2.text2</li>
+                            <li><strong> @AccountingV2.Checked</strong> @AccountingV2.text3 <em> @AccountingV2.Affiliate</em> @AccountingV2.text4</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong> @AccountingV2.text5</strong>
+                    <div class="small text-muted mt-1">
+                        @AccountingV2.tesxt6
+                    </div>
+                </li>                            
+
+                <li class="list-group-item">
+                    <strong> @AccountingV2.text7</strong>
+                    <div class="small text-muted mt-1">
+                        @AccountingV2.text8
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong> @AccountingV2.text9</strong>
+                    <div class="small text-muted mt-1">
+                        @AccountingV2.Afterclicking <em> @AccountingV2.Upload</em> @AccountingV2.text10
+                    </div>
+                </li>               
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Workspace Card -->
+<div class="card shadow-sm border-0 mb-4">
+
+    <div id="mainWorkspace">
+        @* Inline upload form (single source of truth) *@
+        @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 text-primary d-flex align-items-center">
+                        <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                        @AccountingV2.text11
+                        <span class="badge bg-success ms-2">@ChequeManagements.Required</span>
+                    </h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                        <i class="mdi mdi-information-outline me-2"></i>
+                        <div>@ChequeManagements.headertext <strong>10MB</strong>.</div>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                    <div class="row g-3">
+                        <!-- IS AFFILIATE CHECKBOX -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
+                                <label class="form-check-label" for="IsAffiliateCheckbox">
+                                    @AccountingV2.IsAffiliate
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH DROPDOWN -->
+                        <div class="col-12 branch-dropdown">
+                            <label for="branchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
+                            @Html.DropDownListFor(m => m.branchId,
+                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                                new { @class = "form-control select2", id = "BranchId" })
+                            @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- AFFILIATE DROPDOWN -->
+                        <div class="col-12 affiliate-dropdown" style="display:none;">
+                            <label for="affiliateId" class="form-label fw-semibold">👤  @AccountingV2.SelectAffiliate</label>
+                            @Html.DropDownListFor(m => m.affiliateId,
+                                new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
+                                "---" + @AccountingV2.SearchAffiliate+ "---",
+                                new { @class = "form-control select2", id = "AffiliateId", disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- FILE INPUT -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold"> @AccountingV2.Selectfile</label>
+                            <input type="file" name="file" class="form-control" required />
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="col-12 text-end mt-3">
+                            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <div class="card-footer bg-light text-muted text-end">
+        <small>
+            <i class="mdi mdi-information-outline me-1 text-info"></i>
+            @AccountingV2.text12
+        </small>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            function ensureSelect2Init(selector) {
+                var $el = $(selector);
+                if (!$el || $el.length === 0) return;
+                if ($el.data('select2')) return;
+                // Initialize select2 if available; otherwise silently skip
+                try {
+                    if ($.fn.select2) $el.select2({ width: '100%' });
+                } catch (ex) {
+                    console.warn('select2 init failed for', selector, ex);
+                }
+            }
+
+            function toggleAffiliateUI(isAffiliate) {
+                if (isAffiliate) {
+                    $('.affiliate-dropdown').show();
+                    $('.branch-dropdown').hide();
+                    $('#BranchId').prop('disabled', true);
+                    $('#AffiliateId').prop('disabled', false);
+                } else {
+                    $('.affiliate-dropdown').hide();
+                    $('.branch-dropdown').show();
+                    $('#BranchId').prop('disabled', false);
+                    $('#AffiliateId').prop('disabled', true);
+                }
+            }
+
+            // Safe unobtrusive parse - only call if available
+            function safeParseUnobtrusive($form) {
+                try {
+                    if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
+                        $.validator.unobtrusive.parse($form);
+                        return true;
+                    }
+                } catch (ex) {
+                    console.warn('unobtrusive parse failed', ex);
+                }
+                console.info('jQuery Validate / Unobtrusive not present or parse skipped.');
+                return false;
+            }
+
+            // Safe form validation check - returns true when either no validator is present or the form is valid
+            function safeValidateForm($form) {
+                if ($.validator && typeof $form.valid === 'function') {
+                    return $form.valid();
+                }
+                // no client-side validation available; assume OK (server will validate)
+                return true;
+            }
+
+            // Generic AJAX file upload handler - used as onsubmit="return fileupload(this);"
+            window.fileupload = function (form) {
+                try {
+                    var $form = $(form);
+                    if (!$form || $form.length === 0) {
+                        console.warn('fileupload called without a valid form element.');
+                        return false;
+                    }
+
+                    // Log basic form meta
+                    console.log('fileupload: action=%s, method=%s, enctype=%s', $form.attr('action'), $form.attr('method'), $form.attr('enctype'));
+
+                    // Try to parse unobtrusive validation if present
+                    safeParseUnobtrusive($form);
+
+                    // If validation exists, run it and stop if invalid
+                    if (!safeValidateForm($form)) {
+                        console.warn('Form validation failed on client.');
+                        return false;
+                    }
+
+                    // Confirmation dialog (alertify if present, otherwise native confirm)
+                    var confirmFn = function (onOk, onCancel) {
+                        if (window.alertify && typeof alertify.confirm === 'function') {
+                            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
+                        } else {
+                            var ok = confirm("Are you sure you want to perform this action?");
+                            if (ok) onOk(); else onCancel();
+                        }
+                    };
+
+                    confirmFn(function () {
+                        // Build FormData
+                        var fd;
+                        try {
+                            fd = new FormData(form);
+                        } catch (ex) {
+                            alert('Your browser does not support file upload via FormData.');
+                            return;
+                        }
+
+                        // Ensure anti-forgery token included (if present on form)
+                        var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                        if (anti && !fd.has('__RequestVerificationToken')) {
+                            fd.append('__RequestVerificationToken', anti);
+                        }
+
+                        // Optional: log keys (for debugging) but avoid logging File objects fully
+                        try {
+                            for (var pair of fd.entries()) {
+                                var key = pair[0];
+                                var val = pair[1];
+                                if (val instanceof File) {
+                                    console.log('FormData entry:', key, 'File: name=' + val.name + ', size=' + val.size);
+                                } else {
+                                    console.log('FormData entry:', key, val);
+                                }
+                            }
+                        } catch (ex) {
+                            console.info('Could not iterate formData entries for logging', ex);
+                        }
+
+                        // disable submit button
+                        var $btn = $form.find('#btnSubmitUpload');
+                        if ($btn.length === 0) $btn = $('#btnSubmitUpload'); // fallback
+                        $btn.prop('disabled', true).addClass('disabled');
+
+                        // Build AJAX config
+                        var ajaxConfig = {
+                            type: 'POST',
+                            url: $form.attr('action'),
+                            data: fd,
+                            success: function (response, textStatus, jqXHR) {
+                                console.log('fileupload success response:', response);
+                                // If server returns HTML partial (string starting with '<'), replace workspace
+                                if (typeof response === 'string' && response.trim().charAt(0) === '<') {
+                                    $('#mainWorkspace').html(response);
+                                    // re-parse unobtrusive inside new content (if available)
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                    return;
+                                }
+
+                                // If JSON-like object
+                                var json = response;
+                                // sometimes server returns JSON as string
+                                if (typeof response === 'string') {
+                                    try { json = JSON.parse(response); } catch (e) { /* not JSON */ }
+                                }
+
+                                if (json && typeof json === 'object') {
+                                    // Map to your earlier behavior
+                                    if (json.success) {
+                                        if (json.status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
+                                        } else if (json.status === "Failed") {
+                                            if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Upload succeeded.');
+                                        }
+
+                                        // handle optional reload/update flows
+                                        if (json.option === 'Update' && json.reloadDataView === "Yes" && json.controllerName) {
+                                            if (typeof LoadDataMain === 'function') {
+                                                LoadDataMain(json.controllerName, json.option, json.divLoaderList, json.tableName, json.dataLoaderActionName, "KEY", "List");
+                                            }
+                                        } else if (json.optype === 'Insert' && json.reloadDataView === "Yes") {
+                                            if (typeof EditResetMain === 'function') {
+                                                EditResetMain("KEY", json.option, json.divLoaderCreator, json.controllerName, json.reinitializedActionName, json.groupID);
+                                            }
+                                        } else if (json.reloadDataView === "Yes" && json.controllerName) {
+                                            if (typeof LoadDataMain === 'function') {
+                                                LoadDataMain(json.controllerName, json.option, json.divLoaderList, json.tableName, json.dataLoaderActionName, "KEY", "List");
+                                            }
+                                        }
+
+                                        // If server returned HTML inside json.html, replace workspace
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    } else {
+                                        // unsuccessful
+                                        var status = json.Status || json.status;
+                                        if (status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message || 'Operation failed.');
+                                        }
+
+                                        // if html content present show it
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    }
+                                } else {
+                                    // Unknown response form - display raw for debugging
+                                    console.warn('fileupload received unexpected response, replacing mainWorkspace with raw response');
+                                    $('#mainWorkspace').html(response);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                }
+                            },
+                            error: function (err) {
+                                console.error('fileupload error:', err);
+                                if (err && err.status === 401) {
+                                    // Session expired - redirect to login
+                                    window.location.href = '/Authentication/Login';
+                                    return;
+                                }
+
+                                var errMsg = (err && err.statusText) ? err.statusText : 'Server error';
+                                if (err && err.responseText && err.responseText.trim().charAt(0) === '<') {
+                                    // server returned HTML (validation errors)
+                                    $('#mainWorkspace').html(err.responseText);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                } else {
+                                    if (typeof appalert === 'function') appalert(errMsg, 0, 1); else alert(errMsg);
+                                }
+                            },
+                            complete: function () {
+                                // always re-enable submit button
+                                $btn.prop('disabled', false).removeClass('disabled');
+                            }
+                        };
+
+                        // If multipart, set these flags so FormData is sent correctly
+                        if ($form.attr('enctype') && $form.attr('enctype').toLowerCase() === 'multipart/form-data') {
+                            ajaxConfig.contentType = false;
+                            ajaxConfig.processData = false;
+                        } else {
+                            // not a file form; let jQuery handle serialization (we already passed FormData though)
+                            ajaxConfig.contentType = false;
+                            ajaxConfig.processData = false;
+                        }
+
+                        console.log('fileupload ajaxConfig (not showing data):', ajaxConfig);
+                        $.ajax(ajaxConfig);
+                    }, function () {
+                        // cancel callback
+                        if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
+                    });
+
+                } catch (ex) {
+                    console.error('fileupload top-level error', ex);
+                    if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+                    return false;
+                }
+
+                // prevent default form submit
+                return false;
+            };
+
+            // initialize UI on DOM ready
+            $(document).ready(function () {
+                ensureSelect2Init('#BranchId');
+                ensureSelect2Init('#AffiliateId');
+
+                // initial toggle state (server may have pre-checked the checkbox)
+                toggleAffiliateUI($('#IsAffiliateCheckbox').is(':checked'));
+
+                $('#IsAffiliateCheckbox').on('change', function () {
+                    toggleAffiliateUI($(this).is(':checked'));
+                });
+            });
+        })(jQuery);
+    </script>
+}
+

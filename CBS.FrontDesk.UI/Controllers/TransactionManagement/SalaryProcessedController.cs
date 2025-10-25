@@ -2,7 +2,9 @@
 using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.BusinessService.CustomerManagement;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
@@ -26,21 +28,24 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
         private readonly UserManagementServices _userManagementServices;
-        public SalaryProcessedController(BranchServices branchServices, SalaryProcessedServices salaryProcessedServices, UserManagementServices userManagementServices)
+        private readonly IndividualProfileServices _individualProfileServices;
+
+        public SalaryProcessedController(BranchServices branchServices, SalaryProcessedServices salaryProcessedServices, UserManagementServices userManagementServices, IndividualProfileServices individualProfileServices)
         {
             _branchServices = branchServices;
             _salaryProcessedServices = salaryProcessedServices;
             _userManagementServices = userManagementServices;
+            _individualProfileServices = individualProfileServices;
         }
 
         public async Task<ActionResult> Index()
         {
-            // Branches
+            //// Branches
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches.ToList();
 
             // Users (for UploadedBy / ExecutedBy filters)
-            var users = await _userManagementServices.GetUserDropDownList();
+            var users = await _userManagementServices.GetUserDropDownList(branches.ToList());
             ViewBag.Users = users.ToList();
             // Optionally preload common filter values for Status (Paid / Pending)
             ViewBag.StatusOptions = new List<SelectListItem>
@@ -52,44 +57,38 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
             return View();
         }
+        private async Task PopulateAggregatesInViewBag(Aggregrate agrAggregates = null)
+        {
+            if (agrAggregates == null)
+            {
+                agrAggregates = await _individualProfileServices.GetAggregates();
+            }
+          
+            ViewBag.Banks = agrAggregates.Banks;
+            ViewBag.Branches = agrAggregates.Branches;
+            ViewBag.EconomicActivities = agrAggregates.EconomicActivities;
+            ViewBag.Countries = agrAggregates.Countries;
+            ViewBag.Regions = agrAggregates.Regions;
+            ViewBag.Divisions = agrAggregates.Divisions;
+            ViewBag.Subdivisions = agrAggregates.Subdivisions;
+            ViewBag.Towns = agrAggregates.Towns;
+            ViewBag.Savings = agrAggregates.Savings;
+            ViewBag.Organizations = agrAggregates.Organizations;
+            ViewBag.bankingRelationships = agrAggregates.CustomerDefaultEnum.bankingRelationships;
+            ViewBag.Genders = agrAggregates.CustomerDefaultEnum.genders;
+            ViewBag.membershipApprovalStatuses = agrAggregates.CustomerDefaultEnum.membershipApprovalStatuses;
+            ViewBag.activeStatuses = agrAggregates.CustomerDefaultEnum.activeStatuses;
+            ViewBag.workingStatuses = agrAggregates.CustomerDefaultEnum.workingStatuses;
+            ViewBag.legalForms = agrAggregates.CustomerDefaultEnum.legalForms;
+            ViewBag.formalOrInformalSectors = agrAggregates.CustomerDefaultEnum.formalOrInformalSectors;
+            ViewBag.maritalStatuses = agrAggregates.CustomerDefaultEnum.maritalStatuses;
+            ViewBag.Languages = _individualProfileServices.GetLanguages();
+            ViewBag.Categories = agrAggregates.CustomerDefaultEnum.customerCategories;
+            ViewBag.relationships = agrAggregates.CustomerDefaultEnum.relationships;
 
+        }
 
-        // In your controller (fields assumed already injected):
-        // private readonly IBranchServices _branchServices;
-        // private readonly IChartOfAccountServices chartOfAccountServices;
-
-        // Reuse one immutable list for File Types (no per-request allocation)
-        //private static readonly IReadOnlyList<SelectListItem> FileTypeOptions =
-        //    new List<SelectListItem>
-        //    {
-        //        new SelectListItem { Value = "CivilServants",       Text = "Civil Servant Files" },
-        //        new SelectListItem { Value = "PrivateInstitutions", Text = "Private Institution Files" },
-        //        new SelectListItem { Value = "StandingOrder",       Text = "Standing Order Files" },
-        //        new SelectListItem { Value = "Analysis",            Text = "Analysed Files" },
-        //        new SelectListItem { Value = "ManualEntryDailyCollection", Text = "Daily Collection Files" },
-        //        new SelectListItem { Value = "Others",              Text = "Other Files" }
-        //    }.AsReadOnly();
-
-        // One helper to populate common dropdowns; optionally include Chart of Accounts
-        //private async Task PopulateDropdownsAsync(bool includeChartOfAccounts)
-        //{
-        //    var branchesTask = _branchServices.GetBranches();
-        //    Task<IEnumerable<object>> coaTask = Task.FromResult(Enumerable.Empty<object>());
-
-        //    if (includeChartOfAccounts)
-        //        coaTask = chartOfAccountServices.GetChartOfAccounts(false).ContinueWith(t => t.Result.Cast<object>());
-
-        //    // Run in parallel when both are needed
-        //    await Task.WhenAll(includeChartOfAccounts ? new Task[] { branchesTask, coaTask } : new Task[] { branchesTask });
-
-        //    ViewBag.Branches = (await branchesTask);                 // original behavior
-        //    ViewBag.FileTypes = FileTypeOptions;                     // reused list
-
-        //    if (includeChartOfAccounts)
-        //        ViewBag.StandingOrderSourceAccountOptions = (await coaTask).ToList(); // original ToList()
-        //}
-
-        // Actions
+       
 
         [HttpPost]
         public async Task<ActionResult> LoadData(GetProcessedSalaryDataTableQuery query)
@@ -124,7 +123,41 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             // Returns a compact, well-structured detail partial for the modal
             return PartialView("_ProcessedSalaryDetails", model);
         }
-       
+        // GET: /SalaryProcessed/RevokePv?tempPayCodeId=...&branchId=...
+        [HttpGet]
+        public async Task<ActionResult> RevokePv(string tempPayCodeId, string branchId = null)
+        {
+            if (string.IsNullOrWhiteSpace(tempPayCodeId))
+                return new HttpStatusCodeResult(400, "Missing TempPayCodeId");
+
+            // Optional: enrich the PV (amount, status, expiresAt, member/non-member, branch…)
+            var info = await _salaryProcessedServices.GetSalary(tempPayCodeId);
+            ViewBag.TempInfo = info;
+
+            // Build a minimal SalaryExtract for the PV (the view expects SalaryExtract)
+            var model = new SalaryExtract
+            {
+                Id = info?.Id,                      // if your DTO provides it
+                BranchId = branchId ?? info?.BranchId,
+                BranchCode = info?.BranchCode,
+                BranchName = info?.BranchName,
+                MemberName = info?.MemberName,
+                MemberReference = info?.MemberReference,
+                NonMemberReference = info?.NonMemberReference,
+                LastTempPayCodeId = tempPayCodeId,
+
+                RevokeTempPayCodesByIdList = new RevokeTempPayCodesByIdList
+                {
+                    BranchId = branchId ?? info?.BranchId,
+                    TempPayCodeIds = new List<string> { tempPayCodeId },
+                    Reason = null
+                }
+            };
+
+            return PartialView("_RevokeTempPayCodePv", model);
+        }
+
+
 
         // GET: /SalaryProcessed/RegistrationPv?salaryExtractId=...&branchId=...&branchCode=...
         [HttpGet]
@@ -136,50 +169,76 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             if (se == null) return HttpNotFound("SalaryExtract not found");
             if (se.Status) // already paid
                 return new HttpStatusCodeResult(400, "Entry already paid; activation not allowed.");
-
+            await PopulateAggregatesInViewBag();
             var vm = new RegisterNonMemberAndGenerateTempCode
             {
                 SalaryExtractId = salaryExtractId,
                 Kyc = new NoneMemberProfileCreateionRequest
                 {
-                    BranchId = branchId ?? se.BranchId,
-                    BranchCode = branchCode ?? se.BranchCode ?? ""
+                    BranchId = branchId,
+                    BranchCode = branchCode, 
                 },
                 ExpiresAt = null // let service default to now + 48h
             };
-
-            return PartialView("_RegisterNonMember", vm);
+            var salaryExtract = new SalaryExtract { RegisterNonMemberAndGenerateTempCode = vm, Id= salaryExtractId };
+            return PartialView("_RegisterNonMemberPv", salaryExtract);
         }
+        // POST: /SalaryProcessed/RevokeTempPayCodes
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RevokeTempPayCodes(RevokeTempPayCodesByIdList cmd)
+        {
+            if (cmd == null || string.IsNullOrWhiteSpace(cmd.BranchId) || cmd.TempPayCodeIds == null || cmd.TempPayCodeIds.Count == 0)
+                return new HttpStatusCodeResult(400, "Missing BranchId or TempPayCodeIds");
 
+            try
+            {
+                var rsp = await _salaryProcessedServices.Delete(cmd); // implement in service
+                                                                               // Expect rsp.Success + rsp.Message
+                return Json(new { success = rsp.MessageStatus, message = rsp.MessageString, revokedIds = cmd.TempPayCodeIds });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
         // POST: /SalaryProcessed/RegisterNonMemberAndGenerateTempCode
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterNonMemberAndGenerateTempCode(RegisterNonMemberAndGenerateTempCode cmd)
         {
+            var vm = new SalaryExtract { RegisterNonMemberAndGenerateTempCode = cmd };
+
             if (!ModelState.IsValid)
             {
-                // re-render the PV with validation messages
-                return PartialView("_RegisterNonMember", cmd);
+                Response.StatusCode = 400;
+                return PartialView("_RegisterNonMemberPv", vm);
             }
 
             try
             {
-                var rsp = await _salaryProcessedServices.Register(cmd);
-                //if (!rsp.Success)
-                //{
-                //    ModelState.AddModelError("", rsp.Message ?? "Registration failed");
-                //    return PartialView("_RegisterNonMember", cmd);
-                //}
+                var rsp = await _salaryProcessedServices.Register(cmd); // ExecutionMessages
 
-                //// signal client to refresh table and close modal
-                return Json(new { success = rsp.Result, status = rsp.MessageStatus, message = Messaging.MessageResult(rsp) });
+                if (rsp == null)
+                    return Json(new { success = false, message = "No response." });
+
+                // ✅ make sure we pass the DTO back
+                return Json(new
+                {
+                    success = rsp.Result,                 // bool
+                    status = rsp.MessageStatus,          // optional
+                    message = Messaging.MessageResult(rsp),
+                    data = rsp.Data as TempPayCodeResultDto
+                });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
-                return PartialView("_RegisterNonMember", cmd);
+                Response.StatusCode = 500;
+                return Json(new { success = false, message = ex.Message });
             }
         }
+
+
 
 
     }

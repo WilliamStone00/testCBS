@@ -28,8 +28,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting
         public async Task<ActionResult> Index()
         {
             GetListAsync();
-           /*JsonRequestBehavior = JsonRequestBehavior.AllowGet*/
-         
+
+            /*JsonRequestBehavior = JsonRequestBehavior.AllowGet*/
+
             return View();
         }
 

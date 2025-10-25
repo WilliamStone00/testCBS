@@ -1,0 +1,324 @@
+﻿@model AffiliateTreeViewModel
+@using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
+@using System.Text.RegularExpressions
+@using Resources;
+
+@{
+    // helper to make a safe HTML id from any node id
+    Func<string, string> safeId = id =>
+    {
+        if (string.IsNullOrEmpty(id)) return "node_unknown";
+        return "node_" + Regex.Replace(id, @"[^\w\-]", "_");
+    };
+}
+
+<style>
+    .coa-tree {
+        font-family: system-ui, "Segoe UI", Roboto, Arial;
+    }
+
+    .coa-node {
+        padding: 6px 8px;
+        margin: 2px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .coa-children {
+        margin-left: 18px;
+        border-left: 1px dashed rgba(0,0,0,0.06);
+        padding-left: 12px;
+    }
+
+    .coa-code {
+        font-weight: 700;
+        margin-right: 8px;
+        color: #0d6efd;
+    }
+
+    .coa-name {
+        color: #333;
+    }
+
+    .coa-toggle {
+        background: transparent;
+        border: none;
+        padding: 0;
+        line-height: 1;
+    }
+
+        .coa-toggle:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+    .coa-node .meta {
+        font-size: .85rem;
+        color: #666;
+        margin-left: 6px;
+    }
+
+    .tree-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .card-tree {
+        max-height: 65vh;
+        overflow: auto;
+    }
+
+    .coa-breadcrumb .coa-code {
+        font-weight: 600;
+        color: #0b5ed7;
+    }
+</style>
+
+<div class="card shadow p-3 mb-4">
+
+    <div class="container-fluid">
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light mb-2">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-account-group me-2"></i>Affiliate Account Details
+                        </h1>
+                        <p class="text-muted mb-0">Details & hierarchical structure for the selected node</p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="card mb-3">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
+
+            <div id="collapseAffiliateTips" class="collapse">
+                <div class="card-body">
+                    <ul>
+                        <li>Click the caret to expand or collapse child nodes.</li>
+                        <li>Use <em>Expand</em> and <em>Collapse</em> to open/close all nodes quickly.</li>
+                        <li>Posting nodes are labelled with a <span class="badge bg-info">Posting</span> badge.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-tree">
+            <div class="text-end">
+                <div class="tree-actions">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnExpandAll" title="Expand all">
+                        <i class="mdi mdi-arrow-expand-all"></i> Expand
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCollapseAll" title="Collapse all">
+                        <i class="mdi mdi-arrow-collapse-all"></i> Collapse
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (Model?.Node == null)
+                {
+                    <div class="text-muted">No details available.</div>
+                }
+                else
+                {
+                    <!-- breadcrumb -->
+                    <div class="mb-2 coa-breadcrumb">
+                        <small class="text-muted">Chart of Accounts</small>
+                        <div class="mt-2">
+                            @{
+                                var parents = Model.ParentChain ?? Enumerable.Empty<Affiliateresponse>();
+                                var last = parents.LastOrDefault();
+                            }
+                            @foreach (var p in parents)
+                            {
+                                <div class="d-inline-block me-2">
+                                    <span class="coa-code">@p.Code</span>
+                                    <span class="coa-name">@p.NameEn</span>
+                                    @if (p != last)
+                                    {
+                                        <span class="text-muted">/</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- selected node header -->
+                    <div class="mb-3">
+                        <h5 class="mb-1">
+                            <i class="mdi mdi-account-box-outline me-1"></i>
+                            @Model.Node.NameEn <small class="text-muted">(@Model.Node.Code)</small>
+                        </h5>
+                        <small class="text-muted">
+                            Id: @Model.Node.Id • Depth: @Model.Node.Depth • PostingAllowed: @(Model.Node.PostingAllowed ? "Yes" : "No")
+                        </small>
+                    </div>
+
+                    <!-- children tree (collapsible) -->
+                    <div class="mt-3 coa-tree-root">
+                        @{
+                            // Root collapse id - we'll show root children expanded initially for better UX
+                            var rootCollapseId = safeId(Model.Node.Id) + "_children";
+                        }
+                        @* Render the root node followed by a collapsible children container *@
+                        <div class="coa-node mb-1">
+                            <div class="d-flex align-items-center w-100">
+                                @* If root has children, show caret toggle (uses data-bs-toggle collapse) *@
+                                @if (Model.Children != null && Model.Children.Item != null && Model.Children.Children?.Count > 0)
+                                {
+                                    <button class="coa-toggle me-2" data-bs-toggle="collapse" data-bs-target="#@rootCollapseId" aria-expanded="true" aria-controls="@rootCollapseId" title="Toggle children">
+                                        <i class="mdi mdi-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="me-3" style="width:1.25rem; display:inline-block;"></span>
+                                }
+
+                                <div>
+                                    <div>
+                                        <span class="coa-code">@Model.Node.Code</span>
+                                        <span class="coa-name">@Model.Node.NameEn</span>
+                                        @if (Model.Node.PostingAllowed)
+                                        {
+                                            <span class="badge bg-info ms-2">Posting</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="@rootCollapseId" class="coa-children collapse show" data-node="@Model.Node.Id">
+                            @* Recursively render children under the root (helper below) *@
+                            @if (Model.Children != null)
+                            {
+                                @RenderTreeNode(Model.Children, safeId)
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    @helper RenderTreeNode(TreeNode node, Func<string, string> safeId)
+    {
+        if (node == null || node.Item == null) { return; }
+
+        var nodeId = node.Item.Id ?? Guid.NewGuid().ToString();
+        var collapseId = safeId(nodeId) + "_children";
+
+        <div class="coa-node" role="treeitem" aria-expanded="false" data-id="@nodeId">
+            <div class="d-flex align-items-center w-100">
+                @if (node.Children != null && node.Children.Count > 0)
+                {
+                    <button class="coa-toggle me-2" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId" title="Toggle children">
+                        <i class="mdi mdi-chevron-right" aria-hidden="true"></i>
+                    </button>
+                }
+                else
+                {
+                    <span class="me-3" style="width:1.25rem; display:inline-block;"></span>
+                }
+
+                <div class="flex-grow-1">
+                    <div>
+                        <span class="coa-code">@node.Item.Code</span>
+                        <span class="coa-name">@node.Item.NameEn</span>
+                        @if (node.Item.PostingAllowed)
+                        {
+                            <span class="badge bg-info ms-2">Posting</span>
+                        }
+                    </div>
+                    <div class="meta">
+                        <small class="text-muted">Id: @node.Item.Id • Depth: @node.Item.Depth</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        if (node.Children != null && node.Children.Count > 0)
+        {
+            <div id="@collapseId" class="coa-children collapse" data-node="@nodeId">
+                @foreach (var child in node.Children)
+                {
+                    @RenderTreeNode(child, safeId)
+                }
+            </div>
+        }    }
+</div>
+    <script>
+        (function () {
+            // toggle caret direction on collapse show/hide events
+            function updateCaret(button, expanded) {
+                // icon element is inside the button
+                var icon = button.querySelector('i');
+                if (!icon) return;
+                if (expanded) {
+                    icon.classList.remove('mdi-chevron-right');
+                    icon.classList.add('mdi-chevron-down');
+                } else {
+                    icon.classList.remove('mdi-chevron-down');
+                    icon.classList.add('mdi-chevron-right');
+                }
+            }
+
+            // Initialize caret states for already mounted collapse elements
+            document.querySelectorAll('.coa-toggle').forEach(function (btn) {
+                var targetSelector = btn.getAttribute('data-bs-target');
+                if (!targetSelector) return;
+                var targetEl = document.querySelector(targetSelector);
+                if (!targetEl) return;
+
+                // set initial icon based on whether the collapse is shown
+                var isShown = targetEl.classList.contains('show');
+                updateCaret(btn, isShown);
+
+                // Listen to bootstrap collapse events
+                targetEl.addEventListener('shown.bs.collapse', function () { updateCaret(btn, true); });
+                targetEl.addEventListener('hidden.bs.collapse', function () { updateCaret(btn, false); });
+            });
+
+            // Expand all
+            document.getElementById('btnExpandAll')?.addEventListener('click', function () {
+                document.querySelectorAll('.coa-children').forEach(function (el) {
+                    var bs = bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
+                    bs.show();
+                });
+            });
+
+            // Collapse all
+            document.getElementById('btnCollapseAll')?.addEventListener('click', function () {
+                document.querySelectorAll('.coa-children').forEach(function (el) {
+                    var bs = bootstrap.Collapse.getInstance(el) || new bootstrap.Collapse(el, { toggle: false });
+                    bs.hide();
+                });
+            });
+
+            // Optional: clicking a node name could select or highlight it — you can hook here
+            document.querySelectorAll('.coa-node').forEach(function (n) {
+                n.addEventListener('click', function (e) {
+                    // prevent collapsing buttons from toggling twice
+                    if (e.target.closest('.coa-toggle')) return;
+                    // highlight selected node (simple visual feedback)
+                    document.querySelectorAll('.coa-node').forEach(x => x.classList.remove('bg-light'));
+                    this.classList.add('bg-light');
+                });
+            });
+        })();
+    </script>

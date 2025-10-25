@@ -97,34 +97,93 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             });
         }
 
-        /// <summary>
-        /// The dedicated AJAX endpoint for the server-side DataTable.
-        /// </summary>
-        [HttpPost]
-        public async Task<ActionResult> LoadCounterCheques(CounterChequeQuery query)
+        ///// <summary>
+        ///// The dedicated AJAX endpoint for the server-side DataTable.
+        ///// </summary>
+        //[HttpPost]
+        //public async Task<ActionResult> LoadCounterCheques(CounterChequeQuery query)
+        //{
+        //    try
+        //    {
+        //        var dataTable = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
+
+        //        // Deserialize the generic 'data' into our strongly-typed object
+        //        var dataList = JsonConvert.DeserializeObject<List<CounterCheques>>(JsonConvert.SerializeObject(dataTable.data));
+
+        //        // Return the data in the exact format the DataTable expects
+        //        return Json(new
+        //        {
+        //            draw = dataTable.draw,
+        //            recordsTotal = dataTable.recordsTotal,
+        //            recordsFiltered = dataTable.recordsFiltered,
+        //            data = dataList
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception
+        //        return new HttpStatusCodeResult(500, "An error occurred while loading data.");
+        //    }
+        //}
+        [HttpGet]
+        public async Task<ActionResult> GetCounterChequeDetails(string id)
         {
             try
             {
-                var dataTable = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
-
-                // Deserialize the generic 'data' into our strongly-typed object
-                var dataList = JsonConvert.DeserializeObject<List<CounterCheques>>(JsonConvert.SerializeObject(dataTable.data));
-
-                // Return the data in the exact format the DataTable expects
-                return Json(new
+                if (string.IsNullOrEmpty(id))
                 {
-                    draw = dataTable.draw,
-                    recordsTotal = dataTable.recordsTotal,
-                    recordsFiltered = dataTable.recordsFiltered,
-                    data = dataList
-                });
+                    // return an empty model fragment if id missing
+                    return PartialView("_CounterChequeDetails", new CounterCheques());
+                }
+
+                var counterCheque = await _counterChequeService.GetCounterChequeDetailsAsync(id);
+
+                // If null, return empty model to avoid Razor null refs
+                if (counterCheque == null) counterCheque = new CounterCheques();
+
+                return PartialView("_CounterChequeDetails", counterCheque);
             }
             catch (Exception ex)
             {
-                // Log the exception
-                return new HttpStatusCodeResult(500, "An error occurred while loading data.");
+                // log (keep your logging approach)
+                System.Diagnostics.Debug.WriteLine($"Error in GetCounterChequeDetails: {ex.Message}");
+                ViewBag.ErrorMessage = "Failed to load counter cheque details. Please try again.";
+                return PartialView("_CounterChequeDetails", new CounterCheques());
             }
         }
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadCounterCheques(CounterChequeQuery query)
+        {
+            try
+            {
+                var data = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
+                var numConfigs = JsonConvert.DeserializeObject<List<ChequeRequestDto>>(JsonConvert.SerializeObject(data.data));
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = numConfigs
+                });
+               
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.DataTableOptions?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
 
         /// <summary>
         /// Handles the submission of an action (Review, Validate, Reject) from the modal.

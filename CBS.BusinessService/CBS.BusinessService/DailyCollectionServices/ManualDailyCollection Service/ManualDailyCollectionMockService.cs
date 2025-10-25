@@ -85,7 +85,7 @@
 
 //        public Task<List<FileUploadResponse>> GetFilesByProcessingStatusAsync(string processingStatus)
 //        {
-//            // For now, we ignore the status and return all files. 
+//            // For now, we ignore the Status and return all files. 
 //            // In a more advanced mock, you could add a "Status" property to FileUploadResponse and filter by it here.
 //            return Task.FromResult(_mockFiles.ToList());
 //        }

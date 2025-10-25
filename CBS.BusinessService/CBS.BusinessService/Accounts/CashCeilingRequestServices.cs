@@ -74,11 +74,11 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
-        public async Task<IEnumerable<CashCeilingRequest>> GetCashCeilingRequests(string userId,string status,string requestType)
+        public async Task<IEnumerable<CashCeilingRequest>> GetCashCeilingRequests(string userId,string Status,string requestType)
         {
             try
             {
-                GetAllCashCeilingRequestsQuery allCashCeilingRequestsQuery = new GetAllCashCeilingRequestsQuery { BranchId=GetBranchID(), Status=status, UserId=userId, RequestType=requestType };
+                GetAllCashCeilingRequestsQuery allCashCeilingRequestsQuery = new GetAllCashCeilingRequestsQuery { BranchId=GetBranchID(), Status=Status, UserId=userId, RequestType=requestType };
                 var queryString = ToQueryString(allCashCeilingRequestsQuery);
                 var fullUrl = $"{APICallHelper.GetAllCashCeilingRequest}?{queryString}";
                 var response = await _transactionApiHelper.GetAsync<ResponseObject<List<CashCeilingRequest>>>(fullUrl);

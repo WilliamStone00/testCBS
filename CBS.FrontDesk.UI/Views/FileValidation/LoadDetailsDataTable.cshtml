@@ -81,7 +81,7 @@
         </tr>
     </thead>
 </table>
-section Scripts {
+@section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 <script>
     $(document).ready(function () {
@@ -101,7 +101,6 @@ section Scripts {
         });
 
         var table = $('#manualEntryDetailsTable').DataTable({
-            processing: true,
             serverSide: true,
             searching: false,
             ordering: true,

@@ -45,6 +45,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
 
     public class ChequeBook
     {
+
         public string Id { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
@@ -83,6 +84,25 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public bool IsIssued { get; set; }
         public string StatusDescription { get; set; }
         public List<ChequeLeaf> Leaves { get; set; } = new List<ChequeLeaf>();
+
+        public string id { get; set; }
+        public string customerId { get; set; }
+        public string customerName { get; set; }
+        public string accountNumber { get; set; }
+        public string branchId { get; set; }
+        public string branchName { get; set; }
+        public string categoryId { get; set; }
+        public string categoryName { get; set; }
+        public int numberOfLeaves { get; set; }
+        public string status { get; set; } // Active, Used, Cancelled, Blocked
+        public DateTime? issueDate { get; set; }
+        public DateTime? expiryDate { get; set; }
+        public DateTime? createdDate { get; set; }
+        public decimal feeAmount { get; set; }
+        public string chequeSeriesStart { get; set; }
+        public string chequeSeriesEnd { get; set; }
+        public List<ChequeLeaf> ChequeLeaves { get; set; } = new List<ChequeLeaf>();
+
     }
 
     public class ChequeLeaf
@@ -100,6 +120,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public DateTime IssueDate { get; set; }
         public DateTime ExpiryDate { get; set; }
     }
+
 
 
 

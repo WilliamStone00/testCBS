@@ -1,0 +1,102 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest.ChequeBookRequest
+
+<fieldset class="fieldset-custom">
+
+    <!-- Header -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Complete details of the cheque book request.
+            </p>
+            <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+        </div>
+    </div>
+
+    <!-- Request Basic Info -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Customer & Request Info</h5>
+                    <hr />
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>Customer Name</th><td>@Model.CustomerName (@Model.CustomerId)</td></tr>
+                            <tr><th>Branch</th><td>@Model.BranchName (@Model.BranchId)</td></tr>
+                            <tr><th>Bank ID</th><td>@Model.BankId</td></tr>
+                            <tr><th>Cheque Book Category</th><td>@Model.CheckBookCategoryName (@Model.CheckBookCategoryId)</td></tr>
+                            <tr><th>Cheque Book Account</th><td><code>@Model.CheckBookAccount</code></td></tr>
+                            <tr><th>Fee Payment Account</th><td><code>@Model.SubscriptionPaymentAccount</code></td></tr>
+                            <tr><th>Request Note</th><td>@Model.RequestNote</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status & Notifications -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3 h-50">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Status & Timeline</h5>
+                    <hr />
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr>
+                                <th>Current Status</th>
+                                <td><span class="badge bg-info">@Model.Status</span></td>
+                            </tr>
+                            @if (Model.ApprovalDate.HasValue)
+                            {
+                                <tr><th>Approval/Rejection Date</th><td>@Model.ApprovalDate?.ToString("f")</td></tr>
+                            }
+                            <tr><th>Approval/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card shadow-sm h-50">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Notification Preferences</h5>
+                    <hr />
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>On Approval</th><td>@(Model.NotifyOnApproval ? "Yes" : "No")</td></tr>
+                            <tr><th>On Rejection</th><td>@(Model.NotifyOnRejection ? "Yes" : "No")</td></tr>
+                            <tr><th>On Clearance</th><td>@(Model.NotifyOnClearance ? "Yes" : "No")</td></tr>
+                            <tr><th>On Payment</th><td>@(Model.NotifyOnPayment ? "Yes" : "No")</td></tr>
+                            <tr><th>On Any Transaction</th><td>@(Model.NotifyOnAnyTransaction ? "Yes" : "No")</td></tr>
+                            <tr><th>Automatic Renewal</th><td>@(Model.AutomaticRenewal ? "Yes" : "No")</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing & Subscription Details -->
+    <div class="row g-3">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Pricing & Subscription</h5>
+                    <hr />
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                            <tr><th>Base Price</th><td>@Model.BasePrice.ToString("C")</td></tr>
+                            <tr><th>Number of Pages</th><td>@Model.NumberOfPages</td></tr>
+                            <tr><th>Subscription Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
+                            <tr><th>Recurring Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
+                            <tr><th>Recurring Amount</th><td>@Model.RecurringAmount?.ToString("C") ?? "-" </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</fieldset>

@@ -1,0 +1,757 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Affiliate Overview - Filters";
+}
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                </h1>
+                <p class="card-text">
+                    @AccountingV2.AffiliateManagementtext
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseAffiliateTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
+                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
+                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Affiliate Filters (bound to AffiliateAccountQuery) -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters</h5>
+
+    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
+        <!-- If your controller expects a POST, change method to post and include @Html.AntiForgeryToken() -->
+        <!-- DataTable options (optional hidden inputs) -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Affiliate identifiers -->
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Affiliate Id</label>
+                    <input type="text" id="affiliateId" name="AffiliateId" class="form-control" placeholder="Affiliate Id" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">@AccountingV2.Code</label>
+                    <input type="text" id="code" name="Code" class="form-control" placeholder="Affiliate code" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">@AccountingV2.Name</label>
+                    <input type="text" id="name" name="Name" class="form-control" placeholder="Affiliate name" />
+                </div>
+            </div>
+
+            <!-- Class and Parent -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Class</label>
+                    <!-- If Class is a free text, keep as input; change to select if you have known classes -->
+                    <input type="text" id="class" name="Class" class="form-control" placeholder="Account class (e.g. Asset, Liability)" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Parent Account</label>
+                    <!-- Replace options with server-generated list when available -->
+                    <select id="parentId" name="ParentId" class="form-control">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="0">-- No parent --</option>
+                        <!-- Example placeholder; ideally populate with real account list -->
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Posting Allowed</label>
+                    <select id="postingAllowed" name="PostingAllowed" class="form-control">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="true">@AccountingV2.Yes</option>
+                        <option value="false">@AccountingV2.No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Created Date Filters toggle -->
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates" onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small class="text-muted">@AccountingV2.Affiliatetext1.</small>
+                </div>
+            </div>
+
+            <div id="createdDateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@AccountingV2.CreatedFrom (UTC)</label>
+                        <input type="date" id="createdFromUtc" name="CreatedFromUtc" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@AccountingV2.CreatedTo (UTC)</label>
+                        <input type="date" id="createdToUtc" name="CreatedToUtc" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language -->
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Language</label>
+                    <select id="language" name="Language" class="form-control">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <!-- add other languages as needed -->
+                    </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="includeDeleted" name="IncludeDeleted" />
+                        <label class="form-check-label fw-bold" for="includeDeleted">@AccountingV2.IncludeDeleted</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- spacing or future controls -->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary me-2 w-100" onclick="document.getElementById('affiliateFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="affiliateListingView">
+    @Html.Partial("_Data")
+</div>
+
+@section Scripts {
+    <script>
+(function ($) {
+    const dataUrl   = '@Url.Action("LoadAffiliateData", "AffiliateAccount")';
+    const detailUrl = '@Url.Action("DetailsPartial", "AffiliateAccount")';
+    const initUrl   = '@Url.Action("InitializeData", "AffiliateAccount")';
+    const deleteUrl = '@Url.Action("Delete", "AffiliateAccount")';
+
+    // expose globals for other scripts
+    window.tableInitialized = window.tableInitialized || false;
+    window.table = window.table || null;
+
+    // internal submit guard & state
+    window._ajaxSubmitState = window._ajaxSubmitState || { isSubmitting: false, lastRequestId: 0, lastXhr: null };
+
+    function safeParseUnobtrusive($scope) {
+        try {
+            if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
+                $.validator.unobtrusive.parse($scope);
+                return true;
+            }
+        } catch (e) { console.warn('unobtrusive.parse failed', e); }
+        return false;
+    }
+
+    function safeValidate($form) {
+        try {
+            if ($.validator && typeof $form.valid === 'function') return $form.valid();
+        } catch (e) { console.warn('client validation check failed', e); }
+        return true;
+    }
+
+    function getFilters() {
+        const createdFrom = $('#createdFromUtc').val();
+        const createdTo = $('#createdToUtc').val();
+
+        return {
+            Options: { Page: 1, PageSize: 10, Sort: '' },
+            AffiliateId: $.trim($('#affiliateId').val()) || null,
+            Code: $.trim($('#code').val()) || null,
+            Name: $.trim($('#name').val()) || null,
+            Class: $.trim($('#class').val()) || null,
+            ParentId: $('#parentId').val() || null,
+            PostingAllowed: (function () {
+                const v = $('#postingAllowed').val();
+                if (v === '') return null;
+                return v === 'true';
+            })(),
+            CreatedFromUtc: createdFrom || null,
+            CreatedToUtc: createdTo || null,
+            IncludeDeleted: $('#includeDeleted').is(':checked'),
+            Language: $('#language').val() || null
+        };
+    }
+
+    function actionButtons(row) {
+        const id = row.Id || row.id || row.affiliateId || '';
+        const name = (row.Name || row.NameEn || '').replace(/'/g, "\\'");
+        // Use class 'btn-add' to avoid duplicate ID issues across rows; delegated listeners below support both
+        return `
+            <div class="d-flex gap-1 justify-content-end">
+                <button type="button" class="btn btn-sm btn-outline-primary btn-detail" data-id="${id}" title="Details ${name}">
+                    <i class="mdi mdi-eye"></i>
+                </button>
+
+                <button type="button" class="btn btn-sm btn-outline-primary btn-add" data-parentid="${id}" title="Add Affiliate">
+                    <i class="mdi mdi-plus"></i>
+                </button>
+
+                <button type="button" class="btn btn-sm btn-outline-primary btn-edit" data-id="${id}" data-partial="_CreateAffiliate" data-path="get" title="Edit ${name}">
+                    <i class="mdi mdi-pencil"></i>
+                </button>
+            </div>`;
+    }
+
+    function initDataTable() {
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            try { $('#myDataTable').DataTable().destroy(); } catch (e) { console.warn(e); }
+            $('#myDataTable').empty();
+        }
+
+        const tbl = $('#myDataTable').DataTable({
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            pageLength: 10,
+            order: [[0, 'desc']],
+            columnDefs: [
+                { targets: [0], width: '15%' },
+                { targets: [1], width: '15%' },
+                { targets: [2], width: '30%' },
+                { targets: [3], width: '5%' },
+                { targets: [4], width: '13%', className: 'text-center' },
+                { targets: [5], width: '12%' },
+                { targets: [6], width: '10%', orderable: false, searchable: false, className: 'text-center' }
+            ],
+            ajax: {
+                url: dataUrl,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: function (d) {
+                    const filters = getFilters();
+                    const pageSize = d.length || 10;
+                    const page = (d.start / pageSize) + 1;
+                    filters.Options = {
+                        Page: page,
+                        PageSize: pageSize,
+                        Sort: (function () {
+                            if (!d.order || !d.order.length) return '';
+                            const ord = d.order[0];
+                            const col = d.columns[ord.column].data || d.columns[ord.column].name;
+                            const dir = ord.dir;
+                            return col ? `${col} ${dir}` : '';
+                        })()
+                    };
+                    return JSON.stringify(filters);
+                },
+                dataSrc: function (json) {
+                    if (!json) return [];
+                    return json.data || [];
+                },
+                error: function (xhr, status, err) {
+                    console.error('Load error', xhr, status, err);
+                    $('#myDataTable tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedDate',
+                    render: function (data) {
+                        return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                    }
+                },
+                { data: 'Code', name: 'Code' },
+                { data: 'Name', name: 'Name' },
+                { data: 'Class', name: 'Class' },
+                { data: 'ParentId', name: 'ParentId' },
+                {
+                    data: 'PostingAllowed',
+                    name: 'PostingAllowed',
+                    className: 'text-center',
+                    render: function (data) {
+                        if (data === true) return '<span class="badge bg-success">Yes</span>';
+                        if (data === false) return '<span class="badge bg-secondary">No</span>';
+                        return '';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-end',
+                    render: function (data, type, row) {
+                        return actionButtons(row);
+                    }
+                }
+            ],
+            language: { emptyTable: 'No affiliates found' }
+        });
+
+        // expose globally for other scripts
+        window.table = tbl;
+        window.tableInitialized = true;
+    }
+
+    function ensureModal() {
+        let $modal = $('#actionModal');
+        if ($modal.length === 0) {
+            const modalHtml = `
+            <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <div class="mt-2">Loading...</div>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+            $('body').append(modalHtml);
+            $modal = $('#actionModal');
+        }
+        return $modal;
+    }
+
+    function openPartialInModal(url, data) {
+        const $modal = ensureModal();
+        $modal.find('.modal-content').html('');
+        const bs = new bootstrap.Modal($modal[0]);
+        bs.show();
+
+        $.get(url, data)
+            .done(function (html) {
+                $modal.find('.modal-content').html(html);
+                wireModalFormSubmit($modal);
+            })
+            .fail(function (xhr) {
+                console.error('Partial load failed', xhr);
+                $modal.find('.modal-content').html('<div class="p-4 text-danger">Unable to load content. Please try again.</div>');
+            });
+    }
+
+    function wireModalFormSubmit($modal) {
+        $modal.off('submit', 'form').on('submit', 'form', function (e) {
+            e.preventDefault();
+            const $form = $(this);
+            const hasFiles = $form.attr('enctype') && $form.attr('enctype').toLowerCase().indexOf('multipart') !== -1;
+
+            let ajaxOptions = {
+                url: $form.attr('action'),
+                type: $form.attr('method') || 'POST',
+                success: function (res) {
+                    if (res && typeof res === 'object' && ('success' in res)) {
+                        if (res.success) {
+                            try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (e) { $modal.modal('hide'); }
+                            if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
+                        } else {
+                            const errMsg = res.message || 'Save failed. Check validation.';
+                            $modal.find('.modal-content').html(`<div class="p-3"><div class="alert alert-danger">${errMsg}</div></div>`);
+                        }
+                    } else {
+                        $modal.find('.modal-content').html(res);
+                        wireModalFormSubmit($modal);
+                    }
+                },
+                error: function (xhr) {
+                    console.error('Form submit failed', xhr);
+                    const msg = xhr.responseText || xhr.statusText || 'Request failed';
+                    $modal.find('.modal-content').html(`<div class="p-3"><div class="alert alert-danger">Submit failed: ${msg}</div></div>`);
+                }
+            };
+
+            if (hasFiles) {
+                const fd = new FormData(this);
+                ajaxOptions.data = fd;
+                ajaxOptions.processData = false;
+                ajaxOptions.contentType = false;
+            } else {
+                ajaxOptions.data = $form.serialize();
+                ajaxOptions.contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+            }
+
+            const token = $form.find('input[name="__RequestVerificationToken"]').val();
+            if (token) ajaxOptions.headers = { "RequestVerificationToken": token };
+
+            $.ajax(ajaxOptions);
+        });
+    }
+
+    // Robust AjaxPost: single authoritative implementation
+    function AjaxPost(form) {
+        try {
+            var $form = $(form);
+            if (!$form || $form.length === 0) {
+                console.warn('AjaxPost called with invalid form');
+                return false;
+            }
+
+            // Prevent concurrent submissions
+            if (window._ajaxSubmitState.isSubmitting) {
+                console.warn('Submission blocked: another submit in progress.');
+                if (typeof appalert === 'function') appalert('A request is already in progress. Please wait...', 2, 1);
+                return false;
+            }
+
+            // set submitting flag + request id
+            window._ajaxSubmitState.isSubmitting = true;
+            var thisRequestId = ++window._ajaxSubmitState.lastRequestId;
+
+            // Parse and validate
+            safeParseUnobtrusive($form);
+            if (!safeValidate($form)) {
+                window._ajaxSubmitState.isSubmitting = false;
+                return false;
+            }
+
+            // small helper to normalize server validation payloads to a single HTML/text message
+            function buildValidationMessage(json) {
+                // prefer errorsHtml (server-rendered <ul> etc.)
+                if (json.errorsHtml) return json.errorsHtml;
+
+                // If server returned errors object { FieldName: ["err1","err2"], ... }
+                if (json.errors && typeof json.errors === 'object') {
+                    var sb = '<ul style="margin:0;padding-left:18px;">';
+                    Object.keys(json.errors).forEach(function (k) {
+                        var arr = json.errors[k] || [];
+                        arr.forEach(function (m) {
+                            var key = (k || '').split('.').pop();
+                            sb += '<li><strong>' + $('<div/>').text(key).html() + '</strong>: ' + $('<div/>').text(m).html() + '</li>';
+                        });
+                    });
+                    sb += '</ul>';
+                    return sb;
+                }
+
+                // fallback to message string
+                if (json.message) return $('<div/>').text(json.message).html();
+
+                return 'Validation failed. Please check the form.';
+            }
+
+            // confirmation
+            var confirmAction = function (onOk, onCancel) {
+                if (window.alertify && typeof alertify.confirm === 'function') {
+                    alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
+                } else {
+                    var ok = confirm("Are you sure you want to perform this action?");
+                    if (ok) onOk(); else onCancel();
+                }
+            };
+
+            confirmAction(function () {
+                var hasFiles = ($form.attr('enctype') || '').toLowerCase().indexOf('multipart') !== -1;
+                var dataToSend, processDataFlag = true, contentTypeFlag = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+                if (hasFiles) {
+                    dataToSend = new FormData(form);
+                    processDataFlag = false;
+                    contentTypeFlag = false;
+                    var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                    try {
+                        if (anti && !dataToSend.has('__RequestVerificationToken')) dataToSend.append('__RequestVerificationToken', anti);
+                    } catch (ex) {
+                        if (anti) dataToSend.append('__RequestVerificationToken', anti);
+                    }
+                } else {
+                    dataToSend = $form.serialize();
+                }
+
+                var $submit = $form.find(':submit:first');
+                if ($submit.length === 0) $submit = $('#btnSubmit').length ? $('#btnSubmit') : ($('#btnSubmitUpload').length ? $('#btnSubmitUpload') : $form.find('button[type="submit"]'));
+                $submit.prop('disabled', true).addClass('disabled');
+
+                var ajaxCfg = {
+                    url: $form.attr('action'),
+                    type: ($form.attr('method') || 'POST').toUpperCase(),
+                    data: dataToSend,
+                    processData: processDataFlag,
+                    contentType: contentTypeFlag,
+                    dataType: 'json',
+                    timeout: 30000 // 30s timeout
+                };
+
+                var jqxhr = $.ajax(ajaxCfg)
+                    .done(function (res) {
+                        // ignore stale responses
+                        if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                            console.warn('Stale response ignored for requestId', thisRequestId);
+                            return;
+                        }
+
+                        // HTML fallback (partial)
+                        if (typeof res === 'string' && res.trim().charAt(0) === '<') {
+                            var $modal = $form.closest('.modal');
+                            if ($modal.length) $modal.find('.modal-content').html(res);
+                            else if ($('#mainWorkspace').length) $('#mainWorkspace').html(res);
+                            else $form.replaceWith(res);
+                            safeParseUnobtrusive($('#mainWorkspace'));
+                            return;
+                        }
+
+                        var json = res || {};
+
+                        // SUCCESS PATH
+                        if (json.success) {
+                            if (json.status === "Exist") {
+                                if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
+                            } else if (json.status === "Failed") {
+                                if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
+                            } else {
+                                if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Saved successfully');
+                            }
+
+                            if (json.html) {
+                                if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                else if ($('#affiliateListingView').length) $('#affiliateListingView').html(json.html);
+                                safeParseUnobtrusive($('#mainWorkspace'));
+                            }
+
+                            // Only reload on explicit server instruction AND on success
+                            if (json.reloadDataView === "Yes") {
+                                try {
+                                    if (typeof reloadListing === 'function') reloadListing();
+                                    else if (typeof window.reloadAffiliateTable === 'function') window.reloadAffiliateTable();
+                                    else if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
+                                } catch (e) { console.warn('reload failed', e); }
+                            }
+
+                            var $modal = $form.closest('.modal');
+                            if ($modal.length) {
+                                try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (e) { $modal.modal && $modal.modal('hide'); }
+                            }
+
+                            // FAILURE PATH
+                        } else {
+                            var status = json.Status || json.status || '';
+
+                            // Detect validation failures explicitly (server should return validation: true) or presence of errorsHtml/errors object
+                            var isValidation = !!json.validation || !!json.errorsHtml || (json.errors && typeof json.errors === 'object');
+
+                            if (isValidation) {
+                                // build message (HTML)
+                                var msgHtml = buildValidationMessage(json);
+
+                                // show via appalert if available (try HTML, fallback to plain text)
+                                if (typeof appalert === 'function') {
+                                    try {
+                                        // if appalert expects text, it may still show HTML; wrap in try
+                                        appalert(msgHtml, 2, 1);
+                                    } catch (e) {
+                                        var textOnly = $('<div/>').html(msgHtml).text();
+                                        appalert(textOnly, 2, 1);
+                                    }
+                                } else {
+                                    alert($('<div/>').html(msgHtml).text());
+                                }
+
+                                // inject small validation summary inside the form (so the modal stays open)
+                                if ($form.find('.validation-aggregate').length === 0) {
+                                    $form.prepend('<div class="validation-aggregate alert alert-danger mt-2"></div>');
+                                }
+                                $form.find('.validation-aggregate').html(msgHtml);
+                                safeParseUnobtrusive($form);
+
+                                // DO NOT replace form or close modal — let user fix inputs.
+
+                            } else {
+                                // Non-validation failure (business rule, exist, etc.)
+                                if (status === "Exist") {
+                                    if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
+                                } else {
+                                    if (typeof appalert === 'function') appalert(json.message || 'Operation failed', 2, 1); else alert(json.message || 'Operation failed');
+                                }
+
+                                if (json.html) {
+                                    if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                    else $form.replaceWith(json.html);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                }
+                            }
+                        }
+                    })
+                    .fail(function (xhr, status, err) {
+                        // ignore stale responses
+                        if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                            console.warn('Stale fail ignored for requestId', thisRequestId);
+                            return;
+                        }
+
+                        console.error('AjaxPost failed', status, err, xhr);
+                        if (xhr && xhr.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                            return;
+                        }
+
+                        // If server returned HTML (validation) in responseText, show it inside modal or workspace
+                        if (xhr && xhr.responseText && xhr.responseText.trim().charAt(0) === '<') {
+                            var $modal = $form.closest('.modal');
+                            if ($modal.length) $modal.find('.modal-content').html(xhr.responseText);
+                            else if ($('#mainWorkspace').length) $('#mainWorkspace').html(xhr.responseText);
+                            safeParseUnobtrusive($('#mainWorkspace'));
+                        } else {
+                            var msg = (xhr && xhr.responseText) ? xhr.responseText : (err || status || 'Server error');
+                            if (typeof appalert === 'function') appalert(msg, 0, 1); else alert(msg);
+                        }
+                    })
+                    .always(function () {
+                        // clear submitting flag only if this was the latest request
+                        if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                            window._ajaxSubmitState.isSubmitting = false;
+                        } else {
+                            console.info('Newer request present, leaving submitting state true');
+                        }
+
+                        if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                            try { $submit.prop('disabled', false).removeClass('disabled'); } catch (e) { /*ignore*/ }
+                        }
+                    });
+
+                // store xhr so it can be aborted externally if needed
+                window._ajaxSubmitState.lastXhr = jqxhr;
+
+            }, function () {
+                // confirm cancel
+                window._ajaxSubmitState.isSubmitting = false;
+                if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
+            });
+
+        } catch (ex) {
+            window._ajaxSubmitState.isSubmitting = false;
+            console.error('AjaxPost top-level error', ex);
+            if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+        }
+
+        return false; // prevent normal submit
+    }
+
+
+    // attach to window for backward compatibility
+    window.AjaxPost = AjaxPost;
+
+    // Expose reload helper used by other code
+    window.reloadAffiliateTable = window.reloadAffiliateTable || function () {
+        try {
+            if (window.table && typeof window.table.ajax === 'object') window.table.ajax.reload(null, false);
+            else $('#applyAffiliateFilterBtn').trigger('click');
+        } catch (e) { console.warn('reloadAffiliateTable error', e); }
+    };
+
+    // Delegated events & init
+    $(document).ready(function () {
+        // Apply filter -> initialize or reload DataTable
+        $('#applyAffiliateFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            if (!window.tableInitialized) {
+                if ($('#myDataTable').length === 0) {
+                    console.error('myDataTable markup is missing. Ensure _Data partial is rendered on the page.');
+                    return;
+                }
+                initDataTable();
+            } else {
+                if (window.table && typeof window.table.ajax === 'object') window.table.ajax.reload();
+            }
+        });
+
+        // Reset filters
+        $('#resetAffiliateFilterBtn').on('click', function () {
+            $('#affiliateFilterForm')[0].reset();
+            $('#createdDateFilters').addClass('d-none');
+            $('#createdFromUtc, #createdToUtc').val('');
+            if (window.tableInitialized && window.table) window.table.ajax.reload();
+        });
+
+        // Add button: support both id (#btnAddAffiliate) and class (.btn-add)
+        $('#affiliateListingView').on('click', '#btnAddAffiliate, .btn-add', function () {
+            const id = $(this).data('parentid') || $(this).data('id');
+            openPartialInModal(initUrl, { KEY: id, partialView: '_CreateAffiliate', path: 'new', serviceOption: 'AffiliateAccount' });
+        });
+
+        // Details
+        $('#affiliateListingView').on('click', '.btn-detail', function () {
+            const id = $(this).data('id');
+            openPartialInModal(detailUrl, { id: id });
+        });
+
+        // Edit
+        $('#affiliateListingView').on('click', '.btn-edit', function () {
+            const id = $(this).data('id');
+            openPartialInModal(initUrl, { KEY: id, partialView: '_CreateAffiliate', path: 'get', serviceOption: 'AffiliateAccount' });
+        });
+
+        // Delete
+        $('#affiliateListingView').on('click', '.btn-delete', function () {
+            const id = $(this).data('id');
+            if (!id) { alert('Invalid id'); return; }
+            if (!confirm('Are you sure you want to delete this record?')) return;
+
+            $.ajax({
+                url: deleteUrl,
+                method: 'GET',
+                data: { KEY: id },
+                success: function (res) {
+                    if (res && typeof res === 'object' && ('success' in res) && !res.success) {
+                        alert(res.message || 'Delete failed');
+                        return;
+                    }
+                    if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
+                },
+                error: function (xhr) {
+                    console.error('Delete failed', xhr);
+                    alert('Delete failed: ' + (xhr.responseText || xhr.statusText));
+                }
+            });
+        });
+
+        // hit enter in filter inputs => apply
+        $('#affiliateFilterForm input').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                $('#applyAffiliateFilterBtn').trigger('click');
+            }
+        });
+    });
+})(jQuery);
+    </script>
+}

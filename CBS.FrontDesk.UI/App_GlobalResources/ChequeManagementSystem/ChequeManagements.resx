@@ -271,7 +271,7 @@
     <value>Use this section to upload a new collection file for validation.</value>
   </data>
   <data name="validity" xml:space="preserve">
-    <value>Validity Period in months</value>
+    <value>Validity Period(Months):</value>
   </data>
   <data name="ViewAllFiles" xml:space="preserve">
     <value>View All Files:</value>
@@ -329,5 +329,419 @@
   </data>
   <data name="thisisatest" xml:space="preserve">
     <value>thisisatest</value>
+  </data>
+  <data name="RenewalFee" xml:space="preserve">
+    <value>Renewal Fee</value>
+  </data>
+  <data name="MaxIssuancePerYear" xml:space="preserve">
+    <value>Max Issuance Per Year:</value>
+  </data>
+  <data name="NumberOfCheckBooks" xml:space="preserve">
+    <value>Number Of Check Books</value>
+  </data>
+  <data name="IssuanceFee" xml:space="preserve">
+    <value>Issuance Fee</value>
+  </data>
+  <data name="CheckBooks" xml:space="preserve">
+    <value>Cheque Books</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="CategoryName" xml:space="preserve">
+    <value>Category Name</value>
+  </data>
+  <data name="IsCentralised" xml:space="preserve">
+    <value>IsCentralised</value>
+  </data>
+  <data name="BasePrice" xml:space="preserve">
+    <value>Base Price:</value>
+  </data>
+  <data name="NumOfLeaves" xml:space="preserve">
+    <value>Num. Of Leaves</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="CategoryDetails" xml:space="preserve">
+    <value>Category Details</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value> Here are the details of the selected cheque book category with all relevant information.</value>
+  </data>
+  <data name="BasicInformation" xml:space="preserve">
+    <value>Basic Information</value>
+  </data>
+  <data name="CategoryID" xml:space="preserve">
+    <value>Category ID:</value>
+  </data>
+  <data name="BankId" xml:space="preserve">
+    <value>Bank Id:</value>
+  </data>
+  <data name="limit" xml:space="preserve">
+    <value>Issuance Limit Per Customer Type:</value>
+  </data>
+  <data name="Createdby" xml:space="preserve">
+    <value>Created By:</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modified Date:</value>
+  </data>
+  <data name="ModifiedBy" xml:space="preserve">
+    <value>Modified By:</value>
+  </data>
+  <data name="headtextconf" xml:space="preserve">
+    <value>  Manage cheque categories Manage system users and apply filters to search by branch  details, user name.</value>
+  </data>
+  <data name="ImportantTextcat" xml:space="preserve">
+    <value>Use filters like branch, and  to manage and audit user access effectively.</value>
+  </data>
+  <data name="Branchtip" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="Branchtiptext" xml:space="preserve">
+    <value>View Category by organizational branch. </value>
+  </data>
+  <data name="tiptext" xml:space="preserve">
+    <value>Make sure category was actually created if not create one first</value>
+  </data>
+  <data name="catlisting" xml:space="preserve">
+    <value>Category Listing</value>
+  </data>
+  <data name="catlistingtext" xml:space="preserve">
+    <value>Manage cheque book categories, view existing records, and use advanced filters</value>
+  </data>
+  <data name="Branchtiptext2" xml:space="preserve">
+    <value>Narrow results by organizational branch to check category distribution.</value>
+  </data>
+  <data name="catlistingSearch" xml:space="preserve">
+    <value>for cheque categories using full or partial name.</value>
+  </data>
+  <data name="Centralisation" xml:space="preserve">
+    <value>Centralisation</value>
+  </data>
+  <data name="Centralisationtext" xml:space="preserve">
+    <value>Filter categories based on whether they are centralised or branch-specific.</value>
+  </data>
+  <data name="createddatetiptext" xml:space="preserve">
+    <value>Narrow results by category creation period for audit purposes.</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Refreshtext" xml:space="preserve">
+    <value> Always refresh data to make sure your results are up-to-date.</value>
+  </data>
+  <data name="catfilters" xml:space="preserve">
+    <value>Cheque Book Filters</value>
+  </data>
+  <data name="ShowBranchFilter" xml:space="preserve">
+    <value>Show Branch Filter</value>
+  </data>
+  <data name="ShowDateFilters" xml:space="preserve">
+    <value>Show Date Filters</value>
+  </data>
+  <data name="egChequebookname" xml:space="preserve">
+    <value>e.g. Cheque book name</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply Filter</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="AcceptSerialNumber" xml:space="preserve">
+    <value>Accept Serial Number</value>
+  </data>
+  <data name="chequeNumberConfiguration" xml:space="preserve">
+    <value>Cheque Number Configuration</value>
+  </data>
+  <data name="chequenumheadertext" xml:space="preserve">
+    <value>Manage serial/number configuration per branch and date range.</value>
+  </data>
+  <data name="TipsNumber" xml:space="preserve">
+    <value>Tips for Number Configuration</value>
+  </data>
+  <data name="numbranchtip" xml:space="preserve">
+    <value>Select the branch to apply this numbering scheme</value>
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Dates</value>
+  </data>
+  <data name="numdatestip" xml:space="preserve">
+    <value>Use date range to enable/disable configuration across time.</value>
+  </data>
+  <data name="Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="Positionstips" xml:space="preserve">
+    <value>Bank/branch/year/serial positions control how numbers are built</value>
+  </data>
+  <data name="NumberConfigFilters" xml:space="preserve">
+    <value> Number Config Filters</value>
+  </data>
+  <data name="ShowBranch" xml:space="preserve">
+    <value>Show Branch</value>
+  </data>
+  <data name="SerialNumberPosition" xml:space="preserve">
+    <value>Serial Number Position</value>
+  </data>
+  <data name="BankCodePosition" xml:space="preserve">
+    <value>Bank Code Position</value>
+  </data>
+  <data name="BranchCodePosition" xml:space="preserve">
+    <value>Branch Code Position</value>
+  </data>
+  <data name="YearPosition" xml:space="preserve">
+    <value>Year Position</value>
+  </data>
+  <data name="chequeNumberConfigurationlist" xml:space="preserve">
+    <value>Cheque Number Configuration Listing </value>
+  </data>
+  <data name="chequeNumberConfigurationtext" xml:space="preserve">
+    <value> Define and manage the structure of cheque number identifiers by arranging variables</value>
+  </data>
+  <data name="numimp" xml:space="preserve">
+    <value> Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.</value>
+  </data>
+  <data name="tipCnum" xml:space="preserve">
+    <value>Tips for Cheque Number Configuration</value>
+  </data>
+  <data name="NumberComponentsPositions" xml:space="preserve">
+    <value>Number Components &amp; Positions</value>
+  </data>
+  <data name="Shownumericpositioninputs" xml:space="preserve">
+    <value>Show numeric position inputs</value>
+  </data>
+  <data name="BankCode" xml:space="preserve">
+    <value>Bank Code</value>
+  </data>
+  <data name="BranchCode" xml:space="preserve">
+    <value>Branch Code</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="DragDrop" xml:space="preserve">
+    <value>Drag &amp; Drop</value>
+  </data>
+  <data name="Dragplaceholders" xml:space="preserve">
+    <value>Drag placeholders (e.g.</value>
+  </data>
+  <data name="BranchCodenumtip" xml:space="preserve">
+    <value>{BranchCode}</value>
+  </data>
+  <data name="Sequence" xml:space="preserve">
+    <value>Sequence</value>
+  </data>
+  <data name="numtiptext1" xml:space="preserve">
+    <value> in the template area to build your cheque number format.</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="previewtext" xml:space="preserve">
+    <value> The template area shows your current format in real time.</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="Validation" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="numvaltext" xml:space="preserve">
+    <value>Ensure each required placeholder (like </value>
+  </data>
+  <data name="numtiptext2" xml:space="preserve">
+    <value>is included at least once </value>
+  </data>
+  <data name="numtiptext3" xml:space="preserve">
+    <value> Click "Save" to store your template. You can also</value>
+  </data>
+  <data name="numtiptext4" xml:space="preserve">
+    <value>to clear and start fresh.</value>
+  </data>
+  <data name="Reorder" xml:space="preserve">
+    <value>Reorder</value>
+  </data>
+  <data name="numtiptext5" xml:space="preserve">
+    <value> Drag placeholders horizontally to adjust the order of fields in your cheque number.</value>
+  </data>
+  <data name="ViewList" xml:space="preserve">
+    <value>ViewList</value>
+  </data>
+  <data name="AddConfiguration" xml:space="preserve">
+    <value>Add Configuration</value>
+  </data>
+  <data name="ManageConfigurationfor" xml:space="preserve">
+    <value>Manage Configuration for</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="StaticConfig" xml:space="preserve">
+    <value>Static Config</value>
+  </data>
+  <data name="EnableStatusFee" xml:space="preserve">
+    <value>Enable Status Fee</value>
+  </data>
+  <data name="Static" xml:space="preserve">
+    <value>Static</value>
+  </data>
+  <data name="PercentageConfig" xml:space="preserve">
+    <value>Percentage Config</value>
+  </data>
+  <data name="EnablePercentageFee" xml:space="preserve">
+    <value>Enable Percentage Fee</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>Pourcentage</value>
+  </data>
+  <data name="RangeConfig" xml:space="preserve">
+    <value>Range Config</value>
+  </data>
+  <data name="EnableRangeBasedFee" xml:space="preserve">
+    <value>Enable Range-Based Fee</value>
+  </data>
+  <data name="FeeRanges" xml:space="preserve">
+    <value>Fee Ranges</value>
+  </data>
+  <data name="AddRow" xml:space="preserve">
+    <value>Add Row</value>
+  </data>
+  <data name="FromAmount" xml:space="preserve">
+    <value>From Amount</value>
+  </data>
+  <data name="ToAmount" xml:space="preserve">
+    <value>To Amount</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="IsCentralized" xml:space="preserve">
+    <value>IsCentralized</value>
+  </data>
+  <data name="FeeConfigDetails" xml:space="preserve">
+    <value>Fee Config Details</value>
+  </data>
+  <data name="feedetailstxt" xml:space="preserve">
+    <value>here we have the details of each fee configuration which is divided into three sections Basic Information, Fee Seting and Fee Ranges</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="FeeType" xml:space="preserve">
+    <value>Fee Type</value>
+  </data>
+  <data name="FeeSettings" xml:space="preserve">
+    <value> Fee Settings</value>
+  </data>
+  <data name="StaticAmount" xml:space="preserve">
+    <value>Static Amount</value>
+  </data>
+  <data name="Accepterstatique" xml:space="preserve">
+    <value>Accepter statique</value>
+  </data>
+  <data name="AcceptPercentage" xml:space="preserve">
+    <value>Accept Percentage</value>
+  </data>
+  <data name="AcceptRange" xml:space="preserve">
+    <value>Accept Range</value>
+  </data>
+  <data name="RangeName" xml:space="preserve">
+    <value>Range Name</value>
+  </data>
+  <data name="FeeValue" xml:space="preserve">
+    <value>Fee Value</value>
+  </data>
+  <data name="feedetailstext2" xml:space="preserve">
+    <value>No fee ranges defined for this configuration</value>
+  </data>
+  <data name="FeeConfiguration" xml:space="preserve">
+    <value>Fee Configuration</value>
+  </data>
+  <data name="text2" xml:space="preserve">
+    <value> Configure centralized or branch-specific fees using percentage or range-based calculations.</value>
+  </data>
+  <data name="text3" xml:space="preserve">
+    <value>Always choose either to configure a centralized system or decentralized and always choose a Fee Type.</value>
+  </data>
+  <data name="tipCfee" xml:space="preserve">
+    <value>TIPS FOR FEE CONFIGURATION</value>
+  </data>
+  <data name="ConfigurationScope" xml:space="preserve">
+    <value>Configuration Scope</value>
+  </data>
+  <data name="LoadConfiguration" xml:space="preserve">
+    <value>Load Configuration</value>
+  </data>
+  <data name="FeeMethodChoice" xml:space="preserve">
+    <value>Fee Method Choice</value>
+  </data>
+  <data name="SavingChanges" xml:space="preserve">
+    <value>Saving Changes</value>
+  </data>
+  <data name="DeletingaConfiguration" xml:space="preserve">
+    <value>Deleting a Configuration</value>
+  </data>
+  <data name="ConfigurationScopetext" xml:space="preserve">
+    <value>Use 'Is Centralized' for system-wide rules; uncheck to pick a branch.</value>
+  </data>
+  <data name="feeindextext1" xml:space="preserve">
+    <value>After selecting scope and a fee type click 'Load' to fetch existing settings.</value>
+  </data>
+  <data name="feeindextext2" xml:space="preserve">
+    <value>Enable only one method at a time (Percentage or Range) — UI enforces this.</value>
+  </data>
+  <data name="feeindextext3" xml:space="preserve">
+    <value>When using ranges ensure no overlap.</value>
+  </data>
+  <data name="feeindextext4" xml:space="preserve">
+    <value>Save button persists the entire configuration.</value>
+  </data>
+  <data name="feeindextext5" xml:space="preserve">
+    <value>Delete will permanently remove the configuration for the loaded scope.</value>
+  </data>
+  <data name="SelectConfigurationScope" xml:space="preserve">
+    <value>Select Configuration Scope</value>
+  </data>
+  <data name="SelectBranch" xml:space="preserve">
+    <value>Select Branch</value>
+  </data>
+  <data name="SelectFeeType" xml:space="preserve">
+    <value>Select Fee Type</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="AcceptStatic" xml:space="preserve">
+    <value>Accept Static</value>
+  </data>
+  <data name="AcceptStaticAmount" xml:space="preserve">
+    <value>Accept Static Amount</value>
+  </data>
+  <data name="ChequeBookRequestManagement" xml:space="preserve">
+    <value>Cheque Book Request Management</value>
+  </data>
+  <data name="chequerequesttext1" xml:space="preserve">
+    <value> Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.</value>
   </data>
 </root>

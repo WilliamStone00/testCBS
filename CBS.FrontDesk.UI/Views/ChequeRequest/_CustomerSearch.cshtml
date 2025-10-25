@@ -1,20 +1,17 @@
-﻿<!-- Partial Views/_CustomerSearch.cshtml -->
-<div class="fieldset-custom">
-    <legend class="text-primary">
-        <i class="mdi mdi-account-search-outline me-2"></i> Customer Search
-    </legend>
+﻿
+
+<div class="fieldset-custom">   
 
     <div class="row g-3">
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Branch</label>
-            @Html.DropDownList("searchBranchId", new SelectList(ViewBag.Branches, "Id", "name"),
-                "Select Branch", new { @class = "form-control select2", id = "searchBranchId" })
-        </div>
 
-        <div class="col-md-6">
+        <h6 class="text-primary">
+            <i class="mdi mdi-account-search-outline me-2"></i> Customer Search
+        </h6>
+
+        <div class="col-md-12">
             <label class="form-label fw-bold">Customer ID</label>
             <div class="input-group">
-                <input type="text" id="customerIdInput" class="form-control" placeholder="Enter Customer ID" value="003DCT0001">
+                <input type="text" id="customerIdInput" class="form-control" placeholder="Enter Customer ID">
                 <button type="button" class="btn btn-primary" id="searchCustomerBtn">
                     <i class="mdi mdi-magnify"></i> Search
                 </button>

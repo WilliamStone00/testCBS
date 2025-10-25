@@ -158,6 +158,7 @@
 // -----------------------------------------------------------------------------
 // File: FeeConfigController.cs
 // -----------------------------------------------------------------------------
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
@@ -165,13 +166,14 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfigur
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.FeeConfiguration
 {
-    // [CheckSessionTimeOut]
+    [CheckSessionTimeOut]
     public class FeeConfigController : BaseController
     {
         private readonly FeeConfigService _feeConfigService;
@@ -247,15 +249,54 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
         //    return PartialView(partialView ?? "_FormPartial", model);
         //}
 
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await Loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadfeeData(FeeConfigQuery query)
+        {
+            try
+            {
+                var data = await _feeConfigService.GetFeeDataTableAsync(query);
+
+                var FeeConfig = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = FeeConfig
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string path = null,string serviceOption = null)
         {
+            await Loader(); 
             // ROUTE: Return summary list
             if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
-                await Loader(); // Make sure ViewBag is populated for filters
-
-                // Get the data but don't pass it to the view - it will be loaded via AJAX
-                // We just return the empty partial view structure
+              // We just return the empty partial view structure
                 return PartialView(partialView ?? "_FeeConfigList");
             }
 
@@ -284,14 +325,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
                 if (model == null)
                     return HttpNotFound($"FeeConfig with id '{KEY}' not found.");
 
-                await Loader();
-                return PartialView(partialView ?? "_FormPartial", model);
+                // await Loader();
+                return PartialView(partialView , model);
             }
 
             // ROUTE: Create (return a new FeeConfig prefilled if serviceOption provided)
-            if (string.Equals(path, "create", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(path, "_Create", StringComparison.OrdinalIgnoreCase))
             {
-                await Loader();
+               // await Loader();
 
                 FeeConfig model = null;
                 if (!string.IsNullOrWhiteSpace(serviceOption))
@@ -322,7 +363,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
             // DEFAULT BEHAVIOUR:
             // If path is null or unknown, attempt: if KEY provided => get by id, else => create new
-            await Loader();
+            //await Loader();
             FeeConfig defaultModel = null;
 
             if (!string.IsNullOrWhiteSpace(KEY))

@@ -193,21 +193,21 @@
 //        // In ManualDailyCollectionService.cs
 
 //        /// <summary>
-//        /// Gets a list of uploaded files filtered by their processing status.
+//        /// Gets a list of uploaded files filtered by their processing Status.
 //        /// </summary>
-//        /// <param name="status">The status to filter by (e.g., "Pending", "Approved").</param>
-//        public async Task<IEnumerable<FileUploadSummary>> GetFilesByStatusAsync(string status)
+//        /// <param name="Status">The Status to filter by (e.g., "Pending", "Approved").</param>
+//        public async Task<IEnumerable<FileUploadSummary>> GetFilesByStatusAsync(string Status)
 //        {
 //            try
 //            {
-//                if (string.IsNullOrWhiteSpace(status))
+//                if (string.IsNullOrWhiteSpace(Status))
 //                {
-//                    // Return empty list if no status is provided
+//                    // Return empty list if no Status is provided
 //                    return Enumerable.Empty<FileUploadSummary>();
 //                }
 
-//                // Assumes your APICallHelper has a constant like: GetFilesByStatus = "api/files/status/{0}"
-//                string url = string.Format(APICallHelper.GetFilesByStatus, status);
+//                // Assumes your APICallHelper has a constant like: GetFilesByStatus = "api/files/Status/{0}"
+//                string url = string.Format(APICallHelper.GetFilesByStatus, Status);
 
 //                var response = await _apiHelper.GetAsync<ResponseObject<List<FileUploadSummary>>>(url);
 
