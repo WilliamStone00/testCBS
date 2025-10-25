@@ -107,6 +107,7 @@ namespace CBS.BusinessService.Accounting
                 throw;
             }
         }
+       
 
         public async Task<SelectList> GetEventAttributeByOperationTypeID(string productid = null)
         {

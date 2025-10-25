@@ -3,6 +3,91 @@
 @{
     var isNewSubscription = ViewBag.Operation?.ToString()?.ToLower() == "newsubcription";
 }
+
+<style>
+    /* Let browser auto-fit based on content & header */
+    #myDataTableT2 {
+        table-layout: auto; /* auto sizing, not fixed */
+        width: 100%;
+    }
+
+        #myDataTableT2 thead th,
+        #myDataTableT2 tbody td,
+        #myDataTableT2 tfoot td {
+            white-space: nowrap; /* prevent wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            padding: .4rem .6rem; /* consistent compact padding */
+        }
+
+            /* Right-align numeric columns */
+            #myDataTableT2 th:nth-child(3),
+            #myDataTableT2 th:nth-child(4),
+            #myDataTableT2 th:nth-child(5),
+            #myDataTableT2 th:nth-child(10),
+            #myDataTableT2 td:nth-child(3),
+            #myDataTableT2 td:nth-child(4),
+            #myDataTableT2 td:nth-child(5),
+            #myDataTableT2 td:nth-child(10),
+            #myDataTableT2 tfoot td:nth-child(9) {
+                text-align: right;
+            }
+
+        /* Keep CONF column narrow */
+        #myDataTableT2 th:last-child,
+        #myDataTableT2 td:last-child {
+            text-align: center;
+            width: 3rem; /* force smallest */
+        }
+
+        /* Inputs smaller and consistent */
+        #myDataTableT2 .form-control.form-control-sm {
+            padding: .25rem .4rem;
+            height: 2rem;
+            font-size: .85rem;
+        }
+
+    @@media (max-width: 992px) {
+        #myDataTableT2 {
+            font-size: .8rem; /* shrink font on smaller screens */
+        }
+
+            #myDataTableT2 .form-control.form-control-sm {
+                font-size: .75rem;
+            }
+    }
+</style>
+<style>
+    /* Compact fieldsets and tables stacked vertically */
+    .fieldset-custom {
+        margin-bottom: .75rem;
+    }
+
+        .fieldset-custom > legend {
+            margin-bottom: .35rem;
+        }
+
+    /* Tables inside our compact sections */
+    .compact-section .table {
+        margin-bottom: .5rem;
+    }
+
+        .compact-section .table thead {
+            margin-bottom: 0;
+        }
+
+    .compact-section .table-responsive {
+        margin-bottom: .5rem;
+    }
+
+    /* Remove extra top margin on the repayment block */
+    #loanRepaymentSection {
+        margin-top: .5rem !important;
+    }
+</style>
+
+
 <span id="customerName" class="d-none">@Model.Customer.name</span>
 @if (ViewBag.Operation == "cashin" || isNewSubscription)
 {
@@ -38,7 +123,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="form-floating form-floating-outline">
+                        <div class="form-floating form-floating-outline d-flex justify-content-end">
                             <span class="formatted-amount shadow-box mb-2" id="lblDepositRequest_amount">
                                 @CashDesk_OperationForm.TotalAmount : <b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b>
                             </span>
@@ -46,21 +131,33 @@
                         </div>
                     </div>
 
-                    <!-- ✅ Nice placement of the Hide Balance option below -->
-                    <div class="col-md-12">
-                        <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
-                            <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
-                            <label class="form-check-label fw-bold" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size: 0.95rem;">
-                                @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
-                            </label>
+                    <!-- Toolbar: hide-balance + include-loan on one line -->
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap align-items-center gap-4">
+                            <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                <input class="form-check-input" type="checkbox" id="hideBalanceCheckbox" onchange="toggleHideBalance()" />
+                                <label class="form-check-label fw-bold m-0" id="hideBalanceLabel" for="hideBalanceCheckbox" style="font-size:0.95rem;">
+                                    @CashDesk_OperationForm.BalancewWllBeShownOnReceipt
+                                </label>
+                            </div>
+
+                            <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                <input class="form-check-input" type="checkbox" id="includeLoanRepaymentCheckbox" onchange="toggleLoanRepayment()" />
+                                <label class="form-check-label fw-bold m-0" for="includeLoanRepaymentCheckbox" style="font-size:0.95rem;">
+                                    Include Loan Repayment
+                                </label>
+                                <!-- mirror for backend -->
+                                <input type="hidden" id="IncludeLoanRepayment" name="IncludeLoanRepayment" value="false" />
+                            </div>
                         </div>
                     </div>
                     @if (isNewSubscription)
                     {
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline mb-3">
-                                <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber" placeholder=" @CashDesk_OperationForm.MemberCustomAccountNumberExample" required />
-                                <label for="CustomerAlphaNumber"> @CashDesk_OperationForm.MemberCustomAccountNumber</label>
+                                <input type="text" class="form-control shadow-input-boxes" id="CustomerAlphaNumber"
+                                       placeholder=" @CashDesk_OperationForm.MemberCustomAccountNumberExample" required />
+                                <label for="CustomerAlphaNumber">@CashDesk_OperationForm.MemberCustomAccountNumber</label>
                             </div>
                         </div>
                     }
@@ -113,62 +210,245 @@
                             </div>
                         </div>
                     }
-                <input type="hidden" id="CustomerAlphaNumber" value="0" />
+                    <input type="hidden" id="CustomerAlphaNumber" value="0" />
 
 
-                    <div class="table-responsive w-100">
-                        <table class="table table-hover" id="myDataTableT">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="display: none;"> @CashDesk_OperationForm.ProductID</th>
-                                    <th> @CashDesk_OperationForm.Accounts</th>
-                                    <th> @CashDesk_OperationForm.Balance</th>
-                                    <th> @CashDesk_OperationForm.Amount</th>
-                                    <th> @CashDesk_OperationForm.Fee</th>
-                                    <th> @CashDesk_OperationForm.Total</th>
-                                    <th> @CashDesk_OperationForm.Conf</th>
-                                    <th> @CashDesk_OperationForm.Inc</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var d in Model.BulkDeposits
-                                                       .Where(x => !x.AccountType.ToLower().Contains("loan"))
-                                                       .OrderBy(t => t.AccountType))
-                                {
-                                    <tr>
-                                        <td style="display: none;">@d.AccountNumber</td>
-                                        <td>@d.AccountType</td>
-                                        <td>@d.Balance.ToString("N2")</td>
-                                        <td>
-                                            <input type="number"
-                                                   class="form-control amount-input shadow-input-boxes"
-                                                   value="@d.Amount" />
-                                        </td>
-                                        <td>
-                                            <input type="number"
-                                                   class="form-control fee-input shadow-input-boxes"
-                                                   value="@d.Fee" />
-                                        </td>
-                                        <td><span class="total-span">@d.Total</span></td>
-                                        <td><input type="checkbox" class="form-check-input" /></td>
-                                        <td><input type="checkbox" class="form-check-input check-inclussive" disabled /></td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-end fw-bold">Total:</td>
-                                    <td id="tableTotal"><b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></td>
-                                    <td colspan="4"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" class="text-end fw-bold"> @CashDesk_OperationForm.Difference:</td>
-                                    <td id="tableBalance">0</td>
-                                    <td colspan="4"></td>
-                                </tr>
-                            </tfoot>
-                        </table>
+
+
+                    <div class="table-responsive w-100 compact-section">
+                        <fieldset class="fieldset-custom">
+                            <div class="table-responsive w-100">
+                                <table class="table table-hover" id="myDataTableT">
+                                    <thead class="table-light">
+                                        <!-- New header row (legend) to match the loans table style -->
+                                        <tr>
+                                            <th colspan="8" class="text-center fw-bold bg-light text-dark">
+                                                MEMBER'S ACCOUNTS
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th style="display: none;"> @CashDesk_OperationForm.ProductID</th>
+                                            <th> @CashDesk_OperationForm.Accounts</th>
+                                            <th> @CashDesk_OperationForm.Balance</th>
+                                            <th> @CashDesk_OperationForm.Amount</th>
+                                            <th> @CashDesk_OperationForm.Fee</th>
+                                            <th> @CashDesk_OperationForm.Total</th>
+                                            <th> @CashDesk_OperationForm.Conf</th>
+                                            <th> @CashDesk_OperationForm.Inc</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var d in Model.BulkDeposits
+                                                               .Where(x => !x.AccountType.ToLower().Contains("loan"))
+                                                               .OrderBy(t => t.AccountType))
+                                        {
+                                            <tr>
+                                                <td style="display: none;">@d.AccountNumber</td>
+                                                <td>@d.AccountType</td>
+                                                <td>@d.Balance.ToString("N2")</td>
+                                                <td>
+                                                    <input type="number"
+                                                           class="form-control amount-input shadow-input-boxes"
+                                                           value="@d.Amount" />
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                           class="form-control fee-input shadow-input-boxes"
+                                                           value="@d.Fee" />
+                                                </td>
+                                                <td><span class="total-span">@d.Total</span></td>
+                                                <td><input type="checkbox" class="form-check-input" /></td>
+                                                <td><input type="checkbox" class="form-check-input check-inclussive" disabled /></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" class="text-end fw-bold">Total:</td>
+                                            <td id="tableTotal"><b>@Model.MemberOnboardingDetailDto.GrandTotal.ToString("N0")</b></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end fw-bold"> @CashDesk_OperationForm.Difference:</td>
+                                            <td id="tableBalance">0</td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
+
+                        </fieldset>
                     </div>
+
+                    <!-- Loan Repayment: reduce top spacing -->
+                    <div id="loanRepaymentSection" class="mt-1 d-none compact-section">
+                        <fieldset class="fieldset-custom">
+                            <!-- ========================= LOAN REPAYMENT SECTION (Hidden by default) ========================= -->
+                            <!-- Toolbar: left = search member's loans, right = VAT mode + calculate -->
+                            <div class="row">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <!-- Left: Search member’s loans -->
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadMemberLoans">
+                                        <i class="mdi mdi-magnify me-1"></i> Load Member’s Loans
+                                    </button>
+
+                                    <!-- Right: VAT buttons -->
+                                    <div class="btn-group" role="group" aria-label="VAT Mode">
+                                        <input class="btn-check" type="radio" name="vatMode" id="vatModeExclusive"
+                                               value="exclusive"
+                                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                                        <label class="btn btn-outline-primary" for="vatModeExclusive">
+                                            VAT Exclusive (19.25%)
+                                        </label>
+
+                                        <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
+                                               value="inclusive" checked
+                                               onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                                        <label class="btn btn-outline-primary" for="vatModeInclusive">
+                                            VAT Inclusive (16.1425%)
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="myDataTableT2">
+                                        <!-- Column widths -->
+                                        <colgroup>
+                                            <col class="col-hide">        @* LRef (hidden) *@
+                                            <col class="col-date">        @* DATE *@
+                                            <col class="col-lamount">     @* L.AMOUNT *@
+                                            <col class="col-ai">          @* A.I *@
+                                            <col class="col-balance">     @* BALANCE *@
+                                            <col class="col-capital">     @* CAPITAL input *@
+                                            <col class="col-interest">    @* INTEREST input *@
+                                            <col class="col-vat">         @* VAT (readonly) *@
+                                            <col class="col-penalty">     @* PENALTY input *@
+                                            <col class="col-total">       @* TOTAL *@
+                                            <col class="col-conf">        @* CONF (smallest) *@
+                                        </colgroup>
+
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th colspan="10" class="text-center fw-bold bg-light text-dark">
+                                                    @GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.VAT</th>
+                                                <th>Pen</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
+                                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="loanRepaymentTable">
+                                            @foreach (var d in Model.Loans)
+                                            {
+                                                var loanId = d.Id;
+                                                <tr id="row-@loanId">
+                                                    <!-- hidden ref -->
+                                                    <td style="display:none;">@loanId</td>
+
+                                                    <!-- DATE -->
+                                                    <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+
+                                                    <!-- L.AMOUNT (also expose data-loan-amount for JS) -->
+                                                    <td class="loan-amount" data-loan-amount="@d.LoanAmount">
+                                                        @d.LoanAmount.ToString("#,##0.0")
+                                                    </td>
+
+                                                    <!-- A.I -->
+                                                    <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+
+                                                    <!-- BALANCE -->
+                                                    <td>@d.Balance.ToString("#,##0.0")</td>
+
+                                                    <!-- CAPITAL -->
+                                                    <td>
+                                                        <input type="number"
+                                                               class="form-control form-control-sm capital-input"
+                                                               id="capital-@loanId"
+                                                               value="0"
+                                                               step="0.01"
+                                                               oninput="updateTotals('@loanId')" />
+                                                    </td>
+
+                                                    <!-- INTEREST (holds data-loanamount for VAT logic) -->
+                                                    <td>
+                                                        <input type="number"
+                                                               class="form-control form-control-sm interest-input"
+                                                               id="interest-@loanId"
+                                                               value="0"
+                                                               data-original="0"
+                                                               data-loanamount="@d.LoanAmount"
+                                                               oninput="handleInterestInput('@loanId')" />
+                                                    </td>
+
+                                                    <!-- VAT (readonly) -->
+                                                    <td>
+                                                        <input type="text"
+                                                               class="form-control form-control-sm vat-input"
+                                                               id="vat-@loanId"
+                                                               value="0"
+                                                               readonly />
+                                                    </td>
+
+                                                    <!-- PENALTY -->
+                                                    <td>
+                                                        <input type="number"
+                                                               class="form-control form-control-sm penalty-input"
+                                                               id="penalty-@loanId"
+                                                               value="0"
+                                                               step="0.01"
+                                                               oninput="updateTotals('@loanId')" />
+                                                    </td>
+
+                                                    <!-- TOTAL -->
+                                                    <td class="text-end">
+                                                        <span class="total-span" id="total-@loanId">0</span>
+                                                    </td>
+
+                                                    <!-- CONF -->
+                                                    <td class="text-center">
+                                                        <input type="checkbox"
+                                                               class="form-check-input loan-confirmation-checkbox"
+                                                               onchange="updateTotals()" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="8" class="text-end fw-bold">
+                                                    @GlobalLoanRepaymentBackOffice.OverallTotalRepayment:
+                                                </td>
+                                                <td id="totalRepaymentAmount" class="text-end">0</td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <!-- ======================= / LOAN REPAYMENT SECTION ======================= -->
+
+                        </fieldset>
+                    </div>
+
+
+
+
                 </div>
 
                 <div class="header-buttons mt-4 float-end">
@@ -319,6 +599,8 @@ else if (ViewBag.Operation == "cashout")
                             <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         </div>
                     </div>
+
+
                     <!-- ✅ Nice placement of the Hide Balance option below -->
                     <div class="col-md-12">
                         <div class="form-check form-switch d-flex align-items-center gap-2 mt-1">
@@ -328,6 +610,7 @@ else if (ViewBag.Operation == "cashout")
                             </label>
                         </div>
                     </div>
+
                     <hr style="border: 2px solid red;" />
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
@@ -370,6 +653,7 @@ else if (ViewBag.Operation == "cashout")
                                     </tr>
                                 }
                             </tbody>
+
                             <tfoot>
                                 <tr>
                                     <td colspan="4" style="text-align: right;"><strong>>@CashDesk_OperationForm.Total:</strong></td>
@@ -383,7 +667,7 @@ else if (ViewBag.Operation == "cashout")
                             </tfoot>
                         </table>
                     </div>
-                   
+
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="Withdrawal" id="OperationType" />
@@ -505,7 +789,7 @@ else if (ViewBag.Operation == "cashoutsws")
 
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="WithdrawalSWS" id="OperationType" />
@@ -721,156 +1005,6 @@ else if (ViewBag.Operation == "repayment")
                         </div>
                     </div>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                        <input type="hidden" id="modalLoanId">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content shadow-lg border-0">
-                                <div class="modal-header bg-primary text-white">
-                                    <h5 class="modal-title" id="paymentModalLabel">💵 @CashDesk_OperationForm.PaymentDetails</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body p-4">
-                                    <!-- Loan Information Section (Due Amount and Balance) -->
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.AccrualInterest</h6>
-                                                    <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDesk_OperationForm.xaf 0</h4> <!-- Dynamically populated -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_OperationForm.Balance</h6>
-                                                    <h4 class="card-text text-dark" id="modalBalance">@CashDesk_OperationForm.xaf# 0</h4> <!-- Dynamically populated -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Capital Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-cash-stack"></i> @CashDesk_OperationForm.Capital
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder="@CashDesk_OperationForm.EnterCapital amount" oninput="updateTotal()">
-                                    </div>
-
-                                    <!-- Interest Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-piggy-bank"></i> @CashDesk_OperationForm.Interest
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder="@CashDesk_OperationForm.EnterInterest" oninput="updateTotal()">
-                                    </div>
-
-                                    <!-- Penalty Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-exclamation-triangle"></i> @CashDesk_OperationForm.Penalty
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder="@CashDesk_OperationForm.EnterPenalty" oninput="updateTotal()">
-                                    </div>
-
-                                    <!-- Total Amount Display -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calculator"></i> @CashDesk_OperationForm.TotalEntered
-                                        </span>
-                                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value="@CashDesk_OperationForm.xaf 0">
-                                    </div>
-                                </div>
-
-                                <!-- Modal Footer -->
-                                <div class="modal-footer d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                                        <i class="bi bi-x-circle"></i> @CashDesk_OperationForm.Cancel
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
-                                        <i class="bi bi-check-circle"></i> @CashDesk_OperationForm.Confirm
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <!-- Add Bootstrap Icons in case they are not loaded -->
-                    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-                    <style>
-                        /* Custom modal content styling */
-                        .modal-content {
-                            border-radius: 12px;
-                            overflow: hidden;
-                        }
-
-                        .modal-header {
-                            padding: 1rem 1.5rem;
-                            border-bottom: none;
-                        }
-
-                        .modal-body {
-                            background-color: #f9fafb;
-                        }
-
-                        .modal-footer {
-                            border-top: none;
-                            padding: 1rem 1.5rem;
-                        }
-
-                        /* Card styling for Loan Details */
-                        .card {
-                            border: none;
-                            border-radius: 8px;
-                            padding: 10px;
-                        }
-
-                        .card-body {
-                            padding: 1rem;
-                        }
-
-                        .card-title {
-                            font-size: 0.9rem;
-                        }
-
-                        .card-text {
-                            font-size: 1.4rem;
-                        }
-
-                        /* Shadow effects for form controls */
-                        .form-control-lg {
-                            border-radius: 8px;
-                            font-size: 1.2rem;
-                        }
-
-                        /* Input group text styling */
-                        .input-group-text {
-                            border: none;
-                            border-radius: 8px 0 0 8px;
-                            font-size: 1.1rem;
-                        }
-
-                        .input-group {
-                            border-radius: 12px;
-                            overflow: hidden;
-                        }
-
-                        /* Modal button styling */
-                        .btn-lg {
-                            padding: 0.75rem 1.5rem;
-                            font-size: 1.2rem;
-                        }
-
-                        .shadow-sm {
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        }
-                    </style>
 
                 </div>
                 <div class="header-buttons mt-4 float-end">
@@ -1047,3 +1181,495 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
         });
     })();
 </script>
+<script>
+    // Hide on load (defensive; also styled with d-none)
+    document.addEventListener('DOMContentLoaded', function () {
+        const sec = document.getElementById('loanRepaymentSection');
+        if (sec) sec.classList.add('d-none');
+        const includeHidden = document.getElementById('IncludeLoanRepayment');
+        if (includeHidden) includeHidden.value = "false";
+    });
+
+    function toggleLoanRepayment() {
+        const checked = document.getElementById('includeLoanRepaymentCheckbox').checked;
+        document.getElementById('IncludeLoanRepayment').value = checked ? "true" : "false";
+        const sec = document.getElementById('loanRepaymentSection');
+        if (!sec) return;
+        if (checked) {
+            sec.classList.remove('d-none');
+        } else {
+            sec.classList.add('d-none');
+            resetLoanSectionValues();
+        }
+        recalcLoanTotals();
+    }
+
+    function resetLoanSectionValues() {
+        // Zero-out inputs and totals when hidden (prevents stale amounts)
+        document.querySelectorAll('#loanRepaymentSection input[type="number"]').forEach(i => i.value = "0");
+        document.querySelectorAll('#loanRepaymentSection input[type="checkbox"]').forEach(i => i.checked = false);
+        document.querySelectorAll('#loanRepaymentSection .total-span').forEach(s => s.textContent = "0");
+        const t = document.getElementById('loanTableTotal'); if (t) t.textContent = "0";
+        const b = document.getElementById('loanTableBalance'); if (b) b.textContent = "0";
+        const v = document.getElementById('calculatedVat'); if (v) v.textContent = "0";
+    }
+
+    function recalcLoanRow(loanId) {
+        // Read row amounts
+        const cap = parseFloat(document.getElementById(`capital-${loanId}`)?.value || "0");
+        const intv = parseFloat(document.getElementById(`interest-${loanId}`)?.value || "0");
+        const pen = parseFloat(document.getElementById(`penalty-${loanId}`)?.value || "0");
+
+        // If you also compute VAT per row, you can read a per-row VAT span here:
+        // const vat = parseFloat(document.getElementById(`vat-${loanId}`)?.textContent || "0");
+        // For now, just sum principal+interest+penalty
+        const total = (cap + intv + pen);
+        const totalSpan = document.getElementById(`total-${loanId}`);
+        if (totalSpan) totalSpan.textContent = total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+        recalcLoanTotals();
+    }
+
+    function recalcLoanTotals() {
+        let total = 0;
+        document.querySelectorAll('#loanRepaymentSection tbody tr').forEach(tr => {
+            // If you require confirmation to include in totals, gate here:
+            const useRow = tr.querySelector('.confirm-loan')?.checked ?? true;
+            const totalCell = tr.querySelector('.total-span');
+            const val = parseFloat((totalCell?.textContent || "0").replace(/,/g, ""));
+            if (useRow) total += (isNaN(val) ? 0 : val);
+        });
+
+        const totalEl = document.getElementById('loanTableTotal');
+        if (totalEl) totalEl.textContent = total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+        // If you want the "Balance" row to reflect difference vs. entered cash, wire it to your cash-in amount:
+        const enteredCash = parseFloat(document.getElementById('totalNoteAmount')?.value || "0");
+        const bal = (enteredCash - total);
+        const balEl = document.getElementById('loanTableBalance');
+        if (balEl) balEl.textContent = bal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    }
+    // Load loans for the member
+    function loadMemberLoans() {
+        var memberId = $("#customerId").val(); // hidden field from your form
+        if (!memberId) {
+            alert("⚠️ Member ID is missing.");
+            return;
+        }
+
+        $.getJSON("/CashDesk/GetMemberLoans", { memberId: memberId })
+            .done(function (res) {
+                if (!res.success) {
+                    alert(res.message || "❌ Failed to load loans.");
+                    return;
+                }
+
+                const tbody = $("#loanRepaymentTable");
+                tbody.empty(); // clear existing
+
+                const fmt = (n) => (Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits: 1 });
+
+                res.data.forEach(function (loan) {
+                    const id = loan.Id;
+                    const rowHtml = `
+                      <tr id="row-${id}">
+                        <!-- hidden LRef -->
+                        <td style="display:none;">${id}</td>
+
+                        <!-- DATE -->
+                        <td>${loan.LoanDate}</td>
+
+                        <!-- L.AMOUNT (with data-loan-amount for VAT threshold check) -->
+                        <td class="loan-amount" data-loan-amount="${loan.LoanAmount}">
+                          ${fmt(loan.LoanAmount)}
+                        </td>
+
+                        <!-- A.I -->
+                        <td>${fmt(loan.AccrualInterest)}</td>
+
+                        <!-- BALANCE -->
+                        <td>${fmt(loan.Balance)}</td>
+
+                        <!-- CAPITAL -->
+                        <td>
+                          <input type="number"
+                                 class="form-control capital-input"
+                                 id="capital-${id}"
+                                 value="0"
+                                 step="0.01"
+                                 oninput="updateTotals('${id}')" />
+                        </td>
+
+                        <!-- INTEREST (holds data-loanamount for VAT calc) -->
+                        <td>
+                          <input type="number"
+                                 class="form-control interest-input"
+                                 id="interest-${id}"
+                                 value="0"
+                                 data-original="0"
+                                 data-loanamount="${loan.LoanAmount}"
+                                 oninput="handleInterestInput('${id}')" />
+                        </td>
+
+                        <!-- VAT (readonly) -->
+                        <td>
+                          <input type="text"
+                                 class="form-control vat-input"
+                                 id="vat-${id}"
+                                 value="0"
+                                 readonly />
+                        </td>
+
+                        <!-- PENALTY -->
+                        <td>
+                          <input type="number"
+                                 class="form-control penalty-input"
+                                 id="penalty-${id}"
+                                 value="0"
+                                 step="0.01"
+                                 oninput="updateTotals('${id}')" />
+                        </td>
+
+                        <!-- TOTAL (right-aligned to match footer) -->
+                        <td class="text-end">
+                          <span class="total-span" id="total-${id}">0</span>
+                        </td>
+
+                        <!-- CONF -->
+                        <td class="text-center">
+                          <input type="checkbox"
+                                 class="form-check-input loan-confirmation-checkbox"
+                                 onchange="updateTotals()" />
+                        </td>
+                      </tr>`;
+
+                    tbody.append(rowHtml);
+                });
+
+                // reset footer cells
+                $("#totalRepaymentAmount").text("0");
+                $("#remainingBalance").text("0");
+                $("#balanceIndicator").text("❌").css("color", "red");
+                $("#calculatedVat").text("0");
+
+                // recompute once
+                if (typeof updateGrandTotals === "function") {
+                    updateGrandTotals();
+                }
+            })
+            .fail(function () {
+                alert("❌ Server error while fetching loans.");
+            });
+    }
+
+    // Bind button
+    $(document).on("click", "#btnLoadMemberLoans", loadMemberLoans);
+</script>
+<script>
+    (() => {
+        // -------- Constants --------
+        const LOAN_VAT_THRESHOLD = 2000000; // VAT applies only when loan amount >= 2,000,000
+        const VAT_EXCLUSIVE_RATE = 19.25;   // VAT on net interest
+        const VAT_INCLUSIVE_RATE = 16.1425; // VAT portion inside a VAT-inclusive amount
+
+        // Safe number parser
+        const toNumber = (v) => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+
+        // VAT mode: 'exclusive' | 'inclusive' | null
+        const getVatMode = () => {
+            const r = document.querySelector('input[name="vatMode"]:checked');
+            return r ? r.value : null;
+        };
+
+        // Called when user types interest — ONLY stores raw (gross) input, clears VAT
+        function handleInterestInput(loanId) {
+            const interestEl = document.getElementById(`interest-${loanId}`);
+            if (!interestEl) return;
+
+            const entered = toNumber(interestEl.value);
+            interestEl.dataset.gross = String(entered);     // remember what user typed
+
+            const vatEl = document.getElementById(`vat-${loanId}`);
+            if (vatEl) vatEl.value = "0";                   // clear VAT until mode is applied
+
+            updateRowTotal(loanId);
+            updateGrandTotals();
+        }
+
+        // Apply VAT for a single row given a mode
+        function applyVatForRow(loanId, mode) {
+            const interestEl = document.getElementById(`interest-${loanId}`);
+            const vatEl = document.getElementById(`vat-${loanId}`);
+            if (!interestEl || !vatEl) return;
+
+            const loanAmount = toNumber(interestEl.dataset.loanamount);
+            let gross = toNumber(interestEl.dataset.gross);
+            if (!gross) {                                   // fallback if user never typed yet
+                gross = toNumber(interestEl.value);
+                interestEl.dataset.gross = String(gross);
+            }
+
+            let vat = 0;
+
+            if (loanAmount >= LOAN_VAT_THRESHOLD && (mode === 'exclusive' || mode === 'inclusive')) {
+                if (mode === 'exclusive') {
+                    // Exclusive: interest remains gross; VAT is added separately
+                    interestEl.value = Math.round(gross);
+                    vat = Math.round(gross * (VAT_EXCLUSIVE_RATE / 100));
+                } else {
+                    // Inclusive: compute VAT portion inside gross, reduce interest to net
+                    vat = Math.round(gross * (VAT_INCLUSIVE_RATE / 100));
+                    const net = Math.max(0, Math.round(gross - vat));
+                    interestEl.value = net;
+                }
+            } else {
+                // Not eligible => no VAT
+                interestEl.value = Math.round(gross);
+                vat = 0;
+            }
+
+            // Keep row VAT strictly numeric
+            vatEl.value = String(vat);
+
+            updateRowTotal(loanId);
+        }
+
+        // Apply the currently selected VAT mode to ALL rows
+        function applyVatModeToAllRows() {
+            const mode = getVatMode(); // may be null
+            document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                const loanId = row.id.replace('row-', '');
+                if (loanId) applyVatForRow(loanId, mode);
+            });
+            updateGrandTotals();
+        }
+
+        // Update one row total (capital + interest + vat + penalty)
+        function updateRowTotal(loanId) {
+            const interest = toNumber(document.getElementById(`interest-${loanId}`)?.value);
+            const vat = toNumber(document.getElementById(`vat-${loanId}`)?.value);
+            const capital = toNumber(document.getElementById(`capital-${loanId}`)?.value);
+            const penalty = toNumber(document.getElementById(`penalty-${loanId}`)?.value);
+
+            const total = capital + interest + vat + penalty;
+
+            // Keep row TOTAL strictly numeric
+            const span = document.getElementById(`total-${loanId}`);
+            if (span) span.innerText = String(total);
+        }
+
+        // Grand totals (footer only)
+        function updateGrandTotals() {
+            let totalRepayment = 0;
+
+            document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
+                const id = row.id.replace("row-", "");
+                const interest = toNumber(document.getElementById(`interest-${id}`)?.value);
+                const vat = toNumber(document.getElementById(`vat-${id}`)?.value);
+                const capital = toNumber(document.getElementById(`capital-${id}`)?.value);
+                const penalty = toNumber(document.getElementById(`penalty-${id}`)?.value);
+
+                totalRepayment += capital + interest + vat + penalty;
+            });
+
+            const totalCell = document.getElementById("totalRepaymentAmount");
+            if (totalCell) {
+                totalCell.innerText = (typeof formatCurrencyNoName === 'function')
+                    ? formatCurrencyNoName(totalRepayment)
+                    : totalRepayment.toLocaleString('en-US');
+            }
+        }
+
+        // Expose for inline calls
+        window.handleInterestInput = handleInterestInput;
+        window.applyVatModeToAllRows = applyVatModeToAllRows;
+        window.updateTotals = function (loanId) { if (loanId) updateRowTotal(loanId); updateGrandTotals(); };
+
+        // Wire listeners once DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Row listeners
+            document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                const id = row.id.replace('row-', '');
+                document.getElementById(`capital-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                document.getElementById(`interest-${id}`)?.addEventListener('input', () => handleInterestInput(id));
+            });
+
+            // VAT radios (if you still have them hidden in the toolbar)
+            document.querySelectorAll('input[name="vatMode"]').forEach(r => {
+                r.addEventListener('change', applyVatModeToAllRows);
+                r.addEventListener('click', applyVatModeToAllRows);
+            });
+
+            // Default to Inclusive
+            const inclusiveRadio = document.getElementById('vatModeInclusive');
+            if (inclusiveRadio) inclusiveRadio.checked = true;
+            applyVatModeToAllRows();
+
+            updateGrandTotals();
+        });
+    })();
+</script>
+
+@*<script>
+
+        (() => {
+            // -------- Constants --------
+            const LOAN_VAT_THRESHOLD = 2000000; // VAT applies only when loan amount >= 2,000,000
+            const VAT_EXCLUSIVE_RATE = 19.25;   // VAT on net interest
+            const VAT_INCLUSIVE_RATE = 16.1425; // VAT portion inside a VAT-inclusive amount
+
+            // Safe number parser
+            const toNumber = (v) => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+
+            // VAT mode: 'exclusive' | 'inclusive' | null
+            const getVatMode = () => {
+                const r = document.querySelector('input[name="vatMode"]:checked');
+                return r ? r.value : null;
+            };
+
+            // Called when user types interest — ONLY stores raw (gross) input, clears VAT
+            function handleInterestInput(loanId) {
+                const interestEl = document.getElementById(`interest-${loanId}`);
+                if (!interestEl) return;
+
+                const entered = toNumber(interestEl.value);
+                interestEl.dataset.gross = String(entered);     // remember what user typed
+
+                const vatEl = document.getElementById(`vat-${loanId}`);
+                if (vatEl) vatEl.value = "0";                   // clear VAT until mode is applied
+
+                updateRowTotal(loanId);
+                updateGrandTotals();
+            }
+
+            // Apply VAT for a single row given a mode
+            function applyVatForRow(loanId, mode) {
+                const interestEl = document.getElementById(`interest-${loanId}`);
+                const vatEl = document.getElementById(`vat-${loanId}`);
+                if (!interestEl || !vatEl) return;
+
+                const loanAmount = toNumber(interestEl.dataset.loanamount);
+                let gross = toNumber(interestEl.dataset.gross);
+                if (!gross) {                                   // fallback if user never typed yet
+                    gross = toNumber(interestEl.value);
+                    interestEl.dataset.gross = String(gross);
+                }
+
+                let vat = 0;
+
+                if (loanAmount >= LOAN_VAT_THRESHOLD && (mode === 'exclusive' || mode === 'inclusive')) {
+                    if (mode === 'exclusive') {
+                        // Interest field remains what user typed (gross)
+                        interestEl.value = Math.round(gross);
+                        vat = Math.round(gross * (VAT_EXCLUSIVE_RATE / 100));
+                    } else {
+                        // Inclusive: compute VAT inside gross, then reduce interest to net (once)
+                        vat = Math.round(gross * (VAT_INCLUSIVE_RATE / 100));
+                        const net = Math.max(0, Math.round(gross - vat));
+                        interestEl.value = net;
+                    }
+                } else {
+                    // Below threshold or no mode selected => no VAT, interest shows gross
+                    interestEl.value = Math.round(gross);
+                    vat = 0;
+                }
+
+                vatEl.value = vat.toLocaleString('en-US');
+                updateRowTotal(loanId);
+            }
+
+            // Apply the currently selected VAT mode to ALL rows
+            function applyVatModeToAllRows() {
+                const mode = getVatMode(); // may be null
+                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                    const loanId = row.id.replace('row-', '');
+                    applyVatForRow(loanId, mode);
+                });
+                updateGrandTotals();
+            }
+
+            // Update one row total (capital + interest + vat + penalty)
+            function updateRowTotal(loanId) {
+                const interest = toNumber(document.getElementById(`interest-${loanId}`)?.value);
+                const vat = toNumber(document.getElementById(`vat-${loanId}`)?.value);
+                const capital = toNumber(document.getElementById(`capital-${loanId}`)?.value);
+                const penalty = toNumber(document.getElementById(`penalty-${loanId}`)?.value);
+
+                const total = capital + interest + vat + penalty;
+                const span = document.getElementById(`total-${loanId}`);
+                if (span) span.innerText = (typeof formatCurrencyNoName === 'function'
+                    ? formatCurrencyNoName(total)
+                    : total.toLocaleString('en-US'));
+            }
+
+            // Grand totals (bottom)
+            function updateGrandTotals() {
+                let totalRepayment = 0, totalVat = 0, totalDebited = 0;
+
+                document.querySelectorAll(".amount-input").forEach(i => totalDebited += toNumber(i.value));
+
+                document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
+                    const id = row.id.replace("row-", "");
+                    const interest = toNumber(document.getElementById(`interest-${id}`)?.value);
+                    const vat = toNumber(document.getElementById(`vat-${id}`)?.value);
+                    const capital = toNumber(document.getElementById(`capital-${id}`)?.value);
+                    const penalty = toNumber(document.getElementById(`penalty-${id}`)?.value);
+
+                    totalRepayment += capital + interest + vat + penalty;
+                    totalVat += vat;
+                });
+
+                const setText = (id, val, withName = false) => {
+                    const el = document.getElementById(id); if (!el) return;
+                    el.innerText = (withName && typeof formatCurrency === 'function')
+                        ? formatCurrency(val)
+                        : (typeof formatCurrencyNoName === 'function'
+                            ? formatCurrencyNoName(val)
+                            : val.toLocaleString('en-US'));
+                };
+
+                setText("totalRepaymentAmount", totalRepayment);
+                setText("calculatedVat", totalVat);
+                setText("totalDebitedAmount", totalDebited, true);
+
+                const balance = totalDebited - totalRepayment;
+                setText("remainingBalance", balance, true);
+
+                const ind = document.getElementById("balanceIndicator");
+                if (ind) { ind.innerHTML = (balance === 0 ? " ✅" : " ❌"); ind.style.color = (balance === 0 ? "green" : "red"); }
+            }
+
+            // Expose functions used by inline attributes
+            window.handleInterestInput = handleInterestInput;
+            window.applyVatModeToAllRows = applyVatModeToAllRows;
+            window.updateTotals = function (loanId) { if (loanId) updateRowTotal(loanId); updateGrandTotals(); };
+
+            // Wire listeners once DOM is ready
+            document.addEventListener('DOMContentLoaded', () => {
+                // Capital / Penalty / Interest listeners
+                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                    const id = row.id.replace('row-', '');
+                    document.getElementById(`capital-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                    document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                    document.getElementById(`interest-${id}`)?.addEventListener('input', () => handleInterestInput(id));
+                });
+
+                // VAT mode toggle — apply on change AND on click (so re-click reapplies)
+                document.querySelectorAll('input[name="vatMode"]').forEach(r => {
+                    r.addEventListener('change', applyVatModeToAllRows);
+                    r.addEventListener('click', applyVatModeToAllRows);
+                });
+                // Make Inclusive the default and apply once on load
+                const inclusiveRadio = document.getElementById('vatModeInclusive');
+                if (inclusiveRadio) inclusiveRadio.checked = true;
+                applyVatModeToAllRows();
+
+                // Initial totals only; DO NOT auto-apply VAT (wait for user choice)
+                updateGrandTotals();
+            });
+        })();
+
+
+    </script>*@
+

@@ -81,7 +81,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
                 reason = r;
                 return true;
             }
-            
+
             // 3️⃣ Validate IP format and perform GeoIP country filtering
             //if (!_geoResolver.IsValidIPv4(ctx.Ip))
             //{
@@ -106,7 +106,7 @@ namespace CBS.FrontDesk.UI.WAF.Middleware.Core
             //    Task.Run(() => _suspiciousHandler.Handle("GeoIP-CIDR", r, ctx, ctx.FullUrl, "GeoIP-CIDR-Restriction")).GetAwaiter().GetResult();
             //    return true;
             //}
-         
+
             // ✅ Whitelisted static resources (e.g., .css, .jpg)
             if (_pathValidator.IsExcludedStaticAssetPath(ctx.Path))
             {
