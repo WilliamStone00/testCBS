@@ -143,7 +143,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- server-rendered details partial will be injected here -->
@@ -154,6 +154,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     <script>
@@ -241,7 +242,6 @@
 
         correspondenceTable = $('#myDataTable').DataTable({
             serverSide: true,
-            processing: true,
             searching: false,
             responsive: true,
             destroy: false,
@@ -249,7 +249,7 @@
             // prevent initial load — deferLoading: 0 prevents the first automatic ajax call
             deferLoading: 0,
             ajax: {
-                url: '@Url.Action("LoadCorrespondenceData", "FileUpload")', // adjust if your action name differs
+                url: '@Url.Action("LoadCorrespondanceDatatable", "FileUpload")', // adjust if your action name differs
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {

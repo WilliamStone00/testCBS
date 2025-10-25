@@ -51,7 +51,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                 }
             }
 
-            public async Task<CustomDataTable> GetcategoryDataTableAsync(BranchAccountQuery query)
+            public async Task<CustomDataTable> GetDataTableAsync(BranchAccountQuery query)
             {
                 try
                 {

@@ -84,11 +84,17 @@
                 <!-- File upload input -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Select operation file</label>
-                    <div class="input-group">
-                        <input type="file" name="uploadedFile" class="form-control" required />
-                        <button type="button" id="btnUpload" class="btn btn-primary">
-                            <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
-                        </button>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Select operation file</label>
+                        <div class="input-group">
+                            <input type="file" name="uploadedFile" class="form-control" required />
+                            <button type="button" id="btnUpload" class="btn btn-primary">
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">
+                            @ChequeManagements.Supportedformats: .csv, .xlsx, .xls
+                        </small>
                     </div>
                     <small class="form-text text-muted">
                         @ChequeManagements.Supportedformats: .csv, .xlsx, .xls

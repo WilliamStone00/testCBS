@@ -60,7 +60,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount
         public string Name { get; set; }
         public string Class { get; set; }
         public string ParentId { get; set; }
-        public bool PostingAllowed { get; set; }
+        public bool? PostingAllowed { get; set; }
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
         public bool IncludeDeleted { get; set; } = false;

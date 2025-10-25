@@ -30,7 +30,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
         public DateTime? ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
     }
-
+    
     public class AffiliateCommand
     {
         public string Id { get; set; }

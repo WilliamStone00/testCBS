@@ -2,6 +2,7 @@
 @using Resources
 @{
     ViewBag.Title = "Affiliate And Branch File Upload";
+    var isAffiliate = Model?.isAffiliate == true;
 }
 
 <div class="row">
@@ -11,7 +12,7 @@
                 <h1 class="card-title text-primary fw-bold mb-2">
                     <i class="mdi mdi-bank-outline me-2"></i>@AccountingV2.BranchAndAffiliateFileUpload
                 </h1>
-                <p class="card-text text-muted mb-1"> @AccountingV2.fileuploadtext1  </p>
+                <p class="card-text text-muted mb-1">@AccountingV2.fileuploadtext1</p>
                 <p class="card-text text-info fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i> @AccountingV2.fileuploadtext2
                 </p>
@@ -24,45 +25,39 @@
 <!-- Tips -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i>  @AccountingV2.Tips</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
     <div id="collapseLoanTips" class="collapse">
         <div class="card-body">
             <ul class="list-group list-group-flush">
-
                 <li class="list-group-item">
-                    <strong> @AccountingV2.fileuploadtext3</strong>
+                    <strong>@AccountingV2.fileuploadtext3</strong>
                     <div class="small text-muted mt-1">
-                        @AccountingV2.Clickthe<strong> @AccountingV2.IsAffiliate</strong> @AccountingV2.checkboxtochoosetheuploadtype                        <ul class="mb-0">
-                            <li><strong> @AccountingV2.Unchecked</strong> @AccountingV2.text1 <em> @AccountingV2.Branch</em> @AccountingV2.text2</li>
-                            <li><strong> @AccountingV2.Checked</strong> @AccountingV2.text3 <em> @AccountingV2.Affiliate</em> @AccountingV2.text4</li>
+                        @AccountingV2.Clickthe <strong>@AccountingV2.IsAffiliate</strong> @AccountingV2.checkboxtochoosetheuploadtype
+                        <ul class="mb-0">
+                            <li><strong>@AccountingV2.Unchecked</strong> @AccountingV2.text1 <em>@AccountingV2.Branch</em> @AccountingV2.text2</li>
+                            <li><strong>@AccountingV2.Checked</strong> @AccountingV2.text3 <em>@AccountingV2.Affiliate</em> @AccountingV2.text4</li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="list-group-item">
-                    <strong> @AccountingV2.text5</strong>
-                    <div class="small text-muted mt-1">
-                        @AccountingV2.tesxt6
-                    </div>
-                </li>                            
-
-                <li class="list-group-item">
-                    <strong> @AccountingV2.text7</strong>
-                    <div class="small text-muted mt-1">
-                        @AccountingV2.text8
-                    </div>
+                    <strong>@AccountingV2.text5</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.tesxt6</div>
                 </li>
 
                 <li class="list-group-item">
-                    <strong> @AccountingV2.text9</strong>
-                    <div class="small text-muted mt-1">
-                        @AccountingV2.Afterclicking <em> @AccountingV2.Upload</em> @AccountingV2.text10
-                    </div>
-                </li>               
+                    <strong>@AccountingV2.text7</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.text8</div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>@AccountingV2.text9</strong>
+                    <div class="small text-muted mt-1">@AccountingV2.Afterclicking <em>@AccountingV2.Upload</em> @AccountingV2.text10</div>
+                </li>
             </ul>
         </div>
     </div>
@@ -70,9 +65,7 @@
 
 <!-- Main Workspace Card -->
 <div class="card shadow-sm border-0 mb-4">
-
-    <div id="mainWorkspace">
-        @* Inline upload form (single source of truth) *@
+    <div id="mainWorkspace" data-is-affiliate="@(isAffiliate ? "true" : "false")">
         @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
         {
             @Html.AntiForgeryToken()
@@ -99,49 +92,81 @@
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
-                                <label class="form-check-label" for="IsAffiliateCheckbox">
-                                    @AccountingV2.IsAffiliate
-                                </label>
+                                <label class="form-check-label" for="IsAffiliateCheckbox">@AccountingV2.IsAffiliate</label>
                             </div>
                         </div>
 
                         <!-- BRANCH DROPDOWN -->
-                        <div class="col-12 branch-dropdown">
-                            <label for="branchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
+                        <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
+                            <label for="BranchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
                             @Html.DropDownListFor(m => m.branchId,
                                 new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
                                 "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                                new { @class = "form-control select2", id = "BranchId" })
+                                new
+                                     {
+                                    @class = "form-control select2",
+                                    id = "BranchId",
+                                    disabled = isAffiliate ? "disabled" : null
+                                })
                             @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- AFFILIATE DROPDOWN -->
-                        <div class="col-12 affiliate-dropdown" style="display:none;">
-                            <label for="affiliateId" class="form-label fw-semibold">👤  @AccountingV2.SelectAffiliate</label>
+                        <div class="col-12 affiliate-dropdown @(isAffiliate ? "" : "d-none")">
+                            <label for="AffiliateId" class="form-label fw-semibold">👤 @AccountingV2.SelectAffiliate</label>
                             @Html.DropDownListFor(m => m.affiliateId,
                                 new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
-                                "---" + @AccountingV2.SearchAffiliate+ "---",
-                                new { @class = "form-control select2", id = "AffiliateId", disabled = "disabled" })
+                                "--- " + @AccountingV2.SearchAffiliate + " ---",
+                                new
+                                     {
+                                    @class = "form-control select2",
+                                    id = "AffiliateId",
+                                    disabled = isAffiliate ? null : "disabled"
+                                })
                             @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
                         </div>
 
-                        <!-- FILE INPUT -->
-                        <div class="col-12">
-                            <label class="form-label fw-semibold"> @AccountingV2.Selectfile</label>
-                            <input type="file" name="file" class="form-control" required />
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">@AccountingV2.Selectfile</label>
+                            <div class="input-group">
+
+                                <input type="file" name="file" id="file" class="form-control" required />
+                                <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- SUBMIT BUTTON -->
+                        <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
                         <div class="col-12 text-end mt-3">
-                            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
-                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
-                            </button>
+                            <div class="d-flex justify-content-end gap-2">
+                                @* Render initial visible button server-side, keep the other hidden with d-none so JS can toggle immediately *@
+                                @if (isAffiliate)
+                                {
+                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    </a>
+
+                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                    </a>
+
+                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                    </a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-
+        }  <!-- using block closed -->
     </div>
 
     <div class="card-footer bg-light text-muted text-end">
@@ -155,11 +180,12 @@
 @section Scripts {
     <script>
         (function ($) {
+            'use strict';
+
             function ensureSelect2Init(selector) {
                 var $el = $(selector);
                 if (!$el || $el.length === 0) return;
                 if ($el.data('select2')) return;
-                // Initialize select2 if available; otherwise silently skip
                 try {
                     if ($.fn.select2) $el.select2({ width: '100%' });
                 } catch (ex) {
@@ -168,43 +194,50 @@
             }
 
             function toggleAffiliateUI(isAffiliate) {
-                if (isAffiliate) {
-                    $('.affiliate-dropdown').show();
-                    $('.branch-dropdown').hide();
-                    $('#BranchId').prop('disabled', true);
-                    $('#AffiliateId').prop('disabled', false);
-                } else {
-                    $('.affiliate-dropdown').hide();
-                    $('.branch-dropdown').show();
-                    $('#BranchId').prop('disabled', false);
-                    $('#AffiliateId').prop('disabled', true);
+                try {
+                    if (isAffiliate) {
+                        $('.affiliate-dropdown').removeClass('d-none').show();
+                        $('.branch-dropdown').addClass('d-none').hide();
+
+                        $('#BranchId').prop('disabled', true);
+                        $('#AffiliateId').prop('disabled', false);
+
+                        $('#affiliateTemplateLink').removeClass('d-none').show();
+                        $('#branchTemplateLink').addClass('d-none').hide();
+                    } else {
+                        $('.affiliate-dropdown').addClass('d-none').hide();
+                        $('.branch-dropdown').removeClass('d-none').show();
+
+                        $('#BranchId').prop('disabled', false);
+                        $('#AffiliateId').prop('disabled', true);
+
+                        $('#affiliateTemplateLink').addClass('d-none').hide();
+                        $('#branchTemplateLink').removeClass('d-none').show();
+                    }
+                } catch (ex) {
+                    console.error('toggleAffiliateUI error', ex);
                 }
             }
 
-            // Safe unobtrusive parse - only call if available
-            function safeParseUnobtrusive($form) {
+            function safeParseUnobtrusive($context) {
                 try {
                     if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
-                        $.validator.unobtrusive.parse($form);
+                        $.validator.unobtrusive.parse($context);
                         return true;
                     }
                 } catch (ex) {
                     console.warn('unobtrusive parse failed', ex);
                 }
-                console.info('jQuery Validate / Unobtrusive not present or parse skipped.');
                 return false;
             }
 
-            // Safe form validation check - returns true when either no validator is present or the form is valid
             function safeValidateForm($form) {
                 if ($.validator && typeof $form.valid === 'function') {
                     return $form.valid();
                 }
-                // no client-side validation available; assume OK (server will validate)
                 return true;
             }
 
-            // Generic AJAX file upload handler - used as onsubmit="return fileupload(this);"
             window.fileupload = function (form) {
                 try {
                     var $form = $(form);
@@ -213,30 +246,22 @@
                         return false;
                     }
 
-                    // Log basic form meta
-                    console.log('fileupload: action=%s, method=%s, enctype=%s', $form.attr('action'), $form.attr('method'), $form.attr('enctype'));
-
-                    // Try to parse unobtrusive validation if present
                     safeParseUnobtrusive($form);
 
-                    // If validation exists, run it and stop if invalid
                     if (!safeValidateForm($form)) {
                         console.warn('Form validation failed on client.');
                         return false;
                     }
 
-                    // Confirmation dialog (alertify if present, otherwise native confirm)
                     var confirmFn = function (onOk, onCancel) {
                         if (window.alertify && typeof alertify.confirm === 'function') {
-                            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
+                            alertify.confirm("Confirmation", "Are you sure you want to perform this action?", onOk, onCancel);
                         } else {
-                            var ok = confirm("Are you sure you want to perform this action?");
-                            if (ok) onOk(); else onCancel();
+                            if (confirm("Are you sure you want to perform this action?")) onOk(); else onCancel();
                         }
                     };
 
                     confirmFn(function () {
-                        // Build FormData
                         var fd;
                         try {
                             fd = new FormData(form);
@@ -245,56 +270,35 @@
                             return;
                         }
 
-                        // Ensure anti-forgery token included (if present on form)
                         var anti = $form.find('input[name="__RequestVerificationToken"]').val();
                         if (anti && !fd.has('__RequestVerificationToken')) {
                             fd.append('__RequestVerificationToken', anti);
                         }
 
-                        // Optional: log keys (for debugging) but avoid logging File objects fully
-                        try {
-                            for (var pair of fd.entries()) {
-                                var key = pair[0];
-                                var val = pair[1];
-                                if (val instanceof File) {
-                                    console.log('FormData entry:', key, 'File: name=' + val.name + ', size=' + val.size);
-                                } else {
-                                    console.log('FormData entry:', key, val);
-                                }
-                            }
-                        } catch (ex) {
-                            console.info('Could not iterate formData entries for logging', ex);
-                        }
-
-                        // disable submit button
                         var $btn = $form.find('#btnSubmitUpload');
-                        if ($btn.length === 0) $btn = $('#btnSubmitUpload'); // fallback
+                        if ($btn.length === 0) $btn = $('#btnSubmitUpload');
                         $btn.prop('disabled', true).addClass('disabled');
 
-                        // Build AJAX config
                         var ajaxConfig = {
                             type: 'POST',
                             url: $form.attr('action'),
                             data: fd,
-                            success: function (response, textStatus, jqXHR) {
-                                console.log('fileupload success response:', response);
-                                // If server returns HTML partial (string starting with '<'), replace workspace
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                // Try to handle HTML partials or JSON responses
                                 if (typeof response === 'string' && response.trim().charAt(0) === '<') {
                                     $('#mainWorkspace').html(response);
-                                    // re-parse unobtrusive inside new content (if available)
                                     safeParseUnobtrusive($('#mainWorkspace'));
                                     return;
                                 }
 
-                                // If JSON-like object
                                 var json = response;
-                                // sometimes server returns JSON as string
                                 if (typeof response === 'string') {
                                     try { json = JSON.parse(response); } catch (e) { /* not JSON */ }
                                 }
 
                                 if (json && typeof json === 'object') {
-                                    // Map to your earlier behavior
                                     if (json.success) {
                                         if (json.status === "Exist") {
                                             if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
@@ -304,28 +308,56 @@
                                             if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Upload succeeded.');
                                         }
 
-                                        // handle optional reload/update flows
-                                        if (json.option === 'Update' && json.reloadDataView === "Yes" && json.controllerName) {
-                                            if (typeof LoadDataMain === 'function') {
-                                                LoadDataMain(json.controllerName, json.option, json.divLoaderList, json.tableName, json.dataLoaderActionName, "KEY", "List");
+                                        // NEW: Check for conditions and redirect automatically
+                                        if (json.data) {
+                                            // For Affiliate Upload - Check AutoMatchedAccounts
+                                            if (json.data.AutoMatchedAccounts > 0) {
+                                                setTimeout(function () {
+                                                    if (typeof appalert === 'function') {
+                                                        appalert(`Auto matched accounts: ${json.data.AutoMatchedAccounts}. Redirecting to Awaiting Correspondence...`, 1, 1);
+                                                    } else {
+                                                        alert(`Auto matched accounts: ${json.data.AutoMatchedAccounts}. Redirecting to Awaiting Correspondence...`);
+                                                    }
+
+                                                    // Automatic redirection after showing message
+                                                    setTimeout(function () {
+                                                        window.open('/FileUpload/AwaitingCorrespondence', '_blank');
+                                                    }, 2000);
+
+                                                }, 1000);
                                             }
-                                        } else if (json.optype === 'Insert' && json.reloadDataView === "Yes") {
-                                            if (typeof EditResetMain === 'function') {
-                                                EditResetMain("KEY", json.option, json.divLoaderCreator, json.controllerName, json.reinitializedActionName, json.groupID);
+
+                                            // For Branch Upload - Check awaitingCorrespondenceCreated
+                                            else if (json.data.awaitingCorrespondenceCreated > 0) {
+                                                setTimeout(function () {
+                                                    if (typeof appalert === 'function') {
+                                                        appalert(`Awaiting correspondence created: ${json.data.awaitingCorrespondenceCreated}. Redirecting to Awaiting Correspondence...`, 1, 1);
+                                                    } else {
+                                                        alert(`Awaiting correspondence created: ${json.data.awaitingCorrespondenceCreated}. Redirecting to Awaiting Correspondence...`);
+                                                    }
+
+                                                    // Automatic redirection after showing message
+                                                    setTimeout(function () {
+                                                        window.open('/FileUpload/List', '_blank');
+                                                    }, 2000);
+
+                                                }, 1000);
                                             }
-                                        } else if (json.reloadDataView === "Yes" && json.controllerName) {
-                                            if (typeof LoadDataMain === 'function') {
-                                                LoadDataMain(json.controllerName, json.option, json.divLoaderList, json.tableName, json.dataLoaderActionName, "KEY", "List");
+
+                                            // Keep existing conditions for other redirects
+                                            if (json.data.requiresMappingAccounts > 0) {
+                                                var listUrl = '@Url.Action("List", "FileUpload")';
+                                                window.open(listUrl, '_blank');
                                             }
+
+                                            // Note: Removed duplicate awaitingCorrespondenceCreated condition to avoid double redirect
                                         }
 
-                                        // If server returned HTML inside json.html, replace workspace
                                         if (json.html) {
                                             $('#mainWorkspace').html(json.html);
                                             safeParseUnobtrusive($('#mainWorkspace'));
                                         }
                                     } else {
-                                        // unsuccessful
                                         var status = json.Status || json.status;
                                         if (status === "Exist") {
                                             if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
@@ -333,15 +365,12 @@
                                             if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message || 'Operation failed.');
                                         }
 
-                                        // if html content present show it
                                         if (json.html) {
                                             $('#mainWorkspace').html(json.html);
                                             safeParseUnobtrusive($('#mainWorkspace'));
                                         }
                                     }
                                 } else {
-                                    // Unknown response form - display raw for debugging
-                                    console.warn('fileupload received unexpected response, replacing mainWorkspace with raw response');
                                     $('#mainWorkspace').html(response);
                                     safeParseUnobtrusive($('#mainWorkspace'));
                                 }
@@ -349,14 +378,12 @@
                             error: function (err) {
                                 console.error('fileupload error:', err);
                                 if (err && err.status === 401) {
-                                    // Session expired - redirect to login
                                     window.location.href = '/Authentication/Login';
                                     return;
                                 }
 
                                 var errMsg = (err && err.statusText) ? err.statusText : 'Server error';
                                 if (err && err.responseText && err.responseText.trim().charAt(0) === '<') {
-                                    // server returned HTML (validation errors)
                                     $('#mainWorkspace').html(err.responseText);
                                     safeParseUnobtrusive($('#mainWorkspace'));
                                 } else {
@@ -364,25 +391,12 @@
                                 }
                             },
                             complete: function () {
-                                // always re-enable submit button
                                 $btn.prop('disabled', false).removeClass('disabled');
                             }
                         };
 
-                        // If multipart, set these flags so FormData is sent correctly
-                        if ($form.attr('enctype') && $form.attr('enctype').toLowerCase() === 'multipart/form-data') {
-                            ajaxConfig.contentType = false;
-                            ajaxConfig.processData = false;
-                        } else {
-                            // not a file form; let jQuery handle serialization (we already passed FormData though)
-                            ajaxConfig.contentType = false;
-                            ajaxConfig.processData = false;
-                        }
-
-                        console.log('fileupload ajaxConfig (not showing data):', ajaxConfig);
                         $.ajax(ajaxConfig);
                     }, function () {
-                        // cancel callback
                         if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
                     });
 
@@ -392,23 +406,30 @@
                     return false;
                 }
 
-                // prevent default form submit
                 return false;
             };
 
-            // initialize UI on DOM ready
-            $(document).ready(function () {
+            $(function () {
                 ensureSelect2Init('#BranchId');
                 ensureSelect2Init('#AffiliateId');
 
-                // initial toggle state (server may have pre-checked the checkbox)
-                toggleAffiliateUI($('#IsAffiliateCheckbox').is(':checked'));
+                // get checkbox reliably
+                var $chk = $('#IsAffiliateCheckbox');
+                if ($chk.length === 0) {
+                    $chk = $('input[name="isAffiliate"][type="checkbox"]');
+                }
 
-                $('#IsAffiliateCheckbox').on('change', function () {
+                // initialize UI from checkbox or data attribute fallback
+                var initialIsAffiliate = false;
+                if ($chk.length) initialIsAffiliate = $chk.is(':checked');
+                else initialIsAffiliate = ($('#mainWorkspace').data('is-affiliate') === true || $('#mainWorkspace').data('is-affiliate') === 'true');
+
+                toggleAffiliateUI(initialIsAffiliate);
+
+                $chk.on('change', function () {
                     toggleAffiliateUI($(this).is(':checked'));
                 });
             });
         })(jQuery);
     </script>
 }
-

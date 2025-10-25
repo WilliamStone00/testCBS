@@ -1,4 +1,5 @@
-﻿@using Resources
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount.COADATATABLE_Query
+@using Resources
 @{
     ViewBag.Title = "Affiliate Overview - Filters";
 }
@@ -38,13 +39,12 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Filters</h5>
 
     <form id="affiliateFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
-            <div class="row mb-3">
+            <div class="row mb-1">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">@AccountingV2.Search</label>
                     <div class="row g-2">
                         <div class="col-6">
                             <!-- matches DTO.Code -->
@@ -58,11 +58,10 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">@AccountingV2.Status</label>
                     <div class="d-flex gap-2 align-items-center">
                         <!-- postingAllowed mapped via select (null / true / false) -->
                         <select id="PostingAllowed" name="PostingAllowed" class="form-control w-50">
-                            <option value="">Any</option>
+                            <option value="">Posting Allowed</option>
                             <option value="true">@AccountingV2.Yes</option>
                             <option value="false">@AccountingV2.No</option>
                         </select>
@@ -76,9 +75,8 @@
                 </div>
             </div>
 
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-1 align-items-center">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">OtherFilters</label>
                     <div class="row g-2">
                         <div class="col-md-6">
                             <!-- matches DTO.Class -->
@@ -86,8 +84,8 @@
                         </div>
 
                         <div class="col-md-6">
-                            <!-- matches DTO.ParentId -->
-                            <input type="text" id="ParentId" name="ParentId" class="form-control" placeholder="Parent Id" />
+                            @Html.TextBoxFor(m => m.ParentId, new { @class = "form-control", placeholder = "Enter Parent Id", type = "number", step = "1", min = "0" })
+                            @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="col-md-12 mt-2">
@@ -98,28 +96,27 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">@AccountingV2.Depth</label>
                     <div class="row g-2">
                         <div class="col-6">
                             <!-- matches DTO.DepthFrom -->
-                            <input type="number" id="DepthFrom" name="DepthFrom" class="form-control" min="0" />
+                            <input type="number" id="DepthFrom" name="DepthFrom" class="form-control" min="0" placeholder="Depth From" />
                         </div>
                         <div class="col-6">
                             <!-- matches DTO.DepthTo -->
-                            <input type="number" id="DepthTo" name="DepthTo" class="form-control" min="0" />
+                            <input type="number" id="DepthTo" name="DepthTo" class="form-control" min="0" placeholder="Depth To" />
                         </div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-6">
-                            <label class="form-label fw-bold">@AccountingV2.CreatedFrom (UTC)</label>
+                            @*<label class="form-label fw-bold">@AccountingV2.CreatedFrom (UTC)</label>*@
                             <!-- matches DTO.CreatedFromUtc -->
-                            <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
+                            <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" placeholder="Created From (UTC)" />
                         </div>
                         <div class="col-6">
-                            <label class="form-label fw-bold">@AccountingV2.CreatedTo (UTC)</label>
+                            @*<label class="form-label fw-bold">@AccountingV2.CreatedTo (UTC)</label>*@
                             <!-- matches DTO.CreatedToUtc -->
-                            <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
+                            <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" placeholder="Created To (UTC)" />
                         </div>
                     </div>
                 </div>
@@ -149,7 +146,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- content loaded by AJAX -->
@@ -166,7 +163,7 @@
     <div class="modal-dialog modal-md modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- edit form loaded by AJAX -->
@@ -227,7 +224,7 @@
                 searching: false,
                 responsive: true,
                 destroy: false,
-                order: [[0, 'desc']], // createdDate desc by default
+                order: [[1, 'desc']], // createdDate desc by default
                 ajax: {
                     url: '/ChartOfAccountV2/LoadData',
                     type: 'POST',
@@ -241,7 +238,7 @@
                             skip: d.start,
                             pageSize: d.length,
                             searchValue: d.search?.value || '',
-                            sortColumnName: 'createdDate',
+                            sortColumnName: 'CreatedDate',
                             sortColumnDirection: 'desc'
                         };
                         return JSON.stringify(filters);
@@ -259,8 +256,8 @@
                             return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
                         }
                     },
-                    { data: 'Code', defaultContent: '-' },
-                    { data: 'NameEn', name: 'name', defaultContent: '-' },
+                    { data: 'AccountNumber', defaultContent: '-' },
+                    { data: 'Name', name: 'name', defaultContent: '-' },
                     { data: 'Class', defaultContent: '-' },
                     { data: 'ParentId', defaultContent: '-' },
                     { data: 'Path', defaultContent: '-' },
@@ -278,27 +275,27 @@
                             var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
                             var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
-                                                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                          </button>`;
+                                                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                                  </button>`;
 
                             var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
-                                                                       <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                                     </button>` : '';
+                                                                               <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                                             </button>` : '';
 
                             return `
-                                            <div class="dropdown text-center">
-                                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                        type="button" id="${btnId}"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="mdi mdi-cog-outline"></i> Actions
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                                    <li>${detailsBtn}</li>
-                                                    ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                                    ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                                </ul>
-                                            </div>
-                                        `.trim();
+                                                    <div class="dropdown text-center">
+                                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                                type="button" id="${btnId}"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                            <li>${detailsBtn}</li>
+                                                            ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                            ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                                                        </ul>
+                                                    </div>
+                                                `.trim();
                         }
                     }
                 ],

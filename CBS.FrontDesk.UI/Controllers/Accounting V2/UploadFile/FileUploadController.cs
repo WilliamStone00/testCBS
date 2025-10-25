@@ -1,9 +1,12 @@
-﻿using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.FilesUpload;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Owin.Logging;
@@ -20,16 +23,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         private readonly FileUploadService _fileUploadService;
         private readonly BranchServices _branchServices;
         private readonly AffiliateAccountMockService _affiliateAccountMockService;
+        private readonly AffiliateService _affiliateService;
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public FileUploadController(FileUploadService fileUploadService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService)
+        public FileUploadController(AffiliateService affiliateService, FileUploadService fileUploadService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService)
         {
             _fileUploadService = fileUploadService;
             _branchServices = branchServices;
             _affiliateAccountMockService = affiliateAccountMockService;
+            _affiliateService = affiliateService;
         }
 
         public async Task<ActionResult> Index()
@@ -42,8 +47,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
             ViewBag.Branches = await _branchServices.GetBranches();
-            var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            var affiliate = await _affiliateService.GetAsync();
             ViewBag.Affiliates = affiliate;
+        }
+
+        /// <summary>
+        /// ACTION 4: Handles the "Download Template" button click.
+        /// </summary>
+        public ActionResult AffiliateTemplate()
+        {
+            string physicalPath = Server.MapPath("~/AppFiles/AffiliateAccountUpload/MFIUploadTemplateForCode.xlsx");
+            if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Affiliate not found.");
+            byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MFIUploadTemplate.xlsx");
+        }
+
+        /// <summary>
+        /// ACTION 4: Handles the "Download Template" button click.
+        /// </summary>
+        public ActionResult BranchAccountTemplate()
+        {
+
+            string physicalPath = Server.MapPath("~/AppFiles/AffiliateAccountUpload/SampleBalanceSheetTemplateforcode.xlsx");
+            if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Branch Accounts not found.");
+            byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SampleBalanceSheetTemplate.xlsx");
         }
 
         [HttpGet]
@@ -62,6 +90,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             {
 
                 var data = await _fileUploadService.AccountwaitingDataTableAsync(query);
+                //var data = await _fileUploadService.AccountwaitingMockDataTableAsync(query);
 
                 var Accountwaiting = JsonConvert.DeserializeObject<List<Accountwaiting>>(JsonConvert.SerializeObject(data.data));
 
@@ -95,8 +124,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
         }
 
+
         [HttpPost]
-        public async Task<JsonResult> LoadCorrespondanceData(CorespondanceQUERY query)
+        public async Task<JsonResult> LoadCorrespondanceDatatable(CorespondanceQUERY query)
         {
             //await loader();
             try
@@ -140,7 +170,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             //GetRolePermissions
             else if (path == "new")
             {
-                return PartialView(partialView, new CategoryConfig());
+                return PartialView(partialView, new AddCORRESPONDANCE());
             }
 
             else
@@ -149,6 +179,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
                 return PartialView(partialView, data);
 
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Addcorrespondance(AddCORRESPONDANCE model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+
+            var result = await _fileUploadService.CreateCorrespondanceAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpPost]
@@ -277,6 +318,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
                         success = true,
                         data = response.ApiResponseData.Data,
                         message = response.ApiResponseData.Message ?? response.Message
+                        
                     });
                 }
 
@@ -327,10 +369,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         }
 
 
-        public async Task<ActionResult> GetCorrespondance (string KEY = null, string partialView = null, string path = null, string serviceOption = null)
-        {          
-                var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
-                return PartialView(partialView, data);                        
+        public async Task<ActionResult> GetCorrespondance(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
+            return PartialView(partialView, data);
         }
 
     }

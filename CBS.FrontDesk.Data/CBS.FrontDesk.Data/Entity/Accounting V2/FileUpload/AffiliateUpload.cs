@@ -11,19 +11,32 @@ using System.Web;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
 {
-    public class A_B_FileUploadResponse
+    public class AffiliateFileUploadResponse
     {
-        public int TotalRows { get; set; }
-        public int ProcessedRows { get; set; }
-        public int SkippedRows { get; set; }
-        public int TotalAffiliateAccounts { get; set; }
-        public int AutoMatchedAccounts { get; set; }
-        public int RequiresMappingAccounts { get; set; }
+        public int? TotalRows { get; set; }
+        public int? ProcessedRows { get; set; }
+        public int? SkippedRows { get; set; }
+        public int? TotalAffiliateAccounts { get; set; }
+        public int? AutoMatchedAccounts { get; set; }
+        public int? RequiresMappingAccounts { get; set; }
+    }
+
+    public class BranchFileUploadResponse
+    {
+        public int? TotalRows { get; set; }
+        public int? ProcessedRows { get; set; }
+        public int? SkippedRows { get; set; }
+        public int? totalBranchAccounts { get; set; }
+        public int? branchAccountsCreated { get; set; }
+        public int? branchAccountsUpdated { get; set; }
+        public int? branchAccountsRequiresMapping { get; set; }
+        public int? trialBalanceStagingCreated { get; set; }
+        public int? awaitingCorrespondenceCreated { get; set; }
     }
 
     public class FileUpload
     {
-        public bool isAffiliate { get; set; }
+        public bool isAffiliate { get; set; } 
         public string affiliateId { get; set; } = null;
         public string branchId { get; set; } = null;
         public HttpPostedFileBase file { get; set; }
@@ -70,6 +83,22 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string Language { get; set; } = null;
     }
 
+    public class AddCORRESPONDANCE
+    {
+        public string Type { get; set; }
+        public string Rationale { get; set; }
+        public string CorrelationId { get; set; }
+        public string RequestedByUserId { get; set; }
+        public string RequestedByName { get; set; }
+        public string BranchId { get; set; }
+        public string BranchAccountId { get; set; }
+        public string AffiliateAccountId { get; set; }
+        public string SourceAffiliateAccountId { get; set; }
+        public string HoPcmfAccountId { get; set; }
+        public string Language { get; set; }
+    }
+
+
     public class AF_BRCorrespondance
     {
         //AffiliateAccount
@@ -101,21 +130,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string Language { get; set; }
     }
 
-    public class AddCORRESPONDANCE
-    {
-        public string Type { get; set; }
-        public string Rationale { get; set; }
-        public string CorrelationId { get; set; }
-        public string RequestedByUserId { get; set; }
-        public string RequestedByName { get; set; }
-        public string BranchId { get; set; }
-        public string BranchAccountId { get; set; }
-        public string AffiliateAccountId { get; set; }
-        public string SourceAffiliateAccountId { get; set; }
-        public string HoPcmfAccountId { get; set; }
-        public string Language { get; set; }
-    }
-
+    
     public class CorespondanceQUERY
     {
         public DataTableOptions Options { get; set; }

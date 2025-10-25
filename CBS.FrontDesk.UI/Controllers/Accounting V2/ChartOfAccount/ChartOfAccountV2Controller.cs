@@ -11,6 +11,7 @@ using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -33,22 +34,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             _accountsService2 = chartOfAccountsV2Service;
         }
 
-        // GET: /Accounting_V2/ChartOfAccounts
+       
         [HttpGet]
         public ActionResult Index()
         {
-            // If you need viewbag/loader data, call a Loader method similar to your old controller.
+            
             return View();
         }
 
-        // GET: /Accounting_V2/ChartOfAccounts/GetTreeData
-        // Returns jsTree-compatible JSON nodes
         [HttpGet]
         public async Task<ActionResult> GetTreeData(string branchId = null)
        {
             try
             {
-                var nodes = await _accountsService2.GetAccountTreeForJsTreeAsync(branchId);
+                var nodes = await _accountsService.GetAccountTreeForJsTreeAsync(branchId);
                 return Json(nodes, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -77,20 +76,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
         public async Task<JsonResult> LoadData(COADATATABLE_Query query)
-        {
-            try
+        {               try
             {
               //  var data = await _accountsService.GetDataTableAsync(query);
               var data = await _accountsService2.GetDataTableAsync(query);
 
                 var response = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(JsonConvert.SerializeObject(data.data));
-
+                var mapped = _accountsService2.MapCodesToAccountNumbers(response.ToList());
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = response
+                    data = mapped
                 });
             }
             catch (Exception ex)
@@ -101,7 +99,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
                     draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
-                    data = new List<object>(),
+                    data = new List<HoPcmfAccountTreeDto>(),
                     error = ex.Message
                 });
             }
@@ -140,7 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             try
             {
                 // I previously provided UpdateAccountNameAsync(accountId, newNameEn, newNameFr)
-                var result = await _accountsService2.UpdateAccountNameAsync(request.Id, request.NameEn, request.NameFr);
+                var result = await _accountsService2.UpdateAccountNameAsync(request);
 
                 // ExecutionMessages is your standard response wrapper used across services
                 return Json(new
@@ -178,7 +176,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             else // This handles the "get" path for editing
             {
                 // Get the Affiliateresponse from service
-                var entity = await _accountsService.GetAccountTreeDtoByIdAsync(KEY);
+                //var entity = await _accountsService.GetAccountTreeDtoByIdAsync(KEY);
+                var entity = await _accountsService2.GetAccountByIdAsync(KEY);
 
                 if (entity == null)
                 {

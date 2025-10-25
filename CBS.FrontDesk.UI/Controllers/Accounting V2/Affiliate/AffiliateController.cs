@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
 
         // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
-        public async Task<JsonResult> LoadAffiliateData(AffiliateAccountQuery query)
+        public async Task<JsonResult> LoadAffiliateData(AffiliateQuery query)
         {
             try
             {

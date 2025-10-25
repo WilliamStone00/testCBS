@@ -61,6 +61,173 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             }
         }
 
+        //***************************************** Mock Data table ********************************
+        // Mock implementation for testing the Account Awaiting Correspondance DataTable
+        public async Task<CustomDataTable> AccountwaitingMockDataTableAsync(AccountwaitingCorrespondanceQuery query)
+        {
+            // small artificial latency to mimic real API
+            await Task.Delay(10);
+
+            try
+            {
+                var now = DateTime.UtcNow;
+
+                // --- In-memory sample data (adjust fields to match your real Accountwaiting DTO) ---
+                var all = new List<Accountwaiting>
+        {
+            new Accountwaiting {
+                Id = "AW-1001",
+                CreatedDate = now.AddDays(-1),
+                Name = "Alpha Co.",
+                Class = "ASSET",
+                Reason = "Missing signature",
+                PostingAllowed = true,
+                Scope = "Affiliate",
+                IsDeleted = false
+            },
+            new Accountwaiting {
+                Id = "AW-1002",
+                CreatedDate = now.AddDays(-2),
+                Name = "Beta Ltd",
+                Class = "LIABILITY",
+                Reason = "Incorrect account number",
+                PostingAllowed = false,
+                Scope = "TryBallance",
+                IsDeleted = false
+            },
+            new Accountwaiting {
+                Id = "AW-1003",
+                CreatedDate = now.AddDays(-10),
+                Name = "Gamma Enterprises",
+                Class = "EQUITY",
+                Reason = "Awaiting documentation",
+                PostingAllowed = true,
+                Scope = "Affiliate",
+                IsDeleted = true
+            },
+            new Accountwaiting {
+                Id = "AW-1004",
+                CreatedDate = now.AddDays(-5),
+                Name = "Delta Partners",
+                Class = "ASSET",
+                Reason = "Mismatch in currency",
+                PostingAllowed = true,
+                Scope = "TryBallance",
+                IsDeleted = false
+            },
+            new Accountwaiting {
+                Id = "AW-1005",
+                CreatedDate = now.AddDays(-3),
+                Name = "Epsilon Services",
+                Class = "EXPENSE",
+                Reason = "Missing approval",
+                PostingAllowed = false,
+                Scope = "Affiliate",
+                IsDeleted = false
+            },
+            // add more items if you want more pages
+        };
+
+                // Work on an IQueryable for convenient filtering / paging
+                var items = all.AsQueryable();
+
+                //// --- Apply filters from AccountwaitingCorrespondanceQuery (defensive) ---
+                if (query != null)
+                {
+                    // Example string filters (Scope, Code, Class, Language) - adjust property names as needed
+                    if (!string.IsNullOrWhiteSpace(query.Scope))
+                    {
+                        var s = query.Scope.Trim();
+                        items = items.Where(x => (x.Scope ?? string.Empty).IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(query.Code))
+                    {
+                        var s = query.Code.Trim();
+                        items = items.Where(x => (x.Id ?? string.Empty).IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0
+                                              || (x.Name ?? string.Empty).IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(query.Class))
+                    {
+                        var s = query.Class.Trim();
+                        items = items.Where(x => (x.Class ?? string.Empty).IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+                    }
+
+                    if (query.CreatedFromUtc.HasValue)
+                    {
+                        var from = query.CreatedFromUtc.Value;
+                        items = items.Where(x => (DateTime)x.CreatedDate >= from);
+                    }
+
+                    if (query.CreatedToUtc.HasValue)
+                    {
+                        var to = query.CreatedToUtc.Value;
+                        items = items.Where(x => (DateTime)x.CreatedDate <= to);
+                    }
+
+                   
+
+                    if (!string.IsNullOrWhiteSpace(query.Language))
+                    {
+                        // no-op in mock (unless you want to simulate different names by language)
+                    }
+                }
+                else
+                {
+                    // default behavior when query is null: exclude deleted
+                    items = items.Where(x => x.IsDeleted == false);
+                }
+
+                //// --- Global search coming from DataTable options (if provided) ---
+                var opts = query?.Options;
+                var globalSearch = opts?.searchValue?.ToString()?.Trim();
+                if (!string.IsNullOrWhiteSpace(globalSearch))
+                {
+                    var s = globalSearch.ToLowerInvariant();
+                    items = items.Where(x =>
+                        ((x.Id ?? string.Empty).ToString().ToLowerInvariant().Contains(s))
+                        || ((x.Name ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.Class ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.Reason ?? string.Empty).ToLowerInvariant().Contains(s))
+                        || ((x.Scope ?? string.Empty).ToLowerInvariant().Contains(s))
+                    );
+                }
+
+                // --- Sorting: default CreatedDate desc ---
+                items = items.OrderByDescending(x => (DateTime)x.CreatedDate);
+
+                // --- Paging (DataTables style) ---
+                var total = all.Count;
+                var filteredCount = items.Count();
+
+                var start = opts?.start ?? 0;
+                var length = opts?.length ?? 10;
+                if (start < 0) start = 0;
+                if (length <= 0) length = 10;
+
+                var page = items.Skip(start).Take(length).ToList();
+
+                // Build and return CustomDataTable result
+                var result = new CustomDataTable
+                {
+                    draw = Convert.ToInt32(opts?.draw ?? "1"),
+                    recordsTotal = total,
+                    recordsFiltered = filteredCount,
+                    data = page // the controller will deserialize this to List<Accountwaiting>
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Bubble up to caller - controller will handle and return a DataTables-safe error response
+                throw new Exception($"Mock AccountwaitingDataTableAsync failed: {ex.Message}", ex);
+            }
+        }
+
+        //***************************************** END OF Mock Data table ********************************
+
         public async Task<CustomDataTable> CorrespondanceDataTableAsync(CorespondanceQUERY query)
         {
             try
@@ -91,13 +258,13 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             }
         }
 
-        public async Task<ApiResponse<ServiceResponse<FileUploadResponse>>> AffiliateUpload(FileUpload affiliateUpload)
+        public async Task<ApiResponse<ServiceResponse<AffiliateFileUploadResponse>>> AffiliateUpload(FileUpload affiliateUpload)
         {
             try
             {
                 if (affiliateUpload.file == null)
                 {
-                    return new ApiResponse<ServiceResponse<FileUploadResponse>>
+                    return new ApiResponse<ServiceResponse<AffiliateFileUploadResponse>>
                     {
                         IsSuccess = false,
                         ApiResponseData = null,
@@ -105,12 +272,12 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                     };
                 }
                 var endpoint = string.Format(APICallHelper.AffiliateUpload, Uri.EscapeDataString(affiliateUpload.affiliateId));
-                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<FileUploadResponse>>(affiliateUpload.file, endpoint);
+                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<AffiliateFileUploadResponse>>(affiliateUpload.file, endpoint);
                 return result;
             }
             catch (Exception ex)
             {
-                return new ApiResponse<ServiceResponse<FileUploadResponse>>
+                return new ApiResponse<ServiceResponse<AffiliateFileUploadResponse>>
                 {
                     IsSuccess = false,
                     ApiResponseData = null,
@@ -119,13 +286,13 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             }
         }
 
-        public async Task<ApiResponse<ServiceResponse<A_B_FileUploadResponse>>> BranchUpload(FileUpload BranchUpload)
+        public async Task<ApiResponse<ServiceResponse<BranchFileUploadResponse>>> BranchUpload(FileUpload BranchUpload)
         {
             try
             {
                 if (BranchUpload.file == null)
                 {
-                    return new ApiResponse<ServiceResponse<A_B_FileUploadResponse>>
+                    return new ApiResponse<ServiceResponse<BranchFileUploadResponse>>
                     {
                         IsSuccess = false,
                         ApiResponseData = null,
@@ -134,13 +301,13 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                 }
 
                 var endpoint = $"{APICallHelper.BranchUpload}";
-                var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<A_B_FileUploadResponse>>(BranchUpload.file, BranchUpload.branchId, endpoint);
+                var result = await _apiHelper.UploadAccountingV2FileAsync<ServiceResponse<BranchFileUploadResponse>>(BranchUpload.file, BranchUpload.branchId, endpoint);
 
                 return result;
             }
             catch (Exception ex)
             {
-                return new ApiResponse<ServiceResponse<A_B_FileUploadResponse>>
+                return new ApiResponse<ServiceResponse<BranchFileUploadResponse>>
                 {
                     IsSuccess = false,
                     ApiResponseData = null,
@@ -173,8 +340,8 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             try
             {
                 if (string.IsNullOrWhiteSpace(fileUploadId)) return null;
-                string url = APICallHelper.GetawaitingcorrespondanceById.Replace("{FileUploadId}", fileUploadId);
-                var response = await _apiHelper.GetAsync<ResponseObject<Accountwaiting>>(url);
+                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(fileUploadId));
+                var response = await _apiHelper.GetAsync<ResponseObject<Accountwaiting>>(endpoint);
                 return response?.ApiResponseData?.Data;
             }
             catch (Exception ex)
@@ -189,7 +356,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             try
             {
 
-                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(APICallHelper.createCorrespondanceRequest, model);
+                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(APICallHelper.createawaitingcorrespondanceRequest, model);
 
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
@@ -206,6 +373,33 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             catch (Exception ex)
             {
                 GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> CreateCorrespondanceAsync(AddCORRESPONDANCE model)
+        {
+            try
+            {
+
+                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(APICallHelper.createCorrespondanceRequest, model);
+
+                // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Type, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.Type, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.Type, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;

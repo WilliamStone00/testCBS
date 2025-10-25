@@ -7663,6 +7663,8 @@
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
+    <Content Include="AppFiles\AffiliateAccountUpload\MFIUploadTemplateForCode.xlsx" />
+    <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheetTemplateforcode.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -10762,7 +10764,7 @@
     <Content Include="Views\FileUpload\_Data.cshtml" />
     <Content Include="Views\FileUpload\_Details.cshtml" />
     <Content Include="Views\FileUpload\_AddCorrespondance.cshtml" />
-    <Content Include="Views\FileUpload\_UpdateCorrespondance.cshtml" />
+    <Content Include="Views\FileUpload\_UpdateAwaitingCorrespondance.cshtml" />
     <Content Include="Views\ChartOfAccountV2\List.cshtml" />
     <Content Include="Views\ChartOfAccountV2\_Data.cshtml" />
     <Content Include="Views\ChartOfAccountV2\_DetailsPartial.cshtml" />

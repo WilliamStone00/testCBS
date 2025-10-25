@@ -66,15 +66,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoadAffiliateData(BranchAccountQuery query)
+        public async Task<JsonResult> LoadBranchData(BranchAccountQuery query)
         {
             //await loader();
             try
             {
 
-                var data = await _branchAccountService.GetcategoryDataTableAsync2(query);
-               // var data = await _accountsService.GetDataTableAsync(query);
-
+                var data = await _branchAccountService.GetDataTableAsync(query);
+              
                 var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -101,7 +100,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
        
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            await loader();
+          //  await loader();
             if (path == "list")
             {
                 var data = await _branchAccountService.GetAsync();

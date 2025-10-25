@@ -1421,8 +1421,8 @@ namespace CBS.FrontDesk.Helper
         public static string DeactivatBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string CreateBranchAccount = "/api/v1/BranchAccount";
-        public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{branchId}/tree";
-        public static string GetBranchAccountById = "/api/v1/BranchAccount/{id}";
+        public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
 
@@ -1437,6 +1437,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/list";
         public static string awaitingcorrespondancedatatable = "/api/v1/AccountAwaitingCorrespondence/datatable";
         public static string createCorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
+        public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
        
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
         public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";

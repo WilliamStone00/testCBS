@@ -27,6 +27,23 @@
                     @* server-bound hidden id *@
                     <input type="hidden" id="accountId" name="Id" value="@Model.Id" />
 
+                    <div class="alert alert-info py-2 mb-4">
+                        @*<i class="mdi mdi-account-outline me-2"></i>*@
+
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <span class="small text-muted">Account Ref</span>
+                                <div class="fw-medium">@(!string.IsNullOrEmpty(Model.Id) ? Model.Id : "N/A")</div>
+                            </div>
+                            <div class="col-auto">
+                                <span class="small text-muted">Customer</span>
+                                <div class="fw-medium">@(!string.IsNullOrEmpty(Model.Name) ? Model.Name : "N/A")</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                     <div class="mb-3">
                         <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
                         <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.Code" />
@@ -44,7 +61,10 @@
 
                     <div class="mb-3">
                         <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                        @*<input type="text" class="form-control" id="accountClass" name="Class" readonly value="@Model.Class" />*@
                         <input type="text" class="form-control" id="accountClass" readonly value="@Model.Class" />
+                        <input type="hidden" name="Class" value="@Model.Class" />
+
                     </div>
 
                     <div class="mb-3">

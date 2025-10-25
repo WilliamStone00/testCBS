@@ -75,12 +75,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            var affiliate = await _AffiliateService.GetAsync();
             ViewBag.Affiliates = affiliate;
 
             var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
             ViewBag.HoPcmfAccountId = Chartofaccount;
             return true;
+
         }
 
         [HttpPost]
@@ -90,7 +91,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             try
             {
 
-                var data = await _affiliateAccountMockService.GetcategoryDataTableAsync(query);
+                var data = await _AffiliateAccountService.GetcategoryDataTableAsync(query);
 
                 var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.Affiliate.Affiliateresponse>>(JsonConvert.SerializeObject(data.data));
 
@@ -153,7 +154,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
             if (path == "list")
             {
-                var data = await _affiliateAccountMockService.GetAsync();
+                var data = await _AffiliateAccountService.GetAsync();
                 return PartialView(partialView, data);
             }
             else if (path == "new")
@@ -168,7 +169,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             else // This handles the "get" path for editing
             {
                 // Get the Affiliateresponse from service
-                var entity = await _affiliateAccountMockService.GetByIdAsync(KEY);
+                var entity = await _AffiliateAccountService.GetByIdAsync(KEY);
 
                 if (entity == null)
                 {
@@ -176,24 +177,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                     return Content("Affiliate not found");
                 }
 
-                // MAP Affiliateresponse to AddAffiliateAccountCommand
-                var model = new AddAffiliateAccountCommand
-                {
-                    Id = entity.Id,
-                    Code = entity.Code,
-                    Class = entity.Class,
-                    NameEn = entity.NameEn,
-                    NameFr = entity.NameFr,
-                    IsActive = entity.IsActive,
-                    PostingAllowed = entity.PostingAllowed,
-                    ParentId = entity.ParentId,
-                    // Note: AffiliateId and HoPcmfAccountId might need different mapping
-                    // since they don't exist in Affiliateresponse
-                    AffiliateId = entity.Id, // Or map appropriately
-                    HoPcmfAccountId = entity.ParentId // Or map appropriately
-                };
+                //// MAP Affiliateresponse to AddAffiliateAccountCommand
+                //var model = new AddAffiliateAccountCommand
+                //{
+                //    Id = entity.Id,
+                //    Code = entity.Code,
+                //    Class = entity.Class,
+                //    NameEn = entity.NameEn,
+                //    NameFr = entity.NameFr,
+                //    IsActive = entity.IsActive,
+                //    PostingAllowed = entity.PostingAllowed,
+                //    ParentId = entity.ParentId,
+                //    // Note: AffiliateId and HoPcmfAccountId might need different mapping
+                //    // since they don't exist in Affiliateresponse
+                //    AffiliateId = entity.Id, // Or map appropriately
+                //    HoPcmfAccountId = entity.ParentId // Or map appropriately
+                //};
 
-                return PartialView(partialView, model);
+                return PartialView(partialView, entity);
             }
         }
 

@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -52,7 +53,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
         }
 
-        public async Task<CustomDataTable> GetcategoryDataTableAsync(AffiliateAccountQuery query)
+        public async Task<CustomDataTable> GetcategoryDataTableAsync(AffiliateQuery query)
         {
             try
             {
@@ -105,9 +106,6 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                   throw;
             }
         }
-
-
-
 
         public async Task<ExecutionMessages> CreateAsync(AffiliateCommand model)
         {
@@ -193,8 +191,12 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         public async Task<IEnumerable<Affiliateresponse>> GetAffiliatesAsync()
         {
             try
-            {
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(APICallHelper.GetAllAffiliate);
+            {              
+                var isActive = true;
+                var includeDeleted = false;
+                string formattedUrl = string.Format(APICallHelper.GetAffiliateById, isActive, includeDeleted);
+
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(formattedUrl);
                 var affiliates = response?.ApiResponseData?.Data ?? new List<Affiliateresponse>();
 
                 if (!IsHeadOffice())

@@ -1,10 +1,12 @@
 ﻿using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -96,7 +98,7 @@ namespace CBS.BusinessService.Accounting_V2
         /// <summary>
         /// Returns the account entity fetched from the API (raw).
         /// </summary>
-        public async Task<HoPcmfAccount> GetAccountByIdAsync(string accountId)
+        public async Task<HoPcmfAccountTreeDto> GetAccountByIdAsync(string accountId)
         {
             if (string.IsNullOrWhiteSpace(accountId)) return null;
             var lang = GetLanguage();
@@ -111,7 +113,7 @@ namespace CBS.BusinessService.Accounting_V2
 
                 var url = string.Format(APICallHelper.GetAccountByIdEndpoint, idEscaped, langEscaped);
 
-                var response = await _apiHelper.GetAsync<ResponseObject<HoPcmfAccount>>(url);
+                var response = await _apiHelper.GetAsync<ResponseObject<HoPcmfAccountTreeDto>>(url);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData != null)
                     return response.ApiResponseData.Data;
@@ -156,40 +158,67 @@ namespace CBS.BusinessService.Accounting_V2
         }
 
         /// <summary>
+        /// Maps a collection of HoPcmfAccountTreeDto to a new list where AccountNumber
+        /// is parsed from Code. If Code is null/empty or not an integer, AccountNumber becomes 0.
+        /// Mapping is applied recursively to children.
+        /// </summary>
+        public  List<HoPcmfAccountTreeDto> MapCodesToAccountNumbers(List<HoPcmfAccountTreeDto> source)
+        {
+            if (source == null) return new List<HoPcmfAccountTreeDto>();
+            return source.Select(MapNode).ToList();
+        }
+
+        private  HoPcmfAccountTreeDto MapNode(HoPcmfAccountTreeDto node)
+        {
+            if (node == null) return new HoPcmfAccountTreeDto();
+
+            return new HoPcmfAccountTreeDto
+            {
+                Id = node.Id,
+                Code = node.Code,
+                // parse Code to AccountNumber, fallback to 0 when empty or non-integer
+                AccountNumber = ParseCodeToInt(node.Code),
+                Name = node.Name,
+                NameEn = node.NameEn,
+                NameFr = node.NameFr,
+                Class = node.Class,
+                ParentId = node.ParentId,
+                PostingAllowed = node.PostingAllowed,
+                Depth = node.Depth,
+                Path = node.Path,
+                CreatedDate = node.CreatedDate,
+                ModifiedDate = node.ModifiedDate,
+                IsDeleted = node.IsDeleted,
+                Children = node.Children == null
+                    ? new List<HoPcmfAccountTreeDto>()
+                    : node.Children.Select(MapNode).ToList()
+            };
+        }
+
+        private static int ParseCodeToInt(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code)) return 0;
+            return int.TryParse(code, out var value) ? value : 0;
+        }
+
+        /// <summary>
         /// Calls the API to update an account name. Returns ExecutionMessages (same pattern as BaseApiServices).
         /// </summary>
-        public async Task<ExecutionMessages> UpdateAccountNameAsync(string accountId, string newNameEn, string newNameFr)
+        public async Task<ExecutionMessages> UpdateAccountNameAsync(UpdateAccountNameRequest request)
         {
-            if (string.IsNullOrWhiteSpace(accountId))
+            if (string.IsNullOrWhiteSpace(request.Id))
             {
                 GetExecutionMessages(null, false, "Account Name", MessagesResults.Failed, ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, "Invalid account id");
                 return ExecutionMessage;
             }
 
             try
-            {
-                // Prepare payload. Adjust the body type to match the API contract if different.
-                var payload = new
-                {
-                    Id = accountId,
-                    NameEn = newNameEn,
-                    NameFr = newNameFr
-                };
-
+            {                
                 // If APICallHelper has a dedicated endpoint for this action, use it; otherwise use the generic update endpoint
-                string endpoint;
-                if (!string.IsNullOrEmpty(APICallHelper.UpdateAccountNameEndpoint))
-                {
-                    endpoint = APICallHelper.UpdateAccountNameEndpoint; // e.g. "api/v2/accounts/{0}/name" or similar — implement in APICallHelper
-                }
-                else
-                {
-                    endpoint = string.Format(APICallHelper.GetAccountByIdEndpoint, accountId); // fallback: PUT to update resource
-                }
-
+                var encodedId = Uri.EscapeDataString(request.Id);
+                string endpoint = string.Format(APICallHelper.UpdateAccountNameEndpoint, encodedId); 
                 // Use PutAsync or PostAsync depending on your API. Here we try PutAsync as a safe default for updates.
-                var response = await _apiHelper.PutAsync<ServiceResponse<bool>>(endpoint, payload);
-
+                var response = await _apiHelper.PutAsync<ServiceResponse<HoPcmfAccount>>(endpoint, request);
                 if (response != null && response.IsSuccess)
                 {
                     GetExecutionMessages(response, true, "Account Name", MessagesResults.Success,
@@ -212,13 +241,13 @@ namespace CBS.BusinessService.Accounting_V2
         /// <summary>
         /// Returns a filtered/detailed account DTO suitable for the UI.
         /// </summary>
-        public async Task<HoPcmfAccount> GetAccountDetailsAsync(string accountId)
+        public async Task<HoPcmfAccountTreeDto> GetAccountDetailsAsync(string accountId)
         {
             var acc = await GetAccountByIdAsync(accountId);
             if (acc == null) return null;
 
             // Map to a lighter DTO if needed; currently returning same entity
-            return new HoPcmfAccount
+            return new HoPcmfAccountTreeDto
             {
                 Id = acc.Id,
                 Code = acc.Code,

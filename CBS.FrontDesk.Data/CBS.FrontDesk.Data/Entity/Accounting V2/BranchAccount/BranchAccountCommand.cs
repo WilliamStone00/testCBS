@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public bool? PostingAllowed { get; set; }
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
-        public bool? IncludeDeleted { get; set; }
+        public bool IncludeDeleted { get; set; } = false;
 
     }
 }
