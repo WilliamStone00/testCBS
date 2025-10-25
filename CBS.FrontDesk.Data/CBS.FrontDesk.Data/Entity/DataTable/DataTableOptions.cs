@@ -43,6 +43,25 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
             this.DataTableOptions = dataTableOptions;
         }
     }
+    public class CustomDataTable2 
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public object data { get; set; }
+        public DataTableOptions Options { get; set; }
+
+        public CustomDataTable2() { }
+
+        public CustomDataTable2(int draw, int recordsTotal, int recordsFiltered, object data, DataTableOptions dataTableOptions)
+        {
+            this.draw = draw;
+            this.recordsTotal = recordsTotal;
+            this.recordsFiltered = recordsFiltered;
+            this.data = data;
+            this.Options = dataTableOptions;
+        }
+    }
 
     public class CustomDataTable<T> : ICustomDataTable<T> where T : class 
     {
