@@ -1524,7 +1524,7 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string CreateBranchAccount = "/api/v1/BranchAccount";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
-        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
 

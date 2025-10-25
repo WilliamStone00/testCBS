@@ -42,16 +42,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
         {
 
             // _affiliateService should be injected via constructor as IAffiliateAccountService
-            var node = await _affiliateAccountMockService.GetByIdAsync(id);
-            if (node == null) return PartialView("_AffiliateModals", new AffiliateTreeViewModel());
+            var node = await _AffiliateAccountService.GetByIdAsync(id);
+            if (node == null) return PartialView("_AffiliateModals", new AffiliateAccountTreeViewModel());
 
             // get full flat list (service can supply)
-            var flat = await _affiliateAccountMockService.GetAllAsync();
+            var flat = await _AffiliateAccountService.GetAsync();
 
-            var parents = _affiliateAccountMockService.GetParentChain(id, flat);
-            var childrenTree = _affiliateAccountMockService.BuildChildrenTree(id, flat);
+            var parents = _AffiliateAccountService.GetParentChain(id, flat);
+            var childrenTree = _AffiliateAccountService.BuildChildrenTree(id, flat);
 
-            var vm = new AffiliateTreeViewModel
+            var vm = new AffiliateAccountTreeViewModel
             {
                 Node = node,
                 ParentChain = parents,
@@ -93,11 +93,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
                 var data = await _AffiliateAccountService.GetcategoryDataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.Affiliate.Affiliateresponse>>(JsonConvert.SerializeObject(data.data));
+                var Affiliate = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount.AffiliateAccountDto>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
-                    draw = data.draw,
+                    draw = data.Options.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
                     data = Affiliate
@@ -159,16 +159,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
             else if (path == "new")
             {
-                var model = new AddAffiliateAccountCommand();
+                var model = new AffiliateAccountDto();
                 if (!string.IsNullOrWhiteSpace(KEY))
                 {
                     model.ParentId = KEY;
                 }
                 return PartialView(partialView, model);
             }
-            else // This handles the "get" path for editing
+            else 
             {
-                // Get the Affiliateresponse from service
+                // Get the AffiliateAccountDto from service
                 var entity = await _AffiliateAccountService.GetByIdAsync(KEY);
 
                 if (entity == null)
@@ -177,30 +177,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                     return Content("Affiliate not found");
                 }
 
-                //// MAP Affiliateresponse to AddAffiliateAccountCommand
-                //var model = new AddAffiliateAccountCommand
-                //{
-                //    Id = entity.Id,
-                //    Code = entity.Code,
-                //    Class = entity.Class,
-                //    NameEn = entity.NameEn,
-                //    NameFr = entity.NameFr,
-                //    IsActive = entity.IsActive,
-                //    PostingAllowed = entity.PostingAllowed,
-                //    ParentId = entity.ParentId,
-                //    // Note: AffiliateId and HoPcmfAccountId might need different mapping
-                //    // since they don't exist in Affiliateresponse
-                //    AffiliateId = entity.Id, // Or map appropriately
-                //    HoPcmfAccountId = entity.ParentId // Or map appropriately
-                //};
-
                 return PartialView(partialView, entity);
             }
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(AddAffiliateAccountCommand model)
+        public async Task<ActionResult> CreateOrUpdate(AffiliateAccountDto model)
         {
             if (string.IsNullOrWhiteSpace(model.Id))
             {
@@ -289,7 +272,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(AddAffiliateAccountCommand model)
+        public async Task<ActionResult> Update(AffiliateAccountDto model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });

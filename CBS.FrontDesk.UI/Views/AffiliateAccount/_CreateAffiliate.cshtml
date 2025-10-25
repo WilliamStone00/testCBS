@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount.AddAffiliateAccountCommand
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount.AffiliateAccountDto
 @using Resources
 
 
@@ -68,7 +68,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.AffiliateId)
+           @Html.HiddenFor(m => m.AffiliateId)
             @Html.HiddenFor(m => m.ParentId)
             @Html.HiddenFor(m => m.HoPcmfAccountId)
 
