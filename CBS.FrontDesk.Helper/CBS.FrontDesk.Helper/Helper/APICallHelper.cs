@@ -1541,7 +1541,6 @@ namespace CBS.FrontDesk.Helper
         public static string createCorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
         public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
 
-        public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
        
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
         public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
