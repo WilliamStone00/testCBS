@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.Entity.AccountongV2
+namespace CBS.FrontDesk.Data.Entity.AccountingV2
 {
     //public class ConfigurationManualEntries
     //{

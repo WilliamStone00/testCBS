@@ -4,7 +4,7 @@ using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
-using CBS.FrontDesk.Data.Entity.AccountongV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
