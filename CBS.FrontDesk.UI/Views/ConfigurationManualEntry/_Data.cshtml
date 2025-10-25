@@ -1,0 +1,152 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.AccountongV2.ConfigurationManualEntries>
+
+<fieldset class="fieldset-custom">
+    <h6 class="d-flex justify-content-between align-items-center text-primary mb-3">
+        <span><i class="mdi mdi-cog-outline me-2"></i> Interbranch / Local Configuration</span>
+    </h6>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center my-3">
+            <p>No configurations have been defined yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle border" id="myDataTable">
+                <thead class="bg-light text-center fw-semibold text-uppercase small">
+                    <tr>
+                        <th style="display:none;">Id</th> <!-- Hidden Id column -->
+                        <th class="py-2">Type</th>
+                        <th class="py-2">Command</th>
+                        <th class="py-2">Description</th>
+                        <th class="py-2">User Required Approval</th>
+                        <th class="py-2">Status</th>
+                        <th class="py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr data-id="@d.Id">
+                            <td style="display:none;">@d.Id</td>
+                            <td class="text-nowrap">@d.Type</td>
+                            <td class="text-nowrap">@d.Command</td>
+                            <td class="text-nowrap">@d.Description</td>
+
+                            <td class="text-center">
+                                @if (d.UserRequiredApproval)
+                                {
+                                    <span class="badge bg-success bg-opacity-75 px-3">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary bg-opacity-75 px-3">No</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (d.StatusIsActive)
+                                {
+                                    <span class="badge bg-success bg-opacity-75 px-3">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary bg-opacity-75 px-3">Inactive</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <button type="button"
+                                        class="btn btn-outline-primary btn-sm px-3 btn-edit-config"
+                                        data-id="@d.Id">
+                                    Edit
+                                </button>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>
+
+<!-- ===================== EDIT CONFIGURATION MODAL ===================== -->
+<!--<div class="modal fade" id="configModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+
+            <div class="modal-body" id="configModalBody">-->
+<!-- Partial view will load here -->
+<!--<div class="text-center text-muted py-4">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+
+<script>
+    $(document).ready(function () {
+
+        // Handle Edit button click
+        $(document).on('click', '.btn-edit-config', function () {
+            var id = $(this).data('id');
+            if (!id) return;
+
+            // Fetch partial view first
+            $.ajax({
+                url: '@Url.Action("GetDetails", "ConfigurationManualEntry")',
+                type: 'GET',
+                data: { id: id },
+                success: function (html) {
+
+                    // Remove any previous modal to avoid duplication
+                    $('#configModal').remove();
+
+                    // Create and inject new modal dynamically
+                    $('body').append(`
+                        <div class="modal fade" id="configModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content shadow-lg border-0">
+
+
+                                    <div class="modal-body" id="configModalBody">
+                                        ${html}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    // Show the modal now
+                    var modal = new bootstrap.Modal(document.getElementById('configModal'));
+                    modal.show();
+                },
+                error: function (xhr) {
+                    alert('Error loading configuration: ' + xhr.statusText);
+                }
+            });
+        });
+
+    });
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

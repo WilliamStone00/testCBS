@@ -1,0 +1,113 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+@using Resources
+
+@{
+    ViewBag.Title = "Manual Journal Entry";
+}
+
+@using (Html.BeginForm("PostJournalEntry", "ManualJournalEntry", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "journalForm", onsubmit = "return journalEntrySubmitAjax(this);" }))
+{
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold text-primary mb-0">
+                    <i class="mdi mdi-book-plus-outline me-2"></i> @ManualEntry.ManualJournalEntry
+                </h4>
+
+                <div class="col-md-4 text-end">
+                    <label class="form-label fw-bold me-2">@ManualEntry.AccountingDate</label>
+                    <input type="date" class="form-control d-inline-block w-auto shadow-sm"
+                           id="AccountingDate" name="AccountingDate" required />
+                </div>
+            </div>
+
+            <!-- Reference & Branch -->
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-4 mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="enableInterbranch">
+                        <label class="form-check-label fw-bold" for="enableInterbranch">
+                            @ManualEntry.EnableInterbranchTransaction
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">@ManualEntry.OperationCode</label>
+                    @Html.DropDownListFor(m => m.OperationCode,
+                        new SelectList(new[]
+                        {
+                            new { Value = "OP001", Text = "Operation 001" },
+                            new { Value = "OP002", Text = "Operation 002" },
+                            new { Value = "OP003", Text = "Operation 003" }
+                        }, "Value", "Text", Model?.OperationCode),
+                        "Select Operation Code",
+                        new { @class = "form-control select2", id = "OperationCode", required = "required" })
+                </div>
+
+                <div class="col-md-4 mb-3" id="counterpartyBranchDiv" style="display:none;">
+                    <label class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
+                    @Html.DropDownList("CounterpartyBranchId",
+                        new SelectList(ViewBag.Branches, "Id", "Name", Model?.BranchId),
+                        "Select Counterparty Branch",
+                        new { @class = "form-control select2", id = "CounterpartyBranchId" })
+                </div>
+            </div>
+
+            <!-- Journal Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center" id="myDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:30%">@ManualEntry.Account</th>
+                            <th style="width:30%">@ManualEntry.Narration</th>
+                            <th style="width:15%">@ManualEntry.Debit</th>
+                            <th style="width:15%">@ManualEntry.Credit</th>
+                            <th style="width:10%">@ManualEntry.Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot class="table-light fw-bold">
+                        <tr>
+                            <td colspan="2" class="text-end">@ManualEntry.Totals:</td>
+                            <td id="totalDebit" class="text-end">0.00</td>
+                            <td id="totalCredit" class="text-end">0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="text-end mt-2">
+                <span id="difference" class="fw-bold text-danger">@ManualEntry.Diff: 0.00</span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-3 d-flex justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-outline-primary" id="addRowBtn">
+                        <i class="mdi mdi-plus"></i> @ManualEntry.AddRow
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
+                        <i class="mdi mdi-trash-can-outline"></i> @ManualEntry.ClearAllRows
+                    </button>
+                </div>
+            </div>
+
+            <!-- Remark -->
+            <div class="mt-4">
+                <label class="form-label fw-bold">@ManualEntry.Remark</label>
+                <textarea name="Remark" class="form-control shadow-sm" rows="3"
+                          placeholder="@ManualEntry.Enter" required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-4 text-end">
+                <button type="submit" id="postEntriesBtn" class="btn btn-primary px-4" disabled>
+                    <i class="mdi mdi-check-circle-outline me-1"></i> @ManualEntry.PostEntries
+                </button>
+            </div>
+        </div>
+    </div>
+}

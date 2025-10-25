@@ -17,7 +17,11 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceReq
             [Required(ErrorMessage = "A statement is required.")]
             public string Statement { get; set; } // Renamed for clarity
             public string Mode { get; set; }
-        
+
+            public string AccountNumber { get; set; }
+
+            public bool DepositToAccount { get; set; }
+
 
     }
 }

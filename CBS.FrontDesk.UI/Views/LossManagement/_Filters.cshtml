@@ -1,0 +1,97 @@
+﻿<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Checkleaf Search Filters</h5>
+    <form id="checkleafFilterForm">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for additional filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleStatus" onclick="document.getElementById('statusFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleStatus">Show Status Filter</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleCategory" onclick="document.getElementById('categoryFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleCategory">Show Category Filter</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDate" onclick="document.getElementById('dateFilter').classList.toggle('d-none')">
+                        <label class="form-check-label fw-bold" for="toggleDate">Show Date Filter</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Filters -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Customer Member Reference</label>
+                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="Enter customer ID" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Checkbook ID</label>
+                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="Enter specific checkbook ID" />
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div id="statusFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Checkleaf Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div id="categoryFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Checkleaf Category</label>
+                        <select id="category" name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Business">Business</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Corporate">Corporate</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filter -->
+            <div id="dateFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Issue Date From</label>
+                        <input type="date" id="issueDateFrom" name="issueDateFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Issue Date To</label>
+                        <input type="date" id="issueDateTo" name="issueDateTo" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Search Checkleaves</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset Filters</button>
+                @* <button id="clearResultsBtn" class="btn btn-label-secondary w-100"><i class="mdi mdi-close"></i> Clear Results</button>*@
+            </div>
+        </div>
+    </form>
+</div>
+

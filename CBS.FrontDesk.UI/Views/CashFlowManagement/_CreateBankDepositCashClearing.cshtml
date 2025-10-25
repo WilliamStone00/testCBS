@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
-    @using Resources
+@using Resources
 @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
 {
     @Html.Partial("_GeneralErrorDiv")
@@ -26,7 +26,7 @@
                                     var formattedAmount = Convert.ToDecimal(Model.DepositNotificationDto.Amount).ToString("N");
                                 }
                                 <h3 class="mb-3">XAF @formattedAmount</h3>
-                           
+
                                 <p class="mb-0">@GlobalCashFlowManagement.AuthorizedBy @Model.DepositNotificationDto.Temp2 </p>
                                 <p class="mb-0">@GlobalCashFlowManagement.TransferBy @Model.BankDepositCashClearing.TransferBy </p>
                                 <p class="mb-0">@GlobalCashFlowManagement.TransactionDoneOnThe @Model.BankDepositCashClearing.CreatedDate </p>
@@ -43,9 +43,9 @@
 
             <div class="col-md-6" hidden="hidden">
                 <div class="form-floating form-floating-outline">
-                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashFlowManagement.TotalAmount: 0.0</span>
-                    @*<input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                    <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.BankDepositCashClearing.AmountExpected">*@
+                    <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalCashFlowManagement.TotalAmount: 0.0</span>-->-->
+                    <!--<input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
+                        <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.BankDepositCashClearing.AmountExpected">-->
                 </div>
             </div>
             <div class="col-md-6">

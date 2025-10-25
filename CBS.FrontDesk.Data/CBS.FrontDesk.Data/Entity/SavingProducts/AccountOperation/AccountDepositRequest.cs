@@ -113,6 +113,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<BulkDeposit> BulkOperations { get; set; } = new List<BulkDeposit>();
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
+        public List<LoanRepaymentOperationDto> BulkOperationsForLoanRepayments { get; set; } = new List<LoanRepaymentOperationDto>();
+        public bool IncludeLoanRepayment { get; set; }
         public DateTime? AccountingDate { get; set; }
         public string DepositType { get; set; }
         public string Period { get; set; }
@@ -166,7 +168,8 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
     {
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
-        public List<BulkOperation> BulkOperationsForLoanRepayments { get; set; }
+        public List<LoanRepaymentOperationDto> BulkOperationsForLoanRepayments { get; set; } = new List<LoanRepaymentOperationDto>();
+
         public bool IncludeLoanRepayment { get; set; }
         public DateTime? AccountingDate { get; set; }
         public string AccountNumber { get; set; }
@@ -241,6 +244,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
             Interest = 0;
             Total = 0;
         }
+    }
+    public class LoanRepaymentOperationDto
+    {
+        public string LoanId { get; set; }
+        public decimal Amount { get; set; }    // Capital
+        public decimal Interest { get; set; }
+        public decimal VAT { get; set; }
+        public decimal Penalty { get; set; }
+        public decimal Total { get; set; }
     }
     public class Depositer
     {

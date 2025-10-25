@@ -3,6 +3,7 @@ using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
@@ -31,14 +32,17 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
         private readonly BranchServices _branchServices;
         private readonly SalaryProcessedServices _salaryProcessedServices;
+        private readonly LoanServices _loanServices;
 
-        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null, SalaryProcessedServices salaryProcessedServices = null)
+
+        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null, SalaryProcessedServices salaryProcessedServices = null, LoanServices loanServices = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
             this.chartOfAccountServices = chartOfAccountServices;
             _branchServices = branchServices;
             _salaryProcessedServices = salaryProcessedServices;
+            _loanServices = loanServices;
         }
         // GET: CashDesk
         //public ActionResult Index()
@@ -172,6 +176,41 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 var listing = await _cashDeskService.LoadMembersAccountByMemberReference(Key);
                 return Json(listing, JsonRequestBehavior.AllowGet);
 
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetMemberLoans(string memberId)
+        {
+            if (string.IsNullOrWhiteSpace(memberId))
+                return Json(new { success = false, message = "❌ Member ID is required." }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                // Call service/repo to get loans for this member
+                var loans = await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId=memberId, QueryParameter= "Open" });
+
+                if (loans == null || !loans.Any())
+                    return Json(new { success = false, message = "⚠️ No active loans found for this member." }, JsonRequestBehavior.AllowGet);
+
+                // Send only what UI needs
+                return Json(new
+                {
+                    success = true,
+                    data = loans.Select(l => new
+                    {
+                        l.Id,
+                        LoanDate = l.LoanDate.ToString("dd/MM/yyyy"),
+                        Balance = l.Balance,
+                        AccrualInterest = l.AccrualInterest,
+                        VatRate = l.VatRate,
+                        LoanAmount = l.LoanAmount,
+                        DueAmount = l.DueAmount
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"🚨 Error: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
         }
 

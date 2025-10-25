@@ -17,15 +17,12 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
     public class ChequeBookController : BaseController
     {
         private readonly ChequeBookService _chequeBookService;
-        private readonly ChequeBookMockService _chequeBookMockService;
         private readonly BranchServices _branchServices;
 
         public ChequeBookController(ChequeBookService chequeBookService,
-                                  ChequeBookMockService chequeBookMockService,
                                   BranchServices branchServices)
         {
             _chequeBookService = chequeBookService;
-            _chequeBookMockService = chequeBookMockService;
             _branchServices = branchServices;
         }
 
@@ -68,70 +65,28 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 return Json(new { success = false, message = ex.Message });
                 // Fall back to mock service
-                //try
-                //{
-                /*    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);*/
-                /*     return Json(new
-                     {
-                         draw = query.DataTableOptions.draw,
-                         recordsTotal = mockData.recordsTotal,
-                         recordsFiltered = mockData.recordsFiltered,
-                         data = mockData.data
-                     });
-                 }
-                 catch (Exception mockEx)
-                 {
-                     return Json(new
-                     {
-                         draw = query.DataTableOptions.draw,
-                         recordsTotal = 0,
-                         recordsFiltered = 0,
-                         data = new List<object>(),
-                         error = "Failed to load cheque books data"
-                     });
-                 }*/
-            }
-        }
-
-        // using Microsoft.AspNetCore.Mvc;
-
-       
-        [HttpGet]
-        public async Task<ActionResult> List()
-        {
-            await LoadViewBagData();
-            return View();
-        }
-
-        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
-        [HttpPost]
-        public async Task<JsonResult> LoadChequeBooksData(ChequeBookQuery query)
-        {
-            try
-            {
-                var data = await _chequeBookService.GetChequeBooksDataTableAsync(query);
-
-                var chequeBooks = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook>>(JsonConvert.SerializeObject(data.data));
-
-                return Json(new
+               /* try
                 {
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = chequeBooks
-                });
-            }
-            catch (Exception ex)
-            {
-                // return a DataTables-compatible empty result on error
-                return Json(new
-                {
-                    draw = query?.Options?.draw ?? "1",
-                    recordsTotal = 0,
-                    recordsFiltered = 0,
-                    data = new List<object>(),
-                    error = ex.Message
-                });
+                    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
+                    return Json(new
+                    {
+                        draw = mockData.draw,
+                        recordsTotal = mockData.recordsTotal,
+                        recordsFiltered = mockData.recordsFiltered,
+                        data = mockData.data
+                    });
+                }
+                catch (Exception mockEx)
+                {*/
+                    return Json(new
+                    {
+                        draw = query.Options.draw,
+                        recordsTotal = 0,
+                        recordsFiltered = 0,
+                        data = new List<object>(),
+                        error = "Failed to load cheque books data"
+                    });
+                /*}*/
             }
         }
 
@@ -152,29 +107,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 // Try main service first
                 var chequeBook = await _chequeBookService.GetChequeBookByIdAsync(id);
-                if (chequeBook == null)
-                {
-                    // Fall back to mock service
-                    chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(id);
-                }
-
-                if (chequeBook == null)
-                {
-                    return HttpNotFound($"Cheque book with ID {id} not found");
-                }
+              
 
                 return PartialView("_ChequeBookDetails", chequeBook);
             }
             catch (Exception ex)
             {
                 // Final fallback to mock service
-                var chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(id);
-                if (chequeBook == null)
-                {
                     return HttpNotFound($"Cheque book with ID {id} not found");
-                }
 
-                return PartialView("_ChequeBookDetails", chequeBook);
             }
         }
 
@@ -186,26 +127,9 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 var chequeBookId = leafId.Split('-')[0];
                 ChequeBook chequeBook;
 
-                // Try main service first
-                try
-                {
-                    chequeBook = await _chequeBookService.GetChequeBookByIdAsync(chequeBookId);
-                    if (chequeBook == null)
-                    {
-                        chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(chequeBookId);
-                    }
-                }
-                catch
-                {
-                    chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(chequeBookId);
-                }
+                chequeBook = await _chequeBookService.GetChequeBookByIdAsync(chequeBookId);
 
-                if (chequeBook == null)
-                {
-                    return HttpNotFound("Cheque book not found");
-                }
-
-                var leaf = chequeBook.ChequeLeaves.Find(l => l.id == leafId);
+                var leaf = chequeBook.Leaves.Find(l => l.Id == leafId);
                 if (leaf == null)
                 {
                     return HttpNotFound("Leaf not found");
@@ -228,16 +152,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.CancelChequeBookAsync(chequeBookId, cancellationReason);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.CancelChequeBookAsync(chequeBookId, cancellationReason);
-                }
+                result = await _chequeBookService.CancelChequeBookAsync(chequeBookId, cancellationReason);
+
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
@@ -255,16 +171,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.MarkLeafAsUsedAsync(leafId, statement);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.MarkLeafAsUsedAsync(leafId, statement);
-                }
+                result = await _chequeBookService.MarkLeafAsUsedAsync(leafId, statement);
+
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
@@ -282,16 +190,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.BlockLeafAsync(leafId, blockReason);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.BlockLeafAsync(leafId, blockReason);
-                }
+                result = await _chequeBookService.BlockLeafAsync(leafId, blockReason);
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }

@@ -250,6 +250,16 @@
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
+    <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
+    <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />
+    <Compile Include="AccountingV2\BranchCashConfig\MockBranchCashConfigService.cs" />
+    <Compile Include="AccountingV2\LiaisonAccount2\LiaisonMappingService.cs" />
+    <Compile Include="AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationService.cs" />
+    <Compile Include="AccountingV2\LiaisonAccountConfiguration\MockLiaisonAccountConfiguration.cs" />
+    <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
+    <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
+    <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />
+    <Compile Include="AccountingV2\ManualJournalEntry\ManualJournalEntryService.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />
@@ -262,6 +272,7 @@
     <Compile Include="Accounting\TransactionTracker.cs" />
     <Compile Include="Accounts\FileUploadServices.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\ChequeCertificationService.cs" />
+    <Compile Include="CheckManagementSystem\ChequeCertificationServices\GetChequeCertificationsDataTableQuery.cs" />
     <Compile Include="CheckManagementSystem\ChequeCertificationServices\MockChequeCertificationService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\ChequeClearanceService.cs" />
     <Compile Include="CheckManagementSystem\ChequeClearance\MockCheckClearanceService.cs" />
@@ -272,15 +283,14 @@
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
+    <Compile Include="CheckManagementSystem\LossManagementServices\DataTableResult.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\LossManagementService.cs" />
-    <Compile Include="CheckManagementSystem\LossManagementServices\MockLossManagementService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryService.cs" />
     <Compile Include="CheckManagementSystem\CustomerService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeBookListing\ChequeBookService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeCancelation\CancellationRequestService.cs" />
-    <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestMockService.cs" />
     <Compile Include="CheckManagementSystem\Operations\ChequeRequestService\ChequeRequestService.cs" />
     <Compile Include="CheckManagementSystem\Operations\CounterCheque\CounterChequeService.cs" />
     <Compile Include="CustomerManagement\DailySaverServices.cs" />
@@ -514,6 +524,9 @@
     <Folder Include="bin\Debug\zh\" />
     <Folder Include="bin\Release\" />
     <Folder Include="BlacklistAccount\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

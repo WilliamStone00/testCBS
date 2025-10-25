@@ -13,6 +13,14 @@
 
 
 });
+// Enforce only ONE loan can be checked; keep it once on the page.
+$(document).on('change', '#loanRepaymentTable .loan-confirmation-checkbox', function () {
+    if (this.checked) {
+        $('#loanRepaymentTable .loan-confirmation-checkbox').not(this).prop('checked', false);
+    }
+    // keep your totals live
+    if (typeof updateTotals === 'function') updateTotals();
+});
 
 function AddNote() {
     EditResetModal(null, 'modal', 'modalContent', 'CashDesk', 'InitializeData', '_Note', 'new_depositor', 'NOTE', 'modalLabel')
@@ -174,6 +182,48 @@ function validateTotalAmount(total, totalNotes) {
 
     return true;
 }
+// Collect exactly ONE checked loan; return { items: [...], loanTotal, anySelected, errorMsg }
+function collectLoanRepaymentSelection() {
+    const result = { items: [], loanTotal: 0, anySelected: false, errorMsg: "" };
+
+    const checked = $('#loanRepaymentTable .loan-confirmation-checkbox:checked');
+    const count = checked.length;
+
+    if (count === 0) return result; // no selection is allowed when IncludeLoanRepayment is OFF
+    if (count > 1) {
+        result.errorMsg = "Please select only one loan row to repay.";
+        return result;
+    }
+
+    const $row = checked.closest('tr');
+    const loanId = ($row.attr('id') || '').replace('row-', '');
+
+    // Parse numbers from inputs/labels (keep everything numeric; dialog formats later)
+    const capital = parseFloat($row.find('.capital-input').val()) || 0;
+    const interest = parseFloat($row.find('.interest-input').val()) || 0;
+    const vat = parseFloat(String($row.find('.vat-input').val()).replace(/,/g, '')) || 0;
+    const penalty = parseFloat($row.find('.penalty-input').val()) || 0;
+
+    // Prefer the numeric unformatted total-span; if blank, recompute
+    const totalSpan = String($row.find('.total-span').text()).replace(/,/g, '').trim();
+    const rowTotal = totalSpan ? (parseFloat(totalSpan) || 0) : (capital + interest + vat + penalty);
+
+    result.items.push({
+        Id: loanId,
+        LoanId: loanId,
+        Amount: capital,          // maps to Principal on server
+        Interest: interest,
+        VAT: vat,                 // your server maps VAT -> Tax
+        Penalty: penalty,
+        Total: rowTotal
+    });
+
+    result.anySelected = true;
+    result.loanTotal = rowTotal;
+
+    return result;
+}
+
 function collectDeposits() {
     const deposits = [];
     const totalInfo = calculateTotalAmount();
@@ -347,23 +397,100 @@ function failureCallback(response) {
     $("#confirmDepositorBtn").prop("disabled", false);
     $("#depositorLoader").addClass("d-none");
 }
+// Returns summary {rowsHtml, totalAmount, totalFee, anySelected}
+function buildDepositsSummaryFromCheckedRows() {
+    let totalAmount = 0, totalFee = 0, anySelected = false;
+    let rows = '';
+
+    $('#myDataTableT tbody tr').each(function () {
+        const $row = $(this);
+        const isChecked = $row.find('td input[type="checkbox"]').prop('checked');
+        if (!isChecked) return;
+
+        anySelected = true;
+        const accountType = $row.find('td:eq(1)').text().trim();
+        const amount = parseFloat($row.find('.amount-input').val()) || 0;
+        const fee = parseFloat($row.find('.fee-input').val()) || 0;
+
+        totalAmount += amount;
+        totalFee += fee;
+
+        rows += `
+          <tr>
+            <td>${accountType}</td>
+            <td class="text-end">${amount.toLocaleString('en-US')}</td>
+            <td class="text-end">${fee.toLocaleString('en-US')}</td>
+          </tr>`;
+    });
+
+    return {
+        rowsHtml: rows,
+        totalAmount,
+        totalFee,
+        anySelected
+    };
+}
+
+// Returns summary {rowCount, rowsHtml, totalCapital, totalInterest, totalVat, totalPenalty, total, anySelected}
+function buildLoanSummaryFromCheckedRow() {
+    let rows = '';
+    let totalCapital = 0, totalInterest = 0, totalVat = 0, totalPenalty = 0, total = 0;
+    let rowCount = 0, anySelected = false;
+
+    $('#loanRepaymentTable tr').each(function () {
+        const $r = $(this);
+        const $chk = $r.find('.loan-confirmation-checkbox');
+        if ($chk.length === 0 || !$chk.prop('checked')) return;
+
+        anySelected = true;
+        rowCount++;
+
+        const capital = parseFloat($r.find('.capital-input').val()) || 0;
+        const interest = parseFloat($r.find('.interest-input').val()) || 0;
+        const vat = parseFloat(String($r.find('.vat-input').val()).replace(/,/g, '')) || 0;
+        const penalty = parseFloat($r.find('.penalty-input').val()) || 0;
+        const rowTotal = parseFloat(String($r.find('.total-span').text()).replace(/,/g, '')) || (capital + interest + vat + penalty);
+
+        totalCapital += capital;
+        totalInterest += interest;
+        totalVat += vat;
+        totalPenalty += penalty;
+        total += rowTotal;
+
+        // NOTE: Date column removed per request
+        rows += `
+          <tr>
+            <td class="text-end">${capital.toLocaleString('en-US')}</td>
+            <td class="text-end">${interest.toLocaleString('en-US')}</td>
+            <td class="text-end">${vat.toLocaleString('en-US')}</td>
+            <td class="text-end">${penalty.toLocaleString('en-US')}</td>
+            <td class="text-end fw-semibold">${rowTotal.toLocaleString('en-US')}</td>
+          </tr>`;
+    });
+
+    return {
+        rowCount,
+        rowsHtml: rows,
+        totalCapital, totalInterest, totalVat, totalPenalty, total,
+        anySelected
+    };
+}
+
 function PostCashIn() {
     const operation = $("#currentselectedOperation").val();
     const isNewSubscription = operation === "newsubcription";
 
-    // Daily Collector UI present?
+    // Daily Collector context
     const hasDcControls = $('input[name="DailyCollectorCollectApproach"]').length > 0;
     const approach = hasDcControls ? $('input[name="DailyCollectorCollectApproach"]:checked').val() : null;
     const isManualApproach = hasDcControls && approach === "Manual";
     const isDeviceApproach = hasDcControls && approach === "Device";
-
-    // Still need to know if this screen is the DC context (dropdown exists in the DOM)
     const isDailyCollectorContext = $("#ManualEntryDailyCollectorId").length > 0;
 
     if (!validateCustomerAlphaNumber()) return;
     if (!checkTotalNotes()) return;
 
-    // If DC + Manual => enforce approved batch selection
+    // DC Manual requires an approved batch
     let dcBatchId = null, dcBatchText = "";
     if (isDailyCollectorContext && isManualApproach) {
         dcBatchId = $("#ManualEntryDailyCollectorId").val();
@@ -374,81 +501,190 @@ function PostCashIn() {
         }
     }
 
+    // Notes amount entered by teller
     const totalNotes = parseFloat($("#totalNoteAmount").val());
-    const totalInfo = calculateTotalAmount();
-    if (!validateTotalAmount(totalInfo, totalNotes)) return;
 
-    autoCheckDeposits();
-
+    // ✅ Member deposits (checked rows only)
     const deposits = collectDeposits();
     if (deposits.length === 0) {
         appalert("⚠️ Please select at least one account with a valid amount.", 3, 1);
         return;
     }
 
-    // Attach DC info to payload (only if DC context is present)
+    // Sum member deposits (amount + fee are shown separately in dialog)
+    const depositsTotal = deposits.reduce((s, d) => s + (parseFloat(d.Total) || 0), 0);
+
+    // ✅ Loan repayment block (only if toggle is ON)
+    const includeLoan = $("#includeLoanRepaymentCheckbox").is(":checked");
+    const loanSel = collectLoanRepaymentSelection();
+    if (includeLoan) {
+        if (loanSel.errorMsg) { appalert(loanSel.errorMsg, 3, 1); return; }
+        if (!loanSel.anySelected) {
+            appalert("⚠️ Include Loan Repayment is ON. Please select one loan row to repay.", 3, 1);
+            return;
+        }
+    }
+
+    const loanTotal = includeLoan ? (loanSel.loanTotal || 0) : 0;
+
+    // ✅ Combined total for validation against notes
+    const combinedTotal = depositsTotal + loanTotal;
+
+    // Validate totals vs notes (reusing your helper)
+    const totalInfo = { total: combinedTotal, anyRowsSelected: deposits.length > 0 || loanSel.anySelected };
+    if (!validateTotalAmount(totalInfo, totalNotes)) return;
+
+    // Auto-check deposit rows if needed
+    autoCheckDeposits();
+
+    // Attach DC context (first deposit object retains the envelope)
     if (isDailyCollectorContext) {
         deposits[0].IsDailyCollector = true;
         deposits[0].CollectionType = isManualApproach ? "Manual" : "Device";
         if (isManualApproach) {
             deposits[0].ManualEntryDailyCollectorId = dcBatchId;
         } else {
-            // Ensure we don't send a stale id if user switched from Manual -> Device
             delete deposits[0].ManualEntryDailyCollectorId;
         }
     }
 
-    // 👤 Member Info
+    // ✅ Attach loan selection to payload without breaking existing server shape
+    if (includeLoan) {
+        deposits[0].IncludeLoanRepayment = true;
+        deposits[0].BulkOperationsForLoanRepayments = loanSel.items;
+    } else {
+        deposits[0].IncludeLoanRepayment = false;
+        deposits[0].BulkOperationsForLoanRepayments = [];
+    }
+
+    // 👤 Member info for dialog
     const memberName = $("#customerName").length ? $("#customerName").text().trim() : "Unknown Member";
     const customerId = $("#customerId").val() || "N/A";
 
-    // 🔍 Build table of account types with amounts and fees (non-zero only)
-    let totalAmount = 0;
-    let totalFee = 0;
-    let accountSummaryHtml = `
-        <table class="table table-sm table-bordered w-100 mt-2">
-            <thead class="table-light">
-                <tr>
-                    <th>Account Type</th>
-                    <th>Amount</th>
-                    <th>Fee</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
+    // ===== Build confirmation dialog (no currency suffix) =====
+    // Deposits table rows/summary
+    let depRowsHtml = "", depAmountSum = 0, depFeeSum = 0;
     $('#myDataTableT tbody tr').each(function () {
-        const accountType = $(this).find('td:eq(1)').text().trim();
-        const amount = parseFloat($(this).find('.amount-input').val()) || 0;
-        const fee = parseFloat($(this).find('.fee-input').val()) || 0;
+        const $r = $(this);
+        const isChecked = $r.find('td input[type="checkbox"]').prop('checked');
+        if (!isChecked) return;
 
-        if (amount > 0 || fee > 0) {
-            totalAmount += amount;
-            totalFee += fee;
+        const accountType = $r.find('td:eq(1)').text().trim();
+        const amount = parseFloat($r.find('.amount-input').val()) || 0;
+        const fee = parseFloat($r.find('.fee-input').val()) || 0;
 
-            accountSummaryHtml += `
-                <tr>
-                    <td>${accountType}</td>
-                    <td>${amount.toLocaleString('en-US')} FCFA</td>
-                    <td>${fee.toLocaleString('en-US')} FCFA</td>
-                </tr>
-            `;
-        }
+        depAmountSum += amount;
+        depFeeSum += fee;
+
+        depRowsHtml += `
+          <tr>
+            <td>${accountType}</td>
+            <td class="text-end">${amount.toLocaleString('en-US')}</td>
+            <td class="text-end">${fee.toLocaleString('en-US')}</td>
+          </tr>`;
     });
 
-    accountSummaryHtml += `
-            </tbody>
-            <tfoot>
-                <tr class="fw-bold text-dark">
-                    <td class="text-end">Total</td>
-                    <td>${totalAmount.toLocaleString('en-US')} FCFA</td>
-                    <td>${totalFee.toLocaleString('en-US')} FCFA</td>
-                </tr>
-            </tfoot>
-        </table>
-    `;
+    const depositsTableHtml = `
+      <table class="table table-sm table-bordered w-100 confirm-table">
+        <thead class="table-light">
+          <tr>
+            <th>ACCOUNT TYPE</th>
+            <th class="text-end">AMOUNT</th>
+            <th class="text-end">FEE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${depRowsHtml || `<tr><td colspan="3" class="text-muted">No member account selected.</td></tr>`}
+        </tbody>
+        <tfoot>
+          <tr class="fw-bold text-dark">
+            <td class="text-end">Total</td>
+            <td class="text-end">${depAmountSum.toLocaleString('en-US')}</td>
+            <td class="text-end">${depFeeSum.toLocaleString('en-US')}</td>
+          </tr>
+        </tfoot>
+      </table>`;
 
-    // 📦 Confirmation Title & Message
+    // ---- VAT mode description (for user understanding) ----
+    const vatRadio = document.querySelector('input[name="vatMode"]:checked');
+    const vatMode = vatRadio ? vatRadio.value : null; // 'exclusive' | 'inclusive' | null
+    const vatLabel = vatMode === 'exclusive' ? 'VAT Exclusive' : 'VAT Inclusive';
+    const vatRateText = vatMode === 'exclusive' ? '19.25%' : '16.1425%';
+
+    // Loan table (no Date column) + VAT info line
+    let loanTableHtml = "";
+    if (includeLoan && loanSel.anySelected) {
+        const li = loanSel.items[0];
+        const showNoVatNote = (li.VAT || 0) === 0;
+
+        const vatInfoHtml = showNoVatNote
+            ? `<div class="small text-muted mb-1">
+                 VAT mode: <strong>${vatLabel}</strong> — no VAT applied (threshold not met or VAT rate is 0). 
+                 VAT applies only on <strong>interest</strong> when loan ≥ 2,000,000 & VAT rate &gt; 0.
+               </div>`
+            : `<div class="small text-muted mb-1">
+                 VAT mode: <strong>${vatLabel} (${vatRateText})</strong> — applied on <strong>interest only</strong> for loans ≥ 2,000,000 with VAT rate &gt; 0.
+               </div>`;
+
+        loanTableHtml = `
+          <div class="mt-3">
+            <p class="mb-1 fw-bold text-primary">Loan Repayment</p>
+            ${vatInfoHtml}
+            <table class="table table-sm table-bordered w-100 confirm-table">
+              <thead class="table-light">
+                <tr>
+                  <th class="text-end">CAPITAL</th>
+                  <th class="text-end">INTEREST</th>
+                  <th class="text-end">VAT</th>
+                  <th class="text-end">PENALTY</th>
+                  <th class="text-end">TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-end">${(li.Amount || 0).toLocaleString('en-US')}</td>
+                  <td class="text-end">${(li.Interest || 0).toLocaleString('en-US')}</td>
+                  <td class="text-end">${(li.VAT || 0).toLocaleString('en-US')}</td>
+                  <td class="text-end">${(li.Penalty || 0).toLocaleString('en-US')}</td>
+                  <td class="text-end fw-semibold">${(li.Total || 0).toLocaleString('en-US')}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="fw-bold text-dark">
+                  <td class="text-end" colspan="4">Loan Total</td>
+                  <td class="text-end">${loanTotal.toLocaleString('en-US')}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>`;
+    }
+
+    const finalTotalsHtml = `
+      <div class="mt-2">
+        <table class="table table-sm table-bordered w-100 confirm-table">
+          <tbody>
+            <tr>
+              <td class="text-end fw-bold">Deposits Total</td>
+              <td class="text-end">${depositsTotal.toLocaleString('en-US')}</td>
+            </tr>
+            <tr>
+              <td class="text-end fw-bold">Loan Total</td>
+              <td class="text-end">${loanTotal.toLocaleString('en-US')}</td>
+            </tr>
+            <tr class="table-active">
+              <td class="text-end fw-bold">Grand Total</td>
+              <td class="text-end fw-bold">${combinedTotal.toLocaleString('en-US')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+
+    const modalTablesCss = `
+      <style>
+        .confirm-table{table-layout:fixed}
+        .confirm-table th,.confirm-table td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      </style>`;
+
     const confirmationTitle = isNewSubscription
         ? "🧾 CONFIRM MEMBER ONBOARDING DEPOSIT"
         : (isDailyCollectorContext
@@ -465,36 +701,36 @@ function PostCashIn() {
                 : `You're about to post a <strong>DAILY COLLECTOR DEVICE COLLECTION</strong> totaling`)
             : `You're about to perform a <strong>CASH-IN</strong> of`);
 
-    // Extra context only for DC Manual (EOD clearance)
     const dcContextHtml = (isDailyCollectorContext && isManualApproach)
         ? `
-            <div class="mt-2 p-2 border rounded bg-light">
-                <p class="mb-1"><strong>Approved Batch:</strong> ${dcBatchText}</p>
-                <p class="mb-0">
-                  <strong>Note:</strong> This operation clears the Daily Collector’s cash for end-of-day.
-                  A paired <em>Credit → Debit</em> posting is expected so the collector’s transit closes to
-                  <strong>0</strong> and the till can be closed.
-                </p>
-            </div>
-          `
+          <div class="mt-2 p-2 border rounded bg-light">
+            <p class="mb-1"><strong>Approved Batch:</strong> ${dcBatchText}</p>
+            <p class="mb-0">
+              <strong>Note:</strong> This operation clears the Daily Collector’s cash for end-of-day.
+              A paired <em>Credit → Debit</em> posting is expected so the collector’s transit closes to
+              <strong>0</strong> and the till can be closed.
+            </p>
+          </div>`
         : "";
 
     const message = `
-        <div class="text-start">
-            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
-            <p>
-                ${opLead} <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.
-            </p>
-            ${dcContextHtml}
-            <p class="mt-3 fw-bold text-primary">Accounts Summary</p>
-            ${accountSummaryHtml}
-        </div>
-    `;
+      ${modalTablesCss}
+      <div class="text-start">
+        <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
+        <p>${opLead} <b>${combinedTotal.toLocaleString('en-US')}</b>.</p>
+        ${dcContextHtml}
+        <p class="mt-3 fw-bold text-primary mb-1">Member Accounts</p>
+        ${depositsTableHtml}
+        ${loanTableHtml}
+        ${finalTotalsHtml}
+      </div>`;
 
+    // ===== Show confirm dialog & post =====
     alertify.confirm(
         confirmationTitle,
         message,
         function () {
+            // Prep depositor modal (unchanged)
             $('#depositorForm input, #depositorForm textarea').val('').removeClass('is-invalid');
 
             $("#depositorModalTitle").html(
@@ -535,7 +771,7 @@ function PostCashIn() {
                 deposits[0].Depositer = depositor;
                 deposits[0].currencyNotes = collectCurrencyNotes();
 
-                // Preserve existing endpoint & operation type
+                // 🚀 Post to your existing endpoint with enriched payload
                 PostTransaction('/CashDesk/PostRequestCash', deposits, 'CashIn');
             });
         },
@@ -545,138 +781,6 @@ function PostCashIn() {
     ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
 }
 
-//function PostCashIn() {
-//    const operation = $("#currentselectedOperation").val();
-//    const isNewSubscription = operation === "newsubcription";
-
-//    if (!validateCustomerAlphaNumber()) return;
-//    if (!checkTotalNotes()) return;
-
-//    const totalNotes = parseFloat($("#totalNoteAmount").val());
-//    const totalInfo = calculateTotalAmount();
-
-//    if (!validateTotalAmount(totalInfo, totalNotes)) return;
-
-//    autoCheckDeposits();
-
-//    const deposits = collectDeposits();
-//    if (deposits.length === 0) {
-//        appalert("⚠️ Please select at least one account with a valid amount.", 3, 1);
-//        return;
-//    }
-
-//    // 👤 Member Info
-//    const memberName = $("#customerName").length ? $("#customerName").text().trim() : "Unknown Member";
-//    const customerId = $("#customerId").val() || "N/A";
-
-//    // 🔍 Build table of account types with amounts and fees (non-zero only)
-//    let totalAmount = 0;
-//    let totalFee = 0;
-//    let accountSummaryHtml = `
-//        <table class="table table-sm table-bordered w-100 mt-2">
-//            <thead class="table-light">
-//                <tr>
-//                    <th>Account Type</th>
-//                    <th>Amount</th>
-//                    <th>Fee</th>
-//                </tr>
-//            </thead>
-//            <tbody>
-//    `;
-
-//    $('#myDataTableT tbody tr').each(function () {
-//        const accountType = $(this).find('td:eq(1)').text().trim();
-//        const amount = parseFloat($(this).find('.amount-input').val()) || 0;
-//        const fee = parseFloat($(this).find('.fee-input').val()) || 0;
-
-//        if (amount > 0 || fee > 0) {
-//            totalAmount += amount;
-//            totalFee += fee;
-
-//            accountSummaryHtml += `
-//                <tr>
-//                    <td>${accountType}</td>
-//                    <td>${amount.toLocaleString('en-US')} FCFA</td>
-//                    <td>${fee.toLocaleString('en-US')} FCFA</td>
-//                </tr>
-//            `;
-//        }
-//    });
-
-//    accountSummaryHtml += `
-//            </tbody>
-//            <tfoot>
-//                <tr class="fw-bold text-dark">
-//                    <td class="text-end">Total</td>
-//                    <td>${totalAmount.toLocaleString('en-US')} FCFA</td>
-//                    <td>${totalFee.toLocaleString('en-US')} FCFA</td>
-//                </tr>
-//            </tfoot>
-//        </table>
-//    `;
-
-//    // 📦 Confirmation Message
-//    const confirmationTitle = isNewSubscription
-//        ? "🧾 CONFIRM MEMBER ONBOARDING DEPOSIT"
-//        : "💰 CONFIRM CASH-IN OPERATION";
-
-//    const message = `
-//        <div class="text-start">
-//            <p><strong>Member:</strong> ${memberName}<br><strong>Member Account Number:</strong> ${customerId}</p>
-//            <p>
-//                ${isNewSubscription
-//            ? `You're about to complete a <strong>MEMBER ONBOARDING DEPOSIT</strong> of`
-//            : `You're about to perform a <strong>CASH-IN</strong> of`}
-//                <b>${totalInfo.total.toLocaleString('en-US')} FCFA</b>.
-//            </p>
-//            <p class="mt-3 fw-bold text-primary">Accounts Summary</p>
-//            ${accountSummaryHtml}
-//        </div>
-//    `;
-
-//    alertify.confirm(
-//        confirmationTitle,
-//        message,
-//        function () {
-//            $('#depositorForm input, #depositorForm textarea').val('').removeClass('is-invalid');
-
-//            $("#depositorModalTitle").html(
-//                isNewSubscription
-//                    ? `<i class="mdi mdi-account-plus-outline me-2"></i> MEMBER ONBOARDING DEPOSITOR`
-//                    : `<i class="mdi mdi-account-card-details-outline me-2"></i> DEPOSITOR INFORMATION REQUIRED`
-//            );
-//            $("#depositorModalDescription").text(
-//                isNewSubscription
-//                    ? `As part of the member onboarding process, please record the depositor’s full identity for compliance.`
-//                    : `To complete this transaction, please enter the depositor's full information for regulatory and audit compliance.`
-//            );
-
-//            $("#depositorCustomerName").text(memberName);
-//            $("#depositorCustomerId").text(customerId);
-
-//            setTimeout(() => $("#depositerModal").modal("show"), 100);
-
-//            $("#confirmDepositorBtn").off("click").on("click", function () {
-//                const depositor = collectDepositorInfo();
-//                if (!validateDepositor(depositor)) {
-//                    appalert("❗ All depositor fields are required to proceed.", 3, 1);
-//                    return;
-//                }
-
-//                $("#confirmDepositorBtn").prop("disabled", true);
-//                $("#depositorLoader").removeClass("d-none");
-
-//                deposits[0].Depositer = depositor;
-//                deposits[0].currencyNotes = collectCurrencyNotes();
-
-//                PostTransaction('/CashDesk/PostRequestCash', deposits, 'CashIn');
-//            });
-//        },
-//        function () {
-//            appalert("🚫 Operation cancelled.",2,1);
-//        }
-//    ).set('labels', { ok: 'Yes, Continue', cancel: 'Cancel' });
-//}
 
 
 

@@ -10,251 +10,135 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
 {
-    public class ChequeBookMockService : BaseService
-    {
-        private static readonly List<ChequeBook> _mockChequeBooks = new List<ChequeBook>
-        {
-      /*      new ChequeBook
-            {
-                Id = "CB001",
-                customerId = "CUST001",
-                customerName = "John Doe",
-                accountNumber = "3711000012345678",
-                branchId = "BR001",
-                branchName = "Main Branch",
-                categoryId = "CAT001",
-                CheckBookCategoryName = "Standard 25 Leaves",
-                numberOfLeaves = 25,
-                Status = "Active",
-                issueDate = DateTime.Now.AddMonths(-1),
-                expiryDate = DateTime.Now.AddMonths(11),
-                feeAmount = 5000,
-                chequeSeriesStart = "100001",
-                chequeSeriesEnd = "100025",
-                ChequeLeaves = GenerateMockLeaves("CB001", 25, "100001")
-            },
-            new ChequeBook
-            {
-                id = "CB002",
-                customerId = "CUST002",
-                customerName = "Jane Smith",
-                accountNumber = "3711000023456789",
-                branchId = "BR002",
-                branchName = "Downtown Branch",
-                categoryId = "CAT002",
-                CheckBookCategoryName = "Premium 50 Leaves",
-                numberOfLeaves = 50,
-                Status = "Active",
-                issueDate = DateTime.Now.AddMonths(-2),
-                expiryDate = DateTime.Now.AddMonths(10),
-                feeAmount = 8000,
-                chequeSeriesStart = "200001",
-                chequeSeriesEnd = "200050",
-                ChequeLeaves = GenerateMockLeaves("CB002", 50, "200001")
-            },
-            new ChequeBook
-            {
-                id = "CB003",
-                customerId = "CUST003",
-                customerName = "Mike Johnson",
-                accountNumber = "3711000034567890",
-                branchId = "BR001",
-                branchName = "Main Branch",
-                categoryId = "CAT001",
-                CheckBookCategoryName = "Standard 25 Leaves",
-                numberOfLeaves = 25,
-                Status = "Cancelled",
-                issueDate = DateTime.Now.AddMonths(-3),
-                expiryDate = DateTime.Now.AddMonths(9),
-                feeAmount = 5000,
-                chequeSeriesStart = "300001",
-                chequeSeriesEnd = "300025",
-                ChequeLeaves = GenerateMockLeaves("CB003", 25, "300001")
-            }*/
-        };
+    //public class ChequeBookMockService : BaseService
+    //{
+    //    private static readonly List<ChequeBook> _mockChequeBooks = new List<ChequeBook>
+    //    {
+     
 
-        private static List<ChequeLeaf> GenerateMockLeaves(string chequeBookId, int count, string startSeries)
-        {
-            var leaves = new List<ChequeLeaf>();
-            var random = new Random();
+    //    };
 
-            for (int i = 1; i <= count; i++)
-            {
-                var leafNumber = int.Parse(startSeries) + i - 1;
-                var Statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
-                var Status = Statuses[random.Next(Statuses.Length)];
+    //    private static List<ChequeLeaf> GenerateMockLeaves(string chequeBookId, int count, string startSeries)
+    //    {
+    //        var leaves = new List<ChequeLeaf>();
+    //        var random = new Random();
 
-                leaves.Add(new ChequeLeaf
-                {
-                    id = $"{chequeBookId}-L{i}",
-                    chequeBookId = chequeBookId,
-                    leafNumber = i,
-                    chequeNumber = leafNumber.ToString("D6"),
-                    status = Status,
-                    usedDate = Status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
-                    amount = Status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
-                    beneficiary = Status == "Used" ? "Test Beneficiary" : null,
-                    remarks = Status == "Blocked" ? "Reported lost" : null,
-                    createdDate = DateTime.Now.AddMonths(-random.Next(1, 3))
-                });
-            }
-            return leaves;
-        }
+    //        for (int i = 1; i <= count; i++)
+    //        {
+    //            var leafNumber = int.Parse(startSeries) + i - 1;
+    //            var Statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
+    //            var Status = Statuses[random.Next(Statuses.Length)];
 
-    /*    public async Task<CustomDataTable> GetChequeBooksDataTableAsync(ChequeBookQuery query)
-        {
-            await Task.Delay(100); // Simulate API delay
+    //            leaves.Add(new ChequeLeaf
+    //            {
 
-            var data = _mockChequeBooks.AsQueryable();
+    //                Id = $"{chequeBookId}-L{i}",
+    //                ChequeBookId = chequeBookId,
+    //                LeafNumber = i,
+    //                ChequeNumber = leafNumber.ToString("D6"),
+    //                Status = status,
+    //                UsedDate = status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
+    //                Amount = status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
+    //                Beneficiary = status == "Used" ? "Test Beneficiary" : null,
+    //                Remarks = status == "Blocked" ? "Reported lost" : null,
+    //                CreatedDate = DateTime.Now.AddMonths(-random.Next(1, 3))
 
-            // Apply filters
-            if (!string.IsNullOrEmpty(query.customerName))
-            {
-                data = data.Where(cb => cb.customerName.Contains(query.customerName));
-            }
+    //                id = $"{chequeBookId}-L{i}",
+    //                chequeBookId = chequeBookId,
+    //                leafNumber = i,
+    //                chequeNumber = leafNumber.ToString("D6"),
+    //                status = Status,
+    //                usedDate = Status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
+    //                amount = Status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
+    //                beneficiary = Status == "Used" ? "Test Beneficiary" : null,
+    //                remarks = Status == "Blocked" ? "Reported lost" : null,
+    //                createdDate = DateTime.Now.AddMonths(-random.Next(1, 3))
 
-            if (!string.IsNullOrEmpty(query.branchId))
-            {
-                data = data.Where(cb => cb.branchId == query.branchId);
-            }
+    //            });
+    //        }
+    //        return leaves;
+    //    }
 
-            if (!string.IsNullOrEmpty(query.Status))
-            {
-                data = data.Where(cb => cb.Status == query.Status);
-            }
 
-            if (query.fromDate.HasValue)
-            {
-                data = data.Where(cb => cb.issueDate >= query.fromDate.Value);
-            }
+          
 
-            if (query.toDate.HasValue)
-            {
-                data = data.Where(cb => cb.issueDate <= query.toDate.Value);
-            }
+    //    public async Task<ChequeBook> GetChequeBookByIdAsync(string chequeBookId)
+    //    {
+    //        await Task.Delay(50);
+    //        return _mockChequeBooks.FirstOrDefault(cb => cb.Id == chequeBookId);
+    //    }
 
-            // Apply sorting
-            if (!string.IsNullOrEmpty(query.DataTableOptions.sortColumnName))
-            {
-                switch (query.DataTableOptions.sortColumnName.ToLower())
-                {
-                    case "customername":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.customerName)
-                            : data.OrderByDescending(cb => cb.customerName);
-                        break;
-                    case "numberofleaves":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.numberOfLeaves)
-                            : data.OrderByDescending(cb => cb.numberOfLeaves);
-                        break;
-                    case "Status":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.Status)
-                            : data.OrderByDescending(cb => cb.Status);
-                        break;
-                    case "issuedate":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.issueDate)
-                            : data.OrderByDescending(cb => cb.issueDate);
-                        break;
-                }
-            }
+    //    public async Task<ExecutionMessages> CancelChequeBookAsync(string chequeBookId, string cancellationReason)
+    //    {
+    //        await Task.Delay(100);
 
-            var totalRecords = data.Count();
+    //        var chequeBook = _mockChequeBooks.FirstOrDefault(cb => cb.Id == chequeBookId);
+    //        if (chequeBook != null)
+    //        {
+    //            chequeBook.Status = "Cancelled";
+    //            foreach (var leaf in chequeBook.Leaves)
+    //            {
+    //                leaf.Status = "Cancelled";
+    //            }
 
-            // Apply pagination
-            var pagedData = data
-                .Skip(query.DataTableOptions.start)
-                .Take(query.DataTableOptions.pageSize)
-                .ToList();
+    //            GetExecutionMessages(null, true, "Cheque Book", MessagesResults.Success,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
+    //                null, $"Cheque book {chequeBookId} cancelled successfully. Reason: {cancellationReason}");
+    //        }
+    //        else
+    //        {
+    //            GetExecutionMessages(null, false, "Cheque Book", MessagesResults.Failed,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
+    //                null, "Cheque book not found");
+    //        }
+    //        return ExecutionMessage;
+    //    }
 
-            return new CustomDataTable(
-                draw: Convert.ToInt32(query.DataTableOptions.draw),
-                recordsTotal: totalRecords,
-                recordsFiltered: totalRecords,
-                data: pagedData.Cast<object>().ToList(),
-                dataTableOptions: query.DataTableOptions
-            );
-        }
-*/
-        public async Task<ChequeBook> GetChequeBookByIdAsync(string chequeBookId)
-        {
-            await Task.Delay(50);
-            return _mockChequeBooks.FirstOrDefault(cb => cb.id == chequeBookId);
-        }
+    //    public async Task<ExecutionMessages> MarkLeafAsUsedAsync(string leafId, string statement)
+    //    {
+    //        await Task.Delay(100);
 
-        public async Task<ExecutionMessages> CancelChequeBookAsync(string chequeBookId, string cancellationReason)
-        {
-            await Task.Delay(100);
+    //        var leaf = _mockChequeBooks.SelectMany(cb => cb.Leaves).FirstOrDefault(l => l.Id == leafId);
+    //        if (leaf != null)
+    //        {
+    //            leaf.Status = "Used";
+    //            leaf.UsedDate = DateTime.Now;
+    //            leaf.Remarks = statement;
 
-            var chequeBook = _mockChequeBooks.FirstOrDefault(cb => cb.id == chequeBookId);
-            if (chequeBook != null)
-            {
-                chequeBook.status = "Cancelled";
-                foreach (var leaf in chequeBook.ChequeLeaves)
-                {
-                    leaf.status = "Cancelled";
-                }
+    //            GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
+    //                null, $"Leaf {leaf.ChequeNumber} marked as used. Statement: {statement}");
+    //        }
+    //        else
+    //        {
+    //            GetExecutionMessages(null, false, "Cheque Leaf", MessagesResults.Failed,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
+    //                null, "Leaf not found");
+    //        }
+    //        return ExecutionMessage;
+    //    }
 
-                GetExecutionMessages(null, true, "Cheque Book", MessagesResults.Success,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                    null, $"Cheque book {chequeBookId} cancelled successfully. Reason: {cancellationReason}");
-            }
-            else
-            {
-                GetExecutionMessages(null, false, "Cheque Book", MessagesResults.Failed,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
-                    null, "Cheque book not found");
-            }
-            return ExecutionMessage;
-        }
+    //    public async Task<ExecutionMessages> BlockLeafAsync(string leafId, string blockReason)
+    //    {
+    //        await Task.Delay(100);
 
-        public async Task<ExecutionMessages> MarkLeafAsUsedAsync(string leafId, string statement)
-        {
-            await Task.Delay(100);
+    //        var leaf = _mockChequeBooks.SelectMany(cb => cb.Leaves).FirstOrDefault(l => l.Id == leafId);
+    //        if (leaf != null)
+    //        {
+    //            leaf.Status = "Blocked";
+    //            leaf.Remarks = blockReason;
 
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.id == leafId);
-            if (leaf != null)
-            {
-                leaf.status = "Used";
-                leaf.usedDate = DateTime.Now;
-                leaf.remarks = statement;
-
-                GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                    null, $"Leaf {leaf.chequeNumber} marked as used. Statement: {statement}");
-            }
-            else
-            {
-                GetExecutionMessages(null, false, "Cheque Leaf", MessagesResults.Failed,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
-                    null, "Leaf not found");
-            }
-            return ExecutionMessage;
-        }
-
-        public async Task<ExecutionMessages> BlockLeafAsync(string leafId, string blockReason)
-        {
-            await Task.Delay(100);
-
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.id == leafId);
-            if (leaf != null)
-            {
-                leaf.status = "Blocked";
-                leaf.remarks = blockReason;
-
-                GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                    null, $"Leaf {leaf.chequeNumber} blocked. Reason: {blockReason}");
-            }
-            else
-            {
-                GetExecutionMessages(null, false, "Cheque Leaf", MessagesResults.Failed,
-                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
-                    null, "Leaf not found");
-            }
-            return ExecutionMessage;
-        }
-    }
+    //            GetExecutionMessages(null, true, "Cheque Leaf", MessagesResults.Success,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
+    //                null, $"Leaf {leaf.ChequeNumber} blocked. Reason: {blockReason}");
+    //        }
+    //        else
+    //        {
+    //            GetExecutionMessages(null, false, "Cheque Leaf", MessagesResults.Failed,
+    //                ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
+    //                null, "Leaf not found");
+    //        }
+    //        return ExecutionMessage;
+    //    }
+    //}
 }
