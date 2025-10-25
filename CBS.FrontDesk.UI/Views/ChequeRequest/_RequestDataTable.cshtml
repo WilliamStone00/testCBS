@@ -2,125 +2,166 @@
 @{
     ViewBag.Title = "Cheque Requests";
 }
-
 <fieldset class="fieldset-custom">
-    
-    <div class="card shadow p-3 mb-4">
+
         <h5 class="text-primary mb-3">
             <i class="mdi mdi-filter-outline me-1"></i> Advanced Request Filters
         </h5>
 
-        
         <div class="card p-3 mb-3 bg-light">
-            <div class="row mb-2">
-
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCustomerToggle">
-                        <label class="form-check-label" for="byCustomerToggle">Filter by Customer</label>
-                    </div>
-                    <div id="customerFilterSection" style="display:none; margin-top:8px;">
-                        <input type="text" id="customerFilter" class="form-control" placeholder="Name or ID..." />
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCategoryToggle">
-                        <label class="form-check-label" for="byCategoryToggle">Filter by Category</label>
-                    </div>
-                    <div id="categoryFilterSection" style="display:none; margin-top:8px;">
-                        @Html.DropDownList("categoryFilter", new SelectList(ViewBag.Categories ?? new List<object>(), "Id", "name"), "All Categories", new { @class = "form-select", id = "categoryFilter" })
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byStatusToggle">
-                        <label class="form-check-label" for="byStatusToggle">Filter by Status</label>
-                    </div>
-                    <div id="statusFilterSection" style="display:none; margin-top:8px;">
-                        <select id="statusFilter" class="form-select">
-                            <option value="">All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Delivered">Delivered</option>
-                            <option value="Reviewed">Reviewed</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byBranchToggle">
-                        <label class="form-check-label" for="byBranchToggle">Filter by Branch</label>
-                    </div>
-                    <div id="branchFilterSection" style="display:none; margin-top:8px;">
-                        @Html.DropDownList("branchFilter", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "name"), "All Branches", new { @class = "form-select", id = "branchFilter" })
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byBankToggle">
-                        <label class="form-check-label" for="byBankToggle">Filter by Bank</label>
-                    </div>
-                    <div id="bankFilterSection" style="display:none; margin-top:8px;">
-                        @Html.DropDownList("bankFilter", new SelectList(ViewBag.Banks ?? new List<object>(), "Id", "name"), "All Banks", new { @class = "form-select", id = "bankFilter" })
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row mb-2">
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byCustomerNameToggle">
-                        <label class="form-check-label" for="byCustomerNameToggle">Filter by Customer Name</label>
-                    </div>
-                    <div id="customerNameFilterSection" style="display:none; margin-top:8px;">
-                        <input type="text" id="customerNameFilter" class="form-control" placeholder="Exact name..." />
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byNotifyToggle">
-                        <label class="form-check-label" for="byNotifyToggle">Notification Options</label>
-                    </div>
-                    <div id="notifyFilterSection" style="display:none; margin-top:8px;">
+            <form id="chequeRequestFilterForm" autocomplete="off" method="post" action="@Url.Action("Filter", "ChequeRequests")">
+                <div class="row g-3 mb-2">
+                    <!-- Customer -->
+                    <div class="col-md-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyRejectionFilter" />
-                            <label class="form-check-label small" for="notifyRejectionFilter">Notify on Rejection</label>
+                            <input class="form-check-input" type="checkbox" id="byCustomerToggle" />
+                            <label class="form-check-label" for="byCustomerToggle">Filter by Customer</label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyAnyTransactionFilter" />
-                            <label class="form-check-label small" for="notifyAnyTransactionFilter">Notify on Any Transaction</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="notifyClearanceFilter" />
-                            <label class="form-check-label small" for="notifyClearanceFilter">Notify on Clearance</label>
-                        </div>
-                        <div class="form-check mt-1">
-                            <input class="form-check-input" type="checkbox" id="automaticRenewalFilter" />
-                            <label class="form-check-label small" for="automaticRenewalFilter">Automatic Renewal</label>
+
+                        <div id="customerFilterSection" class="mt-2" style="display:none;">
+                            <!-- maps to ChequeRequestQuery.CustomerId -->
+                            <input type="text" id="CustomerId" name="CustomerId" class="form-control" placeholder="Customer name or ID..." />
                         </div>
                     </div>
+
+                    <!-- Category -->
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byCategoryToggle" />
+                            <label class="form-check-label" for="byCategoryToggle">Filter by Category</label>
+                        </div>
+
+                        <div id="categoryFilterSection" class="mt-2" style="display:none;">
+                            @Html.DropDownList(
+                                "CategoryId",                                             
+                                new SelectList(ViewBag.Categories ?? new List<object>(), "Id", "name"),
+                                "All Categories",
+                                new { @class = "form-select", id = "CategoryId" })
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byStatusToggle" />
+                            <label class="form-check-label" for="byStatusToggle">Filter by Status</label>
+                        </div>
+
+                        <div id="statusFilterSection" class="mt-2" style="display:none;">
+                            <!-- maps to ChequeRequestQuery.Status -->
+                            <select id="Status" name="Status" class="form-select">
+                                <option value="">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="reviewed">Reviewed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Branch -->
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byBranchToggle" />
+                            <label class="form-check-label" for="byBranchToggle">Filter by Branch</label>
+                        </div>
+
+                        <div id="branchFilterSection" class="mt-2" style="display:none;">
+                            @Html.DropDownList(
+                                "BranchId",                                            
+                                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "name"),
+                                "All Branches",
+                                new { @class = "form-select", id = "BranchId" })
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-md-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="byDateToggle">
-                        <label class="form-check-label" for="byDateToggle">Filter by Date Range</label>
+                <div class="row g-3 mb-2">
+                    <!-- Approval Date (single) -->
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byApprovalDateToggle" />
+                            <label class="form-check-label" for="byApprovalDateToggle">Filter by Approval Date</label>
+                        </div>
+
+                        <div id="approvalDateFilterSection" class="mt-2" style="display:none;">
+                            <!-- maps to ChequeRequestQuery.ApprovalDate -->
+                            <input type="date" id="ApprovalDate" name="ApprovalDate" class="form-control" />
+                        </div>
                     </div>
-                    <div id="dateFilterSection" style="display:none; margin-top:8px;">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <input type="date" id="startDateFilter" class="form-control" />
+
+                    <!-- Notification options -->
+                    <div class="col-md-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byNotifyToggle" />
+                            <label class="form-check-label" for="byNotifyToggle">Notification Options</label>
+                        </div>
+
+                        <div id="notifyFilterSection" class="mt-2" style="display:none;">
+                            <div class="row">
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="NotifyOnApproval" name="NotifyOnApproval" />
+                                        <label class="form-check-label small" for="NotifyOnApproval">Notify on Approval</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="NotifyOnClearance" name="NotifyOnClearance" />
+                                        <label class="form-check-label small" for="NotifyOnClearance">Notify on Clearance</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="NotifyOnRejection" name="NotifyOnRejection" />
+                                        <label class="form-check-label small" for="NotifyOnRejection">Notify on Rejection</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-sm-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="NotifyOnPayment" name="NotifyOnPayment" />
+                                        <label class="form-check-label small" for="NotifyOnPayment">Notify on Payment</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-sm-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="NotifyOnAnyTransaction" name="NotifyOnAnyTransaction" />
+                                        <label class="form-check-label small" for="NotifyOnAnyTransaction">Notify on Any Transaction</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-sm-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="AutomaticRenewal" name="AutomaticRenewal" />
+                                        <label class="form-check-label small" for="AutomaticRenewal">Automatic Renewal</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <input type="date" id="endDateFilter" class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- Validity Date range -->
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="byDateToggle" />
+                            <label class="form-check-label" for="byDateToggle">Filter by Date Range</label>
+                        </div>
+
+                        <div id="dateFilterSection" class="mt-2" style="display:none;">
+                            <div class="row g-2">
+                                <!-- StartDate & EndDate map to ChequeRequestQuery.StartDate / EndDate -->
+                                <div class="col-6">
+                                    <input type="date" id="StartDate" name="StartDate" class="form-control" />
+                                </div>
+                                <div class="col-6">
+                                    <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,41 +169,53 @@
 
                 <div class="row mt-2">
                     <div class="col-md-12 d-flex">
-                        <button id="applyFilterBtn" class="btn btn-primary me-2"><i class="mdi mdi-magnify"></i> Apply Filters</button>
-                        <button id="resetFilterBtn" class="btn btn-secondary"><i class="mdi mdi-refresh"></i> Reset</button>
-                        <button id="printBtn" class="btn btn-outline-danger ms-auto"><i class="mdi mdi-printer"></i> Print PDF</button>
+                        <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                            <i class="mdi mdi-magnify"></i> Apply Filter
+                        </button>
+
+                        <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                            <i class="mdi mdi-refresh"></i> Reset
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </form>
         </div>
+   
 
-    </div>
 
     <hr />
 
-    <table id="requestsDataTable" class="table table-bordered table-striped" width="100%">
+    <table id="myDataTable" class="table table-bordered table-striped" width="100%">
+
+        <colgroup>
+            <col style="width:30%;">
+            <col style="width:20%;"> 
+            <col style="width:20%;"> 
+            <col style="width:15%;">
+            <col style="width:15%;"> 
+        </colgroup>
+
         <thead class="table-light">
             <tr>
                 <th>Customer Name</th>
                 <th>Category</th>
-                <th>Request Date</th>
+                <th>Branch Name</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Actions</th>
             </tr>
         </thead>
     </table>
+
 </fieldset>
 
-<!-- DETAILS MODAL -->
+
+<!-- DETAILS MODAL (RE-ENABLED) -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-white">
-                <h5 class="modal-title"><i class="mdi mdi-eye-outline me-1"></i> Request Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           <div id="detailsModalBody" class="modal-body p-3">
+                
             </div>
-            <div id="detailsModalBody" class="modal-body p-3">Loading…</div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
@@ -170,252 +223,373 @@
     </div>
 </div>
 
-<!-- ACTION MODAL -->
+<!-- ACTION MODAL (unchanged) -->
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div id="actionModalBody" class="modal-body p-3">
+                <div class="text-center text-muted py-4" id="detailsLoading"><i class="mdi mdi-loading mdi-spin"></i> Loading…</div>
             </div>
-            <div id="actionModalBody" class="modal-body">
-                <div class="text-center text-muted py-4">Loading form…</div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    (function () {
-        console.log('ChequeRequests view script loaded');
+/* Cheque Requests - DataTable + AJAX payload (fixed & cleaned, uses appalert for user messages) */
+(function () {
+    'use strict';
 
-        // ensure DOM ready
-        $(function () {
-            try {
-                // Initialize DataTable
-                var table = $('#requestsDataTable').DataTable({
-                    processing: false,
-                    serverSide: true,
-                    searching: false,
-                    order: [[2, 'desc']],
-                    // send JSON body (like your manual entry system)
-                    ajax: {
-                        url: '@Url.Action("LoadRequestsForDataTable", "ChequeRequest")',
-                        type: 'POST',
-                        contentType: "application/json",
-                        data: function (d) {
-                            // if toggles are off, still pass values (server can ignore nulls)
-                            return JSON.stringify({
-                                Options: d,
-                                CustomerFilter: $('#customerFilter').val() || null,
-                                CategoryFilter: $('#categoryFilter').val() || null,
-                                StatusFilter: $('#statusFilter').val() || null,
-                                CustomerName: $('#customerNameFilter').val() || null,
-                                BranchId: $('#branchFilter').val() || null,
-                                BankId: $('#bankFilter').val() || null,
-                                NotifyOnRejection: $('#notifyRejectionFilter').is(':checked') || false,
-                                AutomaticRenewal: $('#automaticRenewalFilter').is(':checked') || false,
-                                NotifyOnAnyTransaction: $('#notifyAnyTransactionFilter').is(':checked') || false,
-                                NotifyOnClearance: $('#notifyClearanceFilter').is(':checked') || false,
-                                StartDate: $('#startDateFilter').val() || null,
-                                EndDate: $('#endDateFilter').val() || null
-                            });
-                        }
-                    },
-                    columns: [
-                        { data: "customerName", name: "CustomerName", className: "ps-4" },
-                        { data: "categoryName", name: "CategoryName" },
-                        {
-                            data: "requestDate",
-                            name: "RequestDate",
-                            render: function (data) { return data ? new Date(data).toLocaleString() : ''; }
-                        },
-                        {
-                            data: "status",
-                            name: "Status",
-                            className: "text-center",
-                            orderable: false,
-                            render: function (data) { return getStatusBadge(data); }
-                        },
-                        {
-                            data: null,
-                            className: "text-center pe-4",
-                            orderable: false,
-                            render: function (data, type, row) { return renderActionButtons(row); }
-                        }
-                    ],
-                    drawCallback: function () {
-                        updateTableInfo();
-                    }
-                });
+    // Collect filters to send to server
+    function collectChequeFilters() {
+        return {
+            CustomerId: $('#CustomerId').val() || '',
+            CategoryId: $('#CategoryId').val() || '',
+            Status: $('#Status').val() || '',
+            BranchId: $('#BranchId').val() || '',
+            BankId: $('#BankId').val() || '',
+            ApprovalDate: $('#ApprovalDate').val() || '',
+            StartDate: $('#StartDate').val() || '',
+            EndDate: $('#EndDate').val() || '',
+            NotifyOnApproval: $('#NotifyOnApproval').is(':checked') || false,
+            NotifyOnClearance: $('#NotifyOnClearance').is(':checked') || false,
+            NotifyOnRejection: $('#NotifyOnRejection').is(':checked') || false,
+            NotifyOnPayment: $('#NotifyOnPayment').is(':checked') || false,
+            NotifyOnAnyTransaction: $('#NotifyOnAnyTransaction').is(':checked') || false,
+            AutomaticRenewal: $('#AutomaticRenewal').is(':checked') || false,
+            ShowAll: false,
+            options: {}
+        };
+    }
 
-                // Toggle handlers
-                $('#byCustomerToggle').change(function () { $('#customerFilterSection').toggle(this.checked); });
-                $('#byCategoryToggle').change(function () { $('#categoryFilterSection').toggle(this.checked); });
-                $('#byStatusToggle').change(function () { $('#statusFilterSection').toggle(this.checked); });
-                $('#byDateToggle').change(function () { $('#dateFilterSection').toggle(this.checked); });
-                $('#byBranchToggle').change(function () { $('#branchFilterSection').toggle(this.checked); });
-                $('#byBankToggle').change(function () { $('#bankFilterSection').toggle(this.checked); });
-                $('#byCustomerNameToggle').change(function () { $('#customerNameFilterSection').toggle(this.checked); });
-                $('#byNotifyToggle').change(function () { $('#notifyFilterSection').toggle(this.checked); });
+    // Initialize / load cheques into DataTable
+    function loadChequeData() {
+        // destroy if exists so filters/sorting reapply cleanly
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            $('#myDataTable').DataTable().destroy();
+            $('#myDataTable').find('tbody').empty();
+        }
 
-                // Buttons
-                $('#applyFilterBtn').on('click', function () {
-                    console.debug('Apply filters clicked');
-                    table.ajax.reload();
-                });
-
-                $('#resetFilterBtn').on('click', function () {
-                    resetFilters();
-                    table.ajax.reload();
-                });
-
-                $('#printBtn').on('click', function () {
-                    alert('TODO: Implement PDF export for filtered results.');
-                });
-
-                // Global functions used by action buttons in rows
-                window.viewDetails = function (id) {
-                    if (!id) return;
-                    $.get('@Url.Action("InitializeData", "ChequeRequest")', { KEY: id, partialView: '_RequestDetails', path: 'get' })
-                        .done(function (html) {
-                            $('#detailsModalBody').html(html);
-                            var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
-                            modal.show();
-                        })
-                        .fail(function () {
-                            alert('Unable to load details.');
-                        });
-                };
-
-                window.showActionModal = function (action, requestId, customerName) {
-                    if (!requestId) return;
-                    $.get('@Url.Action("InitializeData", "ChequeRequest")', { KEY: requestId, partialView: '_ActionModal', path: 'get' })
-                        .done(function (html) {
-                            $('#actionModalBody').html(html);
-                            $('#actionModalLabel').text(action + ' Request - ' + customerName);
-                            $('#actionModalBody').find('#actionType').val(action.toLowerCase());
-                            $('#actionModalBody').find('#actionRequestId').val(requestId);
-                            $('#actionModalBody').find('#actionSubmitBtn').off('click').on('click', function () {
-                                submitAction($('#actionModalBody').find('form').get(0), table);
-                            });
-                            var modal = new bootstrap.Modal(document.getElementById('actionModal'));
-                            modal.show();
-                        })
-                        .fail(function () {
-                            var fallback = '<form id="actionForm">' +
-                                '<input type="hidden" id="actionType" name="action" value="' + action.toLowerCase() + '" />' +
-                                '<input type="hidden" id="actionRequestId" name="requestId" value="' + requestId + '" />' +
-                                '<div class="mb-3"><label for="actionNote" class="form-label">Statement / Reason</label>' +
-                                '<textarea id="actionNote" name="note" class="form-control" rows="4" required></textarea></div>' +
-                                '<div class="text-end"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>' +
-                                '<button type="button" class="btn btn-primary" id="actionSubmitBtn">Submit Action</button></div></form>';
-
-                            $('#actionModalBody').html(fallback);
-                            $('#actionSubmitBtn').off('click').on('click', function () {
-                                submitAction($('#actionModalBody').find('#actionForm').get(0), table);
-                            });
-                            var modal = new bootstrap.Modal(document.getElementById('actionModal'));
-                            modal.show();
-                        });
-                };
-
-                // Helpers
-                function getStatusBadge(status) {
-                    var statusMap = {
-                        'pending': 'bg-warning text-dark',
-                        'approved': 'bg-success',
-                        'rejected': 'bg-danger',
-                        'delivered': 'bg-info',
-                        'reviewed': 'bg-primary'
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            searching: true,
+            order: [[0, 'desc']],
+            columnDefs: [
+                { targets: 0, width: '30%' },
+                { targets: 1, width: '20%' },
+                { targets: 2, width: '20%' },
+                { targets: 3, width: '15%', className: 'text-center' },
+                { targets: 4, width: '15%', className: 'text-center' }
+            ],
+            ajax: {
+                url: '@Url.Action("LoadChequeBooksData", "ChequeRequest")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    var filters = collectChequeFilters();
+                    filters.options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: (d.search && d.search.value) ? d.search.value : '',
+                        sortColumnName: (d.order && d.order.length) ? (d.columns[d.order[0].column].data) : '',
+                        sortColumnDirection: (d.order && d.order.length) ? d.order[0].dir : 'desc'
                     };
-                    var cls = statusMap[(status || '').toLowerCase()] || 'bg-secondary';
-                    return '<span class="badge ' + cls + '">' + (status || '—') + '</span>';
+                    return JSON.stringify(filters);
                 }
+            },
+            columns: [
+                { data: 'CustomerName', name: 'customerName' },
+                { data: 'CheckBookCategoryName', name: 'categoryName' },
+                {
+                    data: 'BranchName',
+                    name: 'branchName',
+                    render: function (data) { return data ? data : '—'; }
+                },
+                {
+                    data: 'Status',
+                    name: 'status',
+                    className: 'text-center',
+                    orderable: false,
+                    render: function (data) { return getStatusBadge(data); }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function (_, __, row) {
+                        var id = row.Id || row.id || '';
+                        var customerId = row.CustomerId || row.CustomerId || '';
+                        var name = (row.CustomerName || '').replace(/'/g, "\\'");
+                        var status = (row.Status || '').toLowerCase();
 
-                function renderActionButtons(row) {
-                    var status = (row.status || '').toLowerCase();
-                    var id = row.Id || row.id || '';
-                    var name = (row.customerName || '').replace(/'/g, "\\'");
-                    var detailsBtn = '<a href="#" class="btn btn-sm btn-outline-info me-1" onclick="viewDetails(\'' + id + '\')" title="View Details"><i class="mdi mdi-eye-outline"></i></a>';
-                    var dropdownItems = '';
-                    if (status === 'pending') dropdownItems += '<li><a class="dropdown-item" href="#" onclick="showActionModal(\'Review\', \'' + id + '\', \'' + name + '\')">Review</a></li>';
-                    if (status === 'reviewed') { dropdownItems += '<li><a class="dropdown-item" href="#" onclick="showActionModal(\'Approve\', \'' + id + '\', \'' + name + '\')">Approve</a></li>'; dropdownItems += '<li><a class="dropdown-item" href="#" onclick="showActionModal(\'Reject\', \'' + id + '\', \'' + name + '\')">Reject</a></li>'; }
-                    if (status === 'approved') dropdownItems += '<li><a class="dropdown-item" href="#" onclick="showActionModal(\'Delivered\', \'' + id + '\', \'' + name + '\')">Mark as Delivered</a></li>';
+                        var items = '';
+                        if (status === 'pending') {
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Review', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-magnify me-2 text-primary"></i> Review</button></li>`;
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Approve', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Reject', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-close me-2 text-danger"></i> Reject</button></li>`;
 
-                    if (dropdownItems) {
-                        return '<div class="btn-group">' + detailsBtn +
-                            '<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>' +
-                            '<ul class="dropdown-menu">' + dropdownItems + '</ul></div>';
-                    }
-                    return detailsBtn;
-                }
-
-                function submitAction(form, tableInstance) {
-                    if (!form) return false;
-                    var $f = $(form);
-                    var token = $f.find('input[name="__RequestVerificationToken"]').val();
-                    var requestId = $f.find('input[name="requestId"]').val() || $f.find('#actionRequestId').val();
-                    var action = $f.find('input[name="action"]').val() || $f.find('#actionType').val();
-                    var note = $f.find('textarea[name="note"]').val() || $f.find('#actionNote').val();
-
-                    if (!requestId || !action) {
-                        alert('Missing request id or action');
-                        return false;
-                    }
-
-                    var payload = { requestId: requestId, action: action, note: note };
-
-                    $.ajax({
-                        url: '@Url.Action("TakeAction", "ChequeRequest")',
-                        type: 'POST',
-                        data: payload,
-                        headers: token ? { 'RequestVerificationToken': token } : {},
-                        success: function (res) {
-                            var modalEl = document.getElementById('actionModal');
-                            bootstrap.Modal.getInstance(modalEl)?.hide();
-                            tableInstance.ajax.reload();
-                            alert((res && res.message) ? res.message : 'Action processed.');
-                        },
-                        error: function (xhr) {
-                            alert('Error performing action.');
                         }
-                    });
-
-                    return false;
-                }
-
-                function updateTableInfo() {
-                    if (table) {
-                        var info = table.page.info();
-                        // optionally update a small info element
-                        if ($('#tableInfo').length) {
-                            $('#tableInfo').text('Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' + info.recordsTotal + ' entries');
+                        if (status === 'reviewed') {
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Approve', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Reject', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-close me-2 text-danger"></i> Reject</button></li>`;
                         }
+                        if (status === 'approved') {
+                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('Delivered', '${id}', '${name}','${status}','${customerId}')"><i class="mdi mdi-truck-delivery me-2 text-info"></i> Mark as Delivered</button></li>`;
+                        }
+
+                        var detailsBtn = `<li><button class="dropdown-item text-dark" onclick="viewDetails('${id}')"><i class="mdi mdi-eye-outline me-2 text-primary"></i> Details</button></li>`;
+
+                        var menu = `
+                            <div class="text-center dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-eye"></i> Action
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    ${detailsBtn}
+                                    ${items}
+                                </ul>
+                            </div>`;
+                        return menu;
                     }
                 }
+            ],
+            drawCallback: function () { updateTableInfo(); }
+        });
+    }
 
-                function resetFilters() {
-                    $('#customerFilter').val('');
-                    $('#categoryFilter').val('');
-                    $('#statusFilter').val('');
-                    $('#customerNameFilter').val('');
-                    $('#branchFilter').val('');
-                    $('#bankFilter').val('');
-                    $('#startDateFilter').val('');
-                    $('#endDateFilter').val('');
-                    $('#notifyRejectionFilter').prop('checked', false);
-                    $('#notifyAnyTransactionFilter').prop('checked', false);
-                    $('#notifyClearanceFilter').prop('checked', false);
-                    $('#automaticRenewalFilter').prop('checked', false);
+    // Simple status badge helper
+    function getStatusBadge(status) {
+        var statusMap = {
+            'pending': 'bg-warning text-dark',
+            'approved': 'bg-success',
+            'rejected': 'bg-danger',
+            'delivered': 'bg-info',
+            'reviewed': 'bg-primary'
+        };
+        var cls = statusMap[(status || '').toLowerCase()] || 'bg-secondary';
+        return '<span class="badge ' + cls + '">' + (status || '—') + '</span>';
+    }
 
-                    $('input.form-check-input[type=checkbox]').prop('checked', false);
-                    $('#customerFilterSection, #categoryFilterSection, #statusFilterSection, #dateFilterSection, #customerNameFilterSection, #branchFilterSection, #bankFilterSection, #notifyFilterSection').hide();
+    // viewDetails: improved and robust for empty / redirect responses
+    window.viewDetails = function (id) {
+        if (!id) {
+            appalert('Missing request identifier. Cannot load details.', 0, 1);
+            return;
+        }
+        var url = '@Url.Action("InitializeData", "ChequeRequest")';
+
+        // show loading inside modal body and show modal early (gives immediate feedback)
+        $('#detailsModalBody').html('<div class="text-center text-muted py-4"><i class="mdi mdi-loading mdi-spin"></i> Loading…</div>');
+        var modalEl = document.getElementById('detailsModal');
+        var modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        // Request partial (server expects KEY, partialView, path)
+        $.get(url, { KEY: id, partialView: '_RequestDetails', path: 'get' })
+            .done(function (html) {
+                // Basic guards: empty or obvious full-page html (login/redirect) -> treat as error
+                if (!html || (typeof html === 'string' && html.trim().length === 0)) {
+                    console.error('viewDetails: empty response for id', id);
+                    $('#detailsModalBody').html('<div class="text-center text-danger py-3">No details were returned for this request.</div>');
+                    appalert('No details were returned for this request.', 2, 1);
+                    return;
+                }
+                // If server returned a full HTML page (e.g., login redirect), detect and show helpful msg
+                var lowered = (html + '').toLowerCase();
+                if (lowered.indexOf('<!doctype html') !== -1 || lowered.indexOf('<html') !== -1) {
+                    console.error('viewDetails: server returned full page (possible redirect to login):', html);
+                    $('#detailsModalBody').html('<div class="text-center text-danger py-3">Unable to load details. You may have been redirected to the login page or an error occurred. See console for details.</div>');
+                    appalert('Unable to load details. You may have been redirected to the login page.', 0, 1);
+                    return;
                 }
 
-            } catch (err) {
-                console.error('ChequeRequests script failed:', err);
+                // Success: inject partial html
+                $('#detailsModalBody').html(html);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('viewDetails failed:', jqXHR.status, textStatus, errorThrown, jqXHR.responseText);
+                var msg = 'Unable to load details.';
+                if (jqXHR && jqXHR.responseText) {
+                    msg += ' Server message: ' + (jqXHR.status === 500 ? 'Internal server error' : ('Status: ' + jqXHR.status));
+                }
+                $('#detailsModalBody').html('<div class="text-center text-danger py-3">' + msg + '</div>');
+                appalert(msg, 0, 1);
+            });
+    };
+
+    // showActionModal unchanged (kept as-is from your code) - minor safe cleanup
+    window.showActionModal = function (action, requestId, customerName, currentStatus, customerId) {
+        if (!requestId) {
+            appalert('Missing request identifier. Cannot proceed.', 0, 1);
+            return;
+        }
+        $.get('@Url.Action("InitializeData", "ChequeRequest")', { KEY: requestId, partialView: '_ActionModal', path: 'get' })
+            .done(function (html) {
+                $('#actionModalBody').html(html);
+                // if your partial uses these ids, set them; otherwise set display-only nodes
+                $('#actionModalBody').find('#actionType').val(action.toLowerCase());
+                $('#actionModalBody').find('#actionRequestId').val(requestId);
+
+                // update modal header text if present in partial or wrapper
+                if ($('#actionModalTitle').length) {
+                    $('#actionModalTitle').text(action + ' Request - ' + (customerName || ''));
+                }
+
+                // wire submit inside the injected partial
+                $('#actionModalBody').find('#actionSubmitBtn').off('click').on('click', function () {
+                    submitAction($('#actionModalBody').find('form').get(0), $('#myDataTable').DataTable());
+                });
+
+                var modal = new bootstrap.Modal(document.getElementById('actionModal'));
+                modal.show();
+            })
+            .fail(function (xhr) {
+                // fallback inline form (kept your fallback)
+                var fallback = `
+                    <form id="actionForm">
+                        <input type="hidden" id="actionType" name="action" value="${action.toLowerCase()}" />
+                        <input type="hidden" id="actionRequestId" name="requestId" value="${requestId}" />
+                        <div class="mb-3">
+                            <label for="actionNote" class="form-label">Statement / Reason</label>
+                            <textarea id="actionNote" name="note" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="actionSubmitBtn">Submit Action</button>
+                        </div>
+                    </form>`;
+                $('#actionModalBody').html(fallback);
+                $('#actionSubmitBtn').off('click').on('click', function () {
+                    submitAction($('#actionModalBody').find('#actionForm').get(0), $('#myDataTable').DataTable());
+                });
+                var modal = new bootstrap.Modal(document.getElementById('actionModal'));
+                modal.show();
+            });
+    };
+
+    // submitAction
+    function submitAction(form, tableInstance) {
+        if (!form) {
+            appalert('The action form could not be found.', 0, 1);
+            return false;
+        }
+        var $f = $(form);
+        var token = $f.find('input[name="__RequestVerificationToken"]').val();
+        var requestId = $f.find('input[name="requestId"]').val() || $f.find('#actionRequestId').val();
+        var action = $f.find('input[name="action"]').val() || $f.find('#actionType').val();
+        var note = $f.find('textarea[name="note"]').val() || $f.find('#actionNote').val();
+
+        if (!requestId || !action) {
+            appalert('Missing request id or action', 0, 1);
+            return false;
+        }
+
+        var payload = { requestId: requestId, action: action, note: note };
+
+        $.ajax({
+            url: '@Url.Action("TakeAction", "ChequeRequest")',
+            type: 'POST',
+            data: payload,
+            headers: token ? { 'RequestVerificationToken': token } : {},
+            success: function (res) {
+                var modalEl = document.getElementById('actionModal');
+                bootstrap.Modal.getInstance(modalEl)?.hide();
+                if (tableInstance) tableInstance.ajax.reload();
+                var message = (res && res.message) ? res.message : 'Action processed.';
+                appalert(message, 1, 1);
+            },
+            error: function (xhr) {
+                console.error('Error performing action', xhr);
+                var msg = 'Error performing action.';
+                if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                appalert(msg, 0, 1);
             }
         });
-    })();
+
+        return false;
+    }
+
+    function updateTableInfo() {
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            var table = $('#myDataTable').DataTable();
+            var info = table.page.info();
+            if ($('#tableInfo').length) {
+                $('#tableInfo').text('Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' + info.recordsTotal + ' entries');
+            }
+        }
+    }
+
+    function resetFilters() {
+        $('#CustomerId').val('');
+        $('#CategoryId').val('');
+        $('#Status').val('');
+        $('#BranchId').val('');
+        $('#BankId').val('');
+        $('#ApprovalDate').val('');
+        $('#StartDate').val('');
+        $('#EndDate').val('');
+        $('#NotifyOnApproval').prop('checked', false);
+        $('#NotifyOnClearance').prop('checked', false);
+        $('#NotifyOnRejection').prop('checked', false);
+        $('#NotifyOnPayment').prop('checked', false);
+        $('#NotifyOnAnyTransaction').prop('checked', false);
+        $('#AutomaticRenewal').prop('checked', false);
+
+        $('input.form-check-input[type=checkbox]').prop('checked', false);
+        $('#customerFilterSection, #categoryFilterSection, #statusFilterSection, #dateFilterSection, #approvalDateFilterSection, #branchFilterSection, #bankFilterSection, #notifyFilterSection').hide();
+    }
+
+    // Init bindings
+    $(document).ready(function () {
+        $('#applyFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            loadChequeData();
+        });
+
+        $('#resetFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            resetFilters();
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().clear().draw();
+            }
+        });
+
+        if (!$.fn.DataTable.isDataTable('#myDataTable')) {
+           
+        }
+
+        function toggleFilterSection(checkboxId, sectionId) {
+            const checkbox = document.getElementById(checkboxId);
+            const section = document.getElementById(sectionId);
+
+            if (checkbox && section) {
+                // Set initial state
+                section.style.display = checkbox.checked ? 'block' : 'none';
+
+                // Add change event listener
+                checkbox.addEventListener('change', function () {
+                    section.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+        }
+
+        // Initialize all filter toggles
+        toggleFilterSection('byCustomerToggle', 'customerFilterSection');
+        toggleFilterSection('byCategoryToggle', 'categoryFilterSection');
+        toggleFilterSection('byStatusToggle', 'statusFilterSection');
+        toggleFilterSection('byBranchToggle', 'branchFilterSection');
+        toggleFilterSection('byBankToggle', 'bankFilterSection');
+        toggleFilterSection('byApprovalDateToggle', 'approvalDateFilterSection');
+        toggleFilterSection('byNotifyToggle', 'notifyFilterSection');
+        toggleFilterSection('byDateToggle', 'dateFilterSection');
+
+    });
+
+})();
 </script>

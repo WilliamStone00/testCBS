@@ -5,78 +5,78 @@
     @using (Html.BeginForm("CreateOrUpdate", "Categoryconfic", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return categorySubmitAjax(this);" }))
     {
         @Html.HiddenFor(m => m.Id)
-        <div class="row gy-3">
-            <!-- Profile & Address Section -->
-            <div class="col-12">
-                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Category Details </h6>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = ChequeManagements.Name })
-                    @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.basePrice, new { @class = "form-control", placeholder = ChequeManagements.Price })
-                    @Html.ValidationMessageFor(m => m.basePrice, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.Price</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.numberOfPages, new { @class = "form-control", placeholder = ChequeManagements.Numberofpages })
-                    @Html.ValidationMessageFor(m => m.numberOfPages, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.Numberofpages</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.issuanceLimitPerCustomerType, new { @class = "form-control", placeholder = ChequeManagements.isc })
-                    @Html.ValidationMessageFor(m => m.issuanceLimitPerCustomerType, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.isc</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.validityPeriodInMonths, new { @class = "form-control", placeholder = ChequeManagements.validity })
-                    @Html.ValidationMessageFor(m => m.validityPeriodInMonths, "", new { @class = "text-danger" })
-                    <label>@ChequeManagements.validity</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.branchID, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
-                    @Html.ValidationMessageFor(m => m.branchID, "", new { @class = "text-danger" })
-
-                    <label>@GlobalUserManagement.Branch</label>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="form-group ps-2">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input", id = "IsActive" })
-                        <label class="form-check-label" for="IsActive">@ChequeManagements.isactive</label>
-                    </div>
-                    @Html.ValidationMessageFor(m => m.isActive, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-12 text-end mt-3">
-                @if (Model.Id == null)
-                {
-                    <button type="submit" class="btn btn-primary shadow-sm px-4">
-                        <i class="fas fa-save me-1"></i> @GlobalUserManagement.CreateAccount
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                        @GlobalShared.Reset
-                    </button>
-                }
-                else
-                { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>}
-            </div>
-
+    <div class="row gy-3">
+        <!-- Profile & Address Section -->
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Category Details </h6>
         </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = ChequeManagements.Name })
+                @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                <label>@ChequeManagements.Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.basePrice, new { @class = "form-control", placeholder = ChequeManagements.Price })
+                @Html.ValidationMessageFor(m => m.basePrice, "", new { @class = "text-danger" })
+                <label>@ChequeManagements.Price</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.numberOfPages, new { @class = "form-control", placeholder = ChequeManagements.Numberofpages })
+                @Html.ValidationMessageFor(m => m.numberOfPages, "", new { @class = "text-danger" })
+                <label>@ChequeManagements.Numberofpages</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.issuanceLimitPerCustomerType, new { @class = "form-control", placeholder = ChequeManagements.isc })
+                @Html.ValidationMessageFor(m => m.issuanceLimitPerCustomerType, "", new { @class = "text-danger" })
+                <label>@ChequeManagements.isc</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.TextBoxFor(m => m.validityPeriodInMonths, new { @class = "form-control", placeholder = ChequeManagements.validity })
+                @Html.ValidationMessageFor(m => m.validityPeriodInMonths, "", new { @class = "text-danger" })
+                <label>@ChequeManagements.validity</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating shadow-sm">
+                @Html.DropDownListFor(m => m.branchID, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(m => m.branchID, "", new { @class = "text-danger" })
+
+                <label>@GlobalUserManagement.Branch</label>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group ps-2">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.isActive, new { @class = "form-check-input", id = "IsActive" })
+                    <label class="form-check-label" for="IsActive">@ChequeManagements.isactive</label>
+                </div>
+                @Html.ValidationMessageFor(m => m.isActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-12 text-end mt-3">
+            @if (Model.Id == null)
+            {
+                <button type="submit" class="btn btn-primary shadow-sm px-4">
+                    <i class="fas fa-save me-1"></i> @GlobalUserManagement.CreateAccount
+                </button>
+                <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                    @GlobalShared.Reset
+                </button>
+            }
+            else
+            { <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>}
+        </div>
+
+    </div>
     }
 </div>

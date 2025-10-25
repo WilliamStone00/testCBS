@@ -1,4 +1,5 @@
 ﻿using BusinessServices;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -12,8 +13,77 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation
 {
     public class ChequeCancellationMockService : BaseService
     {
-        private static readonly List<CancellationRequest> _mockRequests = new List<CancellationRequest>();
+        //private static readonly List<CancellationRequest> _mockRequests = new List<CancellationRequest>();
         private static int _requestCounter = 1;
+
+        private readonly object _lock = new object();
+
+
+        private readonly List<CancellationRequest> _mockRequests = new List<CancellationRequest>
+{
+    new CancellationRequest
+    {
+        Id = "1",
+    RequestType = "ChequeNumber",
+    CustomerId = "001",
+    CustomerName = "bro",
+    ChequeBookId = "CBK-2025-003",
+    ChequeLeafId = "CLF-2025-030",
+    ChequeNumber = "CHQ00056789",
+    PageNumber = "7",
+    RequestedByUserId = "USR1055",
+    RequestedByUserName = "Michael Johnson",
+    RequestedDate = DateTime.UtcNow,
+    BranchId = "BR003",
+    BranchName = "Uptown Branch"
+    },
+    new CancellationRequest
+    {
+        Id = "2",
+    RequestType = "ChequeLeaf",
+    CustomerId = "002",
+    CustomerName = "brend",
+    ChequeBookId = "CBK-2025-002",
+    ChequeLeafId = "CLF-2025-020",
+    ChequeNumber = "CHQ00022222",
+    PageNumber = "8",
+    RequestedByUserId = "USR1022",
+    RequestedByUserName = "Alice Smith",
+    RequestedDate = DateTime.UtcNow,
+    BranchId = "BR002",
+    BranchName = "Downtown Branch"
+    },
+    new CancellationRequest
+    {
+
+    Id = "3",
+    RequestType = "ChequeBook",
+    CustomerId = "003",
+    CustomerName = "brenda",
+    ChequeBookId = "CBK-2025-001",
+    ChequeLeafId = "CLF-2025-010",
+    ChequeNumber = "CHQ00011111",
+    PageNumber = "3",
+    RequestedByUserId = "USR1001",
+    RequestedByUserName = "John Doe",
+    RequestedDate = DateTime.UtcNow,
+    BranchId = "BR001",
+    BranchName = "Central Branch"
+    }};
+
+        public Task<IEnumerable<CancellationRequest>> GetAllAsync()
+        {
+            lock (_lock)
+            {
+                return Task.FromResult(_mockRequests.AsEnumerable());
+            }
+        }
+
+        public Task<CancellationRequest> GetByIdAsync(string Id)
+        {
+            var cancellation = _mockRequests.FirstOrDefault(c => c.Id == Id);
+            return Task.FromResult(cancellation);
+        }
 
         public async Task<IEnumerable<CancellationRequest>> GetCancellationRequestsAsync()
         {
@@ -161,8 +231,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation
             // Apply filters
             if (!string.IsNullOrEmpty(query.Status))
             {
-                var status = (CancellationStatus)Enum.Parse(typeof(CancellationStatus), query.Status);
-                data = data.Where(r => r.Status == status);
+                var Status = (CancellationStatus)Enum.Parse(typeof(CancellationStatus), query.Status);
+                data = data.Where(r => r.Status == Status);
             }
 
             if (!string.IsNullOrEmpty(query.BranchId))

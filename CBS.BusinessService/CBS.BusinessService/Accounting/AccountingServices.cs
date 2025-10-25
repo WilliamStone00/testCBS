@@ -499,7 +499,7 @@ namespace CBS.BusinessService.Accounting
             try
             {
                // branchId = branchId.Equals("DEFAULTID") ? (await _branchService.GetBranches()).Where(x => x.BranchCode == "001").FirstOrDefault().Id : branchId;
-                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAllAccountByBranch, branchId));
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<FrontDesk.Data.Account>>>(string.Format(APICallHelper.GetAccountByBranchIdUrl, branchId));
                 if (couApiResponse.IsSuccess)
                 {
                     if (couApiResponse.ApiResponseData != null)

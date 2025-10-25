@@ -1,0 +1,43 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonAccountConfiguration.LiaisonAccountConfigurationDto>
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <legend class="text-primary ">Liaison Mappings</legend>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="text-center my-3">
+            <p>No Liaison Account Mapping found.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Source Branch</th>
+                        <th>Liaison Account</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.BranchName</td>
+                            <td>@item.HeadOfficeLiaisonAccountId</td>
+                            <td>@(item.Status ? "Active" : "Inactive")</td>
+                            <td>
+                                <a href="#" onclick="AddORUpdateGen('@item.BranchId','datalistingview','_Create','update','LiaisonAccountConfiguration')" class="me-2">Edit</a> |
+                                <a href="#" onclick="DeleteRecordDataTable('LiaisonAccountConfiguration','@item.BranchId','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</fieldset>
+

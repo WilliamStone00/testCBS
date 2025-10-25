@@ -320,7 +320,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
         public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
-        
+
 
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
@@ -1258,6 +1258,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateChequeBookCategory = "/api/v1/checkbook-category";
         public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
         public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string categorydatatable = "/api/v1/checkbook-category/data-table";
 
         // ---------------- cheque number position CRUD ----------------
         public static string GetAll = "/api/v1/check-configs";
@@ -1274,14 +1275,18 @@ namespace CBS.FrontDesk.Helper
         public static string CreateFeeConfig = "/api/v1/fee-config";
         public static string UpdateFeeConfig = "/api/v1/fee-config/{0}";
         public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
+        public static string FeeDatatable = "/api/v1/FeeConfig/data-table";
 
         // ---------------- NOTIFICATIONS ----------------
 
         public static string GetAllnot = "/api/v1/Notification/types";
+        public static string GetNotificationConfigById = "/api/v1/Notification/types";
         public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
         public static string Createnot = "/api/v1/Notification/Config";
         public static string Updatenot = "/api/v1/update-notification-config/{0}";
         public static string Deletenot = "/api/v1/delete-notification-config/{0}";
+        public static string notdata = "/api/v1/data-table";
+
 
         //------------------- CounterCheque ----------------
         public static string CreateCounterCheque = "/api/v1/counter-checks";
@@ -1290,25 +1295,27 @@ namespace CBS.FrontDesk.Helper
         //--------------------------------------TEST--------------------------------------//
         public static string GetAllChequeClearance = "/api/v1/counter-clearance";
         public static string GetChequeClearanceById = "/api/v1/counter-clearanceByid";
+        public static string GetClearanceDataTable = "/api/v1/counter-clearance";
 
-        //public static string GetAllnot = "/api/v1/verify-notification-config";
+
+        
         public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
         
-        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-        //public static string Createnot = "/api/v1/Notification/Config";
-        //public static string Updatenot = "/api/NotificationConfig/{0}";
-        //public static string Deletenot = "/api/NotificationConfig/{0}";
+       
 
+        
         //---------------------Notification History -----------------------
         public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
         public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
 
         //------------------------- Cheque Request -------------------------
         public const string CreateChequeRequest = "/api/v1/CheckRequest";
-        public const string GetAllChequeRequests = "/api/v1/cheque-requests";
-        public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
-        public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
-        public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
+        public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
+        public const string GetAllChequeRequests = "not yet provided by backend";
+        public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
+        public const string RejectChequeRequest = "not yet provided by backend";
+        public const string ReviewChequeRequest = "not yet provided by backend";
+        public const string datatableforrequest = "/api/v1/CheckRequest/DataTable";
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";
@@ -1317,8 +1324,13 @@ namespace CBS.FrontDesk.Helper
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
 
+        public const string GetCounterChequeDetails = "/api/v1/counter-checks";
+
+        public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
+
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
+        public const string GetChequeBooksDataTableloss = "/api/v1/checkbook/data-table";
         public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
         public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
@@ -1333,6 +1345,11 @@ namespace CBS.FrontDesk.Helper
         public const string ReviewCancellationRequest = "/api/v1/Cheque-Book";
         public const string DeactivateCancellationRequest = "/api/v1/Cheque-Book/{0}";
         public const string GetCancellationRequestsDataTable = "/api/v1/Cheque-Book";
+
+        //-------------------- Cheque Cleance ---------------
+        public const string clearanceData = "/api/v1/cheque-clearance/data-table";
+        public const string ChequebookDetail = "/api/v1/checkbook/{0}";
+
 
         //************************** END CHEQUE BOOK *******************************
 
@@ -1371,16 +1388,90 @@ namespace CBS.FrontDesk.Helper
         public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
 
-        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
-    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
-    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
-    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
-    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+    //    public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+    //public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+    //public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    //public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+    //public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+    //public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-        //public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
-       // public static string GetManualEntryCollectorDetailsDataTable = "api/v1/ManualEntryCollector/Extracted/details/data-table";
+       
+        //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
+        //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
+        //public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
+        public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
+        //public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        //public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        //public static string SubmitLossRequest = "/api/v1/loss-requests";
+
+
+        //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
+        //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
+        //public static string GetCheckbookDetails = "/api/v1/checkbook/{0}";
+        //public static string GetCheckLeafDetails = "/api/v1/checkbook-leave/{0}";
+        //public static string RequestLossForCheckbook = "/api/v1/loss-requests/{0}";
+        //public static string RequestLossForCheckLeaf = "/api/v1/loss-requests/{0}";
+        //public static string SubmitLossRequest = "/api/v1/loss-requests";
+        public static string LossRequestDataTable = "api/lossmanagement/requests/datatable";
+        public static string ApproveLossRequest = "api/lossmanagement/requests/approve";
+        public static string RejectLossRequest = "api/lossmanagement/requests/reject";
+
+        public static string LossRequestDetails = "api/lossmanagement/requests/details";
+
+
+
+
+
         //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+        //******************** BRANCH CASH CONFIG *********************************//
+
+        public static string GetAllBranchCashConfigs = "/api/v1/BranchCashConfig";
+        public static string GetBranchCashConfigById = "/api/v1/BranchCashConfig/{0}";
+        public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
+        public static string CreateBranchCashConfig = "/api/v1/BranchCashConfig";
+        public static string UpdateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string DeactivateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
+        public static string ValidateBranchConfig = "api/branchcashconfig/validate";
+
+
+        public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
+        public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
+        public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string GetLiaisonMappingsDataTable = "/api/v1/LiaisonMapping/datatable";
+
+        //************************************Role Gl Resolution Endpoints  ********************************************////
+
+        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string GetRoleGlResolutionsDataTable = "/api/v1/RoleGlResolution/datatable";
+        //-------------------Interbranch Configuration -----------------------------------//
+        public static string GetAllConfigurationManualEntry = "api/v1/InterBranchConfig";
+
+        public static string GetConfigurationManualEntryById = "api/v1/InterBranchConfig/get/{0}";
+
+        public const string UpdateConfigurationManualEntryById = "api/v1/InterBranchConfig/update/{0}";
+
+        //----------------------------_manualJournalEntry--------------------------------//
+
+        public static string GetAccountsByBranch = "/api/v1/BranchAccount/{branchId}/{lang}/tree";
+        public static string PostJournalEntry = "/api/v1/ManualEntries";
+        //---------------------------Journal Head--------------------------------------//
+
+
+        public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
+        public static string ApproveJournalEntry = "api/manualjournalentry/id";
+        public static string RejectJournalEntry = "api/manualjournalentry/post";
+        
+        public static string GetJournalEntryById = "api/WorkFlowTicket/workticketflow/{0}/{operationCode}";
+
+
+
+
 
     }
 }

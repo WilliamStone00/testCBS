@@ -158,6 +158,7 @@
 // -----------------------------------------------------------------------------
 // File: FeeConfigController.cs
 // -----------------------------------------------------------------------------
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfiguration;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
@@ -165,13 +166,14 @@ using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfigur
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.FeeConfiguration
 {
-    // [CheckSessionTimeOut]
+    [CheckSessionTimeOut]
     public class FeeConfigController : BaseController
     {
         private readonly FeeConfigService _feeConfigService;
@@ -246,6 +248,47 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Fee
 
         //    return PartialView(partialView ?? "_FormPartial", model);
         //}
+
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await Loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadfeeData(FeeConfigQuery query)
+        {
+            try
+            {
+                var data = await _feeConfigService.GetFeeDataTableAsync(query);
+
+                var FeeConfig = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration.FeeConfig>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = FeeConfig
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string path = null,string serviceOption = null)
         {

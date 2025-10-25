@@ -8,10 +8,10 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Management
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @ChequeManagements.ChequeBookRequestManagement
         </h1>
         <p class="card-text text-muted mb-1">
-            Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.
+            @ChequeManagements.chequerequesttext1
         </p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
@@ -32,7 +32,7 @@
         </button>
     </h6>
 
-    <div id="collapseTips" class="collapse show">
+    <div id="collapseTips" class="collapse">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -137,27 +137,11 @@
     </div>
 </div>
 
-@*<div class="card mb-1">
-    <div class="card-body d-flex justify-content-end align-items-center">
-        <a type="button" onclick=" LoadDataGen('ChequeRequest', 'dataTableSection', '_RequestDataTable', 0, 'requestFormSection', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
-        </a>
-        <a type="button" onclick="AddORUpdateGen(null,'requestFormSection','_RequestDataTable','new','ChequeRequest')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
-            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
-        </a>
-    </div>
-</div>*@
-
 <!-- Main Content Area -->
 <div class="card shadow p-3 mb-4">
     <!-- Search Section (Initially Visible) -->
     <div id="searchSection">
         @Html.Partial("_CustomerSearch")
-    </div>
-
-    <!-- Request Form Section (Initially Hidden) -->
-    <div id="requestFormSection" style="display: none;">
-        <!-- Form will be loaded here dynamically -->
     </div>
 
     <!-- DataTable Section (Initially Hidden) -->
@@ -166,58 +150,18 @@
     </div>
 </div>
 
-<!-- Action Modal -->
-<div class="modal fade" id="actionModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Take Action</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="actionForm">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" id="actionType" name="action">
-                    <input type="hidden" id="actionRequestId" name="requestId">
-
-                    <div class="mb-3">
-                        <label for="actionNote" class="form-label">Statement / Reason</label>
-                        <textarea id="actionNote" name="note" class="form-control" rows="4" required
-                                  placeholder="Please provide a statement or reason for this action..."></textarea>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit Action</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Request Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="detailsModalBody">
-                <!-- Details will be loaded here -->
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script>
+        const getCustomerDetailsUrl = '@Url.Action("GetCustomerDetails", "ChequeRequest")';
+        const getRequestFormUrl = '@Url.Action("GetRequestForm", "ChequeRequest")';
+    </script>
     <!-- Corrected Script Paths -->
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
- @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
+    @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
 
     <script>
         // Global section management functions
@@ -232,15 +176,12 @@
             }
         }
 
-        function showDataTableSection() {
+        function showrequestFormSection() {
             $('#searchSection').hide();
-            $('#requestFormSection').hide();
-            $('#dataTableSection').show();
+            $('#dataTableSection').hide();
+            $('#dataTablrequestFormSectioneSection').show();
 
-            // Load data table content if not already loaded
-            if (!$('#dataTableSection').html().trim()) {
-                loadDataTableContent();
-            }
+            
 
             // Refresh data table if already initialized
             if (window.dataTableManager && window.dataTableManager.dataTable) {
@@ -254,26 +195,14 @@
             $('#requestFormSection').show();
         }
 
-        function loadDataTableContent() {
-            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
-                partialView: '_RequestDataTable',
-                path: 'list'
-            }, function(html) {
-                $('#dataTableSection').html(html);
-
-                // Re-initialize DataTable after content is loaded
-                if (window.dataTableManager) {
-                    window.dataTableManager.initializeDataTable();
-                }
-            });
-        }
+       
 
         function loadRequestForm() {
             $.get('@Url.Action("InitializeData", "ChequeRequest")', {
                 partialView: '_ChequeRequestForm',
                 path: 'new'
             }, function(html) {
-                $('#requestFormSection').html(html);
+                $('#dataTableSection').html(html);
 
                 // Re-initialize form manager after content is loaded
                 if (window.formManager) {
@@ -288,7 +217,7 @@
             $('#emptyState').hide();
 
             // Show and load data table section
-            $('#dataTableSection').show();
+                 $('#dataTableSection').show();
 
             // Load the DataTable partial view
             $.get('/ChequeRequest/InitializeData', {
@@ -298,13 +227,13 @@
                 $('#dataTableSection').html(html);
 
                 // Initialize DataTable after content is loaded
-                initializeDataTable();
+               /* initializeDataTable();*/
             });
         }
 
         function loadSearchForm() {
             // Hide other sections
-            $('#dataTableSection').hide();
+            $('#requestFormSection').hide();
             $('#emptyState').hide();
 
             // Show search section
@@ -316,367 +245,119 @@
             }
         }
 
-                function initializeDataTable() {
-                    // Wait a brief moment for the table to be rendered
-                    setTimeout(function() {
-                        if ($.fn.DataTable && $('#myDataTable').length) {
-                            // Destroy existing DataTable if it exists
-                            if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                                $('#myDataTable').DataTable().destroy();
-                            }
+                
 
-                            // Initialize new DataTable
-                            $('#myDataTable').DataTable({
-                                processing: true,
-                                serverSide: true,
-                                ajax: {
-                                    url: '/ChequeRequest/LoadRequestsForDataTable',
-                                    type: 'POST',
-                                    data: function(d) {
-                                        return {
-                                            query: {
-                                                Options: {
-                                                    draw: d.draw,
-                                                    start: d.start,
-                                                    pageSize: d.length,
-                                                    sortColumnName: d.columns[d.order[0]?.column]?.data,
-                                                    sortDirection: d.order[0]?.dir || 'asc'
-                                                },
-                                                CustomerFilter: $('#customerFilter')?.val() || '',
-                                                CategoryFilter: $('#categoryFilter')?.val() || '',
-                                                StatusFilter: $('#statusFilter')?.val() || ''
-                                            }
-                                        };
-                                    }
-                                },
-                                columns: [
-                                    { data: 'customerName', name: 'customerName' },
-                                    { data: 'categoryName', name: 'categoryName' },
-                                    {
-                                        data: 'requestDate',
-                                        name: 'requestDate',
-                                        render: function(data) {
-                                            return data ? new Date(data).toLocaleDateString() : 'N/A';
-                                        }
-                                    },
-                                    {
-                                        data: 'status',
-                                        name: 'status',
-                                        render: function(data) {
-                                            // Your status badge rendering logic
-                                            return data;
-                                        }
-                                    },
-                                    {
-                                        data: null,
-                                        orderable: false,
-                                        className: 'text-center',
-                                        render: function(data, type, row) {
-                                            // Your action buttons rendering logic
-                                            return '<div class="dropdown">...</div>';
-                                        }
-                                    }
-                                ]
-                            });
-                        }
-                    }, 100);
-        }
 
-             
-
-///*        function submitChequeRequestForm(form)*/ {
-//            // Validate form first
-//            if (!$(form).valid()) {
-//                return false;
-//            }
-
-//            const submitBtn = $(form).find('button[type="submit"]');
-//            const originalText = submitBtn.html();
-//            submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
-
-//            // Build FormData manually so we control checkbox values and avoid MVC duplicate hidden fields
-//            const formData = new FormData();
-
-//            // Add non-checkbox fields from serializeArray() (skips MVC's checkbox hidden duplicates)
-//            $(form).serializeArray().forEach(function (field) {
-//                if (!field.name.endsWith("_false")) {
-//                    formData.append(field.name, field.value);
-//                }
-//            });
-
-//            // Add checkboxes explicitly as "true"/"false"
-//            $(form).find('input[type="checkbox"]').each(function () {
-//                const checkbox = $(this);
-//                const isChecked = checkbox.is(':checked');
-//                const fieldName = checkbox.attr('name');
-
-//                // Ensure no previous value remains
-//                formData.delete(fieldName);
-//                formData.append(fieldName, isChecked.toString());
-//            });
-
-//            // Add file inputs (if any) with proper keys (keeps FormData semantics)
-//            $(form).find('input[type="file"]').each(function () {
-//                const input = this;
-//                const name = $(input).attr('name') || $(input).attr('id') || 'file';
-//                // If multiple files allowed, append each; otherwise append first file
-//                if (input.files && input.files.length) {
-//                    for (let i = 0; i < input.files.length; i++) {
-//                        // use name (for server it may be "files" or specific field name). If multiple, include index.
-//                        formData.append(name, input.files[i]);
-//                    }
-//                }
-//            });
-
-//            // Optional debug logging (comment out in production)
-//            console.log('Form Data (preview):');
-//            for (let [key, value] of formData.entries()) {
-//                // If value is a File show its name
-//                if (value instanceof File) {
-//                    console.log(`${key}: [File] ${value.name}`);
-//                } else {
-//                    console.log(`${key}: ${value}`);
-//                }
-//            }
-
-//            // Re-parse unobtrusive validation (if you rely on it)
-//            if ($.validator && $.validator.unobtrusive) {
-//                $.validator.unobtrusive.parse(form);
-//            }
-
-//            if (!$(form).valid()) {
-//                submitBtn.prop('disabled', false).html(originalText);
-//                return false;
-//            }
-
-//            // --- Build dynamic confirmation message ---
-//            // Helper to pick first existing key from an array of keys
-//            function pick(formData, keys) {
-//                for (let k of keys) {
-//                    if (formData.get(k) !== null && formData.get(k) !== undefined && formData.get(k) !== '') {
-//                        return formData.get(k);
-//                    }
-//                }
-//                return null;
-//            }
-
-//            const idValue = pick(formData, ['Id', 'id', 'RequestId', 'requestId']);
-//            const customerName = pick(formData, ['customerName', 'CustomerName', 'customer', 'customerId']);
-//            const customerId = pick(formData, ['customerId', 'CustomerId']);
-//            const branchId = pick(formData, ['branchId', 'BranchId', 'branch']);
-//            const note = pick(formData, ['requestNote', 'note', 'RequestNote']);
-//            const operation = idValue ? 'Update' : 'Create';
-
-//            // collect filenames if any files exist
-//            const fileNames = [];
-//            for (let [key, val] of formData.entries()) {
-//                if (val instanceof File) {
-//                    fileNames.push(val.name);
-//                }
-//            }
-
-//            // Build readable summary lines
-//            const summaryParts = [];
-//            summaryParts.push(`Action: ${operation}`);
-//            if (idValue) summaryParts.push(`Id: ${idValue}`);
-//            if (customerName && customerName !== customerId) summaryParts.push(`Customer: ${customerName}`);
-//            if (customerId) summaryParts.push(`Customer ID: ${customerId}`);
-//            if (branchId) summaryParts.push(`Branch: ${branchId}`);
-//            if (note) summaryParts.push(`Note: ${note}`);
-//            if (fileNames.length) summaryParts.push(`Files: ${fileNames.join(', ')}`);
-
-//            const summary = summaryParts.join('\n');
-
-//            const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Submission';
-//            const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
-
-//            // --- Show confirmation using alertify (styled) ---
-//            alertify.confirm(confirmTitle, confirmMessage,
-//                function () { // OK callback -> perform AJAX
-//                    const ajaxConfig = {
-//                        type: 'POST',
-//                        url: form.action,
-//                        data: formData,
-//                        success: function (response) {
-//                            console.log("Response:", response);
-
-//                            if (response && response.success) {
-//                                if (response.status === "Exist") {
-//                                    appalert(response.message, 3, 1);
-//                                } else if (response.status === "Failed") {
-//                                    appalert(response.message, 2, 1);
-//                                } else {
-//                                    appalert(response.message, 1, 1);
-//                                }
-
-//                                // Refresh logic (keeps behavior you already used)
-//                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
-//                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-//                                } else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
-//                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-//                                } else if (response.reloadDataView === "Yes") {
-//                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-//                                }
-
-//                                // UI cleanup
-//                                $('#chequeRequestModal').modal('hide');
-//                                if (window.dataTableManager) {
-//                                    window.dataTableManager.refresh();
-//                                }
-//                                form.reset();
-//                            } else {
-//                                // Non-success response handling
-//                                if (response && (response.Status === "Exist" || response.status === "Exist")) {
-//                                    appalert(response.message, 3, 1);
-//                                } else {
-//                                    const msg = response && response.message ? response.message : 'Operation failed';
-//                                    appalert(msg, 2, 1);
-//                                }
-//                            }
-//                        },
-//                        error: function (err) {
-//                            console.error('AJAX Error:', err);
-//                            if (err && err.status === 401) {
-//                                window.location.href = '/Authentication/Login';
-//                            } else {
-//                                const text = err && err.statusText ? err.statusText : 'An error occurred';
-//                                appalert(text, 0, 1);
-//                            }
-//                        },
-//                        complete: function () {
-//                            // always restore the submit button
-//                            submitBtn.prop('disabled', false).html(originalText);
-//                        }
-//                    };
-
-//                    // If multipart/form-data (has files), tell jQuery not to process
-//                    if ($(form).attr('enctype') === "multipart/form-data" || fileNames.length > 0) {
-//                        ajaxConfig.contentType = false;
-//                        ajaxConfig.processData = false;
-//                    }
-
-//                    console.log('AJAX Config:', ajaxConfig);
-//                    $.ajax(ajaxConfig);
-//                },
-//                function () { // Cancel callback
-//                    submitBtn.prop('disabled', false).html(originalText);
-//                    appalert('Transaction cancelled', 3, 1);
-//                }
-//            ).set('labels', { ok: 'Yes', cancel: 'No' });
-
-//            return false;
-//        }
-
-    function submitChequeRequestForm(form) {
-    // Validate form first
-    if (!$(form).valid()) {
-        return false;
-    }
-
-    const submitBtn = $(form).find('button[type="submit"]');
-    const originalText = submitBtn.html();
-    submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
-
-    // Build FormData manually
-    const formData = new FormData();
-
-    // Add non-checkbox fields
-    $(form).serializeArray().forEach(function (field) {
-        if (!field.name.endsWith("_false")) {
-            formData.append(field.name, field.value);
-        }
-    });
-
-    // Add checkboxes explicitly
-    $(form).find('input[type="checkbox"]').each(function () {
-        const checkbox = $(this);
-        const isChecked = checkbox.is(':checked');
-        const fieldName = checkbox.attr('name');
-        formData.delete(fieldName);
-        formData.append(fieldName, isChecked.toString());
-    });
-
-    // Build confirmation message
-    const idValue = formData.get('Id') || formData.get('id');
-    const customerName = formData.get('customerName') || 'Not specified';
-    const customerId = formData.get('customerId') || 'Not specified';
-    const operation = idValue ? 'Update' : 'Create';
-
-    const summaryParts = [];
-    summaryParts.push(`Action: ${operation}`);
-    if (idValue) summaryParts.push(`ID: ${idValue}`);
-    summaryParts.push(`Customer: ${customerName} (${customerId})`);
-
-    const summary = summaryParts.join('\n');
-    const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Cheque Book Request';
-    const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
-
-    // Show confirmation using alertify
-    alertify.confirm(confirmTitle, confirmMessage,
-        function () { // OK callback -> perform AJAX
-            const ajaxConfig = {
-                type: 'POST',
-                url: form.action,
-                data: formData,
-                contentType: false,  // CRITICAL: Add this
-                processData: false,  // CRITICAL: Add this
-                success: function (response) {
-                    console.log("Response:", response);
-
-                    if (response && response.success) {
-                        // Use the actual properties your controller returns
-                        const messageType = response.status === "Exist" ? 3 : 
-                                          response.status === "Failed" ? 2 : 1;
-                        
-                        appalert(response.message, messageType, 1);
-
-                        // Simple success handling
-                        $('#chequeRequestModal').modal('hide');
-                        
-                        if (window.dataTableManager) {
-                            window.dataTableManager.refresh();
-                        }
-                        
-                        form.reset();
-                        
-                    } else {
-                        // Handle failure
-                        const msg = response && response.message ? response.message : 'Operation failed';
-                        const msgType = response && response.status === "Exist" ? 3 : 2;
-                        appalert(msg, msgType, 1);
-                    }
-                },
-                error: function (err) {
-                    console.error('AJAX Error:', err);
-                    if (err && err.status === 401) {
-                        window.location.href = '/Authentication/Login';
-                    } else {
-                        const errorMsg = err.responseJSON && err.responseJSON.message ? 
-                                       err.responseJSON.message : 
-                                       (err.statusText || 'An error occurred');
-                        appalert(errorMsg, 4, 1);
-                    }
-                },
-                complete: function () {
-                    submitBtn.prop('disabled', false).html(originalText);
+            function submitChequeRequestForm(form) {
+                // Validate form first
+                if (!$(form).valid()) {
+                    return false;
                 }
-            };
 
-            console.log('AJAX Config:', ajaxConfig);
-            $.ajax(ajaxConfig);
-        },
-        function () { // Cancel callback
-            submitBtn.prop('disabled', false).html(originalText);
-            appalert('Transaction cancelled', 3, 1);
-        }
-    ).set('labels', { ok: 'Yes', cancel: 'No' });
+                const submitBtn = $(form).find('button[type="submit"]');
+                const originalText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
 
-    return false;
-}
+                // Build FormData manually
+                const formData = new FormData();
+
+                // Add non-checkbox fields
+                $(form).serializeArray().forEach(function (field) {
+                    if (!field.name.endsWith("_false")) {
+                        formData.append(field.name, field.value);
+                    }
+                });
+
+                // Add checkboxes explicitly
+                $(form).find('input[type="checkbox"]').each(function () {
+                    const checkbox = $(this);
+                    const isChecked = checkbox.is(':checked');
+                    const fieldName = checkbox.attr('name');
+                    formData.delete(fieldName);
+                    formData.append(fieldName, isChecked.toString());
+                });
+
+                // Build confirmation message
+                const idValue = formData.get('Id') || formData.get('id');
+                const customerName = formData.get('customerName') || 'Not specified';
+                const customerId = formData.get('customerId') || 'Not specified';
+                const operation = idValue ? 'Update' : 'Create';
+
+                const summaryParts = [];
+                summaryParts.push(`Action: ${operation}`);
+                if (idValue) summaryParts.push(`ID: ${idValue}`);
+                summaryParts.push(`Customer: ${customerName} (${customerId})`);
+
+                const summary = summaryParts.join('\n');
+                const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Cheque Book Request';
+                const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
+
+                // Show confirmation using alertify
+                alertify.confirm(confirmTitle, confirmMessage,
+                    function () { // OK callback -> perform AJAX
+                        const ajaxConfig = {
+                            type: 'POST',
+                            url: form.action,
+                            data: formData,
+                            contentType: false,  // CRITICAL: Add this
+                            processData: false,  // CRITICAL: Add this
+                            success: function (response) {
+                                console.log("Response:", response);
+
+                                if (response && response.success) {
+                                    // Use the actual properties your controller returns
+                                    const messageType = response.status === "Exist" ? 3 :
+                                                      response.status === "Failed" ? 2 : 1;
+
+                                    appalert(response.message, messageType, 1);
+
+                                    // Simple success handling
+                                    $('#chequeRequestModal').modal('hide');
+
+                                    if (window.dataTableManager) {
+                                        window.dataTableManager.refresh();
+                                    }
+
+                                    form.reset();
+
+                                } else {
+                                    // Handle failure
+                                    const msg = response && response.message ? response.message : 'Operation failed';
+                                    const msgType = response && response.status === "Exist" ? 3 : 2;
+                                    appalert(msg, msgType, 1);
+                                }
+                            },
+                            error: function (err) {
+                                console.error('AJAX Error:', err);
+                                if (err && err.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                } else {
+                                    const errorMsg = err.responseJSON && err.responseJSON.message ?
+                                                   err.responseJSON.message :
+                                                   (err.statusText || 'An error occurred');
+                                    appalert(errorMsg, 4, 1);
+                                }
+                            },
+                            complete: function () {
+                                submitBtn.prop('disabled', false).html(originalText);
+                            }
+                        };
+
+                        console.log('AJAX Config:', ajaxConfig);
+                        $.ajax(ajaxConfig);
+                    },
+                    function () { // Cancel callback
+                        submitBtn.prop('disabled', false).html(originalText);
+                        appalert('Transaction cancelled', 3, 1);
+                    }
+                ).set('labels', { ok: 'Yes', cancel: 'No' });
+
+                return false;
+            }
 
         $(document).ready(function() {
             // Initialize managers
-            window.searchManager = new SearchManager();
+           window.searchManager = new SearchManager();
             window.formManager = new FormManager();
             window.dataTableManager = new DataTableManager();
             loadChequeRequests();

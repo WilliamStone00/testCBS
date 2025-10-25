@@ -1,0 +1,531 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount.BranchAccountQuery
+@{
+    ViewBag.Title = "Affiliate Overview - Filters";
+}
+@using Resources
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters</h5>
+
+    <form id="affiliateFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row g-1">
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkCode" data-target="#Code" />
+                        <label class="form-check-label" for="chkCode">@AccountingV2.Code</label>
+                    </div>
+                    <input type="text" id="Code" name="Code" class="form-control mt-1" placeholder="Affiliate code" style="display:none;" />
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkName" data-target="#Name" />
+                        <label class="form-check-label" for="chkName">@AccountingV2.Name</label>
+                    </div>
+                    <input type="text" id="Name" name="Name" class="form-control mt-1" placeholder="Affiliate name" style="display:none;" />
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                        "---" + @GlobalUserManagement.SelectBranch + "---",
+                        new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    <label>@GlobalUserManagement.Branch</label>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row g-1 mt-2">
+                @*<div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkClass" data-target="#Class" />
+                        <label class="form-check-label" for="chkClass">Class</label>
+                    </div>
+                    <input type="text" id="Class" name="Class" class="form-control mt-1" placeholder="e.g. Asset, Liability" style="display:none;" />
+                </div>*@
+
+                <div class="col-md-4">
+                                       <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="form-floating shadow-sm">
+                                @Html.DropDownListFor(m => m.AffiliateAccountId, new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"), "--- " + "HoPcmfAccountId" + " ---",
+                                    new { @class = "form-select select2", @aria_label = "HoPcmfAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                                <label>HoPcmfAccountId</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkParentId" data-target="#ParentId" />
+                        <label class="form-check-label" for="chkParentId">Parent Id</label>
+                    </div>
+                    <input type="text" id="ParentId" name="ParentId" class="form-control mt-1" placeholder="Parent affiliate id" style="display:none;" />
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row g-1 mt-2">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkPathContains" data-target="#PathContains" />
+                        <label class="form-check-label" for="chkPathContains">Path contains</label>
+                    </div>
+                    <input type="text" id="PathContains" name="PathContains" class="form-control mt-1" placeholder="/1/10/" style="display:none;" />
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkDepthFrom" data-target="#DepthFrom" />
+                        <label class="form-check-label" for="chkDepthFrom">Depth from</label>
+                    </div>
+                    <input type="number" id="DepthFrom" name="DepthFrom" class="form-control mt-1" min="0" style="display:none;" />
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkDepthTo" data-target="#DepthTo" />
+                        <label class="form-check-label" for="chkDepthTo">Depth to</label>
+                    </div>
+                    <input type="number" id="DepthTo" name="DepthTo" class="form-control mt-1" min="0" style="display:none;" />
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkPostingAllowed" data-target="#PostingAllowed" />
+                        <label class="form-check-label" for="chkPostingAllowed">Posting allowed</label>
+                    </div>
+                    <select id="PostingAllowed" name="PostingAllowed" class="form-control mt-1" style="display:none;">
+                        <option value="">Any</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4: Created dates + IncludeDeleted -->
+            <div class="row g-1 mt-2">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkCreatedFromUtc" data-target="#CreatedFromUtc" />
+                        <label class="form-check-label" for="chkCreatedFromUtc">Created from (UTC)</label>
+                    </div>
+                    <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control mt-1" style="display:none;" />
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkCreatedToUtc" data-target="#CreatedToUtc" />
+                        <label class="form-check-label" for="chkCreatedToUtc">Created to (UTC)</label>
+                    </div>
+                    <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control mt-1" style="display:none;" />
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="filter-toggle form-check-input" id="chkIncludeDeleted" data-target="#IncludeDeleted" />
+                        <label class="form-check-label" for="chkIncludeDeleted">Include deleted</label>
+                    </div>
+                    <input type="checkbox" id="IncludeDeleted" name="IncludeDeleted" class="form-check-input mt-1" style="display:none;" />
+                </div>
+            </div>
+        </div>
+
+        @*<div class="row mt-2">
+                <div class="col-md-6 d-grid">
+                    <button id="applyAffiliateFilterBtn" type="button" class="btn btn-primary">
+                        <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                    </button>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <button id="resetAffiliateFilterBtn" type="button" class="btn btn-outline-secondary">
+                        <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                    </button>
+                </div>
+            </div>*@
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary me-2 w-100" onclick="document.getElementById('affiliateFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="affiliateListingView"></div>
+
+<!-- DETAILS modal -->
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- content loaded by AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT modal -->
+<div class="modal fade" id="affiliateEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- edit form loaded by AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+(function() {
+    let dt = null;
+
+    // Show/hide inputs when checkbox toggled
+    $('.filter-toggle').on('change', function() {
+        const target = $(this).data('target');
+        if (this.checked) $(target).slideDown();
+        else $(target).slideUp().val(''); // reset value when hidden
+    });
+
+    // Apply filter
+    $('#applyAffiliateFilterBtn').on('click', function() {
+        const filters = {};
+        $('#affiliateFilterForm .filter-toggle:checked').each(function() {
+            const target = $(this).data('target');
+            const val = $(target).val();
+            if (val !== null && val !== '') filters[$(target).attr('name')] = val;
+        });
+
+        // Destroy existing table
+        if (dt) dt.destroy();
+
+        // Insert table element
+        $('#affiliateListingView').html('<table id="affiliateDataTable" class="table table-striped table-bordered w-100"></table>');
+
+        dt = $('#affiliateDataTable').DataTable({
+            serverSide: true,
+            responsive: true,
+            ajax: {
+                url: '@Url.Action("LoadAffiliateData", "BranchAccount")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function(d) { return JSON.stringify({...d, filters }); }
+            },
+            columns: [
+                { data: 'createdDate', render: d => d ? new Date(d).toLocaleString() : '' },
+                { data: 'branchId' },
+                { data: 'code' },
+                { data: 'name' },
+                { data: 'class' },
+                { data: 'affiliateAccountId' },
+                {
+                    data: 'Id',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        var rawId = String(row.id || row.Id || data || '');
+                        var recordId = encodeURIComponent(rawId);
+                        var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                        var btnId = 'actionDropdown_' + safeId;
+
+                        var name = escapeHtml(row.name || row.Name || '');
+                        var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
+
+                        var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
+                                         <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                       </button>`;
+
+                        var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
+                                                    <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                  </button>` : '';
+
+                        return `
+                         <div class="dropdown text-center">
+                             <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                     type="button" id="${btnId}"
+                                     data-bs-toggle="dropdown" aria-expanded="false">
+                                 <i class="mdi mdi-cog-outline"></i> Actions
+                             </button>
+                             <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                 <li>${detailsBtn}</li>
+                                 ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                 ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                             </ul>
+                         </div>
+                     `.trim();
+                    }
+                
+                }
+            ],
+            order: [[0, 'desc']],
+            lengthMenu: [10,25,50,100],
+            pageLength: 25
+        });
+    });
+
+
+    function enterEditMode() {
+        // Hide filters area (if you have an id for filters wrapper)
+        $('#filtersSection').addClass('d-none');
+
+        try {
+            if (window.affiliateTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+                window.affiliateTable.destroy(true);
+                window.affiliateTable = null;
+            }
+        } catch (e) {
+            console.warn('Failed to destroy affiliateTable', e);
+        }
+        $('body').addClass('edit-mode');
+    }
+
+    function exitEditModeAndReload() {
+        $('#filtersSection').removeClass('d-none');
+
+        // Replace listing partial (example call - adapt AddORUpdateGen to your helper)
+        if (typeof AddORUpdateGen === 'function') {
+            AddORUpdateGen(null, 'datalistingview', '_AffiliateDataTable', 'get', 'Affiliate');
+        }
+
+        $('body').removeClass('edit-mode');
+
+        setTimeout(function () {
+            try { initAffiliateDataTableIfNeeded(); } catch (e) { console.error(e); }
+        }, 300);
+    }
+
+    $(document).ready(function () {
+        // wire buttons (avoid double-binding)
+        $('#applyAffiliateFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            loadAffiliateData();
+        });
+
+        $('#resetAffiliateFilterBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            resetAffiliateFilters();
+        });
+
+        // Enter key triggers apply on form fields
+        $('#affiliateFilterForm input').off('keypress').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                loadAffiliateData();
+            }
+        });
+
+        // init select2 safely if used
+        if ($.fn.select2) {
+            try {
+                if ($('#ParentId').length) {
+                    $('#ParentId').select2({ width: '100%', placeholder: 'Select Parent' });
+                }
+            } catch (err) {
+                if (typeof appalert === 'function') appalert('select2 init failed: ' + (err && err.message ? err.message : err), 2, 1);
+                console.warn('select2 init failed', err);
+            }
+        }
+
+        // DETAILS button (replace existing handler)
+        $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+            e.preventDefault();
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) {
+                if (typeof appalert === 'function') appalert('Missing id for details', 0, 1);
+                return;
+            }
+
+            var modalEl = document.getElementById('affiliateDetailsModal');
+            if (!modalEl) {
+                if (typeof appalert === 'function') appalert('Details modal not found (#affiliateDetailsModal)', 0, 1);
+                return;
+            }
+
+            // Ensure we have a Bootstrap modal instance
+            var bsModal = null;
+            try { bsModal = new bootstrap.Modal(modalEl); } catch (ex) { bsModal = null; }
+
+            // Show a spinner while loading and display modal so aria-hidden flips to false first
+            $('#affiliateDetailsModal .modal-body').html(
+                '<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>'
+            );
+
+            if (bsModal) bsModal.show();
+
+            // After modal shown, move keyboard/screenreader focus to a predictable element inside the modal
+            $(modalEl).off('shown.bs.modal.focusFix').on('shown.bs.modal.focusFix', function () {
+                try {
+                    var closeBtn = modalEl.querySelector('.btn-close, .modal-footer .btn[data-bs-dismiss="modal"]');
+                    if (closeBtn) {
+                        closeBtn.focus();
+                    } else {
+                        var dialog = modalEl.querySelector('.modal-dialog');
+                        if (dialog) { dialog.setAttribute('tabindex', '-1'); dialog.focus(); }
+                    }
+                } catch (err) { /* ignore focus errors */ }
+            });
+
+            // Ensure we blur active child if the modal hides (to avoid aria-hidden + focused descendant)
+            $(modalEl).off('hide.bs.modal.blurFix').on('hide.bs.modal.blurFix', function () {
+                try {
+                    var active = document.activeElement;
+                    if (modalEl.contains(active)) active.blur();
+                } catch (err) { /* ignore */ }
+            });
+
+            // Call InitializeData to load the details partial (controller expects KEY, partialView, path)
+            $.get('/BranchAccount/InitializeData', {
+                KEY: id,
+                partialView: '_DetailsPartial',
+                path: 'get'
+            })
+                .done(function (html) {
+                    $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+
+                    // init tooltip only inside modal
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('#affiliateDetailsModal [data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                })
+                .fail(function () {
+                    $('#affiliateDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                    if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
+                });
+        });
+
+
+        // delegated handler for Edit — loads _EditPartial into modal and shows it
+        $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+            e.preventDefault();
+
+            var $btn = $(this);
+            // remove focus from the clicked button to avoid aria-hidden+focus conflict
+            try { $btn.blur(); } catch (err) { /* ignore */ }
+
+            var raw = $btn.data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) { if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1); return; }
+
+            var modalEl = document.getElementById('affiliateEditModal');
+            if (!modalEl) { if (typeof appalert === 'function') appalert('Edit modal not found (#affiliateEditModal)', 0, 1); return; }
+
+            // prepare spinner content
+            var spinner = '<div class="text-center py-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+            $('#affiliateEditModal .modal-body').html(spinner);
+
+            // show modal
+            var bsModal = null;
+            try { bsModal = new bootstrap.Modal(modalEl); } catch (ex) { /* ignore */ }
+            if (bsModal) bsModal.show();
+
+            // Load edit partial from controller (InitializeData with path=get returning _EditPartial)
+            $.get('/BranchAccount/InitializeData', { KEY: id, partialView: '_EditPartial', path: 'get' })
+                .done(function (html) {
+                    $('#affiliateEditModal .modal-body').html(html || '<div class="text-center text-muted">No edit form available.</div>');
+                    // initialize tooltips inside modal if any
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('#affiliateEditModal [data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                })
+                .fail(function () {
+                    $('#affiliateEditModal .modal-body').html('<div class="text-center text-danger">Error loading edit form</div>');
+                    if (typeof appalert === 'function') appalert('Failed to load edit form', 0, 1);
+                });
+        });
+
+        // Delegated handler for the edit form loaded into the modal.
+        // Put this inside your existing $(document).ready(...) or after it.
+        $(document).off('submit', '#editAccountForm').on('submit', '#editAccountForm', function (e) {
+            e.preventDefault();
+
+            var $form = $(this);
+            var $btn = $form.find('#saveButton');
+            var originalHtml = $btn.html();
+
+            // serialize form data
+            var formData = $form.serialize();
+
+            // get anti-forgery token (if present)
+            var token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+            // disable button and show spinner
+            $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving');
+
+            $.ajax({
+                url: '/BranchAccount/Update',
+                type: 'POST',
+                data: formData,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (res) {
+                    $btn.prop('disabled', false).html(originalHtml);
+
+                    if (res && res.success) {
+                        // hide modal
+                        try {
+                            var modalEl = document.getElementById('affiliateEditModal');
+                            var bs = bootstrap.Modal.getInstance(modalEl);
+                            if (bs) bs.hide();
+                        } catch (err) { /* ignore */ }
+
+                        // reload datatable if present
+                        if (typeof affiliateTable !== 'undefined' && affiliateTable) {
+                            affiliateTable.ajax.reload(null, false);
+                        }
+
+                        if (typeof appalert === 'function') appalert(res.message || 'Saved', 3, 1);
+                    } else {
+                        if (typeof appalert === 'function') appalert(res?.message || 'Save failed', 0, 1);
+                    }
+                },
+                error: function (xhr) {
+                    $btn.prop('disabled', false).html(originalHtml);
+                    if (typeof appalert === 'function') appalert('Save request failed', 0, 1);
+                }
+            });
+        });
+
+    // Reset filters
+    $('#resetAffiliateFilterBtn').on('click', function() {
+        $('#affiliateFilterForm')[0].reset();
+        $('.filter-toggle').each(function() {
+            $($(this).data('target')).hide().val('');
+        });
+        if(dt) dt.destroy();
+        $('#affiliateListingView').html('');
+    });
+
+})();
+    </script>
+}

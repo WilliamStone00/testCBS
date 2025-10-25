@@ -106,20 +106,20 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-        public async Task<IEnumerable<MemberNoneCashOperation>> GetMemberNoneCashOperations(string branchid = null, string status = null)
+        public async Task<IEnumerable<MemberNoneCashOperation>> GetMemberNoneCashOperations(string branchid = null, string Status = null)
         {
             try
             {
                 if (IsHeadOffice())
                 {
                     branchid="all";
-                    status="all";
+                    Status="all";
                 }
                 else
                 {
                     branchid=GetBranchID();
                 }
-                GetAllMemberNoneCashOperationsQuery getAllMemberNone = new GetAllMemberNoneCashOperationsQuery(status, branchid);
+                GetAllMemberNoneCashOperationsQuery getAllMemberNone = new GetAllMemberNoneCashOperationsQuery(Status, branchid);
 
                 var queryString = ToQueryString(getAllMemberNone);
                 var fullUrl = $"{APICallHelper.GetAll_MemberNoneCashOperations}?{queryString}";

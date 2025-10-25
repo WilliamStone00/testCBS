@@ -17,15 +17,32 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
       /*      new ChequeBook
             {
                 Id = "CB001",
+
+                CustomerId = "CUST001",
+                AccountNumber = "3711000012345678",
+                BranchId = "BR001",
+                NumberOfLeaves = 25,
+                Status = "Active",
+            },
+            new ChequeBook
+            {
+                Id = "CB002",
+                CustomerId = "CUST002",
+                AccountNumber = "3711000023456789",
+                BranchId = "BR002",
+                NumberOfLeaves = 50,
+                Status = "Active",
+            }
+
                 customerId = "CUST001",
                 customerName = "John Doe",
                 accountNumber = "3711000012345678",
                 branchId = "BR001",
                 branchName = "Main Branch",
                 categoryId = "CAT001",
-                categoryName = "Standard 25 Leaves",
+                CheckBookCategoryName = "Standard 25 Leaves",
                 numberOfLeaves = 25,
-                status = "Active",
+                Status = "Active",
                 issueDate = DateTime.Now.AddMonths(-1),
                 expiryDate = DateTime.Now.AddMonths(11),
                 feeAmount = 5000,
@@ -42,9 +59,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 branchId = "BR002",
                 branchName = "Downtown Branch",
                 categoryId = "CAT002",
-                categoryName = "Premium 50 Leaves",
+                CheckBookCategoryName = "Premium 50 Leaves",
                 numberOfLeaves = 50,
-                status = "Active",
+                Status = "Active",
                 issueDate = DateTime.Now.AddMonths(-2),
                 expiryDate = DateTime.Now.AddMonths(10),
                 feeAmount = 8000,
@@ -61,9 +78,9 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 branchId = "BR001",
                 branchName = "Main Branch",
                 categoryId = "CAT001",
-                categoryName = "Standard 25 Leaves",
+                CheckBookCategoryName = "Standard 25 Leaves",
                 numberOfLeaves = 25,
-                status = "Cancelled",
+                Status = "Cancelled",
                 issueDate = DateTime.Now.AddMonths(-3),
                 expiryDate = DateTime.Now.AddMonths(9),
                 feeAmount = 5000,
@@ -71,6 +88,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                 chequeSeriesEnd = "300025",
                 ChequeLeaves = GenerateMockLeaves("CB003", 25, "300001")
             }*/
+
         };
 
         private static List<ChequeLeaf> GenerateMockLeaves(string chequeBookId, int count, string startSeries)
@@ -81,11 +99,12 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
             for (int i = 1; i <= count; i++)
             {
                 var leafNumber = int.Parse(startSeries) + i - 1;
-                var statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
-                var status = statuses[random.Next(statuses.Length)];
+                var Statuses = new[] { "Available", "Used", "Available", "Available", "Blocked" };
+                var Status = Statuses[random.Next(Statuses.Length)];
 
                 leaves.Add(new ChequeLeaf
                 {
+
                     Id = $"{chequeBookId}-L{i}",
                     ChequeBookId = chequeBookId,
                     LeafNumber = i,
@@ -96,6 +115,18 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
                     Beneficiary = status == "Used" ? "Test Beneficiary" : null,
                     Remarks = status == "Blocked" ? "Reported lost" : null,
                     CreatedDate = DateTime.Now.AddMonths(-random.Next(1, 3))
+
+                    id = $"{chequeBookId}-L{i}",
+                    chequeBookId = chequeBookId,
+                    leafNumber = i,
+                    chequeNumber = leafNumber.ToString("D6"),
+                    status = Status,
+                    usedDate = Status == "Used" ? DateTime.Now.AddDays(-random.Next(1, 30)) : (DateTime?)null,
+                    amount = Status == "Used" ? random.Next(1000, 50000) : (decimal?)null,
+                    beneficiary = Status == "Used" ? "Test Beneficiary" : null,
+                    remarks = Status == "Blocked" ? "Reported lost" : null,
+                    createdDate = DateTime.Now.AddMonths(-random.Next(1, 3))
+
                 });
             }
             return leaves;
@@ -108,73 +139,85 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
             var data = _mockChequeBooks.AsQueryable();
 
             // Apply filters
-            if (!string.IsNullOrEmpty(query.customerName))
+           /* if (!string.IsNullOrEmpty(query.customerName))
             {
-                data = data.Where(cb => cb.customerName.Contains(query.customerName));
+                data = data.Where(cb => cb.CustomerName.Contains(query.customerName));
+            }*/
+
+            //if (!string.IsNullOrEmpty(query.branchId))
+            //{
+            //    data = data.Where(cb => cb.BranchId == query.branchId);
+            //}
+
+
+            //if (!string.IsNullOrEmpty(query.status))
+            //{
+            //    data = data.Where(cb => cb.Status == query.status);
+            //}
+
+            if (!string.IsNullOrEmpty(query.Status))
+            {
+                data = data.Where(cb => cb.Status == query.Status);
             }
 
-            if (!string.IsNullOrEmpty(query.branchId))
-            {
-                data = data.Where(cb => cb.branchId == query.branchId);
-            }
 
-            if (!string.IsNullOrEmpty(query.status))
+           /* if (query.fromDate.HasValue)
             {
-                data = data.Where(cb => cb.status == query.status);
-            }
-
-            if (query.fromDate.HasValue)
-            {
-                data = data.Where(cb => cb.issueDate >= query.fromDate.Value);
+                data = data.Where(cb => cb.IssueDate >= query.fromDate.Value);
             }
 
             if (query.toDate.HasValue)
             {
-                data = data.Where(cb => cb.issueDate <= query.toDate.Value);
-            }
+                data = data.Where(cb => cb.IssueDate <= query.toDate.Value);
+            }*/
 
             // Apply sorting
-            if (!string.IsNullOrEmpty(query.DataTableOptions.sortColumnName))
+          /*  if (!string.IsNullOrEmpty(query.Options.sortColumnName))
             {
-                switch (query.DataTableOptions.sortColumnName.ToLower())
+                switch (query.Options.sortColumnName.ToLower())
                 {
                     case "customername":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.customerName)
-                            : data.OrderByDescending(cb => cb.customerName);
+                        data = query.Options.sortDirection == "asc"
+                            ? data.OrderBy(cb => cb.CustomerName)
+                            : data.OrderByDescending(cb => cb.CustomerName);
                         break;
                     case "numberofleaves":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.numberOfLeaves)
-                            : data.OrderByDescending(cb => cb.numberOfLeaves);
+                        data = query.Options.sortDirection == "asc"
+                            ? data.OrderBy(cb => cb.NumberOfLeaves)
+                            : data.OrderByDescending(cb => cb.NumberOfLeaves);
                         break;
+
                     case "status":
+                        data = query.Options.sortDirection == "asc"
+
+                    case "Status":
                         data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.status)
-                            : data.OrderByDescending(cb => cb.status);
+
+                            ? data.OrderBy(cb => cb.Status)
+                            : data.OrderByDescending(cb => cb.Status);
                         break;
                     case "issuedate":
-                        data = query.DataTableOptions.sortDirection == "asc"
-                            ? data.OrderBy(cb => cb.issueDate)
-                            : data.OrderByDescending(cb => cb.issueDate);
+                        data = query.Options.sortDirection == "asc"
+                            ? data.OrderBy(cb => cb.IssueDate)
+                            : data.OrderByDescending(cb => cb.IssueDate);
                         break;
                 }
             }
-
+*/
             var totalRecords = data.Count();
 
             // Apply pagination
             var pagedData = data
-                .Skip(query.DataTableOptions.start)
-                .Take(query.DataTableOptions.pageSize)
+                .Skip(query.Options.start)
+                .Take(query.Options.pageSize)
                 .ToList();
 
             return new CustomDataTable(
-                draw: Convert.ToInt32(query.DataTableOptions.draw),
+                draw: Convert.ToInt32(query.Options.draw),
                 recordsTotal: totalRecords,
                 recordsFiltered: totalRecords,
                 data: pagedData.Cast<object>().ToList(),
-                dataTableOptions: query.DataTableOptions
+                dataTableOptions: query.Options
             );
         }
 */
@@ -192,7 +235,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
             if (chequeBook != null)
             {
                 chequeBook.Status = "Cancelled";
-                foreach (var leaf in chequeBook.ChequeLeaves)
+                foreach (var leaf in chequeBook.Leaves)
                 {
                     leaf.Status = "Cancelled";
                 }
@@ -214,7 +257,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         {
             await Task.Delay(100);
 
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.Id == leafId);
+            var leaf = _mockChequeBooks.SelectMany(cb => cb.Leaves).FirstOrDefault(l => l.Id == leafId);
             if (leaf != null)
             {
                 leaf.Status = "Used";
@@ -238,7 +281,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing
         {
             await Task.Delay(100);
 
-            var leaf = _mockChequeBooks.SelectMany(cb => cb.ChequeLeaves).FirstOrDefault(l => l.Id == leafId);
+            var leaf = _mockChequeBooks.SelectMany(cb => cb.Leaves).FirstOrDefault(l => l.Id == leafId);
             if (leaf != null)
             {
                 leaf.Status = "Blocked";

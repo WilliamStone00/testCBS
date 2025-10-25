@@ -23,6 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public string search { get; set; }
         public string sortDirection { get; set; }
     }
+
     public class CustomDataTable : ICustomDataTable
     {
         public int draw { get; set; }

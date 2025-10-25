@@ -1827,8 +1827,15 @@ namespace BusinessServices
         {
             var data = HttpContext.Current?.Session?["FullName"]?.ToString();
             return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
-        }  
-        
+        }
+
+        public string GetUserLanguage()
+        {
+            var data = HttpContext.Current?.Session?["SelectedLanguage"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "en" : data=="fr"?"fr" : "en";
+        }
+        //SelectedLanguage
+
         public string GetUserId()
         {
             var data = HttpContext.Current?.Session["UserId"]?.ToString();

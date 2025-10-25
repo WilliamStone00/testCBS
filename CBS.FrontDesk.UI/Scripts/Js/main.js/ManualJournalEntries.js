@@ -25,7 +25,7 @@ $(document).ready(function () {
         }, {
             data: 'credit',
             render: function (data, type, row) {
-                // Check if the booking direction is 'credit', if true, show '0' in credit column
+                // Check if the booking direction is 'credit',<i class="mdi mdi-delete removeBtn" style="color: #dc3545; cursor: pointer; font-size: 24px;"></i>if true, show '0' in credit column
                 return (row.bookingDirection.toLowerCase() === 'credit') ? data : 0;
             }
         }, {

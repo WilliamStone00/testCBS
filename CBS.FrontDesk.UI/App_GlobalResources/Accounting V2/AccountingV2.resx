@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountCode" xml:space="preserve">
+    <value>Account Code</value>
+  </data>
+  <data name="AccountCodes" xml:space="preserve">
+    <value>Account Codes</value>
+  </data>
+  <data name="AccountCodestext" xml:space="preserve">
+    <value>Follow the established numbering system for consistent account identification.</value>
+  </data>
+  <data name="AccountHierarchy" xml:space="preserve">
+    <value>Account Hierarchy</value>
+  </data>
+  <data name="AccountHierarchytext" xml:space="preserve">
+    <value>Maintain proper parent-child relationships for accurate financial reporting.</value>
+  </data>
+  <data name="Accountupdatedsuccessfully" xml:space="preserve">
+    <value>Account updated successfully</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Affiliate" xml:space="preserve">
+    <value>Affiliate</value>
+  </data>
+  <data name="AffiliateAccountManagement" xml:space="preserve">
+    <value>Affiliate Account Management</value>
+  </data>
+  <data name="AffiliateFilters" xml:space="preserve">
+    <value>Affiliate Filters</value>
+  </data>
+  <data name="AffiliateManagement" xml:space="preserve">
+    <value>Affiliate Management</value>
+  </data>
+  <data name="AffiliateManagementtext" xml:space="preserve">
+    <value>Filter and manage affiliates (search by code, name, status and creation date).</value>
+  </data>
+  <data name="affiliatetext" xml:space="preserve">
+    <value>Create and manage affiliates within your organization. Each affiliate has a unique</value>
+  </data>
+  <data name="Affiliatetext1" xml:space="preserve">
+    <value>Dates are treated as UTC (CreatedFromUtc / CreatedToUtc)</value>
+  </data>
+  <data name="affiliatetext3" xml:space="preserve">
+    <value>to modify existing details.</value>
+  </data>
+  <data name="affilliatetext2" xml:space="preserve">
+    <value>Use this section to define and update affiliate details such as name, code, and office type.</value>
+  </data>
+  <data name="affoiliatetext4" xml:space="preserve">
+    <value>to create a new affiliate or</value>
+  </data>
+  <data name="Afterclicking" xml:space="preserve">
+    <value>After clicking</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply Filter</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="BranchAndAffiliateFileUpload" xml:space="preserve">
+    <value>Branch And Affiliate File Upload</value>
+  </data>
+  <data name="CentralBranch" xml:space="preserve">
+    <value>Central Branch</value>
+  </data>
+  <data name="ChartofAccountsManagement" xml:space="preserve">
+    <value> Chart of Accounts Management</value>
+  </data>
+  <data name="checkboxtochoosetheuploadtype" xml:space="preserve">
+    <value>checkbox to choose the upload type:</value>
+  </data>
+  <data name="Checked" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="Clickthe" xml:space="preserve">
+    <value>Click the</value>
+  </data>
+  <data name="COAtext1" xml:space="preserve">
+    <value> Manage and organize your financial accounts hierarchy with ease. Display, edit, and maintain your chart of accounts structure.</value>
+  </data>
+  <data name="COAtext2" xml:space="preserve">
+    <value> Important: Changes to account structure may affect financial reporting and transactions.</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="codetext" xml:space="preserve">
+    <value>Use full or partial affiliate code for quick lookup.</value>
+  </data>
+  <data name="codetext1" xml:space="preserve">
+    <value>Enter a short unique identifier (e.g.,</value>
+  </data>
+  <data name="codetext2" xml:space="preserve">
+    <value>for each affiliate</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="CreatedDates" xml:space="preserve">
+    <value>Created Dates </value>
+  </data>
+  <data name="CreatedDatestext" xml:space="preserve">
+    <value>Toggle date filters to limit by creation range (UTC)</value>
+  </data>
+  <data name="CreatedFrom" xml:space="preserve">
+    <value>Created From</value>
+  </data>
+  <data name="CreatedTo" xml:space="preserve">
+    <value>Created To</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="fileuploadtext1" xml:space="preserve">
+    <value>Sellect checkbox choice, if is Affiliate then choose affeliate account if not choose branch</value>
+  </data>
+  <data name="fileuploadtext2" xml:space="preserve">
+    <value>Always check the Is Affiliate check box before uploading to tuckle between Affiliate Accounts file upload and Branch Accounts file upload</value>
+  </data>
+  <data name="fileuploadtext3" xml:space="preserve">
+    <value>1. Choose which kind of file to upload</value>
+  </data>
+  <data name="HeadOffice" xml:space="preserve">
+    <value>Head Office</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="IncludeDeleted" xml:space="preserve">
+    <value>Include Deleted</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>IsActive</value>
+  </data>
+  <data name="IsActivetext" xml:space="preserve">
+    <value>Enable this option if the affiliate is currently operational.</value>
+  </data>
+  <data name="IsAffiliate" xml:space="preserve">
+    <value>Is Affiliate?</value>
+  </data>
+  <data name="IsHeadOffice" xml:space="preserve">
+    <value>Is Head Office</value>
+  </data>
+  <data name="IsHeadOfficetext" xml:space="preserve">
+    <value> Check this box to mark the affiliate as the main administrative or head office.</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Nameen" xml:space="preserve">
+    <value>Name (English)</value>
+  </data>
+  <data name="namefr" xml:space="preserve">
+    <value>Name (French)</value>
+  </data>
+  <data name="Nametext" xml:space="preserve">
+    <value>Matches against affiliate name.</value>
+  </data>
+  <data name="Nametext1" xml:space="preserve">
+    <value>Provide a descriptive name (e.g.</value>
+  </data>
+  <data name="NamingConvention" xml:space="preserve">
+    <value>Naming Convention</value>
+  </data>
+  <data name="NamingConventiontext" xml:space="preserve">
+    <value> Use clear and consistent naming in both English and French for all accounts.</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ParentId" xml:space="preserve">
+    <value>Parent Id</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PCMFCAMCULLDetails" xml:space="preserve">
+    <value>PCMF CAMCULL Details</value>
+  </data>
+  <data name="placeholdercodetext" xml:space="preserve">
+    <value>Affiliate code</value>
+  </data>
+  <data name="PostingAllowed" xml:space="preserve">
+    <value>Posting Allowed</value>
+  </data>
+  <data name="PostingRights" xml:space="preserve">
+    <value>Posting Rights</value>
+  </data>
+  <data name="PostingRightstext" xml:space="preserve">
+    <value>Only leaf-level accounts (with no children) should allow transaction posting.</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="RefreshData" xml:space="preserve">
+    <value>Refresh Data</value>
+  </data>
+  <data name="RefreshDataText" xml:space="preserve">
+    <value>Use the refresh button to ensure you're viewing the latest account structure</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="resettext" xml:space="preserve">
+    <value>Use the reset button to clear all inputs and start fresh.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="SaveChangestext" xml:space="preserve">
+    <value> Remember to save after making any modifications to account details.</value>
+  </data>
+  <data name="SaveorUpdate" xml:space="preserve">
+    <value>Save or Update</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchAffiliate" xml:space="preserve">
+    <value>Search Affiliate</value>
+  </data>
+  <data name="SelectAffiliate" xml:space="preserve">
+    <value>Select Affiliate</value>
+  </data>
+  <data name="Selectanaccounttoviewdetails" xml:space="preserve">
+    <value>Select an account to view details</value>
+  </data>
+  <data name="Selectfile" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="ShowCreatedDateFilters" xml:space="preserve">
+    <value>Show Created Date Filters</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Statustext" xml:space="preserve">
+    <value>Choose All/Active/Inactive — `All` will not filter by active state.</value>
+  </data>
+  <data name="tesxt6" xml:space="preserve">
+    <value>The dropdown is searchable. Start typing the branch or affiliate name to quickly find it.</value>
+  </data>
+  <data name="text1" xml:space="preserve">
+    <value>— you're uploading a </value>
+  </data>
+  <data name="text2" xml:space="preserve">
+    <value> file (Branch selector is shown).</value>
+  </data>
+  <data name="text3" xml:space="preserve">
+    <value>— you're uploading an</value>
+  </data>
+  <data name="text4" xml:space="preserve">
+    <value>file (Affiliate selector is shown).</value>
+  </data>
+  <data name="text5" xml:space="preserve">
+    <value>2. Use the dropdown</value>
+  </data>
+  <data name="text7" xml:space="preserve">
+    <value>3. Double-check required fields</value>
+  </data>
+  <data name="text8" xml:space="preserve">
+    <value>Ensure Branch/Affiliate is selected and the file input is not empty. The form will validate before upload.</value>
+  </data>
+  <data name="text9" xml:space="preserve">
+    <value>4. Confirmation &amp; result</value>
+  </data>
+  <data name="text10" xml:space="preserve">
+    <value>you will be asked to confirm the action. Results (success/errors) will appear on this page.</value>
+  </data>
+  <data name="text11" xml:space="preserve">
+    <value>Affiliate and Branch File Upload</value>
+  </data>
+  <data name="text12" xml:space="preserve">
+    <value> Please ensure Branch or Affiliate as well file to be uploaded are correctly set before uploading.</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Tips</value>
+  </data>
+  <data name="Unchecked" xml:space="preserve">
+    <value>Unchecked</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>

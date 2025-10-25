@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -55,32 +56,57 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             return ExecutionMessage;
         }
 
+        public async Task<CounterCheques> GetCounterChequeDetailsAsync(string id)
+        {
+            try
+            {
+                var response = await _apiHelper.GetAsync<ServiceResponse<CounterCheques>>($"{APICallHelper.GetCounterChequeDetails}/{Uri.EscapeDataString(id)}");
+
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                else
+                {
+                    throw new Exception(response.ApiResponseData?.Message ?? response.Message ?? "Failed to fetch counter cheque details");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error fetching counter cheque details: {ex.Message}");
+                throw new Exception($"Unable to retrieve counter cheque details: {ex.Message}", ex);
+            }
+        }
+
+
+
         public async Task<CustomDataTable> GetCounterChequesForDataTableAsync(CounterChequeQuery query)
         {
             try
             {
-                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(APICallHelper.GetCounterChequesForDataTable, query);
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.datatableforcounterrequest, query);
 
-                if (response.IsSuccess && response.ApiResponseData != null)
+                // ⚠ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
                 {
-                    return response.ApiResponseData.Data;
+                    throw new Exception($"API call failed: {response.Message}");
                 }
 
-                // Return an empty, but valid, CustomDataTable on failure
-                return new CustomDataTable(
-                    draw: Convert.ToInt32(query.Options?.draw),
-                    recordsTotal: 0, recordsFiltered: 0,
-                    data: new List<object>(),
-                    dataTableOptions: query.Options);
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
-                // Log the exception in a real application
-                return new CustomDataTable(
-                    draw: Convert.ToInt32(query.Options?.draw),
-                    recordsTotal: 0, recordsFiltered: 0,
-                    data: new List<object>(),
-                    dataTableOptions: query.Options);
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
             }
         }
 

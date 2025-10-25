@@ -4,8 +4,6 @@
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-2"></i> Filter & Sort Configuration</h5>
 
     <div class="card shadow p-3 mb-4">
-      
-
         <!-- Filter Row -->
         <div class="row g-3 mb-3 bg-light p-3 rounded">
             <div class="col-md-3">
@@ -53,22 +51,21 @@
                     <option value="false">Inactive</option>
                 </select>
             </div>
-        </div>
 
-        <!-- Action Buttons Row -->
-        <div class="row g-2">
-            <div class="col-md-6">
-                <button id="applyFilterBtn" class="btn btn-primary w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
-                </button>
-            </div>
-            <div class="col-md-6">
-                <button id="resetFilterBtn" class="btn btn-secondary w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset
-                </button>
+            <div class="row g-2 mt-2">
+                <div class="col-md-6">
+                    <button id="applyFilterBtn" class="btn btn-primary w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button id="resetFilterBtn" class="btn btn-secondary w-100">
+                        <i class="mdi mdi-refresh me-1"></i> Reset
+                    </button>
+                </div>
             </div>
         </div>
-    </div>   
+    </div>
 </div>
 
 <div class="card">
@@ -98,7 +95,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Fee Configuration Details</h5>
+                 <h5 class="modal-title">Fee Configuration Details</h5> 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="detailsModalBody">
@@ -123,7 +120,7 @@
         // Initialize DataTable FIRST (empty)
         initializeDataTable();
 
-        // Then load the data
+        // Then load the initial data
         loadFeeConfigs();
 
         // Attach event handlers
@@ -194,17 +191,29 @@
                     "width": "20%",
                     "orderable": false,
                     "render": function(data, type, row) {
+                        const uniqueId = `actionDropdown_${data.replace(/[^a-zA-Z0-9]/g, '_')}`;
                         return `
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button type="button" class="btn btn-info" onclick="showDetails('${data}')" title="View Details">
-                                    <i class="mdi mdi-eye"></i>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="${uniqueId}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-cog"></i> Actions
                                 </button>
-                                <button type="button" class="btn btn-primary" onclick="editConfig('${data}')" title="Edit">
-                                    <i class="mdi mdi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger" onclick="deleteConfig('${data}')" title="Delete">
-                                    <i class="mdi mdi-delete"></i>
-                                </button>
+                                <ul class="dropdown-menu p-2 bg-white" aria-labelledby="${uniqueId}" style="min-width: 180px;">
+                                    <li>
+                                        <button class="btn w-100 mb-1 bg-transparent text-dark" onclick="showDetails('${data}')">
+                                            <i class="mdi mdi-eye me-1 text-info"></i> View Details
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="btn w-100 mb-1 bg-transparent text-dark" onclick="editConfig('${data}')">
+                                            <i class="mdi mdi-pencil me-1 text-primary"></i> Edit
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="btn w-100 bg-transparent text-dark" onclick="deleteConfig('${data}')">
+                                            <i class="mdi mdi-delete me-1 text-danger"></i> Delete
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
                         `;
                     }
@@ -228,19 +237,20 @@
     }
 
     function loadFeeConfigs() {
-        //console.log('Loading fee configurations...');
+        console.log('Loading fee configurations...');
 
-        //// Show loading state
-        //$('#feeConfigDataTable tbody').html(`
-        //    <tr>
-        //        <td colspan="6" class="text-center py-4">
-        //            <div class="spinner-border text-primary" role="status">
-        //                <span class="visually-hidden">Loading...</span>
-        //            </div>
-        //            <div class="mt-2">Loading fee configurations...</div>
-        //        </td>
-        //    </tr>
-        //`);
+        // Show loading state
+        dataTable.clear().draw();
+        $('#feeConfigDataTable tbody').html(`
+            <tr>
+                <td colspan="6" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="mt-2">Loading fee configurations...</div>
+                </td>
+            </tr>
+        `);
 
         $.ajax({
             url: '@Url.Action("GetAllFeeConfigs", "FeeConfig")',
@@ -252,17 +262,8 @@
                     allFeeConfigs = response.data;
                     console.log('Data loaded successfully. Records:', allFeeConfigs.length);
 
-                    // Clear the loading message but don't display data yet
-                    dataTable.clear().draw();
-
-                    $('#feeConfigDataTable tbody').html(`
-                        <tr>
-                            <td colspan="6" class="text-center text-success py-4">
-                                <i class="mdi mdi-check-circle-outline mdi-24px d-block mb-2"></i>
-                                ${allFeeConfigs.length} configurations loaded. Click "Apply Filters" to display.
-                            </td>
-                        </tr>
-                    `);
+                    // Apply any existing filters
+                    applyFilters();
                 } else {
                     throw new Error(response.error || 'Failed to load data');
                 }
@@ -270,12 +271,14 @@
             error: function (xhr, status, error) {
                 console.error('Error loading data:', error);
                 console.log('XHR response:', xhr.responseText);
+                console.log('Status:', status);
 
                 $('#feeConfigDataTable tbody').html(`
                     <tr>
                         <td colspan="6" class="text-center text-danger py-4">
                             <i class="mdi mdi-alert-circle-outline mdi-24px d-block mb-2"></i>
-                            Failed to load data. Please check console for details.
+                            Failed to load data. Please check console for details.<br>
+                            <small>Error: ${error}</small>
                         </td>
                     </tr>
                 `);
@@ -299,12 +302,14 @@
         const centralized = $('#centralizedFilter').val();
         const status = $('#statusFilter').val();
 
+        console.log('Filter values:', { feeType, branchId, centralized, status });
+
         if (feeType) {
             filteredData = filteredData.filter(item => item.feeType === feeType);
         }
 
         if (branchId) {
-            filteredData = filteredData.filter(item => item.branchId === branchId);
+            filteredData = filteredData.filter(item => item.branchId == branchId);
         }
 
         if (centralized !== '') {
@@ -316,6 +321,8 @@
             const isActive = status === 'true';
             filteredData = filteredData.filter(item => item.isActive === isActive);
         }
+
+        console.log('Filtered data count:', filteredData.length);
 
         // Clear and reload DataTable with filtered data
         dataTable.clear();
@@ -338,19 +345,8 @@
         $('#centralizedFilter').val('');
         $('#statusFilter').val('');
 
-        // Clear the table but show message that data is ready
-        dataTable.clear().draw();
-
-        if (allFeeConfigs && allFeeConfigs.length > 0) {
-            $('#feeConfigDataTable tbody').html(`
-                <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
-                        <i class="mdi mdi-information-outline mdi-24px d-block mb-2"></i>
-                        Filters reset. ${allFeeConfigs.length} configurations ready. Click "Apply Filters" to display.
-                    </td>
-                </tr>
-            `);
-        }
+        // Reload data to get fresh data from server
+        loadFeeConfigs();
     }
 
     function showDetails(id) {
@@ -365,10 +361,11 @@
                 <div class="col-md-6">
                     <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
                     <table class="table table-sm table-bordered">
-                        <tr><td class="fw-bold">Fee Type:</td><td>${escapeHtml(config.id)}</td></tr>
+                        <tr><td class="fw-bold">ID:</td><td>${escapeHtml(config.id)}</td></tr>
                         <tr><td class="fw-bold">Fee Type:</td><td>${escapeHtml(config.feeType)}</td></tr>
                         <tr><td class="fw-bold">Branch:</td><td>${escapeHtml(config.branchName || 'Centralized')}</td></tr>
                         <tr><td class="fw-bold">Type:</td><td>${config.isCentralized ? 'Centralized' : 'Branch Specific'}</td></tr>
+                        <tr><td class="fw-bold">Status:</td><td>${config.isActive ? 'Active' : 'Inactive'}</td></tr>
                         <tr><td class="fw-bold">Description:</td><td>${escapeHtml(config.description || 'N/A')}</td></tr>
                     </table>
                 </div>

@@ -1,165 +1,127 @@
 ﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.CheckManagementSystem.ChequeCertification.ChequeCertificationDto>
 
-<style>
-    /* Table layout & spacing */
-    #myDataTable {
-        width: 100% !important;
-        table-layout: auto;
-    }
+<div class="card shadow-sm p-3" id="chequeCertificationTableContainer">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-table me-2"></i> Cheque Certifications
+    </h5>
 
-        #myDataTable th,
-        #myDataTable td {
-            vertical-align: middle;
-            padding: 8px 12px;
-        }
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Cheque Cert. ID</th>
+                    <th>Member Ref</th>
+                    <th>Branch ID</th>
+                    <th>Account No</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ChequeCertificationID</td>
+                            <td>@item.MemberReference</td>
+                            <td>@item.BranchId</td>
+                            <td>@item.AccountNumber</td>
+                            <td>@item.Amount.ToString("N2")</td>
+                            <td>
+                                @{
+                                    var statusBadgeClass = "bg-secondary";
+                                    switch (item.CertificationStatus?.ToLower())
+                                    {
+                                        case "approved": statusBadgeClass = "bg-success"; break;
+                                        case "rejected": statusBadgeClass = "bg-danger"; break;
+                                        case "pending": statusBadgeClass = "bg-warning"; break;
+                                        case "reviewed": statusBadgeClass = "bg-info"; break;
+                                    }
+                                }
+                                <span class="badge @statusBadgeClass">@item.CertificationStatus</span>
+                            </td>
+                            <td>@item.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary"
+                                            onclick="ViewDetails('@item.ChequeCertificationID')"
+                                            title="Cheque Certification Details">
+                                        <i class="mdi mdi-book-information-variant me-1"></i> Details
+                                    </button>
 
-        /* Column specific classes */
-        #myDataTable .amount-column {
-            text-align: right !important;
-            font-weight: 500;
-        }
-
-        #myDataTable .status-column {
-            text-align: center !important;
-        }
-
-        #myDataTable .date-column {
-            text-align: center !important;
-        }
-
-        #myDataTable .actions-column {
-            text-align: center !important;
-            white-space: nowrap;
-        }
-
-    .badge {
-        font-size: 0.75em;
-        padding: 4px 8px;
-    }
-
-    .btn-group-sm {
-        flex-wrap: nowrap;
-    }
-
-        .btn-group-sm .btn {
-            padding: 0.25rem 0.5rem;
-        }
-</style>
-
-<div class="table-responsive">
-    <table id="myDataTable" class="table table-striped table-bordered table-hover">
-        <thead class="table-primary">
-            <tr>
-                <th width="12%">Cheque Certification ID</th>
-                <th width="15%">Member Reference</th>
-                <th width="12%">Branch ID</th>
-                <th width="15%">Account Number</th>
-                <th width="12%" class="text-end">Amount</th>
-                <th width="12%" class="text-center">Status</th>
-                <th width="14%" class="text-center">Created Date</th>
-                <th width="20%" class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="confirmDelete('@item.ChequeCertificationID')"
+                                            title="Delete Certification">
+                                        <i class="mdi mdi-delete me-1"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <!-- match cells to headers and use ChequeCertificationID for actions -->
-                        <td>@item.ChequeCertificationID</td>
-                        <td>@item.MemberReference</td>
-                        <td>@item.BranchId</td>
-                        <td>@item.AccountNumber</td>
-                        <td class="amount-column">@item.Amount.ToString("N2")</td>
-                        <td class="status-column">
-                            @{
-                                var statusBadgeClass = "bg-secondary";
-                                switch (item.CertificationStatus?.ToLower())
-                                {
-                                    case "approved": statusBadgeClass = "bg-success"; break;
-                                    case "rejected": statusBadgeClass = "bg-danger"; break;
-                                    case "pending": statusBadgeClass = "bg-warning"; break;
-                                    case "reviewed": statusBadgeClass = "bg-info"; break;
-                                }
-                            }
-                            <span class="badge @statusBadgeClass">@item.CertificationStatus</span>
-                        </td>
-                        <td class="date-column">@item.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td class="actions-column">
-                            <div class="btn-group btn-group-sm" role="group">
-                                @*<button type="button"
-                onclick="AddORUpdateGen('@item.ChequeCertificationID', 'datalistingview', '_ChequeCertificationForm', 'edit', 'ChequeCertification')"
-                class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Edit">
-            <i class="mdi mdi-pencil"></i>
-        </button>*@
-
-                                <button type="button"
-                                        onclick="ViewDetails('@item.ChequeCertificationID')"
-                                        class="btn btn-outline-info" data-bs-toggle="tooltip" title="View Details">
-                                    <i class="mdi mdi-eye"></i>
-                                </button>
-
-                                @*@if (item.CertificationStatus?.ToLower() == "pending")
-        {
-            <button type="button"
-                    onclick="ReviewCertification('@item.ChequeCertificationID')"
-                    class="btn btn-outline-warning" data-bs-toggle="tooltip" title="Review">
-                <i class="mdi mdi-file-search"></i>
-            </button>
-        }
-
-        @if (item.CertificationStatus?.ToLower() == "reviewed")
-        {
-            <button type="button"
-                    onclick="ValidateCertification('@item.ChequeCertificationID')"
-                    class="btn btn-outline-success" data-bs-toggle="tooltip" title="Validate">
-                <i class="mdi mdi-check-circle"></i>
-            </button>
-            <button type="button"
-                    onclick="RejectCertification('@item.ChequeCertificationID')"
-                    class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Reject">
-                <i class="mdi mdi-close-circle"></i>
-            </button>
-        }*@
-
-                                @*<button type="button"
-                                        onclick="DeleteCertification('@item.ChequeCertificationID')"
-                                        class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Delete">
-                                    <i class="mdi mdi-delete"></i>
-                                </button>*@
-                                <a href="#"
-                                   onclick="DeleteRecordDataTable('ChequeCertification', '@item.ChequeCertificationID', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview',null,'list')"
-                                   class="mr-2 text-danger"
-                                   data-toggle="tooltip"
-                                   title="Delete">Delete</a>
-                            </div>
-                        </td>
+                        <td colspan="8" class="text-center text-muted">No cheque certifications found</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="8" class="text-center text-muted">No cheque certifications found</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-  
-<script>
-    // All functions now expect chequeCertificationID and send it to controller as chequeCertificationID
+<!-- Modal for Details -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="detailsModalLabel">Cheque Certification Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <div class="text-center py-4">
+                    <i class="mdi mdi-loading mdi-spin" style="font-size:24px"></i> Loading details...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to delete this cheque certification?</p>
+                <input type="hidden" id="deleteCertificationId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteConfirmed()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
     function ViewDetails(chequeCertificationID) {
         if (!chequeCertificationID) {
             toastr.error('Invalid ID');
             return;
         }
 
-        // show loader while fetching
-       // $('#datalistingview').html('<div class="text-center py-4"><i class="mdi mdi-loading mdi-spin" style="font-size:24px"></i> Loading details...</div>');
+        $('#detailsModalBody').html('<div class="text-center py-4"><i class="mdi mdi-loading mdi-spin" style="font-size:24px"></i> Loading details...</div>');
+        var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+        modal.show();
 
         $.ajax({
             url: '@Url.Action("Details", "ChequeCertification")',
@@ -167,88 +129,63 @@
             data: { chequeCertificationID: chequeCertificationID },
             dataType: 'html',
             success: function (data) {
-                $('#datalistingview2').html(data);
-                $('[data-bs-toggle="tooltip"]').tooltip();
-                var top = $('#datalistingview').offset();
-                if (top) window.scrollTo({ top: top.top - 10, behavior: 'smooth' });
+                $('#detailsModalBody').html(data);
             },
             error: function () {
                 toastr.error('Error loading details');
+                $('#detailsModalBody').html('<p class="text-danger">Failed to load details.</p>');
             }
         });
     }
 
-    function ReviewCertification(chequeCertificationID) {
-        if (confirm('Are you sure you want to review this certification?')) {
-            PerformAction('Review', chequeCertificationID);
-        }
+    // Show confirmation modal
+    function confirmDelete(chequeCertificationID) {
+        $('#deleteCertificationId').val(chequeCertificationID);
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
     }
 
-    function ValidateCertification(chequeCertificationID) {
-        if (confirm('Are you sure you want to validate this certification?')) {
-            PerformAction('Validate', chequeCertificationID);
+    // Proceed with delete after confirmation
+    function deleteConfirmed() {
+        var chequeCertificationID = $('#deleteCertificationId').val();
+        if (!chequeCertificationID) {
+            toastr.error('Invalid ID');
+            return;
         }
-    }
 
-    function RejectCertification(chequeCertificationID) {
-        if (confirm('Are you sure you want to reject this certification?')) {
-            PerformAction('Reject', chequeCertificationID);
-        }
-    }
-
-    function DeleteCertification(chequeCertificationID) {
-        if (confirm('Are you sure you want to delete this certification?')) {
-            PerformAction('Delete', chequeCertificationID);
-        }
-    }
-
-    function PerformAction(action, chequeCertificationID) {
         $.ajax({
-            url: '@Url.Action("Action", "ChequeCertification")' + '?action=' + action + '&chequeCertificationID=' + encodeURIComponent(chequeCertificationID),
+            url: '@Url.Action("Delete", "ChequeCertification")',
             type: 'POST',
+            data: { chequeCertificationID: chequeCertificationID },
             success: function (response) {
-                if (response.success) {
-                    toastr.success(response.message);
-                    // reload list - keep your LoadDataGen call if that exists
-                    LoadDataGen('ChequeCertification', 'myDataTable', '_ChequeCertificationDataTable', 0, 'datalistingview', null, 'list');
-                } else {
-                    toastr.error(response.message || 'Operation failed');
-                }
+                toastr.success('Cheque certification deleted successfully');
+                $('#deleteModal').modal('hide');
+                location.reload(); // reload to refresh table
             },
             error: function () {
-                toastr.error('Error performing action');
+                toastr.error('Failed to delete cheque certification');
             }
         });
     }
 
-    // Initialize DataTable with proper configuration
     $(document).ready(function () {
-        // Destroy existing instance if it exists
         if ($.fn.DataTable.isDataTable('#myDataTable')) {
             $('#myDataTable').DataTable().destroy();
         }
 
         $('#myDataTable').DataTable({
-            "pageLength": 10,
-            "responsive": true,
-            "ordering": true,
-            "searching": true,
-            "autoWidth": false,
-            "info": true,
-            "paging": true,
-            "columnDefs": [
-                { "width": "12%", "targets": 0 },
-                { "width": "15%", "targets": 1 },
-                { "width": "12%", "targets": 2 },
-                { "width": "15%", "targets": 3 },
-                { "width": "12%", "targets": 4 },
-                { "width": "12%", "targets": 5 },
-                { "width": "14%", "targets": 6 },
-                { "width": "20%", "targets": 7, "orderable": false }
+            pageLength: 10,
+            responsive: true,
+            ordering: true,
+            searching: true,
+            autoWidth: false,
+            info: true,
+            paging: true,
+            columnDefs: [
+                { "targets": -1, "orderable": false }
             ]
         });
 
-        // Initialize tooltips
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
 </script>

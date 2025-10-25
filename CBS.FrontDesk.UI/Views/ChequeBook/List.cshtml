@@ -199,7 +199,7 @@
                 },
                 columns: [
                     {
-                        data: 'CreatedDate',
+                        data: 'createdDate',
                         name: 'CreatedDate',
                         render: function (data) {
                             return data && window.moment
@@ -207,14 +207,14 @@
                                 : (data || '');
                         }
                     },
-                    { data: 'CustomerName', name: 'MemberName' },
+                    { data: 'customerName', name: 'MemberName' },
                     {
                         data: 'CategoryName',  // Changed from 'Category' to 'CategoryName'
                         name: 'Category'   // Changed from 'Category' to 'CategoryName'
                     },
-                    { data: 'NumberOfLeaves', name: 'Num. Of Leaves' },
+                    { data: 'numberOfLeaves', name: 'Num. Of Leaves' },
                     {
-                        data: 'Status',
+                        data: 'status',
                         name: 'Status',
                         render: function (data) {
                             const label = data || '';
@@ -236,10 +236,10 @@
                         }
                     },
                     
-                    { data: 'CustomerId', name: 'Member Ref.' },
+                    { data: 'customerId', name: 'Member Ref.' },
                     {
 
-                        data: 'Id',
+                        data: 'id',
                         orderable: false,
                         searchable: false,
                         render: function (id) {

@@ -7,12 +7,12 @@
                 <h5>Cheque Book Information</h5>
             </div>
             <div class="card-body">
-                <p><strong>Customer Name:</strong> @Model.customerName</p>
-                <p><strong>Number of Leaves:</strong> @Model.numberOfLeaves</p>
-                <p><strong>Status:</strong> @Model.status</p>
-                <p><strong>Branch:</strong> @Model.branchName</p>
-                <p><strong>Issue Date:</strong> @Model.issueDate.ToShortDateString()</p>
-                <p><strong>Expiry Date:</strong> @Model.expiryDate.ToShortDateString()</p>
+                <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+                <p><strong>Number of Leaves:</strong> @Model.NumberOfLeaves</p>
+                <p><strong>Status:</strong> @Model.Status</p>
+                <p><strong>Branch:</strong> @Model.BranchName</p>
+                <p><strong>Issue Date:</strong> @Model.IssueDate</p>
+                <p><strong>Expiry Date:</strong> @Model.ExpiryDate</p>
             </div>
         </div>
     </div>
@@ -32,17 +32,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var leaf in Model.ChequeLeaves)
+                @foreach (var leaf in Model.Leaves)
                 {
                     <tr>
-                        <td>@leaf.leafNumber</td>
-                        <td>@leaf.status</td>
-                        <td>@leaf.issueDate.ToShortDateString()</td>
-                        <td>@leaf.expiryDate.ToShortDateString()</td>
+                        <td>@leaf.LeafNumber</td>
+                        <td>@leaf.Status</td>
+                        <td>@leaf.IssueDate.ToShortDateString()</td>
+                        <td>@leaf.ExpiryDate.ToShortDateString()</td>
                         <td>
-                            <button class="btn btn-info btn-sm" onclick="showLeafDetails('@leaf.id')">Details</button>
-                            <button class="btn btn-warning btn-sm" onclick="markLeafAsUsed('@leaf.id')">Mark as Used</button>
-                            <button class="btn btn-danger btn-sm" onclick="blockLeaf('@leaf.id')">Block</button>
+                            <button class="btn btn-info btn-sm" onclick="showLeafDetails('@leaf.Id')">Details</button>
+                            <button class="btn btn-warning btn-sm" onclick="markLeafAsUsed('@leaf.Id')">Mark as Used</button>
+                            <button class="btn btn-danger btn-sm" onclick="blockLeaf('@leaf.Id')">Block</button>
                         </td>
                     </tr>
                 }

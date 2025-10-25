@@ -10,21 +10,21 @@
     @Html.HiddenFor(m => m.CounterChequeId)
 
     @* The 'showActionModal' script will populate the value of this hidden input *@
-    <input type="hidden" name="Action" />
 
-    <div class="mb-3">
-        <p>You are about to take an action on Counter Cheque ID: <strong class="text-primary">@Model.CounterChequeId</strong></p>
-        <hr />
-        <label for="Motive" class="form-label fw-bold">Please provide a motive, reason, or note for this action:</label>
-        @Html.TextAreaFor(m => m.Motive, new
-        {
-            @class = "form-control",
-            rows = "4",
-            required = "required",
-            placeholder = "e.g., 'Customer verified in person.' or 'Signature mismatch.'"
-        })
-        @Html.ValidationMessageFor(m => m.Motive, "", new { @class = "text-danger" })
-    </div>
+<div class="mb-3">
+    <p>You are about to take an action on Counter Cheque ID: <strong class="text-primary">@Model.CounterChequeId</strong></p>
+    <hr />    <input type="hidden" name="Action" />
+
+    <label for="Motive" class="form-label fw-bold">Please provide a motive, reason, or note for this action:</label>
+    @Html.TextAreaFor(m => m.Motive, new
+    {
+        @class = "form-control",
+        rows = "4",
+        required = "required",
+        placeholder = "e.g., 'Customer verified in person.' or 'Signature mismatch.'"
+    })
+    @Html.ValidationMessageFor(m => m.Motive, "", new { @class = "text-danger" })
+</div>
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

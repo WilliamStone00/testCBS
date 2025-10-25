@@ -109,6 +109,22 @@ namespace CBS.BusinessService.Accounting
         }
        
 
+        public async Task<IEnumerable<StringValues>> GetGLAccountsQueryByBranch(string key)
+        {
+            try
+            {
+                var couApiResponse = await _accountingApiCallerHelper.GetAsync<ResponseObject<List<ChartOfAccountStateDto>>>(string.Format(APICallHelper.GetGLAccountsQueryByBranchId, key));
+                return ProcessApiResponseForChartOfAccount(couApiResponse.ApiResponseData);
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+
         public async Task<SelectList> GetEventAttributeByOperationTypeID(string productid = null)
         {
             try

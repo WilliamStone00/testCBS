@@ -1,4 +1,4 @@
-﻿using CBS.BusinessService.Accounts;
+﻿ using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config.Localization;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
@@ -535,7 +535,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberAdjustmentConsole
             }
             else if (model.option == "membershipstatus")
             {
-                var data = await _individualProfileServices.UpdateMembershipstatus(model);
+                var data = await _individualProfileServices.UpdateMembershipStatus(model);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
             }

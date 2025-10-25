@@ -6,58 +6,144 @@
     var placeholders = ViewBag.PlaceHolders as List<PlaceholderDto> ?? new List<PlaceholderDto>();
 }
 
-@* Use a real form so we can reliably call $form.serialize() *@
 @using (Html.BeginForm("CreateOrUpdate", "NotificationConfig", FormMethod.Post, new { id = "notificationConfigForm" }))
 {
     @Html.AntiForgeryToken()
+
+    @* Hidden fields that are driven by the outer workspace or JS *@
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.IsCentralized, new { id = "IsCentralized", Name = "IsCentralized" })
     @Html.HiddenFor(m => m.BranchId, new { id = "BranchId", Name = "BranchId" })
     @Html.HiddenFor(m => m.NotificationType)
+    @Html.HiddenFor(m => m.AvailablePlaceholders) 
 
+<div class="card shadow p-3">
+    <h5 class="text-primary"> Notification Template Configuration </h5>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="text-primary">Notification Template for: <span class="text-dark">@Model.NotificationType</span></h6>
 
-    <div class="card shadow p-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="text-primary mb-3">Edit Template for: <span class="text-dark">@Model.NotificationType</span></h5>
-            <div class="form-check form-switch">
+        <div class="d-flex align-items-center">
+            <div class="form-check form-switch me-3">
                 @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
                 <label class="form-check-label" for="IsActive">Is Active</label>
             </div>
         </div>
+    </div>
 
-        @if (placeholders.Any())
-        {
-            <div class="alert alert-info">
-                <p class="mb-1"><strong>Available Placeholders:</strong></p>
-                <div class="d-flex flex-wrap" id="placeholderContainer">
-                    @foreach (var placeholder in placeholders)
-                    {
-                        <code class="me-2 mb-1 p-1 bg-light border rounded placeholder-tag" style="cursor: pointer;" title="@placeholder.Value">@placeholder.Text</code>
-                    }
-                </div>
-                <small class="text-muted">Click a placeholder to insert it into the template body.</small>
+    @if (!string.IsNullOrWhiteSpace(Model.Id))
+    {
+        <small class="text-muted">Id: @Model.Id</small>
+     }
+
+
+    @if (placeholders.Any())
+    {
+        <div class="alert alert-info">
+            <p class="mb-1"><strong>Available Placeholders:</strong></p>
+            <div class="d-flex flex-wrap" id="placeholderContainer">
+                @foreach (var placeholder in placeholders)
+                {
+                    <code class="me-2 mb-1 p-1 bg-light border rounded placeholder-tag" style="cursor: pointer;" title="@placeholder.Value">@placeholder.Text</code>
+                }
             </div>
-        }
+            <small class="text-muted"> Click a placeholder to insert it into the template body.</small>
+        </div>
+    }
 
-        <div class="form-floating mb-3">
-            @Html.TextAreaFor(m => m.Name, new { @class = "form-control", placeholder = "Name", style = "height: 50px;", id = "name" })
-            <label for="Name">Name</label>
-            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", id = "name" })
+                <label for="name">Name</label>
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height: 50px;", id = "templateBody" })
-            <label for="templateBody">Template Body</label>
-            @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.TriggerEvent, new { @class = "form-control", placeholder = "Trigger Event", id = "triggerEvent" })
+                <label for="triggerEvent">Trigger Event</label>
+                @Html.ValidationMessageFor(m => m.TriggerEvent, "", new { @class = "text-danger" })
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description", id = "description" })
-            <label for="description">Template Description</label>
+        <div class="col-12">
+            <div class="form-floating">
+                @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height:80px;", id = "templateBody" })
+                <label for="templateBody">Template Body</label>
+                @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
+            </div>
         </div>
 
-        <hr />
-        <div class="d-flex justify-content-end align-items-center">
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description", id = "description" })
+                <label for="description">Template Description</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control", placeholder = "Purpose", id = "purpose" })
+                <label for="purpose">Template Purpose</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.ScheduleCron, new { @class = "form-control", placeholder = "Schedule CRON", id = "scheduleCron" })
+                <label for="scheduleCron">Schedule (CRON)</label>
+                <small class="form-text text-muted">Optional: cron expression for scheduled notifications.</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.DaysBeforeExpiry, new { @class = "form-control", type = "number", min = "0", placeholder = "Days Before Expiry", id = "daysBeforeExpiry" })
+                <label for="daysBeforeExpiry">Days Before Expiry</label>
+            </div>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-center">
+            <div class="form-check mt-2">
+                @Html.CheckBoxFor(m => m.RequiresApproval, new { @class = "form-check-input", id = "requiresApproval" })
+                <label class="form-check-label" for="requiresApproval">Requires Approval</label>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="form-floating">
+                @Html.TextAreaFor(m => m.ConditionExpression, new { @class = "form-control", placeholder = "Condition Expression", style = "height:80px;", id = "conditionExpression" })
+                <label for="conditionExpression">Condition Expression</label>
+                <small class="form-text text-muted">Optional: expression that must evaluate to true to send.</small>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Audience, new { @class = "form-control", placeholder = "Audience", id = "audience" })
+                <label for="audience">Audience</label>
+                <small class="form-text text-muted">E.g. Customer, Staff, Admin</small>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Channel, new { @class = "form-control", placeholder = "Channel", id = "channel" })
+                <label for="channel">Channel</label>
+                <small class="form-text text-muted">E.g. Email, SMS, Push</small>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-3" />
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <small class="text-muted">Placeholders in use will be stored in AvailablePlaceholders</small>
+        </div>
+
+        <div>
             <button type="button" id="resetConfigBtn" class="btn btn-outline-secondary me-2">Reset</button>
 
             @if (!string.IsNullOrWhiteSpace(Model.Id))
@@ -65,10 +151,10 @@
                 <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">Delete Template</button>
             }
 
-            @* Make Save a submit button inside the form *@
             <button type="submit" id="saveConfigBtn" class="btn btn-primary shadow-sm px-4">
                 <i class="fas fa-save me-1"></i> Save Changes
             </button>
         </div>
     </div>
+</div>
 }

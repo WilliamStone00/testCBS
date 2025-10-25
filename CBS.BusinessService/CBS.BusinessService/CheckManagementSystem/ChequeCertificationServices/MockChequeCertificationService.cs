@@ -4,7 +4,9 @@ using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.CheckManagementSystem.ChequeCertification
 {
@@ -174,7 +176,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeCertification
                     existing.AccountNumber = model.AccountNumber;
                     existing.Amount = model.Amount;
                     existing.Description = model.Description;
-                    // Allow manual status update if provided (but typically status flows through Review/Validate/Reject)
+                    // Allow manual Status update if provided (but typically Status flows through Review/Validate/Reject)
                     if (!string.IsNullOrWhiteSpace(model.CertificationStatus))
                         existing.CertificationStatus = model.CertificationStatus;
                 }
@@ -211,6 +213,28 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeCertification
                 GetExecutionMessages(item, true, chequeCertificationID, MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, "Marked as Reviewed.");
                 return Task.FromResult(ExecutionMessage);
             }
+        }
+
+       
+
+        private IEnumerable<ChequeCertificationDto> ApplyFilters(
+            IEnumerable<ChequeCertificationDto> data,
+            GetChequeCertificationsDataTableQuery query)
+        {
+            var result = data.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.MemberReference))
+                result = result.Where(x => x.MemberReference.Contains(query.MemberReference));
+
+            if (!string.IsNullOrEmpty(query.ChequeCertificationID))
+                result = result.Where(x => x.ChequeCertificationID.Contains(query.ChequeCertificationID));
+
+            if (!string.IsNullOrEmpty(query.CertificationStatus))
+                result = result.Where(x => x.CertificationStatus == query.CertificationStatus);
+
+            // Add more filters as needed...
+
+            return result.ToList();
         }
 
         // Approve/Validate certification (by ChequeCertificationID)

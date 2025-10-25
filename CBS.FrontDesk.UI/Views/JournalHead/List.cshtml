@@ -1,0 +1,427 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+@using Resources
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> Work Ticket
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Use the filters below to search and review journal entries efficiently.
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="journalHeaderFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Main Filters Card -->
+        <div class="card p-3 mb-3 bg-light">
+
+            <!-- 🔹 Branch & Date Toggles -->
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDateFilters">
+                            Show Accounting / Created Date Filters
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔹 Hidden Branch Dropdown -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔹 Hidden Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Start Accounting Date</label>
+                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">End Accounting Date</label>
+                        <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" id="endDate" name="EndDate" class="form-control mb-1" />
+                    </div>
+                </div>
+            </div>
+
+            @*<hr class="my-3" />*@
+
+            <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
+            <div class="row mb-1">
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Reference</label>
+                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Operation Type</label>
+                    @Html.DropDownList("OperationType",
+                        new SelectList(ViewBag.OperationTypes, "Value", "Text"),
+                        "Select Operation Type",
+                        new { @class = "form-control select2 mb-1", @id = "OperationType" })
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Reconciliation Status</label>
+                    @Html.DropDownList("WorkTicket",
+                        new SelectList(ViewBag.WorkTickets, "Value", "Text"),
+                        "Select Work Ticket",
+                        new { @class = "form-control select2 mb-1", @id = "WorkTicket" })
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filters
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
+                        onclick="document.getElementById('journalHeaderFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> Reset Filters
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="datalistingview">
+    @Html.Partial("_SourceDataTable")
+</div>
+<div id="modalContainer"></div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            let tableInitialized = false;
+            let table;
+
+            // ==========================
+            // APPLY FILTERS AND LOAD DATA
+            // ==========================
+            $("#journalHeaderFilterForm").on("submit", function (e) {
+                e.preventDefault();
+
+                const ajaxOptions = {
+                    url: "/JournalHead/LoadJournalSourceData", // ✅ match controller
+                    type: "POST",
+                    contentType: "application/json",
+                    data: function (d) {
+                        const filter = {
+                            Options: d, // DataTables paging/sorting
+                            BranchId: $("#branchId").val(),
+                            Stage: $("#stage").val(),
+                            Reference: $("#reference").val(),
+
+                            PostMode: $("#postMode").val(),
+                            ExternalOperationType: $("#externalOperationType").val(),
+
+                            AccountingDate: $("#accountingDate").val(),
+                            StartDate: $("#startDate").val(),
+                            EndDate: $("#endDate").val()
+                        };
+                        return JSON.stringify(filter);
+                    },
+                    error: function (err) {
+                        console.error("❌ Error loading journal headers:", err);
+                    }
+                };
+
+                // Initialize DataTable (first run)
+                if (!tableInitialized) {
+                    table = $("#myDataTable").DataTable({
+                        /* processing: true,*/
+                        serverSide: true,
+                        responsive: true,
+                        ajax: ajaxOptions,
+                        columns: [
+                            { data: "CreatedAt", render: d => d ? new Date(d).toLocaleDateString() : "" },
+                            { data: "Reference" },
+                            { data: "BranchName" },
+                            { data: "AccountingDate", render: d => d ? new Date(d).toLocaleDateString() : "" },
+                            { data: "PostMode" },
+                            {
+                                data: "Id",
+                                orderable: false,
+                                searchable: false,
+                                render: data => `
+                                            <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
+                                                <i class="mdi mdi-eye"></i> View
+                                            </button>`
+                            }
+                        ]
+                    });
+
+                    tableInitialized = true;
+                } else {
+                    table.ajax.reload();
+                }
+            });
+
+            // ==========================
+            // RESET FILTERS
+            // ==========================
+            $("#resetFilterBtn").on("click", function (e) {
+                e.preventDefault();
+                $("#journalHeaderFilterForm")[0].reset();
+                $(".select2").val(null).trigger("change");
+                if (tableInitialized) {
+                    table.clear().draw();
+                }
+            });
+
+            // ==========================
+            // VIEW DETAILS (AJAX LOAD + SHOW MODAL)
+            // ==========================
+            $("#myDataTable").on("click", ".view-details", function () {
+                const id = $(this).data("id");
+                if (!id) return;
+
+                // Load the partial view (HTML modal)
+                $.ajax({
+                    url: `/JournalHead/Details12?id=${id}`,
+                    type: "GET",
+                    success: function (html) {
+                        // Inject modal HTML into container
+                        $("#modalContainer").html(html);
+
+                        // Show the modal
+                        const modal = new bootstrap.Modal(document.getElementById("sourceDetailsModal"));
+                        modal.show();
+                    },
+                    error: function (err) {
+                        console.error("❌ Error loading details modal:", err);
+                        alert("Failed to load details.");
+                    }
+                });
+            });
+
+            // ==========================
+            // OPTIONAL CLEANUP: REMOVE MODAL CONTENT AFTER CLOSE
+            // ==========================
+            $(document).on("hidden.bs.modal", "#sourceDetailsModal", function () {
+                $("#modalContainer").empty();
+            });
+        });
+
+        // =========================
+        // 📦 DESTINATION DETAILS MODAL LOADER
+        // =========================
+        $("#myDataTable").on("click", ".view-details", function () {
+            const id = $(this).data("id");
+            if (!id) return;
+
+            // Load the partial view (HTML modal)
+            $.ajax({
+                url: `/JournalHead/Details?id=${id}`,
+                type: "GET",
+                success: function (html) {
+                    // Inject modal HTML into the container
+                    $("#modalContainer").html(html);
+
+                    // Show the modal
+                    const modal = new bootstrap.Modal(document.getElementById("destinationDetailsModal"));
+                    modal.show();
+                },
+                error: function (err) {
+                    console.error("❌ Error loading destination details modal:", err);
+                    alert("Failed to load destination details.");
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+        $(document).ready(function () {
+            const tableBody = $("#destinationTable tbody");
+            const totalDebitEl = $("#totalDebitTop");
+            const totalCreditEl = $("#totalCreditTop");
+            const postBtn = $("#postEntriesBtnDest");
+
+            function updateTotals() {
+                let totalDebit = 0, totalCredit = 0;
+
+                tableBody.find('tr').each(function () {
+                    const debit = parseFloat($(this).find('.debit-input').val()) || 0;
+                    const credit = parseFloat($(this).find('.credit-input').val()) || 0;
+                    totalDebit += debit;
+                    totalCredit += credit;
+                });
+
+                totalDebitEl.text(totalDebit.toFixed(2));
+                totalCreditEl.text(totalCredit.toFixed(2));
+
+                // Enable post button only when totals match and not zero
+                if (totalDebit > 0 && totalDebit === totalCredit)
+                    postBtn.prop("disabled", false);
+                else
+                    postBtn.prop("disabled", true);
+            }
+
+            function addRow() {
+                const index = tableBody.children('tr').length;
+                const row = `
+             <tr>
+                 <td>
+                     <select name="Lines[${index}].AccountId" class="form-select account-select" required>
+                         <option value="">Select Account</option>
+                         ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
+                     </select>
+                 </td>
+                 <td>
+                     <input type="text" class="form-control narration-input" name="Lines[${index}].Narration" placeholder="Enter narration" required />
+                 </td>
+                 <td>
+                     <input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" />
+                 </td>
+                 <td>
+                     <input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" />
+                 </td>
+                 <td class="text-center">
+                     <button type="button" class="btn btn-sm btn-outline-danger deleteRow"><i class="mdi mdi-delete"></i></button>
+                 </td>
+             </tr>`;
+                tableBody.append(row);
+                initSelect2();
+            }
+
+            // ➕ Add Row
+            $("#addRowBtnDest").click(() => {
+                let canAdd = true;
+                tableBody.find('tr:last').find('input:enabled, select:enabled').each(function () {
+                    if (!$(this).val()) {
+                        canAdd = false;
+                        $(this).addClass('is-invalid').css('border-color', 'red');
+                    } else {
+                        $(this).removeClass('is-invalid').css('border-color', '');
+                    }
+                });
+                if (!canAdd) {
+                    appalert('Please fill all fields before adding a new row.', 2, 1);
+                    return;
+                }
+                addRow();
+                appalert('Row added successfully.', 1, 1);
+            });
+
+            // 🗑️ Delete Row
+            tableBody.on('click', '.deleteRow', function () {
+                $(this).closest('tr').remove();
+                updateTotals();
+                appalert('Row deleted successfully.', 1, 1);
+            });
+
+            // 💰 Handle debit/credit mutual exclusion + total updates
+            tableBody.on('input', '.debit-input', function () {
+                const debit = parseFloat($(this).val()) || 0;
+                if (debit > 0) {
+                    $(this).closest('tr').find('.credit-input').val('').prop('disabled', true);
+                } else {
+                    $(this).closest('tr').find('.credit-input').prop('disabled', false);
+                }
+                updateTotals();
+            });
+
+            tableBody.on('input', '.credit-input', function () {
+                const credit = parseFloat($(this).val()) || 0;
+                if (credit > 0) {
+                    $(this).closest('tr').find('.debit-input').val('').prop('disabled', true);
+                } else {
+                    $(this).closest('tr').find('.debit-input').prop('disabled', false);
+                }
+                updateTotals();
+            });
+
+            // 🧹 Clear all rows
+            $("#clearRowsBtnDest").click(() => {
+                tableBody.empty();
+                updateTotals();
+                postBtn.prop("disabled", true);
+                appalert('All rows cleared.', 1, 1);
+            });
+
+            // Initialize with one row
+            addRow();
+        });
+    </script>
+}
+

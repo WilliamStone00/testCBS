@@ -49,7 +49,7 @@ namespace CBS.FrontDesk.UI.WAF.Services.Validation
                     userName: ctx.Username,
                     computerName: ctx.Headers?["Computer-Name"] ?? "n/a",
                     path: ctx.Path,
-                    statusCode: 200,
+                    StatusCode: 200,
                     location: ctx.Location,
                     lat: ctx.Latitude,
                     lon: ctx.Longitude,

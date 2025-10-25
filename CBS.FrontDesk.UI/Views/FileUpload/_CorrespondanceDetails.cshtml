@@ -1,0 +1,182 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.CorrespondenceRequestDto
+@using System.Globalization
+@using Resources
+
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-email-outline me-2"></i> Correspondence Details
+        </h1>
+        <p class="card-text text-muted mb-1">
+            Details for a single correspondence request.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Id</td>
+                    <td>@Html.DisplayFor(m => m.Id)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Type</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model.Type) ? "-" : Html.Encode(Model.Type))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Correlation Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model.CorrelationId) ? "-" : Html.Encode(Model.CorrelationId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Status</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model.Status) ? "-" : Html.Encode(Model.Status))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Requested By (Name)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByName) ? "-" : Html.Encode(Model.RequestedByName))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Requested By (User Id)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByUserId) ? "-" : Html.Encode(Model.RequestedByUserId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Actioned By (Name)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.ActionedByName) ? "-" : Html.Encode(Model.ActionedByName))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Actioned By (User Id)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.ActionedByUserId) ? "-" : Html.Encode(Model.ActionedByUserId))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>Accounts & Mapping</h6>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="fw-bold">@ChequeManagements.Branch</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchId) ? "-" : Html.Encode(Model.BranchId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchAccountId) ? "-" : Html.Encode(Model.BranchAccountId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Affiliate Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Html.Encode(Model.AffiliateAccountId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Source Affiliate Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.SourceAffiliateAccountId) ? "-" : Html.Encode(Model.SourceAffiliateAccountId))</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Ho PCMF Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Html.Encode(Model.HoPcmfAccountId))</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Branch Account Code / Name</td>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model?.BranchAccountCode) ? "-" : Html.Encode(Model.BranchAccountCode))
+                        : &nbsp;/&nbsp;
+                        @(string.IsNullOrWhiteSpace(Model?.BranchAccountName) ? "-" : Html.Encode(Model.BranchAccountName))
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Affiliate Account Code / Name</td>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model?.AffiliateAccountCode) ? "-" : Html.Encode(Model.AffiliateAccountCode))
+                        : &nbsp;/&nbsp;
+                        @(string.IsNullOrWhiteSpace(Model?.AffiliateAccountName) ? "-" : Html.Encode(Model.AffiliateAccountName))
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Source Affiliate Code / Name</td>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model?.SourceAffiliateAccountCode) ? "-" : Html.Encode(Model.SourceAffiliateAccountCode))
+                        : &nbsp;/&nbsp;
+                        @(string.IsNullOrWhiteSpace(Model?.SourceAffiliateAccountName) ? "-" : Html.Encode(Model.SourceAffiliateAccountName))
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">HoPcmf Code / Name</td>
+                    <td>
+                        @(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountCode) ? "-" : Html.Encode(Model.HoPcmfAccountCode))
+                        : &nbsp;/&nbsp;
+                        @(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountName) ? "-" : Html.Encode(Model.HoPcmfAccountName))
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-note-text me-2"></i>Rationale / Rejection</h6>
+        <div class="card card-body">
+            @if (!string.IsNullOrWhiteSpace(Model?.Rationale))
+            {
+                @Html.Raw(Html.Encode(Model.Rationale).Replace("\n", "<br/>"))
+            }
+            else if (!string.IsNullOrWhiteSpace(Model?.RejectionReason))
+            {
+                <span class="text-danger">@Html.Encode(Model.RejectionReason)</span>
+            }
+            else
+            {
+                <span class="text-muted">-</span>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i>Dates & Status</h6>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Actioned Date</td>
+                    <td>
+                        @(
+                            Model != null && Model.ActionedDate != default(DateTime)
+                            ? Model.ActionedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                            : "-"
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Created Date</td>
+                    <td>
+                        @(
+                            Model != null && Model.CreatedDate != default(DateTime)
+                            ? Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                            : "-"
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Modified Date</td>
+                    <td>
+                        @(
+                            Model != null && Model.ModifiedDate != default(DateTime)
+                            ? Model.ModifiedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                            : "-"
+                        )
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Is Deleted</td>
+                    <td>@(Model?.IsDeleted == true ? "Yes" : "No")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

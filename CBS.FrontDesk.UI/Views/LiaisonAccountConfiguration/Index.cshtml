@@ -1,0 +1,218 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonAccountConfiguration.LiaisonAccountConfigurationDto
+
+@{
+    ViewBag.Title = "Liaison Account Configuration";
+}
+
+<!-- 🌟 Page Header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-bank-transfer me-2"></i> Liaison Account Configuration Console
+                </h1>
+                <p class="card-text text-muted mb-1">
+                    Configure and manage branch liaison accounts for seamless inter-branch transactions.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensure each branch is linked to the correct head office liaison account.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.4);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 💡 Tips Section -->
+<div class="card mb-4 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using the Liaison Configuration Console</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-bank-outline text-primary me-2"></i> <strong>Source Branch:</strong> Select the branch you want to configure.</li>
+                <li><i class="mdi mdi-link-variant text-success me-2"></i> <strong>Liaison Account:</strong> Choose the appropriate head office liaison account linked to this branch.</li>
+                <li><i class="mdi mdi-checkbox-marked-outline text-warning me-2"></i> <strong>Status:</strong> Use the checkbox to activate or deactivate the configuration.</li>
+                <li><i class="mdi mdi-refresh text-info me-2"></i> <strong>Dynamic Accounts:</strong> The liaison account list updates automatically when you change the branch.</li>
+                <li><i class="mdi mdi-content-save-outline text-success me-2"></i> <strong>Save Button:</strong> Click “Save” to apply configuration changes immediately.</li>
+                <li><i class="mdi mdi-view-list text-secondary me-2"></i> <strong>View List:</strong> Use the list button to see all existing liaison configurations.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a type="button" onclick=" LoadDataGen('LiaisonAccountConfiguration', 'myDataTable', '_Data', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> ViewList
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LiaisonAccountConfiguration')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
+            <i class="mdi mdi-plus mdi-18px"></i> Add New Configuration
+        </a>
+    </div>
+</div>
+
+<!-- 🧩 Main Accordion Section -->
+<!--<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+        <div class="card">
+            <div class="accordion mt-3 accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                data-bs-target="#liaisonAccordion" aria-expanded="true" aria-controls="liaisonAccordion">
+                            <i class="mdi mdi-bank me-2"></i>Liaison Account Configuration
+                        </button>
+                    </h2>
+                    <div id="liaisonAccordion" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="change-group">-->
+<!-- Toolbar -->
+<!-- 🔍 Filter Section -->
+<!--<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Filter Liaison Mappings</h5>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="row-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Source Branch ---", new { @class = "form-control select2", id = "BranchId", onchange = "LoadAccounts(this.value,'LiaisonAccountId')" })
+                    <label>Source Branch</label>
+                </div>
+            </div>
+
+            <div class="row-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.Liasons, "Value", "Text"), "--- Select Option ---", new { @class = "form-control select2", id = "LiaisonAccountId" })
+                    <label>Liaison Account</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <button type="button" id="btnSearch" class="btn btn-primary">
+                    <i class="mdi mdi-magnify me-1"></i>Search
+                </button>
+                <button type="button" id="btnReset" class="btn btn-outline-secondary">
+                    <i class="mdi mdi-refresh me-1"></i>Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Data Listing View -->
+<!--<div id="datalistingview">
+    @Html.Partial("_Data")
+</div>-->
+<!--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> FILTERS
+    </h5>
+
+    <form id="journalHeaderFilterForm" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+
+                <!-- Branch -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2", @id = "branchId" })
+                </div>
+
+                <!-- Liaison Account (Counterparty Branch) -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Liaison Account</label>
+                    @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.Liasons, "Value", "Text"), "--- Select Option ---", new { @class = "form-control select2", id = "LiaisonAccountId" })
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100" onclick="document.getElementById('journalHeaderFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+
+        // 🔍 Handle Search Button Click
+        $('#btnSearch').on('click', function () {
+            var branchId = $('#BranchId').val();
+            var liaisonAccountId = $('#LiaisonAccountId').val();
+
+            // Optional simple validation
+            if (!branchId && !liaisonAccountId) {
+                alert("Please select at least one filter criteria.");
+                return;
+            }
+
+            // Show loading state
+            $('#datalistingview').html('<div class="text-center p-3"><i class="mdi mdi-loading mdi-spin"></i> Loading...</div>');
+
+            // ✅ Only AJAX call we’ll use
+            $.ajax({
+                url: '/LiaisonAccountConfiguration/InitializeData',
+                type: 'GET',
+                data: {
+                    partialView: '_Data',
+                    path: 'list',
+                    branchId: branchId,
+                    liaisonAccountId: liaisonAccountId
+                },
+                success: function (result) {
+                    $('#datalistingview').html(result);
+                },
+                error: function (xhr, status, error) {
+                    $('#datalistingview').html('<div class="alert alert-danger">Error loading data. Please try again.</div>');
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+        // 🔁 Handle Reset Button
+        $('#btnReset').on('click', function () {
+            $('#BranchId').val('').trigger('change');
+            $('#LiaisonAccountId').val('').trigger('change');
+            $('#datalistingview').html('<div class="text-center text-muted p-3">No data loaded. Use the search filter above.</div>');
+        });
+
+        // ➕ Handle Add New
+        $('#btnAdd').on('click', function () {
+            window.location.href = '/LiaisonAccountConfiguration/Create';
+        });
+    });
+</script>
+}
