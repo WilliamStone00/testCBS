@@ -1,257 +1,151 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Cancellation Request Details</h5>
-        <button class="btn btn-sm btn-outline-secondary" onclick="backToList()">
-            <i class="fas fa-arrow-left me-1"></i> Back to List
-        </button>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-bordered">
-                    <tr>
-                        <th width="40%">Request ID:</th>
-                        <td>@Model.Id</td>
-                    </tr>
-                    <tr>
-                        <th>Request Type:</th>
-                        <td>@Model.RequestType</td>
-                    </tr>
-                    <tr>
-                        <th>Reference:</th>
-                        <td>@(Model.ChequeBookId ?? Model.ChequeLeafId ?? Model.ChequeNumber ?? Model.PageNumber ?? "N/A")</td>
-                    </tr>
-                    <tr>
-                        <th>Status:</th>
-                        <td>
-                            @{
-                                var badgeClass = "badge bg-secondary";
-                                switch (Model.Status)
-                                {
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending:
-                                        badgeClass = "badge bg-warning"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Approved:
-                                        badgeClass = "badge bg-success"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Rejected:
-                                        badgeClass = "badge bg-danger"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Completed:
-                                        badgeClass = "badge bg-info"; break;
-                                }
-                            }
-                            <span class="@badgeClass">@Model.Status</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="table table-bordered">
-                    <tr>
-                        <th width="40%">Customer Name:</th>
-                        <td>@Model.CustomerName</td>
-                    </tr>
-                    <tr>
-                        <th>Account Number:</th>
-                        <td>@Model.AccountNumber</td>
-                    </tr>
-                    <tr>
-                        <th>Branch:</th>
-                        <td>@Model.BranchName</td>
-                    </tr>
-                    <tr>
-                        <th>Requested Date:</th>
-                        <td>@Model.RequestedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+<style>
+    .section-header {
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
 
-        <div class="row mt-3">
-            <div class="col-12">
-                <h6 class="text-muted">Reason for Cancellation</h6>
-                <div class="border p-3 bg-light">
-                    @Model.Reason
-                </div>
-            </div>
-        </div>
+    .header-viewer {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #555;
+        border-left: 4px solid #4CAF50;
+    }
 
-        @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
-        {
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h6 class="text-muted">Additional Notes</h6>
-                    <div class="border p-3 bg-light">
-                        @Model.AdditionalNotes
-                    </div>
-                </div>
-            </div>
+        .header-viewer h6 {
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
-        @if (Model.ReviewedDate.HasValue)
-        {
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h6 class="text-muted">Review Information</h6>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th width="30%">Reviewed By:</th>
-                            <td>@Model.ReviewedByUserName</td>
-                        </tr>
-                        <tr>
-                            <th>Reviewed Date:</th>
-                            <td>@Model.ReviewedDate.Value.ToString("yyyy-MM-dd HH:mm")</td>
-                        </tr>
-                        <tr>
-                            <th>Comments:</th>
-                            <td>@(Model.ReviewComments ?? "N/A")</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        }
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 220px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-        <div class="text-end mt-3">
-            <button class="btn btn-primary" onclick="loadEditForm('@Model.Id')">
-                <i class="fas fa-edit me-1"></i> Edit Request
-            </button>
-            @if (Model.Status == CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending)
-            {
-                <button class="btn btn-success" onclick="loadReviewForm('@Model.Id', true)">
-                    <i class="fas fa-check me-1"></i> Approve
-                </button>
-                <button class="btn btn-danger" onclick="loadReviewForm('@Model.Id', false)">
-                    <i class="fas fa-times me-1"></i> Reject
-                </button>
-            }
-        </div>
-    </div>
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+</style>
+
+<!-- ✅ New Header Viewer -->
+<div class="header-viewer">
+    <h6><i class="mdi mdi-file-eye-outline"></i> CANCELLATION REQUEST VIEWER</h6>
+    <p>
+        You are viewing a detailed summary of the selected cheque cancellation request.
+        Use the details below to guide your validation process.
+    </p>
+    
 </div>
 
-<div class="card">
+<!-- ✅ Existing Card -->
+<div class="card shadow-sm mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Cancellation Request Details</h5>
-        <button class="btn btn-sm btn-outline-secondary" onclick="backToList()">
-            <i class="fas fa-arrow-left me-1"></i> Back to List
-        </button>
+        <h5 class="card-title mb-0 text-primary">
+            <i class="mdi mdi-file-cancel me-1"></i> Cancellation Request (@Model.Id)
+        </h5>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-bordered">
-                    <tr>
-                        <th width="40%">Request ID:</th>
-                        <td>@Model.Id</td>
-                    </tr>
-                    <tr>
-                        <th>Request Type:</th>
-                        <td>@Model.RequestType</td>
-                    </tr>
-                    <tr>
-                        <th>Reference:</th>
-                        <td>@(Model.ChequeBookId ?? Model.ChequeLeafId ?? Model.ChequeNumber ?? Model.PageNumber ?? "N/A")</td>
-                    </tr>
-                    <tr>
-                        <th>Status:</th>
-                        <td>
-                            @{
-                               // var badgeClass = "badge bg-secondary";
-                                switch (Model.Status)
-                                {
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending:
-                                        badgeClass = "badge bg-warning"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Approved:
-                                        badgeClass = "badge bg-success"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Rejected:
-                                        badgeClass = "badge bg-danger"; break;
-                                    case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Completed:
-                                        badgeClass = "badge bg-info"; break;
-                                }
+    <div class="card-body px-3 py-2">
+
+        <!-- 🔷 Request Info -->
+        <h6 class="fw-bold border-bottom text-primary section-header">
+            <i class="mdi mdi-information-outline"></i> Request Information
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <tbody>
+                <tr><th class="bg-label">Request Type</th><td>@Model.RequestType</td></tr>
+                <tr><th class="bg-label">Reference</th><td>@(Model.ChequeBookId ?? Model.ChequeLeafId ?? Model.ChequeNumber ?? Model.PageNumber ?? "N/A")</td></tr>
+                <tr>
+                    <th class="bg-label">Status</th>
+                    <td>
+                        @{
+                            var badgeClass = "bg-secondary";
+                            switch (Model.Status)
+                            {
+                                case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending:
+                                    badgeClass = "bg-warning"; break;
+                                case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Approved:
+                                    badgeClass = "bg-success"; break;
+                                case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Rejected:
+                                    badgeClass = "bg-danger"; break;
+                                case CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Completed:
+                                    badgeClass = "bg-info"; break;
                             }
-                            <span class="@badgeClass">@Model.Status</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="table table-bordered">
-                    <tr>
-                        <th width="40%">Customer Name:</th>
-                        <td>@Model.CustomerName</td>
-                    </tr>
-                    <tr>
-                        <th>Account Number:</th>
-                        <td>@Model.AccountNumber</td>
-                    </tr>
-                    <tr>
-                        <th>Branch:</th>
-                        <td>@Model.BranchName</td>
-                    </tr>
-                    <tr>
-                        <th>Requested Date:</th>
-                        <td>@Model.RequestedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
-                </table>
-            </div>
+                        }
+                        <span class="badge @badgeClass">@Model.Status</span>
+                    </td>
+                </tr>
+                <tr><th class="bg-label">Requested Date</th><td>@Model.RequestedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 🔷 Customer Info -->
+        <h6 class="fw-bold border-bottom text-primary section-header">
+            <i class="mdi mdi-account"></i> Customer Information
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <tbody>
+                <tr><th class="bg-label">Customer Name</th><td>@Model.CustomerName</td></tr>
+                <tr><th class="bg-label">Account Number</th><td>@Model.AccountNumber</td></tr>
+                <tr><th class="bg-label">Branch</th><td>@Model.BranchName</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 🔷 Reason -->
+        <h6 class="fw-bold border-bottom text-primary section-header">
+            <i class="mdi mdi-comment-alert-outline"></i> Reason for Cancellation
+        </h6>
+        <div class="border p-3 bg-light mb-3">
+            @Model.Reason
         </div>
 
-        <div class="row mt-3">
-            <div class="col-12">
-                <h6 class="text-muted">Reason for Cancellation</h6>
-                <div class="border p-3 bg-light">
-                    @Model.Reason
-                </div>
-            </div>
-        </div>
-
+        <!-- 🔷 Additional Notes -->
         @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
         {
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h6 class="text-muted">Additional Notes</h6>
-                    <div class="border p-3 bg-light">
-                        @Model.AdditionalNotes
-                    </div>
-                </div>
+            <h6 class="fw-bold border-bottom text-primary section-header">
+                <i class="mdi mdi-note-text-outline"></i> Additional Notes
+            </h6>
+            <div class="border p-3 bg-light mb-3">
+                @Model.AdditionalNotes
             </div>
         }
 
+        <!-- 🔷 Review -->
         @if (Model.ReviewedDate.HasValue)
         {
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h6 class="text-muted">Review Information</h6>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th width="30%">Reviewed By:</th>
-                            <td>@Model.ReviewedByUserName</td>
-                        </tr>
-                        <tr>
-                            <th>Reviewed Date:</th>
-                            <td>@Model.ReviewedDate.Value.ToString("yyyy-MM-dd HH:mm")</td>
-                        </tr>
-                        <tr>
-                            <th>Comments:</th>
-                            <td>@(Model.ReviewComments ?? "N/A")</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            <h6 class="fw-bold border-bottom text-primary section-header">
+                <i class="mdi mdi-account-check-outline"></i> Review Information
+            </h6>
+            <table class="table table-sm table-bordered mb-3">
+                <tbody>
+                    <tr><th class="bg-label">Reviewed By</th><td>@Model.ReviewedByUserName</td></tr>
+                    <tr><th class="bg-label">Reviewed Date</th><td>@Model.ReviewedDate.Value.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                    <tr><th class="bg-label">Comments</th><td>@(Model.ReviewComments ?? "N/A")</td></tr>
+                </tbody>
+            </table>
         }
 
+        <!-- 🔷 Actions -->
         <div class="text-end mt-3">
-            <button class="btn btn-primary" onclick="loadEditForm('@Model.Id')">
-                <i class="fas fa-edit me-1"></i> Edit Request
+            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <i class="mdi mdi-close me-1"></i> Close
             </button>
-            @if (Model.Status == CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationStatus.Pending)
-            {
-                <button class="btn btn-success" onclick="loadReviewForm('@Model.Id', true)">
-                    <i class="fas fa-check me-1"></i> Approve
-                </button>
-                <button class="btn btn-danger" onclick="loadReviewForm('@Model.Id', false)">
-                    <i class="fas fa-times me-1"></i> Reject
-                </button>
-            }
         </div>
     </div>
 </div>

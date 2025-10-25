@@ -5,6 +5,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.FeeConfiguration;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
@@ -17,103 +18,102 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using ZXing;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeClearance
 {
+    
     public class ChequeClearanceController : Controller
     {
 
         private readonly ChequeClearanceService _chequeClearanceService;
         private readonly BranchServices _branchServices;
-        private readonly MockCheckClearanceService _mockCheckClearanceService;
+       private readonly MockCheckClearanceService _mockCheckClearanceService;
+        private readonly FeeConfigService _feeConfigService;
+        private readonly CategoryConfigService _categoryServices;
 
-        public ChequeClearanceController(ChequeClearanceService chequeClearanceService, BranchServices branchServices, MockCheckClearanceService mockCheckClearanceService)
+        public ChequeClearanceController(ChequeClearanceService chequeClearanceService,CategoryConfigService categoryConfigService, BranchServices branchServices, FeeConfigService feeConfigService, MockCheckClearanceService mockCheckClearanceService)
         {
             _chequeClearanceService = chequeClearanceService;
             _branchServices = branchServices;
-            _mockCheckClearanceService = mockCheckClearanceService;
-
-
+           _mockCheckClearanceService = mockCheckClearanceService;
+            _feeConfigService = feeConfigService;
+            _categoryServices = categoryConfigService;
         }
 
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View(new OptionRequest()); // pass categories as model
+            return View(new OptionRequest() { Discount= new Discount()}); // pass categories as model
         }
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
+            var feeConfigure = await _feeConfigService.GetFeeTypesAsync();
+            ViewBag.FeeTypes = feeConfigure;
+
+            var categories = await _categoryServices.GetCategories();
+            ViewBag.Categories = categories;
+
             return true;
         }
         // Ajax entry point
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
+            await loader();
+
             if (path == "list")
             {
                 // ✅ When loading list view
                 var data = await _mockCheckClearanceService.GetAllAsync();
-                return PartialView(partialView, data);
+                return PartialView(partialView ?? "_ChequeClearanceDataTable", data);
             }
             else if (path == "new")
             {
-                // ✅ New record (with mock check for now)
-                await loader();
 
                 OptionRequest model = null;
+                OptionRequest options = new OptionRequest(); // ✅ always initialized
 
                 if (!string.IsNullOrWhiteSpace(serviceOption))
                 {
-                    OptionRequest options;
                     try
                     {
-                        options = JsonConvert.DeserializeObject<OptionRequest>(serviceOption);
+                        options = JsonConvert.DeserializeObject<OptionRequest>(serviceOption)
+                                  ?? new OptionRequest(); // ✅ fallback if null
                     }
                     catch
                     {
-                        options = new OptionRequest();
+                        options = new OptionRequest(); // ✅ fallback on bad JSON
                     }
 
-                    // ← Replace your old call with this safe null-check version
-                    if (options.BranchId == null || options.CheckBookNumber == null || options.CheckBookPageNumber == null)
+                    // ✅ Now options can never be null
+                    model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
+                        options.External,
+                        options.BranchId,
+                        options.CheckBookNumber,
+                        options.CheckBookPageNumber
+                    );
+
+                    if (model == null)
                     {
-                        // Return empty model or echo the inputs
                         model = new OptionRequest
                         {
-                            IsNotfromMFI = options.IsNotfromMFI,
+                            External = options.External,
                             BranchId = options.BranchId,
                             CheckBookNumber = options.CheckBookNumber,
                             CheckBookPageNumber = options.CheckBookPageNumber
                         };
-                    }
-                    else
-                    {
-                        model = await _mockCheckClearanceService.GetByBranchAndBookAsync(
-                            options.IsNotfromMFI,
-                            options.BranchId,
-                            options.CheckBookNumber,
-                            options.CheckBookPageNumber
-                        );
-
-                        if (model == null)
-                        {
-                            model = new OptionRequest
-                            {
-                                IsNotfromMFI = options.IsNotfromMFI,
-                                BranchId = options.BranchId,
-                                CheckBookNumber = options.CheckBookNumber,
-                                CheckBookPageNumber = options.CheckBookPageNumber
-                            };
-                        }
                     }
                 }
 
                 if (model == null)
                     model = new OptionRequest();
 
-                return PartialView(partialView, model);
+                model.ChequeImagePath = "~/AppFiles/Images/noimage.jpg";
+
+                return PartialView(partialView ?? "_Create", model);
             }
 
             else
@@ -121,8 +121,63 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
                 // ✅ Edit existing record
                 await loader();
                 var data = await _mockCheckClearanceService.GetByIdAsync(KEY);
-                return PartialView(partialView, data);
+                return PartialView(partialView ?? "_Edit", data);
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+        }
+
+        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
+        [HttpPost]
+        public async Task<JsonResult> LoadcheckbookData(ChequeBookQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.GetchequebokDataTableAsync(query);
+
+                var chequeBook = JsonConvert.DeserializeObject<List<Data.Entity.CheckManagementSystem.Operations.ChequeBookListing.ChequeBook>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = chequeBook
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ChequebookDetail(string KEY)
+        {
+            var ChequebookDetail = await _chequeClearanceService.GetChequebookDetail(KEY);
+            if (ChequebookDetail != null)
+            {
+                // You can either:
+                // 1️⃣ return a PartialView (if embedded somewhere)
+                // 2️⃣ return a View if standalone
+
+                return PartialView("_ChequeBookD", ChequebookDetail);
+            }
+
+            return PartialView("_Error", "Checkbook details not found.");
         }
 
 
@@ -150,7 +205,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             {
                 ChequeClearanceId = fileUploadId,
                 ApprovedBy = Session["FullName"]?.ToString(),
-                Mode = mode // "approve", "review", or "reject"
+                Mode = mode // "approve", "review", or "reject",""
             };
             return PartialView("_ValidationForm", model);
         }
@@ -178,6 +233,57 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Clearance.ChequeCl
             // Ensure Messaging.MessageResult returns a string
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+        [HttpPost]
+        public async Task<JsonResult> LoadClearanceData(ClearanceQuery query)
+        {
+            try
+            {
+                var data = await _chequeClearanceService.GetClearanceDataTableAsync(query);
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = data.data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateOrUpdate(OptionRequest model)
+       {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, status = "Failed", message = "Please fill all required fields." });
+            }
+
+            ExecutionMessages data;
+            if (string.IsNullOrWhiteSpace(model.ChequeClearanceId))
+            {
+                data = await _chequeClearanceService.CreateAsync(model);
+            }
+            else
+            {
+                data = await _chequeClearanceService.UpdateAsync(model);
+            }
+
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+        }
+
+
+
 
 
     }

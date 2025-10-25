@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -264,3 +265,4 @@ namespace CBS.BusinessService.CheckManagementSystem.LossManagementSystem
         }
     }
 }
+

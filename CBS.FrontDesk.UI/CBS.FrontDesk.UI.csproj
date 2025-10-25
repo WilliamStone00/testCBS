@@ -886,6 +886,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ManualEntry.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ManualEntry.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BranchCashConfig.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountOpeningRulePerBranch\AccountOpeningRuleModal.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2017,6 +2037,13 @@
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
+    <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
+    <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
+    <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
+    <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
+    <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
+    <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -9319,13 +9346,21 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MainReportOld.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.resx">
+    <Content Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV2.Designer.cs</LastGenOutput>
+      <LastGenOutput>ManualEntry.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.fr.resx">
+    <Content Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV2.fr.designer.cs</LastGenOutput>
+      <LastGenOutput>ManualEntry.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -10690,14 +10725,14 @@
     <Content Include="Views\LossManagement\Index.cshtml" />
     <Content Include="Views\LossManagement\_CheckbooksTable.cshtml" />
     <Content Include="Views\LossManagement\_CheckLeavesTable.cshtml" />
-    <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
-    <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
+    <Content Include="Views\LossManagement\_LossRequestForm.cshtml" />
     <Content Include="Views\ChequeClearance\Index.cshtml" />
-    <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDataTable.cshtml" />
     <Content Include="Views\ChequeClearance\_ChequeClearanceDetails.cshtml" />
     <Content Include="Views\ChequeClearance\_Edit.cshtml" />
     <Content Include="Views\ChequeClearance\_ValidationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_MainForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_Create.cshtml" />
     <Content Include="Views\AccountingStatements\_JournalEntryData.cshtml" />
     <Content Include="Views\ManualDailyCollection\_listingFilesdatatable.cshtml" />
     <Content Include="Views\FileValidation\_ExtractedDetails.cshtml" />
@@ -10727,6 +10762,45 @@
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationRequestDetails.cshtml" />
     <Content Include="Views\ChequeRequest\_CustomerSearch.cshtml" />
+    <Content Include="Views\ChequeCancellation\_Edit.cshtml" />
+    <Content Include="Views\ChequeCancellation\_VerificationForm.cshtml" />
+    <Content Include="Views\ChequeClearance\_DiscountModal.cshtml" />
+    <Content Include="Views\LossManagement\_CheckbookDetails.cshtml" />
+    <Content Include="Views\LossManagement\_CheckLeafDetails.cshtml" />
+    <Content Include="Views\LossManagement\_Header.cshtml" />
+    <Content Include="Views\LossManagement\_Filters.cshtml" />
+    <Content Include="Views\LossManagement\CheckbookDetails.cshtml" />
+    <Content Include="Views\LossManagement\LossRequestForm.cshtml" />
+    <Content Include="Views\ChequeClearance\List.cshtml" />
+    <Content Include="Views\ChequeClearance\_ChequeBookDataTable.cshtml" />
+    <Content Include="Views\ChequeClearance\_ChequeBookD.cshtml" />
+    <Content Include="Views\ManualJournalEntry\Index.cshtml" />
+    <Content Include="Views\ManualJournalEntry\_Posting.cshtml" />
+    <Content Include="Views\ConfigurationManualEntry\Index.cshtml" />
+    <Content Include="Views\ConfigurationManualEntry\_Data.cshtml" />
+    <Content Include="Views\ConfigurationManualEntry\_Create.cshtml" />
+    <Content Include="Views\JournalHead\Index.cshtml" />
+    <Content Include="Views\JournalHead\_JournalHeadDetails.cshtml" />
+    <Content Include="Views\JournalHead\_JournalHeadDataTable.cshtml" />
+    <Content Include="Views\JournalHead\List.cshtml" />
+    <Content Include="Views\JournalHead\_SourceDetails.cshtml" />
+    <Content Include="Views\JournalHead\_SourceDataTable.cshtml" />
+    <Content Include="Views\JournalHead\_DestDetails.cshtml" />
+    <Content Include="Views\BranchCashConfig\Index.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Create.cshtml" />
+    <Content Include="Views\BranchCashConfig\_BranchCashConfigDataTable.cshtml" />
+    <Content Include="Views\BranchCashConfig\List.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Details.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\Index.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\_Data.cshtml" />
+    <Content Include="Views\LiaisonAccountConfiguration\_Create.cshtml" />
+    <Content Include="Views\LiaisonMapping\Index.cshtml" />
+    <Content Include="Views\LiaisonMapping\_LiaisonMappingForm.cshtml" />
+    <Content Include="Views\LiaisonMapping\_LiaisonMappingData.cshtml" />
+    <Content Include="Views\RoleGlResolution\Index.cshtml" />
+    <Content Include="Views\RoleGlResolution\_RoleGlResolutionData.cshtml" />
+    <Content Include="Views\RoleGlResolution\_RoleGlResolutionForm.cshtml" />
+
     <Content Include="Views\SalaryProcessed\_RegisterNonMemberPv.cshtml" />
     <Content Include="Views\SalaryProcessed\_RevokeTempPayCodePv.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
@@ -10772,6 +10846,7 @@
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10798,6 +10873,7 @@
     <Folder Include="bin\zh\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
+    <Folder Include="Views\AccountingV2\" />
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />

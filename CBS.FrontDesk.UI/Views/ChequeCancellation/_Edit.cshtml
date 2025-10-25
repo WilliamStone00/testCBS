@@ -1,0 +1,163 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation.CancellationRequest
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h6 class="text-success border-bottom pb-2 mb-3">
+            <i class="mdi mdi-file-document-outline me-1"></i> Cheque Cancellation Details
+        </h6>
+
+        @using (Html.BeginForm("CreateOrUpdate", "ChequeCancellation", FormMethod.Post,
+            new { enctype = "multipart/form-data", id = "editCancellationForm", onsubmit = "return cancellationSubmitAjax(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+
+            <div class="row gy-3">
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.DropDownListFor(m => m.BranchId,
+                            ViewBag.Branches != null
+                                ? new SelectList(ViewBag.Branches, "Id", "Name", Model.BranchId)
+                                : Enumerable.Empty<SelectListItem>(),
+                            "--- Select Branch ---",
+                            new { @class = "form-select" })
+                        <label>Cheque Branch</label>
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Status, new { @class = "form-control", @readonly = "readonly", placeholder = "Status" })
+                        <label>Status</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ChequeBookId, new { @class = "form-control", placeholder = "Cheque Book Id" })
+                        <label>Cheque Book Id</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ChequeLeafId, new { @class = "form-control", placeholder = "Cheque Leaf Id" })
+                        <label>Cheque Leaf Id</label>
+                    </div>
+                </div>
+                <!-- Customer Name -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Enter customer name" })
+
+                        <label for="CustomerName">Customer Name</label>
+                    </div>
+                </div>
+
+
+                <!-- Reason -->
+                <div class="mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextAreaFor(m => m.Reason, 3, 50, new { @class = "form-control", placeholder = "Enter reason for cancellation", style = "height:100px" })
+
+                        <label for="Reason">Reason for Cancellation</label>
+                    </div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextAreaFor(m => m.AdditionalNotes, 2, 50, new { @class = "form-control", placeholder = "Optional additional information", style = "height:80px" })
+
+                        <label for="AdditionalNotes">Additional Notes</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control", type = "datetime-local" })
+                        <label>Cheque Creation Date</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="mt-4 text-end">
+
+                <button type="submit" class="btn btn-success px-4 me-2">
+                    <i class="fas fa-save me-1"></i> Update
+                </button>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        // AJAX form submit for cancellation
+        function cancellationSubmitAjax(form) {
+            var $form = $(form);
+            if (!$form.length) return false;
+
+            // Unobtrusive validation
+            try { $.validator.unobtrusive.parse($form); } catch (e) { }
+            if (!$form.valid()) return false;
+
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.html();
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method') || 'POST',
+                data: isMultipart ? new FormData(form) : $form.serialize(),
+                contentType: isMultipart ? false : 'application/x-www-form-urlencoded; charset=UTF-8',
+                processData: !isMultipart,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                success: function (res) {
+                    if (res.success) {
+                        alert(res.message || "Updated successfully!");
+                        // Optionally reload table or list
+                    } else {
+                        alert(res.message || "Update failed.");
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing your request.');
+                },
+                complete: function () {
+                    $submit.prop('disabled', false).html(origHtml);
+                }
+            });
+
+            return false; // prevent normal form submission
+        }
+
+        // Optional: populate form via GET (like Edit)
+        function loadCancellationForm(cancellationId) {
+            $.get('/ChequeCancellation/Get', { id: cancellationId }, function (data) {
+                if (!data) return;
+                var form = $('#editCancellationForm');
+
+                form.find('[name="Id"]').val(data.Id);
+                form.find('[name="BranchId"]').val(data.BranchId);
+                form.find('[name="Status"]').val(data.Status);
+                form.find('[name="ChequeBookId"]').val(data.ChequeBookId);
+                form.find('[name="ChequeLeafId"]').val(data.ChequeLeafId);
+                form.find('[name="CustomerName"]').val(data.CustomerName);
+                form.find('[name="Reason"]').val(data.Reason);
+                form.find('[name="AdditionalNotes"]').val(data.AdditionalNotes);
+                form.find('[name="CreatedDate"]').val(data.CreatedDate);
+            }).fail(function () {
+                alert("Failed to load cancellation data.");
+            });
+        }
+    </script>
+}

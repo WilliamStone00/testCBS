@@ -21,7 +21,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     new OptionRequest
     {
         ChequeClearanceId = " Cheque001",
-        IsNotfromMFI = true,
+        External = true,
         BranchId = "B001",
         CheckBookNumber = "CB001",
         CheckBookPageNumber = "1",
@@ -43,7 +43,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     new OptionRequest
     {
         ChequeClearanceId = " Cheque002",
-        IsNotfromMFI = false,
+        External = false,
         BranchId = "B002",
         CheckBookNumber = "CB002",
         CheckBookPageNumber = "2",
@@ -64,7 +64,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     new OptionRequest
     {
         ChequeClearanceId = " Cheque003",
-        IsNotfromMFI = true,
+        External = true,
         BranchId = "B003",
         CheckBookNumber = "CB003",
         CheckBookPageNumber = "1",
@@ -85,7 +85,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     new OptionRequest
     {
         ChequeClearanceId = " Cheque004",
-        IsNotfromMFI = false,
+        External = false,
         BranchId = "B001",
         CheckBookNumber = "CB004",
         CheckBookPageNumber = "3",
@@ -106,7 +106,7 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
     new OptionRequest
     {
         ChequeClearanceId = " Cheque005",
-        IsNotfromMFI = true,
+        External = true,
         BranchId = "B002",
         CheckBookNumber = "CB005",
         CheckBookPageNumber = "4",
@@ -138,18 +138,18 @@ namespace CBS.BusinessService.CheckManagementSystem.ChequeClearance
             var clearance = _mockClearances.FirstOrDefault(c => c.ChequeClearanceId == chequeClearanceId);
             return Task.FromResult(clearance);
         }
-        public Task<OptionRequest> GetByBranchAndBookAsync(bool isNotfromfi, string branchId, string CheckBookNumber, string pageNumber)
+        public async Task<OptionRequest> GetByBranchAndBookAsync(bool isNotfromfi, string branchId, string CheckBookNumber, string pageNumber)
         {
-            lock (_lock)
-            {
+            /*lock (_lock)
+            {*/
                 var result = _mockClearances.FirstOrDefault(c =>
                    
                     c.BranchId == branchId &&
                     c.CheckBookNumber == CheckBookNumber &&
                     c.CheckBookPageNumber == pageNumber);
 
-                return Task.FromResult(result);
-            }
+                return result;
+            //}
         }
 
         public Task<OptionRequest> CreateAsync(OptionRequest model)

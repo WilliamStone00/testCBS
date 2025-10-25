@@ -68,6 +68,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         // The central router for loading all our partial views.
         // Keep your existing controller, just ensure these actions exist:
 
+
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             await Loader();

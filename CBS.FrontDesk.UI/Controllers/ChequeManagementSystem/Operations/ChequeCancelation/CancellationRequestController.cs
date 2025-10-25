@@ -1,5 +1,7 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation;
+﻿using CBS.BusinessService.CheckManagementSystem.ChequeClearance;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeCancelation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -7,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -45,7 +48,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeC
                 new { Value = "Approved", Text = "Approved" },
                 new { Value = "Rejected", Text = "Rejected" },
                 new { Value = "Cancelled", Text = "Cancelled" },
-                new { Value = "Completed", Text = "Completed" }
+                
             };
         }
 
@@ -54,11 +57,12 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeC
         {
             if (path == "list")
             {
+                await LoadViewBagData();
+
                 try
                 {
-                    // Try main service first
-                    var data = await _chequeCancellationService.GetCancellationRequestsAsync();
-                    return PartialView(partialView, data);
+                    var data = await _chequeCancellationMockService.GetAllAsync();
+                    return PartialView(partialView ?? "_CancellationDataTable", data);
                 }
                 catch (Exception ex)
                 {
@@ -72,26 +76,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeC
                 await LoadViewBagData();
                 return PartialView(partialView, new CancellationRequest());
             }
-            else if (path == "details")
-            {
-                try
-                {
-                    // Try main service first
-                    var data = await _chequeCancellationService.GetCancellationRequestByIdAsync(KEY);
-                    if (data == null)
-                    {
-                        // Fall back to mock service
-                        data = await _chequeCancellationMockService.GetCancellationRequestByIdAsync(KEY);
-                    }
-                    return PartialView(partialView, data);
-                }
-                catch (Exception ex)
-                {
-                    // Final fallback to mock service
-                    var data = await _chequeCancellationMockService.GetCancellationRequestByIdAsync(KEY);
-                    return PartialView(partialView, data);
-                }
-            }
+            
             else if (path == "review")
             {
                 // For review form, we just need the request ID
@@ -175,6 +160,79 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeC
                 reinitializedActionName = "_CancellationRequests"
             });
         }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing id");
+
+            var clearance = await _chequeCancellationMockService.GetByIdAsync(id);
+
+            if (clearance == null)
+                return HttpNotFound();
+
+            return PartialView("_CancellationRequestDetails", clearance);
+        }
+
+        [HttpGet]
+        public ActionResult GetActionForm(string fileUploadId, string mode)
+        {
+            var model = new CancellationValidatiion
+            {
+                Id = fileUploadId,
+                ApprovedBy = Session["FullName"]?.ToString(),
+                Mode = mode // "approve", "review", or "reject",""
+            };
+            return PartialView("_VerificationForm", model);
+        }
+
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> SubmitAction(CancellationValidatiion model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // --- THIS IS THE CRITICAL CHANGE ---
+                // We need to return the ModelState errors in a format the client can parse.
+                var errors = new Dictionary<string, string[]>();
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state.Errors.Any())
+                    {
+                        errors[key] = state.Errors.Select(e => e.ErrorMessage).ToArray();
+                    }
+                }
+                return Json(new { success = false, message = "Please correct the validation errors.", errors = errors });
+            }
+
+            var result = await _chequeCancellationService.SubmitFileActionAsync(model);
+            // Ensure Messaging.MessageResult returns a string
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // POST: Review/Approve/Reject request
         [HttpPost]

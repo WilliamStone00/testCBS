@@ -1,0 +1,125 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest.Discount
+@using Resources
+
+
+<style>
+    .section-header {
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .header-viewer {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #555;
+        border-left: 4px solid #4CAF50;
+    }
+
+        .header-viewer h6 {
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 220px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg border-0">
+
+           
+
+            <!-- ✅ Custom Header Viewer -->
+            <div class="header-viewer bg-light mb-4 px-3 pt-3 pb-2">
+                <h6 class="fw-bold mb-1">
+                    <i class="mdi mdi-file-eye-outline me-1"></i> DISCOUNT APPLICATION VIEWER
+                </h6>
+                <p class="mb-0">
+                    You are applying a discount to the selected cheque clearance request.
+                    Please fill in the required fields and load the calculated results before proceeding.
+                </p>
+            </div>
+
+            <!-- ✅ Modal Body -->
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6 mb-3">
+                        <label>@GlobalUserManagement.Branch</label>
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                            "---" + @GlobalUserManagement.SelectBranch + "---",
+                            new { @class = "form-control select2" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Select Fee Type</label>
+                        @Html.DropDownListFor(m => m.FeeType, new SelectList(ViewBag.FeeTypes, "Value", "Text"),
+                            "--- Select Fee Type ---", new { @class = "form-control select2", id = "feeType" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mt-2">
+                            @Html.CheckBoxFor(m => m.IsCentralized, new { @class = "form-check-input", id = "isCentralized" })
+                            <label class="form-check-label" for="isCentralized">Is Centralized</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.IssueAmount, new { @class = "form-control", type = "number" })
+                            <label>Issue Amount</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary w-100" id="btnLoad">
+                        <i class="mdi mdi-refresh me-2"></i> Load
+                    </button>
+                </div>
+
+                <div class="row g-3 mt-4 d-none" id="discountSection">
+                    <div class="col-md-6">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.NewAmount, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                            <label>New Amount</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.Fees, new { @class = "form-control", type = "number", @readonly = "readonly" })
+                            <label>Fees</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ Footer -->
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
