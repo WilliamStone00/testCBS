@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account name.
+        ///   Looks up a localized string similar to Acc. name.
         /// </summary>
         internal static string AccountName {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account number.
+        ///   Looks up a localized string similar to Acc .number.
         /// </summary>
         internal static string Account_Number {
             get {

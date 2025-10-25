@@ -33,7 +33,7 @@ namespace CBS.FrontDesk.Data.Entity.ManualDailycollection
     {
         // Inherits start, draw, length, etc.
     }
-     
+
     public class GetManualEntryDailyCollectionDetailDataTableQuery
     {
         public GetManualEntryDailyCollectionDetailDataTableQuery()

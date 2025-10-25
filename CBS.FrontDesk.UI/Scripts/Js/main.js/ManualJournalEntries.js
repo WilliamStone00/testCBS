@@ -11,8 +11,12 @@ $(document).ready(function () {
     tableJE = $('#DataEntrybasketTable').DataTable({
 
         columns: [{
-            data: 'accountName'
+            data: 'accountNumber'
         }, {
+            data: 'accountName'
+            }, {
+                data: 'description'
+            }, {
             data: 'debit',
             render: function (data, type, row) {
                 // Check if the booking direction is 'debit', if true, show '0' in debit column
@@ -21,7 +25,7 @@ $(document).ready(function () {
         }, {
             data: 'credit',
             render: function (data, type, row) {
-                // Check if the booking direction is 'credit', if true, show '0' in credit column
+                // Check if the booking direction is 'credit',<i class="mdi mdi-delete removeBtn" style="color: #dc3545; cursor: pointer; font-size: 24px;"></i>if true, show '0' in credit column
                 return (row.bookingDirection.toLowerCase() === 'credit') ? data : 0;
             }
         }, {
@@ -31,20 +35,25 @@ $(document).ready(function () {
         }
         ],
         columnDefs: [{
-            width: '50%',
-            targets: 0
-        }, // ruleName
-        {
             width: '20%',
             targets: 1
-        }, // chartOfAccount
+        }, // number
+            {
+                width: '20%',
+                targets: 2
+            }, // name 
+        {
+            width: '30%',
+            targets: 3
+            }
+            , // debit
+            {
+                width: '20%',
+                targets: 4
+            },    // credit
         {
             width: '20%',
-            targets: 2
-        }, // bookingDirection
-        {
-            width: '10%',
-            targets: 3
+            targets: 5
         }
         ],
         autoWidth: false // This is important to enforce our custom widths
@@ -380,7 +389,7 @@ function loadBranchBankAccount(branchId) {
         url: '/ManuallyJournalEntry/GetBranchAccount',
         type: 'GET',
         dataType: 'json',
-        data: { BranchId: branchId },
+        data: { branchId: branchId },
         success: function (data) {
             // Clear existing options in the OperationEventAttributeId combo
             $('#EntryTempData_AccountId').empty();

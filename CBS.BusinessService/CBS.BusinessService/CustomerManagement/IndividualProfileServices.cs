@@ -1058,7 +1058,7 @@ namespace CBS.BusinessService.CustomerManagement
             }
             return ExecutionMessage;
         }
-        public async Task<ExecutionMessages> UpdateMembershipstatus(IndividualCustomerProfile objCustomerProfile)
+        public async Task<ExecutionMessages> UpdateMembershipStatus(IndividualCustomerProfile objCustomerProfile)
         {
             try
             {

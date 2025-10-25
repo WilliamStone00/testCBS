@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounts
 {
-   
+
     public class SalaryProcessedServices : BaseService
     {
         private readonly ApiCallerHelper _transactionApiHelper;
@@ -53,7 +53,7 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-   
+
         public async Task<ExecutionMessages> GenerateForKnown(GenerateTempPayCodeForKnownBeneficiary model)
         {
             try
@@ -86,7 +86,9 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.GenerateProcessedSalaryTempCodeNoneMember, model);
+                model.Kyc.BankId = "1";
+                model.Kyc.CustomerCode = "0";
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<TempPayCodeResultDto>>(APICallHelper.GenerateProcessedSalaryTempCodeNoneMember, model);
                 if (response.IsSuccess)
                 {
                     // Successful creation
@@ -109,7 +111,7 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
-    
+
         public async Task<SalaryExtract> GetSalary(string id)
         {
             try
@@ -128,7 +130,28 @@ namespace CBS.BusinessService.Accounts
                 throw ex;
             }
         }
-  
+
+        public async Task<TempPayCode> GetSalaryTempCode(string id)
+        {
+            try
+            {
+                var data=new GetTempPayCodeByCodeQuery { PlainCode=id };
+                var queryString = ToQueryString(data);
+                var fullUrl = $"{APICallHelper.GetProcessedSalaryByTempCode}?{queryString}";
+                var couApiResponse = await _transactionApiHelper.GetAsync<ResponseObject<TempPayCode>>(fullUrl);
+                if (couApiResponse.IsSuccess)
+                {
+                    // FileDownloadDto should contain file data and metadata
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new TempPayCode();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public async Task<CustomDataTable> GetDataTableAsync(GetProcessedSalaryDataTableQuery request)
         {

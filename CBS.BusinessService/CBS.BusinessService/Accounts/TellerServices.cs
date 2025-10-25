@@ -346,11 +346,11 @@ namespace CBS.BusinessService.Accounts
 
             return ExecutionMessage;
         }
-        private void ApplyTellerUpdates(Teller target, Teller source, bool status)
+        private void ApplyTellerUpdates(Teller target, Teller source, bool Status)
         {
             if (source==null)
             {
-                target.AllowRemoteTellerClose=status;
+                target.AllowRemoteTellerClose=Status;
             }
             else
             {

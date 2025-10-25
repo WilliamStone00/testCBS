@@ -227,10 +227,10 @@ namespace CBS.FrontDesk.UI.Controllers
 
             try
             {
-                var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
+                //var listAccounts = await _chartOfAccountServices.GetAllChartOfAccounts();
 
-                var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
-                ViewBag.Accounts = CreditAccounts;
+                //var CreditAccounts = BuildMenuViewBag(await _AccountServices.GetJournalEntryMFIAccountQuery(_AccountServices.GetBranchID()));
+                //ViewBag.Accounts = CreditAccounts;
                 ViewBag.BookingDirections = await GetBookingDirections();
                 ViewBag.ChartOfAccountManagementPositions = BuildMenuCOAccountViewBag((await _ChartOfAccountManagementPositionServicesServices.GetChartOfAccountManagementPositions()).ToList());
                 ViewBag.DoubbleEntryValidation = await GetDoubbleEntryValidation();
@@ -309,21 +309,13 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> GetBranchAccount(string BranchId)
+        public async Task<ActionResult> GetBranchAccount(string branchId)
         {
-            if (_AccountServices.IsHeadOffice())
-            {
-                var ListOfData = await _AccountServices.GetAllAccounting();
-                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
+             
+                var ListOfData = await _AccountServices.GetAllBranchAccount(branchId);
+      
                 return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-              //var ListOfData = await _AccountServices.GetJournalEntryMFIAccountQuery(BranchId);
-                var ListOfData = await _AccountServices.GetAllAccounting();
-                ListOfData = ListOfData.Where(x => x.AccountOwnerId == BranchId).ToList();
-                return Json(BuildDropDown(ListOfData), JsonRequestBehavior.AllowGet);
-            }
+           
 
         }
         private List<StringValues> BuildDropDown(List<Data.Account> ListOfData)

@@ -169,7 +169,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetTempPayCodeId = "/api/v1/ProcessedSalary/temp-code/{0}";
         public static string RedeemTempCode = "/api/v1/ProcessedSalary/temp-code/redeem";
         public static string NoneMemberPendingPayOut = "/api/v1/ProcessedSalary/nonmember-pending";
-
+        public static string GetProcessedSalaryByTempCode = "/api/v1/ProcessedSalary/temp-paycode/by-code";
 
         //SalaryExecution
         public static string ExecuteSalary = "/api/v1/SalaryExecution/execute-salary";
@@ -320,7 +320,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllByParameters = "/api/v1/Customer/GetAllByParameters";
         public static string MembersDatatableQuery = "/api/v1/customers/datatable";
         public static string MembersDownloadDatatableQuery = "/api/v1/customer-download/customers";
-        
+
 
         public static string AllCustomers = "/api/v1/Customers";
         public static string GetAllIndividualProfileByBranch = "/api/v1/Customers/{0}";
@@ -1004,8 +1004,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAccountByBranchIdUrl = "/api/v1/Account/GetAccountByBranchIDQuery/{0}";
         public static string GetAlAccounts = "/api/v1/Accounts";
         public static string GetAllLiaisonAccount = "/api/v1/Accounts/LiaisonAccount";
-        public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
-
+        //public static string GetAllAccountByBranch = "/api/v1/Accounts/{0}";
+        public static string GetAllAccountByBranch = "/api/v1/Accounts/GetAllAccountByBranchIDQuery/{0}";
         public static string GetAllBankAccountChartUsedToCreditCashFlow = "/api/v1/ChartOfAccountManagementPosition/{0}/{1}";
 
         public static string GetAllBranchAccountUsedToCreditCashFlow = "/api/v1/Account/GetAccountByMFIBankAccountNumberQuery/{0}";
@@ -1258,29 +1258,36 @@ namespace CBS.FrontDesk.Helper
         public static string CreateChequeBookCategory = "/api/v1/checkbook-category";
         public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
         public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string categorydatatable = "/api/v1/checkbook-category/data-table";
 
-        // ---------------- GENERIC CRUD ----------------
+        // ---------------- cheque number position CRUD ----------------
         public static string GetAll = "/api/v1/check-configs";
         public static string GetById = "/api/v1/check-config/{0}";
         public static string Create = "/api/v1/check-config";
         public static string Update = "/api/v1/check-config/{0}";
         public static string Delete = "/api/v1/check-config/{0}";
+        public static string datatable = "/api/v1/check-config/data-table";
 
         // ---------------- FEE CONFIG ----------------
         public static string GetAllFeeConfigs = "/api/v1/get-Feeconfigs";
         public static string GetFeeTypes = "/api/v1/Fee-types";
-        public static string GetFeeConfigById = "/api/v1/FeeConfig/{0}";
+        public static string GetFeeConfigById = "/api/v1/Fee-config/{0}";
         public static string CreateFeeConfig = "/api/v1/fee-config";
         public static string UpdateFeeConfig = "/api/v1/fee-config/{0}";
         public static string DeleteFeeConfig = "/api/v1/fee-config/{0}";
+        public static string FeeDatatable = "/api/v1/FeeConfig/data-table";
 
         // ---------------- NOTIFICATIONS ----------------
 
         public static string GetAllnot = "/api/v1/Notification/types";
-        public static string GetNotificationTypes = "/api/v1/Notification";
-        public static string Createnot = "/api/v1/Notification";
-        public static string Updatenot = "/api/v1/Notification/{id}";
-        public static string Deletenot = "/api/v1/Notification/{id}";
+        public static string GetNotificationConfigById = "/api/v1/Notification/types";
+        public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        public static string Createnot = "/api/v1/Notification/Config";
+        public static string Updatenot = "/api/v1/update-notification-config/{0}";
+        public static string Deletenot = "/api/v1/delete-notification-config/{0}";
+        public static string notdata = "/api/v1/data-table";
+
+
         //------------------- CounterCheque ----------------
         public static string CreateCounterCheque = "/api/v1/counter-checks";
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
@@ -1302,11 +1309,13 @@ namespace CBS.FrontDesk.Helper
         public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
 
         //------------------------- Cheque Request -------------------------
-        public const string CreateChequeRequest = "/api/v1/cheque-requests";
-        public const string GetAllChequeRequests = "/api/v1/cheque-requests";
-        public const string GetChequeRequestById = "/api/v1/cheque-requests/{0}";
-        public const string ApproveChequeRequest = "/api/v1/cheque-requests/{0}/approve";
-        public const string RejectChequeRequest = "/api/v1/cheque-requests/{0}/reject";
+        public const string CreateChequeRequest = "/api/v1/CheckRequest";
+        public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
+        public const string GetAllChequeRequests = "not yet provided by backend";
+        public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
+        public const string RejectChequeRequest = "not yet provided by backend";
+        public const string ReviewChequeRequest = "not yet provided by backend";
+        public const string datatableforrequest = "/api/v1/CheckRequest/DataTable";
 
         //------------------------ Counter Cheque ------------------------
         public const string IssueCounterCheque = "/api/v1/counter-checks";
@@ -1314,6 +1323,10 @@ namespace CBS.FrontDesk.Helper
         public const string ReviewCounterCheque = "/api/v1/counter-checks/{0}/review";
         public const string ValidateCounterCheque = "/api/v1/counter-checks/{0}/validate";
         public const string RejectCounterCheque = "/api/v1/counter-checks/{0}/reject";
+
+        public const string GetCounterChequeDetails = "/api/v1/counter-checks";
+
+        public const string datatableforcounterrequest = "/api/v1/counter-checks/data-table";
 
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
@@ -1375,12 +1388,12 @@ namespace CBS.FrontDesk.Helper
         public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
 
-        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
-    public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
-    public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
-    public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
-    public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+    //    public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+    //public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+    //public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+    //public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+    //public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+    //public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
        
         //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
@@ -1407,8 +1420,35 @@ namespace CBS.FrontDesk.Helper
 
 
 
-        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
 
+
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 
+        //******************** BRANCH CASH CONFIG *********************************//
+
+        public static string GetAllBranchCashConfigs = "/api/v1/BranchCashConfig";
+        public static string GetBranchCashConfigById = "/api/v1/BranchCashConfig/{0}";
+        public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
+        public static string CreateBranchCashConfig = "/api/v1/BranchCashConfig";
+        public static string UpdateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string DeactivateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
+        public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
+        public static string ValidateBranchConfig = "api/branchcashconfig/validate";
+
+
+        public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
+        public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
+        public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string GetLiaisonMappingsDataTable = "/api/v1/LiaisonMapping/datatable";
+
+        //************************************Role Gl Resolution Endpoints  ********************************************////
+
+        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
+        public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string GetRoleGlResolutionsDataTable = "/api/v1/RoleGlResolution/datatable";
         //-------------------Interbranch Configuration -----------------------------------//
         public static string GetAllConfigurationManualEntry = "api/v1/InterBranchConfig";
 
@@ -1430,7 +1470,83 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
 
 
+        //*************************** CHEQUE BOOK ******************************
 
+        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        //public static string Createnot = "/api/v1/Notification/Config";
+        //public static string Updatenot = "/api/NotificationConfig/{0}";
+        //public static string Deletenot = "/api/NotificationConfig/{0}";
+
+       
+
+        //************************** END CHEQUE BOOK *******************************
+
+        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+
+        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+        public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+        public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+        public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+        public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+        public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+
+
+        //*************************** END MANUAL DAILLY COLLECTIONS ************************ 1
+
+        //*************************** Accounting V2 **************************************
+        //-------------------------- Chat of account ------------------------------------
+        public static string GetAllAccountsEndpoint = "/api/v1/HoPcmfAccount/tree";
+        public static string GetAccountByIdEndpoint = "/api/v1/HoPcmfAccount/{0}/{1}";
+        public static string UpdateAccountNameEndpoint = "/api/v1/HoPcmfAccount/{0}";
+        public static string COAdatatable = "/api/v1/HoPcmfAccount/datatable";
+
+        //-------------------------- Affiliate ------------------------------------------
+        public static string GetAllAffiliate = "/api/v1/Affiliate/simple?isActive=true&includeDeleted=false";
+        public static string Affiliatedatatable = "/api/v1/Affiliate/datatable";
+        public static string GetAffiliateById = "/api/v1/Affiliate/{0}";
+        public static string CreateAffiliate = "/api/v1/Affiliate";
+        public static string UpdateAffiliate = "/api/v1/Affiliate/{0}/update";
+        public static string DeactivateAffiliate = "/api/v1/Affiliate/{0}/soft-delete?force=true";
+
+
+        //-------------------------- Affiliate Account ------------------------------------------
+        public static string GetAllAffiliateAccount = "/api/v1/Affiliate/simple?isActive=true&includeDeleted=false";
+        public static string AffiliateAccountdatatable = "/api/v1/AffiliateAccount/datatable";
+        public static string GetAffiliateAccountById = "/api/v1/AffiliateAccount/{0}?lang=string";
+        public static string CreateAffiliateAccount = "/api/v1/AffiliateAccount";
+        public static string UpdateAffiliateAccount = "/api/v1/AffiliateAccount/{0}";
+        public static string DeactivateAffiliateAccount = "/api/v1/AffiliateAccount/{0}?force=true";
+        public static string GetAllAccountDropAffiliate = "/api/v1/AffiliateAccount/:id?force=true";
+
+        //-------------------------- Branch Account ------------------------------------------
+        public static string DeactivatBranchAccount = "/api/v1/BranchAccount/{0}";
+        public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
+        public static string CreateBranchAccount = "/api/v1/BranchAccount";
+        public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
+        public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
+        public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
+
+        //-------------------------- FileUpload ------------------------------------------
+        public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
+        public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
+
+        //-------------------------- FileUpload ------------------------------------------
+        public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string Updateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string GetawaitingcorrespondanceById = "/api/v1/AccountAwaitingCorrespondence/{0}";
+        public static string GetAllawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/list";
+        public static string awaitingcorrespondancedatatable = "/api/v1/AccountAwaitingCorrespondence/datatable";
+        public static string createCorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
+        public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
+
+        public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
+        public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
+        public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
+
+
+        //*************************** End of Accounting V2 **************************************
 
 
     }

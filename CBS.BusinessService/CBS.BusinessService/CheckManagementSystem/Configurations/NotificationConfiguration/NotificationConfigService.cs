@@ -3,7 +3,9 @@
 using BusinessServices;
 using CBS.API.Helper; // For ApiCallerHelper
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -77,6 +79,35 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
             }
         }
 
+        public async Task<CustomDataTable> GetNotificationDataTableAsync(NotificationconfigQuery query)
+        {
+            try
+            {
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.notdata, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
 
         //public async Task<IEnumerable<StringValues>> GetFeeTypesAsync()
         //{
@@ -128,6 +159,34 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
                 throw;
             }
         }
+
+        public async Task<NotificationConfig> GetByIdAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentException("id is required", nameof(id));
+
+            try
+            {
+                // Replace the APICallHelper constant below with the actual one if different.
+                // Expected form: "api/notifications/configurations/{0}"
+                string url = string.Format(APICallHelper.GetNotificationConfigById, id);
+
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<NotificationConfig>>(url);
+
+                // If the API call failed, surface a clear exception (controller will handle it).
+                if (response == null || !response.IsSuccess)
+                    throw new Exception(response?.Message ?? "Failed to call notification service.");
+
+                // If API succeeded but no data was returned, return null so caller can treat as NotFound.
+                return response.ApiResponseData?.Data;
+            }
+            catch
+            {
+                // rethrow to allow controller to send a generic failure message
+                throw;
+            }
+        }
+
 
 
         /// <summary>

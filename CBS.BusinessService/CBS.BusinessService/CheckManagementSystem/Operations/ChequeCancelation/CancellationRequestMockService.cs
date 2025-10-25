@@ -231,8 +231,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.ChequeCancelation
             // Apply filters
             if (!string.IsNullOrEmpty(query.Status))
             {
-                var status = (CancellationStatus)Enum.Parse(typeof(CancellationStatus), query.Status);
-                data = data.Where(r => r.Status == status);
+                var Status = (CancellationStatus)Enum.Parse(typeof(CancellationStatus), query.Status);
+                data = data.Where(r => r.Status == Status);
             }
 
             if (!string.IsNullOrEmpty(query.BranchId))

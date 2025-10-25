@@ -1,35 +1,35 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Application;
+using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
-using CBS.FrontDesk.Data.Entity.Config;
-
-using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.CustomerManagement;
+using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
+using CBS.FrontDesk.Data.Entity.SalaryManagement;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.ReportDataSetDto;
+using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Irony.Parsing;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
-using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
-using CBS.FrontDesk.Data.ReportDataSetDto;
-using CBS.FrontDesk.Data.UserManagement;
 using System.Web;
-using CBS.BusinessService.UserManagement;
-using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using Irony.Parsing;
 using System.Web.Mvc;
-using CBS.BusinessService.Application;
-using DocumentFormat.OpenXml.Bibliography;
-using CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP;
-using Microsoft.Owin.Logging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using CBS.FrontDesk.Data.Entity.DailyCollectionEntities;
 
 namespace CBS.BusinessService.Accounts
 {
@@ -55,8 +55,8 @@ namespace CBS.BusinessService.Accounts
             _branchServices = branchServices;
             _loanServices = loanServices;
             _loanConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["LoanBaseUrl"].ToString());
-            _remittanceServices=remittanceServices;
-            _accountServices=accountServices;
+            _remittanceServices = remittanceServices;
+            _accountServices = accountServices;
         }
 
         public async Task<List<TransactionHistory>> GetCustomerTransactionsByCustomerNumber(string customerNumber)
@@ -337,7 +337,7 @@ namespace CBS.BusinessService.Accounts
         }
 
         // ---------------- Local helper keeps both branches identical on success/failure ----------------
-        ExecutionMessages HandlePaymentResponse(ServiceResponse<PaymentReceipt> response, string actionLabel,string message)
+        ExecutionMessages HandlePaymentResponse(ServiceResponse<PaymentReceipt> response, string actionLabel, string message)
         {
             if (response?.Data != null)
             {
@@ -414,15 +414,65 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> RedeemNonMemberSalaryAsync(RedeemTempPayCodeCommand a)
+        {
+            //OtherCashIn
+            try
+            {
+                var (isValid, discrepancyMessage) = ValidateDenominations(a.CurrencyNotes, a.Amount);
+                if (!isValid)
+                {
+                    string errorMessage = $"Other cashIn has a discrepancy. {discrepancyMessage}";
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                       ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
+                    return ExecutionMessage;
+                }
+
+                a.Naration = string.IsNullOrEmpty(a.Naration) ? "N/A" : a.Naration;
+                var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.RedeemTempCode, a);
+                if (response.ApiResponseData != null)
+                {
+                    Branch branch = RetrieveBranchFromSession();
+                    var rpt = MapToDto(branch, response.ApiResponseData.Data);
+                    var rptSource = new List<OtherTransactionDto>();
+                    rptSource.Add(rpt);
+                    HttpContext.Current.Session["rptSource"] = rptSource;
+                    GetExecutionMessages(response, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+                else
+                {
+                    // Failed creation
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
+            }
+            return ExecutionMessage;
+        }
 
         public async Task<ExecutionMessages> BulkDeposi(List<BulkDeposit> bulkDeposits1)
         {
             try
             {
                 var bulkDeposits = FilterByAmountGreaterThanZero(bulkDeposits1);
-                var TotalAmount = bulkDeposits.Sum(x => x.Total);
+
+
                 // Take only the first BulkDeposit object
                 var deposit = bulkDeposits.FirstOrDefault();
+                var TotalAmount = bulkDeposits.Sum(x => x.Total);
+
+                if (deposit.IncludeLoanRepayment)
+                {
+                    TotalAmount += deposit.BulkOperationsForLoanRepayments.FirstOrDefault().Total;
+                }
                 if (bulkDeposits.FirstOrDefault().OperationType == "Withdrawal")
                 {
                     var (isValid, discrepancyMessage) = ValidateDenominations(deposit.currencyNotes, TotalAmount);
@@ -434,7 +484,7 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance = bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -465,7 +515,7 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance=bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, HideBalance = bulkDeposits.FirstOrDefault().HideBalance, OperationType = "Withdrawal" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -568,15 +618,15 @@ namespace CBS.BusinessService.Accounts
                             // --- Build command for Daily Collector Cash Clearing ---
                             var cmd = new AddDailyCollectorCashDepositCommand
                             {
-                                AccountNumber                 = bulkOP.AccountNumber,
-                                Amount                        = bulkOP.Amount,
-                                CollectionType                = bulkOP.CollectionType,          // "Manual" or "Device"
-                                CurrencyNotes                 = bulkOP.currencyNotes,
-                                CustomerId                    = bulkOP.CustomerId,
-                                Depositer                     = bulkOP.Depositer,
-                                ManualEntryDailyCollectorId   = bulkOP.ManualEntryDailyCollectorId,
-                                Note                          = bulkOP.Note==null ? "n/a" : bulkOP.Note,
-                                Total                         = bulkOP.Total
+                                AccountNumber = bulkOP.AccountNumber,
+                                Amount = bulkOP.Amount,
+                                CollectionType = bulkOP.CollectionType,          // "Manual" or "Device"
+                                CurrencyNotes = bulkOP.currencyNotes,
+                                CustomerId = bulkOP.CustomerId,
+                                Depositer = bulkOP.Depositer,
+                                ManualEntryDailyCollectorId = bulkOP.ManualEntryDailyCollectorId,
+                                Note = bulkOP.Note == null ? "n/a" : bulkOP.Note,
+                                Total = bulkOP.Total
                             };
 
                             var response = await _transactionApiHelper
@@ -589,11 +639,13 @@ namespace CBS.BusinessService.Accounts
                             // --- Standard bulk deposit (non DC) ---
                             var request = new BulkOperation
                             {
-                                BulkOperations     = bulkDeposits,
-                                IsCashOperation    = true,
-                                OperationType      = "Deposit",
-                                CustomerAlphaNumber= customerAlphaNumber,
-                                HideBalance        = bulkOP.HideBalance
+                                BulkOperations = bulkDeposits,
+                                IsCashOperation = true,
+                                OperationType = "Deposit",
+                                IncludeLoanRepayment = deposit.IncludeLoanRepayment,
+                                BulkOperationsForLoanRepayments = deposit.BulkOperationsForLoanRepayments,
+                                CustomerAlphaNumber = customerAlphaNumber,
+                                HideBalance = bulkOP.HideBalance
                             };
 
                             var response = await _transactionApiHelper
@@ -624,7 +676,7 @@ namespace CBS.BusinessService.Accounts
                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, errorMessage);
                         return ExecutionMessage;
                     }
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", Id=bulkDeposits.FirstOrDefault().RemittanceId, DepositType="RemittanceIN" };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "Deposit", Id = bulkDeposits.FirstOrDefault().RemittanceId, DepositType = "RemittanceIN" };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -660,7 +712,7 @@ namespace CBS.BusinessService.Accounts
                     }
                     string N = "N/A";
                     var remOut = bulkDeposits.FirstOrDefault();
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "RemittanceOUT", Id=remOut.RemittanceId, OTP=remOut.OTP, ReceiverPhoneNumber=remOut.ReceiverPhoneNumber, DepositType=N, Period=N, ReceiverAddress=remOut.ReceiverAddress, ReceiverCNI=remOut.ReceiverCNI, ReceiverCNIDateOfExpiration=remOut.ReceiverCNIDateOfExpiration, ReceiverCNIDateOfIssue=remOut.ReceiverCNIDateOfIssue, ReceiverCNIPlcaceOfIssue=remOut.ReceiverCNIPlcaceOfIssue, ReceiverName=remOut.ReceiverName, RemittanceAmount=remOut.RemittanceAmount, RemittanceDate=remOut.RemittanceDate, SenderAddress=remOut.SenderAddress, SenderName=remOut.SenderName, SenderPhoneNumber=remOut.SenderPhoneNumber, SenderSecretCode=remOut.SenderSecretCode };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = true, OperationType = "RemittanceOUT", Id = remOut.RemittanceId, OTP = remOut.OTP, ReceiverPhoneNumber = remOut.ReceiverPhoneNumber, DepositType = N, Period = N, ReceiverAddress = remOut.ReceiverAddress, ReceiverCNI = remOut.ReceiverCNI, ReceiverCNIDateOfExpiration = remOut.ReceiverCNIDateOfExpiration, ReceiverCNIDateOfIssue = remOut.ReceiverCNIDateOfIssue, ReceiverCNIPlcaceOfIssue = remOut.ReceiverCNIPlcaceOfIssue, ReceiverName = remOut.ReceiverName, RemittanceAmount = remOut.RemittanceAmount, RemittanceDate = remOut.RemittanceDate, SenderAddress = remOut.SenderAddress, SenderName = remOut.SenderName, SenderPhoneNumber = remOut.SenderPhoneNumber, SenderSecretCode = remOut.SenderSecretCode };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.MakeWithdrawal, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -681,7 +733,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
@@ -724,7 +776,7 @@ namespace CBS.BusinessService.Accounts
                 // 650207592 Courage.
                 else if (bulkDeposits.FirstOrDefault().OperationType == "LoanRepaymentMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, DepositType = "LoanRepaymentMomocashCollection", IsCashOperation = false, OperationType = "Deposit", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
@@ -756,11 +808,11 @@ namespace CBS.BusinessService.Accounts
                         IsCashOperation = false,
                         OperationType = "Deposit"
                     ,
-                        LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
-                        AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
+                        LoanToBeRefundeds = bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
+                        AccountToBeDebiteds = bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
                         ,
-                        AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate
+                        AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate
                     };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
@@ -792,12 +844,12 @@ namespace CBS.BusinessService.Accounts
                         DepositType = "LoanRepaymentGLAccountNoneCash",
                         IsCashOperation = false,
                         OperationType = "Deposit",
-                        LedgerChartOfAccountId=bulkDeposits.FirstOrDefault().ChartOfAccountId,
-                        LoanToBeRefundeds= bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
-                        AccountToBeDebiteds=bulkDeposits.FirstOrDefault().AccountToBeDebiteds
+                        LedgerChartOfAccountId = bulkDeposits.FirstOrDefault().ChartOfAccountId,
+                        LoanToBeRefundeds = bulkDeposits.FirstOrDefault().LoanToBeRefundeds,
+                        AccountToBeDebiteds = bulkDeposits.FirstOrDefault().AccountToBeDebiteds
 
                         ,
-                        AccountingDate=bulkDeposits.FirstOrDefault().AccountingDate
+                        AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate
                     };
 
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
@@ -906,19 +958,19 @@ namespace CBS.BusinessService.Accounts
                     {
                         AccountNumber = a.AccountNumber,
                         Amount = a.Amount,
-                        ExternalBranchId=a.ExternalBranchId,
+                        ExternalBranchId = a.ExternalBranchId,
                         CurrencyNotesRequest = a.currencyNotes,
                         CustomerId = (a.SourceType == "Member_Account" || (!string.IsNullOrEmpty(a.CustomerId) && a.SourceType != "Member_Account")) ? a.CustomerId
                  : "N/A",
                         Direction = "",
                         Name = a.Period,
-                        Naration = a.Note=string.IsNullOrEmpty(a.Note) ? "N/A" : a.Note,
+                        Naration = a.Note = string.IsNullOrEmpty(a.Note) ? "N/A" : a.Note,
                         SourceType = a.SourceType,
                         TransactionType = "Income"
                     };
-                    if (addOtherTransaction.ExternalBranchId==null)
+                    if (addOtherTransaction.ExternalBranchId == null)
                     {
-                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                        addOtherTransaction.ExternalBranchId = GetBranchID();
                     }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
@@ -992,7 +1044,7 @@ namespace CBS.BusinessService.Accounts
 
 
                     var data = bulkDeposits.FirstOrDefault();
-                    var addNoneCashMobileMoneyCommand = new AddNoneCashMobileMoneyCommand { Amount=data.Amount, Charges=data.Fee, CustomerName=data.MemberName, MemberReference=data.CustomerId, OperationType=data.OperationType, ReceiverAccountNumber=data.AccountNumber, SourceType=data.SourceType, TelephoneNumber=data.TelephoneNumber, TellerCode=data.TellerCode, Note=data.Note };
+                    var addNoneCashMobileMoneyCommand = new AddNoneCashMobileMoneyCommand { Amount = data.Amount, Charges = data.Fee, CustomerName = data.MemberName, MemberReference = data.CustomerId, OperationType = data.OperationType, ReceiverAccountNumber = data.AccountNumber, SourceType = data.SourceType, TelephoneNumber = data.TelephoneNumber, TellerCode = data.TellerCode, Note = data.Note };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.MobileMoneyNoneCashCashIn, addNoneCashMobileMoneyCommand);
                     if (response.ApiResponseData != null)
                     {
@@ -1028,14 +1080,14 @@ namespace CBS.BusinessService.Accounts
                         CustomerId = a.SourceType == "Member_Account" ? a.CustomerId : "N/A",
                         Direction = "N/A",
                         Name = a.Period,
-                        ExternalBranchId=a.ExternalBranchId,
+                        ExternalBranchId = a.ExternalBranchId,
                         Naration = a.Note,
                         SourceType = a.SourceType,
                         TransactionType = "Expense"
                     };
-                    if (addOtherTransaction.ExternalBranchId==null)
+                    if (addOtherTransaction.ExternalBranchId == null)
                     {
-                        addOtherTransaction.ExternalBranchId=GetBranchID();
+                        addOtherTransaction.ExternalBranchId = GetBranchID();
                     }
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<OtherTransaction>>(APICallHelper.CreateOtherTransaction, addOtherTransaction);
                     if (response.ApiResponseData != null)
@@ -1198,7 +1250,7 @@ namespace CBS.BusinessService.Accounts
                 var firstAccount = accounts.First();
                 var branch = await _branchServices.GetBranch(firstAccount.branchId);
 
-                customer.name = customer.FirstName+" "+customer.LastName;
+                customer.name = customer.FirstName + " " + customer.LastName;
                 customer.CustomerId = customerId;
 
                 // Containers
@@ -1216,7 +1268,7 @@ namespace CBS.BusinessService.Accounts
 
                 if (isDailyCollector)
                 {
-                    selectListItems=await GetCollectorApprovedUpload(customer.CustomerId);
+                    selectListItems = await GetCollectorApprovedUpload(customer.CustomerId);
                 }
 
                 switch (path?.ToLower())
@@ -1260,9 +1312,9 @@ namespace CBS.BusinessService.Accounts
                 return new CashDesk
                 {
                     Branch = branch,
-                    SelectedItemsApprovedUploads=selectListItems,
+                    SelectedItemsApprovedUploads = selectListItems,
                     Accounts = accounts,
-                    IsDailyCollector=isDailyCollector,
+                    IsDailyCollector = isDailyCollector,
                     BulkDeposit = new BulkDeposit
                     {
                         Amount = amountRequested > 0 ? amountRequested : subscriptionFee,
@@ -1391,8 +1443,8 @@ namespace CBS.BusinessService.Accounts
                         Amount = remittance.Amount, // Handles 0 by default if not set in the Remittance object
                         CheckNumber = "N/A",
                         CheckName = "N/A",
-                        IsPaid=remittance.Status=="Paid" ? true : false,
-                        Fee = remittance.Status=="Paid" ? 0 : remittance.Fee
+                        IsPaid = remittance.Status == "Paid" ? true : false,
+                        Fee = remittance.Status == "Paid" ? 0 : remittance.Fee
                     },
                     BulkDeposits = BuidObject(accounts, remittance),
                     Customer = customer,
@@ -1400,8 +1452,8 @@ namespace CBS.BusinessService.Accounts
                     CustomerId = customer.CustomerId,
                     RemittanceId = remittance.Id,
                     Remittance = remittance,
-                    GenerateRemittanceOTPCommand=new GenerateRemittanceOTPCommand { ReceiverPhoneNumber=remittance.ReceiverPhoneNumber, RemittanceReference=remittance.TransactionReference },
-                    SavingProduct=account.Product
+                    GenerateRemittanceOTPCommand = new GenerateRemittanceOTPCommand { ReceiverPhoneNumber = remittance.ReceiverPhoneNumber, RemittanceReference = remittance.TransactionReference },
+                    SavingProduct = account.Product
                 };
 
                 return cashDesk;
@@ -1515,13 +1567,13 @@ namespace CBS.BusinessService.Accounts
 
                 return new CashDesk
                 {
-                    Branch         = branch,
-                    Accounts       = null,
-                    BulkDeposit    = new BulkDeposit(),
-                    BulkDeposits   = new List<BulkDeposit>(),
-                    Customer       = customer,
-                    LoanId         = null,
-                    CustomerId     = customerId,
+                    Branch = branch,
+                    Accounts = null,
+                    BulkDeposit = new BulkDeposit(),
+                    BulkDeposits = new List<BulkDeposit>(),
+                    Customer = customer,
+                    LoanId = null,
+                    CustomerId = customerId,
                     IsDailyCollector = isDailyCollector
                 };
             }
@@ -1629,13 +1681,13 @@ namespace CBS.BusinessService.Accounts
             if (accounts.Any())
             {
 
-                if (remittance.Status=="Paid")
+                if (remittance.Status == "Paid")
                 {
                     var selected = accounts.Select(a => new BulkDeposit
                     {
                         AccountNumber = a.AccountNumber,
                         AccountType = remittance.RemittanceType,
-                        Amount = remittance.ChargeType!="Exclussive" ? remittance.Amount-remittance.Fee : remittance.Amount,
+                        Amount = remittance.ChargeType != "Exclussive" ? remittance.Amount - remittance.Fee : remittance.Amount,
                         Balance = a == null ? 0 : a.Balance,
                         currencyNotes = new CurrencyNotes(),
                         CustomerId = a.CustomerId,
@@ -1644,7 +1696,7 @@ namespace CBS.BusinessService.Accounts
                         LoanId = null,
                         Penalty = 0,
                         Total = 0,
-                        RemittanceId=remittance.Id
+                        RemittanceId = remittance.Id
                     }).ToList();
                     return selected;
                 }
@@ -1663,7 +1715,7 @@ namespace CBS.BusinessService.Accounts
                         LoanId = null,
                         Penalty = 0,
                         Total = 0,
-                        RemittanceId=remittance.Id
+                        RemittanceId = remittance.Id
                     }).ToList();
                     return selected;
                 }

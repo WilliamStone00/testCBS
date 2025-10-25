@@ -1,188 +1,329 @@
-﻿$(document).ready(function () {
-  
-    $("#loadChartOfAccount").click(function () {
-        LoadChartOfAccounts();
+﻿(function () {
+    // Configuration
+    const config = {
+        treeContainer: '#accountsTree',
+        loadBtn: '#refreshTree',
+        expandBtn: '#expandAll',
+        collapseBtn: '#collapseAll',
+        formSelector: '#editAccountForm',
+        noSelection: '#noSelection',
+        detailsLoading: '#detailsLoading',
+        detailsPane: '#accountInfo',
+        closeDetailsBtn: '#closeDetails',
+        closeAccountBtn: '#closeAccountBtn',
+        treeLoading: '#treeLoading'
+    };
+
+    // URLs
+    const urls = {
+        tree: '/ChartOfAccountV2/GetTreeData',
+        accountDetails: '/ChartOfAccountV2/GetAccountDetails',
+        update: '/ChartOfAccountV2/UpdateAccountName',
+        close: '/ChartOfAccountV2/CloseAccount'
+    };
+
+    // State
+    let currentLanguage = 'en';
+    let currentTree = null;
+
+    // Initialize
+    $(document).ready(function () {
+        initializeEvents();
+        loadChartOfAccounts(); // Auto-load on page ready
     });
-});
 
+    function initializeEvents() {
+        $(document).on('click', config.loadBtn, loadChartOfAccounts);
+        $(document).on('click', config.expandBtn, expandAllNodes);
+        $(document).on('click', config.collapseBtn, collapseAllNodes);
+        $(document).on('click', config.closeDetailsBtn, closeDetailsPanel);
+        $(document).on('click', config.closeAccountBtn, closeAccount);
+        $(document).on('submit', config.formSelector, handleFormSubmit);
+        $(document).on('change', '#languageToggle', toggleLanguage);
+    }
 
-function LoadChartOfAccounts() {
-    console.log("LoadChartOfAccounts");
-    $.ajax({
-        url: "/AccountingChart/InitializeData?KEY=null&partialView=null&path=list",
-        success: function (data) {
+    function loadChartOfAccounts() {
+        showElement(config.treeLoading);
+        hideElement(config.treeContainer);
 
-            $('#jstree-context-menu').jstree({
+        $.ajax({
+            url: urls.tree,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                initializeOrRefreshTree(data);
+                hideElement(config.treeLoading);
+                showElement(config.treeContainer);
+            },
+            error: function (xhr, status, err) {
+                console.error('LoadChartOfAccounts error:', err);
+                showError('Failed to load chart of accounts. Please try again.');
+                hideElement(config.treeLoading);
+                showElement(config.treeContainer);
+            }
+        });
+    }
+
+    function initializeOrRefreshTree(data) {
+        if ($.jstree && $(config.treeContainer).data('jstree')) {
+            currentTree = $(config.treeContainer).jstree(true);
+            currentTree.settings.core.data = data;
+            currentTree.refresh();
+        } else {
+            currentTree = $(config.treeContainer).jstree({
                 core: {
-                    data: data
+                    data: data,
+                    multiple: false,
+                    themes: {
+                        name: 'default',
+                        responsive: true,
+                        dots: true,
+                        icons: true
+                    },
+                    check_callback: true
+                },
+                plugins: ['wholerow', 'types'],
+                types: {
+                    default: { icon: 'jstree-folder' },
+                    file: { icon: 'jstree-file' }
                 }
             });
 
+            // Node selection event
+            currentTree.on('select_node.jstree', function (e, data) {
+                const node = data.node;
+                if (node && node.id) {
+                    loadAccountDetails(node.id, node);
+                }
+            });
+
+            // Node loaded event - fix icons
+            currentTree.on('loaded.jstree', function () {
+                fixTreeIcons();
+            });
+        }
+    }
+
+    function loadAccountDetails(accountId, node = null) {
+        showElement(config.detailsLoading);
+        hideElement(config.noSelection);
+        hideElement(config.detailsPane);
+
+        $.ajax({
+            url: urls.accountDetails,
+            type: 'GET',
+            data: { id: accountId },
+            success: function (response) {
+                if (response && response.success) {
+                    displayAccountDetails(response.data, node);
+                } else {
+                    showError(response.message || 'Failed to load account details.');
+                    showElement(config.noSelection);
+                }
+                hideElement(config.detailsLoading);
+            },
+            error: function (xhr) {
+                console.error('LoadAccountDetails error:', xhr);
+                showError('Error loading account details.');
+                hideElement(config.detailsLoading);
+                showElement(config.noSelection);
+            }
+        });
+    }
+
+    function displayAccountDetails(account, node) {
+        // Fill form fields
+        $('#accountId').val(account.id);
+        $('#accountCode').val(account.code);
+        $('#accountNameEn').val(account.nameEn);
+        $('#accountNameFr').val(account.nameFr);
+        $('#accountClass').val(account.class);
+        $('#accountDepth').val(account.depth);
+        $('#postingAllowed').prop('checked', account.postingAllowed);
+
+        // Show/hide close account button based on business rules
+        toggleCloseAccountButton(account);
+
+        // Show details panel
+        hideElement(config.noSelection);
+        hideElement(config.detailsLoading);
+        showElement(config.detailsPane);
+        showElement(config.closeDetailsBtn);
+
+        // Update UI based on account type
+        updateUIForAccountType(account);
+    }
+
+    function toggleCloseAccountButton(account) {
+        // Business logic: Only show close button for certain account types/depths
+        const canClose = account.depth > 0 && account.postingAllowed;
+        if (canClose) {
+            showElement(config.closeAccountBtn);
+        } else {
+            hideElement(config.closeAccountBtn);
+        }
+    }
+
+    function updateUIForAccountType(account) {
+        // Add visual indicators based on account properties
+        const form = $(config.formSelector);
+        form.removeClass('border-warning border-danger border-success');
+
+        if (!account.postingAllowed) {
+            form.addClass('border-warning');
+        } else if (account.depth === 0) {
+            form.addClass('border-success');
+        }
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+
+        const accountId = $('#accountId').val();
+        if (!accountId) {
+            showError('No account selected.');
+            return false;
         }
 
-
-
-    }); 
-
-}
-
-function AjaxPostAndUpdateChartOfAccount(form) {
-
-   /* $.validator.unobtrusive.parse(form);*/
-    if ($(form).valid()) {
-        var ajaxConfig = {
-            type: 'POST',
-            url: form.action,
-            data: new FormData(form),
-            success: function (response) {
-                //$('#jstree-context-menu').on('click', '.parent_', function (e, data) {     LoadChartOfAccounts();
-              //  window.location.href = "/AccountingChart/Index";
-
-    ///
-                if (response.success) {
-                    window.location.href = "/AccountingChart/Index";
-                   // $('#jstree-context-menu').jstree('refresh', '.' + $("#selectedID").val() +'_anchor'  );
-                }
-                else {
-                    alert("Error has occured!");
-                    appalert(response.message, 1, 4);
-                }
-
-            }
-            , error: function (err) {
-                appalert(err.statusText, 0, 1);
-            }
+        const payload = {
+            Id: accountId,
+            NameEn: $('#accountNameEn').val().trim(),
+            NameFr: $('#accountNameFr').val().trim()
         };
 
-        if ($(form).attr('enctype') === "multipart/form-data") {
-            ajaxConfig["contentType"] = false;
-            ajaxConfig["processData"] = false;
-        }
-        $.ajax(ajaxConfig);
-
-    }
-    return false;
-
-}
-
-$('#jstree-context-menu').on('click', '.parent', function (e, data) {
-
-    // Get information about the clicked element or perform specific actions
-    var clickedElement = $(this);
-    var nodeId = clickedElement.closest('li').attr('id');
-    var nodeName = clickedElement.text();
-
-    // Example: Display information about the clicked node
-/*    alert('Clicked Node ID: ' + nodeId + '\nClicked Node Name: ' + nodeName);*/
-
-    alertify.confirm("TRUSTSOFT CREDIT ACCOUNTING SYSTEM", "You are about to modify " + nodeName + ".\n Are you sure you want to proceed?",
-        function () {
-
-        },
-        function () {
-            appalert('Transaction cancelled', 3, 1);
-
+        if (!payload.NameEn) {
+            showError('English name is required.');
+            return false;
         }
 
-    );
-    $("#selectedID").val(nodeId);
-    $(".RootId").val(nodeId);
-    LoadChartOfAccountByAccountNumber(nodeId);
-});
-
-function GetObject(partialview, path) {
-    var id = $("#selectedID").val();
-
-    loadPartialView3(id, partialview, path);  
-    loadCartegoryId(id);
-}
-function loadPartialView3(nodeId,view,path) {
-    // Use AJAX to load the partial view based on the nodeId
-    $.ajax({
-        url: '/AccountingChart/InitializeData?KEY=' + nodeId + '&partialView=' + view + '&path=' + path ,
-        type: 'GET',
-        data: { nodeId: nodeId },
-        success: function (result) {
-            // Assuming you have a container where you want to display the partial view
-            $('.viewSelector').html(result);
-        
-        },
-        error: function (error) {
-            /*console.error('Error loading partial view:', error);*/
-            alert('Error loading partial view:', error);
-        }
-    });
-}
-
-function loadPartialView2(nodeId, view) {
-    // Use AJAX to load the partial view based on the nodeId
-    $.ajax({
-        url: '/AccountingChart/InitializeData?KEY=' + nodeId + '&partialView=' + view + '&path=null',
-        type: 'GET',
-        data: { nodeId: nodeId },
-        success: function (result) {
-            // Assuming you have a container where you want to display the partial view
-            $('.viewSelector').html(result);
-        },
-        error: function (error) {
-            /*console.error('Error loading partial view:', error);*/
-            alert('Error loading partial view:', error);
-        }
-    });
-}
-function LoadChartOfAccountByAccountNumber(accountNumber,accountDescription) {
-
-    $('#accountHeader1').empty();
-    $('#accountHeader2').empty();
-    //@Model.AccountNumber-@Model.LabelEn<br><br> @Model.AccountNumber 
-    var description = "1.Manage account under the rubrique: " + accountNumber + "-" + accountDescription; 
-    var description2 = "2.The account number must start with " + accountNumber;
-    $("#accountHeader1").text(description);
-    $("#accountHeader2").text(description2);
-    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
-    $.ajax({
-        url: '/AccountingChart/InitializeData?KEY=' + accountNumber + '&partialView=null&path=Cartegory',
-        type: 'GET',
-        dataType: 'json',
-        data: { accountNumber: accountNumber },
-        success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
-            $('#AccountCartegoryId').empty();
-
-            console.log(data);  // Add this line
-            $.each(data, function (index, item) {
-                try {
-                    $('#AccountCartegoryId').append($('<option>').text(item.Name).attr('value', item.Id));
-                } catch (e) {
-                    console.error('Error adding option:', e, item);
+        $.ajax({
+            url: urls.update,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: function (response) {
+                if (response && response.success) {
+                    updateTreeAfterEdit(accountId, payload.NameEn);
+                    showSuccess(response.message || 'Account updated successfully.');
+                } else {
+                    showError(response.message || 'Update failed.');
                 }
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
+            },
+            error: function (xhr) {
+                console.error('Update error', xhr);
+                showError('Error updating account. Please try again.');
+            }
+        });
+
+        return false;
+    }
+
+    function updateTreeAfterEdit(accountId, newName) {
+        if (currentTree) {
+            const node = currentTree.get_node(accountId);
+            if (node) {
+                const codePart = node.text.split(' - ')[0];
+                const newText = `${codePart} - ${newName}`;
+                currentTree.rename_node(accountId, newText);
+
+                // Update node data
+                node.original['data-name-en'] = newName;
+                node.li_attr['data-name-en'] = newName;
+            }
         }
-    });
-}
+    }
 
-function loadCartegoryId(accountNumber) {
+    function closeAccount() {
+        const accountId = $('#accountId').val();
+        if (!accountId) return;
 
-    // Make an AJAX request to fetch the OperationEventAttributeIds based on the selected OperationEventId
-    $.ajax({
-        url: '/AccountingChart/InitializeData?KEY=' + accountNumber + '&partialView=null&path=Cartegory',
-        type: 'GET',
-        dataType: 'json',
-        data: { accountNumber: accountNumber },
-        success: function (data) {
-            // Clear existing options in the OperationEventAttributeId combo
-            $('#AccountCartegoryId').empty();
-
-            // Add new options based on the fetched data
-            $.each(data, function (index, item) {
-                $('#AccountCartegoryId').append($('<option>').text(item.Name).attr('value', item.Id));
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
+        if (!confirm('Are you sure you want to close this account? This action may be irreversible.')) {
+            return;
         }
-    });
-}
+
+        $.ajax({
+            url: urls.close,
+            type: 'POST',
+            data: { id: accountId },
+            success: function (response) {
+                if (response && response.success) {
+                    showSuccess(response.message);
+                    closeDetailsPanel();
+                    loadChartOfAccounts(); // Refresh tree
+                } else {
+                    showError(response.message || 'Failed to close account.');
+                }
+            },
+            error: function (xhr) {
+                console.error('Close account error:', xhr);
+                showError('Error closing account.');
+            }
+        });
+    }
+
+    function closeDetailsPanel() {
+        hideElement(config.detailsPane);
+        hideElement(config.closeDetailsBtn);
+        hideElement(config.detailsLoading);
+        showElement(config.noSelection);
+
+        if (currentTree) {
+            currentTree.deselect_all();
+        }
+    }
+
+    function expandAllNodes() {
+        if (currentTree) {
+            currentTree.open_all();
+        }
+    }
+
+    function collapseAllNodes() {
+        if (currentTree) {
+            currentTree.close_all();
+        }
+    }
+
+    function toggleLanguage() {
+        currentLanguage = currentLanguage === 'en' ? 'fr' : 'en';
+        $('#languageLabel').text(currentLanguage === 'en' ? 'English' : 'French');
+        // Implement language switching logic here
+    }
+
+    function fixTreeIcons() {
+        // Ensure all tree nodes have proper icons
+        $(config.treeContainer).find('.jstree-node').each(function () {
+            const $node = $(this);
+            const $icon = $node.find('.jstree-icon');
+
+            if ($icon.length === 0 || !$icon.attr('class').includes('jstree-themeicon')) {
+                const postingAllowed = $node.find('.jstree-anchor').data('postingallowed');
+                const depth = $node.find('.jstree-anchor').data('depth') || 0;
+
+                let iconClass = postingAllowed ? 'jstree-file' : 'jstree-folder';
+                if (depth === 0) iconClass = 'jstree-root text-warning';
+
+                $node.find('.jstree-anchor').prepend(`<i class="${iconClass}"></i> `);
+            }
+        });
+    }
+
+    // Utility functions
+    function showElement(selector) {
+        $(selector).show();
+    }
+
+    function hideElement(selector) {
+        $(selector).hide();
+    }
+
+    function showSuccess(message) {
+        $('#successMessage').text(message || 'Operation completed successfully.');
+        $('#successModal').modal('show');
+    }
+
+    function showError(message) {
+        $('#errorMessage').text(message || 'An error occurred.');
+        $('#errorModal').modal('show');
+    }
+})();

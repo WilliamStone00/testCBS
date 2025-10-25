@@ -1,0 +1,338 @@
+﻿using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.FilesUpload;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNet.SignalR.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Owin.Logging;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+
+namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
+{
+    public class FileUploadController : Controller
+    {
+        private readonly FileUploadService _fileUploadService;
+        private readonly BranchServices _branchServices;
+        private readonly AffiliateAccountMockService _affiliateAccountMockService;
+
+        /// <summary>
+        /// Injects the required AffiliateController via dependency injection.
+        /// </summary>
+        /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
+        public FileUploadController(FileUploadService fileUploadService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService)
+        {
+            _fileUploadService = fileUploadService;
+            _branchServices = branchServices;
+            _affiliateAccountMockService = affiliateAccountMockService;
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            await loader();
+            return View();
+        }
+
+        private async Task loader()
+        {
+            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
+            ViewBag.Branches = await _branchServices.GetBranches();
+            var affiliate = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            ViewBag.Affiliates = affiliate;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadAccountwaitingData(AccountwaitingCorrespondanceQuery query)
+        {
+            //await loader();
+            try
+            {
+
+                var data = await _fileUploadService.AccountwaitingDataTableAsync(query);
+
+                var Accountwaiting = JsonConvert.DeserializeObject<List<Accountwaiting>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = Accountwaiting
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Corespondancelist()
+        {
+            await loader();
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadCorrespondanceData(CorespondanceQUERY query)
+        {
+            //await loader();
+            try
+            {
+
+                var data = await _fileUploadService.CorrespondanceDataTableAsync(query);
+
+                var response = JsonConvert.DeserializeObject<List<CorrespondenceRequestDto>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            await loader();
+            if (path == "list")
+            {
+                var data = await _fileUploadService.GetAllAsync();
+                return PartialView(partialView, data);
+
+            }
+            //GetRolePermissions
+            else if (path == "new")
+            {
+                return PartialView(partialView, new CategoryConfig());
+            }
+
+            else
+            {
+                var data = await _fileUploadService.GetByIdAsync(KEY);
+                return PartialView(partialView, data);
+
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateOrUpdate(Accountwaiting model)
+        {
+            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
+            if (string.IsNullOrWhiteSpace(model.Id))
+            {
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, message = "Validation failed." });
+
+                var result = await _fileUploadService.CreateAsync(model);
+                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+            }
+            else
+            {
+                // IMPORTANT: return the ActionResult from Update
+                return await Update(model);
+            }
+
+            // unreachable now but keep for safety (or remove)
+            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(Accountwaiting model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+
+            var result = await _fileUploadService.UpdateAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+        }
+
+        [HttpGet]
+        // [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(string KEY)
+        {
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
+            var result = await _fileUploadService.DeactivateAsync(KEY);
+
+            // Map to simple JSON shape the client expects. Adjust if result has different property names.
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Upload affiliate file (multipart/form-data).
+        /// Expects a file and affiliateId as form fields.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UploadAffiliate(FileUpload model)
+        {
+            try
+            {
+
+                if (model.file == null)
+                    return Json(new { success = false, message = "No file provided." });
+                if (model.isAffiliate == true)
+                {
+                    var response = await _fileUploadService.AffiliateUpload(model);
+                    if (response?.IsSuccess == true && response.ApiResponseData != null)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            data = response.ApiResponseData.Data,
+                            message = response.ApiResponseData.Message ?? response.Message
+                        });
+                    }
+
+                    // service-level error or failure
+                    var msg = response?.ApiResponseData?.Message ?? response?.Message ?? "Upload failed";
+                    return Json(new { success = false, message = msg });
+                }
+                else
+                {
+                    var response = await _fileUploadService.BranchUpload(model);
+                    if (response?.IsSuccess == true && response.ApiResponseData != null)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            data = response.ApiResponseData.Data,
+                            message = response.ApiResponseData.Message ?? response.Message
+                        });
+                    }
+
+                    // service-level error or failure
+                    var msg = response?.ApiResponseData?.Message ?? response?.Message ?? "Upload failed";
+                    return Json(new { success = false, message = msg });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Consider logging ex
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+        /// <summary>
+        /// Upload branch (A-Branch) file (multipart/form-data).
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UploadBranch(FileUpload model)
+        {
+            try
+            {
+                if (model.file == null)
+                    return Json(new { success = false, message = "No file provided." });
+
+
+                var response = await _fileUploadService.BranchUpload(model);
+
+                if (response?.IsSuccess == true && response.ApiResponseData != null)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        data = response.ApiResponseData.Data,
+                        message = response.ApiResponseData.Message ?? response.Message
+                    });
+                }
+
+                var msg = response?.ApiResponseData?.Message ?? response?.Message ?? "Upload failed";
+                return Json(new { success = false, message = msg });
+            }
+            catch (Exception ex)
+            {
+                // Consider logging ex
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Approve(correspondanceR_A request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Id))
+                return Json(new { isSuccess = false, message = "Invalid request" });
+
+            try
+            {
+                var response = await _fileUploadService.CorrespondenceValidationAsync(request);
+                return Json(new { isSuccess = false, message = "Failed to approve correspondence" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, message = "Server error while approving" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Reject(correspondanceR_A request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Id))
+                return Json(new { isSuccess = false, message = "Invalid request" });
+
+            try
+            {
+                var ok = await _fileUploadService.RejectCorrespondenceAsync(request);
+                return Json(new { isSuccess = false, message = "Failed to reject correspondence" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, message = "Server error while rejecting" });
+            }
+        }
+
+
+        public async Task<ActionResult> GetCorrespondance (string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {          
+                var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
+                return PartialView(partialView, data);                        
+        }
+
+    }
+
+}

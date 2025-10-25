@@ -21,21 +21,21 @@
         <div class="form-floating mb-3">
             @Html.TextBoxFor(m => m.description, new { @class = "form-control", placeholder = "Description" })
             @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-            <label>Description</label>
+            <label>@ChequeManagements.Description</label>
         </div>
 
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Static Config</h5>
+                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> @ChequeManagements.StaticConfig</h5>
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptStaticAmount, new { id = "AcceptStatus", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptStatus">Enable Status Fee</label>
+                    <label class="form-check-label fw-bold" for="AcceptStatus">@ChequeManagements.EnableStatusFee</label>
                 </div>
 
                 <div class="form-floating">
                     @Html.TextBoxFor(m => m.staticAmount, new { @class = "form-control", type = "number", step = "1", placeholder = "Static " })
                     @Html.ValidationMessageFor(m => m.staticAmount, "", new { @class = "text-danger" })
-                    <label>Static</label>
+                    <label>@ChequeManagements.Static</label>
                 </div>
             </div>
         </div>
@@ -44,16 +44,16 @@
 
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Percentage Config</h5>
+                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i>@ChequeManagements.PercentageConfig</h5>
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptPercentage, new { id = "AcceptPercentage", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptPercentage">Enable Percentage Fee</label>
+                    <label class="form-check-label fw-bold" for="AcceptPercentage">@ChequeManagements.EnablePercentageFee</label>
                 </div>
 
                 <div class="form-floating">
                     @Html.TextBoxFor(m => m.percentageApplied, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Percentage (%)" })
                     @Html.ValidationMessageFor(m => m.percentageApplied, "", new { @class = "text-danger" })
-                    <label>Percentage (%)</label>
+                    <label>@ChequeManagements.Percentage (%)</label>
                 </div>
             </div>
         </div>
@@ -62,25 +62,26 @@
 
         <div class="modal-body bg-light">
             <div class="mb-3">
-                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i> Range Config</h5>
+                <h5 class="text-primary mb-3"><i class="mdi mdi-pencil-box-outline me-2"></i>@ChequeManagements.RangeConfig</h5>
                 <div class="form-check form-switch mb-2">
                     @Html.CheckBoxFor(m => m.acceptRange, new { id = "AcceptRange", @class = "form-check-input" })
-                    <label class="form-check-label fw-bold" for="AcceptRange">Enable Range-Based Fee</label>
+                    <label class="form-check-label fw-bold" for="AcceptRange">@ChequeManagements.EnableRangeBasedFee</label>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6>Fee Ranges</h6>
-                    <button type="button" id="addRangeRowBtn" class="btn btn-sm btn-outline-text-primary"><i class="mdi mdi-plus"></i> Add Row</button>
+                    <h6>@ChequeManagements.FeeRanges</h6>
+                    <button type="button" id="addRangeRowBtn" class="btn btn-sm btn-outline-text-primary"><i class="mdi mdi-plus"></i>@ChequeManagements.AddRow</button>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 35%;">From Amount</th>
-                                <th style="width: 35%;">To Amount</th>
-                                <th style="width: 20%;">Fee</th>
-                                <th style="width: 10%;"></th>
+                                <th style="width: 25%;">@ChequeManagements.Name </th>
+                                <th style="width: 20%;">@ChequeManagements.FromAmount</th>
+                                <th style="width: 20%;">@ChequeManagements.ToAmount</th>
+                                <th style="width: 20%;">@ChequeManagements.Fee</th>
+                                <th style="width: 15%;">@ChequeManagements.Actions</th>
                             </tr>
                         </thead>
                         <tbody id="range-table-body">
@@ -112,7 +113,7 @@
                 {
                     <button id="saveConfigBtn" type="button" class="btn btn-primary me-2">@GlobalBank.Update</button>
                     <button id="deleteConfigBtn" type="button" class="btn btn-danger border-4 border-white text-white fw-bold px-3 py-1">
-                        Delete
+                        @ChequeManagements.delete
                     </button>
                 }
             </div>

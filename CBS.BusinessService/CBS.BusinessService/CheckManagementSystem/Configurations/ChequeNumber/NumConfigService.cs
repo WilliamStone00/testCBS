@@ -27,30 +27,61 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
                     throw new ConfigurationErrorsException("The 'CheckbookServiceBaseUrl' appSetting is missing or empty in Web.config.");
                 }
                 _apiCallerHelper = new ApiCallerHelper(baseUrl);
-            }
+        }
 
-            public async Task<IEnumerable<NumConfig>> GetAsync()
+        public async Task<IEnumerable<NumConfig>> GetAsync()
+        {
+            try
             {
-                try
-                {
-                    // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<NumConfig>>>(APICallHelper.GetAll);
+                // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<NumConfig>>>(APICallHelper.GetAll);
 
-                    // CORRECTED: Access the final payload via .ApiResponseData.Data
-                    if (response.IsSuccess && response.ApiResponseData?.Data != null)
-                    {
-                        return response.ApiResponseData.Data;
-                    }
-                    return new List<NumConfig>();
-                }
-                catch (Exception ex)
+                // CORRECTED: Access the final payload via .ApiResponseData.Data
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    // In a real scenario, log 'ex'
-                    throw;
+                    return response.ApiResponseData.Data;
                 }
+                return new List<NumConfig>();
             }
+            catch (Exception ex)
+            {
+                // In a real scenario, log 'ex'
+                throw;
+            }
+        }
 
-            public async Task<NumConfig> GetByIdAsync(string categoryId)
+        public async Task<CustomDataTable> GetNumConfigDataTableAsync(NumconfogQuery query)
+        {
+            try
+            {
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.datatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
+                {
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception for debugging
+                System.Diagnostics.Debug.WriteLine($"API Error (NumConfig): {ex.Message}");
+
+                // Re-throw to trigger fallback or higher-level error handling
+                throw new Exception($"NumConfig service unavailable: {ex.Message}", ex);
+            }
+        }
+
+
+        public async Task<NumConfig> GetByIdAsync(string categoryId)
             {
                 try
                 {
@@ -75,6 +106,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
             {
                 try
                 {
+                model.BankCode = GetBranchCode();
                     var response = await _apiCallerHelper.PostAsync<ServiceResponse<NumConfig>>(APICallHelper.Create, model);
 
                     // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
