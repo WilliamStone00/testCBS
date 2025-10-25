@@ -154,10 +154,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 return Json(new
                 {
                     
-                    draw = data.draw,
-                    recordsTotal = data.recordsTotal,
-                    recordsFiltered = data.recordsFiltered,
-                    data = journalHeaders
                     draw = data.DataTableOptions.draw??"1",
                     recordsTotal = data.DataTableOptions.recordsTotal,
                     recordsFiltered = data.DataTableOptions.recordsFiltered,
