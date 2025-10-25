@@ -161,28 +161,28 @@ namespace CBS.FrontDesk.UI
             var host = req.Url?.Host?.ToLowerInvariant() ?? string.Empty;
 
             // ✅ Block localhost only in Production/TestBed, render branded page
-            if (isProdOrTb && host.Contains("localhost"))
-            {
-                // Correlation ID (re-use existing if present via header; else create one)
-                string correlationId = req.Headers["X-Correlation-Id"] ?? Guid.NewGuid().ToString("N");
-                // Client IP (best effort)
-                string clientIp = req.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                if (string.IsNullOrWhiteSpace(clientIp))
-                    clientIp = req.UserHostAddress ?? "";
+            //if (isProdOrTb && host.Contains("localhost"))
+            //{
+            //    // Correlation ID (re-use existing if present via header; else create one)
+            //    string correlationId = req.Headers["X-Correlation-Id"] ?? Guid.NewGuid().ToString("N");
+            //    // Client IP (best effort)
+            //    string clientIp = req.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            //    if (string.IsNullOrWhiteSpace(clientIp))
+            //        clientIp = req.UserHostAddress ?? "";
 
-                // Prevent FormsAuth 302
-                try { resp.SuppressFormsAuthenticationRedirect = true; } catch { }
+            //    // Prevent FormsAuth 302
+            //    try { resp.SuppressFormsAuthenticationRedirect = true; } catch { }
 
-                // Render branded page with reason
-                RenderForbiddenPage(resp,
-                    correlationId,
-                    clientIp,
-                    reason: "Localhost access is blocked in Production/TestBed");
+            //    // Render branded page with reason
+            //    RenderForbiddenPage(resp,
+            //        correlationId,
+            //        clientIp,
+            //        reason: "Localhost access is blocked in Production/TestBed");
 
-                // Finish request cleanly
-                ctx.ApplicationInstance.CompleteRequest();
-                return;
-            }
+            //    // Finish request cleanly
+            //    ctx.ApplicationInstance.CompleteRequest();
+            //    return;
+            //}
 
             // ✅ Culture selection (cookie -> session -> default)
             string lang = req.Cookies["TSC_Lang"]?.Value;
