@@ -17,15 +17,12 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
     public class ChequeBookController : BaseController
     {
         private readonly ChequeBookService _chequeBookService;
-        private readonly ChequeBookMockService _chequeBookMockService;
         private readonly BranchServices _branchServices;
 
         public ChequeBookController(ChequeBookService chequeBookService,
-                                  ChequeBookMockService chequeBookMockService,
                                   BranchServices branchServices)
         {
             _chequeBookService = chequeBookService;
-            _chequeBookMockService = chequeBookMockService;
             _branchServices = branchServices;
         }
 
@@ -110,29 +107,15 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 // Try main service first
                 var chequeBook = await _chequeBookService.GetChequeBookByIdAsync(id);
-                if (chequeBook == null)
-                {
-                    // Fall back to mock service
-                    chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(id);
-                }
-
-                if (chequeBook == null)
-                {
-                    return HttpNotFound($"Cheque book with ID {id} not found");
-                }
+              
 
                 return PartialView("_ChequeBookDetails", chequeBook);
             }
             catch (Exception ex)
             {
                 // Final fallback to mock service
-                var chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(id);
-                if (chequeBook == null)
-                {
                     return HttpNotFound($"Cheque book with ID {id} not found");
-                }
 
-                return PartialView("_ChequeBookDetails", chequeBook);
             }
         }
 
@@ -144,24 +127,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 var chequeBookId = leafId.Split('-')[0];
                 ChequeBook chequeBook;
 
-                // Try main service first
-                try
-                {
-                    chequeBook = await _chequeBookService.GetChequeBookByIdAsync(chequeBookId);
-                    if (chequeBook == null)
-                    {
-                        chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(chequeBookId);
-                    }
-                }
-                catch
-                {
-                    chequeBook = await _chequeBookMockService.GetChequeBookByIdAsync(chequeBookId);
-                }
-
-                if (chequeBook == null)
-                {
-                    return HttpNotFound("Cheque book not found");
-                }
+                chequeBook = await _chequeBookService.GetChequeBookByIdAsync(chequeBookId);
 
                 var leaf = chequeBook.Leaves.Find(l => l.Id == leafId);
                 if (leaf == null)
@@ -186,16 +152,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.CancelChequeBookAsync(chequeBookId, cancellationReason);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.CancelChequeBookAsync(chequeBookId, cancellationReason);
-                }
+                result = await _chequeBookService.CancelChequeBookAsync(chequeBookId, cancellationReason);
+
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
@@ -213,16 +171,8 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.MarkLeafAsUsedAsync(leafId, statement);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.MarkLeafAsUsedAsync(leafId, statement);
-                }
+                result = await _chequeBookService.MarkLeafAsUsedAsync(leafId, statement);
+
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
@@ -240,16 +190,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 ExecutionMessages result;
 
-                // Try main service first
-                try
-                {
-                    result = await _chequeBookService.BlockLeafAsync(leafId, blockReason);
-                }
-                catch
-                {
-                    // Fall back to mock service
-                    result = await _chequeBookMockService.BlockLeafAsync(leafId, blockReason);
-                }
+                result = await _chequeBookService.BlockLeafAsync(leafId, blockReason);
 
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
             }
