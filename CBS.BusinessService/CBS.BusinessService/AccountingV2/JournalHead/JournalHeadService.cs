@@ -1,14 +1,16 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.AccountongV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.AccountingV2.JournalHead
 {
@@ -29,7 +31,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         {
             try
             {
-                
+               
+                query.Options.sortColumnName = "";
+                query.Options.sortColumnDirection = "";
+
+                var journalHeaders = (
+                   JsonConvert.SerializeObject(query));
 
                 var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.GetJournalHeaderDataTable, query);
@@ -54,21 +61,57 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
+
+        //public async Task<JournalEntry> GetJournalEntryByIdAsync(string id)
+        //{
+        //    try
+        //    {
+        //        var branchId = "BR001";
+
+        //        var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<JournalEntry>>(
+        //            $"{APICallHelper.GetJournalEntryTempById}?id={id}"
+        //        );
+
+
+
+        //        if (!response.IsSuccess)
+        //            throw new Exception($"API call failed: {response.Message}");
+
+        //        var entry = response.ApiResponseData?.Data;
+
+        //        if (entry == null)
+        //            throw new Exception("Journal Entry not found.");
+
+        //        return entry;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"[GetJournalEntryByIdAsync] Error: {ex.Message}");
+        //        throw; // Rethrow so the controller can handle/log it
+        //    }
+        //}
+
+        // Fetch a single journal entry by ID using internal branchId
         public async Task<JournalEntry> GetJournalEntryByIdAsync(string id)
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
+
+                // ✅ Get branchId internally like in GetAccountsByBranchAsync
+                var branchId = "BR001"; // Or use GetBranchID();
+
+                // Make API call including branchId
                 var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<JournalEntry>>(
-                    $"{APICallHelper.GetJournalEntryById}?id={id}"
+                    $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}"
                 );
 
-
-
+                // Validate response
                 if (!response.IsSuccess)
                     throw new Exception($"API call failed: {response.Message}");
 
                 var entry = response.ApiResponseData?.Data;
-
                 if (entry == null)
                     throw new Exception("Journal Entry not found.");
 
@@ -77,10 +120,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[GetJournalEntryByIdAsync] Error: {ex.Message}");
-                throw; // Rethrow so the controller can handle/log it
+                throw;
             }
         }
-
 
 
 
@@ -153,97 +195,126 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        //public async Task<CustomDataTable> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
-        //{
-        //    await Task.Delay(50); // simulate async delay
+//        public async Task<CustomDataTable> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
+//        {
+//            await Task.Delay(50); // simulate async delay
 
-        //    // Use the same _mockEntries here
-        //    var enrichedEntries = _mockEntries.Select((x, i) => new
-        //    {
-        //        Id = x.Id,
-        //        CreatedAt = x.AccountingDate.AddDays(-1),
-        //        Reference = $"ME-20251013-20{i + 1:D2}",
-        //        Narrative = x.Narration,
-        //        BranchName = x.BranchId,
-        //        AccountingDate = x.AccountingDate,
-        //        PostMode = x.PostMode
-        //    }).ToList();
+//            // Enrich entries with selected fields
+//            var enrichedEntries = _mockEntries.Select(x => new
+//            {
+//                Id = x.Id,
+//                Reference = x.Reference,
+//                BranchName = x.BranchName ?? x.BranchId,
+//                AccountingDate = x.AccountingDate,
+//                PostMode = x.PostMode
+//            }).ToList();
 
-        //    // Filters...
-        //    var filtered = enrichedEntries.AsEnumerable();
-        //    if (!string.IsNullOrWhiteSpace(query.BranchId))
-        //        filtered = filtered.Where(x => x.BranchName.Equals(query.BranchId, StringComparison.OrdinalIgnoreCase));
-        //    if (!string.IsNullOrWhiteSpace(query.Reference))
-        //        filtered = filtered.Where(x => x.Reference.IndexOf(query.Reference, StringComparison.OrdinalIgnoreCase) >= 0);
-        //    if (query.AccountingDate.HasValue)
-        //        filtered = filtered.Where(x => x.AccountingDate.Date == query.AccountingDate.Value.Date);
-        //    if (!string.IsNullOrWhiteSpace(query.PostMode))
-        //        filtered = filtered.Where(x => x.PostMode.Equals(query.PostMode, StringComparison.OrdinalIgnoreCase));
+//            // Apply filters
+//            var filtered = enrichedEntries.AsEnumerable();
 
-        //    int drawValue = 1;
-        //    if (!string.IsNullOrEmpty(query?.Options?.draw))
-        //        int.TryParse(query.Options.draw, out drawValue);
+//            if (!string.IsNullOrWhiteSpace(query.BranchId))
+//                filtered = filtered.Where(x => x.BranchName.Equals(query.BranchId, StringComparison.OrdinalIgnoreCase));
 
-        //    return await Task.FromResult(new CustomDataTable
-        //    {
-        //        draw = drawValue,
-        //        recordsTotal = enrichedEntries.Count,
-        //        recordsFiltered = filtered.Count(),
-        //        data = filtered.ToList()
-        //    });
-        //}
+//            if (!string.IsNullOrWhiteSpace(query.Reference))
+//                filtered = filtered.Where(x => x.Reference.IndexOf(query.Reference, StringComparison.OrdinalIgnoreCase) >= 0);
 
-        //private readonly List<JournalEntry> _mockEntries = new List<JournalEntry>
-        //{
-        //    new JournalEntry
-        //    {
-        //        Id = "00000001",
-        //        OperationCode = "MANUAL.ENTRY",
-        //        BranchId = "1",
-        //        BranchName = "H O D",
-        //        Reference = " ME-20251013-20",
-        //        CounterpartyBranchId = "BR-007",
-        //        AccountingDate = DateTime.Parse("2025-10-13"),
-        //        PostMode = "Manual",
-        //        CorrelationId = "CORR-IB-20251013-01",
-        //        Narration = "Interbranch reclass via back-office",
-        //        ExternalApplicationName = "TSC.BackOffice",
-        //        Payload = new JournalPayload
-        //        {
-        //            Memo = "Manual interbranch treatment (notify destination for completion)",
-        //            AllowUnbalanced = false,
-        //            Entries = new List<JournalEntryLine>
-        //            {
-        //                new JournalEntryLine { AffiliateAccountId = "AFF-210900", Naration = "Due to BR-007", Dr = false, Cr = true, Amount = 120000m },
-        //                new JournalEntryLine { AffiliateAccountId = "AFF-130900", Naration = "Due from BR-007", Dr = true, Cr = false, Amount = 120000m }
-        //            }
-        //        }
-        //    },
-        //    new JournalEntry
-        //    {
-        //        Id = "000000002",
-        //        OperationCode = "MANUAL.ENTRY",
-        //        BranchId = "BR-002",
-        //        BranchName = "Bam",
-        //        Reference = " ME-20251013-21",
-        //        CounterpartyBranchId = "BR-008",
-        //        AccountingDate = DateTime.Parse("2025-10-14"),
-        //        PostMode = "Automatic",
-        //        CorrelationId = "CORR-IB-20251014-02",
-        //        Narration = "Manual transfer adjustment",
-        //        ExternalApplicationName = "TSC.BackOffice",
-        //        Payload = new JournalPayload
-        //        {
-        //            Memo = "Manual interbranch transfer adjustment",
-        //            AllowUnbalanced = false,
-        //            Entries = new List<JournalEntryLine>
-        //            {
-        //                new JournalEntryLine { AffiliateAccountId = "AFF-310100", Naration = "Transfer to BR-008", Dr = false, Cr = true, Amount = 50000m },
-        //                new JournalEntryLine { AffiliateAccountId = "AFF-320200", Naration = "Transfer from BR-008", Dr = true, Cr = false, Amount = 50000m }
-        //            }
-        //        }
-        //    }
-        //};
+//            if (query.StartAccountingDate.HasValue)
+//                filtered = filtered.Where(x => x.AccountingDate.Date == query.StartAccountingDate.Value.Date);
+
+//            // Handle DataTables draw parameter
+//            int drawValue = 1;
+//            if (!string.IsNullOrEmpty(query?.Options?.draw))
+//                int.TryParse(query.Options.draw, out drawValue);
+
+//            return await Task.FromResult(new CustomDataTable
+//            {
+//                draw = drawValue,
+//                recordsTotal = enrichedEntries.Count,
+//                recordsFiltered = filtered.Count(),
+//                data = filtered.ToList()
+//            });
+//        }
+
+//        // Mock entries with full model
+//        private readonly List<JournalEntry> _mockEntries = new List<JournalEntry>
+//{
+//    new JournalEntry
+//    {
+//        Id = "JH-251024-0001-TW044",
+//        OperationCode = "MANUAL.ENTRY",
+//        BranchId = "1",
+//        BranchName = "H O D",
+//        Reference = "ME-20251013-20",
+//        CounterpartyBranchId = "BR-007",
+//        AccountingDate = DateTime.Parse("2025-10-13"),
+//        PostMode = "Manual",
+//        CorrelationId = "CORR-IB-20251013-01",
+//        Narration = "Interbranch reclass via back-office",
+//        ExternalApplicationName = "TSC.BackOffice",
+//        Payload = new JournalPayload
+//        {
+//            Memo = "Manual interbranch treatment (notify destination for completion)",
+//            AllowUnbalanced = false,
+//            Entries = new List<JournalEntryLine>
+//            {
+//                new JournalEntryLine
+//                {
+//                    AffiliateAccountId = "AFF-210900",
+//                    Naration = "Due to BR-007",
+//                    Dr = false,
+//                    Cr = true,
+//                    Amount = 120000m
+//                },
+//                new JournalEntryLine
+//                {
+//                    AffiliateAccountId = "AFF-130900",
+//                    Naration = "Due from BR-007",
+//                    Dr = true,
+//                    Cr = false,
+//                    Amount = 120000m
+//                }
+//            }
+//        }
+//    },
+//    new JournalEntry
+//    {
+//        Id = "00000002",
+//        OperationCode = "MANUAL.ENTRY",
+//        BranchId = "BR-002",
+//        BranchName = "Bam",
+//        Reference = "ME-20251013-21",
+//        CounterpartyBranchId = "BR-008",
+//        AccountingDate = DateTime.Parse("2025-10-14"),
+//        PostMode = "Automatic",
+//        CorrelationId = "CORR-IB-20251014-02",
+//        Narration = "Manual transfer adjustment",
+//        ExternalApplicationName = "TSC.BackOffice",
+//        Payload = new JournalPayload
+//        {
+//            Memo = "Manual interbranch transfer adjustment",
+//            AllowUnbalanced = false,
+//            Entries = new List<JournalEntryLine>
+//            {
+//                new JournalEntryLine
+//                {
+//                    AffiliateAccountId = "AFF-310100",
+//                    Naration = "Transfer to BR-008",
+//                    Dr = false,
+//                    Cr = true,
+//                    Amount = 50000m
+//                },
+//                new JournalEntryLine
+//                {
+//                    AffiliateAccountId = "AFF-320200",
+//                    Naration = "Transfer from BR-008",
+//                    Dr = true,
+//                    Cr = false,
+//                    Amount = 50000m
+//                }
+//            }
+//        }
+//    }
+//};
 
     }
 }

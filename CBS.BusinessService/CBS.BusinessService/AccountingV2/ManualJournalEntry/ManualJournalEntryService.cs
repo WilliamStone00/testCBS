@@ -1,7 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.AccountongV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -28,7 +28,7 @@ namespace CBS.BusinessService.AccountingV2
             _manualJournalEntryapiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
 
         }
-        public async Task<List<CBS.FrontDesk.Data.Entity.AccountongV2.AccountDto>> GetAccountsByBranchAsync()
+        public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetAccountsByBranchAsync()
         {
             try
             {
@@ -38,7 +38,7 @@ namespace CBS.BusinessService.AccountingV2
 
                 // ✅ Validate before sending
                 if (string.IsNullOrWhiteSpace(branchId) || string.IsNullOrWhiteSpace(language))
-                    return new List<CBS.FrontDesk.Data.Entity.AccountongV2.AccountDto>();
+                    return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
 
                 // ✅ Properly replace placeholders in endpoint
                 var endpoint = APICallHelper.GetAccountsByBranch
@@ -47,7 +47,7 @@ namespace CBS.BusinessService.AccountingV2
 
                 // ✅ Make API call
                 var apiResponse = await _manualJournalEntryapiCallerHelper
-                    .GetAsync<ResponseObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.AccountDto>>>(endpoint);
+                    .GetAsync<ResponseObject<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>>>(endpoint);
 
                 // ✅ Return sorted results if successful
                 if (apiResponse.IsSuccess && apiResponse.ApiResponseData != null)
@@ -58,7 +58,7 @@ namespace CBS.BusinessService.AccountingV2
                 }
 
                 // ✅ Return empty list if no data
-                return new List<CBS.FrontDesk.Data.Entity.AccountongV2.AccountDto>();
+                return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
             }
             catch (Exception ex)
             {

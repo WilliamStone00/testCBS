@@ -1,7 +1,7 @@
 ﻿using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.AccountongV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
     
 
-    [HttpPost]
+         [HttpPost]
         public async Task<JsonResult> LoadJournalHeaderData(JournalEntryQuery query)
         {
             try
@@ -66,8 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry>>(
-                    JsonConvert.SerializeObject(data.data));
+                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
@@ -113,6 +112,32 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             return PartialView("_JournalHeadDetails", entry);
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult> GetDetails(string id)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(id))
+        //            return Json(new { success = false, message = "⚠️ Journal Entry ID is required." }, JsonRequestBehavior.AllowGet);
+
+        //        // ✅ Call the service which internally handles branchId
+        //        var result = await _journalHeadService.GetJournalEntryByIdAsync(id);
+
+        //        if (result == null)
+        //            return Json(new { success = false, message = "⚠️ Journal Entry not found." }, JsonRequestBehavior.AllowGet);
+
+        //        return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (TaskCanceledException)
+        //    {
+        //        return Json(new { success = false, message = "⚠️ Timeout while fetching journal entry — backend service not responding." }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
 
         [HttpPost]
         public async Task<JsonResult> LoadJournalSourceData(JournalEntryQuery query)
@@ -120,18 +145,20 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             try
             {
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
+               
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry>>(
+                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
+                    
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
                     data = journalHeaders
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -227,6 +254,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
             //return View(entry); // MVC 5 expects Details.cshtml
             return PartialView("_DestDetails", entry);
+        }
+
+
+        public async Task<ActionResult> Table()
+        {
+            
+            return View();
         }
     }
 }
