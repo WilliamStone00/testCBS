@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
 @using Resources
 
 <div class="card bg-light mb-3">
@@ -21,7 +21,7 @@
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-     
+
     <div id="collapseFilterTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
@@ -102,17 +102,17 @@
                         <label class="form-label fw-bold">End Accounting Date</label>
                         <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                     </div>
-                   
+
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="startDate">Start Date</label>
                         <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
                     </div>
 
                     <div class="col-md-6 mb-1">
-                       <label class="form-label fw-bold" for="endDate">End Date</label>
-                       <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                        <label class="form-label fw-bold" for="endDate">End Date</label>
+                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
                     </div>
-                    
+
 
                 </div>
             </div>
@@ -156,6 +156,8 @@
                 </button>
             </div>
         </div>
+
+        
     </form>
 </div>
 
@@ -180,7 +182,9 @@
 
 
 
+
 @section Scripts {
+    
     <script>
         $(document).ready(function () {
 
@@ -196,7 +200,7 @@
                 e.preventDefault();
 
                 const getFilterData = () => ({
-                   
+
                     BranchId: $("#branchId").val(),
                     OperationType: $("#OperationType").val(),
                     WorkTicket: $("#WorkTicket").val(),
@@ -235,9 +239,9 @@
                                 orderable: false,
                                 searchable: false,
                                 render: data => `
-                                            <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
-                                                <i class="mdi mdi-eye"></i> View
-                                            </button>`
+                                                <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
+                                                    <i class="mdi mdi-eye"></i> View
+                                                </button>`
                             }
                         ],
                         initComplete: function () {
@@ -269,13 +273,6 @@
                 }
             });
 
-
-
-
-
-
-
-
             // ==========================
             // 🔹 VIEW DETAILS (Dynamic Modal)
             // ==========================
@@ -296,12 +293,12 @@
                     error: function (xhr, status, err) {
                         console.error("❌ Error loading details:", status, err);
                         $("#journalDetailsModalContent").html(`
-                                            <div class="modal-body">
-                                                <div class="alert alert-danger">
-                                                    Failed to load details. Status: ${xhr.status}
+                                                <div class="modal-body">
+                                                    <div class="alert alert-danger">
+                                                        Failed to load details. Status: ${xhr.status}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        `);
+                                            `);
                         const modalEl = document.getElementById('journalDetailsModal');
                         const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         bsModal.show();
@@ -328,4 +325,5 @@
 
         });
     </script>
-}
+
+ }

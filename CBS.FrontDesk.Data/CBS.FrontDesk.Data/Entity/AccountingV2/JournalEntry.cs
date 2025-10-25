@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBS.FrontDesk.Data.Entity.AccountongV2
+namespace CBS.FrontDesk.Data.Entity.AccountingV2
 {
 
 
 
 
-     public class JournalEntry
-     {
+    public class JournalEntry
+    {
         public string OperationCode { get; set; }
 
         public string BranchId { get; set; }
@@ -35,7 +35,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountongV2
         // Optional (not in JSON but kept for possible internal use)
         public string OperationType { get; set; }
         public string WorkTicket { get; set; }
-     }
+        public string Id { get; set; }
+        public string BranchName { get; set; }
+        public string CorrelationId { get; set; }
+        public string ExternalApplicationName { get; set; }
+    }
 
     public class JournalPayload
     {
@@ -54,7 +58,45 @@ namespace CBS.FrontDesk.Data.Entity.AccountongV2
         public bool Cr { get; set; }
         public decimal Amount { get; set; }
     }
+    //public class JournalEntry
+    //{
+    //    public string Id { get; set; }
+    //    public string OperationCode { get; set; }
+    //    public string BranchId { get; set; }
+    //    public string BranchName { get; set; }
+    //    public string Reference { get; set; }
+    //    public string CounterpartyBranchId { get; set; } // optional
+    //    public DateTime AccountingDate { get; set; }
+    //    public string PostMode { get; set; }
+    //    public string CorrelationId { get; set; }
+    //    public string Narrative { get; set; } // matches JSON "narrative"
+    //    public string ExternalOperationType { get; set; } // maps ExternalApplicationName in some examples
+    //    public JournalPayload Payload { get; set; } // optional
+    //    public string Stage { get; set; } // Temp / Reconciled
+    //    public bool IsBalanced { get; set; }
+    //    public decimal TotalDebit { get; set; }
+    //    public decimal TotalCredit { get; set; }
+    //    public List<JournalEntryLine> Lines { get; set; } = new List<JournalEntryLine>();
+    //    public List<JournalEntryLine> TempRLines { get; set; } = new List<JournalEntryLine>();
+    //    public DateTime CreatedAt { get; set; }
+    //    public DateTime? UpdatedAt { get; set; }
+    //}
 
+    //public class JournalPayload
+    //{
+    //    public string Memo { get; set; }
+    //    public bool AllowUnbalanced { get; set; }
+    //    public List<JournalEntryLine> Entries { get; set; } = new List<JournalEntryLine>();
+    //}
+
+    //public class JournalEntryLine
+    //{
+    //    public string AffiliateAccountId { get; set; }
+    //    public string Naration { get; set; } // keep spelling consistent with your JSON
+    //    public bool Dr { get; set; }
+    //    public bool Cr { get; set; }
+    //    public decimal Amount { get; set; }
+    //}
 
     public class JournalEntryQuery
     {

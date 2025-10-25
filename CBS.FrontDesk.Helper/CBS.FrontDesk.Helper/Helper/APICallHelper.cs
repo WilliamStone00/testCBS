@@ -1427,7 +1427,7 @@ namespace CBS.FrontDesk.Helper
         public static string ApproveJournalEntry = "api/manualjournalentry/id";
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
-        public static string GetJournalEntryById = "api/WorkFlowTicket/workticketflow/{0}/{operationCode}";
+        public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
 
 
 

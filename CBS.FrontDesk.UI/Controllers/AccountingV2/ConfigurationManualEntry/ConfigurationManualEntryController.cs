@@ -1,7 +1,7 @@
 ﻿using CBS.API.Helper;
 using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
-using CBS.FrontDesk.Data.Entity.AccountongV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.ChangeNumber;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
