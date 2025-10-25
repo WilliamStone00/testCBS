@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -19,18 +20,17 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
 
         public LiaisonMappingService()
         {
-            _apiCaller = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingBaseUrl"].ToString());
+            _apiCaller = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
         }
 
         public async Task<ExecutionMessages> CreateOrUpdateLiaisonMappingAsync(CreateOrUpdateLiaisonMappingCommand command)
         {
             try
             {
-                var endpoint = string.IsNullOrEmpty(command.Id) ?
-                    APICallHelper.CreateLiaisonMapping :
-                    APICallHelper.UpdateLiaisonMapping;
+                var endpoint = APICallHelper.CreateLiaisonMapping;
+                //APICallHelper.UpdateLiaisonMapping;
 
-                var response = await _apiCaller.PostAsync<ServiceResponse<LiaisonMappingDto>>(endpoint, command);
+                var response = await _apiCaller.PostAsync<ServiceResponse<CreateOrUpdateLiaisonMappingCommand>>(endpoint, command);
 
                 if (response.IsSuccess)
                 {
@@ -131,6 +131,9 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
                 throw new ApplicationException("Failed to retrieve liaison mapping.", ex);
             }
         }
+
+       
+
 
     }
 }

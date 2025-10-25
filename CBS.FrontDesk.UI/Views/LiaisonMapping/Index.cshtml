@@ -57,6 +57,80 @@
     </div>
 </div>
 
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Liaison Mapping Filters</h5>
+
+    <form id="liaisonFilterForm">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Source Branch</label>
+                @Html.DropDownList("sourceBranchId", new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Source Branch ---",
+                    new { @class = "form-control select2", id = "sourceBranchId" })
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Counterparty Branch</label>
+                <select id="counterpartyBranchId" class="form-control select2">
+                    <option value="">--- Select Counterparty Branch ---</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Include Deleted</label>
+                <select id="includeDeleted" class="form-select">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Due From Asset Account</label>
+                @Html.DropDownList("dueFromAssetAccountId", new SelectList(ViewBag.DueFromAssetAccount, "Id", "Name"),
+                    "--- Select ---", new { @class = "form-control select2", id = "dueFromAssetAccountId" })
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Due To Liability Account</label>
+                @Html.DropDownList("dueToLiabilityAccountId", new SelectList(ViewBag.DueToLiability, "Id", "Name"),
+                    "--- Select ---", new { @class = "form-control select2", id = "dueToLiabilityAccountId" })
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Target Branch</label>
+                @Html.DropDownList("targetBranchId", new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Target ---", new { @class = "form-control select2", id = "targetBranchId" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Created From</label>
+                <input type="date" id="createdFromUtc" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Created To</label>
+                <input type="date" id="createdToUtc" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100" type="button">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <!-- DataTable Partial -->
 <div id="datalistingview">
     @Html.Partial("_LiaisonMappingData")
@@ -91,50 +165,69 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+            loadLiaisonMappings();
 
+            $('#applyFilterBtn').click(function () {
+                $('#myDataTable').DataTable().ajax.reload();
+            });
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script>
-    $(document).ready(function () {
-        loadLiaisonMappings();
-    });
+            $('#resetFilterBtn').click(function () {
+                $('#liaisonFilterForm')[0].reset();
+                $('.select2').val(null).trigger('change');
+                $('#myDataTable').DataTable().ajax.reload();
+            });
+        });
 
-    function loadLiaisonMappings() {
-        $('#myDataTable').DataTable({
-            serverSide: true,
-            destroy: true,
-            searching: true,
-            order: [[0, 'desc']],
-            ajax: {
-                url: '/LiaisonMapping/LoadLiaisonMappingsData',
-                type: 'POST',
-                contentType: 'application/json',
-                data: function (d) {
-                    const filters = {
-                        options: {
-                            draw: d.draw,
-                            start: d.start,
-                            length: d.length,
-                            skip: d.start,
-                            pageSize: d.length,
-                            sortColumnName: d.columns[d.order[0]?.column]?.data || "BranchName",
-                            sortColumnDirection: d.order[0]?.dir || "asc"
-                        }
-                    };
-
-                    return JSON.stringify(filters);
-                }
-            },
-            columns: [
-                { data: 'BranchId', title: 'Source Branch' },
-                { data: 'CounterpartyId', title: 'Counterparty Branch' },
-                { data: 'DueFromAssetAccountId', title: 'Due From Account' },
-                { data: 'DueToLiabilityAccountId', title: 'Due To Account' },
-                {
-                    data: null,
-                    orderable: false,
-                    render: function (data, type, row) {
-                        return `
+        function loadLiaisonMappings() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/LiaisonMapping/LoadLiaisonMappingsData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        // Collect filters
+                        const filters = {
+                            branchId: $('#sourceBranchId').val(),
+                            counterpartyBranchId: $('#counterpartyBranchId').val(),
+                            dueFromAssetAccountId: $('#dueFromAssetAccountId').val(),
+                            dueToLiabilityAccountId: $('#dueToLiabilityAccountId').val(),
+                            sourceBranchId: $('#sourceBranchId').val(),
+                            targetBranchId: $('#targetBranchId').val(),
+                            createdFromUtc: $('#createdFromUtc').val(),
+                            createdToUtc: $('#createdToUtc').val(),
+                            includeDeleted: $('#includeDeleted').val() === 'true',
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                sortColumnName: d.columns[d.order[0]?.column]?.data || "BranchName",
+                                sortColumnDirection: d.order[0]?.dir || "asc"
+                            }
+                        };
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    { data: 'BranchName', title: 'Source Branch' },
+                    { data: 'CounterpartyBranchName', title: 'Counterparty Branch' },
+                    { data: 'DueFromAssetAccountName', title: 'Due From Account' },
+                    { data: 'DueToLiabilityAccountName', title: 'Due To Account' },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-primary"
                                                 onclick="editLiaisonMapping('${row.Id}')"
@@ -148,139 +241,213 @@
                                         </button>
                                     </div>
                                 `;
+                        }
                     }
-                }
-            ]
-        });
-    }
-
-    function openLiaisonMappingForm(id = null) {
-        $('#liaisonMappingLoader').removeClass('d-none');
-
-        const url = id ?
-            `/LiaisonMapping/GetLiaisonMappingFormPartial?id=${id}` :
-            '/LiaisonMapping/GetLiaisonMappingFormPartial';
-
-        $.get(url)
-            .done(function (html) {
-                $('#liaisonMappingFormContainer').html(html);
-                initializeLiaisonForm();
-                $('#liaisonMappingModal').modal('show');
-            })
-            .fail(function () {
-                appAlertError("Failed to load form. Please try again.");
-            })
-            .always(function () {
-                $('#liaisonMappingLoader').addClass('d-none');
-            });
-    }
-
-    function initializeLiaisonForm() {
-        // Initialize select2 if needed
-        $('.select2').select2();
-
-        // Handle branch change to load accounts
-        $('#BranchId, #CounterpartyBranchId').on('change', function () {
-            loadAccountsForBranch();
-        });
-    }
-
-    function loadAccountsForBranch() {
-        const branchId = $('#BranchId').val();
-        const counterpartyBranchId = $('#CounterpartyBranchId').val();
-
-        if (branchId) {
-            // Load asset accounts for source branch
-            $.get(`/LiaisonMapping/GetAssetAccounts?branchId=${branchId}`, function (accounts) {
-                const dueFromSelect = $('#DueFromAssetAccountId');
-                dueFromSelect.empty().append('<option value="">--- Select Due From Account ---</option>');
-                accounts.forEach(account => {
-                    dueFromSelect.append(`<option value="${account.Id}">${account.Name}</option>`);
-                });
-            });
-
-            // Load liability accounts for source branch
-            $.get(`/LiaisonMapping/GetLiabilityAccounts?branchId=${branchId}`, function (accounts) {
-                const dueToSelect = $('#DueToLiabilityAccountId');
-                dueToSelect.empty().append('<option value="">--- Select Due To Account ---</option>');
-                accounts.forEach(account => {
-                    dueToSelect.append(`<option value="${account.Id}">${account.Name}</option>`);
-                });
+                ]
             });
         }
-    }
 
-    function editLiaisonMapping(id) {
-        openLiaisonMappingForm(id);
-    }
+        function openLiaisonMappingForm(id = null) {
+            $('#liaisonMappingLoader').removeClass('d-none');
 
-    function deleteLiaisonMapping(id, mappingName) {
-        alertify.confirm(
-            'Confirm Deletion',
-            `Are you sure you want to delete the liaison mapping:<br><strong>${mappingName}</strong>?`,
-            function () {
-                $.post('/LiaisonMapping/Delete', { id: id })
-                    .done(function (response) {
-                        if (response.success) {
-                            appalert(response.message, 1, 1);
-                            loadLiaisonMappings();
-                        } else {
-                            appalert(response.message, 4, 1);
-                        }
-                    })
-                    .fail(function () {
-                        appalert("Error deleting liaison mapping.", 4, 1);
+            const url = id ?
+                `/LiaisonMapping/GetLiaisonMappingFormPartial?id=${id}` :
+                '/LiaisonMapping/GetLiaisonMappingFormPartial';
+
+            $.get(url)
+                .done(function (html) {
+                    $('#liaisonMappingFormContainer').html(html);
+                    initializeLiaisonForm();
+                    $('#liaisonMappingModal').modal('show');
+                })
+                .fail(function () {
+                    appAlertError("Failed to load form. Please try again.");
+                })
+                .always(function () {
+                    $('#liaisonMappingLoader').addClass('d-none');
+                });
+        }
+
+        function initializeLiaisonForm() {
+            // Initialize select2 if needed
+            $('.select2').select2();
+
+            // Handle branch change to load accounts
+            $('#BranchId, #CounterpartyBranchId').on('change', function () {
+                loadAccountsForBranch();
+            });
+        }
+
+        function loadAccountsForBranch() {
+            const branchId = $('#BranchId').val();
+            const counterpartyBranchId = $('#CounterpartyBranchId').val();
+
+            if (branchId) {
+                // Load asset accounts for source branch
+                $.get(`/LiaisonMapping/GetAssetAccounts?branchId=${branchId}`, function (accounts) {
+                    const dueFromSelect = $('#DueFromAssetAccountId');
+                    dueFromSelect.empty().append('<option value="">--- Select Due From Account ---</option>');
+                    accounts.forEach(account => {
+                        dueFromSelect.append(`<option value="${account.Id}">${account.Name}</option>`);
                     });
-            },
-            function () {
-                appalert("Deletion cancelled.", 3, 1);
-            }
-        ).set({
-            labels: { ok: 'Yes, Delete', cancel: 'Cancel' },
-            padding: true
-        });
-    }
+                });
 
-    // Form submission handler
-    function submitLiaisonMappingForm(form) {
-        $.validator.unobtrusive.parse(form);
-        if (!$(form).valid()) {
+                // Load liability accounts for source branch
+                $.get(`/LiaisonMapping/GetLiabilityAccounts?branchId=${branchId}`, function (accounts) {
+                    const dueToSelect = $('#DueToLiabilityAccountId');
+                    dueToSelect.empty().append('<option value="">--- Select Due To Account ---</option>');
+                    accounts.forEach(account => {
+                        dueToSelect.append(`<option value="${account.Id}">${account.Name}</option>`);
+                    });
+                });
+            }
+        }
+
+        function editLiaisonMapping(id) {
+            openLiaisonMappingForm(id);
+        }
+
+        function deleteLiaisonMapping(id, mappingName) {
+            alertify.confirm(
+                'Confirm Deletion',
+                `Are you sure you want to delete the liaison mapping:<br><strong>${mappingName}</strong>?`,
+                function () {
+                    $.post('/LiaisonMapping/Delete', { id: id })
+                        .done(function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                loadLiaisonMappings();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        })
+                        .fail(function () {
+                            appalert("Error deleting liaison mapping.", 4, 1);
+                        });
+                },
+                function () {
+                    appalert("Deletion cancelled.", 3, 1);
+                }
+            ).set({
+                labels: { ok: 'Yes, Delete', cancel: 'Cancel' },
+                padding: true
+            });
+        }
+
+        // Form submission handler
+        function submitLiaisonMappingForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if (!$(form).valid()) {
+                return false;
+            }
+
+            const formData = new FormData(form);
+
+            alertify.confirm(
+                "Confirm Liaison Mapping",
+                "Are you sure you want to save this liaison mapping configuration?",
+                function () {
+                    $.ajax({
+                        url: form.action,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                $('#liaisonMappingModal').modal('hide');
+                                loadLiaisonMappings();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        },
+                        error: function (err) {
+                            appalert("Error saving liaison mapping.", 4, 1);
+                        }
+                    });
+                },
+                function () {
+                    appalert("Operation cancelled.", 3, 1);
+                }
+            ).set('labels', { ok: 'Yes, Save', cancel: 'Cancel' });
+
             return false;
         }
 
-        const formData = new FormData(form);
+         $('#BranchId').on('change', function () {
+        const branchId = $(this).val();
+        loadCounterpartyBranches(branchId);
+        // Optional: clear GL account dropdowns when source branch changes
+        $('#DueFromAssetAccountId').empty().append('<option value="">--- Select Due From Account ---</option>');
+        $('#DueToLiabilityAccountId').empty().append('<option value="">--- Select Due To Account ---</option>');
+            });
 
-        alertify.confirm(
-            "Confirm Liaison Mapping",
-            "Are you sure you want to save this liaison mapping configuration?",
-            function () {
-                $.ajax({
-                    url: form.action,
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        if (response.success) {
-                            appalert(response.message, 1, 1);
-                            $('#liaisonMappingModal').modal('hide');
-                            loadLiaisonMappings();
-                        } else {
-                            appalert(response.message, 4, 1);
-                        }
-                    },
-                    error: function (err) {
-                        appalert("Error saving liaison mapping.", 4, 1);
-                    }
-                });
-            },
-            function () {
-                appalert("Operation cancelled.", 3, 1);
-            }
-        ).set('labels', { ok: 'Yes, Save', cancel: 'Cancel' });
-
-        return false;
+    // load initially if BranchId has a pre-selected value (edit mode)
+    const initialBranchId = $('#BranchId').val();
+    if (initialBranchId) {
+        loadCounterpartyBranches(initialBranchId, '@Model?.CounterpartyBranchId');
     }
-</script>
+
+
+function loadCounterpartyBranches(sourceBranchId, selectedValue) {
+    const $counterparty = $('#CounterpartyBranchId');
+
+    // Clear and show loading state
+    $counterparty.prop('disabled', true);
+    $counterparty.empty().append('<option value="">Loading...</option>');
+
+    // If no branch selected, clear dropdown
+    if (!sourceBranchId) {
+        $counterparty.prop('disabled', false);
+        $counterparty.empty().append('<option value="">--- Select Counterparty Branch ---</option>');
+        return;
+    }
+
+    $.ajax({
+        url: '/LiaisonMapping/PopulateViewBags',
+        type: 'GET',
+        data: { branchId: sourceBranchId },
+        success: function (data) {
+            $counterparty.empty().append('<option value="">--- Select Counterparty Branch ---</option>');
+
+            if (!Array.isArray(data) || data.length === 0) {
+                $counterparty.append('<option value="">No branches available</option>');
+            } else {
+                data.forEach(function (b) {
+                    // Prevent selecting exactly the same branch as counterparty (optional)
+                    const disabled = (b.Id === sourceBranchId) ? 'disabled' : '';
+                    $counterparty.append(`<option value="${b.Id}" ${disabled}>${escapeHtml(b.Name)}</option>`);
+                });
+
+                // If an external selected value was provided (edit mode), set it
+                if (selectedValue) {
+                    $counterparty.val(selectedValue);
+                }
+            }
+
+            // re-enable and refresh any select2 instance
+            $counterparty.prop('disabled', false);
+            if ($counterparty.hasClass('select2-hidden-accessible')) {
+                $counterparty.trigger('change.select2');
+            }
+        },
+        error: function () {
+            $counterparty.empty().append('<option value="">Error loading branches</option>');
+            $counterparty.prop('disabled', false);
+        }
+    });
 }
 
+// small helper to avoid injection issues when inserting HTML
+function escapeHtml(text) {
+    if (!text && text !== 0) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+    </script>
+}

@@ -1,39 +1,23 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping.LiaisonMappingModel
+
 @using Resources
 
-@using (Html.BeginForm("CreateOrUpdate", "LiaisonMapping", FormMethod.Post,
-    new { id = "liaisonMappingForm", onsubmit = "return submitLiaisonMappingForm(this);" }))
+@using (Html.BeginForm("CreateOrUpdate", "LiaisonMapping", FormMethod.Post, new { id = "liaisonMappingForm", onsubmit = "return submitLiaisonMappingForm(this);" }))
 {
     @Html.HiddenFor(m => m.Id)
 
     <div class="row">
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.BranchId, "Source Branch", new { @class = "form-label fw-bold" })
-            @Html.DropDownListFor(m => m.BranchId,
-                new SelectList(ViewBag.Branches, "Id", "Name"),
-                "--- Select Source Branch ---",
-                new
-                     {
-                    @class = "form-control select2-branch",
-                    @id = "BranchId",
-                    required = "required",
-                    data_placeholder = "Select Source Branch"
-                })
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                "--- Select Source Branch ---", new { @class = "form-select", required = "required" })
             @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
         </div>
 
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.CounterpartyBranchId, "Counterparty Branch", new { @class = "form-label fw-bold" })
-            @Html.DropDownListFor(m => m.CounterpartyBranchId,
-                new SelectList(ViewBag.Branches, "Id", "Name"),
-                "--- Select Counterparty Branch ---",
-                new
-                     {
-                    @class = "form-control select2-branch",
-                    @id = "CounterpartyBranchId",
-                    required = "required",
-                    data_placeholder = "Select Counterparty Branch"
-                })
+            @Html.DropDownListFor(m => m.CounterpartyBranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
+                "--- Select Counterparty Branch ---", new { @class = "form-select", required = "required" })
             @Html.ValidationMessageFor(m => m.CounterpartyBranchId, "", new { @class = "text-danger small" })
         </div>
     </div>
@@ -41,32 +25,17 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.DueFromAssetAccountId, "Due From Account (Asset)", new { @class = "form-label fw-bold" })
-            @Html.DropDownListFor(m => m.DueFromAssetAccountId,
-                Enumerable.Empty<SelectListItem>(),
-                "--- Select Due From Account ---",
-                new
-                     {
-                    @class = "form-control select2-account",
-                    @id = "DueFromAssetAccountId",
-                    required = "required",
-                    data_placeholder = "Select Due From Account"
-                })
+            @Html.DropDownListFor(m => m.DueFromAssetAccountId, new SelectList(ViewBag.DueFromAssetAccount, "Id", "Name"),
+                "--- Select Due From Account ---", new { @class = "form-select", required = "required" })
             @Html.ValidationMessageFor(m => m.DueFromAssetAccountId, "", new { @class = "text-danger small" })
             <small class="form-text text-muted">Asset account for tracking amounts due from counterparty branch</small>
         </div>
 
+        
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.DueToLiabilityAccountId, "Due To Account (Liability)", new { @class = "form-label fw-bold" })
-            @Html.DropDownListFor(m => m.DueToLiabilityAccountId,
-                Enumerable.Empty<SelectListItem>(),
-                "--- Select Due To Account ---",
-                new
-                     {
-                    @class = "form-control select2-account",
-                    @id = "DueToLiabilityAccountId",
-                    required = "required",
-                    data_placeholder = "Select Due To Account"
-                })
+            @Html.DropDownListFor(m => m.DueToLiabilityAccountId, new SelectList(ViewBag.DueToLiability, "Id", "Name"),
+                "--- Select Due To Account ---", new { @class = "form-select", required = "required" })
             @Html.ValidationMessageFor(m => m.DueToLiabilityAccountId, "", new { @class = "text-danger small" })
             <small class="form-text text-muted">Liability account for tracking amounts due to counterparty branch</small>
         </div>
@@ -86,105 +55,3 @@
         </div>
     </div>
 }
-
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")
-<script>
-    // This script will run when the partial view is loaded
-    $(document).ready(function () {
-        initializeLiaisonMappingForm();
-    });
-
-    function initializeLiaisonMappingForm() {
-        // Initialize branch dropdowns with search
-        $('.select2-branch').select2({
-            placeholder: function () {
-                return $(this).data('placeholder');
-            },
-            allowClear: true,
-            width: '100%',
-            dropdownParent: $('#liaisonMappingModal') // Important for modal display
-        });
-
-        // Initialize account dropdowns with search
-        $('.select2-account').select2({
-            placeholder: function () {
-                return $(this).data('placeholder');
-            },
-            allowClear: true,
-            width: '100%',
-            dropdownParent: $('#liaisonMappingModal'), // Important for modal display
-            minimumInputLength: 0 // Allow searching even with no input
-        });
-
-        // Handle branch change to load accounts
-        $('#BranchId').on('change', function () {
-            loadAccountsForSelectedBranch();
-        });
-
-        // If editing and BranchId is already set, load accounts immediately
-        if ($('#BranchId').val()) {
-            loadAccountsForSelectedBranch();
-        }
-    }
-
-    function loadAccountsForSelectedBranch() {
-        const branchId = $('#BranchId').val();
-
-        if (branchId) {
-            // Show loading states
-            $('#DueFromAssetAccountId').html('<option value="">Loading asset accounts...</option>').trigger('change');
-            $('#DueToLiabilityAccountId').html('<option value="">Loading liability accounts...</option>').trigger('change');
-
-            // Load asset accounts
-            loadAccountDropdown(branchId, 'DueFromAssetAccountId', 'asset');
-
-            // Load liability accounts
-            loadAccountDropdown(branchId, 'DueToLiabilityAccountId', 'liability');
-        } else {
-            // Clear both dropdowns
-            $('#DueFromAssetAccountId').html('<option value="">--- Select Due From Account ---</option>').trigger('change');
-            $('#DueToLiabilityAccountId').html('<option value="">--- Select Due To Account ---</option>').trigger('change');
-        }
-    }
-
-    function loadAccountDropdown(branchId, elementId, accountType) {
-        const url = `/LiaisonMapping/Get${accountType === 'asset' ? 'Asset' : 'Liability'}Accounts?branchId=${branchId}`;
-
-        $.get(url)
-            .done(function (accounts) {
-                const $select = $('#' + elementId);
-                $select.empty();
-
-                // Add default option
-                $select.append($('<option>', {
-                    value: '',
-                    text: `--- Select ${accountType === 'asset' ? 'Due From' : 'Due To'} Account ---`
-                }));
-
-                // Add account options
-                if (accounts && accounts.length > 0) {
-                    accounts.forEach(function (account) {
-                        $select.append($('<option>', {
-                            value: account.Id,
-                            text: account.Name
-                        }));
-                    });
-                } else {
-                    $select.append($('<option>', {
-                        value: '',
-                        text: `No ${accountType} accounts found`
-                    }));
-                }
-
-                // Reinitialize Select2 to refresh the dropdown
-                $select.trigger('change');
-            })
-            .fail(function () {
-                const $select = $('#' + elementId);
-                $select.empty().append($('<option>', {
-                    value: '',
-                    text: 'Error loading accounts'
-                })).trigger('change');
-            });
-    }
-</script>

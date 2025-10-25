@@ -26,21 +26,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         private readonly BranchServices _branchServices;
         //private readonly MockBranchCashConfigService _mockData;
         private readonly GLAccountService _glAccountService;
-        private readonly ChartOfAccountServicesAnnex _chartOfAccountService;
 
         public BranchCashConfigController(
             BranchCashConfigService branchCashConfigService,
             BranchServices branchServices,
             //MockBranchCashConfigService mockData,
-            GLAccountService glAccountService,
-           ChartOfAccountServicesAnnex chartOfAccountService
+            GLAccountService glAccountService
            )
         {
             _branchCashConfigService = branchCashConfigService;
             _branchServices = branchServices;
            // _mockData = mockData;
             _glAccountService = glAccountService;
-            _chartOfAccountService = chartOfAccountService;
         }
 
         public async Task<ActionResult> Index()

@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.AccountingV2.BranchCashConfig;
 using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration; // adjust namespace as needed
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
@@ -6,6 +7,8 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonAccountConfiguration;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccountConfiguration;
+using Microsoft.AspNetCore.Mvc;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +23,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount
         private readonly MockLiaisonAccountConfiguration _mockData;
         private readonly BranchServices _branchServices;
         private readonly ChartOfAccountServicesAnnex _chartOfAccountService;
+        private readonly BranchCashConfigService _branchCashConfig;
 
         public LiaisonAccountConfigurationController(
             LiaisonAccountConfigurationService liaisonService,
             MockLiaisonAccountConfiguration mockLiaisonAccountConfiguration,
             BranchServices branchServices,
-            ChartOfAccountServicesAnnex chartOfAccountService)
+            ChartOfAccountServicesAnnex chartOfAccountService,
+            BranchCashConfigService branchCashConfig
+            )
+
         {
+            _branchCashConfig = branchCashConfig;
             _liaisonService = liaisonService;
             _branchServices = branchServices;
             _chartOfAccountService = chartOfAccountService;
@@ -168,6 +176,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount
         //{
         //    var listing = await _chartOfAccountService.GetGLAccountsQueryByBranch(Key);
         //    return Json(listing, JsonRequestBehavior.AllowGet);
+        //}
+
+        //public async Task<IActionResult> GetBranches(string branchId)
+        //{
+        //    var result = await _branchCashConfig.GetBranchesAsync(branchId);
+
+        //    return Json(result);
         //}
     }
 }

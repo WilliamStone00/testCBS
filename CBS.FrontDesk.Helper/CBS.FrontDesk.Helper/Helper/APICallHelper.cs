@@ -1424,7 +1424,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
+        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
         public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string GetLiaisonMappingsDataTable = "/api/v1/LiaisonMapping/datatable";

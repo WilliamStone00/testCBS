@@ -3,6 +3,7 @@ using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -29,12 +30,6 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
-        }
-
-        public string GetUserId()
-        {
-            var data = HttpContext.Current?.Session["UserId"]?.ToString();
-            return string.IsNullOrWhiteSpace(data) ? "No Name" : data;
         }
 
         public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigsAsync()
@@ -75,7 +70,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 throw;
             }
         }
-             
+
 
         public async Task<BranchCashConfigDto> GetBranchCashConfigByBranchIdAsync(string branchId)
         {
@@ -252,6 +247,56 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 HeadOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
                 FormFeeIncomeAccountId = config.FormFeeIncomeAccountId
             };
+        }
+
+        public async Task<IEnumerable<BranchAccount>> GetBranchesAsync(string branchId)
+        {
+            try
+            {
+                var language = GetLanguage();
+                // Call API using parameters (branchId + language)
+                var url = $"{APICallHelper.GetAllBranch}?branchId={branchId}&lang={language}";
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccount>>>(url);
+
+                var branches = response?.ApiResponseData?.Data ?? new List<BranchAccount>();
+
+                // If user is not head office, limit list to his branch only
+                if (!IsHeadOffice())
+                {
+                    string currentBranchId = GetBranchID();
+                    branches = branches
+                        .Where(b => b.Id == currentBranchId)
+                        .ToList();
+                }
+                else
+                {
+                    // Insert default "All" entry at top of list
+                    branches.Insert(0, new BranchAccount
+                    {
+                        Id = "All",
+                        Code = "All",
+                        Name = language == "fr"
+                            ? "Toutes les agences"
+                            : "All Branches"
+                    });
+                }
+
+                // Prepare formatted names for dropdown display
+                return branches
+                    .Select(b => new BranchAccount
+                    {
+                        Id = b.Id,
+                        Code = b.Code,
+                        Name = $"[{b.Code}] {b.Name}"
+                    })
+                    .OrderBy(b => b.Code)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                // You might log the exception here
+                throw;
+            }
         }
     }
 }

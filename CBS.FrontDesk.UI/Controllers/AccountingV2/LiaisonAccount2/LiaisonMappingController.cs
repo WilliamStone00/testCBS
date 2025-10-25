@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.AccountingV2.BranchCashConfig;
 using CBS.BusinessService.AccountingV2.LiaisonAccount2;
 using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration; // adjust namespace as needed
 using CBS.BusinessService.Accounts;
@@ -15,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 {
@@ -23,20 +25,26 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         private readonly LiaisonMappingService _liaisonMappingService;
         private readonly BranchServices _branchServices;
         private readonly ChartOfAccountServices _chartOfAccountServices;
+        private readonly BranchCashConfigService _branchCashConfig;
+
 
         public LiaisonMappingController(
             LiaisonMappingService liaisonMappingService,
             BranchServices branchServices,
-            ChartOfAccountServices chartOfAccountServices)
+            ChartOfAccountServices chartOfAccountServices,
+            BranchCashConfigService branchCashConfig
+
+            )
         {
+            _branchCashConfig = branchCashConfig;
             _liaisonMappingService = liaisonMappingService;
             _branchServices = branchServices;
             _chartOfAccountServices = chartOfAccountServices;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string Branchid)
         {
-            await PopulateViewBags();
+            await PopulateViewBags(Branchid);
             return View();
         }
 
@@ -67,7 +75,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
 
         [HttpGet]
-        public async Task<ActionResult> GetLiaisonMappingFormPartial(string id = null)
+        public async Task<ActionResult> GetLiaisonMappingFormPartial(string id = null,string Branchid=null)
         {
             try
             {
@@ -90,7 +98,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
                     model = new LiaisonMappingModel();
                 }
 
-                await PopulateViewBags();
+                await PopulateViewBags(Branchid);
                 return PartialView("_LiaisonMappingForm", model);
             }
             catch (Exception ex)
@@ -100,7 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(LiaisonMappingModel model)
+        public async Task<ActionResult> CreateOrUpdate(CreateOrUpdateLiaisonMappingCommand model)
         {
             if (!ModelState.IsValid)
             {
@@ -109,16 +117,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
             try
             {
-                var command = new CreateOrUpdateLiaisonMappingCommand
-                {
-                    Id = model.Id,
-                    BranchId = model.BranchId,
-                    CounterpartyBranchId = model.CounterpartyBranchId,
-                    DueFromAssetAccountId = model.DueFromAssetAccountId,
-                    DueToLiabilityAccountId = model.DueToLiabilityAccountId
-                };
+              
 
-                var result = await _liaisonMappingService.CreateOrUpdateLiaisonMappingAsync(command);
+                var result = await _liaisonMappingService.CreateOrUpdateLiaisonMappingAsync(model);
 
                 return Json(new
                 {
@@ -188,9 +189,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
             }
         }
 
-        private async Task PopulateViewBags()
+        private async Task PopulateViewBags(string branchId)
         {
             ViewBag.Branches = await _branchServices.GetBranches();
+           ViewBag.DueFromAssetAccount = await _branchCashConfig.GetBranchesAsync(branchId);
+           ViewBag.DueToLiability = await _branchCashConfig.GetBranchesAsync(branchId);
+            
         }
 
 
@@ -216,7 +220,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
                     accounts = await _chartOfAccountServices.GetLiabilityAccountsByBranch(key);
                 }
 
-                var result = accounts.Select(a => new {
+                var result = accounts.Select(a => new
+                {
                     Id = a.Id,
                     Name = $"{a.AccountNumber} - {a.LabelEn}"
                 }).ToList();
@@ -229,5 +234,31 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
                 return Json(new List<object>(), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCounterpartyBranches(string branchId)
+        {
+            try
+            {
+                // if empty, return all branches (or an empty list depending on desired behavior)
+                var branches = await _branchCashConfig.GetBranchesAsync(branchId);
+
+                // Map to a small JSON-friendly object for dropdown consumption
+                var result = branches.Select(b => new
+                {
+                    Id = b.Id,
+                    Name = b.Name
+                }).ToList();
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Log exception if you have a logging mechanism
+                // Return an empty array so UI remains stable
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }
