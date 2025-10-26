@@ -1,4 +1,4 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.AccountongV2.ConfigurationManualEntries>
+﻿@model List<CBS.FrontDesk.Data.Entity.AccountingV2.ConfigurationManualEntries>
 
 <fieldset class="fieldset-custom">
     <h6 class="d-flex justify-content-between align-items-center text-primary mb-3">
@@ -46,7 +46,7 @@
                                 }
                             </td>
                             <td class="text-center">
-                                @if (d.StatusIsActive)
+                                @if (d.Status == "Active")
                                 {
                                     <span class="badge bg-success bg-opacity-75 px-3">Active</span>
                                 }
@@ -55,6 +55,7 @@
                                     <span class="badge bg-secondary bg-opacity-75 px-3">Inactive</span>
                                 }
                             </td>
+
                             <td class="text-center">
                                 <button type="button"
                                         class="btn btn-outline-primary btn-sm px-3 btn-edit-config"

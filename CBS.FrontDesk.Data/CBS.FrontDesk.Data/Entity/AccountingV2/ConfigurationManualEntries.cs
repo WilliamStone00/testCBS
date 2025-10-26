@@ -24,7 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Command { get; set; } // Auto, Auto Approval, Auto Approval Source, Auto Approval Source Destination
         public string Description { get; set; }
         public bool UserRequiredApproval { get; set; } // Whether the user who initiated must approve
-        public bool StatusIsActive { get; set; } // "Active" or "Inactive"
+        public string Status { get; set; } // "Active" or "Inactive"
     }
 
     public class ConfigurationRoot

@@ -1,6 +1,11 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountongV2.ConfigurationManualEntries
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ConfigurationManualEntries
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "configForm" }))
+@using (Html.BeginForm(
+    "UpdateConfigurationManualEntry",
+    "ConfigurationManualEntry",
+    FormMethod.Post,
+    new { id = "configForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }
+))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id, new { id = "id" })
@@ -102,20 +107,19 @@ A.A.D.S : Automatic Approval Destination Source
                             <input type="text" class="form-control border border-1 rounded-0 bg-light" value="Interbranch" readonly />
                         </div>
 
-                        <!-- Status -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold text-dark">Status</label><br />
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="IsActive" value="true" id="statusActive"
-                                       @(Model.StatusIsActive ? "checked" : "") />
-                                <label class="form-check-label" for="statusActive">Active</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="IsActive" value="false" id="statusInactive"
-                                       @(!Model.StatusIsActive ? "checked" : "") />
-                                <label class="form-check-label" for="statusInactive">Inactive</label>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Status" value="Active"
+                                   @(Model.Status == "Active" ? "checked" : "") />
+                            <label class="form-check-label">Active</label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Status" value="Inactive"
+                                   @(Model.Status == "Inactive" ? "checked" : "") />
+                            <label class="form-check-label">Inactive</label>
+                        </div>
+
+
+
 
                         <!-- Initiator Permission -->
                         <div class="col-md-12">
@@ -161,8 +165,8 @@ A.A.D.S : Automatic Approval Destination Source
                             <div class="p-2 border border-1 rounded-0 bg-light">
                                 <div class="form-check mb-2">
                                     <input class="form-check-input inter-command" type="checkbox" name="Command" value="Auto" id="localAuto"
-                                           @(Model.Command == "Auto" ? "checked" : "") />
-                                    <label class="form-check-label" for="localAuto">Auto</label>
+                                           @(Model.Command == "AUTO" ? "checked" : "") />
+                                    <label class="form-check-label" for="localAuto">AUTO</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input inter-command" type="checkbox" name="Command" value="RA" id="localRA"
@@ -176,7 +180,7 @@ A.A.D.S : Automatic Approval Destination Source
                         <div class="col-md-6 ">
                             <label class="form-label fw-semibold text-dark">Description</label>
                             <textarea class="form-control rounded-0 bg-light description-box" readonly>
-Auto : Automatic Approval
+AUTO : Automatic Approval
 R.A : Require Approval
                             </textarea>
                         </div>
@@ -187,20 +191,19 @@ R.A : Require Approval
                             <input type="text" class="form-control border border-1 rounded-0 bg-light" value="Local" readonly />
                         </div>
 
-                        <!-- Status -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold text-dark">Status</label><br />
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="IsActive" value="true" id="statusActiveLocal"
-                                       @(Model.StatusIsActive ? "checked" : "") />
-                                <label class="form-check-label" for="statusActiveLocal">Active</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="IsActive" value="false" id="statusInactiveLocal"
-                                       @(!Model.StatusIsActive ? "checked" : "") />
-                                <label class="form-check-label" for="statusInactiveLocal">Inactive</label>
-                            </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Status" value="Active"
+                                   @(Model.Status == "Active" ? "checked" : "") />
+                            <label class="form-check-label">Active</label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="Status" value="Inactive"
+                                   @(Model.Status == "Inactive" ? "checked" : "") />
+                            <label class="form-check-label">Inactive</label>
+                        </div>
+
+
 
                         <!-- Initiator Permission -->
                         <div class="col-md-12">
@@ -238,7 +241,7 @@ R.A : Require Approval
 <script>
     $(document).ready(function () {
 
-        // ✅ Allow only one command checked
+        // ✅ Allow only one command checked (Interbranch or Local)
         $('.inter-command, .local-command').on('change', function () {
             const group = $(this).hasClass('inter-command') ? '.inter-command' : '.local-command';
             $(group).not(this).prop('checked', false);
@@ -251,8 +254,13 @@ R.A : Require Approval
             const id = $("#id").val();
             const type = $("#type").val();
             const command = $(".inter-command:checked, .local-command:checked").val() || "";
-            const userrequiredApproval = $("#userrequiredApproval").is(":checked");
-            const status = $("input[name='IsActive']:checked").val() === "true";
+
+            // ✅ Works for both interbranch and local config
+            const userrequiredApproval = $("#userrequiredApproval").is(":checked") ||
+                $("#userrequiredApprovalLocal").is(":checked");
+
+            // ✅ Get string value directly from radio (Active / Inactive)
+            const status = $("input[name='Status']:checked").val() || "";
 
             $.ajax({
                 url: '/ConfigurationManualEntry/UpdateConfigurationManualEntry',
@@ -263,7 +271,7 @@ R.A : Require Approval
                     type: type,
                     command: command,
                     userrequiredApproval: userrequiredApproval,
-                    status: status
+                    status: status // 👉 sends "Active" or "Inactive" as string
                 }),
                 success: function (res) {
                     if (res.success)
@@ -278,3 +286,4 @@ R.A : Require Approval
         });
     });
 </script>
+

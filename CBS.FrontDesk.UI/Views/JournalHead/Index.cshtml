@@ -186,91 +186,141 @@
 @section Scripts {
     
     <script>
-        $(document).ready(function () {
+        // ==============================
+        // Load Journal Header Data
+        // ==============================
+        function loadJournalHeaderData() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                searching: true,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/JournalHead/LoadJournalHeaderData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectJournalHeaderFilters();
 
-            let tableInitialized = false;
-            let table;
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
 
-
-
-            // ==========================
-            // 🔹 APPLY FILTERS & INIT DATATABLE
-            // ==========================
-            $("#journalHeaderFilterForm").on("submit", function (e) {
-                e.preventDefault();
-
-                const getFilterData = () => ({
-
-                    BranchId: $("#branchId").val(),
-                    OperationType: $("#OperationType").val(),
-                    WorkTicket: $("#WorkTicket").val(),
-                    Reference: $("#reference").val(),
-                    StartDate: $("#startDate").val(),
-                    EndDate: $("#endDate").val(),
-                    StartAccountingDate: $("#startaccountingDate").val(),
-                    EndAccountingDate: $("#endaccountingDate").val()
-                });
-
-                if (!tableInitialized) {
-                    table = $("#myDataTable").DataTable({
-                        serverSide: true,
-                        responsive: true,
-                        ajax: {
-                            url: "/JournalHead/LoadJournalHeaderData",
-                            type: "POST",
-                            contentType: "application/json",
-                            data: function () {
-                                return JSON.stringify(getFilterData());
-                            },
-                            error: function (xhr, status, err) {
-                                console.error("❌ Error loading journal headers:", status, err);
-                                appalert('❌ Failed to load journal headers. Status: ' + xhr.status, 4, 1);
-                            }
-                        },
-                        columns: [
-                            { data: "CreatedAt", render: d => d ? new Date(d).toLocaleDateString() : "" },
-                            { data: "Reference" },
-                            { data: "Narrative" },
-                            { data: "BranchName" },
-                            { data: "AccountingDate", render: d => d ? new Date(d).toLocaleDateString() : "" },
-                            { data: "PostMode" },
-                            {
-                                data: "Id",
-                                orderable: false,
-                                searchable: false,
-                                render: data => `
-                                                <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
-                                                    <i class="mdi mdi-eye"></i> View
-                                                </button>`
-                            }
-                        ],
-                        initComplete: function () {
-                            appalert('✅ Journal headers table loaded successfully!', 1, 1);
-                        },
-                        drawCallback: function () {
-                            const api = this.api();
-                            if (api.rows({ page: 'current' }).data().length === 0) {
-                                appalert('⚠️ No journal headers found on this page.', 2, 1);
-                            }
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('❌ Error loading journal headers:', status, err);
+                        appalert('❌ Failed to load journal headers. Status: ' + xhr.status, 4, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreatedAt',
+                        name: 'CreatedAt',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                         }
-                    });
-                    tableInitialized = true;
-                } else {
-                    table.ajax.reload(() => appalert('🔄 Table reloaded successfully!', 1, 1), false);
+                    },
+                    { data: 'Reference', name: 'Reference' },
+                    { data: 'Narrative', name: 'Narrative' },
+                    { data: 'BranchName', name: 'BranchName' },
+                    {
+                        data: 'AccountingDate',
+                        name: 'AccountingDate',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY') : '';
+                        }
+                    },
+                    { data: 'PostMode', name: 'PostMode' },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (_, __, row) {
+                            return `
+                            <div class="text-center dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="mdi mdi-eye"></i> Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                            onclick="window.open('/JournalHead/Details?id=${row.Id}', '_blank')">
+                                            <i class="mdi mdi-eye-outline me-2 text-primary"></i> View Details
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item text-dark"
+                                            onclick="editJournalEntry('${row.Id}')">
+                                            <i class="mdi mdi-pencil-outline me-2 text-warning"></i> Edit Entry
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>`;
+                        }
+                    }
+                ],
+                initComplete: function () {
+                    appalert('✅ Journal headers table loaded successfully!', 1, 1);
+                },
+                drawCallback: function () {
+                    const api = this.api();
+                    if (api.rows({ page: 'current' }).data().length === 0) {
+                        appalert('⚠️ No journal headers found on this page.', 2, 1);
+                    }
                 }
             });
+        }
 
-            // ==========================
-            // 🔹 RESET FILTERS
-            // ==========================
-            $("#resetFilterBtn").on("click", function (e) {
+        // ==============================
+        // Collect Filter Values
+        // ==============================
+        function collectJournalHeaderFilters() {
+            return {
+                BranchId: $('#branchId').val(),
+                OperationType: $('#OperationType').val(),
+                WorkTicket: $('#WorkTicket').val(),
+                Reference: $('#reference').val(),
+                StartDate: $('#startDate').val(),
+                EndDate: $('#endDate').val(),
+                StartAccountingDate: $('#startaccountingDate').val(),
+                EndAccountingDate: $('#endaccountingDate').val(),
+                Options: {}
+            };
+        }
+
+        // ==============================
+        // Reset Filters
+        // ==============================
+        function resetJournalHeaderFilters() {
+            $('#journalHeaderFilterForm').trigger('reset');
+            $('.select2').val('').trigger('change');
+            $('#branchFilter, #dateFilters').addClass('d-none');
+            loadJournalHeaderData();
+            appalert('🧹 Filters reset and table reloaded.', 1, 1);
+        }
+
+        // ==============================
+        // Init
+        // ==============================
+        $(document).ready(function () {
+            // 🔹 Apply filters
+            $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
-                $("#journalHeaderFilterForm")[0].reset();
-                $(".select2").val(null).trigger("change");
-                if (tableInitialized) {
-                    table.clear().draw();
-                    appalert('🧹 Filters reset and table cleared.', 1, 1);
-                }
+                loadJournalHeaderData();
+            });
+
+            // 🔹 Reset filters
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                resetJournalHeaderFilters();
             });
 
             // ==========================

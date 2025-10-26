@@ -1,5 +1,5 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
 
 @{
     ViewBag.Title = "Manual Journal Entry";
@@ -98,7 +98,15 @@
                                     ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
                                 </select>
                             </td>
-                            <td><input type="text" class="form-control narration-input" name="Lines[${index}].Narration" placeholder="Enter narration" required /></td>
+                            <td>
+    <textarea class="form-control narration-input"
+              name="Lines[${index}].Narration" 
+              placeholder="Enter narration" 
+              rows="1"
+              oninput="autoGrow(this)" 
+              required></textarea>
+</td>
+
                             <td><input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" /></td>
                             <td><input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" /></td>
                             <td class="text-center">
@@ -184,7 +192,10 @@
                 updateTotals();
                 appalert('All rows cleared.', 3, 1); // info
             });
-
+            function autoGrow(element) {
+                element.style.height = "auto"; // reset height
+                element.style.height = (element.scrollHeight) + "px"; // adjust to content
+            }
             // 💰 Update totals
             function updateTotals() {
                 let debitTotal = 0, creditTotal = 0;
