@@ -1,5 +1,6 @@
 ﻿// BranchCashConfigController.cs
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.AccountingV2.BranchCashConfig;
 using CBS.BusinessService.AccountingV2.LiaisonAccount2;
 using CBS.BusinessService.CheckManagementSystem.BranchConfiguration;
@@ -24,6 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
     {
         private readonly BranchCashConfigService _branchCashConfigService;
         private readonly BranchServices _branchServices;
+        private readonly BranchAccountService _branchAccountService;
         //private readonly MockBranchCashConfigService _mockData;
         private readonly GLAccountService _glAccountService;
 
@@ -32,12 +34,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
             BranchServices branchServices,
             //MockBranchCashConfigService mockData,
             GLAccountService glAccountService
-           )
+,
+            BranchAccountService branchAccountService)
         {
             _branchCashConfigService = branchCashConfigService;
             _branchServices = branchServices;
-           // _mockData = mockData;
+            // _mockData = mockData;
             _glAccountService = glAccountService;
+            _branchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -75,6 +79,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
              string branchId = null,
              string serviceOption = null)
         {
+
+            if (branchId != null)
+            {
+                var branchAccount = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+                ViewBag.BranchAccounts = branchAccount;
+            }
             if (path == "list")
             {
                 var data = await _branchCashConfigService.GetBranchCashConfigsAsync();
@@ -154,8 +164,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         [HttpPost]
         public async Task<ActionResult> GetByBranch(string branchId)
         {
+
+
+
+
             if (string.IsNullOrEmpty(branchId))
                 return Json(new { success = false, message = "Branch ID is required." });
+
+
+            var branchAccount =await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+            ViewBag.BranchAccounts = branchAccount;
 
             var config = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
             //var dataTable2 = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto>>(JsonConvert.SerializeObject(config.data));
@@ -207,6 +225,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 return PartialView("_Error", "No branch selected.");
 
             await LoadInitialData();
+
+            var branchAccount = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+            ViewBag.BranchAccounts = branchAccount;
 
             // Try to fetch existing configuration
             var existingConfig = await _branchCashConfigService.GetBranchCashConfigByIdAsync(branchId);

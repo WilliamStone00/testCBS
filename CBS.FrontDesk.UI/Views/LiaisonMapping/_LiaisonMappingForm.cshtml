@@ -1,5 +1,4 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping.LiaisonMappingModel
-
 @using Resources
 
 @using (Html.BeginForm("CreateOrUpdate", "LiaisonMapping", FormMethod.Post, new { id = "liaisonMappingForm", onsubmit = "return submitLiaisonMappingForm(this);" }))
@@ -10,14 +9,14 @@
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.BranchId, "Source Branch", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
-                "--- Select Source Branch ---", new { @class = "form-select", required = "required" })
+                "--- Select Source Branch ---", new { @class = "form-select select2", required = "required" })
             @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
         </div>
 
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.CounterpartyBranchId, "Counterparty Branch", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.CounterpartyBranchId, new SelectList(ViewBag.Branches, "Id", "Name"),
-                "--- Select Counterparty Branch ---", new { @class = "form-select", required = "required" })
+                "--- Select Counterparty Branch ---", new { @class = "form-select select2", required = "required" })
             @Html.ValidationMessageFor(m => m.CounterpartyBranchId, "", new { @class = "text-danger small" })
         </div>
     </div>
@@ -26,16 +25,15 @@
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.DueFromAssetAccountId, "Due From Account (Asset)", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.DueFromAssetAccountId, new SelectList(ViewBag.DueFromAssetAccount, "Id", "Name"),
-                "--- Select Due From Account ---", new { @class = "form-select", required = "required" })
+                "--- Select Due From Account ---", new { @class = "form-select select2", required = "required" })
             @Html.ValidationMessageFor(m => m.DueFromAssetAccountId, "", new { @class = "text-danger small" })
             <small class="form-text text-muted">Asset account for tracking amounts due from counterparty branch</small>
         </div>
 
-        
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.DueToLiabilityAccountId, "Due To Account (Liability)", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.DueToLiabilityAccountId, new SelectList(ViewBag.DueToLiability, "Id", "Name"),
-                "--- Select Due To Account ---", new { @class = "form-select", required = "required" })
+                "--- Select Due To Account ---", new { @class = "form-select select2", required = "required" })
             @Html.ValidationMessageFor(m => m.DueToLiabilityAccountId, "", new { @class = "text-danger small" })
             <small class="form-text text-muted">Liability account for tracking amounts due to counterparty branch</small>
         </div>
