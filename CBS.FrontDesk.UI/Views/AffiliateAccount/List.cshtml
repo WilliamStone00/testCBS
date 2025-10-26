@@ -246,13 +246,16 @@
     }
 
     function initDataTable() {
-        if ($.fn.DataTable.isDataTable('#myDataTable')) {
-            try { $('#myDataTable').DataTable().destroy(); } catch (e) { console.warn(e); }
-            $('#myDataTable').empty();
+        const selector = '#myDataTable';
+
+        if ($.fn.DataTable.isDataTable(selector)) {
+            try { $(selector).DataTable().destroy(); } catch (e) { console.warn('destroy failed', e); }
+            $(selector).empty();
         }
 
-        const tbl = $('#myDataTable').DataTable({
+        const tbl = $(selector).DataTable({
             serverSide: true,
+            processing: false,
             responsive: true,
             autoWidth: false,
             pageLength: 10,
@@ -277,6 +280,7 @@
                     filters.Options = {
                         Page: page,
                         PageSize: pageSize,
+                        Draw: d.draw || 0, // ensure draw is sent to server
                         Sort: (function () {
                             if (!d.order || !d.order.length) return '';
                             const ord = d.order[0];
@@ -285,38 +289,101 @@
                             return col ? `${col} ${dir}` : '';
                         })()
                     };
+                    // debugging: show outgoing payload
+                    try { console.debug('DataTable -> request payload:', filters); } catch (e) { /* ignore */ }
                     return JSON.stringify(filters);
                 },
                 dataSrc: function (json) {
+                    // debug raw response
+                    try { console.debug('DataTable <- raw response:', json); } catch (e) { /* ignore */ }
+
                     if (!json) return [];
-                    return json.data || [];
+
+                    // If server returns DataTables server-side format
+                    if (Array.isArray(json.data)) {
+                        // DataTables expects draw/records... to be present when serverSide=true.
+                        // If they're absent it may still render rows if data is present.
+                        return json.data;
+                    }
+
+                    // If server returns array directly
+                    if (Array.isArray(json)) return json;
+
+                    // common wrappers
+                    if (Array.isArray(json.result)) return json.result;
+                    if (Array.isArray(json.items)) return json.items;
+
+                    // fallback: first array property found
+                    for (var k in json) {
+                        if (json.hasOwnProperty(k) && Array.isArray(json[k])) return json[k];
+                    }
+
+                    console.warn('DataTable: no array found in server response; returning empty array');
+                    return [];
                 },
                 error: function (xhr, status, err) {
                     console.error('Load error', xhr, status, err);
-                    $('#myDataTable tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+                    $(selector + ' tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
                 }
             },
             columns: [
+                // CreatedDate: handle both PascalCase and camelCase in the render
                 {
-                    data: 'CreatedDate',
-                    render: function (data) {
-                        return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                    data: null,
+                    render: function (data, type, row) {
+                        const val = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
+                        if (!val) return '-';
+                        return (window.moment ? moment(val).format('DD/MM/YYYY HH:mm:ss') : val);
                     }
                 },
-                { data: 'Code', name: 'Code' },
-                { data: 'Name', name: 'Name' },
-                { data: 'Class', name: 'Class' },
-                { data: 'ParentId', name: 'ParentId' },
+                // Code
                 {
-                    data: 'PostingAllowed',
-                    name: 'PostingAllowed',
+                    data: null,
+                    render: function (data, type, row) {
+                        return row.Code || row.code || '';
+                    },
+                    name: 'Code'
+                },
+                // Name
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return row.Name || row.name || row.NameEn || row.nameEn || '';
+                    },
+                    name: 'Name'
+                },
+                // Class
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return row.Class || row.class || '';
+                    },
+                    name: 'Class'
+                },
+                // ParentId / Path (you used ParentId in columns but header shows Path previously)
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        // prefer ParentId, fall back to Path
+                        return row.ParentId || row.parentId || '';
+                    },
+                    name: 'ParentId'
+                },
+                // PostingAllowed / Path column (you had Path in header earlier)
+                {
+                    data: null,
                     className: 'text-center',
-                    render: function (data) {
-                        if (data === true) return '<span class="badge bg-success">Yes</span>';
-                        if (data === false) return '<span class="badge bg-secondary">No</span>';
-                        return '';
-                    }
+                    render: function (data, type, row) {
+                        // If you actually want to show Path here, swap logic; this shows PostingAllowed badge if present else Path
+                        var posting = (typeof row.PostingAllowed !== 'undefined') ? row.PostingAllowed : (typeof row.postingAllowed !== 'undefined' ? row.postingAllowed : null);
+                        if (posting === true) return '<span class="badge bg-success">Yes</span>';
+                        if (posting === false) return '<span class="badge bg-secondary">No</span>';
+                        // fallback to Path text
+                        return row.Path || row.path || '';
+                    },
+                    name: 'PostingAllowed'
                 },
+                // Actions: render action buttons using the `actionButtons` helper
                 {
                     data: null,
                     orderable: false,
@@ -330,7 +397,6 @@
             language: { emptyTable: 'No affiliates found' }
         });
 
-        // expose globally for other scripts
         window.table = tbl;
         window.tableInitialized = true;
     }
@@ -712,7 +778,7 @@
         // Details
         $('#affiliateListingView').on('click', '.btn-detail', function () {
             const id = $(this).data('id');
-            openPartialInModal(detailUrl, { id: id });
+            openPartialInModal(detailUrl, { id: id, partialView: '_AffiliateModals' });
         });
 
         // Edit
