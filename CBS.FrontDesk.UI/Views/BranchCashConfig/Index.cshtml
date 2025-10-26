@@ -211,7 +211,7 @@
                 dataType: 'json',
                 success: function (response) {
                     if (response && (response.success === true || response.data)) {
-                        loadExistingConfiguration(response.data || response);
+                        loadExistingConfiguration(response.data || response, branchId);
                     } else {
                         // showNewConfigurationForm();
                         appalert(response.message, 4, 1);
@@ -226,9 +226,10 @@
         }
 
         // 🔹 Load existing configuration form
-        function loadExistingConfiguration(config) {
-            $.get(`/BranchCashConfig/InitializeData?KEY=${config.id || config.Id}&partialView=_Create&path=edit`, function (html) {
+        function loadExistingConfiguration(config,branchId) {
+            $.get(`/BranchCashConfig/InitializeData?KEY=${config.id || config.Id}&partialView=_Create&path=edit&branchId=${branchId}`, function (html) {
                 $('#datalistingview').html(html);
+                $('.select2').select2();
                 updateConfigurationStatus('existing', config);
             }).fail(() => showNotification('error', 'Failed to load existing configuration form.'));
         }
@@ -237,6 +238,7 @@
         function showNewConfigurationForm() {
             $.get(`/BranchCashConfig/InitializeData?partialView=_Create&path=new&branchId=${currentBranchId}`, function (html) {
                 $('#datalistingview').html(html);
+                $('.select2').select2();
                 updateConfigurationStatus('new', null);
             }).fail(() => showNotification('error', 'Failed to load new configuration form.'));
         }

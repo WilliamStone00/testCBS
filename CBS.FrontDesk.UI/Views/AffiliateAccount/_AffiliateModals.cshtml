@@ -1,5 +1,5 @@
-﻿@model AffiliateTreeViewModel
-@using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
+﻿@model AffiliateAccountTreeViewModel
+@using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount
 @using System.Text.RegularExpressions
 @using Resources;
 
@@ -138,7 +138,7 @@
                         <small class="text-muted">Chart of Accounts</small>
                         <div class="mt-2">
                             @{
-                                var parents = Model.ParentChain ?? Enumerable.Empty<Affiliateresponse>();
+                                var parents = Model.ParentChain ?? Enumerable.Empty<AffiliateAccountDto>();
                                 var last = parents.LastOrDefault();
                             }
                             @foreach (var p in parents)
@@ -216,7 +216,7 @@
 
     </div>
 
-    @helper RenderTreeNode(TreeNode node, Func<string, string> safeId)
+    @helper RenderTreeNode(TreeNodeaccounting node, Func<string, string> safeId)
     {
         if (node == null || node.Item == null) { return; }
 

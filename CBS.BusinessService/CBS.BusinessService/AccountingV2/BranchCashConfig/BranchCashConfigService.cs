@@ -1,6 +1,7 @@
 ﻿// BranchCashConfigService.cs
 using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig;
 using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
@@ -21,6 +22,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
     public class BranchCashConfigService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
+        private readonly BranchAccountService _branchAccountService;
 
         public BranchCashConfigService()
         {
@@ -30,6 +32,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
+            _branchAccountService = new BranchAccountService();
         }
 
         public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigsAsync()

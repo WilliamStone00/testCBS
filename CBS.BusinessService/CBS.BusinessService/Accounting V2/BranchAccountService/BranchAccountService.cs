@@ -82,18 +82,20 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             }
 
             //tree structure 
-            public async Task<BranchAccountResponse> GetByIdAsync(string id)
+            public async Task<BRANCHTreeDto> GetByIdAsync(string id)
             {
                 try
                 {
                     if (string.IsNullOrWhiteSpace(id))
                         throw new ArgumentException("id is required", nameof(id));
 
+                var lan = GetLanguage();
+
                     var encodedId = Uri.EscapeDataString(id);
-                    string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId);
+                    string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId,lan);
                     // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
 
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchAccountResponse>>(formattedUrl);
+                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<BRANCHTreeDto>>(formattedUrl);
 
                     //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
                     //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
@@ -149,6 +151,38 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
 
                     // Format name for display and order by Code
                     return affiliates
+                        .Select(a =>
+                        {
+                            a.Name = $"[{a.Code}] - {a.Name}".Trim();
+                            return a;
+                        })
+                        .OrderBy(a => a.Code)
+                        .ToList();
+                }
+                catch (Exception)
+                {
+                    // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
+                    throw;
+                }
+            }
+            // real endpoint version
+            public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+            {
+                try
+                {
+                string lang = GetUserLanguage();
+                    // Call API
+                    var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
+
+                if (!response.IsSuccess || response==null || response.ApiResponseData == null)
+                {
+                    return new List<BranchAccountResponse>();
+                }
+
+                var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+
+                    // Format name for display and order by Code
+                    return branchAcounts
                         .Select(a =>
                         {
                             a.Name = $"[{a.Code}] - {a.Name}".Trim();

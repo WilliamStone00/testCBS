@@ -1434,13 +1434,16 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
         public static string ValidateBranchConfig = "api/branchcashconfig/validate";
 
-
+        //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
         public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string GetLiaisonMappingsDataTable = "/api/v1/LiaisonMapping/datatable";
+        public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
+        public const string GetLiaisonMappingsByBranch = "api/liaisonmapping/bybranch";
+        public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
+        public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
 
         //************************************Role Gl Resolution Endpoints  ********************************************////
 
@@ -1526,6 +1529,8 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string CreateBranchAccount = "/api/v1/BranchAccount";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
+        public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}/tree";
         public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
         public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
@@ -1543,7 +1548,6 @@ namespace CBS.FrontDesk.Helper
         public static string createCorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
         public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
 
-       
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
         public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
         public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
