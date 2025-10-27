@@ -59,10 +59,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
                 return Json(new
                 {
-                    draw = query.Options?.draw ?? "1",
+                    draw = dataTable.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
-                    data = mappingList
+                    data = mappingList,
+                    success = true,
+                    message = "Display DataTable for Liaison Mapping successfully"
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)

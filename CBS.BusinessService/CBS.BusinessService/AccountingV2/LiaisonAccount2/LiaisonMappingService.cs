@@ -93,7 +93,7 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
             }
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
+        public async Task<CustomDataTable2> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
                     request.BranchId = string.Empty;
                 }
 
-                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable>>(
+                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetLiaisonMappingsDataTable,
                     request
                 );
@@ -121,7 +121,7 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
                 if (response.IsSuccess && response.ApiResponseData != null)
                     return response.ApiResponseData.Data;
 
-                return new CustomDataTable(
+                return new CustomDataTable2(
                     draw: Convert.ToInt32(request.Options.draw ?? "1"),
                     recordsTotal: 0,
                     recordsFiltered: 0,
