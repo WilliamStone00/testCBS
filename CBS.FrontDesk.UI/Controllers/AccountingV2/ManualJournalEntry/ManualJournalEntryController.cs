@@ -82,29 +82,29 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
         }
 
 
-        [HttpPost]
-        public async Task<ActionResult> PostJournalEntry(JournalEntry model)
-        {
-            if (model == null || model.Payload == null || model.Payload.Entries == null || !model.Payload.Entries.Any())
-            {
-                return Json(new { success = false, message = "Invalid or empty journal entry." });
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> PostJournalEntry(JournalEntry model)
+        //{
+        //    if (model == null || model.Payload == null || model.Payload.Entries == null || !model.Payload.Entries.Any())
+        //    {
+        //        return Json(new { success = false, message = "Invalid or empty journal entry." });
+        //    }
 
-            try
-            {
-                var result = await _manualJournalEntryService.PostJournalEntryAsync(model);
+        //    try
+        //    {
+        //        var result = await _manualJournalEntryService.PostJournalEntryAsync(model);
 
-                // If apiResponse is null or failed
-                if (result == null || !result.IsSuccess)
-                    return Json(new { success = false, message = result?.Message ?? "Failed to post journal entry." });
+        //        // If apiResponse is null or failed
+        //        if (result == null || !result.IsSuccess)
+        //            return Json(new { success = false, message = result?.Message ?? "Failed to post journal entry." });
 
-                return Json(new { success = true, message = result.Message });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = $"Error: {ex.Message}" });
-            }
-        }
+        //        return Json(new { success = true, message = result.Message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = $"Error: {ex.Message}" });
+        //    }
+        //}
 
         //[HttpGet]
         //public async Task<ActionResult> List()

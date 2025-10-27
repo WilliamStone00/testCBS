@@ -1457,7 +1457,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetConfigurationManualEntryById = "api/v1/InterBranchConfig/get/{0}";
 
-        public const string UpdateConfigurationManualEntryById = "api/v1/InterBranchConfig/update/{0}";
+        public const string UpdateConfigurationManualEntryById = "api/v1/InterBranchConfig/update";
 
         //----------------------------_manualJournalEntry--------------------------------//
 
@@ -1467,10 +1467,12 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
+        public static string GetJournalworkticketDataTable = "api/v1/workticketflow/datable";
         public static string ApproveJournalEntry = "api/manualjournalentry/id";
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
         public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
+
 
 
         //*************************** CHEQUE BOOK ******************************
