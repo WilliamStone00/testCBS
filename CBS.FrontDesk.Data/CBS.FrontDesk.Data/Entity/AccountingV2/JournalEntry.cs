@@ -1,6 +1,9 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,92 +14,207 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
 
 
-    public class JournalEntry
-    {
-        public string OperationCode { get; set; }
-
-        public string BranchId { get; set; }
-
-        public string CounterpartyBranchId { get; set; } = null;
-
-        public DateTime AccountingDate { get; set; }
-
-        public string PostMode { get; set; }
-        public string Narration { get; set; }
-        //----------dtails------------------
-        public string Reference { get; set; }
-        public string State { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-
-
-        public JournalPayload Payload { get; set; } = new JournalPayload();
-
-        // Optional (not in JSON but kept for possible internal use)
-        public string OperationType { get; set; }
-        public string WorkTicket { get; set; }
-        public string Id { get; set; }
-        public string BranchName { get; set; }
-        public string CorrelationId { get; set; }
-        public string ExternalApplicationName { get; set; }
-    }
-
-    public class JournalPayload
-    {
-        public string Memo { get; set; }
-        public bool AllowUnbalanced { get; set; } = false;
-        public List<JournalEntryLine> Entries { get; set; } = new List<JournalEntryLine>();
-    }
-
-    public class JournalEntryLine
-    {
-        public string AffiliateAccountId { get; set; }
-
-        public string Naration { get; set; }
-
-        public bool Dr { get; set; }
-        public bool Cr { get; set; }
-        public decimal Amount { get; set; }
-    }
     //public class JournalEntry
     //{
-    //    public string Id { get; set; }
     //    public string OperationCode { get; set; }
+
     //    public string BranchId { get; set; }
-    //    public string BranchName { get; set; }
-    //    public string Reference { get; set; }
-    //    public string CounterpartyBranchId { get; set; } // optional
+
+    //    public string CounterpartyBranchId { get; set; } = null;
+
     //    public DateTime AccountingDate { get; set; }
+
     //    public string PostMode { get; set; }
+    //    public string Narration { get; set; }
+    //    //----------dtails------------------
+    //    public string Reference { get; set; }
+    //    public string State { get; set; }
+    //    public string CreatedBy { get; set; }
+    //    public DateTime CreatedDate { get; set; }
+
+
+    //    public JournalPayload Payload { get; set; } = new JournalPayload();
+
+    //    // Optional (not in JSON but kept for possible internal use)
+    //    public string OperationType { get; set; }
+    //    public string WorkTicket { get; set; }
+    //    public string Id { get; set; }
+    //    public string BranchName { get; set; }
     //    public string CorrelationId { get; set; }
-    //    public string Narrative { get; set; } // matches JSON "narrative"
-    //    public string ExternalOperationType { get; set; } // maps ExternalApplicationName in some examples
-    //    public JournalPayload Payload { get; set; } // optional
-    //    public string Stage { get; set; } // Temp / Reconciled
-    //    public bool IsBalanced { get; set; }
-    //    public decimal TotalDebit { get; set; }
-    //    public decimal TotalCredit { get; set; }
-    //    public List<JournalEntryLine> Lines { get; set; } = new List<JournalEntryLine>();
-    //    public List<JournalEntryLine> TempRLines { get; set; } = new List<JournalEntryLine>();
-    //    public DateTime CreatedAt { get; set; }
-    //    public DateTime? UpdatedAt { get; set; }
+    //    public string ExternalApplicationName { get; set; }
     //}
 
     //public class JournalPayload
     //{
     //    public string Memo { get; set; }
-    //    public bool AllowUnbalanced { get; set; }
+    //    public bool AllowUnbalanced { get; set; } = false;
     //    public List<JournalEntryLine> Entries { get; set; } = new List<JournalEntryLine>();
     //}
 
     //public class JournalEntryLine
     //{
     //    public string AffiliateAccountId { get; set; }
-    //    public string Naration { get; set; } // keep spelling consistent with your JSON
+
+    //    public string Naration { get; set; }
+
     //    public bool Dr { get; set; }
     //    public bool Cr { get; set; }
     //    public decimal Amount { get; set; }
     //}
+    public class JournalEntry
+    {
+        public string Id { get; set; }
+        public string Reference { get; set; } = null;
+        public string Narrative { get; set; } = null;
+        public DateTime AccountingDate { get; set; }
+        public bool IsBalanced { get; set; }
+        public string ExternalOperationType { get; set; } = null;
+        public string PostMode { get; set; } = null;
+        public string OperationCode { get; set; } 
+        public string BranchId { get; set; } 
+        public string Memo { get; set; } = null;
+        public string Stage { get; set; } 
+        public bool RequiresWorkflow { get; set; }
+        public bool RequiresDestinationApproval { get; set; }
+        public bool IsCashOperation { get; set; }
+        public string MemberReference { get; set; } = null;
+        public string TillName { get; set; } = null;
+        public string CashierName { get; set; } = null;
+        public string CashDenomsJson { get; set; } = null;
+        public string CashTillId { get; set; } = null;
+        public decimal CashDenomsTotal { get; set; }
+
+        public List<JournalLine> Lines { get; set; } = null;
+        public List<JournalReconciliation> JournalReconciliations { get; set; } = null;
+        public List<ReconciledLedgerLine> ReconciledLedgerLines { get; set; } = null;
+        public List<WorkflowTicket> WorkflowTickets { get; set; } = null;
+        public Receipt Receipt { get; set; } = null;
+
+        public string Status { get; set; } = "RECEIVED";
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public string CorrelationId { get; set; } = null;
+        public string CounterpartyBranchId { get; set; } = null;
+        public string HeadOfficeBranchId { get; set; } = null;
+        public string AuxiliaryRef { get; set; } = null;
+        public bool IsInterBranch { get; set; }
+        public string WorkflowTicketNotes { get; set; } = null;
+    }
+
+    // ==============================================
+    // JOURNAL LINE
+    // ==============================================
+    public class JournalLine
+    {
+        public string Id { get; set; } 
+        public string JournalHeaderId { get; set; } 
+        public string AccountId { get; set; } 
+        public string DrCr { get; set; } 
+        public decimal Amount { get; set; }
+        public string Description { get; set; } = null;
+        public string MemberId { get; set; } = null;
+        public string LoanId { get; set; } = null;
+        public string CustomerId { get; set; } = null;
+        public string AccountName { get; set; } = null;
+        public string JournalReference { get; set; } = null;
+        public DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; } = null;
+        public DateTime? UpdatedOn { get; set; }
+        public string UpdatedBy { get; set; } = null;
+    }
+
+    // ==============================================
+    // JOURNAL RECONCILIATION
+    // ==============================================
+    public class JournalReconciliation
+    {
+        public string BranchId { get; set; }    
+        public string Reference { get; set; } 
+        public string TempJournalId { get; set; } 
+        public string ReconciledJournalId { get; set; } = null;
+        public string Status { get; set; } 
+        public string Notes { get; set; } = null;
+        public string CorrelationId { get; set; } = null;
+    }
+
+    // ==============================================
+    // RECONCILED LEDGER LINE
+    // ==============================================
+    public class ReconciledLedgerLine
+    {
+        public string BranchId { get; set; }
+        //public string BranchAccountId { get; set; } = default!;
+        //public BranchAccount? BranchAccount { get; set; }
+        public string JournalHeaderId { get; set; } 
+        public JournalEntry Journal { get; set; } 
+        public string DrCr { get; set; } 
+        public decimal Amount { get; set; }
+        public decimal DebitAmount { get; set; }
+        public decimal CreditAmount { get; set; }
+        public decimal Balance { get; set; }
+        public string Description { get; set; } = null;
+        public int Seq { get; set; }
+        public string ReferenceNumber { get; set; } = null;
+        public string AuxiliaryRef { get; set; } = null;
+        public DateTime EntryDate { get; set; }
+        public string UserName { get; set; } = null;
+        public bool InterbranchStatus { get; set; }
+        public  string CounterpartyBranchId { get; set; } = null;
+    }
+
+    // ==============================================
+    // WORKFLOW TICKET
+    // ==============================================
+    public class WorkflowTicket
+    {
+       public string BranchId { get; set; } 
+        public string Reference { get; set; }
+        public string State { get; set; } 
+        public string OperationCode { get; set; } 
+        public DateTime AccountingDate { get; set; }
+        public List<JournalLine> JournalLines { get; set; } = null;
+        public string Remarks { get; set; } = null;
+        public string Id { get; set; } 
+        public string JournalHeaderId { get; set; }
+        public string Notes { get; set; } = null;
+        public DateTime? OpenedAtUtc { get; set; }
+        public string OperationType { get; set; } = null;
+        public DateTime? ClosedAtUtc { get; set; }
+    }
+
+    // ==============================================
+    // RECEIPT
+    // ==============================================
+    public class Receipt
+    {
+        public string BranchId { get; set; }
+        public string Reference { get; set; } 
+        public string JournalHeaderId { get; set; }
+        public JournalEntry Journal { get; set; } = null;
+        public string Title { get; set; } = null;
+        
+        public string PayloadJson { get; set; } = null;
+        public string Number { get; set; } 
+        public DateTime IssuedAtUtc { get; set; } = DateTime.UtcNow;
+        public string Payor { get; set; } = null;
+        public string Memo { get; set; } = null;
+        public DateTime AccountingDate { get; set; }
+        public string OperationCode { get; set; } 
+        public string Currency { get; set; } = null;
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public decimal? CashInAmount { get; set; }
+        public decimal? CashOutAmount { get; set; }
+        public decimal? NetAmount { get; set; }
+        
+        public string IssuedBy { get; set; } = null;
+        public int PrintedCount { get; set; } = 1;
+        public bool IsReprint { get; set; }
+        public bool? IsInterBranch { get; set; }
+        public string CounterpartyBranchId { get; set; } = null;
+        public string PayloadVersion { get; set; } = null;
+        public string PayloadHash { get; set; } = null; 
+    }
 
     public class JournalEntryQuery
     {

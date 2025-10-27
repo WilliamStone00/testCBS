@@ -1,5 +1,4 @@
-﻿// BranchCashConfigService.cs
-using BusinessServices;
+﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.UserManagement;
@@ -74,20 +73,20 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
+        // Removed the commented-out GetBranchCashConfigByBranchIdAsync
 
+        // This is the functional GetBranchCashConfigByBranchIdAsync (uncommented in your original submission)
         public async Task<BranchCashConfigDto> GetBranchCashConfigByBranchIdAsync(string branchId)
         {
+            if (string.IsNullOrWhiteSpace(branchId))
+                return null;
 
             try
             {
                 string formattedUrl = string.Format(APICallHelper.GetBranchCashConfigByBranchId, branchId);
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchCashConfigDto>>(formattedUrl);
 
-                if (response.IsSuccess)
-                {
-                    return response.ApiResponseData?.Data;
-                }
-                return null;
+                return response.IsSuccess ? response.ApiResponseData?.Data : null;
             }
             catch (Exception ex)
             {
@@ -96,7 +95,35 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
-        public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigs()
+        public async Task<ExecutionMessages> CreateOrUpdateBranchCashConfigAsync(BranchCashConfigDto model)
+        {
+            try
+            {
+                model.RequestedBy = GetUserId();
+
+                if (string.IsNullOrEmpty(model.Id))
+                {
+                    // Create new
+                    return await CreateBranchCashConfigAsync(model);
+                }
+                else
+                {
+                    // Update existing
+                    return await UpdateBranchCashConfigAsync(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in CreateOrUpdateBranchCashConfigAsync: {ex.Message}");
+
+                GetExecutionMessages(model, false, $"Branch Cash Config for Branch {model.BranchId}", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                return ExecutionMessage;
+            }
+        }
+
+        // Renamed 'GetBranchCashConfigs' to 'GetAllFilteredConfigs' for clarity (since you had two methods named 'GetBranchCashConfigs')
+        public async Task<IEnumerable<BranchCashConfigDto>> GetAllFilteredConfigs()
         {
             try
             {
@@ -228,12 +255,9 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
 
         public List<BranchCashConfigDto> MapToBranchCashConfigDownloadDtos(IEnumerable<BranchCashConfigDto> configs)
         {
-            return configs.Select(MapToBranchCashConfigDownloadDto).ToList();
-        }
-
-        public BranchCashConfigDto MapToBranchCashConfigDownloadDto(BranchCashConfigDto config)
-        {
-            return new BranchCashConfigDto
+            // Simplified: If the DTO is the final required structure, we just select and return. 
+            // Removed the redundant MapToBranchCashConfigDownloadDto helper.
+            return configs.Select(config => new BranchCashConfigDto
             {
                 BranchId = config.BranchId,
                 CashInHandAccountId = config.CashInHandAccountId,
@@ -249,8 +273,10 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 CamcculAccountId = config.CamcculAccountId,
                 HeadOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
                 FormFeeIncomeAccountId = config.FormFeeIncomeAccountId
-            };
+            }).ToList();
         }
+
+        // Removed the redundant MapToBranchCashConfigDownloadDto method
 
         public async Task<IEnumerable<BranchAccount>> GetBranchesAsync(string branchId)
         {

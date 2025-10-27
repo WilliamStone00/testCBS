@@ -71,11 +71,11 @@ namespace CBS.BusinessService.AccountingV2.ConfigurationsManualEntry
 
 
 
-        public async Task<CBS.API.Helper.ApiResponse<object>> UpdateConfigurationManualEntryAsync(ConfigurationManualEntries model)
+        public async Task<ApiResponse<object>> UpdateConfigurationManualEntryAsync(ConfigurationManualEntries model)
         {
             try
             {
-                var endpoint = string.Format(APICallHelper.UpdateConfigurationManualEntryById, model.Id);
+                var endpoint = string.Format(APICallHelper.UpdateConfigurationManualEntryById);
 
                 // Send model directly to API
                 var apiResponse = await _configurationapiCallerHelper
@@ -113,47 +113,47 @@ namespace CBS.BusinessService.AccountingV2.ConfigurationsManualEntry
 
 
 
-        public List<ConfigurationManualEntries> GetSampleEntries()
-        {
-            try
-            {
-               var data= ConfigurationManualEntriesSample.GetSampleEntries();
+        //public List<ConfigurationManualEntries> GetSampleEntries()
+        //{
+        //    try
+        //    {
+        //       var data= ConfigurationManualEntriesSample.GetSampleEntries();
 
-                return data; // return the full ApiResponse
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
-                throw new Exception($"Configuration service unavailable: {ex.Message}", ex);
-            }
-        }
+        //        return data; // return the full ApiResponse
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+        //        throw new Exception($"Configuration service unavailable: {ex.Message}", ex);
+        //    }
+        //}
 
         
 
 
     }
-    public static class ConfigurationManualEntriesSample
-    {
-        public static List<ConfigurationManualEntries> GetSampleEntries()
-        {
-            return new List<ConfigurationManualEntries>
-        {
-            new ConfigurationManualEntries { Id="1", Type = "Local", Command = "Auto", Description = "Local Auto Posting", UserRequiredApproval = false, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="2", Type = "Local", Command = "Auto Approval", Description = "Local Auto Approval Posting", UserRequiredApproval = true, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="3", Type = "Local", Command = "Auto Approval Source", Description = "Local Auto Approval Source Posting", UserRequiredApproval = true, StatusIsActive = false },
-            new ConfigurationManualEntries { Id="4", Type = "Local", Command = "Auto Approval Source Destination", Description = "Local Auto Approval Source to Destination", UserRequiredApproval = true, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="5", Type = "InterBranch", Command = "Auto", Description = "Inter Branch Auto Posting", UserRequiredApproval = false, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="6", Type = "InterBranch", Command = "Auto Approval", Description = "Inter Branch Auto Approval Posting", UserRequiredApproval = true, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="7", Type = "InterBranch", Command = "Auto Approval Source", Description = "Inter Branch Auto Approval Source Posting", UserRequiredApproval = true, StatusIsActive = false },
-            new ConfigurationManualEntries { Id="8", Type = "InterBranch", Command = "Auto Approval Source Destination", Description = "Inter Branch Auto Approval Source to Destination", UserRequiredApproval = true, StatusIsActive = true },
-            new ConfigurationManualEntries { Id="9", Type = "Local", Command = "Auto", Description = "Local Auto Posting 2", UserRequiredApproval = false, StatusIsActive = true },
+    //public static class ConfigurationManualEntriesSample
+    //{
+    //    public static List<ConfigurationManualEntries> GetSampleEntries()
+    //    {
+    //        return new List<ConfigurationManualEntries>
+    //    {
+    //        new ConfigurationManualEntries { Id="1", Type = "Local", Command = "Auto", Description = "Local Auto Posting", UserRequiredApproval = false, Status = true },
+    //        new ConfigurationManualEntries { Id="2", Type = "Local", Command = "Auto Approval", Description = "Local Auto Approval Posting", UserRequiredApproval = true, Status = true },
+    //        new ConfigurationManualEntries { Id="3", Type = "Local", Command = "Auto Approval Source", Description = "Local Auto Approval Source Posting", UserRequiredApproval = true, Status = false },
+    //        new ConfigurationManualEntries { Id="4", Type = "Local", Command = "Auto Approval Source Destination", Description = "Local Auto Approval Source to Destination", UserRequiredApproval = true, Status = true },
+    //        new ConfigurationManualEntries { Id="5", Type = "InterBranch", Command = "Auto", Description = "Inter Branch Auto Posting", UserRequiredApproval = false, Status = true },
+    //        new ConfigurationManualEntries { Id="6", Type = "InterBranch", Command = "Auto Approval", Description = "Inter Branch Auto Approval Posting", UserRequiredApproval = true, Status = true },
+    //        new ConfigurationManualEntries { Id="7", Type = "InterBranch", Command = "Auto Approval Source", Description = "Inter Branch Auto Approval Source Posting", UserRequiredApproval = true, Status = false },
+    //        new ConfigurationManualEntries { Id="8", Type = "InterBranch", Command = "Auto Approval Source Destination", Description = "Inter Branch Auto Approval Source to Destination", UserRequiredApproval = true, Status = true },
+    //        new ConfigurationManualEntries { Id="9", Type = "Local", Command = "Auto", Description = "Local Auto Posting 2", UserRequiredApproval = false, Status = true },
             
-        };
-        }
+    //    };
+    //    }
 
 
    
-    }
+    //}
 
 }
 

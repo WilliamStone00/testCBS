@@ -66,17 +66,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(JsonConvert.SerializeObject(data.data));
+                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(
+                    JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
-                    draw = data.Options.draw,
+
+                    draw = data.Options.draw ?? "1",
                     recordsTotal = data.Options.recordsTotal,
                     recordsFiltered = data.Options.recordsFiltered,
                     data = journalHeaders,
                     success = true,
                     message = "Display DataTable for Journal Head  successfully"
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -90,6 +92,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     error = ex.Message
                 });
             }
+
+
+           
         }
 
 
@@ -146,11 +151,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
-                var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
+                var data = await _journalHeadService.GetJournalSourceDataTableAsync(query);
                
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(
+                var Workticket = JsonConvert.DeserializeObject<List<JournalEntry>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -159,7 +164,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     draw = data.Options.draw??"1",
                     recordsTotal = data.Options.recordsTotal,
                     recordsFiltered = data.Options.recordsFiltered,
-                    data = journalHeaders,
+                    data = Workticket,
                     success = true,
                     message = "Display DataTable for Journal Head  successfully"
                 }, JsonRequestBehavior.AllowGet);
