@@ -2,9 +2,11 @@
 @using Resources
 
 @{
+    // Determine the title based on the Model ID
     var isEditMode = !string.IsNullOrEmpty(Model?.Id);
-    var formTitle = isEditMode ? "Edit GL Configuration for " + ViewBag.CurrentBranchName : "Create GL Configuration for " + ViewBag.CurrentBranchName;
-    var formTitle2 = isEditMode ? "Edit GL Configuration for " + ViewBag.CurrentBranchName : "Create GL Configuration for " + ViewBag.CurrentBranchName;
+    var formTitle = isEditMode
+        ? $"Edit GL Configuration for {ViewBag.CurrentBranchName}"
+        : $"Create GL Configuration for {ViewBag.CurrentBranchName}";
 }
 
 <div class="row mb-3">
@@ -25,7 +27,6 @@
                 <div id="accordionPopoutIcon-1" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
                     <div class="accordion-body">
 
-                        <!-- Info Alert -->
                         <div class="alert alert-info mb-4">
                             <div class="d-flex align-items-center">
                                 <i class="mdi mdi-office-building me-2 mdi-24px"></i>
@@ -36,98 +37,39 @@
                             </div>
                         </div>
 
-                        <!-- FORM START -->
                         <form asp-action="CreateOrUpdate" method="post" id="branchCashConfigForm">
                             @Html.AntiForgeryToken()
+
+                            @* Hidden Fields for necessary IDs *@
                             @Html.HiddenFor(m => m.Id)
                             @Html.HiddenFor(m => m.BranchId)
-                            @Html.HiddenFor(m => m.RequestedBy)
+                            @* NOTE: RequestedBy removed as it was not in your DTO. *@
 
-                            <!-- Primary Cash Configuration -->
+                            <h5 class="mb-3 text-primary">Core Cash Configuration</h5>
                             <div class="row mb-3">
+                                @* Branch Name (Read-Only Context) *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.BranchName, "Branch Name", new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                                @* Cash In Hand Account *@
                                 <div class="col-md-6">
                                     @Html.LabelFor(m => m.CashInHandAccountId, "Cash in Hand Account", new { @class = "form-label" })
-                                    @*<label class="form-label fw-bold text-dark">Cash in Hand Account <span class="text-danger">*</span></label>*@
                                     @Html.DropDownListFor(m => m.CashInHandAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Cash in Hand Account --", new { @class = "form-select select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.CashInHandAccountId, "", new { @class = "text-danger small" })
                                 </div>
+                            </div>
 
+                            <div class="row mb-4">
+                                @* Vault Account *@
                                 <div class="col-md-6">
-                                    @*<label class="form-label fw-bold text-dark">Vault Account <span class="text-danger">*</span></label>*@
-                                    @Html.LabelFor(m => m.VaultAccountId, "Vault Account ", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.VaultAccountId, "Vault Account", new { @class = "form-label" })
                                     @Html.DropDownListFor(m => m.VaultAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Vault Account --", new { @class = "form-select select2", required = "required" })
                                     @Html.ValidationMessageFor(m => m.VaultAccountId, "", new { @class = "text-danger small" })
                                 </div>
-                            </div>
 
-                            <!-- Surplus and Shortage -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    @*<label class="form-label fw-bold text-dark">Surplus Income Account <span class="text-danger">*</span></label>*@
-                                    @Html.LabelFor(m => m.SurplusIncomeAccountId, "Surplus Income Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.SurplusIncomeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Surplus Income Account --", new { @class = "form-select select2", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.SurplusIncomeAccountId, "", new { @class = "text-danger small" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.ShortageExpenseAccountId, "Shortage Expense Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.ShortageExpenseAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Shortage Expense Account --", new { @class = "form-select select2", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.ShortageExpenseAccountId, "", new { @class = "text-danger small" })
-                                </div>
-                            </div>
-
-                            <!-- Optional Accounts -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.RevenueAccountId, "Revenue Account (Optional)", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.RevenueAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Revenue Account --", new { @class = "form-select select2" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.FormFeeIncomeAccountId, "Form Fee Income Account (Optional)", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.FormFeeIncomeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Form Fee Income Account --", new { @class = "form-select select2" })
-                                </div>
-                            </div>
-
-                            <!-- Inter-Branch and Liaison Accounts -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.SourceBranchAccountId, "Source Branch Commission Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.SourceBranchAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Source Branch Account --", new { @class = "form-select select2" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.DestinationBranchAccountId, "Destination Commission Branch Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.DestinationBranchAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Destination Branch Account --", new { @class = "form-select select2" })
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.HeadOfficeAccountId, "Head Office Commission Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.HeadOfficeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Head Office Account --", new { @class = "form-select select2" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.PartnerAccountId, "Partner Commission Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.PartnerAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Partner Account --", new { @class = "form-select select2" })
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.CamcculAccountId, "Camccul Commission Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.CamcculAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Camccul Account --", new { @class = "form-select select2" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    @Html.LabelFor(m => m.HeadOfficeLiaisonAccountId, "Head Office Commission Liaison Account", new { @class = "form-label" })
-                                    @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Head Office Liaison Account --", new { @class = "form-select select2" })
-                                </div>
-                            </div>
-
-                            <!-- Real-Time Posting -->
-                            <div class="row mb-4">
+                                @* Real-Time Posting Switch *@
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold text-dark">Enable Real-Time Cash Posting?</label>
                                     <div class="form-check form-switch mt-2">
@@ -140,8 +82,82 @@
                                 </div>
                             </div>
 
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-end mt-4">
+                            <h5 class="mb-3 text-primary mt-3 pt-3 border-top">Profit & Loss Configuration</h5>
+                            <div class="row mb-3">
+                                @* Surplus Income Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.SurplusIncomeAccountId, "Surplus Income Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.SurplusIncomeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Surplus Income Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.SurplusIncomeAccountId, "", new { @class = "text-danger small" })
+                                </div>
+
+                                @* Shortage Expense Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.ShortageExpenseAccountId, "Shortage Expense Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.ShortageExpenseAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Shortage Expense Account --", new { @class = "form-select select2", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.ShortageExpenseAccountId, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                @* Revenue Account (Optional) *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.RevenueAccountId, "Revenue Account (Optional)", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.RevenueAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Revenue Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                @* Form Fee Income Account (Optional) *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.FormFeeIncomeAccountId, "Form Fee Income Account (Optional)", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.FormFeeIncomeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Form Fee Income Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 text-primary mt-3 pt-3 border-top">Commission & Inter-Branch Accounts</h5>
+                            <div class="row mb-3">
+                                @* Source Branch Commission Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.SourceBranchAccountId, "Source Branch Commission Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.SourceBranchAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Source Branch Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                @* Destination Commission Branch Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.DestinationBranchAccountId, "Destination Commission Branch Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.DestinationBranchAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Destination Branch Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @* Head Office Commission Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.HeadOfficeAccountId, "Head Office Commission Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.HeadOfficeAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Head Office Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                @* Partner Commission Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.PartnerAccountId, "Partner Commission Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.PartnerAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Partner Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                @* Camccul Commission Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.CamcculAccountId, "Camccul Commission Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.CamcculAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Camccul Account --", new { @class = "form-select select2" })
+                                </div>
+
+                                @* Head Office Commission Liaison Account *@
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.HeadOfficeLiaisonAccountId, "Head Office Commission Liaison Account", new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.BranchAccounts, "Id", "Name"), "-- Select Head Office Liaison Account --", new { @class = "form-select select2" })
+                                </div>
+                            </div>
+
+                            @* Submit/Reset Buttons *@
+                            <div class="d-flex justify-content-end mt-4 pt-3 border-top">
                                 <button type="submit" class="btn btn-primary me-2">
                                     <i class="mdi mdi-content-save-outline me-1"></i>
                                     @(isEditMode ? "Update Configuration" : "Save Configuration")
@@ -153,12 +169,9 @@
                             </div>
 
                         </form>
-                        <!-- FORM END -->
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
