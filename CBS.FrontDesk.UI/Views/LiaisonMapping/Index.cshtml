@@ -540,24 +540,7 @@
                 $("#accountFilters").toggle(this.checked);
             });
 
-            /*// ------------------- Event Handlers -------------------
-            $('#btnAddLiaisonMapping').on('click', function () {
-                LiaisonMappingModule.openForm();
-            });
-
-            $('#liaisonMappingTable').on('click', '.edit-liaison', function () {
-                const id = $(this).data('id');
-                LiaisonMappingModule.editMapping(id);
-            });
-
-            $('#liaisonMappingTable').on('click', '.delete-liaison', function () {
-                const id = $(this).data('id');
-                const name = $(this).data('name');
-                LiaisonMappingModule.deleteMapping(id, name);
-            });*/
-
-            // Initialize DataTable
-            //loadLiaisonMappings();
+            
         });
 
 
@@ -596,16 +579,16 @@
                 },
                 columns: [
                     // 1️⃣ Source Branch
-                    { data: 'BranchName' },
+                    { data: 'BranchId', width: '20%'},
 
                     // 2️⃣ Counterparty Branch
-                    { data: 'CounterpartyBranchName' },
+                    { data: 'CounterpartyBranchId', width: '20%' },
 
                     // 3️⃣ Due From Account
-                    { data: 'DueFromAssetAccountName' },
+                    { data: 'DueFromAssetAccountId', width: '20%' },
 
                     // 4️⃣ Due To Account
-                    { data: 'DueToLiabilityAccountName' },
+                    { data: 'DueToLiabilityAccountId', width: '20%' },
 
                     // 5️⃣ Action Buttons
                     {
@@ -628,7 +611,8 @@
                                 <i class="mdi mdi-delete-outline"></i>
                             </button>
                         </div>`;
-                        }
+                        },
+                         width: '20%'
                     }
                 ]
             });
@@ -842,6 +826,7 @@
                 // Wire branch change
                 modalElements.source.off('change.modal').on('change.modal', function () {
                     const branchId = $(this).val();
+                    console.log('My Branch : '+branchId);
                     loadCounterpartyBranches(branchId, modalElements.counterparty);
                     loadAccountsForBranch(branchId, modalElements.dueFrom, modalElements.dueTo);
                 });
