@@ -87,6 +87,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
     {
         public string Scope { get; set; }
         public string Type { get; set; }
+        public string  Name { get; set; }
+        public string Scope { get; set; }
         public string Rationale { get; set; }
         public string Name { get; set; }
         public string Class { get; set; }
