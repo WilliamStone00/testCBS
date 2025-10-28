@@ -495,12 +495,13 @@
                 $(document).on('click', '.btn-addcorr', function() {
                     const recordId = $(this).data('id');
                     const name = $(this).data('name');
+                    const scope = $(this).data('scope');
 
                     // Load the modal with the partial view
-                    loadCorrespondenceModal(recordId, name);
+                    loadCorrespondenceModal(recordId, name, scope);
                 });
 
-                function loadCorrespondenceModal(recordId, name) {
+                function loadCorrespondenceModal(recordId, name, scope) {
                     // Show loading state
                     showLoading();
 
