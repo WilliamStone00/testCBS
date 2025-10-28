@@ -95,14 +95,18 @@ namespace CBS.BusinessService.AccountingV2
 
                 // ✅ Call API
                 var response = await _manualJournalEntryapiCallerHelper
-                    .PostAsync<ServiceResponse<JournalEntryPayload>>(APICallHelper.PostManualJournalEntry, model);
+                    .PostAsync<ServiceResponse<ManualEntryresponnse>>(APICallHelper.PostManualJournalEntry, model);
 
                 // ✅ Handle success
-                if (response.IsSuccess)
+                // ✅ Handle success or failure
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, "Journal Entry",
+                    var journalData = response.ApiResponseData.Data; // ManualEntryData object
+
+                    GetExecutionMessages(journalData, true, "Journal Entry",
                         MessagesResults.Success, ExecutionProcessOption.InsertObject,
-                        SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                        SystemMessageStatus.Success.ToString(), null,
+                        response.ApiResponseData.Message);
                 }
                 else
                 {
@@ -120,12 +124,14 @@ namespace CBS.BusinessService.AccountingV2
 
             return ExecutionMessage;
         }
+            
+        }
 
     }
 
 
 
-}
+
 
 
 
