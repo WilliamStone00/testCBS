@@ -10888,24 +10888,6 @@
     <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
-      <Project>{7789DE1E-5232-46A6-9A96-1DD39E708EEB}</Project>
-      <Name>CBS.API.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CBS.BusinessService\CBS.BusinessService\CBS.FrontDesk.Service.csproj">
-      <Project>{c8e30e49-fc55-431e-9832-cf6f28e30c30}</Project>
-      <Name>CBS.FrontDesk.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
-      <Name>CBS.FrontDesk.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
-      <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
-      <Name>CBS.FrontDesk.Helper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\BalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>BalanceSheet.cs</LastGenOutput>
@@ -11086,6 +11068,24 @@
   <!-- ✅ Exclude aspnet_client folder from publish output -->
   <ItemGroup>
     <Content Remove="aspnet_client\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
+      <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
+      <Name>CBS.API.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CBS.BusinessService\CBS.BusinessService\CBS.FrontDesk.Service.csproj">
+      <Project>{c8e30e49-fc55-431e-9832-cf6f28e30c30}</Project>
+      <Name>CBS.FrontDesk.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
+      <Name>CBS.FrontDesk.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
+      <Project>{192960f3-c2ba-4286-a4e6-f0b94da85450}</Project>
+      <Name>CBS.FrontDesk.Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Target Name="ExcludeAspNetClient" BeforeTargets="CopyAllFilesToPublishFolder">
     <ItemGroup>
