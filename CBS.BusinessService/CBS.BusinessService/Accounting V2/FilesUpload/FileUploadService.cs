@@ -351,6 +351,22 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             }
         }
 
+        public async Task<AddCORRESPONDANCE> GetByIdFORCorrespondanceAsync(string fileUploadId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(fileUploadId)) return null;
+                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(fileUploadId));
+                var response = await _apiHelper.GetAsync<ResponseObject<AddCORRESPONDANCE>>(endpoint);
+                return response?.ApiResponseData?.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log ex
+                return null;
+            }
+        }
+
         public async Task<ExecutionMessages> CreateAsync(Accountwaiting model)
         {
             try

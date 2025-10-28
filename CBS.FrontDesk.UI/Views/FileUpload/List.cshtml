@@ -323,6 +323,7 @@
                                 var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
                                 var btnId = 'actionDropdown_' + safeId;
                                 var name = (row.name || row.Name) ? String(row.name || row.Name).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
+                                var scope = (row.Scope || row.scope) ? String(row.scope || row.Scope).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
 
                                 var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
@@ -330,7 +331,7 @@
                                                         <i class="mdi mdi-eye me-1 text-primary"></i> Details
                                                    </button>`;
 
-                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name}">
+                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name} data-scope="${scope}">
                                                         <i class="mdi mdi-plus-box-outline me-1 text-success"></i> Correspondance request
                                                    </button>`;
 
@@ -489,94 +490,142 @@
                 });
 
 
-               // Minimal Add Correspondance (keeps full functionality)
-            $(document).off('click', '.btn-addcorr').on('click', '.btn-addcorr', function (e) {
-                e.preventDefault();
+                // Load and show dedicated Add Correspondence modal
+                // Handler for the correspondence button
+                $(document).on('click', '.btn-addcorr', function() {
+                    const recordId = $(this).data('id');
+                    const name = $(this).data('name');
 
-                var $btn = $(this);
-                var raw = $btn.data('id');
-                var id = null;
+                    // Load the modal with the partial view
+                    loadCorrespondenceModal(recordId, name);
+                });
 
-                try { id = raw ? decodeURIComponent(raw) : null; }
-                catch (ex) { console.warn('Invalid data-id encoding', ex); id = raw || null; }
+                function loadCorrespondenceModal(recordId, name) {
+                    // Show loading state
+                    showLoading();
 
-                if (!id) {
-                    if (typeof appalert === 'function') appalert('Missing id to add correspondence', 0, 1);
-                    return;
+                    $.ajax({
+                        url: '/FileUpload/GetCorrespondencePartial',
+                        type: 'GET',
+                        data: {
+                            recordId: recordId,
+                            name: name,
+                            scope: scope
+                            },
+                        success: function(response) {
+                            // Create or update modal
+                            let modal = $('#correspondenceModal');
+                            if (modal.length === 0) {
+                                createCorrespondenceModal();
+                                modal = $('#correspondenceModal');
+                            }
+
+                            // Load content into modal body
+                            modal.find('.modal-body').html(response);
+
+                            // Show modal
+                            modal.modal('show');
+                            hideLoading();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading correspondence form:', error);
+                            hideLoading();
+                            showError('Failed to load correspondence form');
+                        }
+                    });
                 }
 
-                // Prefer AddORUpdateGen if available (your app's helper)
-                if (typeof AddORUpdateGen === 'function') {
-                    try {
-                        AddORUpdateGen(encodeURIComponent(id), 'affiliateFormModal', '_AddCorrespondance', 'new', 'FileUpload');
-                        return;
-                    } catch (err) {
-                        console.warn('AddORUpdateGen failed, falling back to AJAX load', err);
+                function createCorrespondenceModal() {
+                    const modalHtml = `
+                        <div class="modal fade" id="correspondenceModal" tabindex="-1" aria-labelledby="correspondenceModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Content will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $('body').append(modalHtml);
+                }
+
+                //// AJAX form submission handler
+                //function AjaxPostAndUpdate(form) {
+                //    const formData = new FormData(form);
+
+                //    $.ajax({
+                //        url: $(form).attr('action'),
+                //        type: 'POST',
+                //        data: formData,
+                //        processData: false,
+                //        contentType: false,
+                //        success: function(response) {
+                //            if (response.success) {
+                //                // Show success message
+                //                showSuccess(response.message || 'Correspondence created successfully!');
+
+                //                // Close modal
+                //                $('#correspondenceModal').modal('hide');
+
+                //                // Optional: Refresh any relevant data or UI
+                //                if (response.refreshNeeded) {
+                //                    setTimeout(() => {
+                //                        location.reload(); // Or update specific section
+                //                    }, 1000);
+                //                }
+                //            } else {
+                //                // Show validation errors
+                //                showError(response.message || 'Please check the form for errors');
+                //                updateValidationErrors(form, response.errors);
+                //            }
+                //        },
+                //        error: function(xhr, status, error) {
+                //            console.error('Error submitting form:', error);
+                //            showError('An error occurred while submitting the form');
+                //        }
+                //    });
+
+                //    return false; // Prevent default form submission
+                //}
+
+                // Utility functions
+                function showLoading() {
+                    // Implement your loading indicator
+                    $('body').append('<div class="loading-overlay">Loading...</div>');
+                }
+
+                function hideLoading() {
+                    $('.loading-overlay').remove();
+                }
+
+                function showSuccess(message) {
+                    // Use your preferred notification library or simple alert
+                    alert('Success: ' + message);
+                }
+
+                function showError(message) {
+                    alert('Error: ' + message);
+                }
+
+                function updateValidationErrors(form, errors) {
+                    // Clear previous errors
+                    $(form).find('.text-danger').text('');
+
+                    // Update new errors
+                    if (errors) {
+                        Object.keys(errors).forEach(field => {
+                            const errorElement = $(form).find(`[data-valmsg-for="${field}"]`);
+                            if (errorElement.length) {
+                                errorElement.text(errors[field].join(', '));
+                            }
+                        });
                     }
                 }
-
-                // --- Correct action URL: use InitializeData (your controller action) ---
-                var url = '@Url.Action("InitializeData", "FileUpload")'; // <-- corrected
-                var originalHtml = $btn.html();
-                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
-
-                $.get(url, { KEY: id, partialView: '_AddCorrespondance', path: 'new' })
-                    .done(function (html, status, xhr) {
-                        // sanity check: if we got a whole page or redirect, note it
-                        if (!html || html.trim().length === 0) {
-                            $('#affiliateFormModal .modal-body').html('<div class="text-muted p-3">No form returned.</div>');
-                        } else {
-                            $('#affiliateFormModal .modal-body').html(html);
-                        }
-
-                        // Re-parse unobtrusive validation (if you use it)
-                        try {
-                            if (typeof $.validator !== 'undefined' && typeof $.validator.unobtrusive !== 'undefined') {
-                                $.validator.unobtrusive.parse($('#affiliateFormModal'));
-                            }
-                        } catch (pv) { console.warn('Validation parse failed', pv); }
-
-                        // init any plugins in the partial (select2, datepickers, etc.) if needed
-                        try {
-                            if ($.fn.select2) $('#affiliateFormModal .select2').select2({ width: '100%' });
-                        } catch (p) { console.warn('select2 init failed inside modal partial', p); }
-
-                        // Show the modal (create or get existing instance)
-                        try {
-                            var modalEl = document.getElementById('affiliateFormModal');
-                            if (!modalEl) {
-                                console.error('affiliateFormModal element not found in DOM');
-                                if (typeof appalert === 'function') appalert('UI error: modal container not found', 0, 1);
-                                return;
-                            }
-                            var instance = bootstrap.Modal.getOrCreateInstance(modalEl);
-                            instance.show();
-
-                            // optional: focus first visible input inside modal
-                            setTimeout(function () {
-                                var first = $('#affiliateFormModal').find('input:visible, textarea:visible, select:visible').first();
-                                if (first && first.length) first.focus();
-                            }, 120);
-                        } catch (err) {
-                            console.error('Error displaying modal:', err);
-                            if (typeof appalert === 'function') appalert('Form loaded but modal could not be displayed.', 1, 1);
-                        }
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        var msg = 'Error loading add correspondence form.';
-                        $('#affiliateFormModal .modal-body').html('<div class="text-danger p-3">' + msg + '</div>');
-                        try {
-                            var modalEl = document.getElementById('affiliateFormModal');
-                            var fallback = bootstrap.Modal.getOrCreateInstance(modalEl);
-                            if (fallback) fallback.show();
-                        } catch (err) { console.error('Error showing modal on failure:', err); }
-                        if (typeof appalert === 'function') appalert('Failed to load form: ' + (errorThrown || textStatus), 0, 1);
-                    })
-                    .always(function () {
-                        $btn.prop('disabled', false).html(originalHtml);
-                    });
-            });
-
 
 
 

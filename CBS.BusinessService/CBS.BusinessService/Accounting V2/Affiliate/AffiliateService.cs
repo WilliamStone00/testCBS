@@ -194,7 +194,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             {              
                 var isActive = true;
                 var includeDeleted = false;
-                string formattedUrl = string.Format(APICallHelper.GetAffiliateById, isActive, includeDeleted);
+                string formattedUrl = string.Format(APICallHelper.GetAffiliatedropId, isActive, includeDeleted);
 
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(formattedUrl);
                 var affiliates = response?.ApiResponseData?.Data ?? new List<Affiliateresponse>();
@@ -223,7 +223,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                         a.Name = $"[{a.Code}] - {a.Name} {(a.IsHeadOffice ? "(Head Office)" : string.Empty)}";
                         return a;
                     })
-                    .OrderBy(a => a.Code)
+                    .OrderBy(a => a.Id)
                     .ToList();
             }
             catch (Exception ex)

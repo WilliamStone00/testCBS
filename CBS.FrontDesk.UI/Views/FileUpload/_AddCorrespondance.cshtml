@@ -1,7 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.AddCORRESPONDANCE
 @using Resources
+
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Correspondance Request Creation
+        </h1>
+        <p class="card-text text-muted mb-1">
+            Use this form to ceate the correspondance request which is lacking 
+        </p>
+    </div>
+</div>
 <div class="card shadow p-3 mb-4">
-    <div class="modal-body">
+  
         @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             @Html.AntiForgeryToken()
@@ -133,4 +144,3 @@
         }
     </div>
 
-</div>

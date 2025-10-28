@@ -15,7 +15,7 @@
 <div class="card shadow p-3 mb-4">
 
     <div class="modal-body">
-        @using (Html.BeginForm("CreateOrUpdate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
+        @using (Html.BeginForm("CreateOrUpdate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Id)
@@ -202,3 +202,4 @@
         }
     </div>
 </div>
+

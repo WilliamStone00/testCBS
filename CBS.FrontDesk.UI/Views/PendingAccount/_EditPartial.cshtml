@@ -1,0 +1,135 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountDto
+@using Resources
+
+<div class="card mb-1">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-account-group me-2"></i>Edit Branch Account
+                    </h1>
+                    <p class="card-text">This page is used for editing branch account details (English & French names and related metadata).</p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card mb-1">
+    <div class="card-body">
+        <div id="accountInfo">
+            <form id="editAccountForm" class="d-flex flex-column" autocomplete="off">
+                <input type="hidden" id="id" name="Id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label for="scope" class="form-label">Scope</label>
+                    <input type="text" class="form-control" id="scope" name="Scope" value="@Model.Scope" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="affiliateId" class="form-label">Affiliate Id</label>
+                    <input type="text" class="form-control" id="affiliateId" name="AffiliateId" value="@Model.AffiliateId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="branchId" class="form-label">Branch Id</label>
+                    <input type="text" class="form-control" id="branchId" name="BranchId" value="@Model.BranchId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="affiliateAccountId" class="form-label">Affiliate Account Id</label>
+                    <input type="text" class="form-control" id="affiliateAccountId" name="AffiliateAccountId" value="@Model.AffiliateAccountId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="hoPcmfAccountId" class="form-label">Ho PCMF Account Id</label>
+                    <input type="text" class="form-control" id="hoPcmfAccountId" name="HoPcmfAccountId" value="@Model.HoPcmfAccountId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="accountCode" class="form-label">@AccountingV2.AccountCode</label>
+                    <input type="text" class="form-control" id="accountCode" name="Code" readonly value="@Model.Code" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="accountNameEn" class="form-label">@AccountingV2.Nameen</label>
+                    <input type="text" class="form-control" id="accountNameEn" name="NameEn" value="@Model.NameEn" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="accountNameFr" class="form-label">@AccountingV2.namefr</label>
+                    <input type="text" class="form-control" id="accountNameFr" name="NameFr" value="@Model.NameFr" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="accountClass" class="form-label">@AccountingV2.Class</label>
+                    <input type="text" class="form-control" id="accountClass" name="Class" readonly value="@Model.Class" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="parentId" class="form-label">Parent Id</label>
+                    <input type="text" class="form-control" id="parentId" name="ParentId" value="@Model.ParentId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="pathSeed" class="form-label">Path Seed</label>
+                    <input type="text" class="form-control" id="pathSeed" name="PathSeed" value="@Model.PathSeed" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="depthSeed" class="form-label">Depth Seed</label>
+                    <input type="number" class="form-control" id="depthSeed" name="DepthSeed" value="@(Model.DepthSeed)" />
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="postingAllowed" name="PostingAllowed" @(Model.PostingAllowed == true ? "checked" : "") />
+                        <label class="form-check-label" for="postingAllowed">@AccountingV2.PostingAllowed</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="requiresMapping" name="RequiresMapping" @(Model.RequiresMapping == true ? "checked" : "") />
+                        <label class="form-check-label" for="requiresMapping">Requires Mapping</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reference" class="form-label">Reference</label>
+                    <input type="text" class="form-control" id="reference" name="Reference" value="@Model.Reference" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="correlationId" class="form-label">Correlation Id</label>
+                    <input type="text" class="form-control" id="correlationId" name="CorrelationId" value="@Model.CorrelationId" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notes" name="Notes" rows="3">@Model.Notes</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <input type="text" class="form-control" id="status" name="Status" value="@Model.Status" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="language" class="form-label">Language</label>
+                    <input type="text" class="form-control" id="language" name="Language" value="@Model.Language" />
+                </div>
+
+                <div class="mt-auto">
+                    <button type="submit" class="btn btn-primary w-100" id="saveButton">
+                        <i class="fas fa-save me-2"></i>@AccountingV2.SaveChanges
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

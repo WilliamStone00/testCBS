@@ -333,28 +333,36 @@
                                 var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
                                 var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
-                                                     <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                   </button>`;
+                                                 <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                               </button>`;
 
                                 var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
-                                                            <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                          </button>` : '';
+                                  <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                </button>` : '';
+
+                                // ADD: button to create a Branch Account using current row as parent
+                                // data-parent-id is the parent reference passed to the partial
+                                var addBranchBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-add-branch" data-parent-id="${recordId}" data-name="${name}">
+                                       <i class="mdi mdi-bank-plus me-1 text-info"></i> Add Branch Account
+                                     </button>` : '';
 
                                 return `
-                                 <div class="dropdown text-center">
-                                     <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                             type="button" id="${btnId}"
-                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                         <i class="mdi mdi-cog-outline"></i> Actions
-                                     </button>
-                                     <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                         <li>${detailsBtn}</li>
-                                         ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                         ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                     </ul>
-                                 </div>
-                             `.trim();
+                                     <div class="dropdown text-center">
+                                         <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                 type="button" id="${btnId}"
+                                                 data-bs-toggle="dropdown" aria-expanded="false">
+                                             <i class="mdi mdi-cog-outline"></i> Actions
+                                         </button>
+                                         <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                             <li>${detailsBtn}</li>
+                                             ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                             ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                                             ${!isDeleted ? `<li>${addBranchBtn}</li>` : ''}
+                                         </ul>
+                                     </div>
+                                 `.trim();
                             }
+
                         }
                     ],
                     order: [[0, 'desc']],
@@ -427,7 +435,7 @@
                 $('#affiliateDetailsModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>');
                 if (bsModal) bsModal.show();
 
-                $.get('/BranchAccount/InitializeData', { KEY: id, partialView: '_DetailsPartial', path: 'get' })
+                $.get('/BranchAccount/InitializeData2', { KEY: id, partialView: '_DetailsPartial', path: 'get' })
                     .done(function (html) {
                         $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
                         try {
@@ -444,29 +452,326 @@
                     });
             });
 
-            // EDIT button -> loads edit partial into modal
-            $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+            //************************************************************************
+
+           // controller endpoint that returns the partial
+            var branchFormUrl = '@Url.Action("InitializeData", "BranchAccount")';
+
+            // name of the partial view you want returned (change if your partial has a different name)
+            var branchPartialName = '_Create';
+
+            $(document).off('click', '.btn-edit, .btn-add-branch').on('click', '.btn-edit, .btn-add-branch', function (e) {
                 e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) { if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1); return; }
+                var $btn = $(this);
 
-                var modalEl = document.getElementById('affiliateEditModal');
-                if (!modalEl) { if (typeof appalert === 'function') appalert('Edit modal not found', 0, 1); return; }
+                // For edit: data-id (encoded); for create: data-parent-id
+                var encodedId = $btn.data('id');          // may be undefined for create
+                var encodedParent = $btn.data('parent-id') || $btn.data('parentId') || $btn.data('parent'); // tolerate variations
 
+                // decode if needed (we encoded with encodeURIComponent earlier)
+                var id = encodedId ? decodeURIComponent(String(encodedId)) : '';
+                var parentId = encodedParent ? decodeURIComponent(String(encodedParent)) : '';
+
+                // Build params for InitializeData
+                // - KEY : id or parentId depending on path
+                // - partialView : name of the partial to render
+                // - path : "new" for create, "edit" for update (controller uses "new" and else->GetById)
+                // - serviceOption : optional (left empty here)
+                var data = {
+                    partialView: branchPartialName,
+                    serviceOption: '' // provide value if needed
+                };
+
+                if ($btn.hasClass('btn-add-branch')) {
+                    // Create new: use parentId as KEY and path=new
+                    data.KEY = parentId || id || ''; // prefer explicit parentId, fallback to id
+                    data.path = 'new';
+                } else {
+                    // Edit: use id as KEY and path=edit (controller treats anything other than "new" and "list" as get-by-id)
+                    data.KEY = id || parentId || '';
+                    data.path = 'edit';
+                }
+
+                // Optional: show a loading spinner in modal
                 $('#affiliateEditModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-                try { var bsModal = new bootstrap.Modal(modalEl); } catch (ex) { var bsModal = null; }
-                if (bsModal) bsModal.show();
 
-                $.get('/BranchAccount/InitializeData', { KEY: id, partialView: '_EditPartial', path: 'get' })
+                // Request the partial view from server (jQuery will encode data into query string)
+                $.get(branchFormUrl, data)
                     .done(function (html) {
-                        $('#affiliateEditModal .modal-body').html(html || '<div class="text-center text-muted">No edit form available.</div>');
+                        $('#affiliateEditModal .modal-body').html(html);
+
+                        // initialize any plugins inside the partial (select2, datepickers etc)
+                        try {
+                            $('#affiliateEditModal .select2').each(function () {
+                                if ($(this).hasClass('select2-hidden-accessible')) return;
+                                $(this).select2({ dropdownParent: $('#affiliateEditModal') });
+                            });
+                        } catch (ex) {
+                            console.warn('Modal init error', ex);
+                        }
+
+                        // show bootstrap modal
+                        var modalEl = document.getElementById('affiliateEditModal');
+                        var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl, { backdrop: 'static' });
+                        modal.show();
                     })
-                    .fail(function () {
-                        $('#affiliateEditModal .modal-body').html('<div class="text-center text-danger">Error loading edit form</div>');
-                        if (typeof appalert === 'function') appalert('Failed to load edit form', 0, 1);
+                    .fail(function (xhr, status, err) {
+                        var msg = 'Unable to load form. ' + (xhr.responseText || status || err);
+                        $('#affiliateEditModal .modal-body').html('<div class="alert alert-danger">' + msg + '</div>');
+                        console.error('Load partial failed', xhr, status, err);
                     });
             });
+
+            function AjaxPost(form) {
+                try {
+                    var $form = $(form);
+                    if (!$form || $form.length === 0) {
+                        console.warn('AjaxPost called with invalid form');
+                        return false;
+                    }
+
+                    // Prevent concurrent submissions
+                    if (window._ajaxSubmitState.isSubmitting) {
+                        console.warn('Submission blocked: another submit in progress.');
+                        if (typeof appalert === 'function') appalert('A request is already in progress. Please wait...', 2, 1);
+                        return false;
+                    }
+
+                    // set submitting flag + request id
+                    window._ajaxSubmitState.isSubmitting = true;
+                    var thisRequestId = ++window._ajaxSubmitState.lastRequestId;
+
+                    // Parse and validate
+                    safeParseUnobtrusive($form);
+                    if (!safeValidate($form)) {
+                        window._ajaxSubmitState.isSubmitting = false;
+                        return false;
+                    }
+
+                    // small helper to normalize server validation payloads to a single HTML/text message
+                    function buildValidationMessage(json) {
+                        // prefer errorsHtml (server-rendered <ul> etc.)
+                        if (json.errorsHtml) return json.errorsHtml;
+
+                        // If server returned errors object { FieldName: ["err1","err2"], ... }
+                        if (json.errors && typeof json.errors === 'object') {
+                            var sb = '<ul style="margin:0;padding-left:18px;">';
+                            Object.keys(json.errors).forEach(function (k) {
+                                var arr = json.errors[k] || [];
+                                arr.forEach(function (m) {
+                                    var key = (k || '').split('.').pop();
+                                    sb += '<li><strong>' + $('<div/>').text(key).html() + '</strong>: ' + $('<div/>').text(m).html() + '</li>';
+                                });
+                            });
+                            sb += '</ul>';
+                            return sb;
+                        }
+
+                        // fallback to message string
+                        if (json.message) return $('<div/>').text(json.message).html();
+
+                        return 'Validation failed. Please check the form.';
+                    }
+
+                    // confirmation
+                    var confirmAction = function (onOk, onCancel) {
+                        if (window.alertify && typeof alertify.confirm === 'function') {
+                            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
+                        } else {
+                            var ok = confirm("Are you sure you want to perform this action?");
+                            if (ok) onOk(); else onCancel();
+                        }
+                    };
+
+                    confirmAction(function () {
+                        var hasFiles = ($form.attr('enctype') || '').toLowerCase().indexOf('multipart') !== -1;
+                        var dataToSend, processDataFlag = true, contentTypeFlag = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+                        if (hasFiles) {
+                            dataToSend = new FormData(form);
+                            processDataFlag = false;
+                            contentTypeFlag = false;
+                            var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                            try {
+                                if (anti && !dataToSend.has('__RequestVerificationToken')) dataToSend.append('__RequestVerificationToken', anti);
+                            } catch (ex) {
+                                if (anti) dataToSend.append('__RequestVerificationToken', anti);
+                            }
+                        } else {
+                            dataToSend = $form.serialize();
+                        }
+
+                        var $submit = $form.find(':submit:first');
+                        if ($submit.length === 0) $submit = $('#btnSubmit').length ? $('#btnSubmit') : ($('#btnSubmitUpload').length ? $('#btnSubmitUpload') : $form.find('button[type="submit"]'));
+                        $submit.prop('disabled', true).addClass('disabled');
+
+                        var ajaxCfg = {
+                            url: $form.attr('action'),
+                            type: ($form.attr('method') || 'POST').toUpperCase(),
+                            data: dataToSend,
+                            processData: processDataFlag,
+                            contentType: contentTypeFlag,
+                            dataType: 'json',
+                            timeout: 30000 // 30s timeout
+                        };
+
+                        var jqxhr = $.ajax(ajaxCfg)
+                            .done(function (res) {
+                                // ignore stale responses
+                                if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                                    console.warn('Stale response ignored for requestId', thisRequestId);
+                                    return;
+                                }
+
+                                // HTML fallback (partial)
+                                if (typeof res === 'string' && res.trim().charAt(0) === '<') {
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) $modal.find('.modal-content').html(res);
+                                    else if ($('#mainWorkspace').length) $('#mainWorkspace').html(res);
+                                    else $form.replaceWith(res);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                    return;
+                                }
+
+                                var json = res || {};
+
+                                // SUCCESS PATH
+                                if (json.success) {
+                                    if (json.status === "Exist") {
+                                        if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
+                                    } else if (json.status === "Failed") {
+                                        if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
+                                    } else {
+                                        if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Saved successfully');
+                                    }
+
+                                    if (json.html) {
+                                        if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                        else if ($('#affiliateListingView').length) $('#affiliateListingView').html(json.html);
+                                        safeParseUnobtrusive($('#mainWorkspace'));
+                                    }
+
+                                    // Only reload on explicit server instruction AND on success
+                                    if (json.reloadDataView === "Yes") {
+                                        try {
+                                            if (typeof reloadListing === 'function') reloadListing();
+                                            else if (typeof window.reloadAffiliateTable === 'function') window.reloadAffiliateTable();
+                                            else if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
+                                        } catch (e) { console.warn('reload failed', e); }
+                                    }
+
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) {
+                                        try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (e) { $modal.modal && $modal.modal('hide'); }
+                                    }
+
+                                    // FAILURE PATH
+                                } else {
+                                    var status = json.Status || json.status || '';
+
+                                    // Detect validation failures explicitly (server should return validation: true) or presence of errorsHtml/errors object
+                                    var isValidation = !!json.validation || !!json.errorsHtml || (json.errors && typeof json.errors === 'object');
+
+                                    if (isValidation) {
+                                        // build message (HTML)
+                                        var msgHtml = buildValidationMessage(json);
+
+                                        // show via appalert if available (try HTML, fallback to plain text)
+                                        if (typeof appalert === 'function') {
+                                            try {
+                                                // if appalert expects text, it may still show HTML; wrap in try
+                                                appalert(msgHtml, 2, 1);
+                                            } catch (e) {
+                                                var textOnly = $('<div/>').html(msgHtml).text();
+                                                appalert(textOnly, 2, 1);
+                                            }
+                                        } else {
+                                            alert($('<div/>').html(msgHtml).text());
+                                        }
+
+                                        // inject small validation summary inside the form (so the modal stays open)
+                                        if ($form.find('.validation-aggregate').length === 0) {
+                                            $form.prepend('<div class="validation-aggregate alert alert-danger mt-2"></div>');
+                                        }
+                                        $form.find('.validation-aggregate').html(msgHtml);
+                                        safeParseUnobtrusive($form);
+
+                                        // DO NOT replace form or close modal — let user fix inputs.
+
+                                    } else {
+                                        // Non-validation failure (business rule, exist, etc.)
+                                        if (status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message || 'Operation failed', 2, 1); else alert(json.message || 'Operation failed');
+                                        }
+
+                                        if (json.html) {
+                                            if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                            else $form.replaceWith(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    }
+                                }
+                            })
+                            .fail(function (xhr, status, err) {
+                                // ignore stale responses
+                                if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                                    console.warn('Stale fail ignored for requestId', thisRequestId);
+                                    return;
+                                }
+
+                                console.error('AjaxPost failed', status, err, xhr);
+                                if (xhr && xhr.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                    return;
+                                }
+
+                                // If server returned HTML (validation) in responseText, show it inside modal or workspace
+                                if (xhr && xhr.responseText && xhr.responseText.trim().charAt(0) === '<') {
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) $modal.find('.modal-content').html(xhr.responseText);
+                                    else if ($('#mainWorkspace').length) $('#mainWorkspace').html(xhr.responseText);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                } else {
+                                    var msg = (xhr && xhr.responseText) ? xhr.responseText : (err || status || 'Server error');
+                                    if (typeof appalert === 'function') appalert(msg, 0, 1); else alert(msg);
+                                }
+                            })
+                            .always(function () {
+                                // clear submitting flag only if this was the latest request
+                                if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                                    window._ajaxSubmitState.isSubmitting = false;
+                                } else {
+                                    console.info('Newer request present, leaving submitting state true');
+                                }
+
+                                if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                                    try { $submit.prop('disabled', false).removeClass('disabled'); } catch (e) { /*ignore*/ }
+                                }
+                            });
+
+                        // store xhr so it can be aborted externally if needed
+                        window._ajaxSubmitState.lastXhr = jqxhr;
+
+                    }, function () {
+                        // confirm cancel
+                        window._ajaxSubmitState.isSubmitting = false;
+                        if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
+                    });
+
+                } catch (ex) {
+                    window._ajaxSubmitState.isSubmitting = false;
+                    console.error('AjaxPost top-level error', ex);
+                    if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+                }
+
+                return false; // prevent normal submit
+            }
+
+            window.AjaxPost = AjaxPost;
+
+            //******************************************************************* */
 
             // handle edit form submit inside modal (delegated)
             $(document).off('submit', '#editAccountForm').on('submit', '#editAccountForm', function (e) {
@@ -480,7 +785,7 @@
                 $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving');
 
                 $.ajax({
-                    url: '/BranchAccount/Update',
+                    url: '/BranchAccount/CreateOrUpdate',
                     type: 'POST',
                     data: formData,
                     headers: token ? { 'RequestVerificationToken': token } : {},

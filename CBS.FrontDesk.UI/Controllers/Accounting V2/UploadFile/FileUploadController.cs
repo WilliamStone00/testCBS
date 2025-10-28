@@ -318,7 +318,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
                         success = true,
                         data = response.ApiResponseData.Data,
                         message = response.ApiResponseData.Message ?? response.Message
-                        
+
                     });
                 }
 
@@ -373,6 +373,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
             return PartialView(partialView, data);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name, string scope)
+        {
+            // Create a new model with pre-populated data if needed
+            var data = await _fileUploadService.GetByIdFORCorrespondanceAsync(recordId);
+            string type;
+            if(scope == "Branch") { type = "BranchToAffiliate"; } else { type = "AffiliateToHo "; }
+            var model = new AddCORRESPONDANCE
+            {          
+                Type = type,               
+                
+            };
+
+            return PartialView("_AddCorrespondance", model);
         }
 
     }

@@ -6,6 +6,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
@@ -62,6 +63,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 
             var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
             ViewBag.HoPcmfAccountId = Chartofaccount;
+
+            var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
+            ViewBag.AffiliateAccounts = affiliateAccounts;
+
+            ViewBag.Languages = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "English", Value = "en" },
+                new SelectListItem { Text = "French",  Value = "fr" }
+            };
+
             return true;
         }
 
@@ -100,7 +111,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
        
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-          //  await loader();
+            await loader();
             if (path == "list")
             {
                 var data = await _branchAccountService.GetAsync();
@@ -110,22 +121,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             //GetRolePermissions
             else if (path == "new")
             {
-                var model = new BranchAccountCommand();
+                var model = new PendingAccountRequest();
 
                 if (!string.IsNullOrWhiteSpace(KEY))
                 {
                     // set ParentId so the view receives it in the hidden field
+                    model.Scope = "Branch";
                     model.ParentId = KEY;
                 }
                 return PartialView(partialView, model);
             }
-
             else
             {
                 var data = await _branchAccountService.GetByIdAsync(KEY);
                 return PartialView(partialView, data);
 
             }
+        }
+
+        public async Task<ActionResult> InitializeData2(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+                 var data = await _branchAccountService.GetByIdfordetailsAsync(KEY);
+                return PartialView(partialView, data);
+                      
         }
 
         [HttpPost]
