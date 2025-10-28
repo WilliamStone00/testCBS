@@ -116,6 +116,65 @@
                     console.log("ℹ️ EditResetModal request completed for:", controller);
                 });
         }
+
+
+        window.configurationSaveAjax = function (form) {
+            event.preventDefault();
+
+            // ✅ Prepare payload from form fields
+            const payload = {
+                id: $("#id").val(),
+                type: $("#type").val(),
+                command: $(".inter-command:checked, .local-command:checked").val() || "",
+                userrequiredApproval: $("#userrequiredApproval").is(":checked") ||
+                    $("#userrequiredApprovalLocal").is(":checked"),
+                status: $("input[name='Status']:checked").val() || ""
+            };
+
+            const $submitBtn = $("#saveConfig");
+            const origHtml = $submitBtn.data('orig-html') || $submitBtn.html();
+            $submitBtn.data('orig-html', origHtml);
+
+            $.ajax({
+                url: '/ConfigurationManualEntry/UpdateConfigurationManualEntry',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(payload),
+                beforeSend: function () {
+                    $submitBtn.prop('disabled', true)
+                        .html('<span class="spinner-border spinner-border-sm me-2"></span> Saving...');
+                },
+                success: function (res) {
+                    if (res.success) {
+                        appalert(res.message || 'Configuration updated successfully.', 1, 3);
+                    } else {
+                        appalert(res.message || 'Failed to update configuration.', 2, 1);
+                    }
+                },
+                error: function (xhr) {
+                    console.error("AJAX error:", xhr);
+                    appalert("⚠️ Error updating configuration: " + xhr.statusText, 0, 1);
+                },
+                complete: function () {
+                    $submitBtn.prop('disabled', false).html(origHtml);
+                }
+            });
+
+            return false;
+        };
+
+        // Auto-bind form submit
+        $(document).on('submit', '#configForm', function (e) {
+            e.preventDefault();
+            return window.configurationSaveAjax(this);
+        });
+
+        // Bind save button click
+        $(document).on('click', '#saveConfig', function (e) {
+            e.preventDefault();
+            return window.configurationSaveAjax($("#configForm")[0]);
+        });
     </script>
 }
 

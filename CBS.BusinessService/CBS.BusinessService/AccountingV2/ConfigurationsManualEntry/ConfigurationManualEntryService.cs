@@ -71,23 +71,62 @@ namespace CBS.BusinessService.AccountingV2.ConfigurationsManualEntry
 
 
 
-        public async Task<ApiResponse<object>> UpdateConfigurationManualEntryAsync(ConfigurationManualEntries model)
+        public async Task<ExecutionMessages> UpdateConfigurationManualEntryAsync(ConfigurationManualEntries model)
         {
             try
             {
-                var endpoint = string.Format(APICallHelper.UpdateConfigurationManualEntryById);
 
-                // Send model directly to API
-                var apiResponse = await _configurationapiCallerHelper
-                    .PostAsync<object>(endpoint, model); // use PostAsync, or PutAsync if your API expects PUT
+                // Send model to API via POST (or PUT if your API expects PUT)
+                var response = await _configurationapiCallerHelper.PostAsync<ServiceResponse<ConfigurationManualEntries>>(APICallHelper.UpdateConfigurationManualEntry, model);
 
-                return apiResponse;
+                if (response.IsSuccess)
+                {
+                    // Success execution message
+                    GetExecutionMessages(
+                        response.ApiResponseData.Data,      // The updated data object
+                        true,                               // success
+                        model.Type,                          // Object name for logs
+                        MessagesResults.Success,             // Enum: Success
+                        ExecutionProcessOption.UpdateUpject, // Enum: Update operation
+                        SystemMessageStatus.Success.ToString(),
+                        null,                                // exception
+                        response.ApiResponseData?.Message    // optional API message
+                    );
+                }
+                else
+                {
+                    // Failure execution message
+                    GetExecutionMessages(
+                        model,
+                        false,
+                        model.Type,
+                        MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject,
+                        SystemMessageStatus.Failed.ToString(),
+                        null,
+                        response.ApiResponseData?.Message ?? response.Message
+                    );
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw; // Let the controller handle exceptions
+                // Exception execution message
+                GetExecutionMessages(
+                    model,
+                    false,
+                    model.Type,
+                    MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Error.ToString(),
+                    ex,
+                    ex.Message
+                );
             }
+
+            return ExecutionMessage; // Return accumulated execution result
         }
+
+
 
 
         //public async Task<ConfigurationManualEntries> GetData(string id)
@@ -128,7 +167,7 @@ namespace CBS.BusinessService.AccountingV2.ConfigurationsManualEntry
         //    }
         //}
 
-        
+
 
 
     }
@@ -147,12 +186,12 @@ namespace CBS.BusinessService.AccountingV2.ConfigurationsManualEntry
     //        new ConfigurationManualEntries { Id="7", Type = "InterBranch", Command = "Auto Approval Source", Description = "Inter Branch Auto Approval Source Posting", UserRequiredApproval = true, Status = false },
     //        new ConfigurationManualEntries { Id="8", Type = "InterBranch", Command = "Auto Approval Source Destination", Description = "Inter Branch Auto Approval Source to Destination", UserRequiredApproval = true, Status = true },
     //        new ConfigurationManualEntries { Id="9", Type = "Local", Command = "Auto", Description = "Local Auto Posting 2", UserRequiredApproval = false, Status = true },
-            
+
     //    };
     //    }
 
 
-   
+
     //}
 
 }

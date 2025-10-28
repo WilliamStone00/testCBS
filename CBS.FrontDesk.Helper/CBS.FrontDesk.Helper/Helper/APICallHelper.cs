@@ -1457,12 +1457,12 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetConfigurationManualEntryById = "api/v1/InterBranchConfig/get/{0}";
 
-        public const string UpdateConfigurationManualEntryById = "api/v1/InterBranchConfig/update";
+        public const string UpdateConfigurationManualEntry = "/api/v1/InterBranchConfig/update";
 
         //----------------------------_manualJournalEntry--------------------------------//
 
         public static string GetAccountsByBranch = "/api/v1/BranchAccount/{branchId}/{lang}/tree";
-        public static string PostJournalEntry = "/api/v1/ManualEntries";
+        public static string PostManualJournalEntry = "/api/v1/ManualEntries";
         //---------------------------Journal Head--------------------------------------//
 
 
@@ -1472,6 +1472,7 @@ namespace CBS.FrontDesk.Helper
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
         public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
+        public static string GetJournalSourceById = "api/v1/workticketflow/{0}/{operationCode}";
 
 
 
@@ -1482,7 +1483,7 @@ namespace CBS.FrontDesk.Helper
         //public static string Updatenot = "/api/NotificationConfig/{0}";
         //public static string Deletenot = "/api/NotificationConfig/{0}";
 
-       
+
 
         //************************** END CHEQUE BOOK *******************************
 
@@ -1529,7 +1530,7 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string CreateBranchAccount = "/api/v1/BranchAccount";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
-        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
+        //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
         public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}/tree";
         public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";

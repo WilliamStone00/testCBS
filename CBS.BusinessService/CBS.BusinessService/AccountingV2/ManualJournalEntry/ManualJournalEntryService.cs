@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Clearance.ClearanceRequest;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -33,7 +34,7 @@ namespace CBS.BusinessService.AccountingV2
             try
             {
                 // ✅ Get required values
-                var branchId = "BR001"; // or GetBranchID();
+                var branchId = "264139464310378"; // or GetBranchID();
                 var language = GetUserLanguage(); // e.g., "en"
 
                 // ✅ Validate before sending
@@ -68,41 +69,66 @@ namespace CBS.BusinessService.AccountingV2
             }
         }
 
-        
-        public async Task<CBS.API.Helper.ApiResponse<object>> PostJournalEntryAsync(JournalEntry journalEntry)
+
+
+        public async Task<ExecutionMessages> PostJournalAsync(JournalEntryPayload model)
         {
             try
             {
-                var endpoint = APICallHelper.PostJournalEntry;
+               
+                if (model == null)
+                {
+                    GetExecutionMessages(model, false, "Journal Entry", MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(),
+                        null, "Payload cannot be null.");
+                    return ExecutionMessage;
+                }
 
-                // Directly pass the JournalEntry object
-                var apiResponse = await _manualJournalEntryapiCallerHelper
-                    .PostAsync<object>(endpoint, journalEntry);
+                model.BranchId = "264139464310378"; //GetBranchID(); // <-- Add this line
+                model.Reference = "ME-20251013-2003435135";
+                model.OperationCode = "MANUAL.ENTRY";
+                model.ExternalApplicationName = "TSC.BackOffice";
+                
+                //model.CorrelationId = "CORR-IB-20251013-01";
+                //model.AuxiliaryReference = "AUX-IB-RECLASS-10";
 
-                return apiResponse;
+
+                // ✅ Call API
+                var response = await _manualJournalEntryapiCallerHelper
+                    .PostAsync<ServiceResponse<JournalEntryPayload>>(APICallHelper.PostManualJournalEntry, model);
+
+                // ✅ Handle success
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, "Journal Entry",
+                        MessagesResults.Success, ExecutionProcessOption.InsertObject,
+                        SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, "Journal Entry", MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(),
+                        null, response.ApiResponseData?.Message ?? response.Message);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw; // Let the controller handle exceptions
+                GetExecutionMessages(model, false, "Journal Entry", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(),
+                    ex, ex.Message);
             }
+
+            return ExecutionMessage;
         }
-
-        
-
-
-       
-
-        
-
-
-
-        
-
 
     }
 
 
+
 }
+
+
+
 
 
     

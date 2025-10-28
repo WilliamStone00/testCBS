@@ -88,23 +88,34 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.ConfigurationManualEntry
             if (model == null)
                 return Json(new { success = false, message = "⚠️ Invalid or empty model." });
 
-            try  
+            try
             {
-                
+                var execMessage = await _configurationManualEntryService.UpdateConfigurationManualEntryAsync(model);
 
-                var result = await _configurationManualEntryService.UpdateConfigurationManualEntryAsync(model);
+                if (execMessage == null)
+                    return Json(new { success = false, message = "No response from service." });
 
-                if (result == null || !result.IsSuccess)
-                    return Json(new { success = false, message = result?.Message ?? "❌ Failed to update entry." });
+                if (!execMessage.Result)
+                    return Json(new
+                    {
+                        success = false,
+                        message = execMessage.MessageString ?? "❌ Failed to update entry.",
+                        data = execMessage.Data
+                    });
 
-                // Return both success and readable status if you want
-                return Json(new { success = true, message = result.Message });
+                return Json(new
+                {
+                    success = true,
+                    message = execMessage.MessageString ?? "Configuration updated successfully.",
+                    data = execMessage.Data
+                });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
             }
         }
+
 
 
 
