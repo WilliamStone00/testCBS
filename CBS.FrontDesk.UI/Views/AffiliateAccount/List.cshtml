@@ -486,252 +486,252 @@
     }
 
     // Robust AjaxPost: single authoritative implementation
-    function AjaxPost(form) {
-        try {
-            var $form = $(form);
-            if (!$form || $form.length === 0) {
-                console.warn('AjaxPost called with invalid form');
-                return false;
-            }
-
-            // Prevent concurrent submissions
-            if (window._ajaxSubmitState.isSubmitting) {
-                console.warn('Submission blocked: another submit in progress.');
-                if (typeof appalert === 'function') appalert('A request is already in progress. Please wait...', 2, 1);
-                return false;
-            }
-
-            // set submitting flag + request id
-            window._ajaxSubmitState.isSubmitting = true;
-            var thisRequestId = ++window._ajaxSubmitState.lastRequestId;
-
-            // Parse and validate
-            safeParseUnobtrusive($form);
-            if (!safeValidate($form)) {
-                window._ajaxSubmitState.isSubmitting = false;
-                return false;
-            }
-
-            // small helper to normalize server validation payloads to a single HTML/text message
-            function buildValidationMessage(json) {
-                // prefer errorsHtml (server-rendered <ul> etc.)
-                if (json.errorsHtml) return json.errorsHtml;
-
-                // If server returned errors object { FieldName: ["err1","err2"], ... }
-                if (json.errors && typeof json.errors === 'object') {
-                    var sb = '<ul style="margin:0;padding-left:18px;">';
-                    Object.keys(json.errors).forEach(function (k) {
-                        var arr = json.errors[k] || [];
-                        arr.forEach(function (m) {
-                            var key = (k || '').split('.').pop();
-                            sb += '<li><strong>' + $('<div/>').text(key).html() + '</strong>: ' + $('<div/>').text(m).html() + '</li>';
-                        });
-                    });
-                    sb += '</ul>';
-                    return sb;
-                }
-
-                // fallback to message string
-                if (json.message) return $('<div/>').text(json.message).html();
-
-                return 'Validation failed. Please check the form.';
-            }
-
-            // confirmation
-            var confirmAction = function (onOk, onCancel) {
-                if (window.alertify && typeof alertify.confirm === 'function') {
-                    alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
-                } else {
-                    var ok = confirm("Are you sure you want to perform this action?");
-                    if (ok) onOk(); else onCancel();
-                }
-            };
-
-            confirmAction(function () {
-                var hasFiles = ($form.attr('enctype') || '').toLowerCase().indexOf('multipart') !== -1;
-                var dataToSend, processDataFlag = true, contentTypeFlag = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-                if (hasFiles) {
-                    dataToSend = new FormData(form);
-                    processDataFlag = false;
-                    contentTypeFlag = false;
-                    var anti = $form.find('input[name="__RequestVerificationToken"]').val();
-                    try {
-                        if (anti && !dataToSend.has('__RequestVerificationToken')) dataToSend.append('__RequestVerificationToken', anti);
-                    } catch (ex) {
-                        if (anti) dataToSend.append('__RequestVerificationToken', anti);
+            function AjaxPost(form) {
+                try {
+                    var $form = $(form);
+                    if (!$form || $form.length === 0) {
+                        console.warn('AjaxPost called with invalid form');
+                        return false;
                     }
-                } else {
-                    dataToSend = $form.serialize();
-                }
 
-                var $submit = $form.find(':submit:first');
-                if ($submit.length === 0) $submit = $('#btnSubmit').length ? $('#btnSubmit') : ($('#btnSubmitUpload').length ? $('#btnSubmitUpload') : $form.find('button[type="submit"]'));
-                $submit.prop('disabled', true).addClass('disabled');
+                    // Prevent concurrent submissions
+                    if (window._ajaxSubmitState.isSubmitting) {
+                        console.warn('Submission blocked: another submit in progress.');
+                        if (typeof appalert === 'function') appalert('A request is already in progress. Please wait...', 2, 1);
+                        return false;
+                    }
 
-                var ajaxCfg = {
-                    url: $form.attr('action'),
-                    type: ($form.attr('method') || 'POST').toUpperCase(),
-                    data: dataToSend,
-                    processData: processDataFlag,
-                    contentType: contentTypeFlag,
-                    dataType: 'json',
-                    timeout: 30000 // 30s timeout
-                };
+                    // set submitting flag + request id
+                    window._ajaxSubmitState.isSubmitting = true;
+                    var thisRequestId = ++window._ajaxSubmitState.lastRequestId;
 
-                var jqxhr = $.ajax(ajaxCfg)
-                    .done(function (res) {
-                        // ignore stale responses
-                        if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
-                            console.warn('Stale response ignored for requestId', thisRequestId);
-                            return;
+                    // Parse and validate
+                    safeParseUnobtrusive($form);
+                    if (!safeValidate($form)) {
+                        window._ajaxSubmitState.isSubmitting = false;
+                        return false;
+                    }
+
+                    // small helper to normalize server validation payloads to a single HTML/text message
+                    function buildValidationMessage(json) {
+                        // prefer errorsHtml (server-rendered <ul> etc.)
+                        if (json.errorsHtml) return json.errorsHtml;
+
+                        // If server returned errors object { FieldName: ["err1","err2"], ... }
+                        if (json.errors && typeof json.errors === 'object') {
+                            var sb = '<ul style="margin:0;padding-left:18px;">';
+                            Object.keys(json.errors).forEach(function (k) {
+                                var arr = json.errors[k] || [];
+                                arr.forEach(function (m) {
+                                    var key = (k || '').split('.').pop();
+                                    sb += '<li><strong>' + $('<div/>').text(key).html() + '</strong>: ' + $('<div/>').text(m).html() + '</li>';
+                                });
+                            });
+                            sb += '</ul>';
+                            return sb;
                         }
 
-                        // HTML fallback (partial)
-                        if (typeof res === 'string' && res.trim().charAt(0) === '<') {
-                            var $modal = $form.closest('.modal');
-                            if ($modal.length) $modal.find('.modal-content').html(res);
-                            else if ($('#mainWorkspace').length) $('#mainWorkspace').html(res);
-                            else $form.replaceWith(res);
-                            safeParseUnobtrusive($('#mainWorkspace'));
-                            return;
-                        }
+                        // fallback to message string
+                        if (json.message) return $('<div/>').text(json.message).html();
 
-                        var json = res || {};
+                        return 'Validation failed. Please check the form.';
+                    }
 
-                        // SUCCESS PATH
-                        if (json.success) {
-                            if (json.status === "Exist") {
-                                if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
-                            } else if (json.status === "Failed") {
-                                if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
-                            } else {
-                                if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Saved successfully');
-                            }
-
-                            if (json.html) {
-                                if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
-                                else if ($('#affiliateListingView').length) $('#affiliateListingView').html(json.html);
-                                safeParseUnobtrusive($('#mainWorkspace'));
-                            }
-
-                            // Only reload on explicit server instruction AND on success
-                            if (json.reloadDataView === "Yes") {
-                                try {
-                                    if (typeof reloadListing === 'function') reloadListing();
-                                    else if (typeof window.reloadAffiliateTable === 'function') window.reloadAffiliateTable();
-                                    else if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
-                                } catch (e) { console.warn('reload failed', e); }
-                            }
-
-                            var $modal = $form.closest('.modal');
-                            if ($modal.length) {
-                                try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (e) { $modal.modal && $modal.modal('hide'); }
-                            }
-
-                            // FAILURE PATH
+                    // confirmation
+                    var confirmAction = function (onOk, onCancel) {
+                        if (window.alertify && typeof alertify.confirm === 'function') {
+                            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ", onOk, onCancel);
                         } else {
-                            var status = json.Status || json.status || '';
+                            var ok = confirm("Are you sure you want to perform this action?");
+                            if (ok) onOk(); else onCancel();
+                        }
+                    };
 
-                            // Detect validation failures explicitly (server should return validation: true) or presence of errorsHtml/errors object
-                            var isValidation = !!json.validation || !!json.errorsHtml || (json.errors && typeof json.errors === 'object');
+                    confirmAction(function () {
+                        var hasFiles = ($form.attr('enctype') || '').toLowerCase().indexOf('multipart') !== -1;
+                        var dataToSend, processDataFlag = true, contentTypeFlag = 'application/x-www-form-urlencoded; charset=UTF-8';
 
-                            if (isValidation) {
-                                // build message (HTML)
-                                var msgHtml = buildValidationMessage(json);
+                        if (hasFiles) {
+                            dataToSend = new FormData(form);
+                            processDataFlag = false;
+                            contentTypeFlag = false;
+                            var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                            try {
+                                if (anti && !dataToSend.has('__RequestVerificationToken')) dataToSend.append('__RequestVerificationToken', anti);
+                            } catch (ex) {
+                                if (anti) dataToSend.append('__RequestVerificationToken', anti);
+                            }
+                        } else {
+                            dataToSend = $form.serialize();
+                        }
 
-                                // show via appalert if available (try HTML, fallback to plain text)
-                                if (typeof appalert === 'function') {
-                                    try {
-                                        // if appalert expects text, it may still show HTML; wrap in try
-                                        appalert(msgHtml, 2, 1);
-                                    } catch (e) {
-                                        var textOnly = $('<div/>').html(msgHtml).text();
-                                        appalert(textOnly, 2, 1);
-                                    }
-                                } else {
-                                    alert($('<div/>').html(msgHtml).text());
+                        var $submit = $form.find(':submit:first');
+                        if ($submit.length === 0) $submit = $('#btnSubmit').length ? $('#btnSubmit') : ($('#btnSubmitUpload').length ? $('#btnSubmitUpload') : $form.find('button[type="submit"]'));
+                        $submit.prop('disabled', true).addClass('disabled');
+
+                        var ajaxCfg = {
+                            url: $form.attr('action'),
+                            type: ($form.attr('method') || 'POST').toUpperCase(),
+                            data: dataToSend,
+                            processData: processDataFlag,
+                            contentType: contentTypeFlag,
+                            dataType: 'json',
+                            timeout: 30000 // 30s timeout
+                        };
+
+                        var jqxhr = $.ajax(ajaxCfg)
+                            .done(function (res) {
+                                // ignore stale responses
+                                if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                                    console.warn('Stale response ignored for requestId', thisRequestId);
+                                    return;
                                 }
 
-                                // inject small validation summary inside the form (so the modal stays open)
-                                if ($form.find('.validation-aggregate').length === 0) {
-                                    $form.prepend('<div class="validation-aggregate alert alert-danger mt-2"></div>');
-                                }
-                                $form.find('.validation-aggregate').html(msgHtml);
-                                safeParseUnobtrusive($form);
-
-                                // DO NOT replace form or close modal — let user fix inputs.
-
-                            } else {
-                                // Non-validation failure (business rule, exist, etc.)
-                                if (status === "Exist") {
-                                    if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
-                                } else {
-                                    if (typeof appalert === 'function') appalert(json.message || 'Operation failed', 2, 1); else alert(json.message || 'Operation failed');
-                                }
-
-                                if (json.html) {
-                                    if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
-                                    else $form.replaceWith(json.html);
+                                // HTML fallback (partial)
+                                if (typeof res === 'string' && res.trim().charAt(0) === '<') {
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) $modal.find('.modal-content').html(res);
+                                    else if ($('#mainWorkspace').length) $('#mainWorkspace').html(res);
+                                    else $form.replaceWith(res);
                                     safeParseUnobtrusive($('#mainWorkspace'));
+                                    return;
                                 }
-                            }
-                        }
-                    })
-                    .fail(function (xhr, status, err) {
-                        // ignore stale responses
-                        if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
-                            console.warn('Stale fail ignored for requestId', thisRequestId);
-                            return;
-                        }
 
-                        console.error('AjaxPost failed', status, err, xhr);
-                        if (xhr && xhr.status === 401) {
-                            window.location.href = '/Authentication/Login';
-                            return;
-                        }
+                                var json = res || {};
 
-                        // If server returned HTML (validation) in responseText, show it inside modal or workspace
-                        if (xhr && xhr.responseText && xhr.responseText.trim().charAt(0) === '<') {
-                            var $modal = $form.closest('.modal');
-                            if ($modal.length) $modal.find('.modal-content').html(xhr.responseText);
-                            else if ($('#mainWorkspace').length) $('#mainWorkspace').html(xhr.responseText);
-                            safeParseUnobtrusive($('#mainWorkspace'));
-                        } else {
-                            var msg = (xhr && xhr.responseText) ? xhr.responseText : (err || status || 'Server error');
-                            if (typeof appalert === 'function') appalert(msg, 0, 1); else alert(msg);
-                        }
-                    })
-                    .always(function () {
-                        // clear submitting flag only if this was the latest request
-                        if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
-                            window._ajaxSubmitState.isSubmitting = false;
-                        } else {
-                            console.info('Newer request present, leaving submitting state true');
-                        }
+                                // SUCCESS PATH
+                                if (json.success) {
+                                    if (json.status === "Exist") {
+                                        if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message);
+                                    } else if (json.status === "Failed") {
+                                        if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message);
+                                    } else {
+                                        if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Saved successfully');
+                                    }
 
-                        if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
-                            try { $submit.prop('disabled', false).removeClass('disabled'); } catch (e) { /*ignore*/ }
-                        }
+                                    if (json.html) {
+                                        if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                        else if ($('#affiliateListingView').length) $('#affiliateListingView').html(json.html);
+                                        safeParseUnobtrusive($('#mainWorkspace'));
+                                    }
+
+                                    // Only reload on explicit server instruction AND on success
+                                    if (json.reloadDataView === "Yes") {
+                                        try {
+                                            if (typeof reloadListing === 'function') reloadListing();
+                                            else if (typeof window.reloadAffiliateTable === 'function') window.reloadAffiliateTable();
+                                            else if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
+                                        } catch (e) { console.warn('reload failed', e); }
+                                    }
+
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) {
+                                        try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (e) { $modal.modal && $modal.modal('hide'); }
+                                    }
+
+                                    // FAILURE PATH
+                                } else {
+                                    var status = json.Status || json.status || '';
+
+                                    // Detect validation failures explicitly (server should return validation: true) or presence of errorsHtml/errors object
+                                    var isValidation = !!json.validation || !!json.errorsHtml || (json.errors && typeof json.errors === 'object');
+
+                                    if (isValidation) {
+                                        // build message (HTML)
+                                        var msgHtml = buildValidationMessage(json);
+
+                                        // show via appalert if available (try HTML, fallback to plain text)
+                                        if (typeof appalert === 'function') {
+                                            try {
+                                                // if appalert expects text, it may still show HTML; wrap in try
+                                                appalert(msgHtml, 2, 1);
+                                            } catch (e) {
+                                                var textOnly = $('<div/>').html(msgHtml).text();
+                                                appalert(textOnly, 2, 1);
+                                            }
+                                        } else {
+                                            alert($('<div/>').html(msgHtml).text());
+                                        }
+
+                                        // inject small validation summary inside the form (so the modal stays open)
+                                        if ($form.find('.validation-aggregate').length === 0) {
+                                            $form.prepend('<div class="validation-aggregate alert alert-danger mt-2"></div>');
+                                        }
+                                        $form.find('.validation-aggregate').html(msgHtml);
+                                        safeParseUnobtrusive($form);
+
+                                        // DO NOT replace form or close modal — let user fix inputs.
+
+                                    } else {
+                                        // Non-validation failure (business rule, exist, etc.)
+                                        if (status === "Exist") {
+                                            if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.');
+                                        } else {
+                                            if (typeof appalert === 'function') appalert(json.message || 'Operation failed', 2, 1); else alert(json.message || 'Operation failed');
+                                        }
+
+                                        if (json.html) {
+                                            if ($('#mainWorkspace').length) $('#mainWorkspace').html(json.html);
+                                            else $form.replaceWith(json.html);
+                                            safeParseUnobtrusive($('#mainWorkspace'));
+                                        }
+                                    }
+                                }
+                            })
+                            .fail(function (xhr, status, err) {
+                                // ignore stale responses
+                                if (thisRequestId !== window._ajaxSubmitState.lastRequestId) {
+                                    console.warn('Stale fail ignored for requestId', thisRequestId);
+                                    return;
+                                }
+
+                                console.error('AjaxPost failed', status, err, xhr);
+                                if (xhr && xhr.status === 401) {
+                                    window.location.href = '/Authentication/Login';
+                                    return;
+                                }
+
+                                // If server returned HTML (validation) in responseText, show it inside modal or workspace
+                                if (xhr && xhr.responseText && xhr.responseText.trim().charAt(0) === '<') {
+                                    var $modal = $form.closest('.modal');
+                                    if ($modal.length) $modal.find('.modal-content').html(xhr.responseText);
+                                    else if ($('#mainWorkspace').length) $('#mainWorkspace').html(xhr.responseText);
+                                    safeParseUnobtrusive($('#mainWorkspace'));
+                                } else {
+                                    var msg = (xhr && xhr.responseText) ? xhr.responseText : (err || status || 'Server error');
+                                    if (typeof appalert === 'function') appalert(msg, 0, 1); else alert(msg);
+                                }
+                            })
+                            .always(function () {
+                                // clear submitting flag only if this was the latest request
+                                if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                                    window._ajaxSubmitState.isSubmitting = false;
+                                } else {
+                                    console.info('Newer request present, leaving submitting state true');
+                                }
+
+                                if (thisRequestId === window._ajaxSubmitState.lastRequestId) {
+                                    try { $submit.prop('disabled', false).removeClass('disabled'); } catch (e) { /*ignore*/ }
+                                }
+                            });
+
+                        // store xhr so it can be aborted externally if needed
+                        window._ajaxSubmitState.lastXhr = jqxhr;
+
+                    }, function () {
+                        // confirm cancel
+                        window._ajaxSubmitState.isSubmitting = false;
+                        if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
                     });
 
-                // store xhr so it can be aborted externally if needed
-                window._ajaxSubmitState.lastXhr = jqxhr;
+                } catch (ex) {
+                    window._ajaxSubmitState.isSubmitting = false;
+                    console.error('AjaxPost top-level error', ex);
+                    if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+                }
 
-            }, function () {
-                // confirm cancel
-                window._ajaxSubmitState.isSubmitting = false;
-                if (typeof appalert === 'function') appalert('Transaction cancelled', 3, 1); else console.info('Transaction cancelled');
-            });
-
-        } catch (ex) {
-            window._ajaxSubmitState.isSubmitting = false;
-            console.error('AjaxPost top-level error', ex);
-            if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
-        }
-
-        return false; // prevent normal submit
-    }
+                return false; // prevent normal submit
+            }
 
 
     // attach to window for backward compatibility

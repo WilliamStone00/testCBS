@@ -2031,10 +2031,11 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
-    <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccount.cs" />
+    <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
@@ -10847,6 +10848,12 @@
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
+    <Content Include="Views\BranchAccount\_Create.cshtml" />
+    <Content Include="Views\PendingAccount\List.cshtml" />
+    <Content Include="Views\PendingAccount\_Data.cshtml" />
+    <Content Include="Views\PendingAccount\_DetailsPartial.cshtml" />
+    <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
+    <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

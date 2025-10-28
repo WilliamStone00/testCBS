@@ -82,7 +82,38 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             }
 
             //tree structure 
-            public async Task<BRANCHTreeDto> GetByIdAsync(string id)
+            public async Task<BranchAccountResponse> GetByIdAsync(string id)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(id))
+                        throw new ArgumentException("id is required", nameof(id));
+
+                var lan = GetLanguage();
+
+                    var encodedId = Uri.EscapeDataString(id);
+                    string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId,lan);
+                    // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
+
+                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchAccountResponse>>(formattedUrl);
+
+                    //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
+                    //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
+
+                    // CORRECTED: Access the final payload via .ApiResponseData.Data
+                    if (response.IsSuccess)
+                    {
+                        return response.ApiResponseData?.Data;
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    // In a real scenario, log 'ex'
+                    throw;
+                }
+            }
+            public async Task<BRANCHTreeDto> GetByIdfordetailsAsync(string id)
             {
                 try
                 {

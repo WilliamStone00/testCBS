@@ -427,6 +427,7 @@ namespace CBS.FrontDesk.UI
                 }
             }
         }
+
         protected void Application_Error(object sender, EventArgs e)
         {
             var ex = Server.GetLastError();

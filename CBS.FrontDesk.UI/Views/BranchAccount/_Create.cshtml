@@ -1,0 +1,220 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank-outline me-2"></i> Branch Account Setup
+                </h1>
+                @*<p class="card-text">
+                    Create or update a branch-level accounting account. This form links the account to a branch and an affiliate accounting profile.
+                </p>*@
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Use this form to create branch-specific ledger accounts. Ensure the Code is unique within the branch and the Affiliate Account is selected correctly.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Branch Account</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBranchAccountTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseBranchAccountTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-pound-box text-success me-2"></i>
+                    <strong>Code:</strong> Use a short, meaningful code (example: <code>BR001</code> or <code>HQ01</code>).
+                </li>
+                <li>
+                    <i class="mdi mdi-form-textbox text-info me-2"></i>
+                    <strong>Name (EN / FR):</strong> Provide the account name in English and Français.
+                </li>
+                <li>
+                    <i class="mdi mdi-shape-outline text-warning me-2"></i>
+                    <strong>Class:</strong> Indicate the accounting class (e.g., Asset, Liability).
+                </li>
+                <li>
+                    <i class="mdi mdi-toggle-switch text-primary me-2"></i>
+                    <strong>Posting Allowed:</strong> Check when this branch account should accept postings/transactions.
+                </li>
+                <li>
+                    <i class="mdi mdi-office-building-marker text-secondary me-2"></i>
+                    <strong>Affiliate Account:</strong> Link the branch account to the correct affiliate accounting profile.
+                </li>
+                <li>
+                    <i class="mdi mdi-content-save me-2"></i>
+                    <strong>Save / Update:</strong> Click <strong>Save</strong> to create or <strong>Update</strong> to persist changes.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+    <div class="modal-body">
+        @using (Html.BeginForm("CreateOrUpdate", "AffiliateAccount", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.BranchId)
+            @Html.HiddenFor(m => m.Scope)
+            @Html.HiddenFor(m => m.ParentId)
+
+        <div class="mt-2">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Parent Account Reference</label>
+                    <input type="text" class="form-control-plaintext" readonly value="@Model.ParentId" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Scope</label>
+                    <input type="text" class="form-control-plaintext" readonly value="@Model.Scope" />
+                </div>
+            </div>
+
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Code", id = "code", maxlength = "50" })
+                        <label for="code">Code</label>
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class (e.g. Asset, Liability)", id = "class", maxlength = "50" })
+                        <label for="class">Class</label>
+                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (English)", id = "nameEn", maxlength = "150" })
+                        <label for="nameEn">Account Name (English)</label>
+                        @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (Français)", id = "nameFr", maxlength = "150" })
+                        <label for="nameFr">Account Name (Français)</label>
+                        @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+
+                        @Html.DropDownListFor(m => m.AffiliateAccountId,
+                            new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
+                            "--- Select Affiliate Account ---",
+                            new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                        <label>Affiliate Account</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+
+                    <label>@GlobalUserManagement.Branch</label>
+                </div>
+            </div>
+
+           
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(
+                            m => m.Language,
+                            (IEnumerable<SelectListItem>)ViewBag.Languages,
+                            "--- Select Language ---",
+                            new { @class = "form-select", id = "Language" }
+                        )
+                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                        <label>Language</label>
+                    </div>
+              </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "postingAllowed" })
+                        <label class="form-check-label fw-bold ms-2" for="postingAllowed">Posting allowed</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input d-none" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input", id = "requiresMapping" })
+                        <label class="form-check-label fw-bold ms-2" for="postingAllowed">RequiresMapping</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input d-none" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", placeholder = "Note", id = "class", maxlength = "100" })
+                        <label for="notes">Notes</label>
+                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end">
+                @if (string.IsNullOrWhiteSpace(Model?.Id))
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> Update</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

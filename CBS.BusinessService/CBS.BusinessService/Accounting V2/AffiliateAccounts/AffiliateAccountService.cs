@@ -3,7 +3,9 @@ using CBS.API.Helper;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -271,12 +273,10 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
         {
             try
             {
-                // Call API
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<AffiliateAccountDto>>>(APICallHelper.GetAllAccountDropAffiliate);
+                var Affiliate = "1";
+                string formattedUrl = string.Format(APICallHelper.GetAllAccountDropAffiliate, Affiliate);
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<AffiliateAccountDto>>>(formattedUrl);
                 var affiliates = response?.ApiResponseData?.Data ?? new List<AffiliateAccountDto>();
-
-                // Only active ones (mirrors mock's GetAsync which returns only IsActive)
-                affiliates = affiliates.Where(a => a.IsActive).ToList();
 
                 if (!IsHeadOffice())
                 {
@@ -320,11 +320,11 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
 
 
 
-        public async Task<ExecutionMessages> CreateAsync(AffiliateAccountDto model)
-            {
+        public async Task<ExecutionMessages> CreateAsync(PendingAccountRequest model)
+        {
                 try
                 {
-                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateAffiliateAccount, model);
+                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<PendingAccountRequest>>(APICallHelper.CreateAffiliateAccount, model);
 
                     // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                     if (response.IsSuccess)
@@ -346,7 +346,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                 return ExecutionMessage;
             }
 
-            public async Task<ExecutionMessages> UpdateAsync(AffiliateAccountDto model)
+            public async Task<ExecutionMessages> UpdateAsync(PendingAccountRequest model)
             {
                 try
                 {

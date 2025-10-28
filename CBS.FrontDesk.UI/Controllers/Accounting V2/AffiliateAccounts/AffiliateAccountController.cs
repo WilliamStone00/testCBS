@@ -3,6 +3,7 @@ using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Message;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -75,11 +76,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            var affiliate = await _AffiliateService.GetAsync();
+           var affiliate = await _AffiliateService.GetAffiliatesAsync();
             ViewBag.Affiliates = affiliate;
+
+            //var affiliate = await _AffiliateService.GetAsync();
+            //ViewBag.Affiliates = affiliate;
 
             var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
             ViewBag.HoPcmfAccountId = Chartofaccount;
+
+            //var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
+            //ViewBag.HoPcmfAccountId = affiliateAccounts;
+
+            ViewBag.Languages = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "English", Value = "en" },
+                    new SelectListItem { Text = "French",  Value = "fr" }
+                };
             return true;
 
         }
@@ -159,10 +172,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
             else if (path == "new")
             {
-                var model = new AffiliateAccountDto();
+                var model = new PendingAccountRequest();
                 if (!string.IsNullOrWhiteSpace(KEY))
                 {
                     model.ParentId = KEY;
+                    model.Scope = "Affiliate";
                 }
                 return PartialView(partialView, model);
             }
@@ -183,7 +197,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(AffiliateAccountDto model)
+        public async Task<ActionResult> CreateOrUpdate(PendingAccountRequest model)
         {
             if (string.IsNullOrWhiteSpace(model.Id))
             {
@@ -272,7 +286,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(AffiliateAccountDto model)
+        public async Task<ActionResult> Update(PendingAccountRequest model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
