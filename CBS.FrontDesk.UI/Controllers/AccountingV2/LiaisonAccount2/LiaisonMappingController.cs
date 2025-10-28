@@ -1,6 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
-using CBS.BusinessService.AccountingV2.BranchCashConfig;
 using CBS.BusinessService.AccountingV2.LiaisonAccount2;
 using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration;
 using CBS.BusinessService.Accounts;

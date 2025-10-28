@@ -1530,10 +1530,10 @@ namespace CBS.FrontDesk.Helper
         public static string CreateBranchAccount = "/api/v1/BranchAccount";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
         public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
-        public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}/tree";
+        public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}";
         //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";
-        public static string GetAllBranchAccount = "/api/v1/BranchAccount/{branchId}/tree";
+        public static string GetAllBranchAccount = "/api/v1/BranchAccount/{0}";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";

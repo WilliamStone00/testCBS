@@ -10790,7 +10790,7 @@
     <Content Include="Views\JournalHead\_DestDetails.cshtml" />
     <Content Include="Views\BranchCashConfig\Index.cshtml" />
     <Content Include="Views\BranchCashConfig\_Create.cshtml" />
-    <Content Include="Views\BranchCashConfig\_BranchCashConfigDataTable.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Data.cshtml" />
     <Content Include="Views\BranchCashConfig\List.cshtml" />
     <Content Include="Views\BranchCashConfig\_Details.cshtml" />
     <Content Include="Views\LiaisonAccountConfiguration\Index.cshtml" />
@@ -10802,7 +10802,6 @@
     <Content Include="Views\RoleGlResolution\Index.cshtml" />
     <Content Include="Views\RoleGlResolution\_RoleGlResolutionData.cshtml" />
     <Content Include="Views\RoleGlResolution\_RoleGlResolutionForm.cshtml" />
-
     <Content Include="Views\SalaryProcessed\_RegisterNonMemberPv.cshtml" />
     <Content Include="Views\SalaryProcessed\_RevokeTempPayCodePv.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDetails.cshtml" />
@@ -10848,14 +10847,12 @@
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
     <Folder Include="AppFiles\Images\BarCodes\" />
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\AccountingV2\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
