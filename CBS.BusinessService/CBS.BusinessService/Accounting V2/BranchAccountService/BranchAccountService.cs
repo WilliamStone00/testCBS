@@ -187,7 +187,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                             a.Name = $"[{a.Code}] - {a.Name}".Trim();
                             return a;
                         })
-                        .OrderBy(a => a.Code)
+                        .OrderBy(a => a.Id)
                         .ToList();
                 }
                 catch (Exception)
@@ -198,7 +198,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             }
       
         // real endpoint version
-        public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+            public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
             {
                 try
                 {
@@ -233,7 +233,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                             a.Name = $"[{a.Code}] - {a.Name}".Trim();
                             return a;
                         })
-                        .OrderBy(a => a.Code)
+                        .OrderBy(a => a.Id)
                         .ToList();
                 }
                 catch (Exception)

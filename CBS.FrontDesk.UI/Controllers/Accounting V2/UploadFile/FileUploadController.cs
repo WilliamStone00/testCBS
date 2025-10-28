@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.FilesUpload;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
@@ -24,17 +25,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         private readonly BranchServices _branchServices;
         private readonly AffiliateAccountMockService _affiliateAccountMockService;
         private readonly AffiliateService _affiliateService;
+        private readonly AffiliateAccountService _AffiliateAccountService;
+        private readonly BranchAccountService _branchAccountService;
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public FileUploadController(AffiliateService affiliateService, FileUploadService fileUploadService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService)
+        public FileUploadController(BranchAccountService branchAccountService, AffiliateService affiliateService, AffiliateAccountService affiliateAccountService, FileUploadService fileUploadService, BranchServices branchServices, AffiliateAccountMockService affiliateAccountMockService)
         {
             _fileUploadService = fileUploadService;
             _branchServices = branchServices;
             _affiliateAccountMockService = affiliateAccountMockService;
             _affiliateService = affiliateService;
+            _AffiliateAccountService = affiliateAccountService;
+            _branchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -47,8 +52,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
             ViewBag.Branches = await _branchServices.GetBranches();
-            var affiliate = await _affiliateService.GetAsync();
+            var affiliate = await _affiliateService.GetAffiliatesAsync();
             ViewBag.Affiliates = affiliate;
+            var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+            ViewBag.HoPcmfAccountId = Chartofaccount;
+
+            var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
+            ViewBag.AffiliateAccounts = affiliateAccounts;
+
+            ViewBag.Languages = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "English", Value = "en" },
+                new SelectListItem { Text = "French",  Value = "fr" }
+            };
+
         }
 
         /// <summary>
@@ -376,21 +393,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name, string scope)
+        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name)
         {
-            // Create a new model with pre-populated data if needed
+            await loader();
+               // Create a new model with pre-populated data if needed
             var data = await _fileUploadService.GetByIdFORCorrespondanceAsync(recordId);
-            string type;
-            if(scope == "Branch") { type = "BranchToAffiliate"; } else { type = "AffiliateToHo "; }
+
+            string type = "Unknown";
+            if (data.Scope == "Branch") { type = "BranchToAffiliate"; }
+            else if (data.Scope == "Affiliate")
+            { type = "AffiliateToHo "; }
             var model = new AddCORRESPONDANCE
-            {          
-                Type = type,               
-                
+            {
+                Type = type,
+
             };
 
             return PartialView("_AddCorrespondance", model);
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetBranchAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+                return Json(new { success = true, data = branchAccounts });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return Json(new { success = false, message = "Error loading branch accounts" });
+            }
+        }
     }
 
 }

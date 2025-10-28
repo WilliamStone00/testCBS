@@ -191,6 +191,79 @@
 
             var affiliateTable = null;
 
+              $('.select2').select2();
+    
+    $('#BranchId').on('change', function() {
+        var branchId = $(this).val();
+        var branchAccountDropdown = $('#BranchAccountId');
+        
+        // Show loading state
+        branchAccountDropdown.empty().prop('disabled', true);
+        branchAccountDropdown.append($('<option></option>').val('').text('Loading branch accounts...'));
+        
+        if (!branchId) {
+            resetBranchAccountDropdown();
+            return;
+        }
+        
+        // Add loading delay for better UX
+        setTimeout(function() {
+            loadBranchAccounts(branchId, branchAccountDropdown);
+        }, 300);
+    });
+    
+    function loadBranchAccounts(branchId, dropdown) {
+        $.ajax({
+            url: '@Url.Action("GetBranchAccountsByBranch", "YourController")',
+            type: 'GET',
+            data: { branchId: branchId },
+            timeout: 10000, // 10 second timeout
+            success: function(response) {
+                dropdown.empty().prop('disabled', false);
+                
+                if (response.success && response.data && response.data.length > 0) {
+                    dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
+                    
+                    $.each(response.data, function(index, account) {
+                        dropdown.append($('<option></option>').val(account.id).text(account.name));
+                    });
+                    
+                    showToast('Branch accounts loaded successfully', 'success');
+                } else {
+                    dropdown.append($('<option></option>').val('').text('No branch accounts available'));
+                    showToast('No branch accounts found for selected branch', 'warning');
+                }
+                
+                dropdown.trigger('change');
+            },
+            error: function(xhr, status, error) {
+                dropdown.empty().prop('disabled', false);
+                dropdown.append($('<option></option>').val('').text('Error loading branch accounts'));
+                showToast('Failed to load branch accounts. Please try again.', 'error');
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
+    
+    function resetBranchAccountDropdown() {
+        var dropdown = $('#BranchAccountId');
+        dropdown.empty().prop('disabled', false);
+        dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
+        dropdown.trigger('change');
+    }
+    
+    function showToast(message, type) {
+        // Implement your toast notification here
+        // This is just a placeholder - use your preferred notification library
+        console.log(`${type.toUpperCase()}: ${message}`);
+    }
+    
+    // Initialize if branch is pre-selected
+    if ($('#BranchId').val()) {
+        $('#BranchId').trigger('change');
+    }
+
+
             // Utility: get only visible/active filter values (those whose toggle checkbox is checked)
             function collectAffiliateFilters() {
                 var filters = {};
@@ -323,15 +396,13 @@
                                 var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
                                 var btnId = 'actionDropdown_' + safeId;
                                 var name = (row.name || row.Name) ? String(row.name || row.Name).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
-                                var scope = (row.Scope || row.scope) ? String(row.scope || row.Scope).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
-
                                 var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
                                 var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
                                                         <i class="mdi mdi-eye me-1 text-primary"></i> Details
                                                    </button>`;
 
-                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name} data-scope="${scope}">
+                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name}">
                                                         <i class="mdi mdi-plus-box-outline me-1 text-success"></i> Correspondance request
                                                    </button>`;
 
@@ -495,13 +566,13 @@
                 $(document).on('click', '.btn-addcorr', function() {
                     const recordId = $(this).data('id');
                     const name = $(this).data('name');
-                    const scope = $(this).data('scope');
+                
 
                     // Load the modal with the partial view
-                    loadCorrespondenceModal(recordId, name, scope);
+                    loadCorrespondenceModal(recordId, name);
                 });
 
-                function loadCorrespondenceModal(recordId, name, scope) {
+                function loadCorrespondenceModal(recordId, name) {
                     // Show loading state
                     showLoading();
 
@@ -510,8 +581,7 @@
                         type: 'GET',
                         data: {
                             recordId: recordId,
-                            name: name,
-                            scope: scope
+                            name: name                         
                             },
                         success: function(response) {
                             // Create or update modal
@@ -555,44 +625,7 @@
                     $('body').append(modalHtml);
                 }
 
-                //// AJAX form submission handler
-                //function AjaxPostAndUpdate(form) {
-                //    const formData = new FormData(form);
-
-                //    $.ajax({
-                //        url: $(form).attr('action'),
-                //        type: 'POST',
-                //        data: formData,
-                //        processData: false,
-                //        contentType: false,
-                //        success: function(response) {
-                //            if (response.success) {
-                //                // Show success message
-                //                showSuccess(response.message || 'Correspondence created successfully!');
-
-                //                // Close modal
-                //                $('#correspondenceModal').modal('hide');
-
-                //                // Optional: Refresh any relevant data or UI
-                //                if (response.refreshNeeded) {
-                //                    setTimeout(() => {
-                //                        location.reload(); // Or update specific section
-                //                    }, 1000);
-                //                }
-                //            } else {
-                //                // Show validation errors
-                //                showError(response.message || 'Please check the form for errors');
-                //                updateValidationErrors(form, response.errors);
-                //            }
-                //        },
-                //        error: function(xhr, status, error) {
-                //            console.error('Error submitting form:', error);
-                //            showError('An error occurred while submitting the form');
-                //        }
-                //    });
-
-                //    return false; // Prevent default form submission
-                //}
+               
 
                 // Utility functions
                 function showLoading() {
