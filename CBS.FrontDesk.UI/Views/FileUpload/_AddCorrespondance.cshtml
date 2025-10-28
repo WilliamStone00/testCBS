@@ -17,128 +17,128 @@
     {
         @Html.AntiForgeryToken()
 
-    <div class="mt-2">
-        <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
-
-        <div class="col-md-6">
-            <label class="form-label small text-muted">Parent Account Reference</label>
-            <input type="text" class="form-control-plaintext" readonly value="@Model.Name" />
-        </div>
-
-        <hr />
-
-        <div class="row g-2">
-            <div class="col-md-6">
-                <div class="form-floating">
-                    @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
-                    <label for="Type">Correspondence Type</label>
-                    @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        <div class="mt-2">
+            <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
 
             <div class="col-md-6">
-                <div class="form-floating">
-                    @Html.DropDownList("Language", ViewBag.Languages as SelectList ?? new SelectList(new[] { new { Value = "", Text = "--- Any ---" } }, "Value", "Text"), "--- Any ---", new { @class = "form-control", id = "Language", placeholder = "Language" })
-                    @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                    <label for="Language">Language</label>
-                </div>
-            </div>
-        </div>
-
-        <hr />
-
-        <!-- Branch Selection Section -->
-        <div class="row g-2 mt-2">
-            <div class="col-md-12">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "BranchId" })
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label>@GlobalUserManagement.Branch</label>
-                </div>
+                <label class="form-label small text-muted">Parent Account Reference</label>
+                <input type="text" class="form-control-plaintext" readonly value="@Model.Name" />
             </div>
 
-            <div class="col-md-12">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.BranchAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Branch Account reference ---", new { @class = "form-control select2", id = "BranchAccountId" })
-                    @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                    <label for="BranchAccountId">Branch Account reference</label>
+            <hr />
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
+                        <label for="Type">Correspondence Type</label>
+                        @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <hr />
-
-        <!-- Affiliate Accounts Section -->
-        <div class="row g-2 mt-2">
-            <div class="col-md-12">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.AffiliateAccountId,
-                        new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
-                        "--- Select Affiliate Account ---",
-                        new { @class = "form-select select2", @aria_label = "Affiliate Account" })
-                    @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-                    <label>Affiliate Account</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Conditional Source Affiliate Account -->
-        <div id="sourceAffiliateSection" style="display: none;">
-            <div class="row g-2 mt-2">
-                <div class="col-md-12">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.SourceAffiliateAccountId,
-                            new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
-                            "--- Select Source Affiliate Account ---",
-                            new { @class = "form-select select2", @aria_label = "Affiliate Account" })
-                        @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
-                        <label for="SourceAffiliateAccountId">Source Affiliate Account</label>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.DropDownList("Language", ViewBag.Languages as SelectList ?? new SelectList(new[] { new { Value = "", Text = "--- Any ---" } }, "Value", "Text"), "--- Any ---", new { @class = "form-control", id = "Language", placeholder = "Language" })
+                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                        <label for="Language">Language</label>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- HO PCMF Account Section -->
-        <div class="row g-2 mt-2">
-            <div class="col-md-12">
-                <div class="form-floating shadow-sm">
-                    @Html.DropDownListFor(m => m.HoPcmfAccountId,
-                        new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"),
-                        "--- Select HoPcmf Account ---",
-                        new { @class = "form-select select2", placeholder = "HoPcmf Account Id", @aria_label = "HoPcmfAccountId" })
-                    @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                    <label for="HoPcmfAccountId">HoPcmf Account</label>
+            <hr />
+
+            <!-- Branch Selection Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "BranchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>@GlobalUserManagement.Branch</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Branch Account reference ---", new { @class = "form-control select2", id = "BranchAccountId" })
+                        @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                        <label for="BranchAccountId">Branch Account reference</label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Rationale Section -->
-        <div class="row g-2 mt-2">
-            <div class="col-md-12">
-                <div class="form-floating">
-                    @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
-                    <label for="Rationale">Rationale</label>
-                    @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
+            <hr />
+
+            <!-- Affiliate Accounts Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.AffiliateAccountId,
+                            new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
+                            "--- Select Affiliate Account ---",
+                            new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                        <label>Affiliate Account</label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr />
+            <!-- Conditional Source Affiliate Account -->
+            <div id="sourceAffiliateSection" style="display: none;">
+                <div class="row g-2 mt-2">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.SourceAffiliateAccountId,
+                                new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
+                                "--- Select Source Affiliate Account ---",
+                                new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                            @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
+                            <label for="SourceAffiliateAccountId">Source Affiliate Account</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Buttons Section -->
-        <div class="text-end">
-            @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
-            {
-                <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-            }
+            <!-- HO PCMF Account Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.HoPcmfAccountId,
+                            new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"),
+                            "--- Select HoPcmf Account ---",
+                            new { @class = "form-select select2", placeholder = "HoPcmf Account Id", @aria_label = "HoPcmfAccountId" })
+                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                        <label for="HoPcmfAccountId">HoPcmf Account</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rationale Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
+                        <label for="Rationale">Rationale</label>
+                        @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Buttons Section -->
+            <div class="text-end">
+                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }
+            </div>
         </div>
-    </div>
     }
 </div>
 
