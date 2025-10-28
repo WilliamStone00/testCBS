@@ -97,21 +97,24 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
         {
             try
             {
-                if (request.Options == null)
+                /*if (request.Options == null)
                     request.Options = new DataTableOptions();
 
-                request.Options.sortColumnName = "BranchName";
+                request.Options.sortColumnName = "BranchName";*/
 
                 // ✅ Ensure BranchId is always initialized
-                if (!IsHeadOffice())
-                {
-                    request.BranchId = GetBranchID();
-                }
-                else
-                {
-                    // Explicitly set to empty string for Head Office instead of null
-                    request.BranchId = string.Empty;
-                }
+                /* if (!IsHeadOffice())
+                 {
+                     request.BranchId = GetBranchID();
+                 }
+                 else
+                 {
+                     // Explicitly set to empty string for Head Office instead of null
+                     request.BranchId = string.Empty;
+                 }*/
+
+                request.Options.sortColumnName = "";
+                request.Options.sortColumnDirection = "";
 
                 var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetLiaisonMappingsDataTable,
