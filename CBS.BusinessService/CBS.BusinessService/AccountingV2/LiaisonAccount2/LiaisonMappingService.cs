@@ -93,27 +93,30 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
             }
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
+        public async Task<CustomDataTable2> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
         {
             try
             {
-                if (request.Options == null)
+                /*if (request.Options == null)
                     request.Options = new DataTableOptions();
 
-                request.Options.sortColumnName = "BranchName";
+                request.Options.sortColumnName = "BranchName";*/
 
                 // ✅ Ensure BranchId is always initialized
-                if (!IsHeadOffice())
-                {
-                    request.BranchId = GetBranchID();
-                }
-                else
-                {
-                    // Explicitly set to empty string for Head Office instead of null
-                    request.BranchId = string.Empty;
-                }
+                /* if (!IsHeadOffice())
+                 {
+                     request.BranchId = GetBranchID();
+                 }
+                 else
+                 {
+                     // Explicitly set to empty string for Head Office instead of null
+                     request.BranchId = string.Empty;
+                 }*/
 
-                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable>>(
+                request.Options.sortColumnName = "";
+                request.Options.sortColumnDirection = "";
+
+                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetLiaisonMappingsDataTable,
                     request
                 );
@@ -121,7 +124,7 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
                 if (response.IsSuccess && response.ApiResponseData != null)
                     return response.ApiResponseData.Data;
 
-                return new CustomDataTable(
+                return new CustomDataTable2(
                     draw: Convert.ToInt32(request.Options.draw ?? "1"),
                     recordsTotal: 0,
                     recordsFiltered: 0,

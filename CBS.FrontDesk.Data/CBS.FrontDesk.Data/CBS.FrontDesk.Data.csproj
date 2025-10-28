@@ -116,13 +116,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
-
-    <Compile Include="Entity\AccountingV2\BranchCashConfig\BranchCashConfigDto.cs" />
-    <Compile Include="Entity\AccountingV2\BranchCashConfig\BranchCashConfigManagement.cs" />
+    <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
+    <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMappingModel.cs" />
     <Compile Include="Entity\AccountingV2\RoleGlResolution\RoleGlResolutionModel.cs" />
-
     <Compile Include="Entity\Accounting V2\AffiliateAccount\AffiliateAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\Affiliate\AffiliateDto.cs" />
     <Compile Include="Entity\Accounting V2\BranchAccount\BranchAccountCommand.cs" />
@@ -130,7 +128,6 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
-
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />

@@ -211,7 +211,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+    @*<script>
         (function ($) {
             const filter = {
                 source: '#sourceBranchId',
@@ -513,5 +513,432 @@
             };
 
         })(jQuery);
+    </script>*@
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            // Apply filters
+            $('#applyFilterBtn').click(function () {
+                loadLiaisonMappings();
+            });
+
+            // Reset filters
+            $('#resetFilterBtn').click(function () {
+                resetLiaisonMappingFilters();
+            });
+
+            // Toggle branch filter visibility
+            $("#toggleBranchFilters").on("change", function () {
+                $("#branchFilters").toggle(this.checked);
+            });
+
+            // Toggle account filter visibility
+            $("#toggleAccountFilters").on("change", function () {
+                $("#accountFilters").toggle(this.checked);
+            });
+
+            
+        });
+
+
+
+
+
+        // ===============================
+        // 🔄 Load Liaison Mappings
+        // ===============================
+        function loadLiaisonMappings() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                order: [[0, 'asc']], // Order by Source Branch
+                ajax: {
+                    url: '/LiaisonMapping/LoadLiaisonMappingsData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectLiaisonMappingFilters();
+
+                        // DataTable pagination and sorting
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            sortColumnName: d.columns[d.order[0]?.column]?.data || "BranchName",
+                            sortColumnDirection: d.order[0]?.dir || "asc"
+                        };
+
+                        return JSON.stringify(filters);
+                    }
+                },
+                columns: [
+                    // 1️⃣ Source Branch
+                    { data: 'BranchId', width: '20%'},
+
+                    // 2️⃣ Counterparty Branch
+                    { data: 'CounterpartyBranchId', width: '20%' },
+
+                    // 3️⃣ Due From Account
+                    { data: 'DueFromAssetAccountId', width: '20%' },
+
+                    // 4️⃣ Due To Account
+                    { data: 'DueToLiabilityAccountId', width: '20%' },
+
+                    // 5️⃣ Action Buttons
+                    {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (row) {
+                            return `
+                        <div class="btn-group" role="group">
+                            <button type="button" 
+                                    class="btn btn-sm btn-outline-primary" 
+                                    title="View Details" 
+                                    onclick="viewLiaisonMapping('${row.Id}')">
+                                <i class="mdi mdi-eye-outline"></i>
+                            </button>
+                            <button type="button" 
+                                    class="btn btn-sm btn-outline-danger" 
+                                    title="Delete Mapping" 
+                                    onclick="deleteLiaisonMapping('${row.Id}')">
+                                <i class="mdi mdi-delete-outline"></i>
+                            </button>
+                        </div>`;
+                        },
+                         width: '20%'
+                    }
+                ]
+            });
+        }
+
+
+        // ===============================
+        // 📤 Collect Filters
+        // ===============================
+        function collectLiaisonMappingFilters() {
+            return {
+                SourceBranchId: $('#sourceBranchId').val(),
+                CounterpartyBranchId: $('#counterpartyBranchId').val(),
+                TargetBranchId: $('#targetBranchId').val(),
+                DueFromAssetAccountId: $('#dueFromAssetAccountId').val(),
+                DueToLiabilityAccountId: $('#dueToLiabilityAccountId').val(),
+                IncludeDeleted: $('#includeDeleted').val() === 'true',
+                CreatedFromUtc: formatDate1($('#createdFromUtc').val(), true),
+                CreatedToUtc: formatDate1($('#createdToUtc').val(), false),
+                Options: { searchValue: "" }
+            };
+        }
+
+
+        // ===============================
+        // 🔁 Reset Filters
+        // ===============================
+        function resetLiaisonMappingFilters() {
+            $('#sourceBranchId, #counterpartyBranchId, #targetBranchId, #dueFromAssetAccountId, #dueToLiabilityAccountId, #createdFromUtc, #createdToUtc').val('');
+            $('#includeDeleted').val('false');
+            $('.select2').val('').trigger('change');
+            loadLiaisonMappings();
+        }
+
+
+        // ===============================
+        // 👁️ View Mapping Detail
+        // ===============================
+        function viewLiaisonMapping(id) {
+            $('#liaisonMappingLoader').removeClass('d-none');
+
+            $.get(`/LiaisonMapping/GetDetail?id=${id}`, function (html) {
+                $('#liaisonMappingDetailsContainer').html(html);
+                $('#liaisonMappingModal').modal('show');
+            })
+                .fail(function () {
+                    appAlertError("❌ Failed to load liaison mapping details. Please try again.");
+                })
+                .always(function () {
+                    $('#liaisonMappingLoader').addClass('d-none');
+                });
+        }
+
+
+        // ===============================
+        // ❌ Delete Mapping
+        // ===============================
+        function deleteLiaisonMapping(id) {
+            alertify.confirm(
+                'Delete Liaison Mapping',
+                `<p>Are you sure you want to <strong class="text-danger">delete</strong> this mapping?</p>`,
+                function () {
+                    $.post('/LiaisonMapping/DeleteMapping', { id: id }, function (response) {
+                        if (response.success) {
+                            toastr.success(response.message || "Mapping deleted successfully.");
+                            loadLiaisonMappings();
+                        } else {
+                            toastr.error(response.message || "Deletion failed.");
+                        }
+                    });
+                },
+                function () {
+                    toastr.info("❎ Deletion cancelled.");
+                }
+            ).set({
+                labels: { ok: 'Yes, Delete', cancel: 'Cancel' },
+                padding: true,
+                closableByDimmer: false
+            });
+        }
+
+
+        // ===============================
+        // 📅 Date Formatter
+        // ===============================
+        function formatDate1(dateStr, isStart) {
+            if (!dateStr) return null;
+            const date = new Date(dateStr);
+            if (isStart) date.setHours(0, 0, 0, 0);
+            else date.setHours(23, 59, 59, 999);
+            return date.toISOString();
+        }
+
+
+        // ===============================================
+        // LIAISON MAPPING MODULE
+        // ===============================================
+        const LiaisonMappingModule = (() => {
+            const selectors = {
+                modal: '#liaisonMappingModal',
+                formContainer: '#liaisonMappingFormContainer',
+                loader: '#liaisonMappingLoader'
+            };
+
+            // ----------- Public API -----------
+            const openForm = async (id = null) => {
+                toggleLoader(true);
+
+                const url = id
+                    ? `/LiaisonMapping/GetLiaisonMappingFormPartial?id=${id}`
+                    : '/LiaisonMapping/GetLiaisonMappingFormPartial';
+
+                try {
+                    const html = await $.get(url);
+                    $(selectors.formContainer).html(html);
+                    initializeForm();
+                    $(selectors.modal).modal('show');
+                } catch {
+                    appAlertError("Failed to load liaison mapping form. Please try again.");
+                } finally {
+                    toggleLoader(false);
+                }
+            };
+
+            const submitForm = (form) => {
+                $.validator.unobtrusive.parse(form);
+                if (!$(form).valid()) return false;
+
+                const formData = new FormData(form);
+
+                alertify.confirm(
+                    "Confirm Liaison Mapping",
+                    "Are you sure you want to save this liaison mapping configuration?",
+                    function () {
+                        $.ajax({
+                            url: form.action,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false
+                        })
+                            .done((response) => {
+                                if (response.success) {
+                                    appalert(response.message, 1, 1);
+                                    $(selectors.modal).modal('hide');
+                                    loadLiaisonMappings(); // reload table
+                                } else {
+                                    appalert(response.message, 4, 1);
+                                }
+                            })
+                            .fail(() => {
+                                appalert("Error saving liaison mapping.", 4, 1);
+                            });
+                    },
+                    function () {
+                        appalert("Operation cancelled.", 3, 1);
+                    }
+                ).set('labels', { ok: 'Yes, Save', cancel: 'Cancel' });
+
+                return false;
+            };
+
+            const editMapping = (id) => openForm(id);
+
+            const deleteMapping = (id, mappingName) => {
+                alertify.confirm(
+                    'Confirm Deletion',
+                    `Are you sure you want to delete the liaison mapping:<br><strong>${mappingName}</strong>?`,
+                    async function () {
+                        try {
+                            const response = await $.post('/LiaisonMapping/Delete', { id });
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                loadLiaisonMappings();
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        } catch {
+                            appalert("Error deleting liaison mapping.", 4, 1);
+                        }
+                    },
+                    function () {
+                        appalert("Deletion cancelled.", 3, 1);
+                    }
+                ).set({
+                    labels: { ok: 'Yes, Delete', cancel: 'Cancel' },
+                    padding: true
+                });
+            };
+
+            // ----------- Internal Helpers -----------
+
+            function initializeForm() {
+                const $modal = $(selectors.modal);
+
+                // initialize select2
+                $modal.find('.select2').select2({
+                    dropdownParent: $modal,
+                    width: '100%',
+                    allowClear: true,
+                    placeholder: '--- Select ---'
+                });
+
+                const modalElements = {
+                    source: $modal.find('[name="SourceBranchId"]'),
+                    counterparty: $modal.find('[name="CounterpartyBranchId"]'),
+                    dueFrom: $modal.find('[name="DueFromAccountId"]'),
+                    dueTo: $modal.find('[name="DueToAccountId"]')
+                };
+
+                // Wire branch change
+                modalElements.source.off('change.modal').on('change.modal', function () {
+                    const branchId = $(this).val();
+                    console.log('My Branch : '+branchId);
+                    loadCounterpartyBranches(branchId, modalElements.counterparty);
+                    loadAccountsForBranch(branchId, modalElements.dueFrom, modalElements.dueTo);
+                });
+
+                // Load dependent lists if branch already selected (edit mode)
+                const initialBranchId = modalElements.source.val();
+                if (initialBranchId) {
+                    loadCounterpartyBranches(
+                        initialBranchId,
+                        modalElements.counterparty,
+                        modalElements.counterparty.val()
+                    );
+                    loadAccountsForBranch(initialBranchId, modalElements.dueFrom, modalElements.dueTo);
+                }
+            }
+
+            function toggleLoader(show) {
+                $(selectors.loader).toggleClass('d-none', !show);
+            }
+
+            async function loadCounterpartyBranches(branchId, $target, selectedValue) {
+                $target.prop('disabled', true).empty().append('<option>Loading...</option>');
+
+                if (!branchId) {
+                    $target.prop('disabled', false)
+                        .empty()
+                        .append('<option value="">--- Select Counterparty Branch ---</option>');
+                    return;
+                }
+
+                try {
+                    const data = await $.get('/LiaisonMapping/GetCounterpartyBranches', { branchId });
+
+                    $target.empty().append('<option value="">--- Select Counterparty Branch ---</option>');
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        $target.append('<option value="">No branches available</option>');
+                    } else {
+                        data.forEach(b => {
+                            const disabled = (b.Id === branchId) ? 'disabled' : '';
+                            $target.append(`<option value="${b.Id}" ${disabled}>${escapeHtml(b.Name)}</option>`);
+                        });
+
+                        if (selectedValue) $target.val(selectedValue).trigger('change');
+                    }
+
+                    $target.prop('disabled', false).trigger('change.select2');
+                } catch {
+                    $target.empty().append('<option>Error loading branches</option>').prop('disabled', false);
+                }
+            }
+
+            async function loadAccountsForBranch(branchId, $dueFrom, $dueTo) {
+                if (!branchId) {
+                    resetAccounts($dueFrom, $dueTo);
+                    return;
+                }
+
+                try {
+                    const [assets, liabilities] = await Promise.all([
+                        $.get('/LiaisonMapping/GetAssetAccounts', { branchId }),
+                        $.get('/LiaisonMapping/GetLiabilityAccounts', { branchId })
+                    ]);
+
+                    populateAccountSelect($dueFrom, assets, 'Due From');
+                    populateAccountSelect($dueTo, liabilities, 'Due To');
+                } catch {
+                    $dueFrom.empty().append('<option>Error loading accounts</option>');
+                    $dueTo.empty().append('<option>Error loading accounts</option>');
+                }
+            }
+
+            function resetAccounts($dueFrom, $dueTo) {
+                $dueFrom.empty().append('<option value="">--- Select Due From Account ---</option>').trigger('change');
+                $dueTo.empty().append('<option value="">--- Select Due To Account ---</option>').trigger('change');
+            }
+
+            function populateAccountSelect($select, accounts, label) {
+                $select.empty().append(`<option value="">--- Select ${label} Account ---</option>`);
+                (accounts || []).forEach(acc => {
+                    $select.append(`<option value="${acc.Id}">${escapeHtml(acc.Name)}</option>`);
+                });
+                $select.trigger('change.select2');
+            }
+
+            function escapeHtml(text) {
+                if (!text && text !== 0) return '';
+                return String(text)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
+            // ----------- Public Exports -----------
+            return {
+                openForm,
+                submitForm,
+                editMapping,
+                deleteMapping
+            };
+        })();
+
+        // ===============================================
+        // GLOBAL ACCESSORS (for backward compatibility)
+        // ===============================================
+        window.openLiaisonMappingForm = LiaisonMappingModule.openForm;
+        window.submitLiaisonMappingForm = LiaisonMappingModule.submitForm;
+        window.editLiaisonMapping = LiaisonMappingModule.editMapping;
+        window.deleteLiaisonMapping = LiaisonMappingModule.deleteMapping;
+
+
     </script>
 }

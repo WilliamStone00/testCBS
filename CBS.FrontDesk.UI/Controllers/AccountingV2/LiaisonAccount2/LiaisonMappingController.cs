@@ -1,6 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
-using CBS.BusinessService.AccountingV2.BranchCashConfig;
 using CBS.BusinessService.AccountingV2.LiaisonAccount2;
 using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration;
 using CBS.BusinessService.Accounts;
@@ -59,10 +58,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
                 return Json(new
                 {
-                    draw = query.Options?.draw ?? "1",
+                    draw = dataTable.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
-                    data = mappingList
+                    data = mappingList,
+                    success = true,
+                    message = "Display DataTable for Liaison Mapping successfully"
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)

@@ -10790,7 +10790,7 @@
     <Content Include="Views\JournalHead\_DestDetails.cshtml" />
     <Content Include="Views\BranchCashConfig\Index.cshtml" />
     <Content Include="Views\BranchCashConfig\_Create.cshtml" />
-    <Content Include="Views\BranchCashConfig\_BranchCashConfigDataTable.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Data.cshtml" />
     <Content Include="Views\BranchCashConfig\List.cshtml" />
     <Content Include="Views\BranchCashConfig\_Details.cshtml" />
     <Content Include="Views\LiaisonAccountConfiguration\Index.cshtml" />
@@ -10847,7 +10847,6 @@
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
-    <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

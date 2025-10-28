@@ -165,12 +165,26 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     throw;
                 }
             }
-            // real endpoint version
-            public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+      
+        // real endpoint version
+        public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
             {
                 try
                 {
-                string lang = GetUserLanguage();
+              
+                if (IsHeadOffice())
+                {
+                    if (branchId=="")
+                    {
+                        branchId = "all";
+
+                    }
+                }
+                else
+                {
+                    branchId = GetBranchID();
+                }
+                    string lang = GetUserLanguage();
                     // Call API
                     var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
 

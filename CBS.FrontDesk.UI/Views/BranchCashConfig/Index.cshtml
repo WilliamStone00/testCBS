@@ -1,24 +1,18 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto
-@using Resources
-
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
 @{
-    ViewBag.Title = "Branch-Level GL Mapping Configuration";
+    ViewBag.Title = "Branch Cash Configuration";
 }
 
-<!-- PAGE HEADER -->
+<!-- Page Header -->
 <div class="row">
     <div class="col-12">
-        <div class="card bg-light mb-2 shadow-sm">
+        <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank me-2"></i> Branch-Level GL Mapping Configuration
+                    <i class="mdi mdi-cash-multiple me-2"></i> Branch Cash Configuration
                 </h1>
-                <p class="card-text">
-                    Configure default General Ledger accounts for branch-level cash operations.
-                </p>
-                <p class="card-text fw-bold">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    These mappings will be used for cash handling and discrepancy resolution per branch.
+                <p class="card-text text-muted">
+                    Manage teller/vault GLs, liaison and revenue accounts, and real-time cash posting for this branch.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,314 +20,214 @@
     </div>
 </div>
 
-<!-- GUIDELINES CARD -->
-<div class="card mb-3">
+<!-- Tips -->
+<div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-help-circle-outline me-2"></i> Configuration Guidelines</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGuidelines" aria-expanded="false">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashCfgTips" aria-expanded="false" aria-controls="collapseCashCfgTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseGuidelines" class="collapse">
+    <div id="collapseCashCfgTips" class="collapse">
         <div class="card-body">
-            <ul>
-                <li><i class="mdi mdi-office-building text-info me-2"></i><strong>Select Branch:</strong>  Choose the branch whose GL accounts you wish to configure. Only the Head Office can create or modify configurations.</li>
-                <li><i class="mdi mdi-cash-multiple text-success me-2"></i><strong>Cash in Hand Account:</strong> Account used for daily cash operations within the branch.</li>
-                <li><i class="mdi mdi-safe text-secondary me-2"></i><strong>Default Cash Account:</strong> Typically the vault or main cash account.</li>
-                <li><i class="mdi mdi-arrow-up-bold text-primary me-2"></i><strong>Cash Surplus Account:</strong> Account credited when a surplus (cash overage) occurs.</li>
-                <li><i class="mdi mdi-arrow-down-bold text-danger me-2"></i><strong>Cash Deficit Account:</strong> Account debited when a shortage (cash deficit) occurs.</li>
-                <li><i class="mdi mdi-content-save text-warning me-2"></i><strong>Save Configuration:</strong> Each branch must be configured before cash transactions can proceed.</li>
-
-
-                <li class="mb-2">
-                    <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                    <strong>Cash in Hand Account:</strong>
-                    Represents the branch’s main operating cash. All teller and cashier transactions flow through this account.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-safe text-secondary me-2"></i>
-                    <strong>Vault Account:</strong>
-                    Used for secure storage of physical cash reserves. Cash transfers between vault and tellers are posted here.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-arrow-up-bold text-primary me-2"></i>
-                    <strong>Surplus Income Account:</strong>
-                    Credited when excess cash (overage) is detected during balancing or reconciliation.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-arrow-down-bold text-danger me-2"></i>
-                    <strong>Shortage Expense Account:</strong>
-                    Debited when a cash deficit occurs at the end of a transaction or reconciliation period.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-chart-line text-warning me-2"></i>
-                    <strong>Revenue Account (Optional):</strong>
-                    Used to record general branch income such as service charges, fees, or commissions.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-file-document-edit-outline text-primary me-2"></i>
-                    <strong>Form Fee Income Account (Optional):</strong>
-                    Account where income from form sales (e.g., membership or loan forms) is credited.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-bank-transfer text-info me-2"></i>
-                    <strong>Source Branch Commission Account:</strong>
-                    Records commissions or fees deducted from the initiating branch in inter-branch transactions.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-bank-transfer-in text-success me-2"></i>
-                    <strong>Destination Branch Commission Account:</strong>
-                    Records commissions or income received by the destination branch during inter-branch operations.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-domain text-dark me-2"></i>
-                    <strong>Head Office Commission Account:</strong>
-                    Account for recording commissions due to or received by Head Office on inter-branch activities.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-account-tie text-secondary me-2"></i>
-                    <strong>Partner Commission Account:</strong>
-                    Tracks commission income or expenses relating to external partners (e.g., agencies, payment partners).
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-home-city text-danger me-2"></i>
-                    <strong>Camccul Commission Account:</strong>
-                    Records commissions or payments made to CamCCUL or any governing financial union.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-city-variant-outline text-info me-2"></i>
-                    <strong>Head Office Liaison Account:</strong>
-                    Used to record inter-branch or Head Office-related transactions, ensuring reconciliation between units.
-                </li>
-
-                <li class="mb-2">
-                    <i class="mdi mdi-timer-sand text-primary me-2"></i>
-                    <strong>Real-Time Cash Posting:</strong>
-                    When enabled, transactions are instantly posted to GL without waiting for end-of-day processing.
-                </li>
-
-                <li class="mt-3">
-                    <i class="mdi mdi-content-save text-warning me-2"></i>
-                    <strong>Save Configuration:</strong>
-                    Once completed, click <em>Save Configuration</em> to store setup. Each branch must have its GL settings defined before processing any cash transactions.
-                </li>
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the correct <b>Branch</b> is selected before creating or updating the configuration.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>CashInHandAccount</b> is the teller till GL used for cash movements.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>VaultAccount</b> represents the branch vault GL for vault–till transfers.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use <b>SurplusIncome</b> and <b>ShortageExpense</b> to capture overage/shortage differences.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Optional: <b>RevenueAccount</b>, <b>PartnerAccount</b>, <b>CamCCULAccount</b>, <b>HeadOfficeLiaison</b>, <b>FormFeeIncome</b>.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Enabling <b>Real-time Cash Posting</b> immediately impacts GL upon cash operations.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Only authorized users should modify branch cash configuration.</li>
             </ul>
         </div>
     </div>
 </div>
 
-<!-- BRANCH SELECTION CARD -->
-<div class="card mb-3 shadow-sm">
-    <div class=" mb-3 text-start">
-        <h5 class="card-title mb-0 text-primary text-start fs-6">
-            <i class="mdi mdi-office-building me-2 text-primary"></i>
-            Select Branch to Configure
-        </h5>
+<!-- Main -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card shadow-sm">
+            <div id="accordionPopoutIcon" class="accordion accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionCashCfgHead">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionCashCfgBody" aria-expanded="true" aria-controls="accordionCashCfgBody">
+                            <i class="mdi mdi-cash me-2"></i> Branch Cash Config Management
+                        </button>
+                    </h2>
+                    <div id="accordionCashCfgBody" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="card mb-1">
+                                    <div class="card-body d-flex justify-content-end align-items-center">
+                                        <a type="button"
+                                           onclick="LoadDataGen('BranchCashConfig','myDataTable','_Data',0,'datalistingview')"
+                                           class="btn btn-label-primary btn-sm me-2"
+                                           data-bs-toggle="tooltip" title="View list">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> View list
+                                        </a>
+                                        <a type="button"
+                                           onclick="AddORUpdateGen(null,'datalistingview','_Create','new','BranchCashConfig')"
+                                           class="btn btn-label-secondary btn-sm"
+                                           data-bs-toggle="tooltip" title="Add Cash Config">
+                                            <i class="mdi mdi-plus mdi-18px"></i> Add Cash Config
+                                        </a>
+                                    </div>
+                                </div>
 
-
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <label class="form-label fw-bold">Choose Branch</label>
-                @Html.DropDownListFor(m => m.BranchId,
-                    new SelectList(ViewBag.Branches, "Id", "Name"),
-                    "-- Select Branch --",
-                    new
-                    {
-                        @class = "form-select select2",
-                        id = "branchSelector",
-                        onchange = "loadBranchConfiguration(this.value)"
-                    })
+                                <!-- Workspace -->
+                                <div id="datalistingview">
+                                    @Html.Partial("_Create", Model)
+                                </div>
+                            </div> <!-- /mainviewChange -->
+                        </div>
+                    </div>
+                </div> <!-- /accordion-item -->
             </div>
         </div>
     </div>
 </div>
 
-<!-- CONFIGURATION STATUS CARD -->
-<div class="card mb-3" id="configurationStatusCard" style="display: none;">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-8">
-                <h6 class="text-primary mb-1" id="currentBranchTitle"></h6>
-                <p class="mb-0 text-muted" id="configurationStatusText"></p>
+<!-- Details Modal -->
+<div class="modal fade" id="cashConfigDetailsModal" tabindex="-1" aria-labelledby="cashConfigDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-cash me-2"></i> Cash Config Details
+                    </h4>
+                    <p class="text-muted mb-0">View and manage branch cash configuration details.</p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
             </div>
-            <div class="col-md-4 text-end">
-                <div id="configurationActions"></div>
+            <div class="modal-body p-2">
+                <div id="cashConfigDetailsContent"><!-- dynamic content --></div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-
-<!-- PLACEHOLDER FOR DYNAMIC FORM -->
-<div id="datalistingview" class="mt-3"></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+          // Rebuild a select with items [{ id, name }]
+          function fillSelect($select, items, placeholder, selectedId) {
+              const wasSelect2 = $select.hasClass('select2');
+              if (wasSelect2 && $select.data('select2')) { $select.select2('destroy'); }
+              $select.empty();
+              if (placeholder) { $select.append($('<option>', { value: '', text: placeholder })); }
+              if (Array.isArray(items)) {
+                  for (const x of items) { $select.append($('<option>', { value: x.id, text: x.name })); }
+              }
+              if (selectedId) { $select.val(selectedId); }
+              if (wasSelect2) { $select.select2(); }
+          }
+
+            // EXPOSE GLOBALLY so inline onchange="fetchBranchDetails(...)" can find it
+        function fetchBranchDetails(branchId)
+            {
+              if (!branchId) return;
+
+              $.ajax({
+                  url: '@Url.Action("GetByBranch", "BranchCashConfig")',
+                  type: 'POST',
+                  data: { branchId: branchId },
+                  success: function (res) {
+                      if (!res || res.success !== true) {
+                          if (window.toastr) toastr.error(res && res.message ? res.message : 'Failed to load branch configuration.');
+                          return;
+                      }
+
+                      const accounts = res.accounts || [];
+
+                      fillSelect($('#CashInHandAccountId'),        accounts, '-- Select Cash in Hand Account (Till) --',        res.data && res.data.cashInHandAccountId);
+                      fillSelect($('#VaultAccountId'),             accounts, '-- Select Vault Account --',                       res.data && res.data.vaultAccountId);
+                      fillSelect($('#SurplusIncomeAccountId'),     accounts, '-- Select Surplus Income Account --',              res.data && res.data.surplusIncomeAccountId);
+                      fillSelect($('#ShortageExpenseAccountId'),   accounts, '-- Select Shortage Expense Account --',            res.data && res.data.shortageExpenseAccountId);
+                      fillSelect($('#RevenueAccountId'),           accounts, '-- Select Revenue Account (Optional) --',          res.data && res.data.revenueAccountId);
+                      fillSelect($('#PartnerAccountId'),           accounts, '-- Select Partner Account (Optional) --',          res.data && res.data.partnerAccountId);
+                      fillSelect($('#CamcculAccountId'),           accounts, '-- Select CamCCUL Account (Optional) --',          res.data && res.data.camcculAccountId);
+                      fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --',         res.data && res.data.headOfficeLiaisonAccountId);
+                      fillSelect($('#FormFeeIncomeAccountId'),     accounts, '-- Select Form Fee Income Account (Optional) --',  res.data && res.data.formFeeIncomeAccountId);
+
+                      $('#RealTimeCashPosting').prop('checked',
+                          typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true);
+
+                      $('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
+
+                      if (res.branchCode) { $('#BranchCode').val(res.branchCode); }
+
+                      $('input[name="BranchCashConfig.Id"]').val(res.data && res.data.id ? res.data.id : '');
+                  },
+                  error: function () {
+                      if (window.toastr) toastr.error('Error loading branch configuration.');
+                  }
+              });
+          };
+
+      // If preselected, auto-load once
+          $(function () {
+              var initBranch = $('#BranchId').val();
+              if (initBranch) { window.fetchBranchDetails(initBranch); }
+          });
+    </script>
 
     <script>
-        let currentBranchId = '';
-        let currentBranchName = '';
+  // GET /BranchCashConfig/_Data
+  // signature kept: LoadDataGen(feature, tableId, partial, page, containerId)
+  window.LoadDataGen = function (feature, tableId, partial, page, containerId) {
+    var url = '@Url.Action("_Data", "BranchCashConfig")';
+    $.get(url)
+      .done(function (html) {
+        $('#' + containerId).html(html);
+      })
+      .fail(function () {
+        $('#' + containerId).html('<div class="text-danger p-3">Failed to load list.</div>');
+      });
+  };
 
-       /*  🔹 Load configuration by branch*/
-        function loadBranchConfiguration(branchId) {
-            if (!branchId) {
-                $('#datalistingview').empty();
-                $('#configurationStatusCard').hide();
-                return;
-            }
+  // GET /BranchCashConfig/_Create[?id=...] or /_Create?branchId=... when adding new
+  // signature kept: AddORUpdateGen(id, containerId, partial, mode, controller)
+  window.AddORUpdateGen = function (id, containerId, partial, mode, controller) {
+    var baseUrl = '@Url.Action("_Create", "BranchCashConfig")';
+    var url = id ? (baseUrl + '?id=' + encodeURIComponent(id)) : baseUrl;
 
-            currentBranchId = branchId;
-           currentBranchName = $('#branchSelector option:selected').text();
-            /*   <div class="spinner-border text-primary" role="status"></div>*/
-           $('#datalistingview').html(`
-               <div class="text-center py-4">
-                   <p class="mt-2">Loading configuration for <strong>${currentBranchName}</strong>...</p>
-              </div>
-           `);
+    // If creating new (no id) and a Branch is already selected on the page, pass it along
+    if (!id) {
+      var bid = $('#BranchId').val();
+      if (bid) {
+        url += (url.indexOf('?') >= 0 ? '&' : '?') + 'branchId=' + encodeURIComponent(bid);
+      }
+    }
 
-            $.ajax({
-                url: '/BranchCashConfig/GetByBranch',
-                type: 'POST',
-                data: JSON.stringify({ branchId: branchId }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function (response) {
-                    if (response && (response.success === true || response.data)) {
-                        loadExistingConfiguration(response.data || response, branchId);
-                    } else {
-                        // showNewConfigurationForm();
-                        appalert(response.message, 4, 1);
-                    }
-                },
-                error: function (xhr) {
-                    console.error('Error loading branch configuration:', xhr.responseText);
-                    showNotification('error', 'Failed to load branch configuration.');
-                    $('#datalistingview').empty();
-                }
-            });
+    $.get(url)
+      .done(function (html) {
+        var $c = $('#' + containerId);
+        $c.html(html);
+
+        // Re-init select2 if present
+        if ($.fn.select2) $('.select2').select2();
+
+        // If a branch is selected in the loaded form, auto-load its accounts
+        var formBranchId = $('#BranchId').val();
+        if (formBranchId && typeof window.fetchBranchDetails === 'function') {
+          window.fetchBranchDetails(formBranchId);
         }
+      })
+      .fail(function () {
+        $('#' + containerId).html('<div class="text-danger p-3">Failed to load form.</div>');
+      });
+  };
 
-        // 🔹 Load existing configuration form
-        function loadExistingConfiguration(config,branchId) {
-            $.get(`/BranchCashConfig/InitializeData?KEY=${config.id || config.Id}&partialView=_Create&path=edit&branchId=${branchId}`, function (html) {
-                $('#datalistingview').html(html);
-                $('.select2').select2();
-                updateConfigurationStatus('existing', config);
-            }).fail(() => showNotification('error', 'Failed to load existing configuration form.'));
-        }
+  // Optional: edit from details modal
+  $(document).on('click', '.js-edit-config', function () {
+    var id = $(this).data('id');
+    AddORUpdateGen(id, 'datalistingview', '_Create', 'edit', 'BranchCashConfig');
+    $('#cashConfigDetailsModal').modal('hide');
+  });
+    </script>}
 
-        // 🔹 Load new configuration form
-        function showNewConfigurationForm() {
-            $.get(`/BranchCashConfig/InitializeData?partialView=_Create&path=new&branchId=${currentBranchId}`, function (html) {
-                $('#datalistingview').html(html);
-                $('.select2').select2();
-                updateConfigurationStatus('new', null);
-            }).fail(() => showNotification('error', 'Failed to load new configuration form.'));
-        }
-
-        // 🔹 Handle form submission (for dynamically loaded form)
-        $(document).on('submit', '#branchCashConfigForm', function (e) {
-            e.preventDefault();
-
-            const form = $(this);
-            if (!form.valid()) {
-                showNotification('warning', 'Please fill all required fields correctly.');
-                return;
-            }
-
-            const payload = {
-                branchId: $('#BranchId').val() || currentBranchId,
-                cashInHandAccountId: $('#CashInHandAccountId').val(),
-                vaultAccountId: $('#VaultAccountId').val(),
-                surplusIncomeAccountId: $('#SurplusIncomeAccountId').val(),
-                revenueAccountId: $('#RevenueAccountId').val(),
-                shortageExpenseAccountId: $('#ShortageExpenseAccountId').val(),
-                realTimeCashPosting: $('#RealTimeCashPosting').is(':checked'),
-                sourceBranchAccountId: $('#SourceBranchAccountId').val(),
-                destinationBranchAccountId: $('#DestinationBranchAccountId').val(),
-                headOfficeAccountId: $('#HeadOfficeAccountId').val(),
-                partnerAccountId: $('#PartnerAccountId').val(),
-                camcculAccountId: $('#CamcculAccountId').val(),
-                headOfficeLiaisonAccountId: $('#HeadOfficeLiaisonAccountId').val(),
-                formFeeIncomeAccountId: $('#FormFeeIncomeAccountId').val(),
-                requestedBy: $('#RequestedBy').val() || '@User.Identity?.Name' || 'system'
-            };
-
-            $.ajax({
-                url: '/BranchCashConfig/CreateOrUpdate',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(payload),
-                beforeSend: () => showNotification('info', 'Saving configuration...'),
-                success: (response) => {
-                    if (response?.success) {
-                        showNotification('success', response.message || 'Configuration saved successfully.');
-                        setTimeout(() => loadBranchConfiguration(currentBranchId), 1200);
-                    } else {
-                        showNotification('error', response?.message || 'Save failed.');
-                    }
-                },
-                error: (xhr) => {
-                    console.error('Server response:', xhr.responseText);
-                    showNotification('error', 'An error occurred while saving configuration.');
-                }
-            });
-        });
-
-        // 🔹 UI feedback functions
-        function updateConfigurationStatus(type, config) {
-            const statusCard = $('#configurationStatusCard');
-            const title = $('#currentBranchTitle');
-            const statusText = $('#configurationStatusText');
-            const actions = $('#configurationActions');
-
-            statusCard.show();
-            title.text(`${currentBranchName} - GL Configuration`);
-
-            if (type === 'existing') {
-                statusText.html(`
-                    <span class="badge bg-success me-2">
-                        <i class="mdi mdi-check-circle me-1"></i> Configured
-                    </span> Configuration exists and is active.
-                `);
-            } else {
-                statusText.html(`
-                    <span class="badge bg-warning me-2">
-                        <i class="mdi mdi-alert-circle me-1"></i> Not Configured
-                    </span> This branch requires GL account mapping.
-                `);
-            }
-
-            actions.html(`
-                <button type="button" onclick="viewAllConfigurations()" class="btn btn-outline-primary btn-sm">
-                    <i class="mdi mdi-view-list me-1"></i> View All
-                </button>
-            `);
-        }
-
-        // 🔹 View all configurations
-        function viewAllConfigurations() {
-            LoadDataGen('BranchCashConfig', 'myDataTable', '_BranchCashConfigDataTable', 0, 'datalistingview', null, 'list');
-            $('#configurationStatusCard').hide();
-        }
-
-        // 🔹 Simple notification wrapper
-        function showNotification(type, message) {
-            if (typeof appalert === 'function') appalert(message);
-            else alert(`${type.toUpperCase()}: ${message}`);
-        }
-    </script>
-}
