@@ -49,10 +49,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 };
 
             // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.WorkTickets = new List<SelectListItem>
+            ViewBag.OperationCode = new List<SelectListItem>
 {
-    new SelectListItem { Value = "Temp", Text = "Temp Operations" },
-    new SelectListItem { Value = "Reconciled", Text = "Reconciliated Data" }
+    new SelectListItem { Value = "Temp", Text = "Temp " },
+    new SelectListItem { Value = "Reconciled", Text = "Reconciliated" }
+};
+            ViewBag.TicketSource = new List<SelectListItem>
+{
+    new SelectListItem { Value = "Source", Text = "Source " },
+    new SelectListItem { Value = "Destination", Text = "Destination" }
 };
             return true;
         }
@@ -266,10 +271,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
-        public async Task<ActionResult> Table()
-        {
-            
-            return View();
-        }
+        
     }
 }
