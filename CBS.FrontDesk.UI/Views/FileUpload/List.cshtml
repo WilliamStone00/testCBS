@@ -193,128 +193,128 @@
 
               $('.select2').select2();
     
-    $('#BranchId').on('change', function() {
-        var branchId = $(this).val();
-        var branchAccountDropdown = $('#BranchAccountId');
+                $('#BranchId').on('change', function() {
+                    var branchId = $(this).val();
+                    var branchAccountDropdown = $('#BranchAccountId');
         
-        // Show loading state
-        branchAccountDropdown.empty().prop('disabled', true);
-        branchAccountDropdown.append($('<option></option>').val('').text('Loading branch accounts...'));
+                    // Show loading state
+                    branchAccountDropdown.empty().prop('disabled', true);
+                    branchAccountDropdown.append($('<option></option>').val('').text('Loading branch accounts...'));
         
-        if (!branchId) {
-            resetBranchAccountDropdown();
-            return;
-        }
-        
-        // Add loading delay for better UX
-        setTimeout(function() {
-            loadBranchAccounts(branchId, branchAccountDropdown);
-        }, 300);
-    });
-    
-    function loadBranchAccounts(branchId, dropdown) {
-        $.ajax({
-            url: '@Url.Action("GetBranchAccountsByBranch", "YourController")',
-            type: 'GET',
-            data: { branchId: branchId },
-            timeout: 10000, // 10 second timeout
-            success: function(response) {
-                dropdown.empty().prop('disabled', false);
-                
-                if (response.success && response.data && response.data.length > 0) {
-                    dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
-                    
-                    $.each(response.data, function(index, account) {
-                        dropdown.append($('<option></option>').val(account.id).text(account.name));
-                    });
-                    
-                    showToast('Branch accounts loaded successfully', 'success');
-                } else {
-                    dropdown.append($('<option></option>').val('').text('No branch accounts available'));
-                    showToast('No branch accounts found for selected branch', 'warning');
-                }
-                
-                dropdown.trigger('change');
-            },
-            error: function(xhr, status, error) {
-                dropdown.empty().prop('disabled', false);
-                dropdown.append($('<option></option>').val('').text('Error loading branch accounts'));
-                showToast('Failed to load branch accounts. Please try again.', 'error');
-                console.error('AJAX Error:', error);
-            }
-        });
-    }
-    
-    function resetBranchAccountDropdown() {
-        var dropdown = $('#BranchAccountId');
-        dropdown.empty().prop('disabled', false);
-        dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
-        dropdown.trigger('change');
-    }
-    
-    function showToast(message, type) {
-        // Implement your toast notification here
-        // This is just a placeholder - use your preferred notification library
-        console.log(`${type.toUpperCase()}: ${message}`);
-    }
-    
-    // Initialize if branch is pre-selected
-    if ($('#BranchId').val()) {
-        $('#BranchId').trigger('change');
-    }
-
-
-            // Utility: get only visible/active filter values (those whose toggle checkbox is checked)
-            function collectAffiliateFilters() {
-                var filters = {};
-
-                // Always include BranchId and AffiliateId (they are always visible)
-                var branchVal = $('#BranchId').val();
-                var affiliateVal = $('#AffiliateId').val();
-                if (branchVal) filters.BranchId = branchVal;
-                if (affiliateVal) filters.AffiliateId = affiliateVal;
-
-                // For each checked toggle, read its target's value(s)
-                $('.filter-toggle').each(function () {
-                    var $chk = $(this);
-                    var target = $chk.data('target');
-                    if (!$chk.is(':checked') || !target) return;
-                    var $el = $(target);
-
-                    // If the target is the IncludeDeleted container, read the inner checkbox
-                    if ($el.find('#IncludeDeleted').length) {
-                        var inc = $el.find('#IncludeDeleted').is(':checked');
-                        // only set if true (user selected include deleted)
-                        if (inc) filters.IncludeDeleted = true;
+                    if (!branchId) {
+                        resetBranchAccountDropdown();
                         return;
                     }
-
-                    var name = $el.attr('name') || $el.prop('id');
-                    if (!name) return;
-
-                    var val;
-                    if ($el.is(':checkbox')) val = $el.is(':checked');
-                    else val = $el.val();
-
-                    if (val !== undefined && val !== null && String(val).trim() !== '') {
-                        filters[name] = val;
-                    }
+        
+                    // Add loading delay for better UX
+                    setTimeout(function() {
+                        loadBranchAccounts(branchId, branchAccountDropdown);
+                    }, 300);
                 });
-
-                return filters;
-            }
-
-            // Initialize select2 for branch & affiliate if available
-            function initSelect2() {
-                if ($.fn.select2) {
-                    try {
-                        $('#BranchId').select2 && $('#BranchId').select2({ width: '100%', placeholder: 'Select Branch' });
-                        $('#AffiliateId').select2 && $('#AffiliateId').select2({ width: '100%', placeholder: 'Select Affiliate' });
-                    } catch (e) {
-                        console.warn('select2 init failed', e);
-                    }
+    
+                function loadBranchAccounts(branchId, dropdown) {
+                    $.ajax({
+                        url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
+                        type: 'GET',
+                        data: { branchId: branchId },
+                        timeout: 10000, // 10 second timeout
+                        success: function(response) {
+                            dropdown.empty().prop('disabled', false);
+                
+                            if (response.success && response.data && response.data.length > 0) {
+                                dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
+                    
+                                $.each(response.data, function(index, account) {
+                                    dropdown.append($('<option></option>').val(account.id).text(account.name));
+                                });
+                    
+                                showToast('Branch accounts loaded successfully', 'success');
+                            } else {
+                                dropdown.append($('<option></option>').val('').text('No branch accounts available'));
+                                showToast('No branch accounts found for selected branch', 'warning');
+                            }
+                
+                            dropdown.trigger('change');
+                        },
+                        error: function(xhr, status, error) {
+                            dropdown.empty().prop('disabled', false);
+                            dropdown.append($('<option></option>').val('').text('Error loading branch accounts'));
+                            showToast('Failed to load branch accounts. Please try again.', 'error');
+                            console.error('AJAX Error:', error);
+                        }
+                    });
                 }
-            }
+    
+                function resetBranchAccountDropdown() {
+                    var dropdown = $('#BranchAccountId');
+                    dropdown.empty().prop('disabled', false);
+                    dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
+                    dropdown.trigger('change');
+                }
+    
+                function showToast(message, type) {
+                    // Implement your toast notification here
+                    // This is just a placeholder - use your preferred notification library
+                    console.log(`${type.toUpperCase()}: ${message}`);
+                }
+    
+                // Initialize if branch is pre-selected
+                if ($('#BranchId').val()) {
+                    $('#BranchId').trigger('change');
+                }
+
+
+                        // Utility: get only visible/active filter values (those whose toggle checkbox is checked)
+                        function collectAffiliateFilters() {
+                            var filters = {};
+
+                            // Always include BranchId and AffiliateId (they are always visible)
+                            var branchVal = $('#BranchId').val();
+                            var affiliateVal = $('#AffiliateId').val();
+                            if (branchVal) filters.BranchId = branchVal;
+                            if (affiliateVal) filters.AffiliateId = affiliateVal;
+
+                            // For each checked toggle, read its target's value(s)
+                            $('.filter-toggle').each(function () {
+                                var $chk = $(this);
+                                var target = $chk.data('target');
+                                if (!$chk.is(':checked') || !target) return;
+                                var $el = $(target);
+
+                                // If the target is the IncludeDeleted container, read the inner checkbox
+                                if ($el.find('#IncludeDeleted').length) {
+                                    var inc = $el.find('#IncludeDeleted').is(':checked');
+                                    // only set if true (user selected include deleted)
+                                    if (inc) filters.IncludeDeleted = true;
+                                    return;
+                                }
+
+                                var name = $el.attr('name') || $el.prop('id');
+                                if (!name) return;
+
+                                var val;
+                                if ($el.is(':checkbox')) val = $el.is(':checked');
+                                else val = $el.val();
+
+                                if (val !== undefined && val !== null && String(val).trim() !== '') {
+                                    filters[name] = val;
+                                }
+                            });
+
+                            return filters;
+                        }
+
+                        // Initialize select2 for branch & affiliate if available
+                        function initSelect2() {
+                            if ($.fn.select2) {
+                                try {
+                                    $('#BranchId').select2 && $('#BranchId').select2({ width: '100%', placeholder: 'Select Branch' });
+                                    $('#AffiliateId').select2 && $('#AffiliateId').select2({ width: '100%', placeholder: 'Select Affiliate' });
+                                } catch (e) {
+                                    console.warn('select2 init failed', e);
+                                }
+                            }
+                        }
 
             // Create or re-use the table element and initialize DataTable with server-side ajax,
             // but don't call the server until Apply button triggers a reload.

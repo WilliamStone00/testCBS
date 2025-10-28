@@ -92,13 +92,13 @@
                     <div class="col-12">
                         <div class="form-check">
                             @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
-                            <label class="form-check-label" for="IsAffiliateCheckbox">@AccountingV2.IsAffiliate</label>
+                            <label class="form-check-label" for="IsAffiliateCheckbox">Check to Upload Affiliate COA</label>
                         </div>
                     </div>
 
                     <!-- BRANCH DROPDOWN -->
                     <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
-                        <label for="BranchId" class="form-label fw-semibold">🏢 Sellect Branch</label>
+                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
                         @Html.DropDownListFor(m => m.branchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
                             "--- " + @GlobalUserManagement.SelectBranch + " ---",
@@ -126,16 +126,18 @@
                         @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
                     </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">@AccountingV2.Selectfile</label>
-                            <div class="input-group">
-
-                                <input type="file" name="file" id="file" class="form-control" required />
-                                <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
-                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
-                                </button>
-                            </div>
+                    <div class="mb-3">
+                        <label id="fileLabel" class="form-label fw-semibold">
+                            <!-- Default text that will be updated by JavaScript -->
+                            @(isAffiliate ? "Select COF" : "Select Trial Balance (6 columns)")
+                        </label>
+                        <div class="input-group">
+                            <input type="file" name="file" id="file" class="form-control" required />
+                            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                            </button>
                         </div>
+                    </div>
 
                     <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
                     <div class="col-12 text-end mt-3">
@@ -205,8 +207,8 @@
                         $('#affiliateTemplateLink').removeClass('d-none').show();
                         $('#branchTemplateLink').addClass('d-none').hide();
 
-                        $('#fileLabelAffiliate').removeClass('d-none').show();
-                        $('#fileLabelBranch').addClass('d-none').hide();
+                        // Update label text dynamically
+                        $('#fileLabel').text('Select COF');
                     } else {
                         $('.affiliate-dropdown').addClass('d-none').hide();
                         $('.branch-dropdown').removeClass('d-none').show();
@@ -217,8 +219,8 @@
                         $('#affiliateTemplateLink').addClass('d-none').hide();
                         $('#branchTemplateLink').removeClass('d-none').show();
 
-                        $('#fileLabelAffiliate').addClass('d-none').hide();
-                        $('#fileLabelBranch').removeClass('d-none').show();
+                        // Update label text dynamically
+                        $('#fileLabel').text('Select Trial Balance (6 columns)');
                     }
                 } catch (ex) {
                     console.error('toggleAffiliateUI error', ex);
