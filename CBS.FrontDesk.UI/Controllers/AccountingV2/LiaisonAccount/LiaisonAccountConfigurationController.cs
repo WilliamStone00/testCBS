@@ -1,5 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
-using CBS.BusinessService.AccountingV2.BranchCashConfig;
+using CBS.BusinessService.AccountingV2.BranchCashConfigV;
 using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration; // adjust namespace as needed
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;

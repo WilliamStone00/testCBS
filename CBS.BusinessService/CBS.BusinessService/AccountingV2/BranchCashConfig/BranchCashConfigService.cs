@@ -1,8 +1,8 @@
-﻿// BranchCashConfigService.cs
-using BusinessServices;
+﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.UserManagement;
-using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig;
+using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV;
 using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -16,11 +16,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace CBS.BusinessService.AccountingV2.BranchCashConfig
+namespace CBS.BusinessService.AccountingV2.BranchCashConfigV
 {
     public class BranchCashConfigService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
+        private readonly BranchAccountService _branchAccountService;
 
         public BranchCashConfigService()
         {
@@ -30,19 +31,20 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
+            _branchAccountService = new BranchAccountService();
         }
 
-        public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigsAsync()
+        public async Task<IEnumerable<BranchCashConfig>> GetBranchCashConfigsAsync()
         {
             try
             {
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<BranchCashConfigDto>>>(APICallHelper.GetAllBranchCashConfigs);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<BranchCashConfig>>>(APICallHelper.GetAllBranchCashConfigs);
 
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     return response.ApiResponseData.Data;
                 }
-                return new List<BranchCashConfigDto>();
+                return new List<BranchCashConfig>();
             }
             catch (Exception ex)
             {
@@ -51,12 +53,12 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
-        public async Task<BranchCashConfigDto> GetBranchCashConfigByIdAsync(string id)
+        public async Task<BranchCashConfig> GetBranchCashConfigByIdAsync(string id)
         {
             try
             {
                 string formattedUrl = string.Format(APICallHelper.GetBranchCashConfigById, id);
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchCashConfigDto>>(formattedUrl);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchCashConfig>>(formattedUrl);
 
                 if (response.IsSuccess)
                 {
@@ -71,20 +73,20 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
+        // Removed the commented-out GetBranchCashConfigByBranchIdAsync
 
-        public async Task<BranchCashConfigDto> GetBranchCashConfigByBranchIdAsync(string branchId)
+        // This is the functional GetBranchCashConfigByBranchIdAsync (uncommented in your original submission)
+        public async Task<BranchCashConfig> GetBranchCashConfigByBranchIdAsync(string branchId)
         {
+            if (string.IsNullOrWhiteSpace(branchId))
+                return null;
 
             try
             {
                 string formattedUrl = string.Format(APICallHelper.GetBranchCashConfigByBranchId, branchId);
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchCashConfigDto>>(formattedUrl);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchCashConfig>>(formattedUrl);
 
-                if (response.IsSuccess)
-                {
-                    return response.ApiResponseData?.Data;
-                }
-                return null;
+                return response.IsSuccess ? response.ApiResponseData?.Data : null;
             }
             catch (Exception ex)
             {
@@ -93,12 +95,39 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
-        public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigs()
+        public async Task<ExecutionMessages> CreateOrUpdateBranchCashConfigAsync(BranchCashConfig model)
         {
             try
             {
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchCashConfigDto>>>(APICallHelper.GetAllBranchCashConfigs);
-                var configs = response?.ApiResponseData?.Data ?? new List<BranchCashConfigDto>();
+
+                if (string.IsNullOrEmpty(model.Id))
+                {
+                    // Create new
+                    return await CreateBranchCashConfigAsync(model);
+                }
+                else
+                {
+                    // Update existing
+                    return await UpdateBranchCashConfigAsync(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in CreateOrUpdateBranchCashConfigAsync: {ex.Message}");
+
+                GetExecutionMessages(model, false, $"Branch Cash Config for Branch {model.BranchId}", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                return ExecutionMessage;
+            }
+        }
+
+        // Renamed 'GetBranchCashConfigs' to 'GetAllFilteredConfigs' for clarity (since you had two methods named 'GetBranchCashConfigs')
+        public async Task<IEnumerable<BranchCashConfig>> GetAllFilteredConfigs()
+        {
+            try
+            {
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchCashConfig>>>(APICallHelper.GetAllBranchCashConfigs);
+                var configs = response?.ApiResponseData?.Data ?? new List<BranchCashConfig>();
 
                 // Filter by branch if user is not head office
                 if (!IsHeadOffice())
@@ -115,12 +144,11 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             }
         }
 
-        public async Task<ExecutionMessages> CreateBranchCashConfigAsync(BranchCashConfigDto model)
+        public async Task<ExecutionMessages> CreateBranchCashConfigAsync(BranchCashConfig model)
         {
             try
             {
-                model.RequestedBy = GetUserId();
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<BranchCashConfigDto>>(APICallHelper.CreateBranchCashConfig, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<BranchCashConfig>>(APICallHelper.CreateBranchCashConfig, model);
 
                 if (response.IsSuccess)
                 {
@@ -141,13 +169,13 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> UpdateBranchCashConfigAsync(BranchCashConfigDto model)
+        public async Task<ExecutionMessages> UpdateBranchCashConfigAsync(BranchCashConfig model)
         {
             try
             {
                 var configId = model.Id;
                 string formattedUrl = string.Format(APICallHelper.UpdateBranchCashConfig, configId);
-                var response = await _apiCallerHelper.PutAsync<ServiceResponse<BranchCashConfigDto>>(formattedUrl, model);
+                var response = await _apiCallerHelper.PutAsync<ServiceResponse<BranchCashConfig>>(formattedUrl, model);
 
                 if (response.IsSuccess)
                 {
@@ -223,14 +251,11 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             );
         }
 
-        public List<BranchCashConfigDto> MapToBranchCashConfigDownloadDtos(IEnumerable<BranchCashConfigDto> configs)
+        public List<BranchCashConfig> MapToBranchCashConfigDownloadDtos(IEnumerable<BranchCashConfig> configs)
         {
-            return configs.Select(MapToBranchCashConfigDownloadDto).ToList();
-        }
-
-        public BranchCashConfigDto MapToBranchCashConfigDownloadDto(BranchCashConfigDto config)
-        {
-            return new BranchCashConfigDto
+            // Simplified: If the DTO is the final required structure, we just select and return. 
+            // Removed the redundant MapToBranchCashConfigDownloadDto helper.
+            return configs.Select(config => new BranchCashConfig
             {
                 BranchId = config.BranchId,
                 CashInHandAccountId = config.CashInHandAccountId,
@@ -239,15 +264,14 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 RevenueAccountId = config.RevenueAccountId,
                 ShortageExpenseAccountId = config.ShortageExpenseAccountId,
                 RealTimeCashPosting = config.RealTimeCashPosting,
-                SourceBranchAccountId = config.SourceBranchAccountId,
-                DestinationBranchAccountId = config.DestinationBranchAccountId,
-                HeadOfficeAccountId = config.HeadOfficeAccountId,
                 PartnerAccountId = config.PartnerAccountId,
                 CamcculAccountId = config.CamcculAccountId,
                 HeadOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
                 FormFeeIncomeAccountId = config.FormFeeIncomeAccountId
-            };
+            }).ToList();
         }
+
+        // Removed the redundant MapToBranchCashConfigDownloadDto method
 
         public async Task<IEnumerable<BranchAccount>> GetBranchesAsync(string branchId)
         {

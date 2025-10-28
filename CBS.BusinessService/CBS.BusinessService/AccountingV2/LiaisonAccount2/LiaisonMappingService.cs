@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
@@ -27,8 +26,9 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
         {
             try
             {
-                var endpoint = APICallHelper.CreateLiaisonMapping;
-                //APICallHelper.UpdateLiaisonMapping;
+                var endpoint = string.IsNullOrEmpty(command.Id)
+                    ? APICallHelper.CreateLiaisonMapping
+                    : APICallHelper.UpdateLiaisonMapping;
 
                 var response = await _apiCaller.PostAsync<ServiceResponse<CreateOrUpdateLiaisonMappingCommand>>(endpoint, command);
 
@@ -93,32 +93,38 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
             }
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
+        public async Task<CustomDataTable2> GetDataTableAsync(GetLiaisonMappingsDataTableQuery request)
         {
             try
             {
-                // ✅ Empêche NullReferenceException
-                if (request.Options == null)
+                /*if (request.Options == null)
                     request.Options = new DataTableOptions();
 
-                request.Options.sortColumnName = request.Options.sortColumnName ?? "BranchName";
+                request.Options.sortColumnName = "BranchName";*/
 
-                if (!IsHeadOffice())
-                {
-                    request.BranchId = GetBranchID();
-                }
+                // ✅ Ensure BranchId is always initialized
+                /* if (!IsHeadOffice())
+                 {
+                     request.BranchId = GetBranchID();
+                 }
+                 else
+                 {
+                     // Explicitly set to empty string for Head Office instead of null
+                     request.BranchId = string.Empty;
+                 }*/
 
-                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable>>(
+                request.Options.sortColumnName = "";
+                request.Options.sortColumnDirection = "";
+
+                var response = await _apiCaller.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetLiaisonMappingsDataTable,
                     request
                 );
 
                 if (response.IsSuccess && response.ApiResponseData != null)
-                {
                     return response.ApiResponseData.Data;
-                }
 
-                return new CustomDataTable(
+                return new CustomDataTable2(
                     draw: Convert.ToInt32(request.Options.draw ?? "1"),
                     recordsTotal: 0,
                     recordsFiltered: 0,
@@ -128,13 +134,14 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve liaison mapping.", ex);
+                // Log internally, but provide clean message to front-end
+                throw new ApplicationException("Failed to retrieve liaison mapping. " + ex.Message, ex);
             }
         }
 
-       
-
-
+        // Removed unsupported methods that reference undefined endpoints and types
+        // - GetLiaisonMappingsByBranchAsync
+        // - CheckMappingExistsAsync  
+        // - GetCounterpartyBranchesAsync
     }
 }
-

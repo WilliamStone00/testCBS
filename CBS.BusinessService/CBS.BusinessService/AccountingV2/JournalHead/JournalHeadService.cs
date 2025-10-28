@@ -126,12 +126,21 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        public async Task<CustomDataTable> GetJournalSourceDataTableAsync(JournalEntryQuery query)
+        
+
+        public async Task<CustomDataTable2> GetJournalSourceDataTableAsync(JournalEntryQuery query)
         {
             try
             {
-                var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.GetJournalHeaderDataTable, query);
+
+                query.Options.sortColumnName = "";
+                query.Options.sortColumnDirection = "";
+
+                var journalHeaders = (
+                   JsonConvert.SerializeObject(query));
+
+                var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetJournalworkticketDataTable, query);
 
                 // If API call fails or response unsuccessful
                 if (!response.IsSuccess)

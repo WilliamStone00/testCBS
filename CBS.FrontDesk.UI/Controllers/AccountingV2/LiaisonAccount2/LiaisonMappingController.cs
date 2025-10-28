@@ -1,7 +1,7 @@
 ﻿using CBS.BusinessService.Accounting;
-using CBS.BusinessService.AccountingV2.BranchCashConfig;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.AccountingV2.LiaisonAccount2;
-using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration; // adjust namespace as needed
+using CBS.BusinessService.AccountingV2.LiaisonAccountConfiguration;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 {
@@ -24,22 +23,20 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
     {
         private readonly LiaisonMappingService _liaisonMappingService;
         private readonly BranchServices _branchServices;
-        private readonly ChartOfAccountServices _chartOfAccountServices;
-        private readonly BranchCashConfigService _branchCashConfig;
-
+        private readonly BranchAccountService _branchAccountService;
+        //private readonly BranchCashConfigService _branchCashConfig;
 
         public LiaisonMappingController(
             LiaisonMappingService liaisonMappingService,
             BranchServices branchServices,
-            ChartOfAccountServices chartOfAccountServices,
-            BranchCashConfigService branchCashConfig
-
+            BranchAccountService branchAccountService
+            //BranchCashConfigService branchCashConfig
             )
         {
-            _branchCashConfig = branchCashConfig;
+            //_branchCashConfig = branchCashConfig;
             _liaisonMappingService = liaisonMappingService;
             _branchServices = branchServices;
-            _chartOfAccountServices = chartOfAccountServices;
+            _branchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index(string Branchid)
@@ -61,10 +58,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
                 return Json(new
                 {
-                    draw = query.Options?.draw ?? "1",
+                    draw = dataTable.Options?.draw ?? "1",
                     recordsTotal = dataTable.recordsTotal,
                     recordsFiltered = dataTable.recordsFiltered,
-                    data = mappingList
+                    data = mappingList,
+                    success = true,
+                    message = "Display DataTable for Liaison Mapping successfully"
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
@@ -73,9 +72,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
             }
         }
 
-
         [HttpGet]
-        public async Task<ActionResult> GetLiaisonMappingFormPartial(string id = null,string Branchid=null)
+        public async Task<ActionResult> GetLiaisonMappingFormPartial(string id = null, string Branchid = null)
         {
             try
             {
@@ -117,8 +115,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
             try
             {
-              
-
                 var result = await _liaisonMappingService.CreateOrUpdateLiaisonMappingAsync(model);
 
                 return Json(new
@@ -158,14 +154,24 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         {
             try
             {
-                var accounts = await _chartOfAccountServices.GetAssetAccountsByBranch(branchId);
-                return Json(accounts.Select(a => new
+                // Call branch account service to get all accounts for the branch
+                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+
+                // Filter by Class property - looking for asset classes
+                // Common asset classes: ASSET, CURRENT_ASSET, FIXED_ASSET, etc.
+                var assetClasses = new[] { "ASSET", "CURRENT_ASSET", "FIXED_ASSET", "ASSETS" };
+                var assetAccounts = branchAccounts.Where(ba =>
+                    assetClasses.Contains(ba.Class?.ToUpper()) ||
+                    (ba.Class?.ToUpper().Contains("ASSET") ?? false)
+                ).ToList();
+
+                return Json(assetAccounts.Select(a => new
                 {
-                    a.Id,
-                    Name = $"{a.AccountNumber} - {a.LabelEn}"
+                    Id = a.Id,
+                    Name = a.Name // Already formatted as "[Code] - Name" by the service
                 }), JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json(new List<object>(), JsonRequestBehavior.AllowGet);
             }
@@ -176,14 +182,24 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         {
             try
             {
-                var accounts = await _chartOfAccountServices.GetLiabilityAccountsByBranch(branchId);
-                return Json(accounts.Select(a => new
+                // Call branch account service to get all accounts for the branch
+                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+
+                // Filter by Class property - looking for liability classes
+                // Common liability classes: LIABILITY, CURRENT_LIABILITY, LONG_TERM_LIABILITY, etc.
+                var liabilityClasses = new[] { "LIABILITY", "CURRENT_LIABILITY", "LONG_TERM_LIABILITY", "LIABILITIES" };
+                var liabilityAccounts = branchAccounts.Where(ba =>
+                    liabilityClasses.Contains(ba.Class?.ToUpper()) ||
+                    (ba.Class?.ToUpper().Contains("LIABILITY") ?? false)
+                ).ToList();
+
+                return Json(liabilityAccounts.Select(a => new
                 {
-                    a.Id,
-                    Name = $"{a.AccountNumber} - {a.LabelEn}"
+                    Id = a.Id,
+                    Name = a.Name // Already formatted as "[Code] - Name" by the service
                 }), JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json(new List<object>(), JsonRequestBehavior.AllowGet);
             }
@@ -191,11 +207,36 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
 
         private async Task PopulateViewBags(string branchId)
         {
+            // Always populate branches for both filter and modal
             ViewBag.Branches = await _branchServices.GetBranches();
-           ViewBag.DueFromAssetAccount = await _branchCashConfig.GetBranchesAsync(branchId);
-           ViewBag.DueToLiability = await _branchCashConfig.GetBranchesAsync(branchId);
-            
+
+            // Initialize defaults to avoid ArgumentNullException in view
+            ViewBag.BranchAccounts = new List<object>();
+            ViewBag.DueFromAssetAccount = new List<object>();
+            ViewBag.DueToLiability = new List<object>();
+
+            if (!string.IsNullOrEmpty(branchId))
+            {
+                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+
+                // Asset accounts for "Due From"
+                var assetClasses = new[] { "ASSET", "CURRENT_ASSET", "FIXED_ASSET", "ASSETS" };
+                var dueFromAssetAccounts = branchAccounts
+                    .Where(a => assetClasses.Contains(a.Class?.ToUpper()) || (a.Class?.ToUpper().Contains("ASSET") ?? false))
+                    .ToList();
+
+                // Liability accounts for "Due To"
+                var liabilityClasses = new[] { "LIABILITY", "CURRENT_LIABILITY", "LONG_TERM_LIABILITY", "LIABILITIES" };
+                var dueToLiabilityAccounts = branchAccounts
+                    .Where(a => liabilityClasses.Contains(a.Class?.ToUpper()) || (a.Class?.ToUpper().Contains("LIABILITY") ?? false))
+                    .ToList();
+
+                ViewBag.BranchAccounts = branchAccounts;
+                ViewBag.DueFromAssetAccount = dueFromAssetAccounts;
+                ViewBag.DueToLiability = dueToLiabilityAccounts;
+            }
         }
+
 
 
         [HttpGet]
@@ -203,34 +244,45 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         {
             try
             {
-                // If no branch selected, return empty list
                 if (string.IsNullOrEmpty(key) || key == "null")
                 {
                     return Json(new List<object>(), JsonRequestBehavior.AllowGet);
                 }
 
-                IEnumerable<ChartOfAccount> accounts;
+                // Call branch account service
+                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(key);
+
+                IEnumerable<object> filteredAccounts;
 
                 if (type.ToLower() == "asset")
                 {
-                    accounts = await _chartOfAccountServices.GetAssetAccountsByBranch(key);
+                    var assetClasses = new[] { "ASSET", "CURRENT_ASSET", "FIXED_ASSET", "ASSETS" };
+                    filteredAccounts = branchAccounts
+                        .Where(ba => assetClasses.Contains(ba.Class?.ToUpper()) ||
+                                   (ba.Class?.ToUpper().Contains("ASSET") ?? false))
+                        .Select(a => new
+                        {
+                            Id = a.Id,
+                            Name = a.Name
+                        });
                 }
                 else
                 {
-                    accounts = await _chartOfAccountServices.GetLiabilityAccountsByBranch(key);
+                    var liabilityClasses = new[] { "LIABILITY", "CURRENT_LIABILITY", "LONG_TERM_LIABILITY", "LIABILITIES" };
+                    filteredAccounts = branchAccounts
+                        .Where(ba => liabilityClasses.Contains(ba.Class?.ToUpper()) ||
+                                   (ba.Class?.ToUpper().Contains("LIABILITY") ?? false))
+                        .Select(a => new
+                        {
+                            Id = a.Id,
+                            Name = a.Name
+                        });
                 }
 
-                var result = accounts.Select(a => new
-                {
-                    Id = a.Id,
-                    Name = $"{a.AccountNumber} - {a.LabelEn}"
-                }).ToList();
-
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(filteredAccounts.ToList(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // Return empty list on error
                 return Json(new List<object>(), JsonRequestBehavior.AllowGet);
             }
         }
@@ -240,25 +292,23 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         {
             try
             {
-                // if empty, return all branches (or an empty list depending on desired behavior)
-                var branches = await _branchCashConfig.GetBranchesAsync(branchId);
+                // Get all branches except the current one for counterparty selection
+                var allBranches = await _branchServices.GetBranches();
 
-                // Map to a small JSON-friendly object for dropdown consumption
-                var result = branches.Select(b => new
-                {
-                    Id = b.Id,
-                    Name = b.Name
-                }).ToList();
+                var counterpartyBranches = allBranches
+                    .Where(b => b.Id != branchId)
+                    .Select(b => new
+                    {
+                        Id = b.Id,
+                        Name = b.Name
+                    }).ToList();
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(counterpartyBranches, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // Log exception if you have a logging mechanism
-                // Return an empty array so UI remains stable
                 return Json(new List<object>(), JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

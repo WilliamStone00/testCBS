@@ -1,5 +1,5 @@
 ﻿@using Resources
-@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto>
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfig>
 
 @{
     ViewBag.Title = "Branch GL Mapping List";
@@ -7,7 +7,6 @@
 
 <div class="card shadow-sm p-3" id="branchCashConfigTableContainer">
     <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Branch Cash GL Mappings</h5>
-
     <!-- Filters -->
     <div class="row mb-3">
         {{-- Row 1 --}}
@@ -43,3 +42,4 @@
             <a href="@Url.Action("Create", "BranchCashConfig")" class="btn btn-success"><i class="mdi mdi-plus-circle-outline"></i> New Configuration</a>
         </div>
     </div>
+</div>

@@ -1,0 +1,135 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
+@{
+    var rows = (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigRowDto>)(ViewBag.Rows ?? Enumerable.Empty<CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigRowDto>());
+}
+
+
+
+
+<div class="table-responsive mb-3">
+    <table class="table table-hover table-bordered align-middle" id="myDataTable">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 24%;">Branch</th>
+                <th style="width: 21%;">Till (Cash in Hand)</th>
+                <th style="width: 21%;">Vault</th>
+                <th style="width: 21%;">HO Liaison</th>
+                <th style="width: 8%;">Real-time</th>
+                <th style="width: 5%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!rows.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No data found.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var r in rows)
+                {
+                    <tr>
+                        <td>@r.BranchName</td>
+
+                        <td>
+                            <div class="cell-stack" title="@((r.CashInHandAccountName + " " + r.CashInHandAccountNumber).Trim())">
+                                <span class="title">@r.CashInHandAccountName</span>
+                                <span class="sub">@*@r.CashInHandAccountNumber*@</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="cell-stack" title="@((r.VaultAccountName + " " + r.VaultAccountNumber).Trim())">
+                                <span class="title">@r.VaultAccountName</span>
+                                @*<span class="sub">@r.VaultAccountNumber</span>*@
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="cell-stack" title="@((r.HeadOfficeLiaisonAccountName + " " + r.HeadOfficeLiaisonAccountNumber).Trim())">
+                                <span class="title">@r.HeadOfficeLiaisonAccountName</span>
+                                <span class="sub">@*@r.HeadOfficeLiaisonAccountNumber*@</span>
+                            </div>
+                        </td>
+
+                        <td class="actions text-end">
+                            @if (r.RealTimeCashPosting)
+                            {
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </td>
+
+                        <td class="actions text-end">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-primary btn-details" data-id="@r.Id" title="Details">
+                                    <i class="mdi mdi-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-edit" data-id="@r.Id" title="Edit">
+                                    <i class="mdi mdi-pencil"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+  // Details → modal
+  $(document).off('click', '.btn-details').on('click', '.btn-details', function () {
+    const id = $(this).data('id');
+    $('#cashConfigDetailsContent').html('<div class="p-3">Loading...</div>');
+    $('#cashConfigDetailsModal').modal('show');
+
+    $.get('@Url.Action("Details", "BranchCashConfig")', { id: id })
+      .done(function (html) { $('#cashConfigDetailsContent').html(html); })
+      .fail(function () { $('#cashConfigDetailsContent').html('<div class="text-danger p-3">Failed to load details.</div>'); });
+  });
+
+  // Edit
+  $(document).off('click', '.btn-edit').on('click', '.btn-edit', function () {
+    const id = $(this).data('id');
+    AddORUpdateGen(id, 'datalistingview', '_Create', 'edit', 'BranchCashConfig');
+  });
+    (function () {
+        // If DT already mounted (e.g., partial reloaded), reset cleanly
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            $('#myDataTable').DataTable().destroy();
+        }
+
+        // Enhance the static HTML rows with DataTables
+        $('#myDataTable').DataTable({
+            responsive: true,     // collapses columns nicely on small screens
+            autoWidth: false,     // respect your <th style="width:...">
+            deferRender: true,
+            paging: true,
+            searching: true,
+            info: true,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: [4], className: 'text-center' }, // Real-time column
+                { targets: [5], className: 'actions text-end', orderable: false } // Actions column
+            ],
+            drawCallback: function () {
+                // Re-activate Bootstrap tooltips if you're using them
+                if (window.bootstrap && bootstrap.Tooltip) {
+                    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                        new bootstrap.Tooltip(el);
+                    });
+                }
+            }
+        });
+    })();
+</script>
+
+
+

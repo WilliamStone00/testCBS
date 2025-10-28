@@ -196,6 +196,52 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     throw;
                 }
             }
+      
+        // real endpoint version
+        public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+            {
+                try
+                {
+              
+                if (IsHeadOffice())
+                {
+                    if (branchId=="")
+                    {
+                        branchId = "all";
+
+                    }
+                }
+                else
+                {
+                    branchId = GetBranchID();
+                }
+                    string lang = GetUserLanguage();
+                    // Call API
+                    var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
+
+                if (!response.IsSuccess || response==null || response.ApiResponseData == null)
+                {
+                    return new List<BranchAccountResponse>();
+                }
+
+                var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+
+                    // Format name for display and order by Code
+                    return branchAcounts
+                        .Select(a =>
+                        {
+                            a.Name = $"[{a.Code}] - {a.Name}".Trim();
+                            return a;
+                        })
+                        .OrderBy(a => a.Code)
+                        .ToList();
+                }
+                catch (Exception)
+                {
+                    // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
+                    throw;
+                }
+            }
 
         //***************************************** MOCK *********************************************
         public async Task<CustomDataTable> GetcategoryDataTableAsync2(BranchAccountQuery query)

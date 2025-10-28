@@ -1,5 +1,5 @@
 ﻿using BusinessServices;
-using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig;
+using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -11,11 +11,11 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.AccountingV2.BranchCashConfig
+namespace CBS.BusinessService.AccountingV2.BranchCashConfigV
 {
     public class MockBranchCashConfigService : BaseService
     {
-        private readonly List<BranchCashConfigDto> _mockData;
+        private readonly List<BranchCashConfig> _mockData;
         private int _mockIdCounter = 1000;
 
         public MockBranchCashConfigService()
@@ -23,11 +23,11 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             _mockData = GenerateMockData();
         }
 
-        private List<BranchCashConfigDto> GenerateMockData()
+        private List<BranchCashConfig> GenerateMockData()
         {
-            return new List<BranchCashConfigDto>
+            return new List<BranchCashConfig>
             {
-                new BranchCashConfigDto
+                new BranchCashConfig
                 {
                     Id = "BC-1001",
                     BranchId = "BR001",
@@ -37,15 +37,12 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                     ShortageExpenseAccountId = "569100",
                     RevenueAccountId = "401000",
                     FormFeeIncomeAccountId = "402000",
-                    SourceBranchAccountId = "201000",
-                    DestinationBranchAccountId = "202000",
-                    HeadOfficeAccountId = "301000",
                     PartnerAccountId = "501000",
                     CamcculAccountId = "601000",
                     HeadOfficeLiaisonAccountId = "302000",
                     RealTimeCashPosting = true
                 },
-                new BranchCashConfigDto
+                new BranchCashConfig
                 {
                     Id = "BC-1002",
                     BranchId = "BR002",
@@ -55,12 +52,9 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                     ShortageExpenseAccountId = "569100",
                     RevenueAccountId = "401000",
                     FormFeeIncomeAccountId = "402000",
-                    SourceBranchAccountId = "201100",
-                    DestinationBranchAccountId = "202100",
-                    HeadOfficeAccountId = "301000",
                     RealTimeCashPosting = false
                 },
-                new BranchCashConfigDto
+                new BranchCashConfig
                 {
                     Id = "BC-1003",
                     BranchId = "BR003",
@@ -70,11 +64,10 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                     ShortageExpenseAccountId = "569100",
                     RevenueAccountId = "401000",
                     FormFeeIncomeAccountId = "402000",
-                    HeadOfficeAccountId = "301000",
                     PartnerAccountId = "501100",
                     RealTimeCashPosting = true
                 },
-                new BranchCashConfigDto
+                new BranchCashConfig
                 {
                     Id = "BC-1004",
                     BranchId = "BR004",
@@ -85,7 +78,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                     RevenueAccountId = "401000",
                     RealTimeCashPosting = false
                 },
-                new BranchCashConfigDto
+                new BranchCashConfig
                 {
                     Id = "BC-1005",
                     BranchId = "BR005",
@@ -95,31 +88,30 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                     ShortageExpenseAccountId = "569100",
                     RevenueAccountId = "401000",
                     FormFeeIncomeAccountId = "402000",
-                    HeadOfficeAccountId = "301000",
                     RealTimeCashPosting = true
                 }
             };
         }
 
-        public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigsAsync()
+        public async Task<IEnumerable<BranchCashConfig>> GetBranchCashConfigsAsync()
         {
             await Task.Delay(100);
             return _mockData;
         }
 
-        public async Task<BranchCashConfigDto> GetBranchCashConfigByIdAsync(string id)
+        public async Task<BranchCashConfig> GetBranchCashConfigByIdAsync(string id)
         {
             await Task.Delay(50);
             return _mockData.FirstOrDefault(c => c.Id == id);
         }
 
-        public async Task<BranchCashConfigDto> GetBranchCashConfigByBranchIdAsync(string branchId)
+        public async Task<BranchCashConfig> GetBranchCashConfigByBranchIdAsync(string branchId)
         {
             await Task.Delay(50);
             return _mockData.FirstOrDefault(c => c.BranchId == branchId);
         }
 
-        public async Task<IEnumerable<BranchCashConfigDto>> GetBranchCashConfigs()
+        public async Task<IEnumerable<BranchCashConfig>> GetBranchCashConfigs()
         {
             await Task.Delay(100);
             var configs = _mockData.ToList();
@@ -133,7 +125,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             return configs.OrderBy(c => c.BranchId).ToList();
         }
 
-        public async Task<ExecutionMessages> CreateBranchCashConfigAsync(BranchCashConfigDto model)
+        public async Task<ExecutionMessages> CreateBranchCashConfigAsync(BranchCashConfig model)
         {
             await Task.Delay(200);
 
@@ -163,7 +155,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> UpdateBranchCashConfigAsync(BranchCashConfigDto model)
+        public async Task<ExecutionMessages> UpdateBranchCashConfigAsync(BranchCashConfig model)
         {
             await Task.Delay(200);
 
@@ -231,12 +223,12 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
 
             if (!string.IsNullOrEmpty(branchCashConfigQueryDto.BranchId))
             {
-                data = data.Where(d => ((BranchCashConfigDto)d).BranchId == branchCashConfigQueryDto.BranchId).ToList();
+                data = data.Where(d => ((BranchCashConfig)d).BranchId == branchCashConfigQueryDto.BranchId).ToList();
             }
 
             if (branchCashConfigQueryDto.RealTimeCashPosting.HasValue)
             {
-                data = data.Where(d => ((BranchCashConfigDto)d).RealTimeCashPosting == branchCashConfigQueryDto.RealTimeCashPosting.Value).ToList();
+                data = data.Where(d => ((BranchCashConfig)d).RealTimeCashPosting == branchCashConfigQueryDto.RealTimeCashPosting.Value).ToList();
             }
 
             return new CustomDataTable(
@@ -248,14 +240,14 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             );
         }
 
-        public List<BranchCashConfigDto> MapToBranchCashConfigDownloadDtos(IEnumerable<BranchCashConfigDto> configs)
+        public List<BranchCashConfig> MapToBranchCashConfigDownloadDtos(IEnumerable<BranchCashConfig> configs)
         {
             return configs.Select(MapToBranchCashConfigDownloadDto).ToList();
         }
 
-        public BranchCashConfigDto MapToBranchCashConfigDownloadDto(BranchCashConfigDto config)
+        public BranchCashConfig MapToBranchCashConfigDownloadDto(BranchCashConfig config)
         {
-            return new BranchCashConfigDto
+            return new BranchCashConfig
             {
                 Id = config.Id,
                 BranchId = config.BranchId,
@@ -265,9 +257,6 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
                 RevenueAccountId = config.RevenueAccountId,
                 ShortageExpenseAccountId = config.ShortageExpenseAccountId,
                 RealTimeCashPosting = config.RealTimeCashPosting,
-                SourceBranchAccountId = config.SourceBranchAccountId,
-                DestinationBranchAccountId = config.DestinationBranchAccountId,
-                HeadOfficeAccountId = config.HeadOfficeAccountId,
                 PartnerAccountId = config.PartnerAccountId,
                 CamcculAccountId = config.CamcculAccountId,
                 HeadOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
@@ -275,7 +264,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfig
             };
         }
 
-        public List<BranchCashConfigDto> GetAllMockData() => _mockData;
+        public List<BranchCashConfig> GetAllMockData() => _mockData;
 
         public async Task GetByIdAsync(string kEY)
         {

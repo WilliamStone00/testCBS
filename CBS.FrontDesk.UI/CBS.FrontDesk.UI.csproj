@@ -10791,7 +10791,7 @@
     <Content Include="Views\JournalHead\_DestDetails.cshtml" />
     <Content Include="Views\BranchCashConfig\Index.cshtml" />
     <Content Include="Views\BranchCashConfig\_Create.cshtml" />
-    <Content Include="Views\BranchCashConfig\_BranchCashConfigDataTable.cshtml" />
+    <Content Include="Views\BranchCashConfig\_Data.cshtml" />
     <Content Include="Views\BranchCashConfig\List.cshtml" />
     <Content Include="Views\BranchCashConfig\_Details.cshtml" />
     <Content Include="Views\LiaisonAccountConfiguration\Index.cshtml" />

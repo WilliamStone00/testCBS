@@ -1,195 +1,95 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfig.BranchCashConfigDto
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
+@{
+    var vm = Model.BranchCashConfigDetailsVm;
+}
 
 <style>
-    /* --- From Affiliate Template (layout and tone) --- */
-    .section-header {
-        font-weight: bold;
-        color: #0d6efd;
-        margin-top: 1rem;
-        margin-bottom: .5rem;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        text-transform: uppercase;
-    }
-
-    .table-sm th.bg-label {
-        background-color: #f8f9fa;
-        width: 240px;
-        font-weight: 600;
-    }
-
-    .table-sm td, .table-sm th {
-        vertical-align: middle;
-    }
-
-    .badge-status {
-        padding: 5px 10px;
-        font-size: .75rem;
-        border-radius: .5rem;
-    }
-
-    .badge-success {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .badge-secondary {
-        background-color: #6c757d;
-        color: white;
-    }
-
-    .card-details {
-        font-family: system-ui, "Segoe UI", Roboto, Arial;
-    }
-
-        .card-details .card-header {
-            background: #f8f9fa;
-            border-bottom: 2px solid rgba(128, 128, 128, 0.2);
-        }
-
-    .tips-toggle {
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin-left: auto;
-    }
-
-        .tips-toggle:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-    .tips-list li {
-        margin-bottom: 4px;
-    }
+  .detail-card { border:1px solid #e5e7eb; border-radius:.5rem; }
+  .detail-header { background:#f8fafc; border-bottom:1px solid #e5e7eb; padding:.75rem 1rem; }
+  .pill { display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.75rem; }
+  .pill-success { background:#ecfdf5; color:#065f46; }
+  .pill-muted { background:#f3f4f6; color:#374151; }
+  .pair-label { font-weight:600; color:#374151; }
+  .pair-name { display:block; }
+  .pair-no { display:block; color:#6b7280; font-size:.85rem; }
+  .grid-2col { display:grid; grid-template-columns: 1fr 1fr; gap:.75rem 1rem; }
+  @@media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
 </style>
 
+<div class="detail-card">
+    <div class="detail-header d-flex justify-content-between align-items-center">
+        <div>
+            <div class="fw-bold">Configuration Details</div>
+            <div class="text-muted small">Review the branch cash configuration</div>
+        </div>
+        <div>
+            @if (vm.RealTimeCashPosting == true)
+            {<span class="pill pill-success">Real-time: Yes</span> }
+            else
+            { <span class="pill pill-muted">Real-time: No</span>}
+        </div>
+    </div>
 
-<div class="card shadow p-3 mb-4 card-details">
-
-    <div class="container-fluid">
-
-        <!-- Header -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card bg-light mb-3">
-                    <div class="card-body text-center">
-                        <h2 class="card-title text-primary mb-2">
-                            <i class="mdi mdi-bank-outline me-2"></i> Branch Cash Configuration Details
-                        </h2>
-                        <p class="text-muted mb-0">Overview of accounting configuration for this branch</p>
-                        <hr style="border: 2px solid rgba(128,128,128,0.5);" />
-                    </div>
-                </div>
-            </div>
+    <div class="p-3">
+        <div class="mb-3">
+            <span class="pair-label">Branch:</span>
+            <span class="ms-1">@vm.Branch</span>
         </div>
 
-        <!-- Tips -->
-        <div class="card mb-3">
-            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
-                <button class="btn btn-light btn-sm tips-toggle" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#collapseBranchTips"
-                        aria-expanded="false" aria-controls="collapseBranchTips">
-                    <i class="mdi mdi-chevron-down"></i>
-                </button>
-            </h6>
-            <div id="collapseBranchTips" class="collapse">
-                <div class="card-body">
-                    <ul class="tips-list">
-                        <li>Only <strong>Head Office</strong> can edit configuration details.</li>
-                        <li>Review core, inter-branch, and partner mappings carefully before making changes.</li>
-                        <li>Ensure GL accounts are valid and synchronized with the main ledger.</li>
-                    </ul>
-                </div>
+        <div class="grid-2col">
+            <div>
+                <div class="pair-label">Till (Cash in Hand)</div>
+                <span class="pair-name">@vm.CashInHand.Name</span>
+                <span class="pair-no">@vm.CashInHand.Number</span>
             </div>
-        </div>
 
-        <!-- Content Body (unchanged details content) -->
-        <div class="px-3 py-2">
+            <div>
+                <div class="pair-label">Vault</div>
+                <span class="pair-name">@vm.Vault.Name</span>
+                <span class="pair-no">@vm.Vault.Number</span>
+            </div>
 
-            <!-- 🔷 Basic Information -->
-            <h6 class="section-header"><i class="mdi mdi-information-outline"></i> Basic Information</h6>
-            <table class="table table-sm table-bordered mb-3">
-                <tbody>
-                    <tr><th class="bg-label">Configuration ID</th><td>@Model.Id</td></tr>
-                    <tr><th class="bg-label">Branch ID</th><td>@Model.BranchId</td></tr>
-                    <tr>
-                        <th class="bg-label">Real-Time Cash Posting</th>
-                        <td>
-                            @if (Model.RealTimeCashPosting)
-                            {
-                                <span class="badge-status badge-success">Enabled</span>
-                            }
-                            else
-                            {
-                                <span class="badge-status badge-secondary">Disabled</span>
-                            }
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <div class="pair-label">HO Liaison</div>
+                <span class="pair-name">@vm.HeadOfficeLiaison.Name</span>
+                <span class="pair-no">@vm.HeadOfficeLiaison.Number</span>
+            </div>
 
-            <!-- 🔷 Core Account Mappings -->
-            <h6 class="section-header"><i class="mdi mdi-account-convert"></i> Core Account Mappings</h6>
-            <table class="table table-sm table-bordered mb-3">
-                <tbody>
-                    <tr><th class="bg-label">Cash In Hand Account</th><td>@Model.CashInHandAccountId</td></tr>
-                    <tr><th class="bg-label">Vault Account</th><td>@Model.VaultAccountId</td></tr>
-                    <tr><th class="bg-label">Surplus Income Account</th><td>@Model.SurplusIncomeAccountId</td></tr>
-                    <tr><th class="bg-label">Deficit (Shortage Expense) Account</th><td>@Model.ShortageExpenseAccountId</td></tr>
-                    <tr><th class="bg-label">Revenue Account</th><td>@Model.RevenueAccountId</td></tr>
-                    <tr><th class="bg-label">Form Fee Income Account</th><td>@Model.FormFeeIncomeAccountId</td></tr>
-                </tbody>
-            </table>
+            <div>
+                <div class="pair-label">Revenue</div>
+                <span class="pair-name">@vm.Revenue.Name</span>
+                <span class="pair-no">@vm.Revenue.Number</span>
+            </div>
 
-            <!-- 🔷 Inter-Branch Accounts -->
-            <h6 class="section-header"><i class="mdi mdi-arrow-decision"></i> Inter-Branch Accounts</h6>
-            <table class="table table-sm table-bordered mb-3">
-                <tbody>
-                    <tr><th class="bg-label">Source Branch Account</th><td>@Model.SourceBranchAccountId</td></tr>
-                    <tr><th class="bg-label">Destination Branch Account</th><td>@Model.DestinationBranchAccountId</td></tr>
-                </tbody>
-            </table>
+            <div>
+                <div class="pair-label">Surplus Income</div>
+                <span class="pair-name">@vm.SurplusIncome.Name</span>
+                <span class="pair-no">@vm.SurplusIncome.Number</span>
+            </div>
 
-            <!-- 🔷 Head Office & Partners -->
-            <h6 class="section-header"><i class="mdi mdi-domain"></i> Head Office and Partner Accounts</h6>
-            <table class="table table-sm table-bordered mb-3">
-                <tbody>
-                    <tr><th class="bg-label">Head Office Account</th><td>@Model.HeadOfficeAccountId</td></tr>
-                    <tr><th class="bg-label">Head Office Liaison Account</th><td>@Model.HeadOfficeLiaisonAccountId</td></tr>
-                    <tr><th class="bg-label">Partner Account</th><td>@Model.PartnerAccountId</td></tr>
-                    <tr><th class="bg-label">CAMCCUL Account</th><td>@Model.CamcculAccountId</td></tr>
-                </tbody>
-            </table>
+            <div>
+                <div class="pair-label">Shortage Expense</div>
+                <span class="pair-name">@vm.ShortageExpense.Name</span>
+                <span class="pair-no">@vm.ShortageExpense.Number</span>
+            </div>
 
-            <!-- 🔷 Actions -->
-            <div class="d-flex justify-content-end mt-4">
-                <button type="button"
-                        onclick="AddORUpdateGen('@Model.Id','datalistingview','_Create','edit','BranchCashConfig')"
-                        class="btn btn-primary me-2">
-                    <i class="mdi mdi-pencil-outline me-1"></i> Edit Configuration
-                </button>
-                <button type="button"
-                        onclick="LoadDataGen('BranchCashConfig', 'myDataTable', '_BranchCashConfigDataTable', 0, 'datalistingview', null, 'list')"
-                        class="btn btn-secondary">
-                    <i class="mdi mdi-arrow-left me-1"></i> Back to List
-                </button>
+            <div>
+                <div class="pair-label">Partner</div>
+                <span class="pair-name">@vm.Partner.Name</span>
+                <span class="pair-no">@vm.Partner.Number</span>
+            </div>
+
+            <div>
+                <div class="pair-label">CamCCUL</div>
+                <span class="pair-name">@vm.Camccul.Name</span>
+                <span class="pair-no">@vm.Camccul.Number</span>
+            </div>
+
+            <div>
+                <div class="pair-label">Form Fee Income</div>
+                <span class="pair-name">@vm.FormFeeIncome.Name</span>
+                <span class="pair-no">@vm.FormFeeIncome.Number</span>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    // Rotate tip toggle icon
-    document.addEventListener('DOMContentLoaded', () => {
-        const btn = document.querySelector('.tips-toggle');
-        const icon = btn?.querySelector('i');
-        const target = document.querySelector('#collapseBranchTips');
-        if (btn && icon && target) {
-            target.addEventListener('show.bs.collapse', () => icon.classList.replace('mdi-chevron-down', 'mdi-chevron-up'));
-            target.addEventListener('hide.bs.collapse', () => icon.classList.replace('mdi-chevron-up', 'mdi-chevron-down'));
-        }
-    });
-</script>
