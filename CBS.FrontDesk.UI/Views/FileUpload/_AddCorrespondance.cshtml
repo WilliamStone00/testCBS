@@ -13,15 +13,15 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    @using (Html.BeginForm("Addcorrespondance", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate1(this);" }))
+    @using (Html.BeginForm("Addcorrespondance", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
         <div class="mt-2">
             <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
 
-            <div class="col-md-6">
-                <label class="form-label small text-muted">Account Name</label>
+            <div class="col-md-12">
+                <label class="form-label small text-success">Account Name</label>
                 <input type="text" class="form-control-plaintext" readonly value="@Model.Name" />
             </div>
 
@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.DropDownList("Language", ViewBag.Languages as SelectList ?? new SelectList(new[] { new { Value = "", Text = "--- Any ---" } }, "Value", "Text"), "--- Any ---", new { @class = "form-control", id = "Language", placeholder = "Language" })
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.Language, new SelectList(ViewBag.Languages ?? Enumerable.Empty<SelectListItem>(), "Value", "Text"), "--- Sellect Language ---", new { @class = "form-control select2", id = "Language" })
                         @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
                         <label for="Language">Language</label>
                     </div>
@@ -51,7 +51,7 @@
             <div class="row g-2 mt-2">
                 <div class="col-md-12">
                     <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "BranchId" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "BranchId" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                         <label>@GlobalUserManagement.Branch</label>
                     </div>
@@ -73,9 +73,9 @@
                 <div class="col-md-12">
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.AffiliateAccountId,
-                            new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
+                            new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
                             "--- Select Affiliate Account ---",
-                            new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                            new { @class = "form-select select2", @aria_label = "Affiliate Account", id = "AffiliateAccountId" })
                         @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
                         <label>Affiliate Account</label>
                     </div>
@@ -88,9 +88,9 @@
                     <div class="col-md-12">
                         <div class="form-floating shadow-sm">
                             @Html.DropDownListFor(m => m.SourceAffiliateAccountId,
-                                new SelectList(ViewBag.AffiliateAccounts, "Id", "Name"),
+                                new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
                                 "--- Select Source Affiliate Account ---",
-                                new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                                new { @class = "form-select select2", @aria_label = "Affiliate Account", id = "SourceAffiliateAccountId" })
                             @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
                             <label for="SourceAffiliateAccountId">Source Affiliate Account</label>
                         </div>
@@ -98,21 +98,23 @@
                 </div>
             </div>
 
-            @if(Model.Type == "Affiliate") { 
-            <!-- HO PCMF Account Section -->
-            <div class="row g-2 mt-2">
-                <div class="col-md-12">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.HoPcmfAccountId,
-                            new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"),
-                            "--- Select HoPcmf Account ---",
-                            new { @class = "form-select select2", placeholder = "HoPcmf Account Id", @aria_label = "HoPcmfAccountId" })
-                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                        <label for="HoPcmfAccountId">HoPcmf Account</label>
+            @if (Model.Type == "Affiliate")
+            {
+                <!-- HO PCMF Account Section -->
+                <div class="row g-2 mt-2">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.HoPcmfAccountId,
+                                new SelectList(ViewBag.HoPcmfAccountId ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                                "--- Select HoPcmf Account ---",
+                                new { @class = "form-select select2", placeholder = "HoPcmf Account Id", @aria_label = "HoPcmfAccountId", id = "HoPcmfAccountId" })
+                            @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                            <label for="HoPcmfAccountId">HoPcmf Account</label>
+                        </div>
                     </div>
                 </div>
-            </div>
             }
+
             <!-- Rationale Section -->
             <div class="row g-2 mt-2">
                 <div class="col-md-12">
@@ -145,169 +147,229 @@
 
 @section Scripts {
     <script>
-    $(document).ready(function() {
-        // Initialize Select2
-        $('.select2').select2();
+        (function ($) {
+            'use strict';
 
-        // Handle branch dropdown change event
-        $('#BranchId').on('change', function() {
-            var branchId = $(this).val();
-            var branchAccountDropdown = $('#BranchAccountId');
-
-            // Show loading state
-            branchAccountDropdown.empty().prop('disabled', true);
-            branchAccountDropdown.append($('<option></option>').val('').text('Loading branch accounts...'));
-
-            if (!branchId) {
-                resetBranchAccountDropdown();
-                return;
+            // Helpers that accept a form context to avoid collisions when multiple forms/modals exist
+            function initSelect2For($form) {
+                if (!($form && $form.length) || !$.fn.select2) return;
+                $form.find('.select2').each(function () {
+                    try {
+                        if (!$(this).data('select2')) $(this).select2({ width: '100%' });
+                    } catch (e) { console.warn('select2 init failed for element', this, e); }
+                });
             }
 
-            loadBranchAccounts(branchId, branchAccountDropdown);
-        });
-
-        // Handle Type change to show/hide source affiliate section
-        $('#Type').on('change', function() {
-            var type = $(this).val();
-            if (type === 'AffiliateToHo') {
-                $('#sourceAffiliateSection').show();
-            } else {
-                $('#sourceAffiliateSection').hide();
-                $('#SourceAffiliateAccountId').val('').trigger('change');
+            function notify($form, message, type) {
+                // prefer appalert if available; otherwise console.log
+                if (typeof appalert === 'function') {
+                    if (type === 'success') appalert(message, 1, 1);
+                    else if (type === 'warning') appalert(message, 3, 1);
+                    else appalert(message, 2, 1);
+                } else {
+                    console.log((type || 'log').toUpperCase() + ': ' + message);
+                }
             }
-        });
 
-        // Initialize type-based visibility
-        $('#Type').trigger('change');
+            // Load branch accounts for a given form context
+            function loadBranchAccountsScopedFor($form, branchId) {
+                var $dd = $form.find('#BranchAccountId');
+                if (!$dd.length) return;
 
-        function loadBranchAccounts(branchId, dropdown) {
-            $.ajax({
-                url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
-                type: 'GET',
-                data: { branchId: branchId },
-                timeout: 10000, // 10 second timeout
-                success: function(response) {
-                    dropdown.empty().prop('disabled', false);
+                $dd.empty().prop('disabled', true).append($('<option>').val('').text('Loading branch accounts...'));
 
-                    if (response.success && response.data && response.data.length > 0) {
-                        dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
+                if (!branchId) {
+                    $dd.empty().prop('disabled', false).append($('<option>').val('').text('--- Select Branch Account reference ---')).trigger('change');
+                    return;
+                }
 
-                        $.each(response.data, function(index, account) {
-                            dropdown.append($('<option></option>').val(account.id).text(account.name));
-                        });
+                $.ajax({
+                    url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
+                    type: 'GET',
+                    data: { branchId: branchId },
+                    timeout: 10000,
+                    success: function (response) {
+                        $dd.empty().prop('disabled', false);
+                        var items = [];
+                        if (Array.isArray(response)) items = response;
+                        else if (response && response.data) items = response.data;
+                        else if (response && response.success && Array.isArray(response.data)) items = response.data;
 
-                        showNotification('Branch accounts loaded successfully', 'success');
-                    } else {
-                        dropdown.append($('<option></option>').val('').text('No branch accounts available'));
-                        showNotification('No branch accounts found for selected branch', 'warning');
+                        if (items && items.length) {
+                            $dd.append($('<option>').val('').text('--- Select Branch Account reference ---'));
+                            items.forEach(function (account) {
+                                var id = account.id || account.Id || account.value || account.Value || '';
+                                var name = account.name || account.Name || account.text || account.Text || '';
+                                $dd.append($('<option>').val(id).text(name));
+                            });
+                            notify($form, 'Branch accounts loaded successfully', 'success');
+                        } else {
+                            $dd.append($('<option>').val('').text('No branch accounts available'));
+                            notify($form, 'No branch accounts found for selected branch', 'warning');
+                        }
+
+                        try { if ($.fn.select2) $dd.trigger('change.select2'); } catch (e) { /* ignore */ }
+                    },
+                    error: function (xhr, status, err) {
+                        $dd.empty().prop('disabled', false).append($('<option>').val('').text('Error loading branch accounts'));
+                        notify($form, 'Failed to load branch accounts. Please try again.', 'error');
+                        console.error('Partial: error loading branch accounts', err);
+                    }
+                });
+            }
+
+            // Scoped form submit: we'll attach when the form appears
+            function bindFormSubmit($form) {
+                if (!$form || !$form.length) return;
+
+                // prevent binding multiple times
+                $form.off('submit.partialSubmit').on('submit.partialSubmit', function (e) {
+                    e.preventDefault();
+
+                    var $f = $(this);
+                    $.validator.unobtrusive.parse($f);
+                    if (!$f.valid()) return false;
+
+                    var confirmed = confirm('Are you sure you want to perform this action?');
+                    if (!confirmed) {
+                        notify($form, 'Transaction cancelled', 'warning');
+                        return false;
                     }
 
-                    dropdown.trigger('change');
-                },
-                error: function(xhr, status, error) {
-                    dropdown.empty().prop('disabled', false);
-                    dropdown.append($('<option></option>').val('').text('Error loading branch accounts'));
-                    showNotification('Failed to load branch accounts. Please try again.', 'error');
-                    console.error('AJAX Error:', error);
-                }
-            });
-        }
-
-        function resetBranchAccountDropdown() {
-            var dropdown = $('#BranchAccountId');
-            dropdown.empty().prop('disabled', false);
-            dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
-            dropdown.trigger('change');
-        }
-
-        function showNotification(message, type) {
-            // Use your existing notification system or console log
-            console.log(`${type.toUpperCase()}: ${message}`);
-
-            // If you have a toast notification system, use it here:
-            // appalert(message, type === 'success' ? 1 : type === 'warning' ? 3 : 2, 1);
-        }
-
-        // Initialize if branch is pre-selected
-        if ($('#BranchId').val()) {
-            $('#BranchId').trigger('change');
-        }
-    });
-
-    // Your existing form submission function
-    function AjaxPostAndUpdate1(form) {
-        console.log("Form Action:", form.action);
-        console.log("Form Method:", form.method);
-
-        var formData = new FormData(form);
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-
-        $.validator.unobtrusive.parse(form);
-        if ($(form).valid()) {
-            alertify.confirm("Confirmation", "Are you sure you want to perform this action? ",
-                function () {
                     var ajaxConfig = {
                         type: 'POST',
-                        url: form.action,
-                        data: new FormData(form),
+                        url: $f.attr('action'),
+                        data: new FormData($f[0]),
                         success: function (response) {
-                            console.log("Response:", response);
-                            if (response.success) {
-                                if (response.status === "Exist") {
-                                    appalert(response.message, 3, 1);
-                                }
-                                else if (response.status === "Failed") {
-                                    appalert(response.message, 2, 1);
-                                }
-                                else {
-                                    appalert(response.message, 1, 1);
-                                }
+                            try {
+                                if (response && (response.success || response.Success)) {
+                                    var status = response.status || response.Status || '';
+                                    if (status === 'Exist') appalert && appalert(response.message || response.Message, 3, 1);
+                                    else if (status === 'Failed') appalert && appalert(response.message || response.Message, 2, 1);
+                                    else appalert && appalert(response.message || response.Message, 1, 1);
 
-                                if (response.option === 'Update' && response.reloadDataView === "Yes") {
-                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                                }
-                                else if (response.optype === 'Insert' && response.reloadDataView === "Yes") {
-                                    EditResetMain("KEY", response.option, response.divLoaderCreator, response.controllerName, response.reinitializedActionName, response.groupID);
-                                }
-                                else if (response.reloadDataView === "Yes") {
-                                    LoadDataMain(response.controllerName, response.option, response.divLoaderList, response.tableName, response.dataLoaderActionName, "KEY", "List");
-                                }
-                            } else {
-                                if (response.Status === "Exist") {
-                                    appalert(response.message, 3, 1);
+                                    if (response.reloadDataView === 'Yes') {
+                                        if (typeof LoadDataMain === 'function' && response.controllerName) {
+                                            LoadDataMain(response.controllerName, response.option || '', response.divLoaderList, response.tableName, response.dataLoaderActionName, 'KEY', 'List');
+                                        } else if (window.affiliateTable) {
+                                            try { window.affiliateTable.ajax.reload(null, false); } catch (e) { /* ignore */ }
+                                        }
+                                    }
+
+                                    // close modal if present
+                                    try {
+                                        var corrModalEl = document.getElementById('correspondenceModal');
+                                        if (corrModalEl) {
+                                            var m = bootstrap.Modal.getInstance(corrModalEl) || new bootstrap.Modal(corrModalEl);
+                                            m.hide();
+                                        }
+                                    } catch (e) { /* ignore */ }
                                 } else {
-                                    appalert(response.message, 2, 1);
+                                    var st = response && (response.Status || response.status);
+                                    if (st === 'Exist') appalert && appalert(response.message || response.Message, 3, 1);
+                                    else appalert && appalert(response.message || response.Message, 2, 1);
                                 }
+                            } catch (ex) {
+                                console.error('Partial submit success handler error:', ex);
                             }
                         },
                         error: function (err) {
-                            console.log("Error:", err);
-
-                            if (err.status === 401) { // Unauthorized
-                                // Session has expired, redirect to the login page
-                                window.location.href = '/Authentication/Login'; // Adjust the URL as needed
-                            } else {
-                                appalert(err.statusText, 0, 1);
-                            }
+                            console.error('Partial submit error:', err);
+                            if (err.status === 401) window.location.href = '/Authentication/Login';
+                            else appalert && appalert(err.statusText || 'Request failed', 0, 1);
                         }
                     };
 
-                    if ($(form).attr('enctype') === "multipart/form-data") {
+                    if ($f.attr('enctype') === 'multipart/form-data') {
                         ajaxConfig.contentType = false;
                         ajaxConfig.processData = false;
                     }
 
-                    console.log("AJAX Config:", ajaxConfig);
                     $.ajax(ajaxConfig);
-                },
-                function () {
-                    appalert('Transaction cancelled', 3, 1);
+                    return false;
+                });
+            }
+
+            // When a correspondence form is added to DOM, initialize it.
+            // Use MutationObserver if available, otherwise fallback to a periodic initializer.
+            function initCorrespondenceFormIfPresent() {
+                var $form = $('#correspondenceForm');
+                if (!$form.length) return false;
+
+                initSelect2For($form);
+                bindFormSubmit($form);
+
+                // wire branch change scoped handler (direct bind on the form element)
+                $form.find('#BranchId').off('change.partialBranch').on('change.partialBranch', function () {
+                    var branchId = $(this).val();
+                    loadBranchAccountsScopedFor($form, branchId);
+                });
+
+                // wire Type show/hide logic
+                $form.find('#Type').off('change.partialType').on('change.partialType', function () {
+                    var type = $(this).val();
+                    if (type === 'AffiliateToHo') $form.find('#sourceAffiliateSection').show();
+                    else {
+                        $form.find('#sourceAffiliateSection').hide();
+                        $form.find('#SourceAffiliateAccountId').val('').trigger('change');
+                    }
+                });
+
+                // If branch already selected (edit mode), load accounts immediately
+                var pre = $form.find('#BranchId').val();
+                if (pre) {
+                    loadBranchAccountsScopedFor($form, pre);
                 }
-            );
-        }
-        return false;
-    }
+
+                // Cleanup select2 and handlers when modal hidden (if loaded into correspondenceModal)
+                var modalEl = document.getElementById('correspondenceModal');
+                if (modalEl) {
+                    $(modalEl).off('hidden.bs.modal.partialCleanup').on('hidden.bs.modal.partialCleanup', function () {
+                        try {
+                            $form.find('.select2').each(function () {
+                                if ($(this).data('select2')) $(this).select2('destroy');
+                            });
+                        } catch (e) { /* ignore */ }
+
+                        // unbind namespaced handlers
+                        $form.off('.partialSubmit .partialBranch .partialType');
+                    });
+                }
+
+                return true;
+            }
+
+            // Attempt initialization immediately (for synchronous render), and also watch for later insertions.
+            $(function () {
+                if (!initCorrespondenceFormIfPresent()) {
+                    // if form not present yet, watch for insertion using MutationObserver (if supported)
+                    if (window.MutationObserver) {
+                        var observer = new MutationObserver(function (mutations, obs) {
+                            if (initCorrespondenceFormIfPresent()) {
+                                obs.disconnect();
+                            }
+                        });
+                        observer.observe(document.body, { childList: true, subtree: true });
+                        // safety timeout to disconnect observer after 10s
+                        setTimeout(function () { try { observer.disconnect(); } catch (e) { } }, 10000);
+                    } else {
+                        // fallback: poll a few times
+                        var tries = 0;
+                        var poll = setInterval(function () {
+                            tries++;
+                            if (initCorrespondenceFormIfPresent() || tries > 20) clearInterval(poll);
+                        }, 200);
+                    }
+                }
+            });
+
+            // Additionally, handle delegated change if someone dynamically replaces the form element entirely
+            // This ensures branch change still triggers loading even if form was replaced after init.
+            $(document).off('change.delegatedCorrespondenceBranch', '#correspondenceForm #BranchId').on('change.delegatedCorrespondenceBranch', '#correspondenceForm #BranchId', function () {
+                var $form = $(this).closest('form');
+                if ($form && $form.length) loadBranchAccountsScopedFor($form, $(this).val());
+            });
+
+        })(jQuery);
     </script>
 }

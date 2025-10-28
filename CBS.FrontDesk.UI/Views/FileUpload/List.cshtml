@@ -154,7 +154,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- server-rendered details partial will be injected here -->
@@ -171,7 +171,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- server-rendered add/update partial will be injected here -->
@@ -189,147 +189,81 @@
         (function ($) {
             'use strict';
 
+            // -------------------------
+            // Main-page utilities
+            // -------------------------
+            function showToastMain(message, type) {
+                if (typeof appalert === 'function') {
+                    if (type === 'success') appalert(message, 1, 1);
+                    else if (type === 'warning') appalert(message, 3, 1);
+                    else appalert(message, 2, 1);
+                } else {
+                    console.log((type || 'log').toUpperCase() + ': ' + message);
+                }
+            }
+
+            // initialize select2 for main-view controls (filters etc.)
+            function initMainSelect2() {
+                if ($.fn.select2) {
+                    try {
+                        // initialize selects that belong to the main view (avoid doing anything to modal partials,
+                        // they will initialize themselves when rendered)
+                        $('#BranchId').not('#correspondenceForm #BranchId').select2({ width: '100%' });
+                        $('#AffiliateId').select2({ width: '100%' });
+                        // add others as needed
+                    } catch (e) {
+                        console.warn('main select2 init failed', e);
+                    }
+                }
+            }
+
+            // DataTable, filters, and delegated actions (kept from previous consolidated script)
             var affiliateTable = null;
 
-              $('.select2').select2();
-    
-                $('#BranchId').on('change', function() {
-                    var branchId = $(this).val();
-                    var branchAccountDropdown = $('#BranchAccountId');
-        
-                    // Show loading state
-                    branchAccountDropdown.empty().prop('disabled', true);
-                    branchAccountDropdown.append($('<option></option>').val('').text('Loading branch accounts...'));
-        
-                    if (!branchId) {
-                        resetBranchAccountDropdown();
+            function collectAffiliateFilters() {
+                var filters = {};
+                var branchVal = $('#BranchId').val();
+                var affiliateVal = $('#AffiliateId').val();
+                if (branchVal) filters.BranchId = branchVal;
+                if (affiliateVal) filters.AffiliateId = affiliateVal;
+
+                $('.filter-toggle').each(function () {
+                    var $chk = $(this);
+                    var target = $chk.data('target');
+                    if (!$chk.is(':checked') || !target) return;
+                    var $el = $(target);
+
+                    if ($el.find('#IncludeDeleted').length) {
+                        var inc = $el.find('#IncludeDeleted').is(':checked');
+                        if (inc) filters.IncludeDeleted = true;
                         return;
                     }
-        
-                    // Add loading delay for better UX
-                    setTimeout(function() {
-                        loadBranchAccounts(branchId, branchAccountDropdown);
-                    }, 300);
+
+                    var name = $el.attr('name') || $el.prop('id');
+                    if (!name) return;
+
+                    var val;
+                    if ($el.is(':checkbox')) val = $el.is(':checked');
+                    else val = $el.val();
+
+                    if (val !== undefined && val !== null && String(val).trim() !== '') {
+                        filters[name] = val;
+                    }
                 });
-    
-                function loadBranchAccounts(branchId, dropdown) {
-                    $.ajax({
-                        url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
-                        type: 'GET',
-                        data: { branchId: branchId },
-                        timeout: 10000, // 10 second timeout
-                        success: function(response) {
-                            dropdown.empty().prop('disabled', false);
-                
-                            if (response.success && response.data && response.data.length > 0) {
-                                dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
-                    
-                                $.each(response.data, function(index, account) {
-                                    dropdown.append($('<option></option>').val(account.id).text(account.name));
-                                });
-                    
-                                showToast('Branch accounts loaded successfully', 'success');
-                            } else {
-                                dropdown.append($('<option></option>').val('').text('No branch accounts available'));
-                                showToast('No branch accounts found for selected branch', 'warning');
-                            }
-                
-                            dropdown.trigger('change');
-                        },
-                        error: function(xhr, status, error) {
-                            dropdown.empty().prop('disabled', false);
-                            dropdown.append($('<option></option>').val('').text('Error loading branch accounts'));
-                            showToast('Failed to load branch accounts. Please try again.', 'error');
-                            console.error('AJAX Error:', error);
-                        }
-                    });
-                }
-    
-                function resetBranchAccountDropdown() {
-                    var dropdown = $('#BranchAccountId');
-                    dropdown.empty().prop('disabled', false);
-                    dropdown.append($('<option></option>').val('').text('--- Select Branch Account reference ---'));
-                    dropdown.trigger('change');
-                }
-    
-                function showToast(message, type) {
-                    // Implement your toast notification here
-                    // This is just a placeholder - use your preferred notification library
-                    console.log(`${type.toUpperCase()}: ${message}`);
-                }
-    
-                // Initialize if branch is pre-selected
-                if ($('#BranchId').val()) {
-                    $('#BranchId').trigger('change');
-                }
 
+                return filters;
+            }
 
-                        // Utility: get only visible/active filter values (those whose toggle checkbox is checked)
-                        function collectAffiliateFilters() {
-                            var filters = {};
-
-                            // Always include BranchId and AffiliateId (they are always visible)
-                            var branchVal = $('#BranchId').val();
-                            var affiliateVal = $('#AffiliateId').val();
-                            if (branchVal) filters.BranchId = branchVal;
-                            if (affiliateVal) filters.AffiliateId = affiliateVal;
-
-                            // For each checked toggle, read its target's value(s)
-                            $('.filter-toggle').each(function () {
-                                var $chk = $(this);
-                                var target = $chk.data('target');
-                                if (!$chk.is(':checked') || !target) return;
-                                var $el = $(target);
-
-                                // If the target is the IncludeDeleted container, read the inner checkbox
-                                if ($el.find('#IncludeDeleted').length) {
-                                    var inc = $el.find('#IncludeDeleted').is(':checked');
-                                    // only set if true (user selected include deleted)
-                                    if (inc) filters.IncludeDeleted = true;
-                                    return;
-                                }
-
-                                var name = $el.attr('name') || $el.prop('id');
-                                if (!name) return;
-
-                                var val;
-                                if ($el.is(':checkbox')) val = $el.is(':checked');
-                                else val = $el.val();
-
-                                if (val !== undefined && val !== null && String(val).trim() !== '') {
-                                    filters[name] = val;
-                                }
-                            });
-
-                            return filters;
-                        }
-
-                        // Initialize select2 for branch & affiliate if available
-                        function initSelect2() {
-                            if ($.fn.select2) {
-                                try {
-                                    $('#BranchId').select2 && $('#BranchId').select2({ width: '100%', placeholder: 'Select Branch' });
-                                    $('#AffiliateId').select2 && $('#AffiliateId').select2({ width: '100%', placeholder: 'Select Affiliate' });
-                                } catch (e) {
-                                    console.warn('select2 init failed', e);
-                                }
-                            }
-                        }
-
-            // Create or re-use the table element and initialize DataTable with server-side ajax,
-            // but don't call the server until Apply button triggers a reload.
             function initDataTableIfNeeded() {
                 if (affiliateTable && $.fn.DataTable.isDataTable('#myDataTable')) return;
 
-                // create table placeholder if missing
                 if (!$('#myDataTable').length) {
                     $('#affiliateTableContainer').html('<table id="myDataTable" class="table table-striped table-bordered w-100"><thead><tr><th>Created</th><th>Name</th><th>Class</th><th>Posting</th><th>Scope</th><th>Actions</th></tr></thead><tbody></tbody></table>');
                 }
 
-                // destroy any existing instance to be safe
                 if ($.fn.DataTable.isDataTable('#myDataTable')) {
                     try { $('#myDataTable').DataTable().destroy(); } catch (e) { /* ignore */ }
-                    $('#myDataTable').empty(); // clear content
+                    $('#myDataTable').empty();
                 }
 
                 affiliateTable = $('#myDataTable').DataTable({
@@ -339,14 +273,11 @@
                     destroy: true,
                     order: [[0, 'desc']],
                     ajax: {
-                        url: '@Url.Action("LoadAccountwaitingData", "FileUpload")', // controller action that returns DataTables JSON
+                        url: '@Url.Action("LoadAccountwaitingData", "FileUpload")',
                         type: 'POST',
                         contentType: 'application/json',
                         data: function (d) {
-                            // DataTables d contains draw/start/length/order...
                             var filters = collectAffiliateFilters();
-
-                            // Compose payload expected by your server
                             var payload = {
                                 ...filters,
                                 options: {
@@ -355,12 +286,9 @@
                                     length: d.length,
                                     skip: d.start,
                                     pageSize: d.length,
-                                    searchValue: d.search?.value || '',
-                                    sortColumnName: (d.columns && d.columns[d.order && d.order[0] ? d.order[0].column : 0] ? d.columns[d.order[0].column].data : 'createdDate') || 'createdDate',
-                                    sortColumnDirection: (d.order && d.order[0] ? d.order[0].dir : 'desc') || 'desc'
+                                    searchValue: d.search?.value || ''
                                 }
                             };
-
                             return JSON.stringify(payload);
                         },
                         error: function (jqXHR) {
@@ -378,7 +306,6 @@
                         },
                         { data: 'Name', defaultContent: '-' },
                         { data: 'Class', defaultContent: '-' },
-                       /* { data: 'Reason', defaultContent: '-' },*/
                         {
                             data: 'PostingAllowed',
                             render: function (val) {
@@ -398,27 +325,14 @@
                                 var name = (row.name || row.Name) ? String(row.name || row.Name).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
                                 var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
 
-                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
-                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                   </button>`;
-
-                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name}">
-                                                        <i class="mdi mdi-plus-box-outline me-1 text-success"></i> Correspondance request
-                                                   </button>`;
-
-                                var updateBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-update" data-id="${recordId}" data-name="${name}">
-                                                            <i class="mdi mdi-pencil-outline me-1 text-success"></i> Update Awaiting Request
-                                                          </button>` : '';
-
-                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
-                                                                <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                                                             </button>` : '';
+                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button>`;
+                                var addCorrBtn = `<button type="button" class="dropdown-item btn-addcorr" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-plus-box-outline me-1 text-success"></i> Correspondance request</button>`;
+                                var updateBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-update" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-pencil-outline me-1 text-success"></i> Update Awaiting Request</button>` : '';
+                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button>` : '';
 
                                 return `
                                     <div class="dropdown text-center">
-                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                type="button" id="${btnId}"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="mdi mdi-cog-outline"></i> Actions
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="${btnId}">
@@ -435,33 +349,12 @@
                     ],
                     language: { emptyTable: 'No records found' },
                     lengthMenu: [10, 25, 50],
-                    pageLength: 10,
-                    initComplete: function () {
-                        // tooltips if needed
-                        try {
-                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                    new bootstrap.Tooltip(el);
-                                });
-                            }
-                        } catch (e) { /* ignore */ }
-                    }
+                    pageLength: 10
                 });
             }
 
-            function loadAffiliateData() {
-                // initialize table once and then reload; server call happens because DataTable will perform ajax
-                initDataTableIfNeeded();
-                if (affiliateTable) {
-                    affiliateTable.ajax.reload(null, false);
-                } else {
-                    console.warn('affiliateTable not initialized.');
-                }
-            }
-
-            // Toggle logic: show/hide fields based on checkbox and enable/disable the underlying inputs
+            // filter toggle logic — same as before
             function initFilterToggles() {
-                // Attach change handlers
                 $(document).on('change', '.filter-toggle', function () {
                     var targetSelector = $(this).data('target');
                     if (!targetSelector) return;
@@ -470,12 +363,8 @@
 
                     if (this.checked) {
                         $target.removeClass('d-none').slideDown(150);
-                        // enable all inputs inside target
                         $target.find('input, select, textarea').prop('disabled', false).attr('aria-hidden', 'false');
-                        // If the target itself is an input, enable it
-                        if ($target.is('input,select,textarea')) $target.prop('disabled', false).attr('aria-hidden', 'false').focus();
                     } else {
-                        // hide & clear & disable
                         $target.slideUp(150, function () {
                             $(this).addClass('d-none');
                             $(this).find('input, select, textarea').each(function () {
@@ -483,280 +372,125 @@
                                 else this.value = '';
                                 $(this).prop('disabled', true).attr('aria-hidden', 'true');
                             });
-                            if ($target.is('input,select,textarea')) {
-                                if ($target.is(':checkbox') || $target.is(':radio')) $target.prop('checked', false);
-                                else $target.val('');
-                                $target.prop('disabled', true).attr('aria-hidden', 'true');
-                            }
                         });
                     }
                 });
 
-                // Initialize state on load: hide or show based on whether checkbox is pre-checked
+                // init state
                 $('.filter-toggle').each(function () {
                     var target = $(this).data('target');
                     if (!target) return;
                     var $target = $(target);
                     if (this.checked) {
-                        $target.removeClass('d-none').show();
-                        $target.find('input, select, textarea').prop('disabled', false).attr('aria-hidden', 'false');
-                        if ($target.is('input,select,textarea')) $target.prop('disabled', false).attr('aria-hidden', 'false');
+                        $target.removeClass('d-none').show().find('input, select, textarea').prop('disabled', false).attr('aria-hidden', 'false');
                     } else {
-                        $target.addClass('d-none').hide();
-                        $target.find('input, select, textarea').prop('disabled', true).attr('aria-hidden', 'true');
-                        if ($target.is('input,select,textarea')) $target.prop('disabled', true).attr('aria-hidden', 'true');
+                        $target.addClass('d-none').hide().find('input, select, textarea').prop('disabled', true).attr('aria-hidden', 'true');
                     }
                 });
             }
 
-
-            // Delegated actions for buttons inside DataTable rows (details, add corr, update, delete)
+            // delegated actions (details, add corr, update, delete) — the addcorr handler loads the partial into a modal
             function bindDelegatedActions() {
                 // Details
-               $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
-                  e.preventDefault();
-
-                  var $btn = $(this);
-                  var raw = $btn.data('id');
-                  var id = raw ? decodeURIComponent(raw) : null;
-
-                  if (!id) {
-                    if (typeof appalert === 'function') appalert('Missing id for details', 0, 1);
-                    return;
-                  }
-
-                  // small button-level loading indicator to show progress without opening the modal
-                  var originalBtnHtml = $btn.html();
-                  $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
-
-                  // Request the partial view. Send partialView name if you use it server-side:
-                  $.get('@Url.Action("InitializeData", "FileUpload")', { KEY: id, partialView: '_Details' })
-                    .done(function (html) {
-                      // Inject the returned partial into the modal body
-                      $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-muted p-3">No details available.</div>');
-
-                      // Now show the modal (only after content is loaded)
-                      try {
-                        var bsModal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-                        if (bsModal) bsModal.show();
-                      } catch (err) {
-                        // fallback: if bootstrap Modal fails, just ensure content is visible (or log)
-                        console.error('Error showing modal:', err);
-                      }
-                    })
-                    .fail(function () {
-                      // If loading failed, put a user-friendly message in the modal and show it
-                      $('#affiliateDetailsModal .modal-body').html('<div class="text-danger p-3">Error loading details.</div>');
-                      try {
-                        var bsModal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-                        if (bsModal) bsModal.show();
-                      } catch (err) { console.error('Error showing modal on failure:', err); }
-
-                      if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
-                    })
-                    .always(function () {
-                      // restore button state
-                      $btn.prop('disabled', false).html(originalBtnHtml);
-                    });
+                $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id'), id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return appalert && appalert('Missing id for details', 0, 1);
+                    var $btn = $(this), orig = $btn.html();
+                    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+                    $.get('@Url.Action("InitializeData", "FileUpload")', { KEY: id, partialView: '_Details' })
+                        .done(function (html) {
+                            $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-muted p-3">No details available.</div>');
+                            try { var bs = new bootstrap.Modal(document.getElementById('affiliateDetailsModal')); if (bs) bs.show(); } catch (ex) { console.error(ex); }
+                        })
+                        .fail(function () {
+                            $('#affiliateDetailsModal .modal-body').html('<div class="text-danger p-3">Error loading details.</div>');
+                            appalert && appalert('Failed to load details', 0, 1);
+                        })
+                        .always(function () { $btn.prop('disabled', false).html(orig); });
                 });
 
+                // Add correspondence — this loads the partial into the correspondenceModal
+                $(document).off('click', '.btn-addcorr').on('click', '.btn-addcorr', function (e) {
+                    e.preventDefault();
+                    var recordId = $(this).data('id');
+                    var name = $(this).data('name') || '';
+                    if (!recordId) return appalert && appalert('Missing id to load correspondence form', 0, 1);
 
-                // Load and show dedicated Add Correspondence modal
-                // Handler for the correspondence button
-                $(document).on('click', '.btn-addcorr', function() {
-                    const recordId = $(this).data('id');
-                    const name = $(this).data('name');
-                
-
-                    // Load the modal with the partial view
-                    loadCorrespondenceModal(recordId, name);
-                });
-
-                function loadCorrespondenceModal(recordId, name) {
-                    // Show loading state
-                    showLoading();
-
-                    $.ajax({
-                        url: '/FileUpload/GetCorrespondencePartial',
-                        type: 'GET',
-                        data: {
-                            recordId: recordId,
-                            name: name                         
-                            },
-                        success: function(response) {
-                            // Create or update modal
-                            let modal = $('#correspondenceModal');
-                            if (modal.length === 0) {
-                                createCorrespondenceModal();
-                                modal = $('#correspondenceModal');
-                            }
-
-                            // Load content into modal body
-                            modal.find('.modal-body').html(response);
-
-                            // Show modal
-                            modal.modal('show');
-                            hideLoading();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error loading correspondence form:', error);
-                            hideLoading();
-                            showError('Failed to load correspondence form');
-                        }
-                    });
-                }
-
-                function createCorrespondenceModal() {
-                    const modalHtml = `
-                        <div class="modal fade" id="correspondenceModal" tabindex="-1" aria-labelledby="correspondenceModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Content will be loaded here -->
+                    // create modal if missing
+                    if (!$('#correspondenceModal').length) {
+                        var modalHtml = `
+                            <div class="modal fade" id="correspondenceModal" tabindex="-1" aria-labelledby="correspondenceModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">Loading...</div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    `;
-
-                    $('body').append(modalHtml);
-                }
-
-               
-
-                // Utility functions
-                function showLoading() {
-                    // Implement your loading indicator
-                    $('body').append('<div class="loading-overlay">Loading...</div>');
-                }
-
-                function hideLoading() {
-                    $('.loading-overlay').remove();
-                }
-
-                function showSuccess(message) {
-                    // Use your preferred notification library or simple alert
-                    alert('Success: ' + message);
-                }
-
-                function showError(message) {
-                    alert('Error: ' + message);
-                }
-
-                function updateValidationErrors(form, errors) {
-                    // Clear previous errors
-                    $(form).find('.text-danger').text('');
-
-                    // Update new errors
-                    if (errors) {
-                        Object.keys(errors).forEach(field => {
-                            const errorElement = $(form).find(`[data-valmsg-for="${field}"]`);
-                            if (errorElement.length) {
-                                errorElement.text(errors[field].join(', '));
-                            }
-                        });
+                            </div>`;
+                        $('body').append(modalHtml);
                     }
-                }
 
+                    var $modal = $('#correspondenceModal');
+                    $modal.find('.modal-body').html('<div class="text-center p-4"><span class="spinner-border" role="status" aria-hidden="true"></span> Loading...</div>');
+                    var bsModal = new bootstrap.Modal(document.getElementById('correspondenceModal'));
+                    bsModal.show();
 
-
-                // Update Correspondence - improved
-                $(document).off('click', '.btn-update').on('click', '.btn-update', function (e) {
-                  e.preventDefault();
-
-                  var $btn = $(this);
-                  var raw = $btn.data('id');
-                  var id = null;
-
-                  // defend against invalid URI sequences
-                  try {
-                    id = raw ? decodeURIComponent(raw) : null;
-                  } catch (ex) {
-                    console.warn('Invalid data-id encoding', ex);
-                    id = raw || null;
-                  }
-
-                  if (!id) {
-                    if (typeof appalert === 'function') appalert('Missing id to update correspondence', 0, 1);
-                    return;
-                  }
-
-                  // Button-level loading state (user gesture friendly)
-                  var originalBtnHtml = $btn.html();
-                  $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
-
-                  // Optional: pass partialView/path if your action expects them
-                  var requestData = { KEY: id , partialView: '_UpdateAwaitingCorrespondance' };
-
-                  $.get('@Url.Action("InitializeData", "FileUpload")', requestData)
-                    .done(function (html) {
-                      // Inject content first
-                      $('#affiliateFormModal .modal-body').html(html || '<div class="text-muted p-3">No form returned.</div>');
-
-                      // Then create and show the modal (so the modal opens already populated)
-                      try {
-                        var bsModal = new bootstrap.Modal(document.getElementById('affiliateFormModal'));
-                        if (bsModal) bsModal.show();
-                      } catch (err) {
-                        console.error('Error showing modal:', err);
-                        // Fallback: simply ensure content is visible or notify user
-                        if (typeof appalert === 'function') appalert('Unable to display modal, but form loaded.', 1, 1);
-                      }
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                      var msg = 'Error loading form.';
-                      $('#affiliateFormModal .modal-body').html('<div class="text-danger p-3">' + msg + '</div>');
-
-                      // Show modal with error so user can see message (optional)
-                      try {
-                        var bsModal2 = new bootstrap.Modal(document.getElementById('affiliateFormModal'));
-                        if (bsModal2) bsModal2.show();
-                      } catch (err) {
-                        console.error('Error showing modal on failure:', err);
-                      }
-
-                      if (typeof appalert === 'function') appalert('Failed to load form: ' + (errorThrown || textStatus), 0, 1);
-                    })
-                    .always(function () {
-                      // restore button state
-                      $btn.prop('disabled', false).html(originalBtnHtml);
-                    });
+                    // fetch the partial (partial will contain its own scripts and will initialize itself)
+                    $.get('@Url.Action("GetCorrespondencePartial", "FileUpload")', { recordId: recordId, name: name })
+                        .done(function (html) {
+                            $modal.find('.modal-body').html(html || '<div class="text-muted p-3">No form returned.</div>');
+                            // partial will init itself (select2, handlers). No main-view duplication here.
+                        })
+                        .fail(function () {
+                            $modal.find('.modal-body').html('<div class="text-danger p-3">Failed to load correspondence form.</div>');
+                            appalert && appalert('Failed to load correspondence form', 0, 1);
+                        });
                 });
 
+                // Update & Delete handlers (same as before)
+                $(document).off('click', '.btn-update').on('click', '.btn-update', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id'), id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return appalert && appalert('Missing id to update', 0, 1);
+                    var $btn = $(this), orig = $btn.html();
+                    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+                    $.get('@Url.Action("InitializeData", "FileUpload")', { KEY: id, partialView: '_UpdateAwaitingCorrespondance' })
+                        .done(function (html) {
+                            $('#affiliateFormModal .modal-body').html(html || '<div class="text-muted p-3">No form returned.</div>');
+                            try { var bs = new bootstrap.Modal(document.getElementById('affiliateFormModal')); if (bs) bs.show(); } catch (ex) { console.error(ex); }
+                        })
+                        .fail(function () {
+                            $('#affiliateFormModal .modal-body').html('<div class="text-danger p-3">Error loading form.</div>');
+                            appalert && appalert('Failed to load form', 0, 1);
+                        })
+                        .always(function () { $btn.prop('disabled', false).html(orig); });
+                });
 
-                // Delete
                 $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
                     e.preventDefault();
-                    var raw = $(this).data('id');
-                    var id = raw ? decodeURIComponent(raw) : null;
-                    if (!id) return (typeof appalert === 'function') ? appalert('Missing id for delete', 0, 1) : null;
-
-                    // Implement delete confirmation & API call
+                    var raw = $(this).data('id'), id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) return appalert && appalert('Missing id for delete', 0, 1);
                     if (!confirm('Are you sure you want to delete this record?')) return;
                     $.post('@Url.Action("Delete", "FileUpload")', { KEY: id })
                         .done(function (res) {
-                            if (res && res.success) {
+                            if (res && (res.success || res.Success)) {
                                 if (affiliateTable) affiliateTable.ajax.reload(null, false);
-                                if (typeof appalert === 'function') appalert(res.message || 'Deleted', 3, 1);
+                                appalert && appalert(res.message || res.Message || 'Deleted', 3, 1);
                             } else {
-                                if (typeof appalert === 'function') appalert(res?.message || 'Delete failed', 0, 1);
+                                appalert && appalert(res?.message || res?.Message || 'Delete failed', 0, 1);
                             }
                         })
-                        .fail(function () {
-                            if (typeof appalert === 'function') appalert('Delete request failed', 0, 1);
-                        });
+                        .fail(function () { appalert && appalert('Delete request failed', 0, 1); });
                 });
             }
 
-            // Reset filters to defaults and hide optional fields
             function resetAffiliateFilters() {
                 var form = document.getElementById('affiliateFilterForm');
                 if (form) form.reset();
 
-                // hide optional filter fields and clear them
                 $('.filter-toggle').each(function () {
                     var target = $(this).data('target');
                     if (!target) return;
@@ -766,54 +500,38 @@
                         else this.value = '';
                         $(this).prop('disabled', true).attr('aria-hidden', 'true');
                     });
-                    // uncheck the toggle itself
                     $(this).prop('checked', false);
                 });
 
-                // Optionally clear Branch & Affiliate (uncomment if desired)
-                 $('#BranchId').val(null).trigger('change');
-                 $('#AffiliateId').val(null).trigger('change');
+                $('#BranchId').val(null).trigger('change');
+                $('#AffiliateId').val(null).trigger('change');
 
-                // reload table if present
                 if (affiliateTable) affiliateTable.ajax.reload(null, false);
             }
 
             // Document ready wiring
             $(function () {
-                initSelect2();
+                initMainSelect2();
                 initFilterToggles();
                 bindDelegatedActions();
 
-                // Apply button -> initialize table (if needed) and load data (DataTable will call server)
                 $('#applyAffiliateFilterBtn').off('click').on('click', function (e) {
                     e.preventDefault();
-                    // ensure filters are properly enabled for collection
                     $('.filter-field').each(function () {
-                        // if visible, ensure enabled; if hidden, ensure disabled so they are ignored
                         if ($(this).is(':visible')) $(this).prop('disabled', false).attr('aria-hidden', 'false');
                         else $(this).prop('disabled', true).attr('aria-hidden', 'true');
                     });
-
                     initDataTableIfNeeded();
                     if (affiliateTable) affiliateTable.ajax.reload(null, false);
                 });
 
-                // Reset button
                 $('#resetAffiliateFilterBtn').off('click').on('click', function (e) {
                     e.preventDefault();
                     resetAffiliateFilters();
                 });
 
-                // Allow Enter key in visible inputs to trigger apply
-                //$('#affiliateFilterForm').on('keypress', 'input,select', function (e) {
-                //    if (e.which === 13) {
-                //        e.preventDefault();
-                //        $('#applyAffiliateFilterBtn').trigger('click');
-                //    }
-                //});
-
-                // Do NOT auto-init data table on page load. User must click Apply to load data.
-            }); // end ready
+                // do not initialize partial-related handlers here — partial will initialize itself when loaded
+            });
         })(jQuery);
     </script>
 }
