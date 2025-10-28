@@ -83,12 +83,16 @@ namespace CBS.BusinessService.AccountingV2
                         null, "Payload cannot be null.");
                     return ExecutionMessage;
                 }
-
-                model.BranchId = "264139464310378"; //GetBranchID(); // <-- Add this line
+                if (model.BranchId==null || model.BranchId==string.Empty)
+                {
+                    model.BranchId = GetBranchID(); // <-- Add this line
+                }
+                
                 model.Reference = "ME-20251013-2003435135";
                 model.OperationCode = "MANUAL.ENTRY";
                 model.ExternalApplicationName = "TSC.BackOffice";
                 model.PostMode = "HOLD_FOR_APPROVAL";
+                model.Narration = model.Payload.Memo;
                 //model.CorrelationId = "CORR-IB-20251013-01";
                 //model.AuxiliaryReference = "AUX-IB-RECLASS-10";
 
