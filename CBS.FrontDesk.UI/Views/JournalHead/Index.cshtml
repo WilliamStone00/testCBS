@@ -1,5 +1,8 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
 @using Resources
+@{
+    ViewBag.Title = "Journal Head Listing";
+}
 
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
@@ -157,7 +160,7 @@
             </div>
         </div>
 
-        
+
     </form>
 </div>
 
@@ -171,11 +174,13 @@
 </div>
 
 
-<!-- Modal container (no body content yet) -->
+@*Modal container (no body content yet)*@
 <div class="modal fade" id="journalDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0" id="journalDetailsModalContent">
-            <!-- Full content (modal body + footer) will be injected by AJAX -->
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="journalDetailsModalContent" class="p-3">
+                @* Content will be loaded here *@
+            </div>
         </div>
     </div>
 </div>
@@ -183,8 +188,10 @@
 
 
 
+
+
 @section Scripts {
-    
+
     <script>
         // ==============================
         // Load Journal Header Data
@@ -245,26 +252,14 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                            <div class="text-center dropdown">
-                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                    <i class="mdi mdi-eye"></i> Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <button class="dropdown-item text-dark"
-                                            onclick="window.open('/JournalHead/Details?id=${row.Id}', '_blank')">
-                                            <i class="mdi mdi-eye-outline me-2 text-primary"></i> View Details
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="dropdown-item text-dark"
-                                            onclick="editJournalEntry('${row.Id}')">
-                                            <i class="mdi mdi-pencil-outline me-2 text-warning"></i> Edit Entry
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>`;
+                    <div class="text-center">
+                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                            <i class="mdi mdi-eye-outline me-1"></i> Details
+                        </button>
+                    </div>`;
                         }
+
+
                     }
                 ],
                 initComplete: function () {
@@ -327,36 +322,40 @@
             // 🔹 VIEW DETAILS (Dynamic Modal)
             // ==========================
             $(document).on("click", ".view-details", function () {
-                const id = $(this).data("id");
-                if (!id) return;
+                const journalId = $(this).data("id");
+                if (!journalId) return;
 
                 $.ajax({
-                    url: `/JournalHead/GetDetails/${encodeURIComponent(id)}`,
+                    url: `/JournalHead/GetDetails?id=${encodeURIComponent(journalId)}`,
                     type: "GET",
                     dataType: "html",
                     success: function (html) {
-                        $("#journalDetailsModalContent").html(html);
+                        // Inject HTML from partial view
+                        $("#journalDetailsModal .modal-content").html(html);
+
+
+                        // Show modal
                         const modalEl = document.getElementById('journalDetailsModal');
                         const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         bsModal.show();
                     },
                     error: function (xhr, status, err) {
                         console.error("❌ Error loading details:", status, err);
-                        $("#journalDetailsModalContent").html(`
-                                                <div class="modal-body">
-                                                    <div class="alert alert-danger">
-                                                        Failed to load details. Status: ${xhr.status}
-                                                    </div>
-                                                </div>
-                                            `);
+                        $("#journalDetailsModal .modal-content").html(`
+                            <div class="modal-body">
+                                <div class="alert alert-danger">
+                                    Failed to load journal details. Status: ${xhr.status}
+                                </div>
+                            </div>
+                        `);
+
                         const modalEl = document.getElementById('journalDetailsModal');
                         const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         bsModal.show();
-
-                        appalert('❌ Failed to load journal details. Status: ' + xhr.status, 4, 1);
                     }
                 });
             });
+
 
             // ==========================
             // 🔹 PRINT MODAL CONTENT
@@ -376,4 +375,4 @@
         });
     </script>
 
- }
+}

@@ -304,7 +304,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Narration.
+        ///   Looks up a localized string similar to Memo.
         /// </summary>
         internal static string Remark {
             get {

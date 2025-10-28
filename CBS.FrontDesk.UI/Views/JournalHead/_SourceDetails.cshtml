@@ -1,7 +1,7 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
 
 <style>
+    /* ===================== HEADER VIEWER ===================== */
     .header-viewer {
         background: #f8f9fa;
         border-radius: 8px;
@@ -11,6 +11,9 @@
         font-size: 0.95rem;
         color: #555;
         border-left: 4px solid #198754;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
         .header-viewer h6 {
@@ -24,7 +27,7 @@
         }
 
     .card-body-tight {
-        padding: 0; /* Table touches edges */
+        padding: 0;
         border: 1px solid #dee2e6;
         border-radius: 0;
         overflow: hidden;
@@ -49,129 +52,141 @@
         color: #333;
     }
 
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 220px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
     .modal-footer {
         border-top: 1px solid #dee2e6;
         padding-top: 1rem;
     }
 </style>
 
-<!-- ===================== SOURCE DETAILS MODAL ===================== -->
-<div class="modal fade" id="sourceDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+@if (Model == null)
+{
+    <div class="alert alert-danger text-center">
+        Journal entry data could not be loaded.
+    </div>
+    return;
+}
+
+<div class="modal fade" id="SourceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content shadow-lg border-0">
 
-            <!-- Modal Body -->
+            <!-- ===================== MAIN HEADER ===================== -->
+            <div class="header-viewer">
+                <h6>
+                    <i class="mdi mdi-file-document-outline me-1"></i> JOURNAL HEADER & DETAILS
+                </h6>
+                <p class="mb-0">
+                    Detailed information for the selected journal entry.
+                </p>
+            </div>
+
+            <!-- ===================== MODAL BODY ===================== -->
             <div class="modal-body">
 
-                <!-- Source Header -->
-                <div class="header-viewer">
-                    <h6>
-                        <i class="mdi mdi-file-document-outline me-1"></i> SOURCE INFORMATION
-                    </h6>
-                    <p class="mb-0">
-                        You are viewing detailed information for the selected Source Entry.
-                        You can choose to <strong>Approve</strong> or <strong>Reject</strong> this source.
-                    </p>
-                </div>
+                <!-- JOURNAL HEADER INFO -->
+                <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+                    <i class="mdi mdi-file-document me-1"></i> Journal Header
+                </h6>
+                <table class="table table-sm table-bordered mb-3">
+                    <tbody>
+                        <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
+                        <tr><th class="bg-label">Stage</th><td>@(Model?.Stage ?? "")</td></tr>
+                        <tr><th class="bg-label">Status</th><td>@(Model?.Status ?? "")</td></tr>
+                        <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+                        <tr>
+                            <th class="bg-label">Accounting Date</th>
+                            <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-label">Narration</th>
+                            <td colspan="3">@Html.Raw(Model?.Narrative ?? "")</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-label">Total Debit</th>
+                            <td>@(Model != null ? Model.TotalDebit.ToString("N0") : "0")</td>
+                            <th class="bg-label">Total Credit</th>
+                            <td>@(Model != null ? Model.TotalCredit.ToString("N0") : "0")</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                <!-- Source Info Table -->
-                @*<div class="card border-0 mb-3">
-                    <div class="card-body card-body-tight">
-                        <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                                <tr>
-                                    <th>Source Reference</th>
-                                    <td>@(Model?.Reference ?? "")</td>
-                                </tr>
-                                <tr>
-                                    <th>Initiated By</th>
-                                    <td>@(Model?.CreatedBy ?? "")</td>
-                                    <th>Created Date</th>
-                                    <td>@(Model?.CreatedDate.ToString("yyyy-MM-dd HH:mm") ?? "")</td>
-                                    <th>Accounting Date</th>
-                                    <td>@(Model?.AccountingDate.ToString("yyyy-MM-dd HH:mm") ?? "")</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>@(Model?.State ?? "")</td>
-                                    <th>Branch</th>
-                                    <td>@(Model?.BranchId ?? "")</td>
-                                    <th>CounterpartyBranchId</th>
-                                    <td>@(Model?.CounterpartyBranchId ?? "")</td>
-                                </tr>
-                                <tr>
-                                    <th>Narration</th>
-                                    <td colspan="3">@Html.Raw(Model?.Narration ?? "")</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>*@
-
-                <!-- Source Line Entries -->
-                <div class="header-viewer">
-                    <h6>
-                        <i class="mdi mdi-table me-1"></i> SOURCE LINE ENTRIES
-                    </h6>
-                    <p class="mb-0">All source line entries are listed below for your review.</p>
-                </div>
-
-                <div class="card border-0">
+                <!-- JOURNAL LINES -->
+                <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+                    <i class="mdi mdi-table me-1"></i> Journal Line Entries
+                </h6>
+                <div class="card border-0 mb-3">
                     <div class="card-body card-body-tight">
                         <table class="table table-hover table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Account</th>
-                                    <th>Narration</th>
-                                    <th>Debit (XAF)</th>
-                                    <th>Credit (XAF)</th>
+                                    <th>Account Number</th>
+                                    <th>Account Name</th>
+                                    <th>Description</th>
+                                    <th>Debit (FCFA)</th>
+                                    <th>Credit (FCFA)</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model?.Payload?.Entries != null && Model.Payload.Entries.Any())
+                                @if (Model?.Lines != null && Model.Lines.Any())
                                 {
-                                    foreach (var line in Model.Payload.Entries)
+                                    foreach (var line in Model.Lines)
                                     {
-                                        var dr = line.Dr;
-                                        var cr = line.Cr;
-                                        var amountText = line.Amount.ToString("N0");
                                         <tr>
-                                            <td>@(line.AffiliateAccountId ?? "")</td>
-                                            <td>@(line.Naration ?? "")</td>
-                                            <td>@(dr ? amountText : "")</td>
-                                            <td>@(cr ? amountText : "")</td>
+                                            <td>@(line?.AccountNumber ?? "")</td>
+                                            <td>@(line?.AccountName ?? "")</td>
+                                            <td>@(line?.Description ?? "")</td>
+                                            <td>@((line != null && line.DrCr == "Debit") ? line.Amount.ToString("N0") : "")</td>
+                                            <td>@((line != null && line.DrCr == "Credit") ? line.Amount.ToString("N0") : "")</td>
+                                            <td>@(line?.CreatedBy ?? "")</td>
+                                            <td>@(line != null ? line.CreatedOn.ToString("dd/MM/yyyy HH:mm") : "")</td>
                                         </tr>
                                     }
                                 }
                                 else
                                 {
-                                    <tr><td colspan="4" class="text-center">No entries found</td></tr>
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted">No line entries found</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Modal Footer -->
+            <!-- ===================== MODAL FOOTER ===================== -->
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>
                 <div>
-                    <button type="button" id="btnRejectSource" class="btn btn-danger me-2">
+                    <button type="button" id="btnReject" class="btn btn-danger me-2">
                         <i class="mdi mdi-close-circle-outline"></i> Reject
                     </button>
-                    <button type="button" id="btnApproveSource" class="btn btn-success">
+                    <button type="button" id="btnApprove" class="btn btn-success">
                         <i class="mdi mdi-check-circle-outline"></i> Approve
                     </button>
                 </div>
             </div>
 
-        </div>
-    </div>
-</div>
 
 
 <!-- ===================== Optional Script ===================== -->

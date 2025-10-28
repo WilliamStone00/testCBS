@@ -1,8 +1,8 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
+@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntryPayload
 
 @{
-    ViewBag.Title = "Manual Journal Entry";
+    ViewBag.Title = "Manual Entry";
 }
 @using Resources
 
@@ -46,14 +46,15 @@
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
 
-        <a type="button" onclick=" LoadDataGen('ManualJournalEntry', 'myDataTable', '_JournalHeadFilters', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
+        <a href="/JournalHead/Index" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @ManualEntry.ViewList
         </a>
 
 
-        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Posting','new','ManualJournalEntry')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNewVault">
-            <i class="mdi mdi-plus mdi-18px"></i> @ManualEntry.addbutton
-        </a>
+
+        @*<a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Posting','new','ManualJournalEntry')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNewVault">
+                <i class="mdi mdi-plus mdi-18px"></i> @ManualEntry.addbutton
+            </a>*@
 
     </div>
 </div>
@@ -66,281 +67,312 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            @Html.Partial("_Confirmation")
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @section Scripts {@Scripts.Render("~/bundles/jqueryval")
 
 
-    <script>
-        $(function () {
-            const tableBody = $('#myDataTable tbody');
-            let accounts = [];
+<script>
+    $(function () {
+        const tableBody = $('#myDataTable tbody');
+        let accounts = [];
 
-            function initSelect2() {
-                $('.account-select, #CounterpartyBranchId, #OperationCode').select2({
-                    width: '100%',
-                    placeholder: 'Select option',
-                    allowClear: true
-                });
-            }
+        // ==================== Initialize Select2 ====================
+        function initSelect2() {
+            $('.account-select, #CounterpartyBranchId, #OperationCode').select2({
+                width: '100%',
+                placeholder: 'Select option',
+                allowClear: true
+            });
+        }
 
-            // 🗓️ Restrict Accounting Date
-            const today = new Date();
-            const maxDate = today.toISOString().split('T')[0];
-            const minDate = new Date(today.setDate(today.getDate() - 30)).toISOString().split('T')[0];
-            $('#AccountingDate').attr('max', maxDate).attr('min', minDate);
-
-            function addRow() {
-                const index = tableBody.children('tr').length;
-                const row = `
-                        <tr>
-                            <td>
-                                <select name="Lines[${index}].AccountId" class="form-select account-select" required>
-                                    <option value="">Select Account</option>
-                                    ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
-                                </select>
-                            </td>
-                            <td>
-    <textarea class="form-control narration-input"
-              name="Lines[${index}].Narration" 
-              placeholder="Enter narration" 
-              rows="1"
-              oninput="autoGrow(this)" 
-              required></textarea>
-</td>
-
-                            <td><input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" /></td>
-                            <td><input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" /></td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-outline-danger deleteRow"><i class="mdi mdi-delete"></i></button>
-                            </td>
-                        </tr>`;
-                tableBody.append(row);
-                initSelect2();
-            }
-
-            // Load accounts
-            function loadAccounts() {
-                $.ajax({
-                    url: '/ManualJournalEntry/GetAccounts',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        if (!response.success || !response.data) {
-                            appalert(response.message || '⚠️ No accounts found.', 2, 1); // ⚠️ warning
-                            return;
-                        }
-
-                        // ✅ Map backend model fields correctly
-                        accounts = response.data.map(a => ({
-                            Value: a.Id,
-                            Text: `${a.Code} - ${a.Name}`
-                        }));
-
-                        const options = accounts
-                            .map(a => `<option value="${a.Value}">${a.Text}</option>`)
-                            .join('');
-
-                        tableBody.find('.account-select').html('<option value="">Select Account</option>' + options);
-                        initSelect2();
-                        appalert(' Accounts loaded successfully.', 1, 1); // ✅ success
-                    },
-                    error: function (err) {
-                        if (err.status === 401) {
-                            window.location.href = '/Authentication/Login';
-                        } else {
-                            appalert(" Error loading content: " + err.statusText, 0, 1); // ❌ error
-                        }
-                    }
-                });
-            }
-
-            // Initialize data
-            loadAccounts();
-
-            addRow();
+        // ==================== Add Row ====================
+        function addRow() {
+            const index = tableBody.children('tr').length;
+            const row = `
+                <tr>
+                    <td>
+                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
+                            <option value="">Select Account</option>
+                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <textarea class="form-control narration-input"
+                                  name="Lines[${index}].Narration"
+                                  placeholder="Enter narration"
+                                  rows="1"
+                                  oninput="autoGrow(this)"
+                                  required></textarea>
+                    </td>
+                    <td><input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" /></td>
+                    <td><input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" /></td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow"><i class="mdi mdi-delete"></i></button>
+                    </td>
+                </tr>`;
+            tableBody.append(row);
             initSelect2();
+        }
 
-            // ➕ Add new row validation
-            $('#addRowBtn').click(() => {
-                let canAdd = true;
-                tableBody.find('tr:last').find('input:enabled, select:enabled').each(function () {
-                    if (!$(this).val()) {
-                        canAdd = false;
-                        $(this).addClass('is-invalid').css('border-color', 'red');
-                    } else {
-                        $(this).removeClass('is-invalid').css('border-color', '');
+        // ==================== Load Accounts ====================
+        function loadAccounts() {
+            $.ajax({
+                url: '/ManualJournalEntry/GetAccounts',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success || !response.data) {
+                        appalert(response.message || '⚠️ No accounts found.', 2, 1);
+                        return;
                     }
-                });
-                if (!canAdd) {
-                    appalert(' Please fill all fields before adding a new row.', 2, 1);
-                    return;
+
+                    accounts = response.data.map(a => ({
+                        Value: a.Id,
+                        Text: `${a.Code} - ${a.Name}`
+                    }));
+
+                    const options = accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('');
+                    tableBody.find('.account-select').html('<option value="">Select Account</option>' + options);
+                    initSelect2();
+                },
+                error: function (err) {
+                    appalert("Error loading accounts: " + err.statusText, 0, 1);
                 }
-                addRow();
-                appalert(' Row added successfully.', 1, 1);
             });
+        }
 
-            // 🗑️ Delete row
-            tableBody.on('click', '.deleteRow', function () {
-                $(this).closest('tr').remove();
-                updateTotals();
-                appalert(' Row deleted successfully.', 1, 1);
-            });
+        // ==================== Initialize Page ====================
+        loadAccounts();
+        addRow();
+        initSelect2();
 
-            // 🔄 Clear all
-            $('#clearRowsBtn').click(() => {
-                tableBody.empty();
-                addRow();
-                updateTotals();
-                appalert('All rows cleared.', 3, 1); // info
+        // ==================== Add Row Validation ====================
+        $('#addRowBtn').click(() => {
+            let canAdd = true;
+            tableBody.find('tr:last').find('input:enabled, select:enabled').each(function () {
+                if (!$(this).val()) {
+                    canAdd = false;
+                    $(this).addClass('is-invalid').css('border-color', 'red');
+                } else {
+                    $(this).removeClass('is-invalid').css('border-color', '');
+                }
             });
-            function autoGrow(element) {
-                element.style.height = "auto"; // reset height
-                element.style.height = (element.scrollHeight) + "px"; // adjust to content
+            if (!canAdd) {
+                appalert('Please fill all fields before adding a new row.', 2, 1);
+                return;
             }
-            // 💰 Update totals
-            function updateTotals() {
-                let debitTotal = 0, creditTotal = 0;
-                tableBody.find('.debit-input').each(function () {
-                    debitTotal += parseFloat($(this).val()) || 0;
-                });
-                tableBody.find('.credit-input').each(function () {
-                    creditTotal += parseFloat($(this).val()) || 0;
-                });
-                const diff = debitTotal - creditTotal;
-                $('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
-                $('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
-                $('#difference')
-                    .text(`Diff: XAF ${diff.toLocaleString()}`)
-                    .toggleClass('text-danger', diff !== 0)
-                    .toggleClass('text-success', diff === 0);
-                $('#postEntriesBtn').prop('disabled', diff !== 0);
-            }
-
-            tableBody.on('input', '.debit-input, .credit-input', function () {
-                const row = $(this).closest('tr');
-                const debit = row.find('.debit-input');
-                const credit = row.find('.credit-input');
-
-                if ($(this).hasClass('debit-input') && $(this).val()) {
-                    credit.val('').prop('disabled', true);
-                } else if ($(this).hasClass('credit-input') && $(this).val()) {
-                    debit.val('').prop('disabled', true);
-                } else {
-                    debit.prop('disabled', false);
-                    credit.prop('disabled', false);
-                }
-                updateTotals();
-            });
-
-            // 🔹 Interbranch toggle
-            $('#enableInterbranch').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#counterpartyBranchDiv').slideDown();
-                    $('#CounterpartyBranchId').prop('required', true);
-                    appalert(' Interbranch enabled.', 3, 1);
-                } else {
-                    $('#counterpartyBranchDiv').slideUp();
-                    $('#CounterpartyBranchId').prop('required', false).val('').trigger('change');
-                    appalert(' Interbranch disabled.', 3, 1);
-                }
-            });
-
-            // ✅ Validate before posting
-            $('#journalForm').submit(function (e) {
-                let valid = true;
-                $(this).find('input[required], select[required]').each(function () {
-                    if (!$(this).val()) {
-                        valid = false;
-                        $(this).addClass('is-invalid').css('border-color', 'red');
-                    } else {
-                        $(this).removeClass('is-invalid').css('border-color', '');
-                    }
-                });
-                if (!valid) {
-                    e.preventDefault();
-                    appalert(' Please fill all required fields before posting.', 2, 1);
-                } else {
-                    appalert(' Posting journal entry...', 3, 1);
-                }
-            });
+            addRow();
         });
 
+        // ==================== Delete Row ====================
+        tableBody.on('click', '.deleteRow', function () {
+            $(this).closest('tr').remove();
+            updateTotals();
+        });
 
+        // ==================== Clear All Rows ====================
+        $('#clearRowsBtn').click(() => {
+            tableBody.empty();
+            addRow();
+            updateTotals();
+        });
 
+        // ==================== Auto Grow Textarea ====================
+        window.autoGrow = function (element) {
+            element.style.height = "auto";
+            element.style.height = (element.scrollHeight) + "px";
+        }
 
+        // ==================== Update Totals ====================
+        function updateTotals() {
+            let debitTotal = 0, creditTotal = 0;
+            tableBody.find('.debit-input').each(function () {
+                debitTotal += parseFloat($(this).val()) || 0;
+            });
+            tableBody.find('.credit-input').each(function () {
+                creditTotal += parseFloat($(this).val()) || 0;
+            });
+            const diff = debitTotal - creditTotal;
+            $('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
+            $('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
+            $('#difference')
+                .text(`Diff: XAF ${diff.toLocaleString()}`)
+                .toggleClass('text-danger', diff !== 0)
+                .toggleClass('text-success', diff === 0);
+            $('#postEntriesBtn').prop('disabled', diff !== 0);
+        }
 
-        window.journalEntrySubmitAjax = function (form) {
-            try { $.validator.unobtrusive.parse(form); } catch (e) { }
-            var $form = $(form);
-            if ($form.length && !$form.valid()) return false;
+        // ==================== Input Totals Auto Update ====================
+        tableBody.on('input', '.debit-input, .credit-input', function () {
+            const row = $(this).closest('tr');
+            const debit = row.find('.debit-input');
+            const credit = row.find('.credit-input');
 
-            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
-            var token = getAntiForgeryToken(); // your anti-forgery token function
-            var $submit = $form.find('[type="submit"]').first();
-            var origHtml = $submit.data('orig-html') || $submit.html();
-            $submit.data('orig-html', origHtml);
-            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
-
-            var doAjax = function () {
-                var ajaxOptions = {
-                    url: $form.attr('action'),
-                    type: ($form.attr('method') || 'POST').toUpperCase(),
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res && res.success) {
-                            showMsg(res.message || 'Journal entry posted successfully', 1);
-                            // Optionally clear or reload table
-                            if (typeof reloadJournalTable === 'function') reloadJournalTable();
-                            $form[0].reset();
-                            $('#postEntriesBtn').prop('disabled', true);
-                        } else {
-                            var lvl = (res && res.status === 'Exist') ? 3 : 2;
-                            showMsg((res && res.message) ? res.message : 'Failed to post journal entry', lvl);
-                        }
-                    },
-                    error: function (xhr) {
-                        var parsed = normalizeResponse(xhr.responseText);
-                        if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
-                        else if (xhr.status === 401) window.location.href = '/Authentication/Login';
-                        else {
-                            showMsg(xhr.statusText || 'Network error', 4);
-                            console.error('journalEntrySubmitAjax error', xhr.status, xhr.responseText);
-                        }
-                    },
-                    complete: function () {
-                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
-                    }
-                };
-
-                if (isMultipart) {
-                    ajaxOptions.data = new FormData(form);
-                    ajaxOptions.processData = false;
-                    ajaxOptions.contentType = false;
-                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-                } else {
-                    ajaxOptions.data = $form.serialize();
-                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-                }
-
-                $.ajax(ajaxOptions);
-            };
-
-            // confirmation
-            if (window.alertify && typeof alertify.confirm === 'function') {
-                try {
-                    alertify.confirm("Confirmation", "Are you sure you want to post this journal entry?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
-                } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
+            if ($(this).hasClass('debit-input') && $(this).val()) {
+                credit.val('').prop('disabled', true);
+            } else if ($(this).hasClass('credit-input') && $(this).val()) {
+                debit.val('').prop('disabled', true);
             } else {
-                if (confirm('Are you sure you want to post this journal entry?')) doAjax(); else showMsg('Transaction cancelled', 3);
+                debit.prop('disabled', false);
+                credit.prop('disabled', false);
+            }
+            updateTotals();
+        });
+
+        // ==================== Interbranch Toggle ====================
+        $('#enableInterbranch').change(function () {
+            if ($(this).is(':checked')) {
+                $('#counterpartyBranchDiv').slideDown();
+                $('#CounterpartyBranchId').prop('required', true);
+            } else {
+                $('#counterpartyBranchDiv').slideUp();
+                $('#CounterpartyBranchId').prop('required', false).val('').trigger('change');
+            }
+        });
+
+        // ==================== Confirmation Modal Logic ====================
+        const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+
+        $('#postEntriesBtn').on('click', function (e) {
+            e.preventDefault();
+
+            const rows = $('#myDataTable tbody tr');
+            const tbody = $('#confirmTable tbody');
+            tbody.empty();
+
+            let totalDebit = 0, totalCredit = 0;
+
+            rows.each(function () {
+                const account = $(this).find('.account-select option:selected').text().trim();
+                const debit = parseFloat($(this).find('.debit-input').val()) || 0;
+                const credit = parseFloat($(this).find('.credit-input').val()) || 0;
+
+                if (account && (debit > 0 || credit > 0)) {
+                    tbody.append(`
+                        <tr>
+                            <td>${account}</td>
+                            <td class="text-end">${debit.toFixed(2)}</td>
+                            <td class="text-end">${credit.toFixed(2)}</td>
+                        </tr>
+                    `);
+                    totalDebit += debit;
+                    totalCredit += credit;
+                }
+            });
+
+            // ✅ Update visible total fields
+            $('#confirmTotalDebit').text(totalDebit.toFixed(2));
+            $('#confirmTotalCredit').text(totalCredit.toFixed(2));
+
+            if (rows.length === 0 || (totalDebit === 0 && totalCredit === 0)) {
+                appalert("Please add at least one valid entry before posting.", 2, 1);
+                return;
             }
 
-            return false; // prevent normal form submit
+            // Interbranch Info
+            if ($('#enableInterbranch').is(':checked')) {
+                $('#confirmCounterpartyBranch').text($('#CounterpartyBranchId option:selected').text());
+                $('#confirmCounterpartyDiv').show();
+            } else {
+                $('#confirmCounterpartyDiv').hide();
+            }
+
+            $('#confirmAccountingDate').text($('#AccountingDate').val());
+            modal.show();
+        });
+
+        // ==================== Confirm Post ====================
+        $('#confirmPostBtn').on('click', function () {
+            modal.hide();
+            $('#postEntriesBtn').prop('disabled', true);
+            const form = document.getElementById('journalForm');
+            journalEntrySubmitAjax(form);
+        });
+
+        // ==================== Prevent Default Form Submit ====================
+        $('#journalForm').submit(function (e) {
+            e.preventDefault();
+        });
+
+        window.updateTotals = updateTotals;
+    });
+
+    // ==================== AJAX Submit ====================
+    window.journalEntrySubmitAjax = function (form) {
+        const entries = [];
+        $("#myDataTable tbody tr").each(function () {
+            const $row = $(this);
+            const accountId = $row.find(".account-select").val();
+            const narration = $row.find(".narration-input").val();
+            const debit = parseFloat($row.find(".debit-input").val()) || 0;
+            const credit = parseFloat($row.find(".credit-input").val()) || 0;
+
+            if (accountId && (debit > 0 || credit > 0)) {
+                entries.push({
+                    AffiliateAccountId: accountId,
+                    Naration: narration,
+                    Dr: debit > 0,
+                    Cr: credit > 0,
+                    Amount: debit > 0 ? debit : credit
+                });
+            }
+        });
+
+        const payload = {
+            BranchId: $("#BranchId").val() || null,
+            CounterpartyBranchId: $("#CounterpartyBranchId").val() || null,
+            AccountingDate: $("#AccountingDate").val(),
+            PostMode: "MANUAL",
+            Payload: {
+                Memo: $("#Payload_Memo").val(), // ✅ Pass Memo correctly
+                Entries: entries
+            }
         };
 
-        // Auto-bind form
-        $(document).on('submit', '#journalForm', function (e) {
-            e.preventDefault();
-            return window.journalEntrySubmitAjax(this);
+        $.ajax({
+            url: '/ManualJournalEntry/PostJournalEntry',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(payload),
+            beforeSend: function () {
+                $('#postEntriesBtn').prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-2"></span>Posting...');
+            },
+            success: function (res) {
+                if (res.success) {
+                    appalert(res.message || 'Journal entry posted successfully', 1, 1);
+                    $('#journalForm')[0].reset();
+                    $('#myDataTable tbody').empty();
+                    addRow();
+                    updateTotals();
+                } else {
+                    appalert(res.message || 'Failed to post journal entry', 2, 1);
+                }
+            },
+            error: function (xhr) {
+                appalert("Error posting journal entry: " + xhr.statusText, 0, 1);
+            },
+            complete: function () {
+                $('#postEntriesBtn').prop('disabled', false)
+                    .html('<i class="mdi mdi-check-circle-outline me-1"></i> Post Entries');
+            }
         });
-
-    </script>
+    };
+</script>
 }

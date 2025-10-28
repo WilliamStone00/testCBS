@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntry
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
 @using Resources
 
 <div class="card bg-light mb-3">
@@ -158,151 +158,17 @@
 <div id="datalistingview">
     @Html.Partial("_SourceDataTable")
 </div>
-<div id="modalContainer"></div>
+
+<div class="modal fade" id="SourceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            @Html.Partial("_SourceDetails")
+        </div>
+    </div>
+</div>
 
 
 @section Scripts {
-    @* <script>
-            $(document).ready(function () {
-
-                let tableInitialized = false;
-                let table;
-
-                // ==========================
-                // APPLY FILTERS AND LOAD DATA
-                // ==========================
-                $("#journalHeaderFilterForm").on("submit", function (e) {
-                    e.preventDefault();
-
-                    const ajaxOptions = {
-                        url: "/JournalHead/LoadJournalSourceData", // ✅ match controller
-                        type: "POST",
-                        contentType: "application/json",
-                        data: function (d) {
-                            const filter = {
-                                Options: d, // DataTables paging/sorting
-                                BranchId: $("#branchId").val(),
-                                Stage: $("#stage").val(),
-                                Reference: $("#reference").val(),
-
-                                PostMode: $("#postMode").val(),
-                                ExternalOperationType: $("#externalOperationType").val(),
-
-                                AccountingDate: $("#accountingDate").val(),
-                                StartDate: $("#startDate").val(),
-                                EndDate: $("#endDate").val()
-                            };
-                            return JSON.stringify(filter);
-                        },
-                        error: function (err) {
-                            console.error("❌ Error loading journal headers:", err);
-                        }
-                    };
-
-                    // Initialize DataTable (first run)
-                    if (tableInitialized) {
-
-                        console.log('Initialisation of DT')
-                        table = $("#myDataTable").DataTable({
-                            /* processing: true,*/
-                            serverSide: true,
-                            responsive: true,
-                            ajax: ajaxOptions,
-                            columns: [
-                                { data: "CreatedAt", render: d => d ? new Date(d).toLocaleDateString() : "" },
-                                { data: "Reference" },
-                                { data: "BranchName" },
-                                { data: "AccountingDate", render: d => d ? new Date(d).toLocaleDateString() : "" },
-                                { data: "PostMode" },
-                                {
-                                    data: "Id",
-                                    orderable: false,
-                                    searchable: false,
-                                    render: data => `
-                                                <button class="btn btn-sm btn-outline-primary view-details" data-id="${data}">
-                                                    <i class="mdi mdi-eye"></i> View
-                                                </button>`
-                                }
-                            ]
-                        });
-                        console.log('Finalisation of DT')
-                        tableInitialized = true;
-                    } else {
-                        table.ajax.reload();
-                    }
-                });
-
-                // ==========================
-                // RESET FILTERS
-                // ==========================
-                $("#resetFilterBtn").on("click", function (e) {
-                    e.preventDefault();
-                    $("#journalHeaderFilterForm")[0].reset();
-                    $(".select2").val(null).trigger("change");
-                    if (tableInitialized) {
-                        table.clear().draw();
-                    }
-                });
-
-                // ==========================
-                // VIEW DETAILS (AJAX LOAD + SHOW MODAL)
-                // ==========================
-                $("#myDataTable").on("click", ".view-details", function () {
-                    const id = $(this).data("id");
-                    if (!id) return;
-
-                    // Load the partial view (HTML modal)
-                    $.ajax({
-                        url: `/JournalHead/Details12?id=${id}`,
-                        type: "GET",
-                        success: function (html) {
-                            // Inject modal HTML into container
-                            $("#modalContainer").html(html);
-
-                            // Show the modal
-                            const modal = new bootstrap.Modal(document.getElementById("sourceDetailsModal"));
-                            modal.show();
-                        },
-                        error: function (err) {
-                            console.error("❌ Error loading details modal:", err);
-                            alert("Failed to load details.");
-                        }
-                    });
-                });
-
-                // ==========================
-                // OPTIONAL CLEANUP: REMOVE MODAL CONTENT AFTER CLOSE
-                // ==========================
-                $(document).on("hidden.bs.modal", "#sourceDetailsModal", function () {
-                    $("#modalContainer").empty();
-                });
-            });
-
-            // =========================
-            // 📦 DESTINATION DETAILS MODAL LOADER
-            // =========================
-            $("#myDataTable").on("click", ".view-details", function () {
-                const id = $(this).data("id");
-                if (!id) return;
-
-                // Load the partial view (HTML modal)
-                $.ajax({
-                    url: `/JournalHead/Details?id=${id}`,
-                    type: "GET",
-                    success: function (html) {
-                        // Inject modal HTML into the container
-                        $("#modalContainer").html(html);
-
-                        // Show the modal
-                        const modal = new bootstrap.Modal(document.getElementById("destinationDetailsModal"));
-                        modal.show();
-                    },
-                    error: function (err) {
-                        console.error("❌ Error loading destination details modal:", err);
-                        alert("Failed to load destination details.");
-                    }
-                });
-            });
 
 
 
@@ -310,7 +176,7 @@
 
 
 
-
+    @*<script></script>
 
 
             $(document).ready(function () {
@@ -461,7 +327,7 @@
                 columns: [
                     {
                         data: 'CreatedDate',
-                        name: 'CreatedDate',
+                        name: 'Created Date',
                         render: function (data) {
                             return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                         }
@@ -470,7 +336,7 @@
                     { data: 'BranchName', name: 'BranchName' },
                     {
                         data: 'AccountingDate',
-                        name: 'AccountingDate',
+                        name: 'Accounting Date',
                         render: function (data) {
                             return data ? moment(data).format('DD/MM/YYYY') : '';
                         }
@@ -481,25 +347,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                <div class="text-center dropdown">
-                                    <button class="btn btn-sm btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        <i class="mdi mdi-eye"></i> Action
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item text-dark"
-                                                    onclick="window.open('/JournalHead/Details?id=${row.Id}', '_blank')">
-                                                <i class="mdi mdi-eye-outline me-2 text-primary"></i> View Details
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item text-dark"
-                                                    onclick="editJournalEntry('${row.Id}')">
-                                                <i class="mdi mdi-pencil-outline me-2 text-warning"></i> Edit Entry
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>`;
+<div class="text-center">
+        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+            <i class="mdi mdi-eye-outline me-1"></i> Details
+        </button>
+</div>`;
                         }
                     }
                 ]
@@ -554,9 +406,32 @@
         // ==============================
         // Optional Edit Function
         // ==============================
-        function editJournalEntry(id) {
-            alertify.alert('Edit Entry', `Edit journal entry with Id: ${id} (Implement your modal or redirect here)`);
-        }
+        // ==============================
+        // Handle Details Button Click
+        // ==============================
+        $(document).on('click', '.view-details', function () {
+            const journalId = $(this).data('id');
+
+            if (!journalId) return;
+
+            $.ajax({
+                url: `/JournalHead/Details?id=${journalId}`,
+                type: 'GET',
+                success: function (partialViewHtml) {
+                    // Inject the partial view into the modal container
+                    $('#SourceDetailsModal .modal-content').html(partialViewHtml);
+
+                    // Show the modal
+                    const modal = new bootstrap.Modal(document.getElementById('SourceDetailsModal'));
+                    modal.show();
+                },
+                error: function (xhr) {
+                    let message = xhr.responseText || 'An error occurred while fetching details.';
+                    alert(message);
+                }
+            });
+        });
+
     </script>
 
 }

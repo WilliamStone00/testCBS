@@ -1,0 +1,53 @@
+﻿<div class="modal-header bg-light">
+    <h5 class="modal-title fw-bold text-primary" id="confirmModalLabel">
+        <i class="mdi mdi-book-check-outline me-2"></i> Confirm Journal Posting
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <div class="border rounded p-3 mb-3 bg-light small">
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Accounting Date:</strong> <span id="confirmAccountingDate"></span>
+            </div>
+            <div class="col-md-6" id="confirmCounterpartyDiv" style="display:none;">
+                <strong>Counterparty Branch:</strong> <span id="confirmCounterpartyBranch"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle text-center" id="confirmTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Account</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot class="fw-bold text-end">
+                <tr>
+                    <td class="text-end">Total Debit:</td>
+                    <td id="confirmTotalDebit" class="text-end text-success">0.00</td>
+                    <td id="confirmTotalCredit" class="text-end text-danger">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="alert alert-info mt-3 text-center mb-0">
+        <i class="mdi mdi-alert-circle-outline me-1"></i>
+        Are you sure you want to post the above entries?
+    </div>
+</div>
+
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-success px-4" id="confirmPostBtn">
+        <i class="mdi mdi-check-circle-outline me-1"></i> OK
+    </button>
+    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+        <i class="mdi mdi-cancel me-1"></i> Cancel
+    </button>
+</div>

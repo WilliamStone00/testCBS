@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
         {
             await loader();
 
-            return View(new JournalEntry());
+            return View(new JournalEntryPayload());
         }
 
 
@@ -81,30 +81,59 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> PostJournalEntry(JournalEntryPayload model)
+        {
+            try
+            {
 
-        //[HttpPost]
-        //public async Task<ActionResult> PostJournalEntry(JournalEntry model)
-        //{
-        //    if (model == null || model.Payload == null || model.Payload.Entries == null || !model.Payload.Entries.Any())
-        //    {
-        //        return Json(new { success = false, message = "Invalid or empty journal entry." });
-        //    }
 
-        //    try
-        //    {
-        //        var result = await _manualJournalEntryService.PostJournalEntryAsync(model);
+                // ✅ Validate payload
+                if (model == null)
+                    return Json(new { success = false, message = "Invalid payload received." });
 
-        //        // If apiResponse is null or failed
-        //        if (result == null || !result.IsSuccess)
-        //            return Json(new { success = false, message = result?.Message ?? "Failed to post journal entry." });
+                if (model.Payload == null || model.Payload.Entries == null || !model.Payload.Entries.Any())
+                    return Json(new { success = false, message = "No journal lines provided." });
 
-        //        return Json(new { success = true, message = result.Message });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = $"Error: {ex.Message}" });
-        //    }
-        //}
+                // ✅ Ensure Debit = Credit
+                var totalDr = model.Payload.Entries.Where(e => e.Dr).Sum(e => e.Amount);
+                var totalCr = model.Payload.Entries.Where(e => e.Cr).Sum(e => e.Amount);
+                if (totalDr != totalCr)
+                    return Json(new { success = false, message = "Debit and Credit totals must balance." });
+
+                // ✅ Add metadata
+                model.CreatedBy = User?.Identity?.Name ?? "System";
+                model.CreatedDate = DateTime.Now;
+                model.State = "INITIATED";
+
+                // ✅ Call service
+                var execMessage = await _manualJournalEntryService.PostJournalAsync(model);
+
+                // ✅ Handle response (pattern same as CreateOrUpdate)
+                if (execMessage == null)
+                    return Json(new { success = false, message = "No response from service." });
+
+                if (!execMessage.Result)
+                    return Json(new
+                    {
+                        success = false,
+                        message = execMessage.MessageString ?? "Failed to post journal entry.",
+                        data = execMessage.Data
+                    });
+
+                return Json(new
+                {
+                    success = true,
+                    message = execMessage.MessageString ?? "Journal entry posted successfully.",
+                    data = execMessage.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
 
         //[HttpGet]
         //public async Task<ActionResult> List()

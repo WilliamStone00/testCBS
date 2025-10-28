@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<JournalEntry>>(
+                var journalHeaders = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -104,7 +104,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(400, "Journal Entry ID is required");
 
-            JournalEntry entry = null;
+            Data.Entity.AccountingV2.JournalHead entry = null;
             try
             {
                 entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
@@ -155,7 +155,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                
 
                 // Deserialize DataTable payload into strongly-typed list
-                var Workticket = JsonConvert.DeserializeObject<List<JournalEntry>>(
+                var Workticket = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -249,11 +249,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(400, "Journal Entry ID is required");
 
-            JournalEntry entry = null;
+            Data.Entity.AccountingV2.JournalHead entry = null;
 
             try
             {
-                entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
+                entry = await _journalHeadService.GetJournalSourceByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -262,7 +262,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             }
 
             //return View(entry); // MVC 5 expects Details.cshtml
-            return PartialView("_DestDetails", entry);
+            return PartialView("_SourceDetails", entry);
         }
 
 

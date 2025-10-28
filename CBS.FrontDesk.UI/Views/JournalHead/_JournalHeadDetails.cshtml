@@ -1,16 +1,20 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
 
 <style>
+    /* ===================== HEADER VIEWER ===================== */
     .header-viewer {
         background: #f8f9fa;
         border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 1rem;
+        padding: 15px 20px;
+        margin: 1rem 0;
         text-align: center;
         font-size: 0.95rem;
         color: #555;
         border-left: 4px solid #198754;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
         .header-viewer h6 {
@@ -23,7 +27,13 @@
             gap: 6px;
         }
 
-    /* Table and layout adjustments */
+    .card-body-tight {
+        padding: 0;
+        border: 1px solid #dee2e6;
+        border-radius: 0;
+        overflow: hidden;
+    }
+
     .table-striped tbody tr:nth-of-type(odd) {
         background-color: #f9f9f9;
     }
@@ -34,135 +44,426 @@
 
     .table tbody tr td {
         vertical-align: middle;
+        color: #555;
     }
 
     .table thead th {
         background-color: #f1f1f1;
         font-weight: 600;
+        color: #333;
     }
 
-    .card-body-tight {
-        padding: 0; /* Make table touch borders */
-        border: 1px solid #dee2e6;
-        border-radius: 0;
-        overflow: hidden;
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 230px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+        padding: 1.25rem;
     }
 
     .modal-footer {
         border-top: 1px solid #dee2e6;
-        padding-top: 1rem;
-    }
-
-    th {
-        width: 20%;
-        color: #333;
-    }
-
-    td {
-        color: #555;
+        padding: 1rem 1.25rem;
     }
 </style>
 
-<div class="container mt-2">
+<div class="header-viewer">
+    <h6>
+        <i class="mdi mdi-file-document-outline me-1"></i> JOURNAL HEADER & DETAILS
+    </h6>
+    <p class="mb-0">
+        Detailed information for the selected journal entry. Scroll to view line entries, reconciliations, workflow tickets, and receipts.
+    </p>
+</div>
 
-    <!-- Journal Header Info -->
-    <div class="header-viewer">
-        <h6>
-            <i class="mdi mdi-file-eye-outline me-1"></i> MANUAL JOURNAL ENTRY VIEWER
+<div class="modal-body">
+
+    <!-- ================= JOURNAL HEADER INFO ================= -->
+    @if (Model != null)
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-file-document me-1"></i> Journal Header
         </h6>
-        <p class="mb-0">
-            You are viewing a detailed summary of the selected Manual journal entry.
-            Use this information to validate or review the entry.
-        </p>
-    </div>
+        <table class="table table-sm table-bordered mb-3">
+            <tbody>
+                @* Display fields only if they have values *@
+                @if (!string.IsNullOrWhiteSpace(Model.Reference))
+                {
+                    <tr><th class="bg-label">Reference</th><td>@Model.Reference</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Stage))
+                {
+                    <tr><th class="bg-label">Stage</th><td>@Model.Stage</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Status))
+                {
+                    <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.BranchId))
+                {
+                    <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
+                {
+                    <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.HeadOfficeBranchId))
+                {
+                    <tr><th class="bg-label">Head Office Branch</th><td>@Model.HeadOfficeBranchId</td></tr>
+                }
+                @if (Model.AccountingDate != default(DateTime))
+                {
+                    <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                }
+                @if (Model.Date != default(DateTime))
+                {
+                    <tr><th class="bg-label">Date Created</th><td>@Model.Date.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
+                {
+                    <tr><th class="bg-label">Operation Code</th><td>@Model.OperationCode</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.ExternalOperationType))
+                {
+                    <tr><th class="bg-label">External Operation Type</th><td>@Model.ExternalOperationType</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.PostMode))
+                {
+                    <tr><th class="bg-label">Post Mode</th><td>@Model.PostMode</td></tr>
+                }
+                @if (Model.RequiresWorkflow)
+                {
+                    <tr><th class="bg-label">Requires Workflow</th><td>Yes</td></tr>
+                }
+                @if (Model.RequiresDestinationApproval)
+                {
+                    <tr><th class="bg-label">Requires Destination Approval</th><td>Yes</td></tr>
+                }
+                @if (Model.IsCashOperation)
+                {
+                    <tr><th class="bg-label">Is Cash Operation</th><td>Yes</td></tr>
+                }
+                @if (Model.IsInterBranch)
+                {
+                    <tr><th class="bg-label">Is Interbranch</th><td>Yes</td></tr>
+                }
+                @if (Model.IsBalanced)
+                {
+                    <tr><th class="bg-label">Is Balanced</th><td>Yes</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
+                {
+                    <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.TillName))
+                {
+                    <tr><th class="bg-label">Till Name</th><td>@Model.TillName</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CashierName))
+                {
+                    <tr><th class="bg-label">Cashier Name</th><td>@Model.CashierName</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CashTillId))
+                {
+                    <tr><th class="bg-label">Cash Till Id</th><td>@Model.CashTillId</td></tr>
+                }
+                @if (Model.CashDenomsTotal != 0)
+                {
+                    <tr><th class="bg-label">Cash Denoms Total</th><td>@Model.CashDenomsTotal.ToString("N0")</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CorrelationId))
+                {
+                    <tr><th class="bg-label">Correlation Id</th><td>@Model.CorrelationId</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.AuxiliaryRef))
+                {
+                    <tr><th class="bg-label">Auxiliary Ref</th><td>@Model.AuxiliaryRef</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.WorkflowTicketNotes))
+                {
+                    <tr><th class="bg-label">Workflow Ticket Notes</th><td>@Model.WorkflowTicketNotes</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Narrative))
+                {
+                    <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Memo))
+                {
+                    <tr><th class="bg-label">Memo</th><td>@Model.Memo</td></tr>
+                }
+                @if (Model.TotalDebit != 0)
+                {
+                    <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
+                }
+                @if (Model.TotalCredit != 0)
+                {
+                    <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
+                }
+            </tbody>
+        </table>
+    }
 
-    <div class="card rounded-0 shadow-sm mb-4">
-        <div class="card-body card-body-tight">
-            <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                    <tr>
-                        <th>Reference</th>
-                        <td>@(Model?.Reference ?? "")</td>
-                        <th>Operation Code</th>
-                        <td>@(Model?.OperationCode ?? "")</td>
-                    </tr>
-                    <tr>
-                        <th>Branch</th>
-                        <td>@(Model?.BranchId ?? "")</td>
-                        <th>Counterparty Branch</th>
-                        <td>@(Model?.CounterpartyBranchId ?? "")</td>
-                    </tr>
-                    <tr>
-                        <th>Accounting Date</th>
-                        <td>@(Model?.AccountingDate.ToString("yyyy-MM-dd") ?? "")</td>
-                        <th>Post Mode</th>
-                        <td>@(Model?.PostMode ?? "")</td>
-                    </tr>
-                    <tr>
-                        <th>Correlation ID</th>
-                        <td>@(Model?.CorrelationId ?? "")</td>
-                        <th>External App</th>
-                        <td>@(Model?.ExternalApplicationName ?? "")</td>
-                    </tr>
-                    <tr>
-                        <th>Narration</th>
-                        <td colspan="3">@Html.Raw(Model?.Narration ?? "")</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Journal Line Entries -->
-    <div class="header-viewer">
-        <h6>
-            <i class="mdi mdi-table me-1"></i> JOURNAL LINE ENTRIES
+    <!-- ================= JOURNAL LINE ENTRIES ================= -->
+    @if (Model.Lines != null && Model.Lines.Any(l =>
+        !string.IsNullOrWhiteSpace(l.AccountName) || !string.IsNullOrWhiteSpace(l.Description) || l.Amount != 0))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-table me-1"></i> Journal Line Entries
         </h6>
-        <p class="mb-0">All journal line entries under this transaction are listed below for your review.</p>
-    </div>
-
-    <div class="card rounded-0 shadow-sm">
-        <div class="card-body card-body-tight">
-            <table class="table table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th>Affiliate Account</th>
-                        <th>Narration</th>
-                        <th>Debit (XAF)</th>
-                        <th>Credit (XAF)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model?.Payload?.Entries != null && Model.Payload.Entries.Any())
-                    {
-                        foreach (var line in Model.Payload.Entries)
+        <div class="card border-0 mb-3">
+            <div class="card-body card-body-tight">
+                @{
+                    decimal totalDebit = 0;
+                    decimal totalCredit = 0;
+                }
+                <table class="table table-hover table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Account Name</th>
+                            <th>Description</th>
+                            <th>Created By</th>
+                            <th>Debit (FCFA)</th>
+                            <th>Credit (FCFA)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Lines)
                         {
-                            var dr = line.Dr;
-                            var cr = line.Cr;
-                            var amountText = line.Amount.ToString("N0");
-                            <tr>
-                                <td>@(line.AffiliateAccountId ?? "")</td>
-                                <td>@(line.Naration ?? "")</td>
-                                <td>@(dr ? amountText : "")</td>
-                                <td>@(cr ? amountText : "")</td>
-                            </tr>
+                            if (!string.IsNullOrWhiteSpace(line.AccountName) || !string.IsNullOrWhiteSpace(line.Description) || line.Amount != 0)
+                            {
+                                var debit = line.DrCr?.ToLower() == "debit" ? line.Amount : 0;
+                                var credit = line.DrCr?.ToLower() == "credit" ? line.Amount : 0;
+                                totalDebit += debit;
+                                totalCredit += credit;
+                                <tr>
+                                    <td>@line.AccountNumber</td>
+                                    <td>@line.AccountName</td>
+                                    <td>@line.Description</td>
+                                    <td>@line.CreatedBy</td>
+                                    <td>@(debit != 0 ? debit.ToString("N0") : "")</td>
+                                    <td>@(credit != 0 ? credit.ToString("N0") : "")</td>
+                                </tr>
+                            }
                         }
-                    }
-                    else
+                    </tbody>
+                    @if (totalDebit != 0 || totalCredit != 0)
                     {
-                        <tr><td colspan="4" class="text-center">No entries found</td></tr>
+                        <tfoot>
+                            <tr class="fw-bold bg-light">
+                                <td colspan="4" class="text-end">Totals</td>
+                                <td>@totalDebit.ToString("N0")</td>
+                                <td>@totalCredit.ToString("N0")</td>
+                            </tr>
+                        </tfoot>
                     }
-                </tbody>
-            </table>
+                </table>
+            </div>
         </div>
-    </div>
+    }
 
-    <div class="modal-footer d-flex justify-content-between">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="mdi mdi-close"></i> Close
-        </button>
-        <button type="button" id="printJournalBtn" class="btn btn-primary">
-            <i class="mdi mdi-printer"></i> Print
-        </button>
-    </div>
+    <!-- ================= JOURNAL RECONCILIATIONS ================= -->
+    @if (Model.JournalReconciliations != null && Model.JournalReconciliations.Any(r =>
+        !string.IsNullOrWhiteSpace(r.Reference) || !string.IsNullOrWhiteSpace(r.Status) || !string.IsNullOrWhiteSpace(r.Notes)))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i> Journal Reconciliations
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rec in Model.JournalReconciliations)
+                {
+                    if (!string.IsNullOrWhiteSpace(rec.Reference) || !string.IsNullOrWhiteSpace(rec.Status) || !string.IsNullOrWhiteSpace(rec.Notes))
+                    {
+                        <tr>
+                            <td>@rec.Reference</td>
+                            <td>@rec.Status</td>
+                            <td>@rec.Notes</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- ================= RECONCILED LEDGER LINES ================= -->
+    @if (Model.ReconciledLedgerLines != null && Model.ReconciledLedgerLines.Any(r =>
+        !string.IsNullOrWhiteSpace(r.BranchId) ||
+        !string.IsNullOrWhiteSpace(r.DrCr) ||
+        r.DebitAmount != 0 || r.CreditAmount != 0))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-book-account-outline me-1"></i> Reconciled Ledger Lines
+        </h6>
+
+        <table class="table table-sm table-bordered mb-3 align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Branch</th>
+                    <th>Account Number</th>
+                    <th>Account Name</th>
+                    <th>Description</th>
+                    <th>Auxiliary Ref</th>
+                    <th>Dr/Cr</th>
+                    <th>Amount</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    decimal totalDebit = 0;
+                    decimal totalCredit = 0;
+                }
+
+                @foreach (var rline in Model.ReconciledLedgerLines)
+                {
+                    if (!string.IsNullOrWhiteSpace(rline.BranchId) ||
+                        !string.IsNullOrWhiteSpace(rline.DrCr) ||
+                        rline.DebitAmount != 0 || rline.CreditAmount != 0)
+                    {
+                        totalDebit += rline.DebitAmount;
+                        totalCredit += rline.CreditAmount;
+
+                        <tr>
+                            <td>@rline.BranchId</td>
+                            <td>@rline.AccountNumber</td>
+                            <td>@rline.AccountName</td>
+                            <td>@rline.Description</td>
+                            <td>@rline.AuxiliaryRef</td>
+                            <td>@rline.DrCr</td>
+                            <td>@rline.Amount.ToString("N0")</td>
+                            <td>@(rline.DebitAmount != 0 ? rline.DebitAmount.ToString("N0") : "")</td>
+                            <td>@(rline.CreditAmount != 0 ? rline.CreditAmount.ToString("N0") : "")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+            @if (totalDebit != 0 || totalCredit != 0)
+            {
+                <tfoot>
+                    <tr class="fw-bold bg-light">
+                        <td colspan="7" class="text-end">Total:</td>
+                        <td>@totalDebit.ToString("N0")</td>
+                        <td>@totalCredit.ToString("N0")</td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    }
+
+
+    <!-- ================= WORKFLOW TICKETS ================= -->
+    @if (Model.WorkflowTickets != null && Model.WorkflowTickets.Any(w =>
+        !string.IsNullOrWhiteSpace(w.Reference) || !string.IsNullOrWhiteSpace(w.State) || !string.IsNullOrWhiteSpace(w.Remarks)))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-briefcase-check-outline me-1"></i> Workflow Tickets
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>State</th>
+                    <th>Remarks</th>
+                    <th>Opened</th>
+                    <th>Closed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var w in Model.WorkflowTickets)
+                {
+                    if (!string.IsNullOrWhiteSpace(w.Reference) || !string.IsNullOrWhiteSpace(w.State) || !string.IsNullOrWhiteSpace(w.Remarks))
+                    {
+                        <tr>
+                            <td>@w.Reference</td>
+                            <td>@w.State</td>
+                            <td>@w.Remarks</td>
+                            <td>@(w.OpenedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
+                            <td>@(w.ClosedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- ================= RECEIPT ================= -->
+    @if (Model.Receipt != null &&
+        (!string.IsNullOrWhiteSpace(Model.Receipt.Number) || !string.IsNullOrWhiteSpace(Model.Receipt.Title)))
+    {
+        <h6 class="fw-bold text-success border-bottom pb-1 mb-2">
+            <i class="mdi mdi-receipt-outline me-1"></i> Receipt
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <tbody>
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.Number))
+                {
+                    <tr><th class="bg-label">Number</th><td>@Model.Receipt.Number</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.Title))
+                {
+                    <tr><th class="bg-label">Title</th><td>@Model.Receipt.Title</td></tr>
+                }
+                @if (Model.Receipt.IssuedAtUtc != default(DateTime))
+                {
+                    <tr><th class="bg-label">Issued At</th><td>@Model.Receipt.IssuedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.OperationCode))
+                {
+                    <tr><th class="bg-label">Operation Code</th><td>@Model.Receipt.OperationCode</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.Currency))
+                {
+                    <tr><th class="bg-label">Currency</th><td>@Model.Receipt.Currency</td></tr>
+                }
+                @if (Model.Receipt.TotalDebit != 0)
+                {
+                    <tr><th class="bg-label">Total Debit</th><td>@Model.Receipt.TotalDebit.ToString("N0")</td></tr>
+                }
+                @if (Model.Receipt.TotalCredit != 0)
+                {
+                    <tr><th class="bg-label">Total Credit</th><td>@Model.Receipt.TotalCredit.ToString("N0")</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.Payor))
+                {
+                    <tr><th class="bg-label">Payor</th><td>@Model.Receipt.Payor</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.Memo))
+                {
+                    <tr><th class="bg-label">Memo</th><td>@Model.Receipt.Memo</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Receipt.IssuedBy))
+                {
+                    <tr><th class="bg-label">Issued By</th><td>@Model.Receipt.IssuedBy</td></tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+
+<!-- ================= MODAL FOOTER ================= -->
+<div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="mdi mdi-close"></i> Close
+    </button>
 </div>
