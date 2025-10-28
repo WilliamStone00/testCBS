@@ -34,7 +34,7 @@ namespace CBS.BusinessService.AccountingV2
             try
             {
                 // ✅ Get required values
-                var branchId = "264139464310378"; // or GetBranchID();
+                var branchId = GetBranchID();
                 var language = GetUserLanguage(); // e.g., "en"
 
                 // ✅ Validate before sending
