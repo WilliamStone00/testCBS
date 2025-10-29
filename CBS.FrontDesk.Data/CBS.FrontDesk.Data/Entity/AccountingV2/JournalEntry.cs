@@ -125,6 +125,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CashTillId { get; set; } = null;
         public decimal CashDenomsTotal { get; set; }
         public string BranchName { get; set; }
+        public DateTime ClosedAtUtc { get; set; }
+
 
         public List<JournalLine> Lines { get; set; } 
         public List<JournalReconciliation> JournalReconciliations { get; set; } = null;
@@ -142,8 +144,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public bool IsInterBranch { get; set; }
         public string TicketSource { get; set; }
         public DateTime OpenedAtUtc { get; set; }
+        public string ModifiedBy { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
-        public string createdBy { get; set; }
+        public string CreatedBy { get; set; }
        
     }
 
