@@ -1467,12 +1467,13 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
-        public static string GetJournalworkticketDataTable = "api/v1/workticketflow/datable";
-        public static string ApproveJournalEntry = "api/manualjournalentry/id";
+        public static string GetJournalworkticketDataTable = "/api/v1/workticketflow/datatable";
+        public static string ApproveJournalEntry = "/api/v1/ops/manual-entry/approve/source";
+       
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
         public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
-        public static string GetJournalSourceById = "api/v1/workticketflow/{0}/{operationCode}";
+        public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
 

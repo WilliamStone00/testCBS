@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
 @using Resources;
 
 <style>
@@ -83,124 +83,106 @@
     return;
 }
 
-<div class="modal fade" id="SourceDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0">
 
-             ===================== MAIN HEADER ===================== 
-            <div class="header-viewer">
-                <h6><i class="mdi mdi-file-document-outline me-1"></i> JOURNAL HEADER & DETAILS</h6>
-                <p class="mb-0">Detailed information for the selected journal entry.</p>
-            </div>
 
-             ===================== MODAL BODY ===================== 
-            <div class="modal-body">
+@*===================== MAIN HEADER =====================*@
+<div class="header-viewer">
+    <h6><i class="mdi mdi-file-document-outline me-1"></i> Work ticket  & DETAILS</h6>
+    <p class="mb-0">Detailed information for the selected journal entry.</p>
+</div>
 
-                 JOURNAL HEADER INFO 
-                <h6 class="fw-bold text-primary border-bottom pb-1 mb-2"><i class="mdi mdi-file-document me-1"></i> Journal Header</h6>
-                <table class="table table-sm table-bordered mb-3">
-                    <tbody>
-                        <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
-                        <tr><th class="bg-label">Stage</th><td>@(Model?.Stage ?? "")</td></tr>
-                        <tr><th class="bg-label">Status</th><td>@(Model?.Status ?? "")</td></tr>
-                        <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
-                        <tr>
-                            <th class="bg-label">Accounting Date</th>
-                            <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-label">Narration</th>
-                            <td colspan="3">@Html.Raw(Model?.Narrative ?? "")</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-label">Total Debit</th>
-                            <td>@(Model != null ? Model.TotalDebit.ToString("N0") : "0")</td>
-                            <th class="bg-label">Total Credit</th>
-                            <td>@(Model != null ? Model.TotalCredit.ToString("N0") : "0")</td>
-                        </tr>
-                    </tbody>
-                </table>
+@*===================== MODAL BODY =====================*@
+<div class="modal-body">
 
-                 ================= TABLE ================= 
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle text-center" id="myDataTable">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width:30%">@ManualEntry.Account</th>
-                                <th style="width:30%">@ManualEntry.Narration</th>
-                                <th style="width:15%">@ManualEntry.Debit</th>
-                                <th style="width:15%">@ManualEntry.Credit</th>
-                                <th style="width:10%">@ManualEntry.Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot class="table-light fw-bold">
-                            <tr>
-                                <td colspan="2" class="text-end">@ManualEntry.Totals:</td>
-                                <td id="totalDebit" class="text-end">0.00</td>
-                                <td id="totalCredit" class="text-end">0.00</td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+    JOURNAL HEADER INFO
+    <h6 class="fw-bold text-primary border-bottom pb-1 mb-2"><i class="mdi mdi-file-document me-1"></i> Journal Header</h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
+            <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
+            <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
+            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr>
+                <th class="bg-label">Accounting Date</th>
+                <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Remarks</th>
+                <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
+            </tr>
 
-                <div class="text-end mt-2">
-                    <span id="difference" class="fw-bold text-danger">@ManualEntry.Diff: 0.00</span>
-                </div>
+        </tbody>
+    </table>
 
-                 ================= ACTION BUTTONS ================= 
-                <div class="mt-3 d-flex justify-content-between">
-                    <div>
-                        <button type="button" class="btn btn-outline-primary" id="addRowBtn">
-                            <i class="mdi mdi-plus"></i> @ManualEntry.AddRow
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
-                            <i class="mdi mdi-trash-can-outline"></i> @ManualEntry.ClearAllRows
-                        </button>
-                    </div>
-                </div>
+    @*================= TABLE =================*@
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle text-center" id="myDataTable">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:30%">@ManualEntry.Account</th>
+                    <th style="width:30%">@ManualEntry.Narration</th>
+                    <th style="width:15%">@ManualEntry.Debit</th>
+                    <th style="width:15%">@ManualEntry.Credit</th>
+                    <th style="width:10%">@ManualEntry.Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot class="table-light fw-bold">
+                <tr>
+                    <td colspan="2" class="text-end">@ManualEntry.Totals:</td>
+                    <td id="totalDebit" class="text-end">0.00</td>
+                    <td id="totalCredit" class="text-end">0.00</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-                 ================= MEMO ================= 
-                @*<div class="mt-4">
-                    <label class="form-label fw-bold" for="Payload_Memo">@ManualEntry.Remark</label>
-                    @Html.TextAreaFor(m => m.Payload.Memo, new { @class = "form-control shadow-sm", rows = "3", placeholder = @ManualEntry.Enter, required = "required", id = "Payload_Memo" })
-                </div>*@
+    <div class="text-end mt-2">
+        <span id="difference" class="fw-bold text-danger">@ManualEntry.Diff: 0.00</span>
+    </div>
 
-            </div>
-
-             ===================== MODAL FOOTER ===================== 
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
-                </button>
-                <div>
-                    <button type="button" id="btnReject" class="btn btn-danger me-2">
-                        <i class="mdi mdi-close-circle-outline"></i> Reject
-                    </button>
-                    <button type="button" id="btnApprove" class="btn btn-success">
-                        <i class="mdi mdi-check-circle-outline"></i> Approve
-                    </button>
-                </div>
-            </div>
-
+    @*================= ACTION BUTTONS =================*@
+    <div class="mt-3 d-flex justify-content-between">
+        <div>
+            <button type="button" class="btn btn-outline-primary" id="addRowBtn">
+                <i class="mdi mdi-plus"></i> @ManualEntry.AddRow
+            </button>
+            <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
+                <i class="mdi mdi-trash-can-outline"></i> @ManualEntry.ClearAllRows
+            </button>
         </div>
     </div>
+
+    @*================= MEMO =================*@
+    @*<div class="mt-4">
+            <label class="form-label fw-bold" for="Payload_Memo">@ManualEntry.Remark</label>
+            @Html.TextAreaFor(m => m.Payload.Memo, new { @class = "form-control shadow-sm", rows = "3", placeholder = @ManualEntry.Enter, required = "required", id = "Payload_Memo" })
+        </div>*@
+
 </div>
+
+@*===================== MODAL FOOTER =====================*@
+<div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="mdi mdi-close"></i> Close
+    </button>
+    <div>
+        <button type="button" id="btnReject" class="btn btn-danger me-2">
+            <i class="mdi mdi-close-circle-outline"></i> Reject
+        </button>
+        <button type="button" id="btnApprove" class="btn btn-success">
+            <i class="mdi mdi-check-circle-outline"></i> Approve
+        </button>
+    </div>
+</div>
+
+
 
 <script>
     $(document).ready(function () {
         let accounts = [];
         const tableBody = $('#myDataTable tbody');
-
-        // ==================== Initialize Select2 ====================
-        function initSelect2() {
-            $('.account-select, #CounterpartyBranchId, #OperationCode').select2({
-                width: '100%',
-                placeholder: 'Select option',
-                allowClear: true
-            });
-        }
 
         // ==================== Add Row ====================
         function addRow() {
@@ -224,11 +206,20 @@
                     <td><input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" /></td>
                     <td><input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" /></td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow"><i class="mdi mdi-delete"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
                     </td>
                 </tr>`;
             tableBody.append(row);
-            initSelect2();
+
+            // ✅ Initialize select2 *only for this new row* and attach it to the modal
+            $('.account-select').last().select2({
+                width: '100%',
+                placeholder: 'Select Account',
+                allowClear: true,
+                dropdownParent: $('.modal.show') // ensures dropdown appears on top of modal
+            });
         }
 
         // ==================== Load Accounts ====================
@@ -242,9 +233,18 @@
                         appalert(response.message || '⚠️ No accounts found.', 2, 1);
                         return;
                     }
-                    accounts = response.data.map(a => ({ Value: a.Id, Text: `${a.Code} - ${a.Name}` }));
-                    tableBody.find('.account-select').html('<option value="">Select Account</option>' + accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join(''));
-                    initSelect2();
+
+                    // ✅ Store accounts globally
+                    accounts = response.data.map(a => ({
+                        Value: a.Id,
+                        Text: `${a.Code} - ${a.Name}`
+                    }));
+
+                    // ✅ Refresh existing dropdowns if rows already exist
+                    tableBody.find('.account-select').each(function () {
+                        $(this).html('<option value="">Select Account</option>' +
+                            accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join(''));
+                    });
                 },
                 error: function (err) {
                     appalert("Error loading accounts: " + err.statusText, 0, 1);
@@ -252,9 +252,9 @@
             });
         }
 
+        // ==================== Initial Load ====================
         loadAccounts();
         addRow();
-        initSelect2();
 
         // ==================== Add Row Validation ====================
         $('#addRowBtn').click(() => {
@@ -298,12 +298,17 @@
             let debitTotal = 0, creditTotal = 0;
             tableBody.find('.debit-input').each(function () { debitTotal += parseFloat($(this).val()) || 0; });
             tableBody.find('.credit-input').each(function () { creditTotal += parseFloat($(this).val()) || 0; });
+
             const diff = debitTotal - creditTotal;
             $('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
             $('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
-            $('#difference').text(`Diff: XAF ${diff.toLocaleString()}`).toggleClass('text-danger', diff !== 0).toggleClass('text-success', diff === 0);
+            $('#difference')
+                .text(`Diff: XAF ${diff.toLocaleString()}`)
+                .toggleClass('text-danger', diff !== 0)
+                .toggleClass('text-success', diff === 0);
         }
 
+        // ==================== Handle Debit/Credit Exclusivity ====================
         tableBody.on('input', '.debit-input, .credit-input', function () {
             const row = $(this).closest('tr');
             const debit = row.find('.debit-input');
@@ -317,9 +322,11 @@
                 debit.prop('disabled', false);
                 credit.prop('disabled', false);
             }
+
             updateTotals();
         });
 
         window.updateTotals = updateTotals;
     });
 </script>
+

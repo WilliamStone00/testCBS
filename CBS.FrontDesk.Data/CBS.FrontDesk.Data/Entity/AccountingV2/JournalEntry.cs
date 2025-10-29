@@ -126,7 +126,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal CashDenomsTotal { get; set; }
         public string BranchName { get; set; }
 
-        public List<JournalLine> Lines { get; set; } = null;
+        public List<JournalLine> Lines { get; set; } 
         public List<JournalReconciliation> JournalReconciliations { get; set; } = null;
         public List<ReconciledLedgerLine> ReconciledLedgerLines { get; set; } = null;
         public List<WorkflowTicket> WorkflowTickets { get; set; } = null;
@@ -143,6 +143,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string TicketSource { get; set; }
         public DateTime OpenedAtUtc { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
+        public string createdBy { get; set; }
     }
 
     // ==============================================
@@ -224,7 +225,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string State { get; set; } 
         public string OperationCode { get; set; } 
         public DateTime AccountingDate { get; set; }
-        public List<JournalLine> JournalLines { get; set; } = null;
+        public List<JournalLine> JournalLines { get; set; }
+        public JournalHead TempJournalHeader { get; set; } = new JournalHead();
         public string Remarks { get; set; } = null;
         public string Id { get; set; } 
         public string JournalHeaderId { get; set; }
@@ -232,6 +234,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? OpenedAtUtc { get; set; }
         public string OperationType { get; set; } = null;
         public DateTime? ClosedAtUtc { get; set; }
+       
     }
 
     // ==============================================
@@ -280,6 +283,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? EndAccountingDate { get; set; }
         public DateTime? StartDate { get; set; }    // For filtering creation date range
         public DateTime? EndDate { get; set; }
+        public string TicketSource { get; set; } 
     }
 
 
@@ -300,5 +304,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     }
 
 
+
+
+
+   
 }
 
