@@ -58,15 +58,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public string Id { get; set; }
         public string BranchId { get; set; }
         public string NameEn { get; set; }
+        public string Scope { get; set; }
         public string Code { get; set; }
         public string NameFr { get; set; }
         public string Name { get; set; }
+        public string Notes { get; set; }
         public string Class { get; set; }
         public string AffiliateAccountId { get; set; }
         public string ParentId { get; set; }
         public string Path { get; set; }
+        public string  Language { get; set; }
         public int? Depth { get; set; }
-        public bool? PostingAllowed { get; set; }
+        public bool PostingAllowed { get; set; }
+        public bool RequiresMapping { get; set; }
         public DateTime? CreatedDate { get; set; }
         public bool? IsDeleted { get; set; }
     }

@@ -22,6 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public int recordsFiltered { get; set; }
         public string search { get; set; }
         public string sortDirection { get; set; }
+        public string lang { get; set; }
     }
 
     public class CustomDataTable : ICustomDataTable

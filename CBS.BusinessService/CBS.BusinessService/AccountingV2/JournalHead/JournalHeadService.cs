@@ -105,7 +105,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 var operationCode = "temp"; // You can dynamically change this if needed
 
                 // ✅ Build API URL including operationCode
-                var apiUrl = $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}&operationCode={operationCode}";
+                var apiUrl = $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}&ReconciliationStatus={operationCode}";
 
                 // ✅ Make API call
                 var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(apiUrl);
