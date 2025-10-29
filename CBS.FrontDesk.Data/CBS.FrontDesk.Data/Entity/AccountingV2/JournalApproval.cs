@@ -9,7 +9,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     public class JournalApproval
     {
         public string Reference { get; set; }
-        public string BranchId { get; set; }
+        public string SourceBranchId { get; set; }
+        public string  BranchId { get; set; }
         public string Approver { get; set; }
     }
 

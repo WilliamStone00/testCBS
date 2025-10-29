@@ -144,6 +144,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime OpenedAtUtc { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
         public string createdBy { get; set; }
+       
     }
 
     // ==============================================
@@ -234,7 +235,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? OpenedAtUtc { get; set; }
         public string OperationType { get; set; } = null;
         public DateTime? ClosedAtUtc { get; set; }
-       
+        //public string CounterpartyBranchId { get; set; }
+        public string Approveby { get; set; }
+        public string Rejectedby { get; set; }
+        public DateTime ApproveDate { get; set; }
+        public DateTime RejectedDate { get; set; }
     }
 
     // ==============================================

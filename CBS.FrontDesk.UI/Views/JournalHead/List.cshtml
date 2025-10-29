@@ -222,15 +222,16 @@
                             return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                         }
                     },
-                    { data: 'Reference', name: 'Reference' },
                     {
-                        data: 'AccountingDate',
-                        name: 'AccountingDate',
+                        data: 'ClosedAtUtc',
+                        name: 'ClosedAtUtc',
                         render: function (data) {
                             return data ? moment(data).format('DD/MM/YYYY') : '';
                         }
                     },
-                    { data: 'OperationCode', name: 'OperationCode' },
+                    { data: 'Reference', name: 'Reference' },
+                   
+                    { data: 'createdBy', name: 'createdBy' },
                     { data: 'State', name: 'State' },
                     {
                         data: null,
