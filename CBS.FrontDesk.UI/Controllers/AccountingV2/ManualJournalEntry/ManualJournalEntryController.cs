@@ -102,6 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
                     return Json(new { success = false, message = "Debit and Credit totals must balance." });
 
                 // ✅ Add metadata
+                model.PostMode = "HOLD_FOR_APPROVAL";
                 model.CreatedBy = User?.Identity?.Name ?? "System";
                 model.CreatedDate = DateTime.Now;
                 model.State = "INITIATED";

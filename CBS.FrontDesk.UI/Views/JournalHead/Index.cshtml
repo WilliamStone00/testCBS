@@ -138,11 +138,11 @@
                 </div>
 
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Reconciliation Status</label>
-                    @Html.DropDownList("WorkTicket",
-                        new SelectList(ViewBag.WorkTickets, "Value", "Text"),
-                        "Select Work Ticket",
-                        new { @class = "form-control select2 mb-1", @id = "WorkTicket" })
+                    <label class="form-label fw-bold">Operation Code</label>
+                    @Html.DropDownList("OperationCode",
+                        new SelectList(ViewBag.OperationCode, "Value", "Text"),
+                        "Select Operation Code",
+                        new { @class = "form-control select2 mb-1", @id = "OperationCode" })
                 </div>
             </div>
         </div>
@@ -202,7 +202,7 @@
                 destroy: true,
                 responsive: true,
                 searching: true,
-                order: [[0, 'desc']],
+                order: [[0, 'desc']], // ✅ Sort by CreatedAt (most recent first)
                 ajax: {
                     url: '/JournalHead/LoadJournalHeaderData',
                     type: 'POST',
@@ -238,28 +238,19 @@
                     },
                     { data: 'Reference', name: 'Reference' },
                     { data: 'Narrative', name: 'Narrative' },
-                    { data: 'BranchName', name: 'BranchName' },
-                    {
-                        data: 'AccountingDate',
-                        name: 'AccountingDate',
-                        render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY') : '';
-                        }
-                    },
+                    { data: 'OperationCode', name: 'OperationCode' },
                     { data: 'PostMode', name: 'PostMode' },
                     {
                         data: null,
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                    <div class="text-center">
-                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                            <i class="mdi mdi-eye-outline me-1"></i> Details
-                        </button>
-                    </div>`;
+                        <div class="text-center">
+                            <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                <i class="mdi mdi-eye-outline me-1"></i> Details
+                            </button>
+                        </div>`;
                         }
-
-
                     }
                 ],
                 initComplete: function () {
@@ -281,7 +272,7 @@
             return {
                 BranchId: $('#branchId').val(),
                 OperationType: $('#OperationType').val(),
-                WorkTicket: $('#WorkTicket').val(),
+                OperationCode: $('#OperationCode').val(),
                 Reference: $('#reference').val(),
                 StartDate: $('#startDate').val(),
                 EndDate: $('#endDate').val(),

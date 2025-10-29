@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 namespace CBS.FrontDesk.Data.Entity.AccountingV2
 {
 
-
-
-
     public class JournalEntryPayload
     {
         public string OperationCode { get; set; }
@@ -24,7 +21,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
         public DateTime? AccountingDate { get; set; }
 
-        public string PostMode { get; set; }
+        public string PostMode { get; set; } = "HOLD_FOR_APPROVAL";
         public string Narration { get; set; }
         //----------dtails------------------
         public string Reference { get; set; }
@@ -67,6 +64,33 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
 
 
+    public class ManualEntryresponnse
+    {
+        public string Reference { get; set; }
+        public string OperationCode { get; set; }
+        public string BranchId { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public string PostMode { get; set; }
+        public string CorrelationId { get; set; }
+        public string Narration { get; set; }
+        public string AffiliateAccountId { get; set; }
+        public string AuxiliaryReference { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string Memo { get; set; }
+        public bool AllowUnbalanced { get; set; }
+        public string AccountId { get; set; }
+        public string DrCr { get; set; }
+        public decimal? Amount { get; set; }
+        public string Remarks { get; set; }
+        public string SourceModule { get; set; }
+        public string PostedBy { get; set; }
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public string Status { get; set; }
+        public string TempJournalHeaderId { get; set; }
+        public string ReconciledJournalHeaderId { get; set; }
+    }
 
 
 
@@ -82,14 +106,15 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Reference { get; set; } 
         public string Narrative { get; set; } = null;
         public DateTime AccountingDate { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreatedAt { get; set; }
         public bool IsBalanced { get; set; }
         public string ExternalOperationType { get; set; } = null;
         public string PostMode { get; set; } = null;
         public string OperationCode { get; set; } 
         public string BranchId { get; set; } 
         public string Memo { get; set; } = null;
-        public string Stage { get; set; } 
+        public string Stage { get; set; }
+        public string State { get; set; }
         public bool RequiresWorkflow { get; set; }
         public bool RequiresDestinationApproval { get; set; }
         public bool IsCashOperation { get; set; }
@@ -99,6 +124,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CashDenomsJson { get; set; } = null;
         public string CashTillId { get; set; } = null;
         public decimal CashDenomsTotal { get; set; }
+        public string BranchName { get; set; }
 
         public List<JournalLine> Lines { get; set; } = null;
         public List<JournalReconciliation> JournalReconciliations { get; set; } = null;
@@ -114,6 +140,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string HeadOfficeBranchId { get; set; } = null;
         public string AuxiliaryRef { get; set; } = null;
         public bool IsInterBranch { get; set; }
+        public string TicketSource { get; set; }
+        public DateTime OpenedAtUtc { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
     }
 

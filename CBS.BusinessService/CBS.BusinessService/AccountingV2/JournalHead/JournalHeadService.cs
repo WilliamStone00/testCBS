@@ -100,15 +100,17 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
 
-                // ✅ Get branchId internally like in GetAccountsByBranchAsync
+                // ✅ Define internal parameters
                 var branchId = "BR001"; // Or use GetBranchID();
+                var operationCode = "temp"; // You can dynamically change this if needed
 
-                // Make API call including branchId
-                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(
-                    $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}"
-                );
+                // ✅ Build API URL including operationCode
+                var apiUrl = $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}&ReconciliationStatus={operationCode}";
 
-                // Validate response
+                // ✅ Make API call
+                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(apiUrl);
+
+                // ✅ Validate response
                 if (!response.IsSuccess)
                     throw new Exception($"API call failed: {response.Message}");
 
@@ -127,7 +129,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        
+
+
 
         public async Task<CustomDataTable2> GetJournalSourceDataTableAsync(JournalEntryQuery query)
         {
@@ -188,7 +191,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     throw new Exception("Journal Entry not found.");
 
                 // Optionally, set OperationCode or other properties on the returned entry
-                entry.OperationCode = operationCode;
+                //entry.OperationCode = operationCode;
 
                 return entry;
             }
