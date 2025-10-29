@@ -209,7 +209,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             if (model == null || string.IsNullOrEmpty(model.Reference))
                 return Json(new { success = false, message = "Journal Reference is required" });
-
+            model.SourceBranchId = model.BranchId;
             try
             {
                 // ✅ Get the response object instead of a bool

@@ -195,6 +195,10 @@
                 {
                     <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
                 }
+                @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
+                {
+                    <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
+                }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))
                 {
                     <tr><th class="bg-label">Memo</th><td>@Model.Memo</td></tr>
@@ -204,6 +208,41 @@
             </tbody>
         </table>
     }
+
+    <!-- ================= WORKFLOW TICKETS ================= -->
+    @if (Model.WorkflowTickets != null && Model.WorkflowTickets.Any(w =>
+        !string.IsNullOrWhiteSpace(w.Reference) || !string.IsNullOrWhiteSpace(w.State) || !string.IsNullOrWhiteSpace(w.Remarks)))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-briefcase-check-outline me-1"></i> Workflow Tickets
+        </h6>
+        <table class="table table-sm table-bordered mb-3">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>State</th>
+                    <th>Remarks</th>
+                    <th>Opened</th>
+                    <th>Closed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var w in Model.WorkflowTickets)
+                {
+                    <tr>
+                        <td>@w.Reference</td>
+                        <td>@w.State</td>
+                        <td>@w.Remarks</td>
+                        <td>@(w.OpenedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
+                        <td>@(w.ClosedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+
+
 
     <!-- ================= JOURNAL LINE ENTRIES ================= -->
     @if (Model.Lines != null && Model.Lines.Any(l =>
@@ -314,37 +353,6 @@
         </table>
     }
 
-    <!-- ================= WORKFLOW TICKETS ================= -->
-    @if (Model.WorkflowTickets != null && Model.WorkflowTickets.Any(w =>
-        !string.IsNullOrWhiteSpace(w.Reference) || !string.IsNullOrWhiteSpace(w.State) || !string.IsNullOrWhiteSpace(w.Remarks)))
-    {
-        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-            <i class="mdi mdi-briefcase-check-outline me-1"></i> Workflow Tickets
-        </h6>
-        <table class="table table-sm table-bordered mb-3">
-            <thead>
-                <tr>
-                    <th>Reference</th>
-                    <th>State</th>
-                    <th>Remarks</th>
-                    <th>Opened</th>
-                    <th>Closed</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var w in Model.WorkflowTickets)
-                {
-                    <tr>
-                        <td>@w.Reference</td>
-                        <td>@w.State</td>
-                        <td>@w.Remarks</td>
-                        <td>@(w.OpenedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
-                        <td>@(w.ClosedAtUtc?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
 
     <!-- ================= RECEIPT ================= -->
     @if (Model.Receipt != null &&

@@ -111,6 +111,22 @@
                 <th class="bg-label">Remarks</th>
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
+            <tr>
+                <th class="bg-label">Approved By</th>
+                <td>@(string.IsNullOrWhiteSpace(Model?.Approveby) ? "-" : Model.Approveby)</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Approved Date</th>
+                <td>@(Model?.ApproveDate != DateTime.MinValue ? Model.ApproveDate.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Rejected By</th>
+                <td>@(string.IsNullOrWhiteSpace(Model?.Rejectedby) ? "-" : Model.Rejectedby)</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Rejected Date</th>
+                <td>@(Model?.RejectedDate != DateTime.MinValue ? Model.RejectedDate.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+            </tr>
         </tbody>
     </table>
 
@@ -226,9 +242,7 @@
         <i class="mdi mdi-close"></i> Close
     </button>
     <div>
-        <button type="button" id="btnReject" class="btn btn-danger me-2">
-            <i class="mdi mdi-close-circle-outline"></i> Reject
-        </button>
+       
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i> Approve
         </button>
