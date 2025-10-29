@@ -95,6 +95,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string SourceAffiliateAccountId { get; set; }
         public string HoPcmfAccountId { get; set; }
         public string Language { get; set; }
+        public string RequestedByName { get; set; }
+        public string RequestedByUserId { get; set; }
     }
 
 
