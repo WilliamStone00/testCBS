@@ -42,9 +42,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             return View();
         }
 
+
         [HttpGet]
         public async Task<ActionResult> GetTreeData(string branchId = null)
-       {
+        {
             try
             {
                 var nodes = await _accountsService.GetAccountTreeForJsTreeAsync(branchId);
@@ -61,10 +62,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
+            var chartOfAccounts = await _accountsService2.GetAllPCMFAccounts();
+            var classes =  _accountsService2.GetAllClass();
             ViewBag.Branches = branches;
+            ViewBag.ChartAccount = chartOfAccounts;
+            ViewBag.Classes = classes;
 
             return true;
         }
+
+    
+
 
         [HttpGet]
         public async Task<ActionResult> List()
@@ -76,7 +84,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
         public async Task<JsonResult> LoadData(COADATATABLE_Query query)
-        {               try
+        { try
             {
               //  var data = await _accountsService.GetDataTableAsync(query);
               var data = await _accountsService2.GetDataTableAsync(query);

@@ -10,6 +10,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -40,6 +41,7 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
         {
             try
             {
+                var str = JsonConvert.SerializeObject(query);
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.Datatable, query);
 
@@ -62,7 +64,7 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                throw new Exception($"Error Getting Pending Account Creation Request : {ex.Message}", ex);
             }
         }
 
