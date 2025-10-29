@@ -47,10 +47,10 @@
             <!-- Row 1: Code, Name -->
             <div class="row mb-2">
                 <div class="col-md-6">
-                    @Html.TextBox("Code", null, new { @class = "form-control", placeholder = "Affiliate code — digits only", inputmode = "numeric", pattern = "\\d*" })
+                    @Html.TextBox("Code", null, new { @class = "form-control", placeholder = "Pcmf Account code — digits only", inputmode = "numeric", pattern = "\\d*" })
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBox("Name", null, new { @class = "form-control", placeholder = "Affiliate name" })
+                    @Html.TextBox("Name", null, new { @class = "form-control", placeholder = "Pcmf Account name" })
                 </div>
             </div>
 
@@ -237,8 +237,8 @@
                             skip: d.start,
                             pageSize: d.length,
                             searchValue: d.search?.value || '',
-                            sortColumnName: 'CreatedDate',
-                            sortColumnDirection: 'desc'
+                            sortColumnName: '',
+                            sortColumnDirection: ''
                         };
                         return JSON.stringify(filters);
                     },
@@ -255,7 +255,7 @@
                             return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
                         }
                     },
-                    { data: 'AccountNumber', defaultContent: '-' },
+                    { data: 'Code', defaultContent: '-' },
                     { data: 'Name', name: 'name', defaultContent: '-' },
                     {
                         data: 'Class',

@@ -65,6 +65,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public string Notes { get; set; }
         public string Class { get; set; }
         public string AffiliateAccountId { get; set; }
+        public string AffiliateAccountName { get; set; }
         public string ParentId { get; set; }
         public string Path { get; set; }
         public string  Language { get; set; }

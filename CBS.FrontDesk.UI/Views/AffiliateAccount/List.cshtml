@@ -43,56 +43,65 @@
 
 <!-- Affiliate Filters (bound to AffiliateAccountQuery) -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters</h5>
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters
+    </h5>
 
     <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
-        <!-- If your controller expects a POST, change method to post and include @Html.AntiForgeryToken() -->
-        <!-- DataTable options (optional hidden inputs) -->
-        <input type="hidden" name="Options.Page" value="1" />
-        <input type="hidden" name="Options.PageSize" value="10" />
-        <input type="hidden" name="Options.Sort" value="" />
-
-        <!-- Affiliate identifiers -->
+        <!-- Optional DataTable options -->
         <div class="card p-3 mb-3 bg-light">
-            <div class="row mb-3">
 
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Affiliate Id</label>
-                    <input type="text" id="affiliateId" name="AffiliateId" class="form-control" placeholder="Affiliate Id" />
+            <!-- Row 1: AffiliateId, Code, Name -->
+            <div class="row mb-3 g-2">
+               
+                <div class="col-md-6">
+                    <label class="form-label fw-bold" for="Code">@AccountingV2.Code</label>
+                    <input type="text" id="Code" name="Code" class="form-control" placeholder="Affiliate code" />
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@AccountingV2.Code</label>
-                    <input type="text" id="code" name="Code" class="form-control" placeholder="Affiliate code" />
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">@AccountingV2.Name</label>
-                    <input type="text" id="name" name="Name" class="form-control" placeholder="Affiliate name" />
+                <div class="col-md-6">
+                    <label class="form-label fw-bold" for="Name">@AccountingV2.Name</label>
+                    <input type="text" id="Name" name="Name" class="form-control" placeholder="Affiliate name" />
                 </div>
             </div>
 
-            <!-- Class and Parent -->
-            <div class="row mb-3">
+            <!-- Row 2: Class (dropdown), ParentId, PostingAllowed -->
+            <div class="row mb-3 g-2">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Class</label>
-                    <!-- If Class is a free text, keep as input; change to select if you have known classes -->
-                    <input type="text" id="class" name="Class" class="form-control" placeholder="Account class (e.g. Asset, Liability)" />
+                    <label class="form-label fw-bold" for="Class">Class</label>
+                    @* Use your known classes as a dropdown *@
+                    @Html.DropDownList(
+                        "Class",
+                        new List<SelectListItem> {
+                            new SelectListItem { Text = "--- Select Class ---", Value = "" },
+                            new SelectListItem { Text = "EQUITY", Value = "1" },
+                            new SelectListItem { Text = "FIXED ASSETS", Value = "2" },
+                            new SelectListItem { Text = "MEMBERS", Value = "3" },
+                            new SelectListItem { Text = "THIRD PARTIES", Value = "4" },
+                            new SelectListItem { Text = "TREASURY", Value = "5" },
+                            new SelectListItem { Text = "EXPENSES", Value = "6" },
+                            new SelectListItem { Text = "REVENUE", Value = "7" },
+                            new SelectListItem { Text = "OUTSIDE ORDINARY ACTIVITIES (OOA)", Value = "8" },
+                            new SelectListItem { Text = "MANAGEMENT", Value = "9" }
+                        },
+                        new { @class = "form-select select2", id = "Class" }
+                    )
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Parent Account</label>
-                    <!-- Replace options with server-generated list when available -->
-                    <select id="parentId" name="ParentId" class="form-control">
-                        <option value="">@AccountingV2.All</option>
-                        <option value="0">-- No parent --</option>
-                        <!-- Example placeholder; ideally populate with real account list -->
-                    </select>
+                    <label class="form-label fw-bold" for="ParentId">Parent Account</label>
+                    @* Replace ViewBag.ChartAccount with your actual list when available *@
+                    @Html.DropDownList(
+                        "ParentId",
+                        new SelectList(ViewBag.ChartAccount ?? new List<SelectListItem>(), "Id", "Name"),
+                        @AccountingV2.All,
+                        new { @class = "form-select select2", id = "ParentId" }
+                    )
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Posting Allowed</label>
-                    <select id="postingAllowed" name="PostingAllowed" class="form-control">
+                    <label class="form-label fw-bold" for="PostingAllowed">Posting Allowed</label>
+                    <select id="PostingAllowed" name="PostingAllowed" class="form-select select2">
                         <option value="">@AccountingV2.All</option>
                         <option value="true">@AccountingV2.Yes</option>
                         <option value="false">@AccountingV2.No</option>
@@ -100,12 +109,15 @@
                 </div>
             </div>
 
-            <!-- Created Date Filters toggle -->
+            <!-- Row 3: Created Date Filters toggle + tip -->
             <div class="row mb-3 align-items-center">
                 <div class="col-md-6">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates" onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
+                               onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleCreatedDates">
+                            @AccountingV2.ShowCreatedDateFilters
+                        </label>
                     </div>
                 </div>
                 <div class="col-md-6 text-end">
@@ -113,57 +125,53 @@
                 </div>
             </div>
 
+            <!-- Row 4: CreatedFromUtc, CreatedToUtc -->
             <div id="createdDateFilters" class="d-none">
-                <div class="row mb-3">
+                <div class="row mb-3 g-2">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@AccountingV2.CreatedFrom (UTC)</label>
-                        <input type="date" id="createdFromUtc" name="CreatedFromUtc" class="form-control" />
+                        <label class="form-label fw-bold" for="CreatedFromUtc">@AccountingV2.CreatedFrom (UTC)</label>
+                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@AccountingV2.CreatedTo (UTC)</label>
-                        <input type="date" id="createdToUtc" name="CreatedToUtc" class="form-control" />
+                        <label class="form-label fw-bold" for="CreatedToUtc">@AccountingV2.CreatedTo (UTC)</label>
+                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
                     </div>
                 </div>
             </div>
 
-            <!-- Language -->
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Language</label>
-                    <select id="language" name="Language" class="form-control">
-                        <option value="">@AccountingV2.All</option>
-                        <option value="en">English</option>
-                        <option value="fr">Français</option>
-                        <!-- add other languages as needed -->
-                    </select>
-                </div>
-
+            <!-- Row 5: IncludeDeleted -->
+            <div class="row g-2">
                 <div class="col-md-4 d-flex align-items-end">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="includeDeleted" name="IncludeDeleted" />
-                        <label class="form-check-label fw-bold" for="includeDeleted">@AccountingV2.IncludeDeleted</label>
+                        <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" />
+                        <label class="form-check-label fw-bold" for="IncludeDeleted">
+                            @AccountingV2.IncludeDeleted
+                        </label>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <!-- spacing or future controls -->
-                </div>
+                <div class="col-md-4"><!-- reserved space --></div>
             </div>
         </div>
-
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
                     <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
                 </button>
-                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary me-2 w-100" onclick="document.getElementById('affiliateFilterForm').reset();">
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100"
+                        onclick="
+                          document.getElementById('affiliateFilterForm').reset();
+                          document.getElementById('createdDateFilters').classList.add('d-none');
+                          if (window.$ && $.fn.select2) { $('#Class,#ParentId,#PostingAllowed,#Language').val(null).trigger('change'); }
+                        ">
                     <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
                 </button>
             </div>
         </div>
     </form>
 </div>
+
 
 <!-- DataTable Partial -->
 <div id="affiliateListingView">
@@ -250,8 +258,25 @@
 
         if ($.fn.DataTable.isDataTable(selector)) {
             try { $(selector).DataTable().destroy(); } catch (e) { console.warn('destroy failed', e); }
-            $(selector).empty();
+            // Keep table structure (headers/colgroup); just clear rows
+            $(selector + ' tbody').empty();
         }
+
+        const safeActionButtons = (typeof actionButtons === 'function')
+            ? actionButtons
+            : function (row) {
+                const id = encodeURIComponent(String(row.id || row.Id || ''));
+                return `
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-info text-white btn-details" data-id="${id}">
+                        <i class="mdi mdi-eye"></i>
+                    </button>
+                    <button type="button" class="btn btn-success text-white btn-edit" data-id="${id}">
+                        <i class="mdi mdi-pencil-outline"></i>
+                    </button>
+                </div>
+            `;
+            };
 
         const tbl = $(selector).DataTable({
             serverSide: true,
@@ -259,15 +284,13 @@
             responsive: true,
             autoWidth: false,
             pageLength: 10,
-            order: [[0, 'desc']],
+            order: [[0, 'desc']], // CreatedDate desc
             columnDefs: [
-                { targets: [0], width: '15%' },
-                { targets: [1], width: '15%' },
-                { targets: [2], width: '30%' },
-                { targets: [3], width: '5%' },
-                { targets: [4], width: '13%', className: 'text-center' },
-                { targets: [5], width: '12%' },
-                { targets: [6], width: '10%', orderable: false, searchable: false, className: 'text-center' }
+                { targets: 0, width: '18%' },                 // CreatedDate
+                { targets: 1, width: '20%' },                 // Account Number
+                { targets: 2, width: '30%' },                 // Name
+                { targets: 3, width: '17%' },                 // Class
+                { targets: 4, width: '15%', className: 'text-end', orderable: false, searchable: false } // Actions
             ],
             ajax: {
                 url: dataUrl,
@@ -275,122 +298,82 @@
                 contentType: 'application/json; charset=utf-8',
                 data: function (d) {
                     const filters = getFilters();
-                    const pageSize = d.length || 10;
-                    const page = (d.start / pageSize) + 1;
-                    filters.Options = {
-                        Page: page,
-                        PageSize: pageSize,
-                        Draw: d.draw || 0, // ensure draw is sent to server
-                        Sort: (function () {
-                            if (!d.order || !d.order.length) return '';
-                            const ord = d.order[0];
-                            const col = d.columns[ord.column].data || d.columns[ord.column].name;
-                            const dir = ord.dir;
-                            return col ? `${col} ${dir}` : '';
-                        })()
+                    filters.options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: '',
+                        sortColumnDirection: ''
                     };
-                    // debugging: show outgoing payload
+                    return JSON.stringify(filters);
+
                     try { console.debug('DataTable -> request payload:', filters); } catch (e) { /* ignore */ }
                     return JSON.stringify(filters);
                 },
                 dataSrc: function (json) {
-                    // debug raw response
                     try { console.debug('DataTable <- raw response:', json); } catch (e) { /* ignore */ }
 
                     if (!json) return [];
 
-                    // If server returns DataTables server-side format
-                    if (Array.isArray(json.data)) {
-                        // DataTables expects draw/records... to be present when serverSide=true.
-                        // If they're absent it may still render rows if data is present.
-                        return json.data;
-                    }
-
-                    // If server returns array directly
-                    if (Array.isArray(json)) return json;
-
-                    // common wrappers
-                    if (Array.isArray(json.result)) return json.result;
+                    if (Array.isArray(json.data)) return json.data;         // Standard DT wrapper
+                    if (Array.isArray(json.result)) return json.result;     // Common API wrappers
                     if (Array.isArray(json.items)) return json.items;
 
-                    // fallback: first array property found
-                    for (var k in json) {
-                        if (json.hasOwnProperty(k) && Array.isArray(json[k])) return json[k];
-                    }
-
+                    for (var k in json) { if (Array.isArray(json[k])) return json[k]; } // first array
                     console.warn('DataTable: no array found in server response; returning empty array');
                     return [];
                 },
                 error: function (xhr, status, err) {
                     console.error('Load error', xhr, status, err);
-                    $(selector + ' tbody').html('<tr><td colspan="9" class="text-center text-danger">Failed to load data.</td></tr>');
+                    $(selector + ' tbody').html('<tr><td colspan="5" class="text-center text-danger">Failed to load data.</td></tr>');
                 }
             },
             columns: [
-                // CreatedDate: handle both PascalCase and camelCase in the render
+                // CreatedDate
                 {
-                    data: null,
+                    data: 'CreatedDate',
+                    name: 'CreatedDate',
                     render: function (data, type, row) {
                         const val = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
                         if (!val) return '-';
                         return (window.moment ? moment(val).format('DD/MM/YYYY HH:mm:ss') : val);
                     }
                 },
-                // Code
+                // Account Number (NOT Code)
                 {
-                    data: null,
+                    data: 'Code',
+                    name: 'AccountNumber',
                     render: function (data, type, row) {
-                        return row.Code || row.code || '';
-                    },
-                    name: 'Code'
+                        return row.AccountNumber || row.accountNumber || row.Code || row.code || '';
+                    }
                 },
                 // Name
                 {
-                    data: null,
+                    data: 'Name',
+                    name: 'Name',
                     render: function (data, type, row) {
                         return row.Name || row.name || row.NameEn || row.nameEn || '';
-                    },
-                    name: 'Name'
+                    }
                 },
                 // Class
                 {
-                    data: null,
+                    data: 'Class',
+                    name: 'Class',
                     render: function (data, type, row) {
                         return row.Class || row.class || '';
-                    },
-                    name: 'Class'
+                    }
                 },
-                // ParentId / Path (you used ParentId in columns but header shows Path previously)
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        // prefer ParentId, fall back to Path
-                        return row.ParentId || row.parentId || '';
-                    },
-                    name: 'ParentId'
-                },
-                // PostingAllowed / Path column (you had Path in header earlier)
-                {
-                    data: null,
-                    className: 'text-center',
-                    render: function (data, type, row) {
-                        // If you actually want to show Path here, swap logic; this shows PostingAllowed badge if present else Path
-                        var posting = (typeof row.PostingAllowed !== 'undefined') ? row.PostingAllowed : (typeof row.postingAllowed !== 'undefined' ? row.postingAllowed : null);
-                        if (posting === true) return '<span class="badge bg-success">Yes</span>';
-                        if (posting === false) return '<span class="badge bg-secondary">No</span>';
-                        // fallback to Path text
-                        return row.Path || row.path || '';
-                    },
-                    name: 'PostingAllowed'
-                },
-                // Actions: render action buttons using the `actionButtons` helper
+                // Actions
                 {
                     data: null,
                     orderable: false,
                     searchable: false,
                     className: 'text-end',
                     render: function (data, type, row) {
-                        return actionButtons(row);
+                        return safeActionButtons(row);
                     }
                 }
             ],
@@ -400,6 +383,7 @@
         window.table = tbl;
         window.tableInitialized = true;
     }
+
 
     function ensureModal() {
         let $modal = $('#actionModal');

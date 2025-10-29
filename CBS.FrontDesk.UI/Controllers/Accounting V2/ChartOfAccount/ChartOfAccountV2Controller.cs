@@ -86,17 +86,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
         public async Task<JsonResult> LoadData(COADATATABLE_Query query)
         { try
             {
+
               //  var data = await _accountsService.GetDataTableAsync(query);
               var data = await _accountsService2.GetDataTableAsync(query);
 
                 var response = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(JsonConvert.SerializeObject(data.data));
-                var mapped = _accountsService2.MapCodesToAccountNumbers(response.ToList());
+                //var mapped = _accountsService2.MapCodesToAccountNumbers(response.ToList());
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = mapped
+                    data = response
                 });
             }
             catch (Exception ex)
