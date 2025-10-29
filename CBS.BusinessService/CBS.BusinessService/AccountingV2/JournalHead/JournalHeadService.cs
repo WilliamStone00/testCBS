@@ -166,7 +166,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<FrontDesk.Data.Entity.AccountingV2.JournalHead> GetJournalSourceByIdAsync(string id)
+        public async Task<FrontDesk.Data.Entity.AccountingV2.WorkflowTicket> GetJournalSourceByIdAsync(string id)
         {
             try
             {
@@ -174,13 +174,13 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
 
                 // Define operationCode for API call
-                string operationCode = "MANUAL.ENTRY"; // Or call GetBranchID() if you want to use branch info
+                /* string operationCode = "MANUAL.ENTRY";*/ // Or call GetBranchID() if you want to use branch info
 
                 // Make API call including operationCode
                 var response = await _JournalheadapiCallerHelper.GetAsync<
-                    ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(
-                    $"{APICallHelper.GetJournalSourceById}?id={id}&OperationCode={operationCode}"
-                );
+                    ResponseObject<FrontDesk.Data.Entity.AccountingV2.WorkflowTicket>>(string.Format(APICallHelper.GetJournalSourceById, id));
+                 
+           
 
                 // Validate response
                 if (!response.IsSuccess)
@@ -202,12 +202,15 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<bool> ApproveAsync(string id)
+        public async Task<JournalApprovalResponse> ApproveAsync(JournalApproval model)
         {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
             try
             {
-                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<bool>>(
-                    APICallHelper.ApproveJournalEntry, new { Id = id });
+                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
+                    APICallHelper.ApproveJournalEntry, model); // now sending full model
                 return apiResponse.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -215,6 +218,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw new Exception($"Failed to approve journal entry: {ex.Message}", ex);
             }
         }
+
+
 
         // REJECT Journal Entry
         public async Task<bool> RejectAsync(string id)

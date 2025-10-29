@@ -187,23 +187,65 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 });
             }
         }
+        //[HttpPost]
+        //public async Task<ActionResult> Approve(JournalApproval model)
+        //{
+        //    if (model == null || string.IsNullOrEmpty(model.Reference))
+        //        return Json(new { success = false, message = "Journal Reference is required" });
+
+        //    try
+        //    {
+        //        var result = await _journalHeadService.ApproveAsync(model);
+        //        return Json(new { success = result, message = result ? "Approved successfully" : "Approval failed" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
 
         [HttpPost]
-        public async Task<ActionResult> Approve(string id)
+        public async Task<ActionResult> Approve(JournalApproval model)
         {
-            if (string.IsNullOrEmpty(id))
-                return Json(new { success = false, message = "Journal Entry ID is required" });
+            if (model == null || string.IsNullOrEmpty(model.Reference))
+                return Json(new { success = false, message = "Journal Reference is required" });
 
             try
             {
-                bool result = await _journalHeadService.ApproveAsync(id);
-                return Json(new { success = result, message = result ? "Approved successfully" : "Approval failed" });
+                // ✅ Get the response object instead of a bool
+                var result = await _journalHeadService.ApproveAsync(model);
+
+                if (result == null)
+                    return Json(new { success = false, message = "No response from approval service." });
+
+                // ✅ Return structured JSON based on result
+                return Json(new
+                {
+                    success = true,
+                    statusCode = 200,
+                    message = result.Message ?? "Approved successfully",
+                    data = new
+                    {
+                        result.Reference,
+                        result.BranchId,
+                        result.TicketId,
+                        result.TicketState,
+                        result.JournalId
+                    }
+                });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Approval failed: {ex.Message}"
+                });
             }
         }
+
+
 
         // =========================
         // REJECT ENTRY
@@ -254,7 +296,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(400, "Journal Entry ID is required");
 
-            Data.Entity.AccountingV2.JournalHead entry = null;
+            Data.Entity.AccountingV2.WorkflowTicket entry = null;
 
             try
             {

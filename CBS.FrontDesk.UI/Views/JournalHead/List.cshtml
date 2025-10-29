@@ -151,19 +151,19 @@
 
             </div>
 
-       </div>     <!-- Action Buttons -->
-            <div class="row mt-2">
-                <div class="col-md-12 d-flex">
-                    <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filters
-                    </button>
-                    <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
-                            onclick="document.getElementById('journalHeaderFilterForm').reset();">
-                        <i class="mdi mdi-refresh"></i> Reset Filters
-                    </button>
-                </div>
+        </div>     <!-- Action Buttons -->
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filters
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
+                        onclick="document.getElementById('journalHeaderFilterForm').reset();">
+                    <i class="mdi mdi-refresh"></i> Reset Filters
+                </button>
             </div>
-     </form>
+        </div>
+    </form>
 </div>
 
 <div id="datalistingview">
@@ -179,14 +179,8 @@
 </div>
 
 
+
 @section Scripts {
-
-
-
-
-
-
-
 
     <script>
         // ==============================
@@ -197,6 +191,7 @@
                 serverSide: true,
                 destroy: true,
                 responsive: true,
+                searching: true,
                 order: [[0, 'desc']], // Most recent OpenedAtUtc on top
                 ajax: {
                     url: '/JournalHead/LoadJournalSourceData',
@@ -243,9 +238,9 @@
                         render: function (_, __, row) {
                             return `
 <div class="text-center">
-    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-        <i class="mdi mdi-eye-outline me-1"></i> Details
-    </button>
+                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                            <i class="mdi mdi-eye-outline me-1"></i> Details
+                        </button>
 </div>`;
                         }
                     }
@@ -264,6 +259,7 @@
                 OperationCode: $('#OperationCode').val(),
                 StartAccountingDate: $('#startaccountingDate').val(),
                 EndAccountingDate: $('#endaccountingDate').val(),
+                TicketSource: $('#TicketSource').val(),
                 StartDate: $('#startDate').val(),
                 EndDate: $('#endDate').val(),
                 Options: {}
@@ -326,6 +322,8 @@
                 }
             });
         });
+
+
 
     </script>
 
