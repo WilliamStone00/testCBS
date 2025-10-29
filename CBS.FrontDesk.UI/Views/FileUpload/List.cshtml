@@ -181,15 +181,15 @@
     }
           // Map numeric Class -> label
           const CLASS_MAP = {
-            "1": "EQUITY",
-            "2": "FIXED ASSETS",
-            "3": "MEMBERS",
-            "4": "THIRD PARTIES",
-            "5": "TREASURY",
-            "6": "EXPENSES",
-            "7": "REVENUE",
-            "8": "OUTSIDE ORDINARY ACTIVITIES (OOA)",
-            "9": "MANAGEMENT"
+            "EQUITY": "EQUITY",
+            "FIXED ASSETS": "FIXED ASSETS",
+            "MEMBERS": "MEMBERS",
+            "THIRD PARTIES": "THIRD PARTIES",
+            "TREASURY": "TREASURY",
+            "EXPENSES": "EXPENSES",
+            "REVENUE": "REVENUE",
+            "OUTSIDE ORDINARY ACTIVITIES (OOA)": "OUTSIDE ORDINARY ACTIVITIES (OOA)",
+            "MANAGEMENT": "MANAGEMENT"
           };
           function renderClassLabel(raw) {
             if (raw == null) return '-';
@@ -400,22 +400,7 @@
             });
     }
          
-                       /**
-        const updateBtn = !isDeleted ? `
-  <button type="button" class="dropdown-item btn-update" data-id="${recordId}" data-name="${name}">
-    <i class="mdi mdi-pencil-outline me-1 text-success"></i> Update Awaiting Request
-  </button>` : '';
-
-const deleteBtn = !isDeleted ? `
-  <button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
-    <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-  </button>` : '';
-
-        ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-${!isDeleted ? `<li>${updateBtn}</li>` : ''}
-${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
-*/
-          
+                   
 
           // Delegated actions
           function bindDelegatedActions() {

@@ -7,140 +7,104 @@
             <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @("Correspondence Request Creation")
         </h1>
         <p class="card-text text-muted mb-1">
-            Use this form to ceate the correspondance request which is lacking 
+            @("Use this form to create the correspondence request for account mapping.")
         </p>
     </div>
 </div>
+
 <div class="card shadow p-3 mb-4">
-  
-        @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-        {
-            @Html.AntiForgeryToken()
+    @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post,
+        new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+    {
+        @Html.AntiForgeryToken()
 
-            <!-- If you still need AccountWaitingId from your original model, keep a hidden for it -->
-            @* Example: @Html.HiddenFor(m => m.AccountWaitingId) *@
+        @* Preserve operation type *@
+        @Html.HiddenFor(m => m.Type)
 
-            <div class="mt-2">
-                <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
+        <div class="mt-2">
+            <h4 class="mb-3 text-primary">
+                <i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create
+            </h4>
 
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
-                            <label for="Type">Correspondence Type</label>
-                            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
-                        </div>
+            @* ===== COMMON: Mapping Name (read-only) ===== *@
+            <div class="row g-2">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = "readonly", id = "MappingName" })
+                        <label for="MappingName">
+                            @(Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true
+                                ? "Affiliate Account Mapping Name"
+                                : "Branch → Affiliate Account Mapping Name")
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.CorrelationId, new { @class = "form-control", placeholder = "Correlation Id", id = "CorrelationId", maxlength = "50" })
-                            <label for="CorrelationId">Correlation Id</label>
-                            @Html.ValidationMessageFor(m => m.CorrelationId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-12">
-                        <div class="form-floating">
-                            @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
-                            <label for="Rationale">Rationale</label>
-                            @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-            <hr />
-
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.RequestedByUserId, new { @class = "form-control", placeholder = "Requested by (User Id)", id = "RequestedByUserId", maxlength = "50" })
-                            <label for="RequestedByUserId">Requested By (User Id)</label>
-                            @Html.ValidationMessageFor(m => m.RequestedByUserId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.RequestedByName, new { @class = "form-control", placeholder = "Requested by (Name)", id = "RequestedByName", maxlength = "50" })
-                            <label for="RequestedByName">Requested By (Name)</label>
-                            @Html.ValidationMessageFor(m => m.RequestedByName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", placeholder = "Branch Id", id = "BranchId", maxlength = "50" })
-                            <label for="BranchId">Branch Id</label>
-                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.BranchAccountId, new { @class = "form-control", placeholder = "Branch Account Id", id = "BranchAccountId", maxlength = "50" })
-                            <label for="BranchAccountId">Branch Account Id</label>
-                            @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.AffiliateAccountId, new { @class = "form-control", placeholder = "Affiliate Account Id", id = "AffiliateAccountId", maxlength = "50" })
-                            <label for="AffiliateAccountId">Affiliate Account Id</label>
-                            @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.SourceAffiliateAccountId, new { @class = "form-control", placeholder = "Source Affiliate Account Id", id = "SourceAffiliateAccountId", maxlength = "50" })
-                            <label for="SourceAffiliateAccountId">Source Affiliate Account Id</label>
-                            @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.HoPcmfAccountId, new { @class = "form-control", placeholder = "HoPcmf Account Id", id = "HoPcmfAccountId", maxlength = "50" })
-                            <label for="HoPcmfAccountId">HoPcmf Account Id</label>
-                            @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Language", id = "Language", maxlength = "20" })
-                            <label for="Language">Language</label>
-                            @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-            <hr />
-
-                <div class="text-end">
-                    @* Use CorrelationId presence to determine Save vs Update; change to whichever identifier your domain uses *@
-                    @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
-                    {
-                        <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-                    }
-                    else
-                    {
-                        <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    }
                 </div>
             </div>
-        }
-    </div>
+
+            <hr />
+
+            @* ===== CONDITIONAL FIELDS ===== *@
+            @if (Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                @* Affiliate → HO: choose a PCMF account to map to *@
+                <div class="row g-2 mt-1">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold" for="HoPcmfAccountId">HO PCMF Account</label>
+                        @Html.DropDownListFor(
+                            m => m.HoPcmfAccountId,
+                            new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountPcmf ?? Enumerable.Empty<object>()), "Value", "Text"),
+                            "--- Select HO PCMF Account ---",
+                            new { @class = "form-select select2", id = "HoPcmfAccountId" }
+                        )
+                        @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
+                        <div class="form-text">
+                            Select the Head Office PCMF account to map the affiliate account to.
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @* Branch → Affiliate: choose an Affiliate account to map to *@
+                <div class="row g-2 mt-1">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold" for="AffiliateAccountId">Affiliate Account</label>
+                        @Html.DropDownListFor(
+                            m => m.AffiliateAccountId,
+                            new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountMFI ?? Enumerable.Empty<object>()), "Id", "Name"),
+                            "--- Select Affiliate Account ---",
+                            new { @class = "form-select select2", id = "AffiliateAccountId" }
+                        )
+                        @*@Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })*@
+                        <div class="form-text">
+                            Select the Affiliate account to map the branch account to.
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @* ===== DO NOT DISPLAY BRANCH FIELDS PER REQUIREMENT =====
+                (BranchId, BranchAccountId intentionally omitted) *@
+
+            <hr />
+
+            <div class="text-end">
+@*                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
+                {*@
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-save me-1"></i> @GlobalShared.Save
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+               @* }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="mdi mdi-refresh"></i> @GlobalBank.Update
+                    </button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }*@
+            </div>
+        </div>
+    }
+</div>
 
