@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
         [HttpGet]
         public async Task<ActionResult> List()
         {
-            //await loader();
+            await loader();
             return View();
 
         }
@@ -82,17 +82,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             //var affiliate = await _AffiliateService.GetAsync();
             //ViewBag.Affiliates = affiliate;
 
-            var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
-            ViewBag.HoPcmfAccountId = Chartofaccount;
+            var Chartofaccount = await _AffiliateAccountService.GetAllAffiliateAccounts();
+            ViewBag.ChartAccount = Chartofaccount;
 
             //var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
             //ViewBag.HoPcmfAccountId = affiliateAccounts;
 
-            ViewBag.Languages = new List<SelectListItem>
+       /*     ViewBag.Languages = new List<SelectListItem>
                 {
                     new SelectListItem { Text = "English", Value = "en" },
                     new SelectListItem { Text = "French",  Value = "fr" }
-                };
+                };*/
             return true;
 
         }
@@ -103,7 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             //await loader();
             try
             {
-
+                query.AffiliateId = "1";
                 var data = await _AffiliateAccountService.GetcategoryDataTableAsync(query);
 
                 var Affiliate = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount.AffiliateAccountDto>>(JsonConvert.SerializeObject(data.data));

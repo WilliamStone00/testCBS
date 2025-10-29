@@ -150,7 +150,7 @@
                         @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"), "--- " + "HoPcmfAccountId" + " ---",
                             new { @class = "form-select select2", @aria_label = "HoPcmfAccountId" }
                         )
-                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
                         <label>HoPcmfAccountId</label>
                     </div>
                 </div>
