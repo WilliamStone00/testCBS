@@ -398,7 +398,8 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
         {
             try
             {
-
+                model.RequestedByName = GetUserFullName();
+                model.RequestedByUserId = GetUserID();
                 var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(APICallHelper.createCorrespondanceRequest, model);
 
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages

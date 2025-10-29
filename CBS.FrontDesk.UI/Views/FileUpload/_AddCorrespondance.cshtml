@@ -7,140 +7,369 @@
             <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Correspondance Request Creation
         </h1>
         <p class="card-text text-muted mb-1">
-            Use this form to ceate the correspondance request which is lacking 
+            Use this form to create the correspondance request which is lacking
         </p>
     </div>
 </div>
+
 <div class="card shadow p-3 mb-4">
-  
-        @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-        {
-            @Html.AntiForgeryToken()
+    @using (Html.BeginForm("Addcorrespondance", "FileUpload", FormMethod.Post, new { id = "correspondenceForm", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
 
-            <!-- If you still need AccountWaitingId from your original model, keep a hidden for it -->
-            @* Example: @Html.HiddenFor(m => m.AccountWaitingId) *@
+        <div class="mt-2">
+            <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
 
-            <div class="mt-2">
-                <h4 class="mb-3 text-primary"><i class="mdi mdi-email-outline me-2"></i> @GlobalShared.Create</h4>
+            <div class="col-md-12">
+                <label class="form-label small text-success">Account Name</label>
+                <input type="text" class="form-control-plaintext" readonly value="@Model.Name" />
+            </div>
 
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
-                            <label for="Type">Correspondence Type</label>
-                            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+            <hr />
 
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.CorrelationId, new { @class = "form-control", placeholder = "Correlation Id", id = "CorrelationId", maxlength = "50" })
-                            <label for="CorrelationId">Correlation Id</label>
-                            @Html.ValidationMessageFor(m => m.CorrelationId, "", new { @class = "text-danger" })
-                        </div>
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Type, new { @class = "form-control", placeholder = "Correspondence type", id = "Type", maxlength = "50" })
+                        <label for="Type">Correspondence Type</label>
+                        @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="row g-2 mt-2">
-                    <div class="col-md-12">
-                        <div class="form-floating">
-                            @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
-                            <label for="Rationale">Rationale</label>
-                            @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.Language, new SelectList(ViewBag.Languages ?? Enumerable.Empty<SelectListItem>(), "Value", "Text"), "--- Sellect Language ---", new { @class = "form-control select2", id = "Language" })
+                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                        <label for="Language">Language</label>
                     </div>
-                </div>
-
-                <hr />
-
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.RequestedByUserId, new { @class = "form-control", placeholder = "Requested by (User Id)", id = "RequestedByUserId", maxlength = "50" })
-                            <label for="RequestedByUserId">Requested By (User Id)</label>
-                            @Html.ValidationMessageFor(m => m.RequestedByUserId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.RequestedByName, new { @class = "form-control", placeholder = "Requested by (Name)", id = "RequestedByName", maxlength = "50" })
-                            <label for="RequestedByName">Requested By (Name)</label>
-                            @Html.ValidationMessageFor(m => m.RequestedByName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", placeholder = "Branch Id", id = "BranchId", maxlength = "50" })
-                            <label for="BranchId">Branch Id</label>
-                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.BranchAccountId, new { @class = "form-control", placeholder = "Branch Account Id", id = "BranchAccountId", maxlength = "50" })
-                            <label for="BranchAccountId">Branch Account Id</label>
-                            @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.AffiliateAccountId, new { @class = "form-control", placeholder = "Affiliate Account Id", id = "AffiliateAccountId", maxlength = "50" })
-                            <label for="AffiliateAccountId">Affiliate Account Id</label>
-                            @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.SourceAffiliateAccountId, new { @class = "form-control", placeholder = "Source Affiliate Account Id", id = "SourceAffiliateAccountId", maxlength = "50" })
-                            <label for="SourceAffiliateAccountId">Source Affiliate Account Id</label>
-                            @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-2 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.HoPcmfAccountId, new { @class = "form-control", placeholder = "HoPcmf Account Id", id = "HoPcmfAccountId", maxlength = "50" })
-                            <label for="HoPcmfAccountId">HoPcmf Account Id</label>
-                            @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Language, new { @class = "form-control", placeholder = "Language", id = "Language", maxlength = "20" })
-                            <label for="Language">Language</label>
-                            @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div class="text-end">
-                    @* Use CorrelationId presence to determine Save vs Update; change to whichever identifier your domain uses *@
-                    @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
-                    {
-                        <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-                    }
-                    else
-                    {
-                        <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    }
                 </div>
             </div>
-        }
-    </div>
 
+            <hr />
+
+            <!-- Branch Selection Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2", id = "BranchId" })
+                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                        <label>@GlobalUserManagement.Branch</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.BranchAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Branch Account reference ---", new { @class = "form-control select2", id = "BranchAccountId" })
+                        @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                        <label for="BranchAccountId">Branch Account reference</label>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Affiliate Accounts Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.DropDownListFor(m => m.AffiliateAccountId,
+                            new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                            "--- Select Affiliate Account ---",
+                            new { @class = "form-select select2", @aria_label = "Affiliate Account", id = "AffiliateAccountId" })
+                        @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                        <label>Affiliate Account</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conditional Source Affiliate Account -->
+            <div id="sourceAffiliateSection" style="display: none;">
+                <div class="row g-2 mt-2">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.SourceAffiliateAccountId,
+                                new SelectList(ViewBag.AffiliateAccounts ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                                "--- Select Source Affiliate Account ---",
+                                new { @class = "form-select select2", @aria_label = "Affiliate Account", id = "SourceAffiliateAccountId" })
+                            @Html.ValidationMessageFor(m => m.SourceAffiliateAccountId, "", new { @class = "text-danger" })
+                            <label for="SourceAffiliateAccountId">Source Affiliate Account</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Type == "Affiliate")
+            {
+                <!-- HO PCMF Account Section -->
+                <div class="row g-2 mt-2">
+                    <div class="col-md-12">
+                        <div class="form-floating shadow-sm">
+                            @Html.DropDownListFor(m => m.HoPcmfAccountId,
+                                new SelectList(ViewBag.HoPcmfAccountId ?? Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                                "--- Select HoPcmf Account ---",
+                                new { @class = "form-select select2", placeholder = "HoPcmf Account Id", @aria_label = "HoPcmfAccountId", id = "HoPcmfAccountId" })
+                            @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
+                            <label for="HoPcmfAccountId">HoPcmf Account</label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Rationale Section -->
+            <div class="row g-2 mt-2">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextAreaFor(m => m.Rationale, 5, 0, new { @class = "form-control", placeholder = "Rationale / Reason", id = "Rationale" })
+                        <label for="Rationale">Rationale</label>
+                        @Html.ValidationMessageFor(m => m.Rationale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Buttons Section -->
+            <div class="text-end">
+                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            'use strict';
+
+            // Helpers that accept a form context to avoid collisions when multiple forms/modals exist
+            function initSelect2For($form) {
+                if (!($form && $form.length) || !$.fn.select2) return;
+                $form.find('.select2').each(function () {
+                    try {
+                        if (!$(this).data('select2')) $(this).select2({ width: '100%' });
+                    } catch (e) { console.warn('select2 init failed for element', this, e); }
+                });
+            }
+
+            function notify($form, message, type) {
+                // prefer appalert if available; otherwise console.log
+                if (typeof appalert === 'function') {
+                    if (type === 'success') appalert(message, 1, 1);
+                    else if (type === 'warning') appalert(message, 3, 1);
+                    else appalert(message, 2, 1);
+                } else {
+                    console.log((type || 'log').toUpperCase() + ': ' + message);
+                }
+            }
+
+            // Load branch accounts for a given form context
+            function loadBranchAccountsScopedFor($form, branchId) {
+                var $dd = $form.find('#BranchAccountId');
+                if (!$dd.length) return;
+
+                $dd.empty().prop('disabled', true).append($('<option>').val('').text('Loading branch accounts...'));
+
+                if (!branchId) {
+                    $dd.empty().prop('disabled', false).append($('<option>').val('').text('--- Select Branch Account reference ---')).trigger('change');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
+                    type: 'GET',
+                    data: { branchId: branchId },
+                    timeout: 10000,
+                    success: function (response) {
+                        $dd.empty().prop('disabled', false);
+                        var items = [];
+                        if (Array.isArray(response)) items = response;
+                        else if (response && response.data) items = response.data;
+                        else if (response && response.success && Array.isArray(response.data)) items = response.data;
+
+                        if (items && items.length) {
+                            $dd.append($('<option>').val('').text('--- Select Branch Account reference ---'));
+                            items.forEach(function (account) {
+                                var id = account.id || account.Id || account.value || account.Value || '';
+                                var name = account.name || account.Name || account.text || account.Text || '';
+                                $dd.append($('<option>').val(id).text(name));
+                            });
+                            notify($form, 'Branch accounts loaded successfully', 'success');
+                        } else {
+                            $dd.append($('<option>').val('').text('No branch accounts available'));
+                            notify($form, 'No branch accounts found for selected branch', 'warning');
+                        }
+
+                        try { if ($.fn.select2) $dd.trigger('change.select2'); } catch (e) { /* ignore */ }
+                    },
+                    error: function (xhr, status, err) {
+                        $dd.empty().prop('disabled', false).append($('<option>').val('').text('Error loading branch accounts'));
+                        notify($form, 'Failed to load branch accounts. Please try again.', 'error');
+                        console.error('Partial: error loading branch accounts', err);
+                    }
+                });
+            }
+
+            // Scoped form submit: we'll attach when the form appears
+            function bindFormSubmit($form) {
+                if (!$form || !$form.length) return;
+
+                // prevent binding multiple times
+                $form.off('submit.partialSubmit').on('submit.partialSubmit', function (e) {
+                    e.preventDefault();
+
+                    var $f = $(this);
+                    $.validator.unobtrusive.parse($f);
+                    if (!$f.valid()) return false;
+
+                    var confirmed = confirm('Are you sure you want to perform this action?');
+                    if (!confirmed) {
+                        notify($form, 'Transaction cancelled', 'warning');
+                        return false;
+                    }
+
+                    var ajaxConfig = {
+                        type: 'POST',
+                        url: $f.attr('action'),
+                        data: new FormData($f[0]),
+                        success: function (response) {
+                            try {
+                                if (response && (response.success || response.Success)) {
+                                    var status = response.status || response.Status || '';
+                                    if (status === 'Exist') appalert && appalert(response.message || response.Message, 3, 1);
+                                    else if (status === 'Failed') appalert && appalert(response.message || response.Message, 2, 1);
+                                    else appalert && appalert(response.message || response.Message, 1, 1);
+
+                                    if (response.reloadDataView === 'Yes') {
+                                        if (typeof LoadDataMain === 'function' && response.controllerName) {
+                                            LoadDataMain(response.controllerName, response.option || '', response.divLoaderList, response.tableName, response.dataLoaderActionName, 'KEY', 'List');
+                                        } else if (window.affiliateTable) {
+                                            try { window.affiliateTable.ajax.reload(null, false); } catch (e) { /* ignore */ }
+                                        }
+                                    }
+
+                                    // close modal if present
+                                    try {
+                                        var corrModalEl = document.getElementById('correspondenceModal');
+                                        if (corrModalEl) {
+                                            var m = bootstrap.Modal.getInstance(corrModalEl) || new bootstrap.Modal(corrModalEl);
+                                            m.hide();
+                                        }
+                                    } catch (e) { /* ignore */ }
+                                } else {
+                                    var st = response && (response.Status || response.status);
+                                    if (st === 'Exist') appalert && appalert(response.message || response.Message, 3, 1);
+                                    else appalert && appalert(response.message || response.Message, 2, 1);
+                                }
+                            } catch (ex) {
+                                console.error('Partial submit success handler error:', ex);
+                            }
+                        },
+                        error: function (err) {
+                            console.error('Partial submit error:', err);
+                            if (err.status === 401) window.location.href = '/Authentication/Login';
+                            else appalert && appalert(err.statusText || 'Request failed', 0, 1);
+                        }
+                    };
+
+                    if ($f.attr('enctype') === 'multipart/form-data') {
+                        ajaxConfig.contentType = false;
+                        ajaxConfig.processData = false;
+                    }
+
+                    $.ajax(ajaxConfig);
+                    return false;
+                });
+            }
+
+            // When a correspondence form is added to DOM, initialize it.
+            // Use MutationObserver if available, otherwise fallback to a periodic initializer.
+            function initCorrespondenceFormIfPresent() {
+                var $form = $('#correspondenceForm');
+                if (!$form.length) return false;
+
+                initSelect2For($form);
+                bindFormSubmit($form);
+
+                // wire branch change scoped handler (direct bind on the form element)
+                $form.find('#BranchId').off('change.partialBranch').on('change.partialBranch', function () {
+                    var branchId = $(this).val();
+                    loadBranchAccountsScopedFor($form, branchId);
+                });
+
+                // wire Type show/hide logic
+                $form.find('#Type').off('change.partialType').on('change.partialType', function () {
+                    var type = $(this).val();
+                    if (type === 'AffiliateToHo') $form.find('#sourceAffiliateSection').show();
+                    else {
+                        $form.find('#sourceAffiliateSection').hide();
+                        $form.find('#SourceAffiliateAccountId').val('').trigger('change');
+                    }
+                });
+
+                // If branch already selected (edit mode), load accounts immediately
+                var pre = $form.find('#BranchId').val();
+                if (pre) {
+                    loadBranchAccountsScopedFor($form, pre);
+                }
+
+                // Cleanup select2 and handlers when modal hidden (if loaded into correspondenceModal)
+                var modalEl = document.getElementById('correspondenceModal');
+                if (modalEl) {
+                    $(modalEl).off('hidden.bs.modal.partialCleanup').on('hidden.bs.modal.partialCleanup', function () {
+                        try {
+                            $form.find('.select2').each(function () {
+                                if ($(this).data('select2')) $(this).select2('destroy');
+                            });
+                        } catch (e) { /* ignore */ }
+
+                        // unbind namespaced handlers
+                        $form.off('.partialSubmit .partialBranch .partialType');
+                    });
+                }
+
+                return true;
+            }
+
+            // Attempt initialization immediately (for synchronous render), and also watch for later insertions.
+            $(function () {
+                if (!initCorrespondenceFormIfPresent()) {
+                    // if form not present yet, watch for insertion using MutationObserver (if supported)
+                    if (window.MutationObserver) {
+                        var observer = new MutationObserver(function (mutations, obs) {
+                            if (initCorrespondenceFormIfPresent()) {
+                                obs.disconnect();
+                            }
+                        });
+                        observer.observe(document.body, { childList: true, subtree: true });
+                        // safety timeout to disconnect observer after 10s
+                        setTimeout(function () { try { observer.disconnect(); } catch (e) { } }, 10000);
+                    } else {
+                        // fallback: poll a few times
+                        var tries = 0;
+                        var poll = setInterval(function () {
+                            tries++;
+                            if (initCorrespondenceFormIfPresent() || tries > 20) clearInterval(poll);
+                        }, 200);
+                    }
+                }
+            });
+
+            // Additionally, handle delegated change if someone dynamically replaces the form element entirely
+            // This ensures branch change still triggers loading even if form was replaced after init.
+            $(document).off('change.delegatedCorrespondenceBranch', '#correspondenceForm #BranchId').on('change.delegatedCorrespondenceBranch', '#correspondenceForm #BranchId', function () {
+                var $form = $(this).closest('form');
+                if ($form && $form.length) loadBranchAccountsScopedFor($form, $(this).val());
+            });
+
+        })(jQuery);
+    </script>
+}
