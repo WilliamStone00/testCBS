@@ -34,7 +34,7 @@ namespace CBS.BusinessService.AccountingV2
             try
             {
                 // ✅ Get required values
-                var branchId = "264139464310378"; // or GetBranchID();
+                var branchId = GetBranchID();
                 var language = GetUserLanguage(); // e.g., "en"
 
                 // ✅ Validate before sending
@@ -83,26 +83,34 @@ namespace CBS.BusinessService.AccountingV2
                         null, "Payload cannot be null.");
                     return ExecutionMessage;
                 }
-
-                model.BranchId = "264139464310378"; //GetBranchID(); // <-- Add this line
+                if (model.BranchId==null || model.BranchId==string.Empty)
+                {
+                    model.BranchId = GetBranchID(); // <-- Add this line
+                }
+                
                 model.Reference = "ME-20251013-2003435135";
                 model.OperationCode = "MANUAL.ENTRY";
                 model.ExternalApplicationName = "TSC.BackOffice";
                 model.PostMode = "HOLD_FOR_APPROVAL";
+                model.Narration = model.Payload.Memo;
                 //model.CorrelationId = "CORR-IB-20251013-01";
                 //model.AuxiliaryReference = "AUX-IB-RECLASS-10";
 
 
                 // ✅ Call API
                 var response = await _manualJournalEntryapiCallerHelper
-                    .PostAsync<ServiceResponse<JournalEntryPayload>>(APICallHelper.PostManualJournalEntry, model);
+                    .PostAsync<ServiceResponse<ManualEntryresponnse>>(APICallHelper.PostManualJournalEntry, model);
 
                 // ✅ Handle success
-                if (response.IsSuccess)
+                // ✅ Handle success or failure
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, "Journal Entry",
+                    var journalData = response.ApiResponseData.Data; // ManualEntryData object
+
+                    GetExecutionMessages(journalData, true, "Journal Entry",
                         MessagesResults.Success, ExecutionProcessOption.InsertObject,
-                        SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                        SystemMessageStatus.Success.ToString(), null,
+                        response.ApiResponseData.Message);
                 }
                 else
                 {
@@ -120,12 +128,14 @@ namespace CBS.BusinessService.AccountingV2
 
             return ExecutionMessage;
         }
+            
+        }
 
     }
 
 
 
-}
+
 
 
 

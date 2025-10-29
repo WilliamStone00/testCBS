@@ -313,7 +313,7 @@ namespace CBS.BusinessService.AccountingV2.BranchCashConfigV
                         Code = b.Code,
                         Name = $"[{b.Code}] {b.Name}"
                     })
-                    .OrderBy(b => b.Code)
+                    .OrderBy(b => b.Id)
                     .ToList();
             }
             catch (Exception)

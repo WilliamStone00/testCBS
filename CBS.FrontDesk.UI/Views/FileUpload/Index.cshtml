@@ -87,83 +87,85 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
 
-                    <div class="row g-3">
-                        <!-- IS AFFILIATE CHECKBOX -->
-                        <div class="col-12">
-                            <div class="form-check">
-                                @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
-                                <label class="form-check-label" for="IsAffiliateCheckbox">@AccountingV2.IsAffiliate</label>
-                            </div>
-                        </div>
-
-                        <!-- BRANCH DROPDOWN -->
-                        <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
-                            <label for="BranchId" class="form-label fw-semibold">🏢 @ChequeManagements.BranchId</label>
-                            @Html.DropDownListFor(m => m.branchId,
-                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                                "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                                new
-                                     {
-                                    @class = "form-control select2",
-                                    id = "BranchId",
-                                    disabled = isAffiliate ? "disabled" : null
-                                })
-                            @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <!-- AFFILIATE DROPDOWN -->
-                        <div class="col-12 affiliate-dropdown @(isAffiliate ? "" : "d-none")">
-                            <label for="AffiliateId" class="form-label fw-semibold">👤 @AccountingV2.SelectAffiliate</label>
-                            @Html.DropDownListFor(m => m.affiliateId,
-                                new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
-                                "--- " + @AccountingV2.SearchAffiliate + " ---",
-                                new
-                                     {
-                                    @class = "form-control select2",
-                                    id = "AffiliateId",
-                                    disabled = isAffiliate ? null : "disabled"
-                                })
-                            @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">@AccountingV2.Selectfile</label>
-                            <div class="input-group">
-
-                                <input type="file" name="file" id="file" class="form-control" required />
-                                <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
-                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
-                        <div class="col-12 text-end mt-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                @* Render initial visible button server-side, keep the other hidden with d-none so JS can toggle immediately *@
-                                @if (isAffiliate)
-                                {
-                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary">
-                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
-                                    </a>
-
-                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
-                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
-                                        <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
-                                    </a>
-
-                                    <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
-                                        <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
-                                    </a>
-                                }
-                            </div>
+                <div class="row g-3">
+                    <!-- IS AFFILIATE CHECKBOX -->
+                    <div class="col-12">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
+                            <label class="form-check-label" for="IsAffiliateCheckbox">Check to Upload Affiliate COA</label>
                         </div>
                     </div>
+
+                    <!-- BRANCH DROPDOWN -->
+                    <div class="col-12 branch-dropdown @(isAffiliate ? "d-none" : "")">
+                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                        @Html.DropDownListFor(m => m.branchId,
+                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                            new
+                                 {
+                                @class = "form-control select2",
+                                id = "BranchId",
+                                disabled = isAffiliate ? "disabled" : null
+                            })
+                        @Html.ValidationMessageFor(m => m.branchId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- AFFILIATE DROPDOWN -->
+                    <div class="col-12 affiliate-dropdown @(isAffiliate ? "" : "d-none")">
+                        <label for="AffiliateId" class="form-label fw-semibold">👤 @AccountingV2.SelectAffiliate</label>
+                        @Html.DropDownListFor(m => m.affiliateId,
+                            new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- " + @AccountingV2.SearchAffiliate + " ---",
+                            new
+                                 {
+                                @class = "form-control select2",
+                                id = "AffiliateId",
+                                disabled = isAffiliate ? null : "disabled"
+                            })
+                        @Html.ValidationMessageFor(m => m.affiliateId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label id="fileLabel" class="form-label fw-semibold">
+                            <!-- Default text that will be updated by JavaScript -->
+                            @(isAffiliate ? "Select COF" : "Select Trial Balance (6 columns)")
+                        </label>
+                        <div class="input-group">
+                            <input type="file" name="file" id="file" class="form-control" required />
+                            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @ChequeManagements.UploadFile
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
+                    <div class="col-12 text-end mt-3">
+                        <div class="d-flex justify-content-end gap-2">
+                            @* Render initial visible button server-side, keep the other hidden with d-none so JS can toggle immediately *@
+                            @if (isAffiliate)
+                            {
+                                <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                    <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                </a>
+
+                                <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                    <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                </a>
+                            }
+                            else
+                            {
+                                <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
+                                    <i class="mdi mdi-file-download-outline me-1"></i> Download TryBalance Template
+                                </a>
+
+                                <a id="affiliateTemplateLink" href="@Url.Action("AffiliateTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
+                                    <i class="mdi mdi-file-download-outline me-1"></i> Download MFI Template
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         }  <!-- using block closed -->
@@ -204,6 +206,9 @@
 
                         $('#affiliateTemplateLink').removeClass('d-none').show();
                         $('#branchTemplateLink').addClass('d-none').hide();
+
+                        // Update label text dynamically
+                        $('#fileLabel').text('Select COF');
                     } else {
                         $('.affiliate-dropdown').addClass('d-none').hide();
                         $('.branch-dropdown').removeClass('d-none').show();
@@ -213,11 +218,15 @@
 
                         $('#affiliateTemplateLink').addClass('d-none').hide();
                         $('#branchTemplateLink').removeClass('d-none').show();
+
+                        // Update label text dynamically
+                        $('#fileLabel').text('Select Trial Balance (6 columns)');
                     }
                 } catch (ex) {
                     console.error('toggleAffiliateUI error', ex);
                 }
             }
+
 
             function safeParseUnobtrusive($context) {
                 try {

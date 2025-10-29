@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.FilesUpload;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
@@ -53,7 +54,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
             ViewBag.Branches = await _branchServices.GetBranches();
-            var affiliate = await _affiliateService.GetAsync();
+            var affiliate = await _affiliateService.GetAffiliatesAsync();
             ViewBag.Affiliates = affiliate;
             var classes = _chartOfAccountsV.GetAllClass();
             ViewBag.Classes = classes;
