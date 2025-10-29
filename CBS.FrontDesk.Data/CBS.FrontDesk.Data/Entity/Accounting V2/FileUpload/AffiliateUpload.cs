@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -86,11 +87,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
     public class AddCORRESPONDANCE
     {
         public string Type { get; set; }
-        public string Rationale { get; set; }
-        public string CorrelationId { get; set; }
-        public string RequestedByUserId { get; set; }
-        public string RequestedByName { get; set; }
         public string BranchId { get; set; }
+        public string Name { get; set; }
         public string BranchAccountId { get; set; }
         public string AffiliateAccountId { get; set; }
         public string SourceAffiliateAccountId { get; set; }

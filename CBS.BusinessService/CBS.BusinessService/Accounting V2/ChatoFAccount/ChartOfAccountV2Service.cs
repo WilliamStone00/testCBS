@@ -1,4 +1,5 @@
 ﻿using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
@@ -7,6 +8,8 @@ using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using CBS.FrontDesk.Service;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -154,6 +157,63 @@ namespace CBS.BusinessService.Accounting_V2
 
                 // Re-throw to trigger fallback
                 throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
+
+        public List<StringValues> GetAllClass()
+        {
+            return new List<StringValues>()
+            {
+                new StringValues("EQUITY","1"),
+                new StringValues("FIXED ASSETS","2"),
+                new StringValues("MEMBERS", "3"),
+                new StringValues("THIRD PARTIES","4"),
+                new StringValues("TREASURY", "5"),
+                new StringValues("EXPENSES", "6"),
+                new StringValues("REVENUE","7"),
+                new StringValues("OUTSIDE ORDINARY ACTIVITIES (OOA)", "8"),
+                new StringValues("MANAGEMENT","9"),
+
+            };
+        }
+
+        public async Task<List<StringValues>> GetAllPCMFAccounts()
+        {
+            try
+            {
+                COADATATABLE_Query query = new COADATATABLE_Query()
+                {
+                    Options = new DataTableOptions() { lang=GetUserLanguage() }
+
+                };
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.COAdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess || response.ApiResponseData == null)
+                {
+                    return new List<StringValues>();
+                }
+
+
+                var serialise = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(
+                    JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
+
+                // Convert HoPcmfAccount to StringValues
+                var stringValuesList = serialise.Select(account => new StringValues
+                {
+                    Text = account.Code+"-"+ account.Name, // or account.NameFr based on your language preference
+                    Value = account.Id     // or account.Code depending on what you want as value
+                }).ToList();
+
+                return stringValuesList;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                return new List<StringValues>();
             }
         }
 

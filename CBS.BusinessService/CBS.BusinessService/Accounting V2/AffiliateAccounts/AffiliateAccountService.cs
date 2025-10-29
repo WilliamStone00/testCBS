@@ -8,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -81,6 +82,37 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
 
                 // Re-throw to trigger fallback
                 throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+            }
+        }
+
+
+        public async Task<List<AffiliateAccountDto>> GetAllAffiliateAccounts()
+        {
+            try
+            {
+                AffiliateAccountQuery query = new AffiliateAccountQuery()
+                {
+                    Options = new DataTableOptions() { lang = GetUserLanguage() },
+                    AffiliateId = "1"
+
+                };
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.AffiliateAccountdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess || response.ApiResponseData == null)
+                {
+                    return new List<AffiliateAccountDto>();
+                }
+
+                
+                var affiliateAccounts = JsonConvert.DeserializeObject<List<AffiliateAccountDto>>(JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
+
+                return affiliateAccounts;
+            }
+            catch (Exception ex)
+            {
+                return new List<AffiliateAccountDto>();
             }
         }
 
