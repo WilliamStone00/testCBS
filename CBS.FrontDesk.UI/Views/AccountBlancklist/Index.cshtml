@@ -1,10 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklist
 @using Resources
 @{
-    ViewBag.Title = "Account Blacklist - Menu Configuration";
-    var isAffiliate = Model?.isAffiliate == true;
-    // Optional: Chart of Accounts for centralized mode should be provided by controller via ViewBag.ChartOfAccounts
-    // Example: ViewBag.ChartOfAccounts = new List<SelectListItem>{ new SelectListItem("Cash","1"), ... }
+    ViewBag.Title = "Account Blacklist - Menu Configuration";    
 }
 
 <div class="row">
@@ -14,10 +11,7 @@
                 <h1 class="card-title text-primary fw-bold mb-2">
                     <i class="mdi mdi-shield-account-outline me-2"></i> Account Blacklist (Menu configuration)
                 </h1>
-                <p class="card-text text-muted mb-1">Use this screen to upload/account map items that will be blacklisted or routed differently on specific menus.</p>
-                <p class="card-text text-info fw-semibold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Items uploaded here will affect menu-level account visibility and operations.
-                </p>
+                <p class="card-text text-muted mb-1">Use this view to configure and map items that will be blacklisted or routed differently on specific menus.</p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
@@ -63,144 +57,109 @@
 
 <!-- Main Workspace Card -->
 <div class="card shadow-sm border-0 mb-4">
-    <div id="mainWorkspace" data-is-affiliate="@(isAffiliate ? "true" : "false")">
-        @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
-        {
-            @Html.AntiForgeryToken()
+    @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
+    {
+        @Html.AntiForgeryToken()
 
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h6 class="mb-0 text-primary d-flex align-items-center">
-                        <i class="mdi mdi-cloud-upload-outline me-2"></i>
-                        Upload / Configure Account Blacklist
-                        <span class="badge bg-success ms-2">Required</span>
-                    </h6>
-                </div>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="mb-0 text-primary d-flex align-items-center">
+                    <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                     Configure Account Menu Blacklist
+                  </h6>
+            </div>
 
-                <div class="card-body">
-                    <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
-                        <i class="mdi mdi-information-outline me-2"></i>
-                        <div>Files should not exceed <strong>10MB</strong>. Use templates if available.</div>
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="row g-3">
+                    <!-- IsCentralized checkbox (default true) -->
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox" id="IsCentralizedCheckbox" name="IsCentralized" class="form-check-input" checked />
+                            <label class="form-check-label" for="IsCentralizedCheckbox">Is Centralized (use centralized CoA)</label>
+                        </div>
                     </div>
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+                    <!-- CENTRALIZED: show Branch Accounts (global) -->
+                    <div class="col-12 centralized-row">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6">
+                                <label for="BranchAccountId" class="form-label fw-semibold">Branch Account reference (All branches)</label>
+                                @Html.DropDownListFor(m => m.branchAccountId,
+                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                                     "--- Loading branch accounts ---",
+                                     new { @class = "form-control select2", id = "BranchAccountId" })
+                                     @Html.ValidationMessageFor(m => m.branchAccountId, "", new { @class = "text-danger" })
+                            </div>                                                     
 
-                    <div class="row g-3">
-                        <!-- IS AFFILIATE CHECKBOX (existing) -->
-                        <div class="col-12">
-                            <div class="form-check">
-                                @Html.CheckBoxFor(m => m.isAffiliate, new { @class = "form-check-input", id = "IsAffiliateCheckbox" })
-                                <label class="form-check-label" for="IsAffiliateCheckbox">Check to Upload Affiliate COA</label>
+                            <div class="col-md-6">
+                                <label for="TransactionTypeCentral" class="form-label fw-semibold">Transaction Type</label>
+                                <select id="TransactionTypeCentral" name="TransactionType" class="form-control select2">
+                                    <option value="">--- Select Transaction Type ---</option>
+                                    <option value="ManualEntries">Manual entries</option>
+                                    <option value="OtherCashIn">Other Cash in</option>
+                                    <option value="OtherCashOut">Other cash out</option>
+                                    <option value="MemberToGL">Member to GL</option>
+                                    <option value="GLToMember">GL to Member</option>
+                                    <option value="GLToGL">GL to GL</option>
+                                </select>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- NEW: IsCentralized checkbox (affects which account selectors are shown) -->
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input type="checkbox" id="IsCentralizedCheckbox" name="IsCentralized" class="form-check-input" />
-                                <label class="form-check-label" for="IsCentralizedCheckbox">Is Centralized (use centralized CoA)</label>
+                    <!-- NON-CENTRALIZED: show Branch selector + Branch-specific accounts -->
+                    <div class="col-12 non-centralized-row d-none">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6 branch-dropdown">
+                                <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                                @Html.DropDownListFor(m => m.BranchID,
+                                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                    "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                                    new { @class = "form-control select2", id = "BranchId" })
+                                @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="BranchAccountIdLocal" class="form-label fw-semibold">Branch Account reference</label>
+                                @* reuse the same BranchAccountId control on the page (same id) *@
+                                @Html.DropDownList("BranchAccountId",
+                                    new SelectList(Enumerable.Empty<SelectListItem>()),
+                                    "--- Select Branch Account reference ---",
+                                    new { @class = "form-control select2", id = "BranchAccountId" })
+                            </div>
+
+                            <div class="col-md-6 mt-2">
+                                <label for="TransactionTypeLocal" class="form-label fw-semibold">Transaction Type</label>
+                                <select id="TransactionTypeLocal" name="TransactionType" class="form-control select2">
+                                    <option value="">--- Select Transaction Type ---</option>
+                                    <option value="ManualEntries">Manual entries</option>
+                                    <option value="OtherCashIn">Other Cash in</option>
+                                    <option value="OtherCashOut">Other cash out</option>
+                                    <option value="MemberToGL">Member to GL</option>
+                                    <option value="GLToMember">GL to Member</option>
+                                    <option value="GLToGL">GL to GL</option>
+                                </select>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- CENTRALIZED COA + Transaction type -->
-                        <div class="col-12 centralized-row d-none">
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <label for="CentralizedCoA" class="form-label fw-semibold">Chart of Accounts (Centralized)</label>
-                                    @Html.DropDownList("CentralizedCoA",
-                                        ViewBag.ChartOfAccounts as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>()),
-                                        "--- Select centralized CoA ---",
-                                        new { @class = "form-control select2", id = "CentralizedCoA" })
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="TransactionType" class="form-label fw-semibold">Transaction Type</label>
-                                    <select id="TransactionType" name="TransactionType" class="form-control select2">
-                                        <option value="">--- Select Transaction Type ---</option>
-                                        <option value="ManualEntries">Manual entries</option>
-                                        <option value="OtherCashIn">Other Cash in</option>
-                                        <option value="OtherCashOut">Other cash out</option>
-                                        <option value="MemberToGL">Member to GL</option>
-                                        <option value="GLToMember">GL to Member</option>
-                                        <option value="GLToGL">GL to GL</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- NON-CENTRALIZED: Branch selector + Branch Account + Transaction Type -->
-                        <div class="col-12 non-centralized-row @(isAffiliate ? "d-none" : "")">
-                            <div class="row g-2">
-                                <!-- BRANCH DROPDOWN -->
-                                <div class="col-md-6 branch-dropdown">
-                                    <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
-                                    @Html.DropDownListFor(m => m.BranchID,
-                                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                                        new { @class = "form-control select2", id = "BranchId" })
-                                    @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- BRANCH ACCOUNT (populated via AJAX) -->
-                                <div class="col-md-6">
-                                    <label for="BranchAccountId" class="form-label fw-semibold">Branch Account reference</label>
-                                    @Html.DropDownListFor(m => m.branchAccountId,
-                                        new SelectList(Enumerable.Empty<SelectListItem>()),
-                                        "--- Select Branch Account reference ---",
-                                        new { @class = "form-control select2", id = "BranchAccountId" })
-                                </div>
-
-                                <!-- Transaction Type (same as centralized) -->
-                                <div class="col-md-6 mt-2">
-                                    <label for="TransactionTypeLocal" class="form-label fw-semibold">Transaction Type</label>
-                                    <select id="TransactionTypeLocal" name="TransactionType" class="form-control select2">
-                                        <option value="">--- Select Transaction Type ---</option>
-                                        <option value="ManualEntries">Manual entries</option>
-                                        <option value="OtherCashIn">Other Cash in</option>
-                                        <option value="OtherCashOut">Other cash out</option>
-                                        <option value="MemberToGL">Member to GL</option>
-                                        <option value="GLToMember">GL to Member</option>
-                                        <option value="GLToGL">GL to GL</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3 col-12">
-                            <label id="fileLabel" class="form-label fw-semibold">
-                                Select file to upload
-                            </label>
-                            <div class="input-group">
-                                <input type="file" name="file" id="file" class="form-control" required />
-                                <button type="submit" class="btn btn-primary" id="btnSubmitUpload">
-                                    <i class="mdi mdi-cloud-upload-outline me-1"></i> Upload File
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- DYNAMIC TEMPLATE DOWNLOAD BUTTONS -->
-                        <div class="col-12 text-end mt-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                <a id="centralTemplateLink" href="@Url.Action("CentralTemplate", "FileUpload")" class="btn btn-outline-primary d-none">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download Central Template
-                                </a>
-
-                                <a id="branchTemplateLink" href="@Url.Action("BranchAccountTemplate", "FileUpload")" class="btn btn-outline-primary">
-                                    <i class="mdi mdi-file-download-outline me-1"></i> Download Branch Template
-                                </a>
-                            </div>
+                    <!-- Placeholder for menus / mapping UI (always displayed after accounts are chosen) -->
+                    <div class="col-12 mt-3" id="menuMappingArea">
+                       <div class="card p-3 border-1">
+                            <h6 class="fw-semibold">Menu mappings</h6>
+                            <p class="small text-muted mb-0">Configure the menus and routing for the selected account.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        }  <!-- using block closed -->
-    </div>
 
-    <div class="card-footer bg-light text-muted text-end">
-        <small>
-            <i class="mdi mdi-information-outline me-1 text-info"></i> Template files make uploads fast and reliable.
-        </small>
-    </div>
+            <div class="card-footer bg-light text-end">
+                <button id="btnReset" type="button" class="btn btn-outline-secondary me-2">Reset</button>
+                <button id="btnSubmitUpload" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {
@@ -223,28 +182,16 @@
                     $('.centralized-row').removeClass('d-none').show();
                     $('.non-centralized-row').addClass('d-none').hide();
 
-                    $('#CentralizedCoA').prop('disabled', false);
+                    // centralized mode: load all branch accounts into #BranchAccountId
                     $('#BranchId').prop('disabled', true);
-                    $('#BranchAccountId').prop('disabled', true);
 
-                    // show central template link
-                    $('#centralTemplateLink').removeClass('d-none').show();
-                    $('#branchTemplateLink').addClass('d-none').hide();
-
-                    // optionally update the file label
-                    $('#fileLabel').text('Select centralized mapping file (COA)');
                 } else {
                     $('.centralized-row').addClass('d-none').hide();
                     $('.non-centralized-row').removeClass('d-none').show();
 
-                    $('#CentralizedCoA').prop('disabled', true);
                     $('#BranchId').prop('disabled', false);
-                    $('#BranchAccountId').prop('disabled', false);
-
-                    $('#centralTemplateLink').addClass('d-none').hide();
-                    $('#branchTemplateLink').removeClass('d-none').show();
-
-                    $('#fileLabel').text('Select Trial Balance (6 columns) or branch mapping file');
+                    // clear or set branch account placeholder until a branch is selected
+                    $('#BranchAccountId').empty().append($('<option>').val('').text('--- Select Branch Account reference ---')).prop('disabled', false);
                 }
 
                 // refresh select2 visuals
@@ -255,7 +202,8 @@
                         });
                     }
                 } catch (e) { /* ignore */ }
-            }
+            }    
+                       
 
             // Load branch accounts by branchId and populate BranchAccountId dropdown
             function loadBranchAccounts(branchId, $targetDropdown) {
@@ -300,7 +248,7 @@
                 });
             }
 
-            // File upload behavior kept from your original; no change to business logic except hooking UI
+
             window.fileupload = window.fileupload || function (form) {
                 // original fileupload implementation - keep as-is
                 try {
@@ -348,24 +296,6 @@
                                         if (json.status === "Exist") { if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message); }
                                         else if (json.status === "Failed") { if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message); }
                                         else { if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Upload succeeded.'); }
-
-                                        // redirect logic preserved
-                                        if (json.data) {
-                                            if (json.data.AutoMatchedAccounts > 0) {
-                                                setTimeout(function () {
-                                                    if (typeof appalert === 'function') appalert('Auto matched accounts: ' + json.data.AutoMatchedAccounts + '. Redirecting...', 1,1);
-                                                    window.open('/FileUpload/AwaitingCorrespondence', '_blank');
-                                                }, 1500);
-                                            } else if (json.data.awaitingCorrespondenceCreated > 0) {
-                                                setTimeout(function () {
-                                                    if (typeof appalert === 'function') appalert('Awaiting correspondence created: ' + json.data.awaitingCorrespondenceCreated + '. Redirecting...', 1,1);
-                                                    window.open('/FileUpload/List', '_blank');
-                                                }, 1500);
-                                            } else if (json.data.requiresMappingAccounts > 0) {
-                                                var listUrl = '@Url.Action("List", "FileUpload")';
-                                                window.open(listUrl, '_blank');
-                                            }
-                                        }
 
                                         if (json.html) {
                                             $('#mainWorkspace').html(json.html);
@@ -417,38 +347,58 @@
                 // init select2 for visible controls
                 ensureSelect2Init('#BranchId');
                 ensureSelect2Init('#BranchAccountId');
-                ensureSelect2Init('#CentralizedCoA');
-                ensureSelect2Init('#TransactionType');
+                ensureSelect2Init('#TransactionTypeCentral');
                 ensureSelect2Init('#TransactionTypeLocal');
 
                 // hook IsCentralized checkbox
                 var $centralChk = $('#IsCentralizedCheckbox');
-                // init from data-attribute fallback (page default non-centralized)
-                var initialCentral = $centralChk.is(':checked') || false;
+                // default true (checkbox has checked attribute in markup)
+                var initialCentral = true;
                 setCentralized(initialCentral);
-
+                // keep checkbox in sync if user toggles
                 $centralChk.off('change.central').on('change.central', function () {
                     setCentralized($(this).is(':checked'));
                 });
 
-                // Branch change -> load accounts
+                // Branch change -> load specific accounts
                 $('#BranchId').off('change.branch').on('change.branch', function () {
                     var branchId = $(this).val();
                     loadBranchAccounts(branchId, $('#BranchAccountId'));
                 });
 
-                // If a branch is already selected (edit mode), load its accounts
+                // If a branch is already selected (edit mode), load its accounts (only if non-centralized)
                 var preBranch = $('#BranchId').val();
-                if (preBranch) loadBranchAccounts(preBranch, $('#BranchAccountId'));
+                if (preBranch && !$centralChk.is(':checked')) loadBranchAccounts(preBranch, $('#BranchAccountId'));
 
-                // Ensure selecting TransactionType syncs across both selects (if desired)
-                $('#TransactionType').on('change', function () {
+                // Ensure selecting TransactionType syncs across both selects
+                $('#TransactionTypeCentral').on('change', function () {
                     var v = $(this).val();
                     $('#TransactionTypeLocal').val(v).trigger('change');
                 });
                 $('#TransactionTypeLocal').on('change', function () {
                     var v = $(this).val();
-                    $('#TransactionType').val(v).trigger('change');
+                    $('#TransactionTypeCentral').val(v).trigger('change');
+                });
+
+                // Reset button: clear form and restore defaults (centralized = true)
+                $('#btnReset').on('click', function () {
+                    // reset form values
+                    var $form = $(this).closest('form');
+                    if ($form && $form.length) {
+                        $form[0].reset();
+                    }
+                    // restore centralized default and UI
+                    $('#IsCentralizedCheckbox').prop('checked', true);
+                    setCentralized(true);
+
+                    // reset selects
+                    try {
+                        if ($.fn.select2) {
+                            $('.select2').each(function () {
+                                try { $(this).val('').trigger('change'); } catch (e) { /* ignore */ }
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
                 });
             });
         })(jQuery);

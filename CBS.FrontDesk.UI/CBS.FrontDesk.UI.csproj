@@ -7693,8 +7693,8 @@
     </Content>
     <Content Include="App_GlobalResources\AccountingConfiguration.zip" />
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
-    <Content Include="AppFiles\AffiliateAccountUpload\MFIUploadTemplateForCode.xlsx" />
-    <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheetTemplateforcode.xlsx" />
+    <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
+    <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
