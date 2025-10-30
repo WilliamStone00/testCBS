@@ -242,9 +242,9 @@
         <i class="mdi mdi-close"></i> Close
     </button>
     <div>
-       
         <button type="button" id="btnApprove" class="btn btn-success">
-            <i class="mdi mdi-check-circle-outline"></i> Approve
+            <i class="mdi mdi-check-circle-outline"></i>
+            <span class="btn-text">Approve</span>
         </button>
     </div>
 </div>
@@ -255,37 +255,66 @@
 <script>
     $(document).ready(function () {
 
+        const state = '@(Model?.State ?? "")';
+
+        // Disable Approve button if state is APPROVED
+        if (state.toUpperCase() === 'APPROVED') {
+            $('#btnApprove')
+                .prop('disabled', true)
+                .addClass('btn-secondary')
+                .removeClass('btn-success');
+        }
+
         $('#btnApprove').click(function (e) {
             e.preventDefault();
+            const $btn = $(this);
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
 
-            // Prepare payload
+            // Show spinner
+            $btn.prop('disabled', true);
+            $icon.removeClass('mdi-check-circle-outline')
+                 .addClass('mdi-loading mdi-spin');
+            $text.text('Approving...');
+
             const payload = {
-                Reference: '@Model.Reference',   // your journal reference from Razor model
-                BranchId: '@Model.BranchId',     // branch id
-                Approver: '@User.Identity.Name'  // current user
+                Reference: '@Model.Reference',
+                BranchId: '@Model.BranchId',
+                Approver: '@User.Identity.Name'
             };
 
             $.ajax({
-                url: '@Url.Action("Approve", "JournalHead")', // controller action
+                url: '@Url.Action("Approve", "JournalHead")',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(payload),
                 success: function (response) {
                     if (response.success) {
-                        toastr.success(response.message); // success notification
-                        // Optional: disable button after approval
-                        $('#btnApprove').prop('disabled', true);
+                        toastr.success(response.message);
+                        // Keep disabled after approval
+                        $btn.prop('disabled', true);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle');
+                        $text.text('Approved');
                     } else {
                         toastr.error(response.message);
+                        // Re-enable if failed
+                        $btn.prop('disabled', false);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle-outline');
+                        $text.text('Approve');
                     }
                 },
                 error: function (xhr, status, error) {
                     toastr.error("An error occurred: " + error);
+                    // Re-enable on error
+                    $btn.prop('disabled', false);
+                    $icon.removeClass('mdi-loading mdi-spin')
+                         .addClass('mdi-check-circle-outline');
+                    $text.text('Approve');
                 }
             });
         });
-
     });
 </script>
-
 

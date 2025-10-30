@@ -52,7 +52,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
 
         public async Task<bool> loader()
         {
-            var branches = await _branchServices.GetBranches();
+            var branches = await _branchServices.GetCounterpartyBranches();
             ViewBag.Branches = branches;
 
             
