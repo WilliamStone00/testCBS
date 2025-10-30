@@ -1,0 +1,406 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklist
+@using Resources
+@{
+    ViewBag.Title = "Account Blacklist - Menu Configuration";    
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-shield-account-outline me-2"></i> Account Blacklist (Menu configuration)
+                </h1>
+                <p class="card-text text-muted mb-1">Use this view to configure and map items that will be blacklisted or routed differently on specific menus.</p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-2 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlacklistTips" aria-expanded="false" aria-controls="collapseBlacklistTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseBlacklistTips" class="collapse">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Upload mode</strong>
+                    <div class="small text-muted mt-1">
+                        Check <strong>Is Centralized</strong> to manage a centralized chart-of-accounts and menu routing. Uncheck to manage branch-specific accounts.
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Transaction Type</strong>
+                    <div class="small text-muted mt-1">
+                        Choose the transaction category (Manual entries, Other Cash In/Out, Member↔GL, GL↔GL).
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>File formats</strong>
+                    <div class="small text-muted mt-1">
+                        Use the templates available (Download Template button). Files should be within 10MB.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Workspace Card -->
+<div class="card shadow-sm border-0 mb-4">
+    @using (Html.BeginForm("UploadAffiliate", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data", @onsubmit = "return fileupload(this);" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="mb-0 text-primary d-flex align-items-center">
+                    <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                     Configure Account Menu Blacklist
+                  </h6>
+            </div>
+
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="row g-3">
+                    <!-- IsCentralized checkbox (default true) -->
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox" id="IsCentralizedCheckbox" name="IsCentralized" class="form-check-input" checked />
+                            <label class="form-check-label" for="IsCentralizedCheckbox">Is Centralized (use centralized CoA)</label>
+                        </div>
+                    </div>
+
+                    <!-- CENTRALIZED: show Branch Accounts (global) -->
+                    <div class="col-12 centralized-row">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6">
+                                <label for="BranchAccountId" class="form-label fw-semibold">Branch Account reference (All branches)</label>
+                                @Html.DropDownListFor(m => m.branchAccountId,
+                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Name"),
+                                     "--- Loading branch accounts ---",
+                                     new { @class = "form-control select2", id = "BranchAccountId" })
+                                     @Html.ValidationMessageFor(m => m.branchAccountId, "", new { @class = "text-danger" })
+                            </div>                                                     
+
+                            <div class="col-md-6">
+                                <label for="TransactionTypeCentral" class="form-label fw-semibold">Transaction Type</label>
+                                <select id="TransactionTypeCentral" name="TransactionType" class="form-control select2">
+                                    <option value="">--- Select Transaction Type ---</option>
+                                    <option value="ManualEntries">Manual entries</option>
+                                    <option value="OtherCashIn">Other Cash in</option>
+                                    <option value="OtherCashOut">Other cash out</option>
+                                    <option value="MemberToGL">Member to GL</option>
+                                    <option value="GLToMember">GL to Member</option>
+                                    <option value="GLToGL">GL to GL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON-CENTRALIZED: show Branch selector + Branch-specific accounts -->
+                    <div class="col-12 non-centralized-row d-none">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6 branch-dropdown">
+                                <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                                @Html.DropDownListFor(m => m.BranchID,
+                                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                    "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                                    new { @class = "form-control select2", id = "BranchId" })
+                                @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="BranchAccountIdLocal" class="form-label fw-semibold">Branch Account reference</label>
+                                @* reuse the same BranchAccountId control on the page (same id) *@
+                                @Html.DropDownList("BranchAccountId",
+                                    new SelectList(Enumerable.Empty<SelectListItem>()),
+                                    "--- Select Branch Account reference ---",
+                                    new { @class = "form-control select2", id = "BranchAccountId" })
+                            </div>
+
+                            <div class="col-md-6 mt-2">
+                                <label for="TransactionTypeLocal" class="form-label fw-semibold">Transaction Type</label>
+                                <select id="TransactionTypeLocal" name="TransactionType" class="form-control select2">
+                                    <option value="">--- Select Transaction Type ---</option>
+                                    <option value="ManualEntries">Manual entries</option>
+                                    <option value="OtherCashIn">Other Cash in</option>
+                                    <option value="OtherCashOut">Other cash out</option>
+                                    <option value="MemberToGL">Member to GL</option>
+                                    <option value="GLToMember">GL to Member</option>
+                                    <option value="GLToGL">GL to GL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder for menus / mapping UI (always displayed after accounts are chosen) -->
+                    <div class="col-12 mt-3" id="menuMappingArea">
+                       <div class="card p-3 border-1">
+                            <h6 class="fw-semibold">Menu mappings</h6>
+                            <p class="small text-muted mb-0">Configure the menus and routing for the selected account.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light text-end">
+                <button id="btnReset" type="button" class="btn btn-outline-secondary me-2">Reset</button>
+                <button id="btnSubmitUpload" type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            'use strict';
+
+            // Helper: init select2 for provided selector (safe)
+            function ensureSelect2Init(selectorOrJq) {
+                var $el = (selectorOrJq && selectorOrJq.jquery) ? selectorOrJq : $(selectorOrJq);
+                if (!$el || $el.length === 0) return;
+                if ($.fn.select2 && !$el.data('select2')) {
+                    try { $el.select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+                }
+            }
+
+            // Toggle UI for centralized vs non-centralized
+            function setCentralized(isCentralized) {
+                if (isCentralized) {
+                    $('.centralized-row').removeClass('d-none').show();
+                    $('.non-centralized-row').addClass('d-none').hide();
+
+                    // centralized mode: load all branch accounts into #BranchAccountId
+                    $('#BranchId').prop('disabled', true);
+
+                } else {
+                    $('.centralized-row').addClass('d-none').hide();
+                    $('.non-centralized-row').removeClass('d-none').show();
+
+                    $('#BranchId').prop('disabled', false);
+                    // clear or set branch account placeholder until a branch is selected
+                    $('#BranchAccountId').empty().append($('<option>').val('').text('--- Select Branch Account reference ---')).prop('disabled', false);
+                }
+
+                // refresh select2 visuals
+                try {
+                    if ($.fn.select2) {
+                        $('.select2').each(function () {
+                            try { $(this).trigger('change.select2'); } catch (e) { /* ignore */ }
+                        });
+                    }
+                } catch (e) { /* ignore */ }
+            }    
+                       
+
+            // Load branch accounts by branchId and populate BranchAccountId dropdown
+            function loadBranchAccounts(branchId, $targetDropdown) {
+                $targetDropdown = $targetDropdown || $('#BranchAccountId');
+                $targetDropdown.empty().prop('disabled', true).append($('<option>').val('').text('Loading branch accounts...'));
+
+                if (!branchId) {
+                    $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text('--- Select Branch Account reference ---'));
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetBranchAccountsByBranch", "FileUpload")',
+                    type: 'GET',
+                    data: { branchId: branchId },
+                    timeout: 10000,
+                    success: function (response) {
+                        $targetDropdown.empty().prop('disabled', false);
+
+                        var items = [];
+                        if (Array.isArray(response)) items = response;
+                        else if (response && response.data) items = response.data;
+                        else if (response && response.success && Array.isArray(response.data)) items = response.data;
+
+                        if (items && items.length) {
+                            $targetDropdown.append($('<option>').val('').text('--- Select Branch Account reference ---'));
+                            items.forEach(function (acc) {
+                                var id = acc.id || acc.Id || acc.Value || acc.value || acc.valueId || '';
+                                var name = acc.name || acc.Name || acc.Text || acc.text || acc.NameEn || acc.Description || '';
+                                $targetDropdown.append($('<option>').val(id).text(name));
+                            });
+                        } else {
+                            $targetDropdown.append($('<option>').val('').text('No branch accounts available'));
+                        }
+
+                        try { if ($.fn.select2) $targetDropdown.trigger('change.select2'); } catch (e) { /* ignore */ }
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('Error loading branch accounts:', err);
+                        $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text('Error loading branch accounts'));
+                    }
+                });
+            }
+
+
+            window.fileupload = window.fileupload || function (form) {
+                // original fileupload implementation - keep as-is
+                try {
+                    var $form = $(form);
+                    if (!$form || $form.length === 0) {
+                        console.warn('fileupload called without a valid form element.');
+                        return false;
+                    }
+
+                    // parse and validate
+                    try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($form); } catch (ex) { /* ignore */ }
+                    if ($.validator && typeof $form.valid === 'function' && !$form.valid()) return false;
+
+                    var confirmed = confirm("Are you sure you want to perform this action?");
+                    if (!confirmed) return false;
+
+                    var fd = new FormData(form);
+                    var anti = $form.find('input[name="__RequestVerificationToken"]').val();
+                    if (anti && !fd.has('__RequestVerificationToken')) fd.append('__RequestVerificationToken', anti);
+
+                    var $btn = $form.find('#btnSubmitUpload');
+                    $btn.prop('disabled', true).addClass('disabled');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            try {
+                                // preserve your original handling
+                                if (typeof response === 'string' && response.trim().charAt(0) === '<') {
+                                    $('#mainWorkspace').html(response);
+                                    try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($('#mainWorkspace')); } catch (e) { }
+                                    return;
+                                }
+                                var json = response;
+                                if (typeof response === 'string') {
+                                    try { json = JSON.parse(response); } catch (e) { /* not JSON */ }
+                                }
+
+                                if (json && typeof json === 'object') {
+                                    if (json.success) {
+                                        if (json.status === "Exist") { if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message); }
+                                        else if (json.status === "Failed") { if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message); }
+                                        else { if (typeof appalert === 'function') appalert(json.message, 1, 1); else alert(json.message || 'Upload succeeded.'); }
+
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($('#mainWorkspace')); } catch (e) { }
+                                        }
+                                    } else {
+                                        var status = json.Status || json.status;
+                                        if (status === "Exist") { if (typeof appalert === 'function') appalert(json.message, 3, 1); else alert(json.message || 'Already exists.'); }
+                                        else { if (typeof appalert === 'function') appalert(json.message, 2, 1); else alert(json.message || 'Operation failed.'); }
+                                        if (json.html) {
+                                            $('#mainWorkspace').html(json.html);
+                                            try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($('#mainWorkspace')); } catch (e) { }
+                                        }
+                                    }
+                                } else {
+                                    $('#mainWorkspace').html(response);
+                                    try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($('#mainWorkspace')); } catch (e) { }
+                                }
+                            } catch (ex) {
+                                console.error('fileupload success handler error', ex);
+                            }
+                        },
+                        error: function (err) {
+                            console.error('fileupload error:', err);
+                            if (err && err.status === 401) { window.location.href = '/Authentication/Login'; return; }
+                            var errMsg = (err && err.statusText) ? err.statusText : 'Server error';
+                            if (err && err.responseText && err.responseText.trim().charAt(0) === '<') {
+                                $('#mainWorkspace').html(err.responseText);
+                                try { if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($('#mainWorkspace')); } catch (e) { }
+                            } else {
+                                if (typeof appalert === 'function') appalert(errMsg, 0, 1); else alert(errMsg);
+                            }
+                        },
+                        complete: function () {
+                            $btn.prop('disabled', false).removeClass('disabled');
+                        }
+                    });
+
+                } catch (ex) {
+                    console.error('fileupload top-level error', ex);
+                    if (typeof appalert === 'function') appalert('Unexpected error: ' + ex.message, 0, 1); else alert('Unexpected error: ' + ex.message);
+                    return false;
+                }
+                return false;
+            };
+
+            // DOM ready
+            $(function () {
+                // init select2 for visible controls
+                ensureSelect2Init('#BranchId');
+                ensureSelect2Init('#BranchAccountId');
+                ensureSelect2Init('#TransactionTypeCentral');
+                ensureSelect2Init('#TransactionTypeLocal');
+
+                // hook IsCentralized checkbox
+                var $centralChk = $('#IsCentralizedCheckbox');
+                // default true (checkbox has checked attribute in markup)
+                var initialCentral = true;
+                setCentralized(initialCentral);
+                // keep checkbox in sync if user toggles
+                $centralChk.off('change.central').on('change.central', function () {
+                    setCentralized($(this).is(':checked'));
+                });
+
+                // Branch change -> load specific accounts
+                $('#BranchId').off('change.branch').on('change.branch', function () {
+                    var branchId = $(this).val();
+                    loadBranchAccounts(branchId, $('#BranchAccountId'));
+                });
+
+                // If a branch is already selected (edit mode), load its accounts (only if non-centralized)
+                var preBranch = $('#BranchId').val();
+                if (preBranch && !$centralChk.is(':checked')) loadBranchAccounts(preBranch, $('#BranchAccountId'));
+
+                // Ensure selecting TransactionType syncs across both selects
+                $('#TransactionTypeCentral').on('change', function () {
+                    var v = $(this).val();
+                    $('#TransactionTypeLocal').val(v).trigger('change');
+                });
+                $('#TransactionTypeLocal').on('change', function () {
+                    var v = $(this).val();
+                    $('#TransactionTypeCentral').val(v).trigger('change');
+                });
+
+                // Reset button: clear form and restore defaults (centralized = true)
+                $('#btnReset').on('click', function () {
+                    // reset form values
+                    var $form = $(this).closest('form');
+                    if ($form && $form.length) {
+                        $form[0].reset();
+                    }
+                    // restore centralized default and UI
+                    $('#IsCentralizedCheckbox').prop('checked', true);
+                    setCentralized(true);
+
+                    // reset selects
+                    try {
+                        if ($.fn.select2) {
+                            $('.select2').each(function () {
+                                try { $(this).val('').trigger('change'); } catch (e) { /* ignore */ }
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                });
+            });
+        })(jQuery);
+    </script>
+}

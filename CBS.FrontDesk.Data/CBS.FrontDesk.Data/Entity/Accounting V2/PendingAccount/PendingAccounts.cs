@@ -11,7 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
     public class PendingAccountQuery
     {
         public DataTableOptions Options { get; set; }
-        public PendingAccountQuery() { Options = new DataTableOptions(); }
+     
         public string Scope { get; set; }
         public string AffiliateId { get; set; }
         public string BranchId { get; set; }
@@ -63,6 +63,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
     {
         public string Id { get; set; }
         public string Scope { get; set; }
+        public bool IsOrigin { get; set; } = false;
         public string AffiliateId { get; set; }
         public string BranchId { get; set; }
         public string AffiliateAccountId { get; set; }
@@ -73,7 +74,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string Class { get; set; }
         public string ParentId { get; set; }
         public bool PostingAllowed { get; set; }
-        public bool RequiresMapping { get; set; }
+        public bool RequiresMapping { get; set; } = false;
         public string Notes { get; set; }
         public string Language { get; set; }
     }

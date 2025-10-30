@@ -4,10 +4,12 @@ using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.FilesUpload;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using CrystalDecisions.Web;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNet.SignalR.Hosting;
@@ -16,7 +18,9 @@ using Microsoft.Owin.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
@@ -29,7 +33,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         private readonly AffiliateService _affiliateService;
         private readonly ChartOfAccountsV2Service _chartOfAccountsV;
         private readonly AffiliateAccountService _affiliateAccountService;
+        // Root folder (absolute) that contains downloadable files
+        private readonly string _appFilesRoot;
 
+        // Allowed extensions for these templates (adjust if needed)
+        private static readonly string[] AllowedExtensions = { ".xlsx", ".xls" };
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
@@ -42,7 +50,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             _affiliateService = affiliateService;
             _chartOfAccountsV = chartOfAccountsV;
             _affiliateAccountService = affiliateAccountService;
+            // AppDomain.CurrentDomain.BaseDirectory is the application's root folder
+            _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
         }
+       
 
         public async Task<ActionResult> Index()
         {
@@ -60,28 +71,116 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             ViewBag.Classes = classes;
         }
 
+
         /// <summary>
-        /// ACTION 4: Handles the "Download Template" button click.
+        /// Download Affiliate Template (absolute path, streams file)
+        /// URL: /FileUpload/AffiliateTemplate
         /// </summary>
+        [HttpGet]
         public ActionResult AffiliateTemplate()
         {
-            string physicalPath = Server.MapPath("~/AppFiles/AffiliateAccountUpload/MFIUploadTemplateForCode.xlsx");
-            if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Affiliate not found.");
-            byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MFIUploadTemplate.xlsx");
+            // Relative path under AppFiles
+            string relative = Path.Combine("AffiliateAccountUpload", "BAPCCUL_ACCOUNTS2.xlsx");
+            return ServeFileFromAppFiles(relative, "Template file for Affiliate not found.");
         }
 
         /// <summary>
-        /// ACTION 4: Handles the "Download Template" button click.
+        /// Download Branch Account Template (absolute path, streams file)
+        /// URL: /FileUpload/BranchAccountTemplate
         /// </summary>
+        [HttpGet]
         public ActionResult BranchAccountTemplate()
         {
-
-            string physicalPath = Server.MapPath("~/AppFiles/AffiliateAccountUpload/SampleBalanceSheetTemplateforcode.xlsx");
-            if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Branch Accounts not found.");
-            byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SampleBalanceSheetTemplate.xlsx");
+            string relative = Path.Combine("AffiliateAccountUpload", "SampleBalanceSheet2.xlsx");
+            return ServeFileFromAppFiles(relative, "Template file for Branch Accounts not found.");
         }
+
+        #region Helper
+        /// <summary>
+        /// Centralized secure file serving from AppFiles.
+        /// </summary>
+        private ActionResult ServeFileFromAppFiles(string relativePathUnderAppFiles, string notFoundMessage = "File not found.")
+        {
+            if (string.IsNullOrWhiteSpace(relativePathUnderAppFiles))
+                return new HttpStatusCodeResult(400, "Invalid file path.");
+
+            // Protect against weird input - normalize and combine
+            string safeRelative = relativePathUnderAppFiles.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                                                           .Replace('/', Path.DirectorySeparatorChar)
+                                                           .Replace('\\', Path.DirectorySeparatorChar);
+
+            string combined = Path.Combine(_appFilesRoot, safeRelative);
+
+            // Resolve full path & guard against path traversal
+            string fullPath;
+            try
+            {
+                fullPath = Path.GetFullPath(combined);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(400, "Invalid file path.");
+            }
+
+            string rootFull = Path.GetFullPath(_appFilesRoot);
+            if (!fullPath.StartsWith(rootFull, StringComparison.OrdinalIgnoreCase))
+            {
+                // Attempted path traversal
+                return new HttpStatusCodeResult(403, "Access denied.");
+            }
+
+            if (!System.IO.File.Exists(fullPath))
+            {
+                return HttpNotFound(notFoundMessage);
+            }
+
+            // Validate extension
+            string ext = Path.GetExtension(fullPath);
+            if (string.IsNullOrEmpty(ext) || Array.IndexOf(AllowedExtensions, ext, 0) < 0)
+            {
+                return new HttpStatusCodeResult(403, "File type not allowed.");
+            }
+
+            try
+            {
+                // Use MIME mapping from System.Web
+                string contentType = MimeMapping.GetMimeMapping(fullPath);
+                string downloadFileName = Path.GetFileName(fullPath);
+
+                // FilePathResult streams the file directly from disk (memory-friendly)
+                return File(fullPath, contentType, downloadFileName);
+            }
+            catch (Exception ex)
+            {
+                // Optional: replace with your logger (ILogger / log4net / NLog, etc.)
+                // e.g. _logger.LogError(ex, "Failed to serve file {FullPath}", fullPath);
+                return new HttpStatusCodeResult(500, "An error occurred while processing the download.");
+            }
+        }
+        #endregion
+    
+
+        ///// <summary>
+        ///// ACTION 4: Handles the "Download Template" button click.
+        ///// </summary>
+        //public ActionResult AffiliateTemplate()
+        //{
+        //    string physicalPath = Server.MapPath("~AppFiles/AffiliateAccountUpload/BAPCCUL_ACCOUNTS2.xlsx");
+        //    if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Affiliate not found.");
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
+        //    return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BAPCCUL_ACCOUNTS2.xlsx");
+        //}
+
+        ///// <summary>
+        ///// ACTION 4: Handles the "Download Template" button click.
+        ///// </summary>
+        //public ActionResult BranchAccountTemplate()
+        //{
+        //    string physicalPath = Server.MapPath("~AppFiles/AffiliateAccountUpload/SampleBalanceSheet2.xlsx");
+        //    if (!System.IO.File.Exists(physicalPath)) return HttpNotFound("Template file for Branch Accounts not found.");
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(physicalPath);
+        //    return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SampleBalanceSheet2.xlsx");
+        //}
 
         [HttpGet]
         public async Task<ActionResult> List()
@@ -383,15 +482,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
             return PartialView(partialView, data);
         }
+
         [HttpGet]
-        public async Task<ActionResult> GetCorrespondencePartial(
-            string recordId,
-            string name,
-            string scope,
-            string branchId,
-            string hoPcmfAccountId = null,
-            string affiliateAccountId = null,
-            string branchAccountId = null)
+        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name, string scope, string branchId,string hoPcmfAccountId = null,string affiliateAccountId = null,string branchAccountId = null)
         {
             // Basic normalization
             recordId = recordId?.Trim();

@@ -219,19 +219,19 @@
                         data: 'OpenedAtUtc',
                         name: 'OpenedAtUtc',
                         render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '-';
                         }
                     },
                     {
                         data: 'ClosedAtUtc',
                         name: 'ClosedAtUtc',
                         render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY') : '';
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '-';
                         }
                     },
                     { data: 'Reference', name: 'Reference' },
                    
-                    { data: 'createdBy', name: 'createdBy' },
+                    { data: 'CreatedBy', name: 'CreatedBy' },
                     { data: 'State', name: 'State' },
                     {
                         data: null,

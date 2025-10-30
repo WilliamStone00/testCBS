@@ -176,6 +176,22 @@ namespace CBS.BusinessService.Accounting_V2
 
             };
         }
+        public List<StringValues> GetAllClass2()
+        {
+            return new List<StringValues>()
+            {
+                new StringValues("EQUITY","EQUITY"),
+                new StringValues("FIXED ASSETS","FIXED ASSETS"),
+                new StringValues("MEMBERS", "MEMBERS"),
+                new StringValues("THIRD PARTIES","THIRD PARTIES"),
+                new StringValues("TREASURY", "TREASURY"),
+                new StringValues("EXPENSES", "EXPENSES"),
+                new StringValues("REVENUE","REVENUE"),
+                new StringValues("OUTSIDE ORDINARY ACTIVITIES (OOA)", "OUTSIDE ORDINARY ACTIVITIES (OOA)"),
+                new StringValues("MANAGEMENT","MANAGEMENT"),
+
+            };
+        }
 
         public async Task<List<StringValues>> GetAllPCMFAccounts()
         {

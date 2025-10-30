@@ -194,9 +194,12 @@
                 @*@if (!string.IsNullOrWhiteSpace(Model.Narrative))
                 {
                     <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 }*@
                 @if (!string.IsNullOrWhiteSpace(Model.createdBy))
                 {
+                    <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
                     <tr><th class="bg-label">CreatedBy</th><td>@Html.Raw(Model.createdBy)</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))

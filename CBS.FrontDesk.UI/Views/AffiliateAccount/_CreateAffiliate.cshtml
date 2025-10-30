@@ -1,20 +1,16 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountRequest
 @using Resources
 
-
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-multiple-outline me-2"></i>@AccountingV2.AffiliateManagement
+                    <i class="mdi mdi-bank-outline me-2"></i> Affiliate Account Node Setup
                 </h1>
-                <p class="card-text">
-                    @AccountingV2.affiliatetext
-                </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    @AccountingV2.affilliatetext2
+                    Create or edit an Affiliate ledger account node under the selected parent.
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,41 +18,18 @@
     </div>
 </div>
 
-<!-- Tips -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Affiliate Account</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
     <div id="collapseAffiliateTips" class="collapse">
         <div class="card-body">
-            <ul>
-                <li>
-                    <i class="mdi mdi-pound-box text-success me-2"></i>
-                    <strong>@AccountingV2.Code:</strong>@AccountingV2.codetext1 , <code>BR001</code> or <code>HQ01</code>) @AccountingV2.codetext2 .
-                </li>
-                <li>
-                    <i class="mdi mdi-form-textbox text-info me-2"></i>
-                    <strong>@AccountingV2.Name:</strong>@AccountingV2.Nametext1 , <code>@AccountingV2.CentralBranch</code> or <code>@AccountingV2.HeadOffice</code>).
-                </li>
-                <li>
-                    <i class="mdi mdi-toggle-switch text-warning me-2"></i>
-                    <strong>@AccountingV2.IsActive:</strong>@AccountingV2.IsActivetext
-                </li>
-                <li>
-                    <i class="mdi mdi-office-building-marker text-primary me-2"></i>
-                    <strong>@AccountingV2.IsHeadOffice:</strong>@AccountingV2.IsHeadOfficetext
-                </li>
-                <li>
-                    <i class="mdi mdi-content-save text-secondary me-2"></i>
-                    <strong>@AccountingV2.SaveorUpdate:</strong>@AccountingV2.Click <strong>@AccountingV2.Save</strong>@AccountingV2.affoiliatetext4 <strong>@AccountingV2.Update</strong>@AccountingV2.affiliatetext3
-                </li>
-                <li>
-                    <i class="mdi mdi-refresh text-success me-2"></i>
-                    <strong>@AccountingV2.Reset:</strong>@AccountingV2.resettext
-                </li>
+            <ul class="mb-0">
+                <li><strong>Parent:</strong> inherited from the selected node.</li>
+                <li><strong>Class:</strong> auto-inherited; you can allow override if your rules permit.</li>
             </ul>
         </div>
     </div>
@@ -64,148 +37,121 @@
 
 <div class="card shadow p-3 mb-4">
     <div class="modal-body">
-        @using (Html.BeginForm("CreateOrUpdate", "AffiliateAccount", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
+        @using (Html.BeginForm("CreateOrUpdate", "AffiliateAccount", FormMethod.Post,
+               new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             @Html.AntiForgeryToken()
+
             @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.AffiliateId)
-            @Html.HiddenFor(m => m.ParentId)
-            @Html.HiddenFor(m => m.Scope)
-            @Html.HiddenFor(m => m.HoPcmfAccountId)
+            @Html.HiddenFor(m => m.Scope) @* "Affiliate" *@
+            @Html.HiddenFor(m => m.Language)
+            @Html.HiddenFor(m => m.IsOrigin)
+            @Html.HiddenFor(m => m.ParentId) @* set when KEY provided *@
+            @Html.HiddenFor(m => m.HoPcmfAccountId) @* set when KEY provided *@
+            @Html.HiddenFor(m => m.AffiliateId) @* set when KEY provided *@
+            @Html.HiddenFor(m => m.Class) @* set when KEY provided *@
 
-        <div class="mt-2">
-            @* Validation summary (optional) *@
-            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+            <div class="mt-2">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label small text-muted">Parent Account Reference</label>
-                    <input type="text" class="form-control-plaintext" readonly value="@Model.ParentId" />
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.ParentId, "Parent Account Reference", new { @class = "form-label small text-muted" })
+                        <input type="text" class="form-control" readonly value="@Model.ParentId" />
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted" })
+                        <input type="text" class="form-control" readonly value="@Model.Scope" />
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label small text-muted">Scope</label>
-                    <input type="text" class="form-control-plaintext" readonly value="@Model.Scope" />
-                </div>
-            </div>
-
-
-            <div class="row g-2">
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = AccountingV2.placeholdercodetext ?? "Code", id = "code", maxlength = "50" })
-                        <label for="code">@AccountingV2.Code</label>
+                <div class="row g-2">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.Code, new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Code", maxlength = "50" })
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Class, new { @class = "form-control", placeholder = "Class (e.g. Asset, Liability)", id = "class", maxlength = "50" })
-                        <label for="class">@AccountingV2.Class</label>
-                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                    <div class="col-md-6 mb-3">
+                        @Html.Label("Class", new { @class = "form-label small text-muted" })
+                        <input type="text" class="form-control" readonly value="@Model.Class" />
+                        @* If you want to allow change: replace with DropDownListFor Model.Class (like root) *@
                     </div>
                 </div>
-            </div>
 
-            <div class="row g-2 mt-2">
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (English)", id = "nameEn", maxlength = "150" })
-                        <label for="nameEn">Account Name (English)</label>
+                <div class="row g-2">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.NameEn, new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control", placeholder = "Name (English)", maxlength = "150" })
                         @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (Français)", id = "nameFr", maxlength = "150" })
-                        <label for="nameFr">Account Name (Français)</label>
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.NameFr, new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control", placeholder = "Name (Français)", maxlength = "150" })
                         @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>
 
-            <hr />
-
-            <div class="row mb-3">
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input", id = "isActive" })
-                        <label class="form-check-label fw-bold ms-2" for="requiresMapping">Requires Mapping</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="form-check">
-                        @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "postingAllowed" })
-                        <label class="form-check-label fw-bold ms-2" for="postingAllowed">@AccountingV2.PostingAllowed</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.HoPcmfAccountId, new SelectList(ViewBag.HoPcmfAccountId, "Id", "Name"), "--- " + "HoPcmfAccountId" + " ---",
-                            new { @class = "form-select select2", @aria_label = "HoPcmfAccountId" }
-                        )
-                        @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
-                        <label>HoPcmfAccountId</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <div class="form-floating shadow-sm">
-                        @Html.DropDownListFor(m => m.AffiliateId, new SelectList(ViewBag.Affiliates, "Id", "name"), "--- " + "Select Affiliate" + " ---", new { @class = "form-select select2" })
-                        @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
-                        <label>AffiliateId</label>
-                    </div>
-                </div>
-            </div>
-
-       
-            <div class="col-md-3">
-                <div class="col-md-12">
-                    <div class="form-floating shadow-sm">
+                <hr />
+@*
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AffiliateId, "Affiliate", new { @class = "form-label" })
                         @Html.DropDownListFor(
-                            m => m.Language,
-                            (IEnumerable<SelectListItem>)ViewBag.Languages,
-                            "--- Select Language ---",
-                            new { @class = "form-select", id = "Language" }
-                        )
-                        @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
-                        <label>Language</label>
+                            m => m.AffiliateId,
+                            ViewBag.Affiliates as IEnumerable<SelectListItem> ?? new List<SelectListItem>(),
+                            "--- Select Affiliate ---",
+                            new { @class = "form-select select2", @disabled = (Model?.IsOrigin ?? false) ? null : null })
+                        @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
                     </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.HoPcmfAccountId, "HO PCMF (optional)", new { @class = "form-label" })
+                        @Html.DropDownListFor(
+                            m => m.HoPcmfAccountId,
+                            ViewBag.HoPcmfAccounts as IEnumerable<SelectListItem> ?? new List<SelectListItem>(),
+                            "--- Link to HO PCMF (optional) ---",
+                            new { @class = "form-select select2" })
+                        @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })
                     </div>
+                </div>*@
+
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "PostingAllowed" })
+                            @Html.LabelFor(m => m.PostingAllowed, new { @class = "form-check-label fw-bold ms-2" })
+                        </div>
+                    </div>
+                   @* <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.RequiresMapping, new { @class = "form-check-input", id = "RequiresMapping" })
+                            @Html.LabelFor(m => m.RequiresMapping, new { @class = "form-check-label fw-bold ms-2" })
+                        </div>
+                    </div>*@
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <div class="form-floating">
-                            @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", placeholder = "Note", id = "class", maxlength = "100" })
-                            <label for="notes">Notes</label>
-                            @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
-                        </div>
+                        @Html.LabelFor(m => m.Notes, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", placeholder = "Notes", maxlength = "100" })
+                        @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="text-end">
                     @if (string.IsNullOrWhiteSpace(Model?.Id))
                     {
-                        <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
-                        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                        <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> Save</button>
+                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> @GlobalBank.Update</button>
+                        <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i> Update</button>
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     }
                 </div>
             </div>
-            }
-        </div>
+        }
+    </div>
 </div>
-
