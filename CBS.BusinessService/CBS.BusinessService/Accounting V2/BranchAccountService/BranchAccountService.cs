@@ -89,7 +89,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     if (string.IsNullOrWhiteSpace(id))
                         throw new ArgumentException("id is required", nameof(id));
 
-                var lan = GetLanguage();
+                     var lan = GetUserLanguage();
 
                     var encodedId = Uri.EscapeDataString(id);
                     string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId,lan);

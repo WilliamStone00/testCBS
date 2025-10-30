@@ -125,7 +125,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CashTillId { get; set; } = null;
         public decimal CashDenomsTotal { get; set; }
         public string BranchName { get; set; }
-        public DateTime ClosedAtUtc { get; set; }
+        public DateTime? ClosedAtUtc { get; set; }
 
 
         public List<JournalLine> Lines { get; set; } 

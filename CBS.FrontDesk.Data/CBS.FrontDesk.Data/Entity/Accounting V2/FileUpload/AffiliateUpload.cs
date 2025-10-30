@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
     public class AccountwaitingCorrespondanceQuery
     {
         public DataTableOptions Options { get; set; }
-        public AccountwaitingCorrespondanceQuery() { Options = new DataTableOptions(); }
+        
         public string Scope { get; set; }
         public string BranchId { get; set; }
         public string AffiliateId { get; set; }
@@ -135,7 +135,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
     public class CorespondanceQUERY
     {
         public DataTableOptions Options { get; set; }
-        public CorespondanceQUERY() { Options = new DataTableOptions(); }
+
 
         public string Type { get; set; }
         public string Status { get; set; }
