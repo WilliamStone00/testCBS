@@ -2031,10 +2031,12 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
@@ -10855,6 +10857,8 @@
     <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
     <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
+    <Content Include="Views\MemberReconciliation\Index.cshtml" />
+    <Content Include="Views\AccountBlancklist\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
