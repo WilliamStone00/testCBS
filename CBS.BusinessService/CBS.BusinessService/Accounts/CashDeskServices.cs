@@ -696,8 +696,6 @@ namespace CBS.BusinessService.Accounts
                     }
                 }
 
-
-
                 //MobileMoneyNoneCashIn
                 else if (bulkDeposits.FirstOrDefault().OperationType == "RemittanceOUT")
                 {
