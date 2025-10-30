@@ -68,6 +68,33 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             }
         }
 
+        public async Task<ExecutionMessages> CreateAsync(PendingAccountRequest model)
+        {
+            try
+            {
+
+               // string formattedUrl = string.Format(APICallHelper.pendingupdatebyid, Id);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<PendingAccountDto>>(APICallHelper.AddAccountCreationRequest, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
         public async Task<ExecutionMessages> UpdateAsync(BranchAccountResponse model)
         {
             try

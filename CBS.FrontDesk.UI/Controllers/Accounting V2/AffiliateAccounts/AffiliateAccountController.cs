@@ -1,5 +1,7 @@
-﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+﻿using CBS.BusinessService.Accounting_V2;
+using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.Pendingaccounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
@@ -24,18 +26,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
         private readonly AffiliateAccountMockService _affiliateAccountMockService;
         private readonly AffiliateService _AffiliateService;
         private readonly BranchServices _branchServices;
-        
+        private readonly ChartOfAccountsV2Service _chartOfAccountsV;
+        private readonly PendingAccountsService _pendingAccountsService;
+
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public AffiliateAccountController(AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService)
+        public AffiliateAccountController(AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService, ChartOfAccountsV2Service chartOfAccountsV, PendingAccountsService pendingAccountsService)
         {
             _AffiliateAccountService = affiliateaccountService;
             _branchServices = branchServices;
             _AffiliateService = affiliateService;
             _affiliateAccountMockService = affiliateAccountMockService;
+            _chartOfAccountsV = chartOfAccountsV;
+            _pendingAccountsService = pendingAccountsService;
         }
 
         [HttpGet]
@@ -85,14 +91,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             var Chartofaccount = await _AffiliateAccountService.GetAllAffiliateAccounts();
             ViewBag.ChartAccount = Chartofaccount;
 
-            //var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
-            //ViewBag.HoPcmfAccountId = affiliateAccounts;
+            var pcmfs = await _chartOfAccountsV.GetAllPCMFAccounts();
+            ViewBag.HoPcmfAccounts = pcmfs;
 
-       /*     ViewBag.Languages = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "English", Value = "en" },
-                    new SelectListItem { Text = "French",  Value = "fr" }
-                };*/
+            var classes = _chartOfAccountsV.GetAllClass2();
+            ViewBag.Classes = classes;
+
+            ViewBag.Languages = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "English", Value = "en" },
+                new SelectListItem { Text = "French",  Value = "fr" }
+            };
             return true;
 
         }
@@ -172,12 +181,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
             else if (path == "new")
             {
-                var model = new PendingAccountRequest();
-                if (!string.IsNullOrWhiteSpace(KEY))
+                var model = new PendingAccountRequest
                 {
-                    model.ParentId = KEY;
-                    model.Scope = "Affiliate";
+                    Scope = "Affiliate",
+                    Language = _AffiliateAccountService.GetUserLanguage(),
+                    RequiresMapping = false
+                };
+
+                if (string.Equals(serviceOption, "root", StringComparison.OrdinalIgnoreCase))
+                {
+                    model.IsOrigin = true;
+                    model.ParentId = null;             // root
+                                                       // Optionally set a default Affiliate if you have 1; else leave for dropdown
+                                                       // model.AffiliateId = ...
+                                                       // preload any defaults (Class, etc.) if you have policy
                 }
+                else if (!string.IsNullOrWhiteSpace(KEY))
+                {
+                    // creating a child under existing parent
+                    var parent = await _AffiliateAccountService.GetByIdAsync(KEY);
+                    if (parent != null)
+                    {
+                        model.ParentId = parent.Id;
+                        model.Class = parent.Class;                 // inherit class
+                        model.AffiliateId = parent.AffiliateId;     // inherit affiliate
+                        model.HoPcmfAccountId = parent.HoPcmfAccountId;
+                    }
+                }
+
+
                 return PartialView(partialView, model);
             }
             else 
@@ -199,9 +231,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(PendingAccountRequest model)
         {
-            if (string.IsNullOrWhiteSpace(model.Id))
-            {
-                // If modelstate invalid -> return JSON with structured errors so client can show appalert + inline message
+            // If modelstate invalid -> return JSON with structured errors so client can show appalert + inline message
                 if (!ModelState.IsValid)
                 {
                     var errors = GetModelStateErrors();
@@ -217,7 +247,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                     });
                 }
 
-                var result = await _AffiliateAccountService.CreateAsync(model);
+                var result = await _pendingAccountsService.CreateAsync(model);
 
                 // Map your ExecutionMessages -> JSON. Adjust field names as needed based on your ExecutionMessages.
                 // Here I assume result.Result is a bool indicating success and result may carry messages.
@@ -243,11 +273,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                         // optionally: errors = ..., errorsHtml = ...
                     });
                 }
-            }
+          /*  }
             else
             {
                 return await Update(model);
-            }
+            }*/
         }
 
         // Collect ModelState errors into a dictionary

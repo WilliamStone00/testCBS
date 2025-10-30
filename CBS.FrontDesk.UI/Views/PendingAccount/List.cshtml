@@ -44,15 +44,12 @@
 
 <!-- Account Request Filters (organized) -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Account Request Filters</h5>
-
     <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
         <div class="card p-3 mb-3 bg-light">
 
             <!-- SECTION: Context -->
-            <div class="mb-2">
-                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-domain me-1"></i> Context</h6>
-                <div class="row g-2">
+            <div class="mb-1">
+               <div class="row g-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-floating shadow-sm">
                             @Html.DropDownListFor(
@@ -62,7 +59,7 @@
                               new { @class = "form-select select2", id = "AffiliateId" }
                             )
                             @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
-                            <label for="AffiliateId">Affiliate</label>
+                            <label for="AffiliateId"></label>
                         </div>
                     </div>
 
@@ -75,7 +72,7 @@
                               new { @class = "form-select select2", id = "BranchId" }
                             )
                             @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                            <label for="BranchId">@GlobalUserManagement.Branch</label>
+                            <label for="BranchId"></label>
                         </div>
                     </div>
 
@@ -86,17 +83,16 @@
                                 <option value="Branch">Branch</option>
                                 <option value="Affiliate">Affiliate</option>
                             </select>
-                            <label for="Scope">Scope</label>
+                            <label for="Scope"></label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <hr class="my-3" />
+            @*<hr class="my-3" />*@
 
             <!-- SECTION: Attributes -->
-            <div class="mb-2">
-                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-format-list-bulleted-type me-1"></i> Attributes</h6>
+            <div class="mb-1">
                 <div class="row g-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-floating">
@@ -123,7 +119,7 @@
                               },
                               new { @class = "form-select select2", id = "Class" }
                             )
-                            <label for="Class">Class</label>
+                            <label for="Class"></label>
                         </div>
                     </div>
 
@@ -135,16 +131,16 @@
                                 <option value="Approved">Approved</option>
                                 <option value="Rejected">Rejected</option>
                             </select>
-                            <label for="Status">Status</label>
+                            <label for="Status"></label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <hr class="my-3" />
+            @*<hr class="my-3" />*@
 
             <!-- SECTION: Date Range -->
-            <div class="mb-2">
+            <div class="mb-1">
                 <div class="d-flex align-items-center justify-content-between">
                     <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-calendar-range me-1"></i> Date Range (UTC)</h6>
                     <div class="form-check">
@@ -172,12 +168,11 @@
                 </div>
             </div>
 
-            <hr class="my-3" />
+            @*<hr class="my-3" />*@
 
             <!-- SECTION: Options -->
             <div>
-                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-cog-outline me-1"></i> Options</h6>
-                <div class="row g-2">
+               <div class="row g-2">
                     <div class="col-md-4 d-flex align-items-center">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" />
