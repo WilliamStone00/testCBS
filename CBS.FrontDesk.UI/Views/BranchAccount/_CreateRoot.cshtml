@@ -6,7 +6,7 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank-outline me-2"></i> Branch Account Node Setup
+                    <i class="mdi mdi-bank-outline me-2"></i>Root Branch Account Setup
                 </h1>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
@@ -20,7 +20,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Branch Account</span>
+        <span><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Root Branch Account</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBranchAccountTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -44,16 +44,15 @@
                   new { enctype = "multipart/form-data", onsubmit = "return AjaxPost(this);" }))
         {
             @Html.AntiForgeryToken()
+
             @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.BranchId)
             @Html.HiddenFor(m => m.Scope)
-            @Html.HiddenFor(m => m.ParentId)
             @Html.HiddenFor(m => m.Language)
-            @Html.HiddenFor(m => m.Class)
-            @Html.HiddenFor(m => m.AffiliateAccountId)
-            @Html.HiddenFor(m => m.IsOrigin)
             @Html.HiddenFor(m => m.RequiresMapping)
+            @Html.HiddenFor(m => m.IsOrigin)
             @Html.HiddenFor(m => m.AffiliateId)
+            @* Ensure ROOT *@
+            @Html.Hidden("ParentId", null)
 
             <div class="mt-2">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
@@ -61,7 +60,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.ParentId, "Parent Account Reference", new { @class = "form-label small text-muted" })
-                        <input type="text" class="form-control" readonly value="@Model.ParentId" />
+                        <input type="text" class="form-control" readonly value="(ROOT)" />
                     </div>
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.Scope, new { @class = "form-label small text-muted" })
@@ -77,8 +76,13 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        @Html.Label("Class", new { @class = "form-label small text-muted" })
-                        <input type="text" class="form-control" readonly value="@Model.Class" />
+                        @Html.LabelFor(m => m.Class, new { @class = "form-label fw-semibold" })
+                        @Html.DropDownListFor(
+                            m => m.Class,
+                            new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+                            "--- Select Class ---",
+                            new { @class = "form-select select2" })
+                        @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -100,24 +104,24 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        @Html.LabelFor(m => m.AffiliateAccountId,"Affiliate Account", new { @class = "form-label" })
+                        @Html.LabelFor(m => m.AffiliateAccountId, new { @class = "form-label" })
                         @Html.DropDownListFor(
                             m => m.AffiliateAccountId,
                             new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Id", "Name"),
                             "--- Select Affiliate Account (Chart of Account) ---",
-                            new { @class = "form-select select2", @aria_label = "Affiliate Account", @disabled = "disabled" })
+                            new { @class = "form-select select2", @aria_label = "Affiliate Account" })
                         @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        @Html.LabelFor(m => m.BranchId,"Branch", new { @class = "form-label" })
+                        @Html.LabelFor(m => m.BranchId, new { @class = "form-label" })
                         @Html.DropDownListFor(
                             m => m.BranchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
                             "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                            new { @class = "form-select select2" , @aria_label = "Branch", @disabled = "disabled" })
+                            new { @class = "form-select select2" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -125,8 +129,8 @@
                 <div class="row mb-3">
                     <div class="col-md-6 d-flex align-items-center">
                         <div class="form-check">
-                            @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "postingAllowed" })
-                            @Html.LabelFor(m => m.PostingAllowed, "Posting allowed", new { @class = "form-check-label fw-bold ms-2" })
+                            @Html.CheckBoxFor(m => m.PostingAllowed, new { @class = "form-check-input", id = "PostingAllowed" })
+                            @Html.LabelFor(m => m.PostingAllowed, new { @class = "form-check-label fw-bold ms-2" })
                         </div>
                     </div>
                 </div>

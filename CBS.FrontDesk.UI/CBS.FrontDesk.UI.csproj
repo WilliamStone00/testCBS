@@ -10855,6 +10855,8 @@
     <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
     <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
+    <Content Include="Views\BranchAccount\_CreateRoot.cshtml" />
+    <Content Include="Views\AffiliateAccount\_CreateAffiliateRoot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

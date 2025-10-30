@@ -1533,7 +1533,7 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateBranchAccount = "/api/v1/BranchAccount/{0}";
         public static string CreateBranchAccount = "/api/v1/AccountCreationRequest";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
-        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
+        public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{1}";
         public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}";
         //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
@@ -1560,6 +1560,7 @@ namespace CBS.FrontDesk.Helper
         //--------------------------- Account pending Request ------------------------------------------
         public static string Datatable = "/api/v1/AccountCreationRequest/datatable";
         public static string pendinggetbyid = "/api/v1/AccountCreationRequest/{0}";
+        public static string AddAccountCreationRequest = "/api/v1/AccountCreationRequest";
         public static string pendingupdatebyid = "/api/v1/AccountCreationRequest/{0}";
         public static string pendingApprove = "/api/v1/AccountCreationRequest/approve";
         public static string pendingreject = "/api/v1/AccountCreationRequest/reject";
