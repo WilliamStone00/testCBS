@@ -11,7 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
     public class PendingAccountQuery
     {
         public DataTableOptions Options { get; set; }
-        public PendingAccountQuery() { Options = new DataTableOptions(); }
+     
         public string Scope { get; set; }
         public string AffiliateId { get; set; }
         public string BranchId { get; set; }

@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Hangfire.Storage.Monitoring;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,11 +32,12 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             var cusbaseurl = ConfigurationManager.AppSettings["CustomerBaseUrl"];
         }
 
-        public async Task<CustomDataTable> AccountwaitingDataTableAsync(AccountwaitingCorrespondanceQuery query)
+        public async Task<CustomDataTable2> AccountwaitingDataTableAsync(AccountwaitingCorrespondanceQuery query)
         {
             try
             {
-                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                query.Options.lang = GetUserLanguage();
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.awaitingcorrespondancedatatable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
@@ -228,11 +230,13 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
 
         //***************************************** END OF Mock Data table ********************************
 
-        public async Task<CustomDataTable> CorrespondanceDataTableAsync(CorespondanceQUERY query)
+        public async Task<CustomDataTable2> CorrespondanceDataTableAsync(CorespondanceQUERY query)
         {
             try
             {
-                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                var str = JsonConvert.SerializeObject(query);
+                query.Options.lang = GetUserLanguage();
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.Correspondancedatatable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
@@ -254,7 +258,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                throw new Exception($"Accounting Service Unavailable: {ex.Message}", ex);
             }
         }
 

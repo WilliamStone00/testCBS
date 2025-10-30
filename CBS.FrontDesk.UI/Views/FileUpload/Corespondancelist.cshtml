@@ -263,7 +263,7 @@
                         pageSize: d.length,
                         searchValue: d.search?.value || '',
                         // try to derive sort column & direction from d.order
-                        sortColumnName: (d.columns && d.order && d.order.length) ? (d.columns[d.order[0].column].data || '') : '',
+                        sortColumnName: (d.columns && d.order && d.order.length) ? (d.columns[d.order[0].column].data || '') : 'CreatedDate',
                         sortColumnDirection: (d.order && d.order.length) ? d.order[0].dir : 'desc'
                     };
                     return JSON.stringify(filters);
