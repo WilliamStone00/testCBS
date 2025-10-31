@@ -1,7 +1,230 @@
-﻿
+﻿@model dynamic
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Member / Loan Reconciliation";
 }
 
-<h2>Index</h2>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Member / Loan Reconciliation</h5>
 
+        <div class="row g-3 align-items-end">
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">Choose mode</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="reconMode" id="modeMember" value="member" checked>
+                    <label class="form-check-label" for="modeMember">Member</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="reconMode" id="modeLoan" value="loan">
+                    <label class="form-check-label" for="modeLoan">Loan</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="AccountType" class="form-label">Account Type</label>
+                <select id="AccountType" class="form-select select2" aria-label="Account Type">
+                    <option value="">--- Select Account Type ---</option>
+                </select>
+                <div id="accountTypeMeta" class="small text-muted mt-1 d-none">
+                    <div><strong>Account ID:</strong> <span id="displayAccountId">-</span></div>
+                    <div><strong>Balance:</strong> <span id="displayBalance">-</span></div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="BranchId" class="form-label">Branch</label>
+                @* Server fills ViewBag.Branches in controller loader *@
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                    "--- Select Branch ---", new { @class = "form-select select2", id = "BranchId" })
+            </div>
+
+            <div class="col-md-4">
+                <label for="BranchAccountId" class="form-label">Branch Account</label>
+                <select id="BranchAccountId" class="form-select select2">
+                    <option value="">--- Select Branch Account ---</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button id="btnLoadDetails" class="btn btn-primary" type="button" disabled>Show Branch Account Details</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for branch account details -->
+<div class="modal fade" id="branchAccountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Branch Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="branchAccountModalBody">
+                <div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            var accountTypesUrl = '@Url.Action("GetAccountTypes", "Reconciliation")';
+            var branchAccountsUrl = '@Url.Action("GetBranchAccountsByBranch", "Reconciliation")';
+            var accountBalanceUrl = '@Url.Action("GetAccountBalance", "Reconciliation")';
+            var branchAccountDetailsUrl = '@Url.Action("GetBranchAccountDetails", "Reconciliation")';
+
+            function initSelect2(selector) {
+                try {
+                    if ($.fn.select2) {
+                        $(selector).each(function () {
+                            if (!$(this).data('select2')) $(this).select2({ width: '100%' });
+                        });
+                    }
+                } catch (e) { console.warn('select2 init failed', e); }
+            }
+
+            function setAccountMeta(accountId, balance) {
+                if (accountId || balance !== undefined) {
+                    $('#displayAccountId').text(accountId || '-');
+                    $('#displayBalance').text(balance !== undefined ? balance : '-');
+                    $('#accountTypeMeta').removeClass('d-none');
+                } else {
+                    $('#displayAccountId').text('-');
+                    $('#displayBalance').text('-');
+                    $('#accountTypeMeta').addClass('d-none');
+                }
+            }
+
+            // load account types for mode (member | loan)
+            function loadAccountTypes(mode) {
+                $('#AccountType').prop('disabled', true).empty().append($('<option>').val('').text('Loading...'));
+                $.get(accountTypesUrl, { mode: mode })
+                    .done(function (list) {
+                        $('#AccountType').empty().append($('<option>').val('').text('--- Select Account Type ---'));
+                        if (Array.isArray(list)) {
+                            list.forEach(function (it) {
+                                var id = it.Id || it.id || it.Value || it.value;
+                                var text = it.Name || it.name || it.Text || it.text;
+                                $('#AccountType').append($('<option>').val(id).text(text));
+                            });
+                        }
+                        $('#AccountType').prop('disabled', false);
+                        initSelect2('#AccountType');
+                        setAccountMeta(null, undefined);
+                    })
+                    .fail(function () {
+                        $('#AccountType').empty().append($('<option>').val('').text('Error loading account types')).prop('disabled', false);
+                    });
+            }
+
+            // load branch accounts for branch
+            function loadBranchAccounts(branchId) {
+                var $target = $('#BranchAccountId');
+                $target.prop('disabled', true).empty().append($('<option>').val('').text('Loading...'));
+
+                if (!branchId) {
+                    $target.prop('disabled', false).empty().append($('<option>').val('').text('--- Select Branch Account ---'));
+                    initSelect2('#BranchAccountId');
+                    return;
+                }
+
+                $.get(branchAccountsUrl, { branchId: branchId })
+                    .done(function (list) {
+                        $target.empty().append($('<option>').val('').text('--- Select Branch Account ---'));
+                        if (Array.isArray(list)) {
+                            list.forEach(function (it) {
+                                var id = it.Id || it.id || it.Value || it.value;
+                                var text = it.Name || it.name || it.Text || it.text;
+                                $target.append($('<option>').val(id).text(text));
+                            });
+                        }
+                        $target.prop('disabled', false);
+                        initSelect2('#BranchAccountId');
+                    })
+                    .fail(function () {
+                        $target.empty().append($('<option>').val('').text('Error loading branch accounts')).prop('disabled', false);
+                        initSelect2('#BranchAccountId');
+                    });
+            }
+
+            // load account balance for selected account type + mode
+            function loadAccountBalance(mode, accountTypeId) {
+                setAccountMeta(null, undefined);
+                if (!accountTypeId) { return; }
+                $('#AccountType').prop('disabled', true);
+                $.get(accountBalanceUrl, { mode: mode, accountTypeId: accountTypeId })
+                    .done(function (res) {
+                        // res => { AccountId: "...", Balance: 123.45 }
+                        if (res) {
+                            setAccountMeta(res.AccountId || '-', res.Balance !== undefined ? res.Balance : '-');
+                        } else setAccountMeta('-', '-');
+                    })
+                    .fail(function () {
+                        setAccountMeta('-', '-');
+                    })
+                    .always(function () {
+                        $('#AccountType').prop('disabled', false);
+                    });
+            }
+
+            // show branch account details modal
+            function showBranchAccountDetails(accountId) {
+                if (!accountId) return;
+                $('#branchAccountModalBody').html('<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>');
+                try { new bootstrap.Modal(document.querySelector('#branchAccountModal')).show(); } catch (e) { /* ignore */ }
+                $.get(branchAccountDetailsUrl, { accountId: accountId })
+                    .done(function (html) {
+                        $('#branchAccountModalBody').html(html || '<div class="text-muted">No details.</div>');
+                    })
+                    .fail(function () {
+                        $('#branchAccountModalBody').html('<div class="text-danger">Failed to load details.</div>');
+                    });
+            }
+
+            $(function () {
+                initSelect2('.select2');
+
+                // initial load account types for default mode (member)
+                var initialMode = $('input[name="reconMode"]:checked').val() || 'member';
+                loadAccountTypes(initialMode);
+
+                // mode change
+                $('input[name="reconMode"]').on('change', function () {
+                    var mode = $(this).val();
+                    loadAccountTypes(mode);
+                    // clear branch account meta
+                    $('#BranchAccountId').val('').trigger('change');
+                    $('#btnLoadDetails').prop('disabled', true);
+                });
+
+                // account type changed => load balance
+                $(document).on('change', '#AccountType', function () {
+                    var mode = $('input[name="reconMode"]:checked').val();
+                    var id = $(this).val();
+                    loadAccountBalance(mode, id);
+                });
+
+                // branch changed => load branch accounts
+                $(document).on('change', '#BranchId', function () {
+                    var branchId = $(this).val();
+                    loadBranchAccounts(branchId);
+                });
+
+                // branch account changed => enable details button
+                $(document).on('change', '#BranchAccountId', function () {
+                    var val = $(this).val();
+                    $('#btnLoadDetails').prop('disabled', !val);
+                });
+
+                // show modal on button click (or you can double click the dropdown item)
+                $('#btnLoadDetails').on('click', function () {
+                    var accountId = $('#BranchAccountId').val();
+                    showBranchAccountDetails(accountId);
+                });
+            });
+        })();
+    </script>
+}

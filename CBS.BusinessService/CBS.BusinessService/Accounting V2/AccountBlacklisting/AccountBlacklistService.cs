@@ -155,29 +155,29 @@ namespace CBS.BusinessService.Accounting_V2.AccountBlacklisting
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> DeleteAsync(string categoryId)
+        public async Task<ExecutionMessages> DeleteAsync(string Id)
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.DeactivateAccountBlacklist, categoryId);
+                string formattedUrl = string.Format(APICallHelper.DeactivateAccountBlacklist, Id);
                 var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
+                    GetExecutionMessages(null, true, Id, MessagesResults.Success,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
-                        response.ApiResponseData?.Message ?? "Category deactivated successfully.");
+                        response.ApiResponseData?.Message );
                 }
                 else
                 {
-                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
+                    GetExecutionMessages(null, false,Id, MessagesResults.Failed,
                         ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
-                        response.ApiResponseData?.Message ?? response.Message ?? "Failed to deactivate category.");
+                        response.ApiResponseData?.Message ?? response.Message );
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Error,
+                GetExecutionMessages(null, false, Id, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
 

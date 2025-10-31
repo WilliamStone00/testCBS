@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -13,11 +14,11 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
 {
-    public class MemberReconciliation : BaseService
+    public class MemberReconciliationService : BaseService
     {     
             private readonly ApiCallerHelper _apiCallerHelper;
 
-            public MemberReconciliation()
+            public MemberReconciliationService()
             {
                 //change the base url to the actual base url
                 string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
@@ -28,28 +29,28 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 _apiCallerHelper = new ApiCallerHelper(baseUrl);
             }
 
-            public async Task<IEnumerable<Affiliateresponse>> GetAsync()
-            {
-                try
+                public async Task<IEnumerable<GetBalance>> GetAccountBalanceAsync()
                 {
-                    // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<Affiliateresponse>>>(APICallHelper.GetAllMemberReconciliation);
-
-                    // CORRECTED: Access the final payload via .ApiResponseData.Data
-                    if (response.IsSuccess && response.ApiResponseData?.Data != null)
+                    try
                     {
-                        return response.ApiResponseData.Data;
-                    }
-                    return new List<Affiliateresponse>();
-                }
-                catch (Exception ex)
-                {
-                    // In a real scenario, log 'ex'
-                    throw;
-                }
-            }
+                        // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
+                        var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<GetBalance>>>(APICallHelper.GetMemeberAccountBalance);
 
-            public async Task<CustomDataTable> GetDataTableAsync(AffiliateQuery query)
+                        // CORRECTED: Access the final payload via .ApiResponseData.Data
+                        if (response.IsSuccess && response.ApiResponseData?.Data != null)
+                        {
+                            return response.ApiResponseData.Data;
+                        }
+                        return new List<GetBalance>();
+                    }
+                    catch (Exception ex)
+                    {
+                        // In a real scenario, log 'ex'
+                        throw;
+                    }
+                }
+
+        public async Task<CustomDataTable> GetDataTableAsync(AffiliateQuery query)
             {
                 try
                 {
@@ -75,7 +76,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                     System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                     // Re-throw to trigger fallback
-                    throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                    throw new Exception($"service unavailable: {ex.Message}", ex);
                 }
             }
 
@@ -103,30 +104,30 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 }
             }
 
-            public async Task<ExecutionMessages> CreateAsync(AffiliateCommand model)
-            {
-                try
-                {
-                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateMemberReconciliation, model);
+            //public async Task<ExecutionMessages> CreateAsync(AffiliateCommand model)
+            //{
+            //    try
+            //    {
+            //        var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateMemberReconciliation, model);
 
-                    if (response.IsSuccess)
-                    {
-                        GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
-                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
-                    }
-                    else
-                    {
-                        GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
-                        ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-                }
-                return ExecutionMessage;
-            }
+            //        if (response.IsSuccess)
+            //        {
+            //            GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
+            //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+            //        }
+            //        else
+            //        {
+            //            GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+            //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
+            //            ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            //    }
+            //    return ExecutionMessage;
+            //}
 
             public async Task<ExecutionMessages> UpdateAsync(AffiliateCommand model)
             {
@@ -155,37 +156,82 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 return ExecutionMessage;
             }
 
-            public async Task<ExecutionMessages> DeleteAsync(string categoryId)
+            public async Task<ExecutionMessages> DeleteAsync(string Id)
             {
                 try
                 {
-                    string formattedUrl = string.Format(APICallHelper.DeleteMemberReconciliation, categoryId);
+                    string formattedUrl = string.Format(APICallHelper.DeleteMemberReconciliation, Id);
                     var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
 
                     if (response.IsSuccess)
                     {
-                        GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
+                        GetExecutionMessages(null, true, Id, MessagesResults.Success,
                             ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
-                            response.ApiResponseData?.Message ?? "Category deactivated successfully.");
+                            response.ApiResponseData?.Message );
                     }
                     else
                     {
-                        GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
+                        GetExecutionMessages(null, false, Id, MessagesResults.Failed,
                             ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
-                            response.ApiResponseData?.Message ?? response.Message ?? "Failed to deactivate category.");
+                            response.ApiResponseData?.Message ?? response.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Error,
+                    GetExecutionMessages(null, false, Id, MessagesResults.Error,
                         ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
                 }
 
                 return ExecutionMessage;
             }
 
-           
+        public async Task<IEnumerable<dropdownResposne>> MemberAccountTypesAsync()
+        {
+            try
+            {
+                var Build = new MemberAccountdrop()
+                {
+                    BranchCode = GetBranchCode(),
+                    Status     = "Active",
+                    IncludeOnlyActive = true
+                };
+             
+                string formattedUrl = string.Format(APICallHelper.MemberAccountType);
+
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<List<dropdownResposne>>>(formattedUrl, Build);
+                var affiliates = response?.ApiResponseData?.Data ?? new List<dropdownResposne>();
+
+                if (!IsHeadOffice())
+                {
+                    string currentBranchId = GetBranchID();
+                    affiliates = affiliates.Where(a => a.Id == currentBranchId).ToList();
+                }
+                else
+                {
+                    var defaultAffiliate = new dropdownResposne
+                    {
+                        Id = "All",
+                        Name = "All Member Account"                      
+                    };
+                    affiliates.Insert(0, defaultAffiliate);
+                }
+
+                // Optional: format name for display and order by Code
+                return affiliates
+                    .Select(a =>
+                    {
+                        a.Name = $"[{a.Id}] - {a.Name}";
+                        return a;
+                    })
+                    .OrderBy(a => a.Id)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
+}
 
 

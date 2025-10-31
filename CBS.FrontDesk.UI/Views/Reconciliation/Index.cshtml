@@ -1,0 +1,504 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.GetBalance
+@{
+    ViewBag.Title = "Member / Loan Reconciliation";
+}
+
+@* Header + Tips for Member / Loan Reconciliation *@
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-swap-horizontal-bold me-2"></i> Member and Loan Reconciliation
+                </h1>
+                <p class="card-text">
+                    Use this page to quickly check balances and reconcile either a member account or a loan account.
+                    Choose the mode (Member or Loan), pick the account type and branch, then inspect balances and branch account details.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReconTips" aria-expanded="false" aria-controls="collapseReconTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseReconTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-account-circle-outline text-success me-2"></i>
+                    <strong>Mode:</strong> Select <em>Member</em> to reconcile member accounts or <em>Loan</em> to reconcile loan accounts.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-shape-outline text-primary me-2"></i>
+                    <strong>Account Type:</strong> Account types are mode-specific — choose the correct type to fetch the related balance.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-office-building-outline text-secondary me-2"></i>
+                    <strong>Branch & Branch Account:</strong> Select a branch to load its branch accounts. Click <em>Show Branch Account Details</em> to view full info in a modal.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-currency-usd text-info me-2"></i>
+                    <strong>Balance Display:</strong> After selecting an account type, the account Id and current balance will be shown below the selector for quick verification.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                    <strong>Accuracy:</strong> Balances are fetched live from the ledger service — if numbers look off, run a full reconciliation or check transaction history.
+                </li>
+            </ul>
+
+            <div class="mt-3 small text-muted">
+                Tip: If you expect many branch accounts, use the branch filter first so the branch account dropdown loads a smaller set.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Reconciliations</h5>
+        <div class="row g-3 align-items-end">
+            <!-- Mode Selection with better spacing -->
+            <div class="col-md-12 mb-4">
+                <label class="form-label fw-semibold">Choose Mode</label>
+                <div class="d-flex gap-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="reconMode" id="modeMember" value="member" checked>
+                        <label class="form-check-label" for="modeMember">
+                            <i class="mdi mdi-account-circle-outline me-1"></i> Member
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="reconMode" id="modeLoan" value="loan">
+                        <label class="form-check-label" for="modeLoan">
+                            <i class="mdi mdi-cash-usd-outline me-1"></i> Loan
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Type Selection (Conditional) -->
+            <div class="col-md-4">
+                <div id="memberAccountSection">
+                    <label for="MemberAccountType" class="form-label fw-semibold">Select Member Account Type</label>
+                    @Html.DropDownListFor(m => m.MemberAccountType,
+                        new SelectList(ViewBag.MemberReference ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Member Account Type ---",
+                        new { @class = "form-control select2", id = "MemberAccountType" })
+                    @Html.ValidationMessageFor(m => m.MemberAccountType, "", new { @class = "text-danger" })
+                </div>
+
+                <div id="loanAccountSection" class="d-none">
+                    <label for="LoanAccountType" class="form-label fw-semibold">Select Loan Account Type</label>
+                    @Html.DropDownListFor(m => m.LoanAccountType,
+                        new SelectList(ViewBag.LoanAccounts ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Loan Account Type ---",
+                        new { @class = "form-control select2", id = "LoanAccountType" })
+                    @Html.ValidationMessageFor(m => m.LoanAccountType, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Balance Display Area -->
+                <div id="balanceInfo" class="mt-3 d-none">
+                    <div class="card bg-light">
+                        <div class="card-body p-3">
+                            <h6 class="card-title text-primary mb-2">
+                                <i class="mdi mdi-information-outline me-1"></i> Account Information
+                            </h6>
+                            <div class="row small">
+                                <div class="col-6">
+                                    <strong>Account ID:</strong>
+                                </div>
+                                <div class="col-6" id="accountIdDisplay">-</div>
+                                <div class="col-6">
+                                    <strong>Balance:</strong>
+                                </div>
+                                <div class="col-6" id="balanceDisplay">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Selection -->
+            <div class="col-md-4">
+                <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                @Html.DropDownListFor(m => m.BranchId,
+                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2", id = "BranchId" })
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Branch Account Dropdown -->
+            <div class="col-md-4">
+                <label for="BranchAccountId" class="form-label fw-semibold">Branch Account Reference</label>
+                @Html.DropDownList("BranchAccountId",
+                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch Account ---", Value = "" } },
+                    new { @class = "form-control select2", id = "BranchAccountId" })
+            </div>
+
+            <!-- Action Button -->
+            @*<div class="col-md-12 mt-3">
+                <button id="btnLoadDetails" class="btn btn-primary" type="button" disabled>
+                    <i class="mdi mdi-eye-outline me-1"></i> Show Branch Account Details
+                </button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<!-- Modal for branch account details -->
+<div class="modal fade" id="branchAccountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Branch Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="branchAccountModalBody">
+                <div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+
+            // Configuration
+            const CONFIG = {
+                urls: {
+                    accountTypes: '@Url.Action("GetAccountTypes", "Reconciliation")',
+                    branchAccounts: '@Url.Action("GetBranchAccountsByBranch", "Reconciliation")',
+                    accountBalance: '@Url.Action("GetAccountBalance", "Reconciliation")',
+                    branchAccountDetails: '@Url.Action("GetBranchAccountDetails", "Reconciliation")'
+                },
+                selectors: {
+                    modeRadios: 'input[name="reconMode"]',
+                    memberAccountType: '#MemberAccountType',
+                    loanAccountType: '#LoanAccountType',
+                    branchId: '#BranchId',
+                    branchAccountId: '#BranchAccountId',
+                    balanceInfo: '#balanceInfo',
+                    accountIdDisplay: '#accountIdDisplay',
+                    balanceDisplay: '#balanceDisplay',
+                    btnLoadDetails: '#btnLoadDetails',
+                    branchAccountModalBody: '#branchAccountModalBody'
+                },
+                classes: {
+                    hidden: 'd-none',
+                    visible: 'd-block'
+                }
+            };
+
+            // State management
+            const state = {
+                currentMode: 'member',
+                isLoading: false
+            };
+
+            // DOM Elements
+            const elements = {
+                modeRadios: document.querySelectorAll(CONFIG.selectors.modeRadios),
+                memberAccountSection: document.getElementById('memberAccountSection'),
+                loanAccountSection: document.getElementById('loanAccountSection'),
+                memberAccountType: document.querySelector(CONFIG.selectors.memberAccountType),
+                loanAccountType: document.querySelector(CONFIG.selectors.loanAccountType),
+                branchId: document.querySelector(CONFIG.selectors.branchId),
+                branchAccountId: document.querySelector(CONFIG.selectors.branchAccountId),
+                balanceInfo: document.querySelector(CONFIG.selectors.balanceInfo),
+                accountIdDisplay: document.querySelector(CONFIG.selectors.accountIdDisplay),
+                balanceDisplay: document.querySelector(CONFIG.selectors.balanceDisplay),
+                btnLoadDetails: document.querySelector(CONFIG.selectors.btnLoadDetails)
+            };
+
+            // Utility functions
+            const utils = {
+                initSelect2(selector) {
+                    try {
+                        if ($.fn.select2) {
+                            $(selector).each(function () {
+                                if (!$(this).data('select2')) {
+                                    $(this).select2({ width: '100%' });
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.warn('select2 init failed', e);
+                    }
+                },
+
+                showLoading(element) {
+                    if (element) {
+                        element.innerHTML = '<div class="text-center py-2"><div class="spinner-border spinner-border-sm" role="status"></div> Loading...</div>';
+                    }
+                },
+
+                formatCurrency(amount) {
+                    if (amount === undefined || amount === null) return '-';
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    }).format(amount);
+                },
+
+                showError(message) {
+                    // You could implement a toast or alert system here
+                    console.error(message);
+                },
+
+                // Debounce function to prevent rapid firing of events
+                debounce(func, wait) {
+                    let timeout;
+                    return function executedFunction(...args) {
+                        const later = () => {
+                            clearTimeout(timeout);
+                            func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                    };
+                }
+            };
+
+            // UI Management
+            const uiManager = {
+                toggleMode(mode) {
+                    state.currentMode = mode;
+
+                    // Real-time switching with smooth transition
+                    if (mode === 'member') {
+                        elements.loanAccountSection.classList.add(CONFIG.classes.hidden);
+                        // Small delay for smooth visual transition
+                        setTimeout(() => {
+                            elements.memberAccountSection.classList.remove(CONFIG.classes.hidden);
+                        }, 50);
+                    } else {
+                        elements.memberAccountSection.classList.add(CONFIG.classes.hidden);
+                        setTimeout(() => {
+                            elements.loanAccountSection.classList.remove(CONFIG.classes.hidden);
+                        }, 50);
+                    }
+
+                    // Clear balance info when switching modes
+                    this.hideBalanceInfo();
+
+                    // Reinitialize Select2 for the visible dropdown
+                    setTimeout(() => {
+                        const visibleDropdown = mode === 'member' ? elements.memberAccountType : elements.loanAccountType;
+                        utils.initSelect2(visibleDropdown);
+                    }, 100);
+                },
+
+                showBalanceInfo(accountId, balance) {
+                    elements.accountIdDisplay.textContent = accountId || '-';
+                    elements.balanceDisplay.textContent = utils.formatCurrency(balance);
+                    elements.balanceInfo.classList.remove(CONFIG.classes.hidden);
+                },
+
+                hideBalanceInfo() {
+                    elements.balanceInfo.classList.add(CONFIG.classes.hidden);
+                    elements.accountIdDisplay.textContent = '-';
+                    elements.balanceDisplay.textContent = '-';
+                },
+
+                updateLoadButtonState() {
+                    elements.btnLoadDetails.disabled = !elements.branchAccountId.value;
+                }
+            };
+
+            // API Functions
+            const api = {
+                //async getAccountTypes(mode) {
+                //    try {
+                //        const response = await fetch(`${CONFIG.urls.accountTypes}?mode=${mode}`);
+                //        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                //        return await response.json();
+                //    } catch (error) {
+                //        utils.showError(`Failed to load account types: ${error.message}`);
+                //        return [];
+                //    }
+                //},
+
+                async getAccountBalance(mode, accountTypeId) {
+                    if (!accountTypeId) return null;
+
+                    try {
+                        const response = await fetch(`${CONFIG.urls.accountBalance}?mode=${mode}&accountTypeId=${accountTypeId}`);
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const result = await response.json();
+                        return result.success ? result.data : null;
+                    } catch (error) {
+                        utils.showError(`Failed to load account balance: ${error.message}`);
+                        return null;
+                    }
+                },
+
+                async getBranchAccounts(branchId) {
+                    if (!branchId) return [];
+
+                    try {
+                        const response = await fetch(`${CONFIG.urls.branchAccounts}?branchId=${branchId}`);
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const result = await response.json();
+
+                        // Handle different response formats
+                        if (Array.isArray(result)) return result;
+                        if (result && Array.isArray(result.data)) return result.data;
+                        return [];
+                    } catch (error) {
+                        utils.showError(`Failed to load branch accounts: ${error.message}`);
+                        return [];
+                    }
+                },
+
+                //async getBranchAccountDetails(accountId) {
+                //    if (!accountId) return '';
+
+                //    try {
+                //        const response = await fetch(`${CONFIG.urls.branchAccountDetails}?accountId=${accountId}`);
+                //        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                //        return await response.text();
+                //    } catch (error) {
+                //        utils.showError(`Failed to load branch account details: ${error.message}`);
+                //        return '<div class="text-danger">Failed to load details.</div>';
+                //    }
+                //}
+            };
+
+            // Event Handlers
+            const eventHandlers = {
+                async onModeChange(e) {
+                    const mode = e.target.value;
+
+                    // Immediate UI update
+                    uiManager.toggleMode(mode);
+
+                    // Load account types for the selected mode
+                    const accountTypes = await api.getAccountTypes(mode);
+                    this.populateAccountTypes(mode, accountTypes);
+                },                
+
+                async onAccountTypeChange(e) {
+                    const accountTypeId = e.target.value;
+
+                    if (!accountTypeId) {
+                        uiManager.hideBalanceInfo();
+                        return;
+                    }
+
+                    const balanceData = await api.getAccountBalance(state.currentMode, accountTypeId);
+
+                    if (balanceData) {
+                        uiManager.showBalanceInfo(balanceData.AccountId, balanceData.Balance);
+                    } else {
+                        uiManager.showBalanceInfo('-', '-');
+                    }
+                },
+
+                async onBranchChange(e) {
+                    const branchId = e.target.value;
+                    const accounts = await api.getBranchAccounts(branchId);
+                    this.populateBranchAccounts(accounts);
+                },
+
+                populateBranchAccounts(accounts) {
+                    elements.branchAccountId.innerHTML = '<option value="">--- Select Branch Account ---</option>';
+
+                    if (accounts && accounts.length > 0) {
+                        accounts.forEach(account => {
+                            const value = account.id || account.Id || account.Value || account.value;
+                            const text = account.name || account.Name || account.Text || account.text || account.Description || value;
+
+                            if (value && text) {
+                                const option = document.createElement('option');
+                                option.value = value;
+                                option.textContent = text;
+                                elements.branchAccountId.appendChild(option);
+                            }
+                        });
+                    } else {
+                        elements.branchAccountId.innerHTML = '<option value="">No branch accounts available</option>';
+                    }
+
+                    utils.initSelect2(elements.branchAccountId);
+                    uiManager.updateLoadButtonState();
+                },
+
+                async onLoadDetailsClick() {
+                    const accountId = elements.branchAccountId.value;
+                    if (!accountId) return;
+
+                    const modalBody = document.querySelector(CONFIG.selectors.branchAccountModalBody);
+                    utils.showLoading(modalBody);
+
+                    try {
+                        const modal = new bootstrap.Modal(document.getElementById('branchAccountModal'));
+                        modal.show();
+                    } catch (e) {
+                        console.warn('Bootstrap modal error:', e);
+                    }
+
+                    const detailsHtml = await api.getBranchAccountDetails(accountId);
+                    modalBody.innerHTML = detailsHtml;
+                }
+            };
+
+            // Initialization
+            function init() {
+                // Initialize Select2
+                utils.initSelect2('.select2');
+
+                // Set up event listeners with immediate response
+                elements.modeRadios.forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        // Immediate visual feedback
+                        eventHandlers.onModeChange(e);
+                    });
+                });
+
+                // Debounced account type change for better performance
+                const debouncedAccountChange = utils.debounce(eventHandlers.onAccountTypeChange.bind(eventHandlers), 300);
+                elements.memberAccountType.addEventListener('change', debouncedAccountChange);
+                elements.loanAccountType.addEventListener('change', debouncedAccountChange);
+
+                elements.branchId.addEventListener('change', eventHandlers.onBranchChange.bind(eventHandlers));
+                elements.branchAccountId.addEventListener('change', () => uiManager.updateLoadButtonState());
+                elements.btnLoadDetails.addEventListener('click', eventHandlers.onLoadDetailsClick.bind(eventHandlers));
+
+                // Initialize with member mode
+                uiManager.toggleMode('member');
+
+                // Load initial account types
+                Promise.all([
+                    api.getAccountTypes('member'),
+                    api.getAccountTypes('loan')
+                ]).then(([memberTypes, loanTypes]) => {
+                    eventHandlers.populateAccountTypes('member', memberTypes);
+                    eventHandlers.populateAccountTypes('loan', loanTypes);
+                });
+            }
+
+            // Start the application when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+}

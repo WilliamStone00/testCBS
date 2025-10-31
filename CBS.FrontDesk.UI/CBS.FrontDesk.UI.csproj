@@ -10864,6 +10864,7 @@
     <Content Include="Views\AccountBlancklist\List.cshtml" />
     <Content Include="Views\AccountBlancklist\_Data.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistDetailsModal.cshtml" />
+    <Content Include="Views\Reconciliation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
