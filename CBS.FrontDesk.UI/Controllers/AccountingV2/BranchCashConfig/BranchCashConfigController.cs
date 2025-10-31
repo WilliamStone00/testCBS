@@ -71,10 +71,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         public async Task<bool> LoadInitialData()
         {
             var branches = await _branchServices.GetBranches();
-            var glAccounts = await _branchAccountService.GetBranchFromEndpointAsync();
+            //var glAccounts = await _branchAccountService.GetBranchFromEndpointAsync();
 
             ViewBag.Branches = branches;
-            ViewBag.BranchAccounts = glAccounts;
+            //ViewBag.BranchAccounts = glAccounts;
             ViewBag.BranchesDict = branches.ToDictionary(b => b.Id, b => b.Name);
             return true;
         }

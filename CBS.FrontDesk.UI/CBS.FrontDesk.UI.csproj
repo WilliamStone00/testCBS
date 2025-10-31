@@ -10861,6 +10861,9 @@
     <Content Include="Views\AccountBlancklist\Index.cshtml" />
     <Content Include="Views\BranchAccount\_CreateRoot.cshtml" />
     <Content Include="Views\AffiliateAccount\_CreateAffiliateRoot.cshtml" />
+    <Content Include="Views\AccountBlancklist\List.cshtml" />
+    <Content Include="Views\AccountBlancklist\_Data.cshtml" />
+    <Content Include="Views\AccountBlancklist\_BlacklistDetailsModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

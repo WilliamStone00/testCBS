@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -145,23 +146,34 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                 }
             }
 
-            // real endpoint version
-            public async Task<IEnumerable<BranchAccountResponse>> GetBranchFromEndpointAsync()
+         
+            //get Branch Accounts for dro down 
+            public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId)
             {
                 try
                 {
-                    // Call API
-                    var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(APICallHelper.GetAllBranchAccountDropAffiliate);
-                    var affiliates = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+                    // Create an "empty" query so server interprets as get all (everything null)
+                    var query = new BranchAccountQuery
+                    {
+                        BranchId = branchId 
+                    };
 
-                    // Only active ones (mirrors mock's GetAsync which returns only IsActive)
-                   // affiliates = affiliates.Where(a => a.IsActive).ToList();
+                    // Reuse existing method which calls the API datatable endpoint
+                    var dataTable = await GetDataTableAsync(query);
+
+                    // dataTable.data is `object` so convert safely to the expected DTO list
+                    var branchList = JsonConvert.DeserializeObject<List<BranchAccountResponse>>(
+                        JsonConvert.SerializeObject(dataTable?.data)
+                    ) ?? new List<BranchAccountResponse>();
+
+                    // Optional: keep only active ones if needed
+                    // branchList = branchList.Where(a => a.IsActive).ToList();
 
                     if (!IsHeadOffice())
                     {
                         // Filter only the affiliate that matches current branch (if applicable)
                         string currentBranchId = GetBranchID();
-                        affiliates = affiliates.Where(a => a.Id == currentBranchId).ToList();
+                        branchList = branchList.Where(a => a.Id == currentBranchId).ToList();
                     }
                     else
                     {
@@ -170,35 +182,37 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                         {
                             Id = "All",
                             Name = "All Affiliates",
-                            Code = "ALL",
-                           
+                            Code = "ALL"
                         };
-                        // ensure we don't duplicate if API already returns such entry
-                        if (!affiliates.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
+
+                        if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
                         {
-                            affiliates.Insert(0, defaultAffiliate);
+                            branchList.Insert(0, defaultAffiliate);
                         }
                     }
 
-                    // Format name for display and order by Code
-                    return affiliates
+                    // Format name for display and order (choose ordering you prefer)
+                    var formatted = branchList
                         .Select(a =>
                         {
-                            a.Name = $"[{a.Code}] - {a.Name}".Trim();
+                            a.Name = $" {a.Name}".Trim();
                             return a;
                         })
                         .OrderBy(a => a.Id)
                         .ToList();
+
+                    return formatted;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
+                    // log properly (example: _logger.LogError(ex, "GetAllBranchAccountsFromDataTableAsync failed");)
                     throw;
                 }
             }
-      
-        // real endpoint version
-            public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+
+
+    // real endpoint version
+    public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
             {
                 try
                 {

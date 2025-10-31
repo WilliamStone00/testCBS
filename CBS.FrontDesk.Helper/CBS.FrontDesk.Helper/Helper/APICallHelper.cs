@@ -1573,6 +1573,14 @@ namespace CBS.FrontDesk.Helper
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";
 
+        //--------------------------- Member Reconciliation ------------------------------------------
+        public static string GetAllAccountBlacklist = "not yet availlable";
+        public static string AccountBlacklistdatatable = "not yet availlable";
+        public static string GetAccountBlacklistById = "not yet availlable";
+        public static string CreateAccountBlacklist = "not yet availlable";
+        public static string UpdateAccountBlacklist = "not yet availlable";
+        public static string DeactivateAccountBlacklist = "not yet availlable";
+
         //*************************** End of Accounting V2 **************************************
 
 
