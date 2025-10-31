@@ -1565,6 +1565,14 @@ namespace CBS.FrontDesk.Helper
         public static string pendingApprove = "/api/v1/AccountCreationRequest/approve";
         public static string pendingreject = "/api/v1/AccountCreationRequest/reject";
 
+        //--------------------------- Member Reconciliation ------------------------------------------
+        public static string GetAllMemberReconciliation = "not yet availlable";
+        public static string MemberReconciliationdatatable = "not yet availlable";
+        public static string GetMemberReconciliationById = "not yet availlable";
+        public static string CreateMemberReconciliation = "not yet availlable";
+        public static string UpdateMemberReconciliation = "not yet availlable";
+        public static string DeleteMemberReconciliation = "not yet availlable";
+
         //*************************** End of Accounting V2 **************************************
 
 

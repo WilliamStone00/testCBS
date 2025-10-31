@@ -98,6 +98,40 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        // these service send all branch inrespective of the branch
+        public async Task<IEnumerable<Branch>> GetCounterpartyBranches()
+        {
+            try
+            {
+                var response = await _BranchConfigApiHelper.GetAsync<ResponseObject<List<Branch>>>(APICallHelper.GetAllBranch);
+                var branches = response?.ApiResponseData?.Data ?? new List<Branch>();
+
+                // Always add "All" option as the default
+                var defaultBranch = new Branch
+                {
+                    Id = "All",
+                    BranchCode = "All",
+                    Name = "All Branches"
+                };
+
+                branches.Insert(0, defaultBranch);
+
+                // Format the Name and order by BranchCode
+                return branches
+                    .Select(branch =>
+                    {
+                        branch.Name = $"[{branch.BranchCode}] [{branch.Name}]";
+                        return branch;
+                    })
+                    .OrderBy(branch => branch.BranchCode)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<SelectList> GetBranchesByBankId(string id)
         {
@@ -148,6 +182,7 @@ namespace CBS.BusinessService.Config
                 throw;
             }
         }
+        
 
 
 

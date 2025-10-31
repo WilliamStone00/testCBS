@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
