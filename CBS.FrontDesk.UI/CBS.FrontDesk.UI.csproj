@@ -2038,6 +2038,7 @@
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
+    <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
