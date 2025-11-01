@@ -1,0 +1,107 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
+
+<fieldset class="fieldset-custom">
+    <legend id="select_base">MOBILE MONEY CONFIGURATION</legend>
+    <div class="card-body">
+        @using (Html.BeginForm("Create", "MobileMoneyConfigV2", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.HiddenFor(model => model.Id)
+
+        <div class="row mt-3 gy-3">
+
+            <!-- Branch Selection -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches, "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2", id = "BranchId", @search = "true" }
+                    )
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    <label for="BranchId">Select Branch</label>
+                </div>
+            </div>
+
+            <!-- Operator Name -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    <label for="Name">Phone holder or keepers name</label>
+                </div>
+            </div>
+            <!-- Telephone Number -->
+            <div class="col-md-3">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.TelNumber, new { @class = "form-control", placeholder = "Telephone Number" })
+                    @Html.ValidationMessageFor(m => m.TelNumber, "", new { @class = "text-danger" })
+                    <label for="TelNumber">Merchant/MoMo/Orange Number</label>
+                </div>
+            </div>
+            <!-- Operator Type -->
+            <div class="col-md-9">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.OperatorType,
+                        new SelectList(
+                            new List<string> { "MTN", "Orange", "Camtel" }
+                        ),
+                        "--- Select Operator ---",
+                        new { @class = "form-control select2", id = "OperatorType", @search = "true" }
+                    )
+                    @Html.ValidationMessageFor(m => m.OperatorType, "", new { @class = "text-danger" })
+                    <label for="OperatorType">Operator Type (e.g., MTN, Orange, Camtel)</label>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.BranchAccountId,
+                        new SelectList(ViewBag.Accounts, "Id", "Name"),
+                        "--- Select account ---",
+                        new { @class = "form-control select2", id = "BranchId", @search = "true" }
+                    )
+                    @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                    <label for="BranchId">Select Branch Account GL</label>
+                </div>
+            </div>
+
+
+            <!-- Address -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                    <label for="Address">Address</label>
+                </div>
+            </div>
+
+            <!-- Active Status -->
+            <div class="col-md-12">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
+                    <label class="form-check-label" for="ActiveStatus">Active Status</label>
+                </div>
+            </div>
+        </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4">
+                @if (ViewBag.Key != null)
+                {
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                }
+            </div>
+        }
+    </div>
+</fieldset>
+
+
