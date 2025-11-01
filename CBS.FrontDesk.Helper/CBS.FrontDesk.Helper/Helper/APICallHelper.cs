@@ -1476,22 +1476,34 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
-
-        //*************************** CHEQUE BOOK ******************************
-
-        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-        //public static string Createnot = "/api/v1/Notification/Config";
-        //public static string Updatenot = "/api/NotificationConfig/{0}";
-        //public static string Deletenot = "/api/NotificationConfig/{0}";
+		//---------------------------Mobile MoneyV2--------------------------------------//
 
 
+		public static string DeleteMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
+		public static string CreateMobileMoneyV2 = "/api/v1/MobileMoney";
 
-        //************************** END CHEQUE BOOK *******************************
+		public static string UpdateMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
 
-        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+		public static string GetAllMobileMoneyV2 = "/api/v1/MobileMoney";
+		public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
 
 
-        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+
+		//*************************** CHEQUE BOOK ******************************
+
+		//public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+		//public static string Createnot = "/api/v1/Notification/Config";
+		//public static string Updatenot = "/api/NotificationConfig/{0}";
+		//public static string Deletenot = "/api/NotificationConfig/{0}";
+
+
+
+		//************************** END CHEQUE BOOK *******************************
+
+		//*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+
+		public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
         public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
         public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
         public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
