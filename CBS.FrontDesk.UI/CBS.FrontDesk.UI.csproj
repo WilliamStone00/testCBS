@@ -2038,6 +2038,7 @@
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
+    <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
@@ -2154,6 +2155,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
+    <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
@@ -7696,6 +7698,9 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
+    <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
+    <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
+    <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
