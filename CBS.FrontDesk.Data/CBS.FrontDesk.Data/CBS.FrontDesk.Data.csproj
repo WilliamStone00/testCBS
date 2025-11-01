@@ -130,6 +130,7 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
+    <Compile Include="Entity\AccountingV2\CashReconciliation\CashAndVaultInit.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />

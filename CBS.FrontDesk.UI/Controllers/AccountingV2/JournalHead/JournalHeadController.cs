@@ -269,17 +269,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
 
+        
         //[HttpGet]
         //public async Task<ActionResult> Details(string id)
         //{
         //    if (string.IsNullOrEmpty(id))
         //        return new HttpStatusCodeResult(400, "Journal Entry ID is required");
 
-        //    JournalEntry entry = null;
+        //    Data.Entity.AccountingV2.WorkflowTicket entry = null;
 
         //    try
         //    {
-        //        entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
+        //        entry = await _journalHeadService.GetJournalSourceByIdAsync(id);
         //    }
         //    catch (Exception ex)
         //    {
@@ -288,7 +289,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         //    }
 
         //    //return View(entry); // MVC 5 expects Details.cshtml
-        //    return PartialView("_DestDetails", entry);
+        //    return PartialView("_SourceDetails", entry);
         //}
         [HttpGet]
         public async Task<ActionResult> Details(string id)
@@ -309,10 +310,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             }
 
             //return View(entry); // MVC 5 expects Details.cshtml
-            return PartialView("_SourceDetails", entry);
+            return PartialView("_DestDetails", entry);
         }
 
 
-        
     }
 }

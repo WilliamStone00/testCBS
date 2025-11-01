@@ -36,11 +36,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
 
         }
         // GET: ManualJournalEntry
-        //public async Task<ActionResult> Index()
-        //{
-
-        //    return View(new JournalEntry());
-        //}
+        
 
         public async Task<ActionResult> Index()
         {
@@ -136,45 +132,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
         }
 
 
-        //[HttpGet]
-        //public async Task<ActionResult> List()
-        //{
-        //    await loader();
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<JsonResult> LoadJournalHeaderData(JournalEntryQuery query)
-        //{
-        //    try
-        //    {
-        //        var data = await _manualJournalEntryService.GetJournalHeaderDataTableAsync(query);
-
-        //        // Deserialize DataTable payload into strongly-typed list
-        //        var journalHeaders = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry>>(
-        //            JsonConvert.SerializeObject(data.data));
-
-        //        return Json(new
-        //        {
-        //            draw = data.draw,
-        //            recordsTotal = data.recordsTotal,
-        //            recordsFiltered = data.recordsFiltered,
-        //            data = journalHeaders
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Return DataTables-compatible empty result on error
-        //        return Json(new
-        //        {
-        //            draw = query?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<object>(),
-        //            error = ex.Message
-        //        });
-        //    }
-        //}
+        
 
 
         //[HttpGet]
@@ -199,87 +157,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
         //}
 
 
-        [HttpGet]
-        public async Task<ActionResult> Mode()
-        {
-            await loader();
-            return View();
-        }
-        //public async Task<JsonResult> LoadJournalSourceData(JournalEntryQuery query)
-        //{
-        //    try
-        //    {
-        //        var data = await _manualJournalEntryService.GetJournalHeaderDataTableAsync(query);
-
-        //        // Deserialize DataTable payload into strongly-typed list
-        //        var journalHeaders = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry>>(
-        //            JsonConvert.SerializeObject(data.data));
-
-        //        return Json(new
-        //        {
-        //            draw = data.draw,
-        //            recordsTotal = data.recordsTotal,
-        //            recordsFiltered = data.recordsFiltered,
-        //            data = journalHeaders
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Return DataTables-compatible empty result on error
-        //        return Json(new
-        //        {
-        //            draw = query?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<object>(),
-        //            error = ex.Message
-        //        });
-        //    }
-        //}
+     
 
 
 
         
 
-        [HttpGet]
-        public async Task<ActionResult> Table()
-        {
-            await loader();
-            return View();
-        }
-
-        //[HttpPost]
-        //public async Task<JsonResult> LoadDestinationDataTable(JournalEntryQuery query)
-        //{
-        //    try
-        //    {
-        //        var data = await _manualJournalEntryService.GetJournalHeaderDataTableAsync(query);
-
-        //        // Deserialize DataTable payload into strongly-typed list
-        //        var journalHeaders = JsonConvert.DeserializeObject<List<CBS.FrontDesk.Data.Entity.AccountongV2.JournalEntry>>(
-        //            JsonConvert.SerializeObject(data.data));
-
-        //        return Json(new
-        //        {
-        //            draw = data.draw,
-        //            recordsTotal = data.recordsTotal,
-        //            recordsFiltered = data.recordsFiltered,
-        //            data = journalHeaders
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Return DataTables-compatible empty result on error
-        //        return Json(new
-        //        {
-        //            draw = query?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<object>(),
-        //            error = ex.Message
-        //        });
-        //    }
-        //}
+       
     }
 
 

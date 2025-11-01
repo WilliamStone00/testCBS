@@ -2047,6 +2047,7 @@
     <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
     <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
+    <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -10861,6 +10862,8 @@
     <Content Include="Views\AccountBlancklist\Index.cshtml" />
     <Content Include="Views\BranchAccount\_CreateRoot.cshtml" />
     <Content Include="Views\AffiliateAccount\_CreateAffiliateRoot.cshtml" />
+    <Content Include="Views\CashReconciliation\Index.cshtml" />
+    <Content Include="Views\CashReconciliation\_Initialise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

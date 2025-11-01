@@ -1575,6 +1575,8 @@ namespace CBS.FrontDesk.Helper
 
         //*************************** End of Accounting V2 **************************************
 
+        //------------------------cash Reconciliation ------------------------------------------------
+        public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
     }
 }

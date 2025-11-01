@@ -85,7 +85,7 @@
 <!-- ===================== MAIN HEADER ===================== -->
 <div class="header-viewer">
     <h6>
-        <i class="mdi mdi-file-document-outline me-1"></i> JOURNAL HEADER & DETAILS
+        <i class="mdi mdi-file-document-outline me-1"></i> JOURNAL REQUEST & DETAILS
     </h6>
     <p class="mb-0">
         Detailed information for the selected journal entry.
@@ -127,6 +127,8 @@
                 <th class="bg-label">Rejected Date</th>
                 <td>@(Model?.RejectedDate != DateTime.MinValue ? Model.RejectedDate.ToString("dd/MM/yyyy HH:mm") : "-")</td>
             </tr>
+            <tr><th class="bg-label">Total Debit</th><td>@Math.Abs(Model.TotalDebit).ToString("N0")</td></tr>
+            <tr><th class="bg-label">Total Credit</th><td>@Math.Abs(Model.TotalCredit).ToString("N0")</td></tr>
         </tbody>
     </table>
 

@@ -1,0 +1,118 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation.CashAndVaultInit
+@using Resources
+@{
+    ViewBag.Title = "Cash Reconciliation";
+}
+
+@using (Html.BeginForm("SaveCashReconciliation", "CashReconciliation", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "ReconciliationForm", onsubmit = "return cashReconciliationSubmitAjax(this);" }))
+{
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-primary mb-0">
+                    <i class="mdi mdi-cash-multiple me-2"></i> Cash Reconciliation
+                </h6>
+            </div>
+
+            <!-- BRANCH DROPDOWN -->
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold" for="BranchId">Branch</label>
+                    @Html.DropDownList(
+                        "BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new
+                        {
+                            @class = "form-control select2 mb-1",
+                            id = "BranchId",
+                            required = "required",
+                            onchange = "loadReconciliationAccounts(this.value)"
+                        }
+                    )
+                </div>
+            </div>
+
+            <!-- TREASURY ACCOUNT (Cash GL) -->
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-12 mb-3">
+                    <label for="SourceGlId" class="form-label fw-semibold">Cash GL</label>
+                    @Html.DropDownList("SourceGlId",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Cash GL ---", Value = "" } },
+                        new { @class = "form-control select2", id = "SourceGlId", required = "required" })
+                </div>
+            </div>
+
+            <!-- AMOUNT / BALANCE / CASH DIFF -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "Amount", placeholder = "Enter Cash-in Hand", required = "required" })
+                        <label for="Amount">Amount</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="form-floating shadow-sm">
+                        <input type="text" class="form-control" id="Balance" name="Balance" readonly placeholder="Balance" />
+                        <label for="Balance">Balance</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="form-floating shadow-sm">
+                        <input type="text" class="form-control" id="CashDiff" name="CashDiff" readonly placeholder="Cash diff" />
+                        <label for="CashDiff">Cash diff</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIFFERENCE ACCOUNT (Deficit GL) -->
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-12 mb-3">
+                    <label for="DestinationGlId" class="form-label fw-semibold">Difference GL</label>
+                    @Html.DropDownList("DestinationGlId",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select cash diff GL ---", Value = "" } },
+                        new { @class = "form-control select2", id = "DestinationGlId", required = "required" })
+                </div>
+            </div>
+
+            <!-- TILL + CASHIER -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name", required = "required" })
+                        <label for="TillName">Till Name</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.NameOfCashier, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name", required = "required" })
+                        <label for="NameOfCashier">Cashier Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NARRATION -->
+            <div class="mt-4">
+                <label class="form-label fw-bold" for="Memo">Note</label>
+                @Html.TextAreaFor(m => m.Naration, new
+                {
+                    @class = "form-control shadow-sm",
+                    rows = "3",
+                    placeholder = "Enter any remark or note about the cash reconciliation",
+                    required = "required",
+                    id = "Memo"
+                })
+            </div>
+
+            <!-- SAVE -->
+            <div class="mt-4 text-end">
+                <button type="button" class="btn btn-primary" onclick="cashReconciliationSubmitAjax(this.form)">SAVE</button>
+            </div>
+        </div>
+    </div>
+}
