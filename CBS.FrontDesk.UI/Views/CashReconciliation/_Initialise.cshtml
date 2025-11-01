@@ -7,6 +7,8 @@
 @using (Html.BeginForm("SaveCashReconciliation", "CashReconciliation", FormMethod.Post,
     new { enctype = "multipart/form-data", id = "ReconciliationForm", onsubmit = "return cashReconciliationSubmitAjax(this);" }))
 {
+    @Html.AntiForgeryToken()
+
     <div class="card shadow-sm mt-3">
         <div class="card-body">
 
@@ -16,41 +18,36 @@
                 </h6>
             </div>
 
-            <!-- BRANCH DROPDOWN -->
+            <!-- Branch -->
             <div class="row mb-4 align-items-end">
                 <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold" for="BranchId">Branch</label>
+                    @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
                     @Html.DropDownList(
                         "BranchId",
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                         "--- Select Branch ---",
-                        new
-                        {
-                            @class = "form-control select2 mb-1",
-                            id = "BranchId",
-                            required = "required",
-                            onchange = "loadReconciliationAccounts(this.value)"
-                        }
+                        new { @class = "form-control select2 mb-1", id = "BranchId", required = "required", onchange = "loadReconciliationAccounts(this.value)" }
                     )
                 </div>
             </div>
 
-            <!-- TREASURY ACCOUNT (Cash GL) -->
+            <!-- Cash GL -->
             <div class="row mb-4 align-items-end">
                 <div class="col-md-12 mb-3">
-                    <label for="SourceGlId" class="form-label fw-semibold">Cash GL</label>
+                    @Html.Label("SourceGlId", "Cash GL", new { @class = "form-label fw-semibold", @for = "SourceGlId" })
                     @Html.DropDownList("SourceGlId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Cash GL ---", Value = "" } },
                         new { @class = "form-control select2", id = "SourceGlId", required = "required" })
                 </div>
             </div>
 
-            <!-- AMOUNT / BALANCE / CASH DIFF -->
+            <!-- Amount / Balance / Diff -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "Amount", placeholder = "Enter Cash-in Hand", required = "required" })
+                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "Amount", placeholder = "Enter Cash in Hand", required = "required", type = "text", inputmode = "decimal" })
                         <label for="Amount">Amount</label>
+                        @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -69,22 +66,23 @@
                 </div>
             </div>
 
-            <!-- DIFFERENCE ACCOUNT (Deficit GL) -->
+            <!-- Difference GL -->
             <div class="row mb-4 align-items-end">
                 <div class="col-md-12 mb-3">
-                    <label for="DestinationGlId" class="form-label fw-semibold">Difference GL</label>
+                    @Html.Label("DestinationGlId", "Difference GL", new { @class = "form-label fw-semibold", @for = "DestinationGlId" })
                     @Html.DropDownList("DestinationGlId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select cash diff GL ---", Value = "" } },
                         new { @class = "form-control select2", id = "DestinationGlId", required = "required" })
                 </div>
             </div>
 
-            <!-- TILL + CASHIER -->
+            <!-- Till + Cashier -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name", required = "required" })
                         <label for="TillName">Till Name</label>
+                        @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -92,24 +90,19 @@
                     <div class="form-floating shadow-sm">
                         @Html.TextBoxFor(m => m.NameOfCashier, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name", required = "required" })
                         <label for="NameOfCashier">Cashier Name</label>
+                        @Html.ValidationMessageFor(m => m.NameOfCashier, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
 
-            <!-- NARRATION -->
+            <!-- Note -->
             <div class="mt-4">
-                <label class="form-label fw-bold" for="Memo">Note</label>
-                @Html.TextAreaFor(m => m.Naration, new
-                {
-                    @class = "form-control shadow-sm",
-                    rows = "3",
-                    placeholder = "Enter any remark or note about the cash reconciliation",
-                    required = "required",
-                    id = "Memo"
-                })
+                @* If your model uses "Narration", change to m => m.Narration and keep id="Memo" for script compatibility *@
+                @Html.Label("Memo", "Note", new { @class = "form-label fw-bold", @for = "Memo" })
+                @Html.TextAreaFor(m => m.Naration, new { @class = "form-control shadow-sm", rows = "3", placeholder = "Enter any remark or note about the cash reconciliation", required = "required", id = "Memo" })
+                @Html.ValidationMessageFor(m => m.Naration, "", new { @class = "text-danger" })
             </div>
 
-            <!-- SAVE -->
             <div class="mt-4 text-end">
                 <button type="button" class="btn btn-primary" onclick="cashReconciliationSubmitAjax(this.form)">SAVE</button>
             </div>

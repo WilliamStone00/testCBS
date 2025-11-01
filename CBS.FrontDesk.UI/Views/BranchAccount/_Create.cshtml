@@ -71,29 +71,12 @@
 
                 <div class="row g-2">
                     <div class="col-md-6 mb-3">
-                        @Html.LabelFor(m => m.Code, new { @class = "form-label fw-semibold" })
 
-                        @* Keep the real model-bound Code hidden; we'll compose it from prefix + editable *@
-                        @Html.HiddenFor(m => m.Code, new { id = "Code" })
-
-                        <div class="input-group">
-                            <span class="input-group-text" id="codePrefix" title="Fixed part derived from parent account"></span>
-                            <input id="codeEditable"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="Type allowed digits here"
-                                   inputmode="numeric"
-                                   aria-describedby="codePrefix codeHelp" />
-                        </div>
-                        <small id="codeHelp" class="text-muted d-block mt-1"></small>
-
+                        @Html.LabelFor(m => m.Code, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Enter  Codes Take In Consideration Management Pos."})
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        @Html.Label("Class", new { @class = "form-label small text-muted" })
-                        <input type="text" class="form-control" readonly value="@Model.Class" />
-                    </div>
+                        @Html.LabelFor(m => m.Code, new { @class = "form-label fw-semibold" })
+                     </div>
                 </div>
 
                 <div class="row g-2">

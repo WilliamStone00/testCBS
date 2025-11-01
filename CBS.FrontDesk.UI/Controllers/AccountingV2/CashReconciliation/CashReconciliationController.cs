@@ -1,11 +1,11 @@
-﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+﻿
 using CBS.BusinessService.AccountingV2;
-using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.AccountingV2.VaultInitialisation;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.AndriodApp;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.Owin.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
                     {
                         success = false,
                         message = "Branch ID is required."
-                    });
+                    }, JsonRequestBehavior.AllowGet);
                 }
 
                 var data = await _cashReconciliationService.GetCashReconciliationAccountsAsync(branchId);
@@ -69,27 +69,27 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
                     {
                         success = false,
                         message = "No account data found for this branch."
-                    });
+                    }, JsonRequestBehavior.AllowGet);
                 }
 
                 return Json(new
                 {
                     success = true,
                     message = "Accounts retrieved successfully.",
-                    data=data,
-
+                    data
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // Log the error
+               
                 return Json(new
                 {
                     success = false,
                     message = "An unexpected error occurred. Please try again later."
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
         }
+
 
 
         //[HttpGet]
