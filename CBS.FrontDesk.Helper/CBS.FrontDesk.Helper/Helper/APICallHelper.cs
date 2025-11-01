@@ -1559,11 +1559,11 @@ namespace CBS.FrontDesk.Helper
 
         //--------------------------- Account pending Request ------------------------------------------
         public static string Datatable = "/api/v1/AccountCreationRequest/datatable";
-        public static string pendinggetbyid = "/api/v1/AccountCreationRequest/{0}";
+        public static string AccountCreationRequestById = "/api/v1/AccountCreationRequest/{0}/{1}";
         public static string AddAccountCreationRequest = "/api/v1/AccountCreationRequest";
         public static string pendingupdatebyid = "/api/v1/AccountCreationRequest/{0}";
-        public static string pendingApprove = "/api/v1/AccountCreationRequest/approve";
-        public static string pendingreject = "/api/v1/AccountCreationRequest/reject";
+        public static string AccountCreationRequestApproval = "/api/v1/AccountCreationRequest/approve";
+        public static string AccountCreationRequestRejection = "/api/v1/AccountCreationRequest/reject";
 
         //*************************** End of Accounting V2 **************************************
 

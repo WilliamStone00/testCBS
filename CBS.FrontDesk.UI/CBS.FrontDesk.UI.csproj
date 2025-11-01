@@ -10851,7 +10851,7 @@
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
-    <Content Include="Views\PendingAccount\_DetailsPartial.cshtml" />
+    <Content Include="Views\PendingAccount\_Details.cshtml" />
     <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
     <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
