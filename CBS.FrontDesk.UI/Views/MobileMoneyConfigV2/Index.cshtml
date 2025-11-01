@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "Mobile Money Configuration";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cellphone-wireless me-2"></i> Mobile Money Configuration
+                </h1>
+                <p class="card-text text-muted">
+                    Manage all mobile money operators and their branch connections efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMobileMoneyTips" aria-expanded="false" aria-controls="collapseMobileMoneyTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseMobileMoneyTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure operator details are correct before saving.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> The phone number must be valid and unique.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Only authorized staff can modify branch links.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the status checkbox to enable or disable an operator.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card shadow-sm">
+            <div id="accordionPopoutIcon" class="accordion accordion-popout">
+                <div class="accordion-item active">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconThree">
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
+                            <i class="mdi mdi-cellphone me-2"></i> Mobile Money Configuration
+                        </button>
+                    </h2>
+                    <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+                                <div class="card mb-1">
+                                    <div class="card-body d-flex justify-content-end align-items-center">
+                                        <a type="button" onclick="LoadDataGen('MobileMoneyConfigV2','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                        </a>
+                                        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','MobileMoneyConfigV2')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Operator">
+                                            <i class="mdi mdi-plus mdi-18px"></i> Add Operator
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="datalistingview">
+                                    @Html.Partial("_Create")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Mobile Money Details -->
+<div class="modal fade" id="mobileMoneyDetailsModal" tabindex="-1" aria-labelledby="mobileMoneyDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-cellphone me-2"></i> Operator Details
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View and manage mobile money operator information efficiently.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+            <div class="modal-body p-2">
+                <div id="mobileMoneyDetailsContent">
+                    <!-- Dynamic content or partial view will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        // Fetch branch details
+        function fetchBranchDetails(branchId) {
+            var branchCodeInput = $('#BranchCode');
+
+            if (branchId) {
+                $.ajax({
+                    url: '/MobileMoneyConfigV2/GetBranch',
+                    type: 'GET',
+                    data: { Key: branchId },
+                    success: function (branch) {
+                        if (branch) {
+                            branchCodeInput.val(branch.BranchCode || branch.Code || '');
+                        } else {
+                            branchCodeInput.val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching branch details:', error);
+                        branchCodeInput.val('');
+                    }
+                });
+            } else {
+                branchCodeInput.val('');
+            }
+        }
+
+        // Show Mobile Money Details Modal
+        function showMobileMoneyDetails(id) {
+            $('#mobileMoneyDetailsContent').html('<p>Loading...</p>');
+            $.ajax({
+                url: '/MobileMoneyConfigV2/GetDetailsPartialView',
+                type: 'GET',
+                data: { Key: id },
+                success: function (html) {
+                    $('#mobileMoneyDetailsContent').html(html);
+                    $('#mobileMoneyDetailsModal').modal('show');
+                },
+                error: function () {
+                    $('#mobileMoneyDetailsContent').html('<p>Error loading details.</p>');
+                    $('#mobileMoneyDetailsModal').modal('show');
+                }
+            });
+        }
+    </script>
+
+}

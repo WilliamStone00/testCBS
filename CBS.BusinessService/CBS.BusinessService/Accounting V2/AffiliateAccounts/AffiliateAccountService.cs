@@ -376,7 +376,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                         ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
                 }
                 return ExecutionMessage;
-            }
+        }
 
             public async Task<ExecutionMessages> UpdateAsync(PendingAccountRequest model)
             {

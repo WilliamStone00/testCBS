@@ -116,11 +116,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
+    <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
+    <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMappingModel.cs" />
+    <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
     <Compile Include="Entity\AccountingV2\RoleGlResolution\RoleGlResolutionModel.cs" />
     <Compile Include="Entity\Accounting V2\AffiliateAccount\AffiliateAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\Affiliate\AffiliateDto.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
+    <Compile Include="Entity\AccountingV2\CashReconciliation\CashAndVaultInit.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />
@@ -442,7 +446,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Entity\Accounting V2\Reporting\Configurations\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

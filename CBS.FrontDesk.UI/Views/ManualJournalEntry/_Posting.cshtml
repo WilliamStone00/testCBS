@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3" id="counterpartyBranchDiv" style="display:none;">
+                <div class="col-md-12 mb-3" id="counterpartyBranchDiv" style="display:none;">
                     <label class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
                     @Html.DropDownList("CounterpartyBranchId",
                         new SelectList(ViewBag.Branches, "Id", "Name", Model?.BranchId),

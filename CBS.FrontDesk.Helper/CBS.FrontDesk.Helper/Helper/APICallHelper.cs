@@ -1476,22 +1476,34 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
-
-        //*************************** CHEQUE BOOK ******************************
-
-        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-        //public static string Createnot = "/api/v1/Notification/Config";
-        //public static string Updatenot = "/api/NotificationConfig/{0}";
-        //public static string Deletenot = "/api/NotificationConfig/{0}";
+		//---------------------------Mobile MoneyV2--------------------------------------//
 
 
+		public static string DeleteMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
+		public static string CreateMobileMoneyV2 = "/api/v1/MobileMoney";
 
-        //************************** END CHEQUE BOOK *******************************
+		public static string UpdateMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
 
-        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+		public static string GetAllMobileMoneyV2 = "/api/v1/MobileMoney";
+		public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
 
 
-        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+
+		//*************************** CHEQUE BOOK ******************************
+
+		//public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+		//public static string Createnot = "/api/v1/Notification/Config";
+		//public static string Updatenot = "/api/NotificationConfig/{0}";
+		//public static string Deletenot = "/api/NotificationConfig/{0}";
+
+
+
+		//************************** END CHEQUE BOOK *******************************
+
+		//*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+
+		public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
         public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
         public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
         public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
@@ -1565,8 +1577,18 @@ namespace CBS.FrontDesk.Helper
         public static string AccountCreationRequestApproval = "/api/v1/AccountCreationRequest/approve";
         public static string AccountCreationRequestRejection = "/api/v1/AccountCreationRequest/reject";
 
+        //--------------------------- Member Reconciliation ------------------------------------------
+        public static string GetAllMemberReconciliation = "not yet availlable";
+        public static string MemberReconciliationdatatable = "not yet availlable";
+        public static string GetMemberReconciliationById = "not yet availlable";
+        public static string CreateMemberReconciliation = "not yet availlable";
+        public static string UpdateMemberReconciliation = "not yet availlable";
+        public static string DeleteMemberReconciliation = "not yet availlable";
+
         //*************************** End of Accounting V2 **************************************
 
+        //------------------------cash Reconciliation ------------------------------------------------
+        public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
     }
 }

@@ -242,6 +242,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting V2\AccountBlacklisting\AccountBlacklistService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountMockService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
     <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
+    <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliation.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
@@ -258,10 +260,12 @@
     <Compile Include="AccountingV2\LiaisonAccount2\LiaisonMappingService.cs" />
     <Compile Include="AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationService.cs" />
     <Compile Include="AccountingV2\LiaisonAccountConfiguration\MockLiaisonAccountConfiguration.cs" />
+    <Compile Include="AccountingV2\MobileMoneyV2\MobileMoneyService.cs" />
     <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
     <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />
     <Compile Include="AccountingV2\ManualJournalEntry\ManualJournalEntryService.cs" />
+    <Compile Include="AccountingV2\CashReconciliation\CashReconciliationService.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />

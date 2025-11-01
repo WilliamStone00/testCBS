@@ -6,7 +6,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> Work Ticket
+            <i class="mdi mdi-cog-outline me-2"></i> Journal Request
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
@@ -173,7 +173,7 @@
 <div class="modal fade" id="SourceDetailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content shadow-lg border-0">
-            @Html.Partial("_SourceDetails")
+            @Html.Partial("_DestDetails")
         </div>
     </div>
 </div>
@@ -191,7 +191,7 @@
                 serverSide: true,
                 destroy: true,
                 responsive: true,
-                searching: true,
+               /* searching: true,*/
                 order: [[0, 'desc']], // Most recent OpenedAtUtc on top
                 ajax: {
                     url: '/JournalHead/LoadJournalSourceData',
@@ -323,6 +323,10 @@
                 }
             });
         });
+
+
+
+
 
 
 
