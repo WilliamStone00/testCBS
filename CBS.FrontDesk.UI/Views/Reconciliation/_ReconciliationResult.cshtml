@@ -1,0 +1,347 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.TrialBalanceReconciliationData
+
+<div class="modal fade" id="reconciliationResultModal" tabindex="-1" aria-hidden="true" data-branchid="@Model.BranchId" data-branchaccountid="@Model.BranchAccountId">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="mdi mdi-scale-balance me-2"></i>Trial Balance Reconciliation Result
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tips Section -->
+                <div class="card mb-4">
+                    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+                        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Reconciliation Guidance</span>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReconGuidance" aria-expanded="true" aria-controls="collapseReconGuidance">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseReconGuidance" class="collapse show">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Understanding the Difference</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="mdi mdi-check-circle text-success me-2"></i><strong>Surplus:</strong> Member balance is greater than trial balance</li>
+                                        <li><i class="mdi mdi-alert-circle text-warning me-2"></i><strong>Deficit:</strong> Trial balance is greater than member balance</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Next Steps</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Select the appropriate GL account</li>
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Choose surplus or deficit</li>
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Review and confirm reconciliation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reconciliation Results -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="mdi mdi-calculator me-2"></i>Balance Comparison</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <div class="border-end">
+                                            <h5 class="text-primary">@Model.MemberBalance.ToString("C")</h5>
+                                            <small class="text-muted">Member Balance</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div>
+                                            <h5 class="text-info">@Model.TrialBalanceBalance.ToString("C")</h5>
+                                            <small class="text-muted">Trial Balance</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="text-center">
+                                    <h4 class="@(Model.IsMemberBalanceGreater ? "text-success" : "text-warning")">
+                                        Difference: @Math.Abs(Model.MemberBalance - Model.TrialBalanceBalance).ToString("C")
+                                    </h4>
+                                    <p class="mb-0">
+                                        <i class="mdi @(Model.IsMemberBalanceGreater ? "mdi-arrow-up-bold text-success" : "mdi-arrow-down-bold text-warning") me-1"></i>
+                                        @Model.Statement
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>Reconciliation Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Branch Code:</strong></td>
+                                        <td>@Model.BranchCode</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Source GL:</strong></td>
+                                        <td>@Model.BranchAccountId</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Trial Side:</strong></td>
+                                        <td><span class="badge bg-secondary">@Model.TrialSide</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Status:</strong></td>
+                                        <td>
+                                            <span class="badge @(Model.MemberBalance == Model.TrialBalanceBalance ? "bg-success" : "bg-warning")">
+                                                @(Model.MemberBalance == Model.TrialBalanceBalance ? "Balanced" : "Needs Adjustment")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adjustment Section (Only show if there's a difference) -->
+                @if (Model.MemberBalance != Model.TrialBalanceBalance)
+                {
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="mdi mdi-adjust me-2"></i>Reconciliation Adjustment</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Select GL Account for Adjustment</label>
+                                        <select id="adjustmentBranchAccounts" class="form-control select2">
+                                            <option value="">Loading branch accounts...</option>
+                                        </select>
+                                        <div class="form-text">Choose the GL account to apply the adjustment</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Adjustment Type</label>
+                                        <div class="mt-2">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="adjustmentType" id="surplus" value="surplus" @(Model.IsMemberBalanceGreater ? "checked" : "")>
+                                                <label class="form-check-label text-success" for="surplus">
+                                                    <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="adjustmentType" id="deficit" value="deficit" @(!Model.IsMemberBalanceGreater ? "checked" : "")>
+                                                <label class="form-check-label text-warning" for="deficit">
+                                                    <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-text">
+                                            @if (Model.IsMemberBalanceGreater)
+                                            {
+                                                <span class="text-success">Member balance is greater - typically use Surplus</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-warning">Trial balance is greater - typically use Deficit</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <div>
+                                    <strong>Difference Amount:</strong>
+                                    <span class="fs-5 ms-2 @(Model.IsMemberBalanceGreater ? "text-success" : "text-warning")">
+                                        @Math.Abs(Model.MemberBalance - Model.TrialBalanceBalance).ToString("C")
+                                    </span>
+                                </div>
+                                <button type="button" id="btnFinalReconcile" class="btn btn-primary">
+                                    <i class="mdi mdi-check-all me-1"></i>Reconcile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-success text-center">
+                        <i class="mdi mdi-check-circle-outline me-2 fs-4"></i>
+                        <strong>Balances are already reconciled!</strong> No adjustment needed.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // Load branch accounts for adjustment
+        const branchId = '@Model.BranchId';
+        loadAdjustmentBranchAccounts(branchId);
+
+        // Final reconciliation button click
+        $('#btnFinalReconcile').on('click', function () {
+            finalizeReconciliation();
+        });
+
+        // Initialize select2 for adjustment dropdown
+        if ($.fn.select2) {
+            $('#adjustmentBranchAccounts').select2({ width: '100%' });
+        }
+    });
+
+    function loadAdjustmentBranchAccounts(branchId) {
+        if (!branchId) return;
+
+        const url = '@Url.Action("GetBranchAccountsByBranch", "Reconciliation")' + '?branchId=' + encodeURIComponent(branchId);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                if (response.success && response.data) {
+                    const $dropdown = $('#adjustmentBranchAccounts');
+                    $dropdown.empty();
+                    $dropdown.append($('<option>').val('').text('--- Select GL Account ---'));
+
+                    response.data.forEach(function (account) {
+                        const id = account.id || account.Id || account.Value || '';
+                        const name = account.name || account.Name || account.Text || id;
+                        $dropdown.append($('<option>').val(id).text(name));
+                    });
+
+                    // Re-initialize select2
+                    if ($.fn.select2) {
+                        $dropdown.trigger('change.select2');
+                    }
+                }
+            },
+            error: function () {
+                $('#adjustmentBranchAccounts').html('<option value="">Error loading branch accounts</option>');
+            }
+        });
+    }
+
+    function finalizeReconciliation() {
+        const selectedAccount = $('#adjustmentBranchAccounts').val();
+        const adjustmentType = $('input[name="adjustmentType"]:checked').val();
+        const modal = $('#reconciliationResultModal');
+        const branchId = modal.data('branchid');
+        const sourceBranchAccountId = modal.data('branchaccountid');
+
+        // Validation
+        if (!selectedAccount) {
+            if (typeof appalert === 'function') {
+                appalert('Please select a GL account for adjustment.', 3, 1);
+            } else {
+                alert('Please select a GL account for adjustment.');
+            }
+            return;
+        }
+
+        if (!adjustmentType) {
+            if (typeof appalert === 'function') {
+                appalert('Please select adjustment type (Surplus or Deficit).', 3, 1);
+            } else {
+                alert('Please select adjustment type (Surplus or Deficit).');
+            }
+            return;
+        }
+
+        const difference = Math.abs(@Model.MemberBalance - @Model.TrialBalanceBalance);
+
+        const requestData = {
+            BranchId: branchId,
+            SourceBranchAccountId: sourceBranchAccountId,
+            SelectedBranchAccountId: selectedAccount,
+            SurplusDeficit: adjustmentType,
+            MemberBalance: @Model.MemberBalance,
+            TrialBalanceBalance: @Model.TrialBalanceBalance,
+            Difference: difference,
+            TrialBalanceStagingId: '@Model.TrialBalanceStagingId'
+        };
+
+        const message = `Are you sure you want to reconcile with the following details?\n\n` +
+                       `Source GL: ${sourceBranchAccountId}\n` +
+                       `Adjustment GL: ${$('#adjustmentBranchAccounts option:selected').text()}\n` +
+                       `Adjustment Type: ${adjustmentType.toUpperCase()}\n` +
+                       `Difference Amount: $${difference.toLocaleString()}\n\n` +
+                       `This action will balance the accounts.`;
+
+        if (typeof appalert === 'function') {
+            appalert.confirm(
+                "Confirm Final Reconciliation",
+                message,
+                async function (ok) {
+                    if (ok) {
+                        await performFinalReconciliation(requestData);
+                    }
+                }
+            );
+        } else {
+            if (confirm(message)) {
+                performFinalReconciliation(requestData);
+            }
+        }
+    }
+
+    async function performFinalReconciliation(requestData) {
+        try {
+            // Show loading state
+            $('#btnFinalReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
+
+            const response = await fetch('@Url.Action("FinalizeReconciliation", "Reconciliation")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                if (typeof appalert === 'function') {
+                    appalert(result.message || 'Reconciliation completed successfully!', 1, 1);
+                } else {
+                    alert(result.message || 'Reconciliation completed successfully!');
+                }
+
+                // Close the modal
+                $('#reconciliationResultModal').modal('hide');
+
+                // Optional: Refresh the page or update UI
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } else {
+                if (typeof appalert === 'function') {
+                    appalert(result.message || 'Reconciliation failed!', 2, 1);
+                } else {
+                    alert(result.message || 'Reconciliation failed!');
+                }
+            }
+        } catch (error) {
+            console.error('Final reconciliation error:', error);
+            if (typeof appalert === 'function') {
+                appalert('Error during final reconciliation: ' + error.message, 2, 1);
+            } else {
+                alert('Error during final reconciliation: ' + error.message);
+            }
+        } finally {
+            $('#btnFinalReconcile').prop('disabled', false).html('<i class="mdi mdi-check-all me-1"></i>Reconcile');
+        }
+    }
+</script>

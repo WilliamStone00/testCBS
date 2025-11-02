@@ -1,8 +1,10 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -17,69 +19,53 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
     public class MemberReconciliationService : BaseService
     {     
             private readonly ApiCallerHelper _apiCallerHelper;
+            private readonly ApiCallerHelper _apiCallerHelper2;
 
             public MemberReconciliationService()
             {
                 //change the base url to the actual base url
-                string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+                string baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
                 if (string.IsNullOrEmpty(baseUrl))
                 {
-                    throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
+                    throw new ConfigurationErrorsException("The 'TransactionBaseUrl' appSetting is missing or empty in Web.config.");
                 }
                 _apiCallerHelper = new ApiCallerHelper(baseUrl);
-            }
 
-                public async Task<IEnumerable<GetBalance>> GetAccountBalanceAsync()
+                string baseUrl2 = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+                    if (string.IsNullOrEmpty(baseUrl2))
+                    {
+                        throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
+                    }
+                _apiCallerHelper2 = new ApiCallerHelper(baseUrl2);
+            }
+           
+
+                public async Task<IEnumerable<GetBalance>> GetAccountBalanceAsync(GetBalance payload)
                 {
                     try
                     {
-                        // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                        var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<GetBalance>>>(APICallHelper.GetMemeberAccountBalance);
+                    payload.BranchId = GetBankID();
+                    payload.includeOnlyActive = false;
+                    payload.Status = "";
 
-                        // CORRECTED: Access the final payload via .ApiResponseData.Data
-                        if (response.IsSuccess && response.ApiResponseData?.Data != null)
-                        {
-                            return response.ApiResponseData.Data;
+                    // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
+                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<GetBalance>>>(APICallHelper.GetMemeberAccountBalance,payload);
+
+                            // CORRECTED: Access the final payload via .ApiResponseData.Data
+                            if (response.IsSuccess && response.ApiResponseData?.Data != null)
+                            {
+                                return response.ApiResponseData.Data;
+                            }
+                            return new List<GetBalance>();
                         }
-                        return new List<GetBalance>();
-                    }
-                    catch (Exception ex)
-                    {
-                        // In a real scenario, log 'ex'
-                        throw;
-                    }
+                        catch (Exception ex)
+                        {
+                            // In a real scenario, log 'ex'
+                            throw;
+                        }
                 }
 
-        public async Task<CustomDataTable> GetDataTableAsync(AffiliateQuery query)
-            {
-                try
-                {
-                    var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                        APICallHelper.MemberReconciliationdatatable, query);
-
-                    // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
-                    if (!response.IsSuccess)
-                    {
-                        throw new Exception($"API call failed: {response.Message}");
-                    }
-
-                    if (response.ApiResponseData == null)
-                    {
-                        throw new Exception("API returned null data");
-                    }
-
-                    return response.ApiResponseData.Data;
-                }
-                catch (Exception ex)
-                {
-                    // Log the original exception
-                    System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
-
-                    // Re-throw to trigger fallback
-                    throw new Exception($"service unavailable: {ex.Message}", ex);
-                }
-            }
-
+        
             public async Task<Affiliateresponse> GetByIdAsync(string id)
             {
                 try
@@ -101,33 +87,68 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 catch (Exception ex)
                 {
                     throw;
+            }
+        }
+
+
+
+
+        public async Task<ExecutionMessages> ReconcileTrialBalance(GetBalance model)
+        {
+
+
+            try
+            {
+                model.Language = GetLanguage();
+                var response = await _apiCallerHelper2.PostAsync<ServiceResponse<TrialBalanceReconciliationData>>(APICallHelper.Reconciliation, model);
+
+                // For now, return success (replace with actual service call)
+              
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.BranchId, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.BranchId, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.BranchId, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
 
-            //public async Task<ExecutionMessages> CreateAsync(AffiliateCommand model)
-            //{
-            //    try
-            //    {
-            //        var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.CreateMemberReconciliation, model);
 
-            //        if (response.IsSuccess)
-            //        {
-            //            GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
-            //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
-            //        }
-            //        else
-            //        {
-            //            GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-            //                ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        GetExecutionMessages(model, false, model.Name, MessagesResults.Error,
-            //            ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-            //    }
-            //    return ExecutionMessage;
-            //}
+
+        public async Task<ExecutionMessages> FinalizeReconciliation(FinalReconciliationRequest model)
+        {
+            try
+            {
+                var response = await _apiCallerHelper2.PostAsync<ServiceResponse<FinalReconciliationRequest>>(APICallHelper.FINALReconciliation, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.BranchId, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.BranchId, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.BranchId, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+            }
 
             public async Task<ExecutionMessages> UpdateAsync(AffiliateCommand model)
             {
@@ -185,52 +206,28 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 return ExecutionMessage;
             }
 
-        public async Task<IEnumerable<dropdownResposne>> MemberAccountTypesAsync()
+        public async Task<List<StringValues>> MemberAccountTypesAsync(string branchId)
         {
             try
             {
-                var Build = new MemberAccountdrop()
+                var Build = new GetBalance()
                 {
-                    BranchCode = GetBranchCode(),
-                    Status     = "Active",
-                    IncludeOnlyActive = true
+                    BranchId = branchId,
+                    Status = "Active",
+                    includeOnlyActive = false
                 };
-             
+
                 string formattedUrl = string.Format(APICallHelper.MemberAccountType);
 
-                var response = await _apiCallerHelper.PostAsync<ResponseObject<List<dropdownResposne>>>(formattedUrl, Build);
-                var affiliates = response?.ApiResponseData?.Data ?? new List<dropdownResposne>();
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<AccountingTypes>>(formattedUrl,Build);
 
-                if (!IsHeadOffice())
-                {
-                    string currentBranchId = GetBranchID();
-                    affiliates = affiliates.Where(a => a.Id == currentBranchId).ToList();
-                }
-                else
-                {
-                    var defaultAffiliate = new dropdownResposne
-                    {
-                        Id = "All",
-                        Name = "All Member Account"                      
-                    };
-                    affiliates.Insert(0, defaultAffiliate);
-                }
-
-                // Optional: format name for display and order by Code
-                return affiliates
-                    .Select(a =>
-                    {
-                        a.Name = $"[{a.Id}] - {a.Name}";
-                        return a;
-                    })
-                    .OrderBy(a => a.Id)
-                    .ToList();
+                return response?.ApiResponseData?.Data?.AccountTypes ?? new List<StringValues>();
             }
             catch (Exception ex)
             {
                 throw;
             }
-        }
+        }        
     }
 }
 

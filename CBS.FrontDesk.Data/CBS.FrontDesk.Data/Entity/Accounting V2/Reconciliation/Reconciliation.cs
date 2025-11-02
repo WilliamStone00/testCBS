@@ -6,17 +6,7 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
 {
-    public class Reconciliation
-    {
-    }
-
-    public class MemberAccountdrop
-    {
-        public string BranchCode { get; set; }
-        public string Status { get; set; }
-        public bool IncludeOnlyActive { get; set; }
-    }
-
+    
     public class dropdownResposne
     {
         public string Id { get; set; }
@@ -76,17 +66,69 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public int LoanDuration { get; set; }
     }
 
-    public class GetBalance 
-    {
-        public string Balance { get; set; }
-        public string AccountBalance { get; set; }
+    public class GetBalance
+    {//----- used by both --------
+        public decimal TotalBalance { get; set; }
+
+        //---------- Member  -------- 
+        public bool member { get; set; }
+        public int AccountCount { get; set; }
+        public string AccountType { get; set; }
+        public string AverageBalance { get; set; }
+        public string BranchCode { get; set; }
+        public string Status { get; set; }
+        public bool includeOnlyActive { get; set; }
+
+        //--------- loan  -----------
+        public bool loan { get; set; }
+        public bool IsByBranch { get; set; }
+        public string BranchId { get; set; }
+        public string LoanType { get; set; }
+        public int LoanCount { get; set; }
+        public string StatusFilter { get; set; }
+        //public string loanType { get; set; }
+
+
+        //---------- others ---------------
         public string mode { get; set; }
         public string accountTypeId { get; set; }
-        public bool loan { get; set; }
-        public bool member { get; set; }
         public string BranchAccount { get; set; }
-        public string BranchId { get; set; }
         public string LoanAccountType { get; set; }
         public string MemberAccountType { get; set; }
+        public string Language { get; set; }
+    }
+
+    public class TrialBalanceReconciliationResponse
+    {
+        public bool Success { get; set; }
+        public string Code { get; set; }
+        public string Message { get; set; }
+        public TrialBalanceReconciliationData Data { get; set; }
+        public List<string> Errors { get; set; }
+    }
+
+    public class TrialBalanceReconciliationData
+    {
+        public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchAccountId { get; set; }
+        public string TrialBalanceStagingId { get; set; }
+        public decimal MemberBalance { get; set; }
+        public decimal TrialBalanceBalance { get; set; }
+        public string TrialSide { get; set; }
+        public bool IsMemberBalanceGreater { get; set; }
+        public string Statement { get; set; }
+    }
+
+    public class FinalReconciliationRequest
+    {
+        public string BranchId { get; set; }
+        public string SourceBranchAccountId { get; set; }
+        public string SelectedBranchAccountId { get; set; }
+        public string SurplusDeficit { get; set; } // "surplus" or "deficit"
+        public decimal MemberBalance { get; set; }
+        public decimal TrialBalanceBalance { get; set; }
+        public decimal Difference { get; set; }
+        public string TrialBalanceStagingId { get; set; }
     }
 }

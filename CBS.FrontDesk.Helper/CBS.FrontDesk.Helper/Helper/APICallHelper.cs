@@ -1543,6 +1543,8 @@ namespace CBS.FrontDesk.Helper
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
+        public static string fileuploaddatatable = "/api/v1/FileUploads/datatable";
+        public static string FilegetbYId = "/api/v1/FileUploads/{id}";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
@@ -1567,19 +1569,20 @@ namespace CBS.FrontDesk.Helper
 
         //++++++++++++++++++++++++++++++++++ Reconciliation +++++++++++++++++++++++++++++++++++++++++
         //------------------------ Member Reconciliation ------------------------------------
-        public static string GetMemeberAccountBalance = "not yet availlable";
+        public static string GetMemeberAccountBalance = "/api/v1/BalanceSum/ByAccountType";
         public static string GetMemberReconciliationById = "not yet availlable";
-        public static string MemberReconciliationdatatable = "not yet availlable";
-        public static string CreateMemberReconciliation = "not yet availlable";
+
+         public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
+         public static string FINALReconciliation = "Not yet available";
+
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";
         public static string MemberAccountType = "/api/v1/GetAccountTypes";
 
         //--------------------------- Loan Reconciliation ------------------------------------------
-        public static string LoanAccountDROP = "/api/v1/EnumAggregates";
-        public static string GetLoadAccountBalance = "not yet availlable";
+        public static string LoanAccountDROP = "/api/v1/EnumAggregates";       
         public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
-        public static string GetLoanAccountBalance = "not yet availlable";
+        public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
         //*************************** End of Reconciliation **************************************
 
         //--------------------------- Account Black listing ------------------------------------------

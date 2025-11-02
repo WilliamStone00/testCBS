@@ -18,6 +18,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountBlackListing
 {
+    [CheckSessionTimeOut]
     public class AccountBlancklistController : Controller
     {
         private readonly AffiliateService _AffiliateServices;

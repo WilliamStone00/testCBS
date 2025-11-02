@@ -1,0 +1,289 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileListingQuery
+@using Resources
+@{
+    ViewBag.Title = "Affiliate Overview - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                </h1>
+                <p class="card-text">
+                    @AccountingV2.AffiliateManagementtext
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseAffiliateTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
+                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
+                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Affiliate Filters (bound to AffiliateAccountQuery-like object) -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters
+    </h5>
+
+    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3 g-2">
+                <!-- BranchId -->
+                <div class="col-md-12">
+                    @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label" })
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        new { @class = "form-select select2", @aria_label = "Branch" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-4">
+                    <label class="form-label fw-bold" for="Category">Category</label>
+                    <select>
+                        <option value="">@AccountingV2.All</option>
+                        <option value="Branch">Branch</option>
+                        <option value="Affiliate">Affiliate</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold" for="Status">@AccountingV2.Status</label>
+                    <select id="Status" name="Status" class="form-select select2">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Aproved">Approved</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Created Date Filters toggle + tip -->
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
+                               onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleCreatedDates">
+                            @AccountingV2.ShowCreatedDateFilters
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CreatedFromUtc, CreatedToUtc -->
+            <div id="createdDateFilters" class="d-none">
+                <div class="row mb-3 g-2">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold" for="CreatedFromUtc">@AccountingV2.CreatedFrom (UTC)</label>
+                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold" for="CreatedToUtc">@AccountingV2.CreatedTo (UTC)</label>
+                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100"
+                        onclick="
+                          document.getElementById('affiliateFilterForm').reset();
+                          document.getElementById('createdDateFilters').classList.add('d-none');
+                          if (window.$ && $.fn.select2) { $('#BranchId,#Status').val(null).trigger('change'); }
+                        ">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_Data")
+</div>
+
+<div class="modal fade" id="CorrespondanceDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+(function ($) {
+  'use strict';
+
+  const dataUrl   = '@Url.Action("LoadData", "FileListing")'; 
+  const detailUrl = '@Url.Action("Details", "FileListing")'; 
+
+  let table = null;
+
+  function getFilters() {
+    return {
+      BranchId: $('#BranchId').val() || null,
+      Category: $('#Category').val() || null,
+      Status: $('#Status').val() || null,
+      CreatedFromUtc: $('#CreatedFromUtc').val() || null,
+      CreatedToUtc: $('#CreatedToUtc').val() || null,
+      IncludeDeleted: $('#IncludeDeleted').is(':checked') || false,
+      Options: {} // datatable options will be added in data function
+    };
+  }
+
+  function actionButtons(row) {
+    const id = encodeURIComponent(String(row.Id || row.id || ''));
+    return `
+      <div class="btn-group">
+        <button class="btn btn-sm btn-outline-primary btn-detail" data-id="${id}" title="Details">
+            <i class="mdi mdi-eye"></i>
+        </button>
+        <a href="/Reconciliation/Download/${id}" class="btn btn-sm btn-outline-secondary" title="Download">
+            <i class="mdi mdi-download"></i>
+        </a>
+      </div>
+    `;
+  }
+
+  function initDataTable() {
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)) { $(selector).DataTable().destroy(); $(selector + ' tbody').empty(); }
+
+    table = $(selector).DataTable({
+      serverSide: true,
+      responsive: true,
+      pageLength: 10,
+      order: [[0, 'desc']],
+      ajax: {
+        url: dataUrl,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: function (d) {
+          const filters = getFilters();
+          filters.Options = {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            searchValue: d.search?.value || ''
+          };
+          return JSON.stringify(filters);
+        },
+        dataSrc: function (json) {
+          if (!json) return [];
+          return Array.isArray(json.data) ? json.data : (Array.isArray(json.items) ? json.items : []);
+        },
+        error: function () {
+          $(selector + ' tbody').html();
+        }
+      },
+      columns: [
+        {
+          data: 'CreatedDate',
+          render: function (data, type, row) {
+            const v = row.CreatedDate || row.createdDate;
+            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+          }
+        },
+        {
+          data: 'FileName',
+          render: function (d,t,row) { return row.FileName || row.fileName || ''; }
+        },
+        {
+          data: 'BranchId',
+          render: function (d,t,row) { return row.BranchName || row.branchName || row.BranchId || ''; }
+        },
+        {
+          data: null,
+          render: function (d,t,row) {
+            const rows = (row.TrialBalanceRowCount || 0) + (row.MemberBalanceRowCount || 0);
+            return rows;
+          }
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: 'text-end',
+          render: function (d,t,row) { return actionButtons(row); }
+        }
+      ],
+      columnDefs: [
+        { targets: 4, width: '120px' }
+      ],
+      language: { emptyTable: 'No files found' }
+    });
+  }
+
+  function reloadTable() { if (!table) initDataTable(); else table.ajax.reload(null, false); }
+
+  // init
+  $(function () {
+    initDataTable();
+
+    // Apply filters button
+    $('#applyAffiliateFilterBtn').on('click', function (e) {
+      e.preventDefault();
+      reloadTable();
+    });
+
+    // Reset filters
+    $('#resetAffiliateFilterBtn').on('click', function () {
+      $('#affiliateFilterForm')[0].reset();
+      $('#createdDateFilters').addClass('d-none');
+      reloadTable();
+    });
+
+    // Details button - load partial into modal
+    $('#datalistingview').on('click', '.btn-detail', function () {
+      const id = $(this).data('id');
+      if (!id) return;
+      const $modal = $('#CorrespondanceDetailsModal');
+      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+      $modal.modal('show');
+
+        $.get(detailUrl, { id: id, partial: '_Details' })
+        .done(function (html) { $modal.find('.modal-body').html(html); })
+        .fail(function () { $modal.find('.modal-body').html('<div class="p-3 text-danger">Unable to load details.</div>'); });
+    });
+  });
+
+})(jQuery);
+    </script>
+}
