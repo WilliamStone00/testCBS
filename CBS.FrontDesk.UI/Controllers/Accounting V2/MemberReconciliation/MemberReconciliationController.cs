@@ -70,7 +70,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 var resultList = branchAccounts.Select(a => new
                 {
                     Id = a.Id,
-                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"[{a.Code}] - {a.Name}"
+                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
                 });
 
                 return Json(resultList, JsonRequestBehavior.AllowGet);
