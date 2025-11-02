@@ -70,7 +70,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 		private async Task GetValues()
 		{
 			var branches = await _branchServices.GetBranches();
-			var accounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync("");
+			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync("");
 			ViewBag.Branches = branches;
 			ViewBag.Accounts = accounts;
 		}

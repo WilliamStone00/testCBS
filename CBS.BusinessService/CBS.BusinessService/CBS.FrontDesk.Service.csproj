@@ -250,7 +250,6 @@
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
-    <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliation.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\FileListingService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />
