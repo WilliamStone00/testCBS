@@ -29,7 +29,7 @@ namespace CBS.BusinessService.AccountingV2
             _manualJournalEntryapiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
 
         }
-        //public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetAccountsByBranchAsync()
+        //public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetaAccountsByBranchAsync()
         //{
         //    try
         //    {
@@ -68,7 +68,7 @@ namespace CBS.BusinessService.AccountingV2
         //        throw;
         //    }
         //}
-        // Using your project's full type name for clarity:
+        
         public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetAccountsByBranchAsync()
         {
             // Simulate network latency
