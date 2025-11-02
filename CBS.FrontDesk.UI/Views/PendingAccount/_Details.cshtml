@@ -1,0 +1,205 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountDto
+
+<fieldset class="fieldset-custom">
+
+    <!-- Header Card -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Account Request Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Detailed view of the selected account record.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Identity & Hierarchy -->
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Identity & Hierarchy</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Id</td><td>@(Model?.Id ?? "-")</td></tr>
+                <tr><td class="fw-bold">Scope</td><td>@(Model?.Scope ?? "-")</td></tr>
+                <tr><td class="fw-bold">Code</td><td>@(Model?.Code ?? "-")</td></tr>
+                <tr><td class="fw-bold">Name (EN)</td><td>@(Model?.NameEn ?? "-")</td></tr>
+                <tr><td class="fw-bold">Name (FR)</td><td>@(Model?.NameFr ?? "-")</td></tr>
+                <tr><td class="fw-bold">Class</td><td>@(Model?.Class ?? "-")</td></tr>
+                <tr><td class="fw-bold">Display Name</td><td>@(Model?.Name ?? "-")</td></tr>
+                <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>
+                @*<tr><td class="fw-bold">Path Seed</td><td>@(Model?.PathSeed ?? "-")</td></tr>*@
+                @*<tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
+            </table>
+        </div>
+
+        <!-- Right Column: Ownership / Mapping / Flags -->
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> Ownership, Mapping & Flags</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Affiliate</td>
+                    <td>
+                        @((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch</td>
+                    <td>
+                        @((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Affiliate Account</td>
+                    <td>
+                        @{
+                            var aa = (Model?.AffiliateAccountName, Model?.AffiliateAccountCode, Model?.AffiliateAccountId);
+                            var aaText = !string.IsNullOrWhiteSpace(aa.Item1) ? aa.Item1
+                                        : !string.IsNullOrWhiteSpace(aa.Item3) ? aa.Item3
+                                        : "-";
+                            var aaCode = string.IsNullOrWhiteSpace(aa.Item2) ? "" : $" <span class=\"text-muted\">({aa.Item2})</span>";
+                        }
+                        @Html.Raw(aaText + aaCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">HO PCMF Account</td>
+                    <td>
+                        @{
+                            var ho = (Model?.HoPcmfAccountName, Model?.HoPcmfAccountCode, Model?.HoPcmfAccountId);
+                            var hoText = !string.IsNullOrWhiteSpace(ho.Item1) ? ho.Item1
+                                        : !string.IsNullOrWhiteSpace(ho.Item3) ? ho.Item3
+                                        : "-";
+                            var hoCode = string.IsNullOrWhiteSpace(ho.Item2) ? "" : $" <span class=\"text-muted\">({ho.Item2})</span>";
+                        }
+                        @Html.Raw(hoText + hoCode)
+                    </td>
+                </tr>
+                <tr><td class="fw-bold">Posting Allowed</td><td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">Requires Mapping</td><td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
+                @*<tr><td class="fw-bold">Correlation Id</td><td>@(Model?.CorrelationId ?? "-")</td></tr>*@
+                <tr>
+                    <td class="fw-bold">Status</td>
+                    <td>
+                        @{
+                            var s = Model?.Status ?? string.Empty;
+                            var cls = "bg-secondary";
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls = "bg-warning";
+                            }
+
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls = "bg-success";
+                            }
+
+
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls = "bg-danger";
+                            }
+                        }
+                        <span class="badge @cls">@(!string.IsNullOrWhiteSpace(s) ? s : "-")</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- Request / Approval Section -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-account-check-outline me-2"></i> Request & Approval</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Requested By</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.RequestedBy) ? "-" : Model.RequestedBy)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Requested At (UTC)</td>
+                    <td>@(Model?.RequestedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Approved By</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.ApprovedBy) ? "-" : Model.ApprovedBy)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Approved At (UTC)</td>
+                    <td>@(Model?.ApprovedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Rejected By</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.RejectedBy) ? "-" : Model.RejectedBy)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Rejected At (UTC)</td>
+                    <td>@(Model?.RejectedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                </tr>
+
+                <tr>
+                    <td class="fw-bold">Rejection Reason</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.RejectionReason) ? "-" : Model.RejectionReason)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Request Notes</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.Notes) ? "-" : Model.Notes)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Audit & Lifecycle Section -->
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Audit</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Created Date</td>
+                    <td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Modified Date</td>
+                    <td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
+                </tr>
+                <tr><td class="fw-bold">Is Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-clipboard-text-outline me-2"></i> Other Metadata</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Requested / Approval Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
+                <tr><td class="fw-bold">Correlation Id</td><td>@(Model?.CorrelationId ?? "-")</td></tr>
+                <tr>
+                    <td class="fw-bold">Status</td>
+                    <td>
+                        @{
+                            var s2 = Model?.Status ?? string.Empty;
+                            var cls2 = "bg-secondary";
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls2 = "bg-warning";
+                            }
+
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls2 = "bg-success";
+                            }
+
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                cls2 = "bg-danger";
+                            }
+
+                        }
+                        <span class="badge @cls2">@(!string.IsNullOrWhiteSpace(s2) ? s2 : "-")</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</fieldset>

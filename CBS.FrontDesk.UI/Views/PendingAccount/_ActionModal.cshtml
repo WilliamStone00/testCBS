@@ -1,286 +1,96 @@
-﻿@using Resources
-@* Replace controller/action names below if yours differ *@
-@{
-    var detailsUrl = Url.Action("GetRequestDetailsJson", "CheckManagement"); // GET ?id={id}
-    var validateUrl = Url.Action("ValidateRequest", "CheckManagement");     // POST
-    var rejectUrl = Url.Action("RejectRequest", "CheckManagement");       // POST
-}
-
-<input type="hidden" id="__ajax_detailsUrl" value="@detailsUrl" />
-<input type="hidden" id="__ajax_validateUrl" value="@validateUrl" />
-<input type="hidden" id="__ajax_rejectUrl" value="@rejectUrl" />
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.RequestAction
+@* Adjust namespace of requestAction if needed *@
 
 <fieldset class="fieldset-custom">
+
+    <!-- Header Card -->
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Cheque Book Request Actions
+                <i class="mdi @(Model?.ActionType?.Equals("validation", StringComparison.OrdinalIgnoreCase) == true
+                         || Model?.ActionType?.Equals("validate", StringComparison.OrdinalIgnoreCase) == true
+                         ? "mdi-check-decagram"
+                         : "mdi-close-octagon-outline") me-2"></i>
+                @(Model?.ActionType?.Equals("validation", StringComparison.OrdinalIgnoreCase) == true
+           || Model?.ActionType?.Equals("validate", StringComparison.OrdinalIgnoreCase) == true
+             ? "Validate Account Request"
+             : "Reject Account Request")
             </h1>
-            <p class="card-text text-muted mb-1">
-                Validate, Reject or Deliver a customer's cheque request and manage the lifecycle of a request using this page.
-            </p>
-            <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
+            <p class="card-text text-muted mb-1">Provide the required information and confirm this action.</p>
         </div>
     </div>
 
-    <!-- Action Modal (single modal used for Validate or Reject) -->
-    <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="actionModalTitle">
-                        <i class="mdi mdi-cog-outline me-2"></i>
-                        <span id="actionTypeText">Process Request</span>
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+    <div class="row">
+        <!-- Left: Context -->
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Context</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Request Id</td>
+                    <td>@(Model?.Id ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Action</td>
+                    <td>@(Model?.ActionType ?? "-")</td>
+                </tr>
+            </table>
+        </div>
 
-                <div class="modal-body p-4">
-                    <!-- Request Information Header -->
-                    <div class="card mb-4 border-0 bg-light">
-                        <div class="card-body py-3">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label class="form-label small text-muted mb-1">Customer Name</label>
-                                    <p class="fw-bold text-dark mb-0" id="actionCustomerName">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label small text-muted mb-1">Customer ID</label>
-                                    <p class="fw-bold text-dark mb-0" id="actionCustomerId">-</p>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-6">
-                                    <label class="form-label small text-muted mb-1">Request ID</label>
-                                    <p class="fw-bold text-dark mb-0" id="actionRequestIdDisplay">-</p>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label small text-muted mb-1">Current Status</label>
-                                    <p class="fw-bold mb-0">
-                                        <span id="actionCurrentStatus" class="badge bg-warning">-</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Right: Inputs (strongly-typed helpers) -->
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-form-textbox me-2"></i> Provide Details</h6>
+
+            @{
+                var isValidation =
+                    Model?.ActionType?.Equals("validation", StringComparison.OrdinalIgnoreCase) == true
+                    || Model?.ActionType?.Equals("validate", StringComparison.OrdinalIgnoreCase) == true
+                    || Model?.ActionType?.Equals("approved", StringComparison.OrdinalIgnoreCase) == true;
+
+                var postAction = isValidation ? "ValidateRequest" : "RejectRequest";
+            }
+
+            @using (Html.BeginForm(postAction, "PendingAccount", FormMethod.Post, new { id = "requestActionForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.ActionType)
+
+             
+
+                if (isValidation)
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.ApprovalNotes, new { @class = "form-label text-primary fw-semibold" })
+                        @Html.TextAreaFor(m => m.ApprovalNotes, new { @class = "form-control", rows = "3", placeholder = "Optional notes for the approval" })
+                        @Html.ValidationMessageFor(m => m.ApprovalNotes, "", new { @class = "text-danger" })
                     </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.RejectionReason, new { @class = "form-label text-primary fw-semibold" })
+                        @Html.TextAreaFor(m => m.RejectionReason, new { @class = "form-control", rows = "3", placeholder = "Explain why this request is rejected" })
+                        @Html.ValidationMessageFor(m => m.RejectionReason, "", new { @class = "text-danger" })
+                    </div>
+                }
 
-                    <!-- Action Form -->
-                    <form id="actionForm">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" id="actionType" name="actionType" value="">
-                        <input type="hidden" id="hiddenRequestId" name="Id" value="">
-
-                        <div class="mb-3">
-                            <label for="actionLanguage" class="form-label fw-bold text-dark">
-                                <i class="mdi mdi-translate me-1"></i> Language
-                            </label>
-                            <select id="actionLanguage" name="Language" class="form-select">
-                                <option value="">-- Select --</option>
-                                <option value="en">English</option>
-                                <option value="fr">French</option>
-                            </select>
-                            <div class="form-text">Choose language to include in any customer-facing message, if applicable.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="actionNote" class="form-label fw-bold text-dark">
-                                <i class="mdi mdi-text-box-edit-outline me-1"></i>
-                                Action Statement / Reason
-                                <span id="reasonRequiredAsterisk" class="text-danger d-none">*</span>
-                            </label>
-                            <textarea id="actionNote" name="Reason" class="form-control" rows="5"
-                                      placeholder="Please provide a detailed statement or reason for this action. This will be recorded in the request history and may be visible to the customer..."
-                                      minlength="10"></textarea>
-                            <div class="invalid-feedback">Reason is required for rejection and must be at least 10 characters.</div>
-                            <div class="form-text text-muted mt-1">
-                                <small>
-                                    <i class="mdi mdi-information-outline me-1"></i>
-                                    Reason is <strong>required</strong> for rejection. For validation it is optional but recommended.
-                                </small>
-                            </div>
-                        </div>
-
-                        <div id="modalAlert" class="alert d-none" role="alert"></div>
-                    </form>
+                <div class="alert alert-warning">
+                    <i class="mdi mdi-alert-outline me-2"></i>
+                    <strong>Warning:</strong> Please review details carefully before confirming.
                 </div>
 
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close-circle-outline me-1"></i> Cancel
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Cancel
                     </button>
-                    <button type="button" class="btn btn-primary" id="actionSubmitBtn">
-                        <i class="mdi mdi-check-circle-outline me-1"></i>
-                        <span id="submitButtonText">Submit Action</span>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="mdi mdi-check-circle-outline"></i> Confirm
                     </button>
                 </div>
-            </div>
+            }
         </div>
     </div>
+
 </fieldset>
-
-@section Scripts {
-    <script>
-        (function ($) {
-            // endpoints from hidden inputs
-            const detailsUrl = $('#__ajax_detailsUrl').val();
-            const validateUrl = $('#__ajax_validateUrl').val();
-            const rejectUrl = $('#__ajax_rejectUrl').val();
-
-            const actionModalEl = document.getElementById('actionModal');
-            const actionModal = new bootstrap.Modal(actionModalEl, { keyboard: true });
-
-            function getAntiForgeryToken() {
-                const token = $('input[name="__RequestVerificationToken"]').first().val();
-                return token || null;
-            }
-
-            // load details and populate modal read-only fields
-            function loadRequestDetails(id) {
-                if (!id) return Promise.reject('Invalid id');
-                return $.ajax({
-                    url: detailsUrl,
-                    method: 'GET',
-                    data: { id: id },
-                    dataType: 'json'
-                }).then(function (resp) {
-                    // adjust keys according to your API (case-insensitive tolerant)
-                    $('#actionCustomerName').text(resp.customerName ?? resp.name ?? '-');
-                    $('#actionCustomerId').text(resp.customerId ?? resp.customerID ?? resp.requestedBy ?? '-');
-                    $('#actionRequestIdDisplay').text(resp.requestId ?? resp.id ?? resp.requestID ?? id);
-                    $('#actionCurrentStatus').text(resp.status ?? resp.currentStatus ?? '-');
-                    // set hidden Id
-                    $('#hiddenRequestId').val(resp.id ?? id);
-                    return resp;
-                });
-            }
-
-            // setup modal for a given action: "validate" or "reject"
-            function openActionModal(action, id) {
-                if (!action || !id) return;
-                const isReject = action === 'reject';
-
-                $('#actionType').val(action);
-                $('#actionTypeText').text(isReject ? 'Reject Request' : 'Validate Request');
-                $('#submitButtonText').text(isReject ? 'Reject' : 'Validate');
-
-                // button styling
-                $('#actionSubmitBtn').removeClass('btn-warning btn-success btn-primary')
-                    .addClass(isReject ? 'btn-warning' : 'btn-success');
-
-                // reason: required for reject, optional for validate
-                $('#actionNote').removeClass('is-invalid');
-                $('#actionNote').val('');
-                $('#actionLanguage').val('');
-                if (isReject) {
-                    $('#actionNote').prop('required', true);
-                    $('#reasonRequiredAsterisk').removeClass('d-none');
-                } else {
-                    $('#actionNote').prop('required', false);
-                    $('#reasonRequiredAsterisk').addClass('d-none');
-                }
-
-                $('#modalAlert').addClass('d-none').removeClass('alert-danger alert-success').text('');
-
-                loadRequestDetails(id)
-                    .then(() => actionModal.show())
-                    .catch(err => {
-                        console.error(err);
-                        alert('Failed to load request details. Please try again.');
-                    });
-            }
-
-            // attach delegated click handlers - adjust container id to your table/list container
-            $('#chequeRequestList').on('click', '.btn-validate, .btn-approve', function () {
-                const id = $(this).data('id');
-                if (!id) return alert('Invalid id');
-                openActionModal('validate', id);
-            });
-
-            $('#chequeRequestList').on('click', '.btn-reject', function () {
-                const id = $(this).data('id');
-                if (!id) return alert('Invalid id');
-                openActionModal('reject', id);
-            });
-
-            // submit
-            $('#actionSubmitBtn').on('click', function () {
-                // trigger native form validation first
-                const form = document.getElementById('actionForm');
-                if (!form) return;
-
-                const action = $('#actionType').val();
-                const id = $('#hiddenRequestId').val();
-                const reason = $('#actionNote').val()?.trim();
-                const language = $('#actionLanguage').val();
-
-                if (action === 'reject') {
-                    if (!reason || reason.length < 10) {
-                        $('#actionNote').addClass('is-invalid').focus();
-                        return;
-                    }
-                }
-
-                // prepare payload using "Id" property (server-side typical)
-                const payload = { Id: id, Reason: reason, Language: language };
-
-                // choose endpoint
-                const url = action === 'reject' ? rejectUrl : validateUrl;
-
-                // add antiforgery token header if present
-                const token = getAntiForgeryToken();
-                const headers = {};
-                if (token) headers['RequestVerificationToken'] = token;
-
-                // disable submit button
-                const $btn = $('#actionSubmitBtn');
-                $btn.prop('disabled', true);
-                const spinner = $('<span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>');
-                $btn.append(spinner);
-
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(payload),
-                    headers: headers
-                })
-                    .done(function (res) {
-                        // success feedback: adapt to your API response shape
-                        const ok = (res && (res.success === true || res.isSuccess === true)) || (res === '' || res === null ? false : true);
-                        if (ok) {
-                            $('#modalAlert').removeClass('d-none alert-danger').addClass('alert-success').text((action === 'reject' ? 'Rejected' : 'Validated') + ' successfully.');
-                            setTimeout(function () {
-                                actionModal.hide();
-                                // attempt to refresh list without full reload
-                                if (typeof refreshChequeRequests === 'function') {
-                                    refreshChequeRequests();
-                                } else {
-                                    window.location.reload();
-                                }
-                            }, 900);
-                        } else {
-                            const message = (res && (res.message || res.error)) || 'Operation failed';
-                            $('#modalAlert').removeClass('d-none alert-success').addClass('alert-danger').text(message);
-                        }
-                    })
-                    .fail(function (xhr) {
-                        let message = 'An error occurred while processing the request.';
-                        try { message = (xhr.responseJSON && xhr.responseJSON.message) || xhr.responseText || message; } catch (e) { }
-                        $('#modalAlert').removeClass('d-none alert-success').addClass('alert-danger').text(message);
-                    })
-                    .always(function () {
-                        $btn.prop('disabled', false);
-                        spinner.remove();
-                    });
-            });
-
-            // Optional: close modal cleanup
-            $('#actionModal').on('hidden.bs.modal', function () {
-                $('#actionForm')[0]?.reset();
-                $('#actionNote').removeClass('is-invalid');
-                $('#modalAlert').addClass('d-none').removeClass('alert-danger alert-success').text('');
-            });
-
-        })(jQuery);
-    </script>
-}

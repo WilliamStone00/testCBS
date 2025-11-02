@@ -199,7 +199,6 @@
                 }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 {
-                    <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
                     <tr><th class="bg-label">CreatedBy</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))

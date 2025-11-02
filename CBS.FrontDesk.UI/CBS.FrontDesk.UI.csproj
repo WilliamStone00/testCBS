@@ -59,6 +59,10 @@
     <Reference Include="Azure.Storage.Common, Version=12.19.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Storage.Common.12.19.0\lib\netstandard2.0\Azure.Storage.Common.dll</HintPath>
     </Reference>
+    <Reference Include="CBS.BusinessService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\CBS.BusinessService.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.102.2.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
       <Private>True</Private>
@@ -2048,6 +2052,7 @@
     <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
     <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
+    <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -10858,7 +10863,7 @@
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
-    <Content Include="Views\PendingAccount\_DetailsPartial.cshtml" />
+    <Content Include="Views\PendingAccount\_Details.cshtml" />
     <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
     <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
@@ -10866,6 +10871,8 @@
     <Content Include="Views\AccountBlancklist\Index.cshtml" />
     <Content Include="Views\BranchAccount\_CreateRoot.cshtml" />
     <Content Include="Views\AffiliateAccount\_CreateAffiliateRoot.cshtml" />
+    <Content Include="Views\CashReconciliation\Index.cshtml" />
+    <Content Include="Views\CashReconciliation\_Initialise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

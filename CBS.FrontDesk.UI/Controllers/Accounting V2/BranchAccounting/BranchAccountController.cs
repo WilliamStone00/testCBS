@@ -152,7 +152,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                         model.ParentId = parentData?.Id;
                         model.Class = parentData?.Class;
                         model.AffiliateAccountId = parentData?.AffiliateAccountId;
+                        model.ParentAccountNumber = parentData?.Code;
+                        model.Code = AccountManagementPositionCalculator.ComposeChildCode(parentData?.Code,"");
                         model.BranchId = parentData?.BranchId;
+
+
                     }
 
                   

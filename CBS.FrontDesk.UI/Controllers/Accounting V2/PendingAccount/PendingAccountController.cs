@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -105,16 +106,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            await loader();
+
             if (path == "new")
             {
+                await loader();
                 return PartialView(partialView, new BranchAccountResponse());
             }
-
             else
             {
-                var data = await _pendingAccount.GetByIdAsync(KEY);
-                return PartialView(partialView, data);
+
+                if (path == "reject" || path == "validate")
+                {
+                    var model = new RequestAction
+                    {
+                        Id = KEY,
+                        ActionType=serviceOption
+                        
+                    };
+                    return PartialView(partialView, model);
+                }
+                else
+                {
+                    var data = await _pendingAccount.GetByIdAsync(KEY);
+                    return PartialView(partialView, data);
+                }
+
 
             }
         }
@@ -122,10 +138,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
         public ActionResult HandleAction(string id, string actionType)
         {
             // You can fetch the model or data based on ID and action type
-            var model = new requestAction
+            var model = new RequestAction
             {
-                Id = id,
-                ActionType = actionType
+                Id = id
             };
 
             // Return a partial view
@@ -143,26 +158,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-                     
-                     
-            [HttpPost]         
-            public async Task<ActionResult> ValidateRequest(requestAction dto)
-            {
-                if (string.IsNullOrEmpty(dto.Id))
-                    return Json(new { success = false, message = "Invalid request ID." });
 
-                var success = await _pendingAccount.ValidateRequestAsync(dto);
-                return Json(new { success = success.Result, message = Messaging.MessageResult(success) });
-            }
 
-          
-            [HttpPost]      
-            public async Task<ActionResult> RejectRequest(requestAction dto)
-            {
-                if (string.IsNullOrEmpty(dto.Id) || string.IsNullOrEmpty(dto.RejectionReason))
-                    return Json(new { success = false, message = "Request ID and reason are required." });
+        [HttpPost]
+        public async Task<ActionResult> ValidateRequest(RequestAction dto)
+        {
+            
+            if (string.IsNullOrEmpty(dto.Id))
+                return Json(new { success = false, message = "Invalid request ID." });
 
-                var success = await _pendingAccount.RejectRequestAsync(dto);
-                return Json(new { success = success.Result, message = Messaging.MessageResult(success) });
-            }
-        }    }
+            var success = await _pendingAccount.ValidateRequestAsync(dto);
+            return Json(new { success = success.Result, message = Messaging.MessageResult(success) });
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> RejectRequest(RequestAction dto)
+        {
+            if (string.IsNullOrEmpty(dto.Id) || string.IsNullOrEmpty(dto.RejectionReason))
+                return Json(new { success = false, message = "Request ID and reason are required." });
+
+            var success = await _pendingAccount.RejectRequestAsync(dto);
+            return Json(new { success = success.Result, message = Messaging.MessageResult(success) });
+        }
+    }
+}

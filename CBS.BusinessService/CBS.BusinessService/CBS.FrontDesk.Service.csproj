@@ -251,6 +251,7 @@
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliation.cs" />
+    <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />
     <Compile Include="AccountingV2\ManualJournalEntry\ManualJournalEntryService.cs" />
+    <Compile Include="AccountingV2\CashReconciliation\CashReconciliationService.cs" />
     <Compile Include="Accounting\AccountingReconciliationServices.cs" />
     <Compile Include="Accounting\AccountPolicyServices.cs" />
     <Compile Include="Accounting\AccountUploadServices.cs" />

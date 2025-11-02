@@ -243,6 +243,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Rejectedby { get; set; }
         public DateTime ApproveDate { get; set; }
         public DateTime RejectedDate { get; set; }
+        public decimal TotalCredit { get; set; }
+        public decimal TotalDebit { get; set; }
     }
 
     // ==============================================
@@ -295,26 +297,34 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     }
 
 
+    //public class AccountDto
+    //{
+    //    public string Id { get; set; }
+    //    public string Code { get; set; }
+    //    public string AffiliateAccountId { get; set; }
+    //    public string AffiliateAccountName { get; set; }
+    //    public string Name { get; set; }
+    //    public string Class { get; set; }
+    //    public bool PostingAllowed { get; set; }
+    //    public int Depth { get; set; }
+    //    public string Path { get; set; }
+    //    public DateTime CreatedDate { get; set; }
+    //    public bool IsDeleted { get; set; }
+    //    public List<AccountDto> Children { get; set; }
+    //}
     public class AccountDto
     {
-        public string Id { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
         public string Code { get; set; }
-        public string AffiliateAccountId { get; set; }
-        public string AffiliateAccountName { get; set; }
-        public string Name { get; set; }
-        public string Class { get; set; }
-        public bool PostingAllowed { get; set; }
-        public int Depth { get; set; }
-        public string Path { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public bool IsDeleted { get; set; }
-        public List<AccountDto> Children { get; set; }
+        public string Currency { get; set; }
+        public bool IsActive { get; set; }
+        
     }
 
 
 
 
 
-   
 }
 

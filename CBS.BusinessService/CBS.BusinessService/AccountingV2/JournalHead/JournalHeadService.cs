@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AndriodApp;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -62,35 +63,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-
-        //public async Task<JournalEntry> GetJournalEntryByIdAsync(string id)
-        //{
-        //    try
-        //    {
-        //        var branchId = "BR001";
-
-        //        var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<JournalEntry>>(
-        //            $"{APICallHelper.GetJournalEntryTempById}?id={id}"
-        //        );
-
-
-
-        //        if (!response.IsSuccess)
-        //            throw new Exception($"API call failed: {response.Message}");
-
-        //        var entry = response.ApiResponseData?.Data;
-
-        //        if (entry == null)
-        //            throw new Exception("Journal Entry not found.");
-
-        //        return entry;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"[GetJournalEntryByIdAsync] Error: {ex.Message}");
-        //        throw; // Rethrow so the controller can handle/log it
-        //    }
-        //}
 
         // Fetch a single journal entry by ID using internal branchId
         public async Task<FrontDesk.Data.Entity.AccountingV2.JournalHead> GetJournalEntryByIdAsync(string id)
@@ -158,42 +130,46 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<FrontDesk.Data.Entity.AccountingV2.WorkflowTicket> GetJournalSourceByIdAsync(string id)
+        public async Task<WorkflowTicket> GetJournalSourceByIdAsync(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
+                //if (string.IsNullOrWhiteSpace(id))
+                //    throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
 
                 // Define operationCode for API call
                 /* string operationCode = "MANUAL.ENTRY";*/ // Or call GetBranchID() if you want to use branch info
 
                 // Make API call including operationCode
                 var response = await _JournalheadapiCallerHelper.GetAsync<
-                    ResponseObject<FrontDesk.Data.Entity.AccountingV2.WorkflowTicket>>(string.Format(APICallHelper.GetJournalSourceById, id));
-                 
-           
+                    ResponseObject<WorkflowTicket>>(string.Format(APICallHelper.GetJournalSourceById, id));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return null;
 
-                // Validate response
-                if (!response.IsSuccess)
-                    throw new Exception($"API call failed: {response.Message}");
 
-                var entry = response.ApiResponseData?.Data;
-                if (entry == null)
-                    throw new Exception("Journal Entry not found.");
+                //// Validate response
+                //if (!response.IsSuccess)
+                //    throw new Exception($"API call failed: {response.Message}");
+
+                //var entry = response.ApiResponseData?.Data;
+                //if (entry == null)
+                //    throw new Exception("Journal Entry not found.");
 
                 // Optionally, set OperationCode or other properties on the returned entry
                 //entry.OperationCode = operationCode;
 
-                return entry;
+                //return entry;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[GetJournalSourceByIdAsync] Error: {ex.Message}");
+                //System.Diagnostics.Debug.WriteLine($"[GetJournalSourceByIdAsync] Error: {ex.Message}");
                 throw;
             }
         }
-
+       
         public async Task<JournalApprovalResponse> ApproveAsync(JournalApproval model)
         {
             if (model == null)
@@ -207,7 +183,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to approve journal entry: {ex.Message}", ex);
+                throw ex;
             }
         }
 
