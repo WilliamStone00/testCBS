@@ -1472,7 +1472,7 @@ namespace CBS.FrontDesk.Helper
        
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
-        public static string GetJournalEntryTempById = "api/v1/tempjournalheader";
+        public static string GetJournalEntryTempById = "/api/v1/tempjournalheader/{0}";
         public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
@@ -1546,7 +1546,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateBranchAccount = "/api/v1/AccountCreationRequest";
         public static string GetAllBranchAccountDropAffiliate = "/api/v1/BranchAccount/{0}/tree";
         public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{1}";
-        public static string GetAllBranchAccountsOfABranch = "/api/v1/BranchAccount/{0}/{1}";
+        public static string GetAllBranchAccountsOfABranch = "/api/v1/Branch/{0}/{1}";
         //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}";
         //public static string GetBranchAccountById = "/api/v1/BranchAccount/{0}/{0}";
         public static string BranchAccountdatatable = "/api/v1/BranchAccount/datatable";

@@ -99,16 +99,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
-
-                // ✅ Define internal parameters
-                var branchId = "BR001"; // Or use GetBranchID();
-                var operationCode = "temp"; // You can dynamically change this if needed
-
-                // ✅ Build API URL including operationCode
-                var apiUrl = $"{APICallHelper.GetJournalEntryTempById}?id={id}&branchId={branchId}&ReconciliationStatus={operationCode}";
-
                 // ✅ Make API call
-                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(apiUrl);
+                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(string.Format(APICallHelper.GetJournalEntryTempById,id));
 
                 // ✅ Validate response
                 if (!response.IsSuccess)
