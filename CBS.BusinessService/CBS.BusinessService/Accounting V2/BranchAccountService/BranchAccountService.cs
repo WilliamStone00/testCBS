@@ -7,11 +7,13 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.BranchAccountService
@@ -143,119 +145,194 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                 {
                     // In a real scenario, log 'ex'
                     throw;
-                }
             }
+        }
 
-         
-            //get Branch Accounts for dro down 
-            public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId)
+
+        //get Branch Accounts for dro down 
+        public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
+        {
+            try
             {
-                try
-                {
-                    // Create an "empty" query so server interprets as get all (everything null)
-                    var query = new BranchAccountQuery
-                    {
-                        BranchId = branchId 
-                    };
-
-                    // Reuse existing method which calls the API datatable endpoint
-                    var dataTable = await GetDataTableAsync(query);
-
-                    // dataTable.data is `object` so convert safely to the expected DTO list
-                    var branchList = JsonConvert.DeserializeObject<List<BranchAccountResponse>>(
-                        JsonConvert.SerializeObject(dataTable?.data)
-                    ) ?? new List<BranchAccountResponse>();
-
-                    // Optional: keep only active ones if needed
-                    // branchList = branchList.Where(a => a.IsActive).ToList();
-
-                    if (!IsHeadOffice())
-                    {
-                        // Filter only the affiliate that matches current branch (if applicable)
-                        string currentBranchId = GetBranchID();
-                        branchList = branchList.Where(a => a.Id == currentBranchId).ToList();
-                    }
-                    else
-                    {
-                        // Add "All" option at the top for Head Office users
-                        var defaultAffiliate = new BranchAccountResponse
-                        {
-                            Id = "All",
-                            Name = "All Affiliates",
-                            Code = "ALL"
-                        };
-
-                        if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            branchList.Insert(0, defaultAffiliate);
-                        }
-                    }
-
-                    // Format name for display and order (choose ordering you prefer)
-                    var formatted = branchList
-                        .Select(a =>
-                        {
-                            a.Name = $" {a.Name}".Trim();
-                            return a;
-                        })
-                        .OrderBy(a => a.Id)
-                        .ToList();
-
-                    return formatted;
-                }
-                catch (Exception ex)
-                {
-                    // log properly (example: _logger.LogError(ex, "GetAllBranchAccountsFromDataTableAsync failed");)
-                    throw;
-                }
-            }
-
-
-    // real endpoint version
-    public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
-            {
-                try
-                {
-              
+                // Decide branchId first so the query sent to server is correct.
                 if (IsHeadOffice())
                 {
-                    if (branchId=="")
-                    {
-                        branchId = "all";
-
-                    }
+                    if (string.IsNullOrWhiteSpace(branchId))
+                        branchId = "all"; // ensure API understands this convention
+                                          // Head Office may keep a specific branchId if passed
                 }
                 else
                 {
-                    branchId = GetBranchID();
+                    branchId = GetBranchID() ?? throw new InvalidOperationException("Current user's branch ID is not available.");
                 }
-                    string lang = GetUserLanguage();
-                    // Call API
-                    var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
 
-                if (!response.IsSuccess || response==null || response.ApiResponseData == null)
+                var query = new BranchAccountQuery
                 {
-                    return new List<BranchAccountResponse>();
-                }
+                    BranchId = branchId
+                };
 
-                var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+                // Reuse existing method which calls the API datatable endpoint
+                var dataTable = await GetDataTableAsync(query);
 
-                    // Format name for display and order by Code
-                    return branchAcounts
-                        .Select(a =>
-                        {
-                            a.Name = $"[{a.Code}] - {a.Name}".Trim();
-                            return a;
-                        })
-                        .OrderBy(a => a.Id)
-                        .ToList();
-                }
-                catch (Exception)
+                // Convert datatable.data to strongly-typed list safely
+                List<BranchAccountResponse> branchList = new List<BranchAccountResponse>();
+
+                if (dataTable?.data is JToken token)
                 {
-                    // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
-                    throw;
+                    branchList = token.ToObject<List<BranchAccountResponse>>() ?? new List<BranchAccountResponse>();
                 }
+                else if (dataTable?.data != null)
+                {
+                    // Fallback if data is plain object
+                    branchList = JsonConvert.DeserializeObject<List<BranchAccountResponse>>(JsonConvert.SerializeObject(dataTable.data))
+                                 ?? new List<BranchAccountResponse>();
+                }
+
+                // Optional: server may already have enforced branch filtering. If you still want to
+                // double-check client-side for non-HO users, do case-insensitive compare:
+                if (!IsHeadOffice())
+                {
+                    var currentBranch = GetBranchID();
+                    branchList = branchList.Where(a => string.Equals(a.Id, currentBranch, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+                else
+                {
+                    // Ensure "All" entry exists for HO users
+                    var defaultAffiliate = new BranchAccountResponse { Id = "All", Name = "All Affiliates", Code = "ALL" };
+                    if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
+                        branchList.Insert(0, defaultAffiliate);
+                }
+
+                var formatted = branchList
+                    .Select(a => new BranchAccountResponse
+                    {
+                        Id = a.Id,
+                        Code = a.Code,
+                        Name = $"[{a.Code}] - {a.Name}".Trim()
+                    })
+                    .OrderBy(a => a.Name) // nicer UX for dropdown; change if you prefer Id
+                    .ToList();
+
+                return formatted;
             }
+            catch (Exception ex)
+            {
+               
+                throw;
+            }
+        }
+
+
+
+        ////get Branch Accounts for dro down 
+        //public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId)
+        //{
+        //    try
+        //    {
+        //        // Create an "empty" query so server interprets as get all (everything null)
+        //        var query = new BranchAccountQuery
+        //        {
+        //            BranchId = branchId 
+        //        };
+
+        //        // Reuse existing method which calls the API datatable endpoint
+        //        var dataTable = await GetDataTableAsync(query);
+
+        //        // dataTable.data is `object` so convert safely to the expected DTO list
+        //        var branchList = JsonConvert.DeserializeObject<List<BranchAccountResponse>>(
+        //            JsonConvert.SerializeObject(dataTable?.data)
+        //        ) ?? new List<BranchAccountResponse>();
+
+        //        // Optional: keep only active ones if needed
+        //        // branchList = branchList.Where(a => a.IsActive).ToList();
+
+        //        if (!IsHeadOffice())
+        //        {
+        //            // Filter only the affiliate that matches current branch (if applicable)
+        //            string currentBranchId = GetBranchID();
+        //            branchList = branchList.Where(a => a.Id == currentBranchId).ToList();
+        //        }
+        //        else
+        //        {
+        //            // Add "All" option at the top for Head Office users
+        //            var defaultAffiliate = new BranchAccountResponse
+        //            {
+        //                Id = "All",
+        //                Name = "All Affiliates",
+        //                Code = "ALL"
+        //            };
+
+        //            if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
+        //            {
+        //                branchList.Insert(0, defaultAffiliate);
+        //            }
+        //        }
+
+        //        // Format name for display and order (choose ordering you prefer)
+        //        var formatted = branchList
+        //            .Select(a =>
+        //            {
+        //                a.Name = $" {a.Name}".Trim();
+        //                return a;
+        //            })
+        //            .OrderBy(a => a.Id)
+        //            .ToList();
+
+        //        return formatted;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // log properly (example: _logger.LogError(ex, "GetAllBranchAccountsFromDataTableAsync failed");)
+        //        throw;
+        //    }
+        //}
+
+
+        // real endpoint version
+        public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+                    {
+                        try
+                        {
+              
+                        if (IsHeadOffice())
+                        {
+                            if (branchId=="")
+                            {
+                                branchId = "all";
+
+                            }
+                        }
+                        else
+                        {
+                            branchId = GetBranchID();
+                        }
+                            string lang = GetUserLanguage();
+                            // Call API
+                            var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
+
+                        if (!response.IsSuccess || response==null || response.ApiResponseData == null)
+                        {
+                            return new List<BranchAccountResponse>();
+                        }
+
+                        var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+
+                            // Format name for display and order by Code
+                            return branchAcounts
+                                .Select(a =>
+                                {
+                                    a.Name = $"[{a.Code}] - {a.Name}".Trim();
+                                    return a;
+                                })
+                                .OrderBy(a => a.Id)
+                                .ToList();
+                        }
+                        catch (Exception)
+                        {
+                            // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
+                            throw;
+                        }
+                    }
 
         //***************************************** MOCK *********************************************
         public async Task<CustomDataTable> GetcategoryDataTableAsync2(BranchAccountQuery query)
