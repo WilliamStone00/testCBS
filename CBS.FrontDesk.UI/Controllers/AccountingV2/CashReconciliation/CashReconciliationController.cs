@@ -1,15 +1,12 @@
 ﻿
+//using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2;
-using CBS.BusinessService.AccountingV2.VaultInitialisation;
+using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
 {
@@ -20,7 +17,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         private readonly CashReconciliationService _cashReconciliationService;
 
 
-        public CashReconciliationController(BranchServices branchServices, CashReconciliationService cashReconciliationService, ManualJournalEntryService manualJournalEntryService)
+        public CashReconciliationController(BranchServices branchServices, CashReconciliationService cashReconciliationService)
         {
 
             _branchServices = branchServices;

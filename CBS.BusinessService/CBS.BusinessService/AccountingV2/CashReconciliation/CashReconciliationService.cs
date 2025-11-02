@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.BusinessService.AccountingV2.VaultInitialisation
+namespace CBS.BusinessService.AccountingV2.CashReconciliation
 {
     public class CashReconciliationService : BaseService
     {
