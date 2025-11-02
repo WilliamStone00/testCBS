@@ -71,8 +71,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 		{
 			var branches = await _branchServices.GetBranches();
 			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync("");
+			var newlistng = _branchAccountService.DroupDownGen(accounts.ToList());
 			ViewBag.Branches = branches;
-			ViewBag.Accounts = accounts;
+			ViewBag.Accounts = newlistng;
 		}
 		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
 		{
@@ -126,9 +127,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 		{
 			if (Key != null)
 			{
-				var listing = await _branchServices.GetBranchesByBankId(Key);
-				return Json(listing, JsonRequestBehavior.AllowGet);
-
+				var listing =  await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(Key);
+				var newlistng=_branchAccountService.DroupDownGen(listing.ToList());
+				return Json(newlistng, JsonRequestBehavior.AllowGet);
 			}
 			return Json(null, JsonRequestBehavior.AllowGet);
 		}
