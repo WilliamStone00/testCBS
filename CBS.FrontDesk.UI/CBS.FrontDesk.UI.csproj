@@ -274,14 +274,6 @@
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
-    <Reference Include="MvcSiteMapProvider, Version=4.6.26.0, Culture=neutral, PublicKeyToken=1923abe4657913cc, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvcSiteMapProvider.MVC5.Core.4.6.26\lib\net45\MvcSiteMapProvider.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvcSiteMapProvider.WebActivator, Version=4.6.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvcSiteMapProvider.MVC5.4.6.26\lib\net45\MvcSiteMapProvider.WebActivator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -2039,6 +2031,7 @@
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
+    <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
@@ -2048,6 +2041,7 @@
     <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
     <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
+    <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -2154,6 +2148,7 @@
     <Compile Include="Controllers\MemberNoneCashOperation\MobileMoneyBackOfficeController.cs" />
     <Compile Include="Controllers\LoanApplicationManagement\MemberOperationController.cs" />
     <Compile Include="Controllers\MembersFSerie\MembersFSeriesController.cs" />
+    <Compile Include="Controllers\MobileMoneyV2\MobileMoneyConfigV2Controller.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftActivationController.cs" />
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
@@ -7696,6 +7691,9 @@
     <Content Include="AppFiles\ManualDailyCollection\Manualdaillycollectiontemplete.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\BAPCCUL_ACCOUNTS2.xlsx" />
     <Content Include="AppFiles\AffiliateAccountUpload\SampleBalanceSheet2.xlsx" />
+    <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
+    <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
+    <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -10854,7 +10852,7 @@
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
-    <Content Include="Views\PendingAccount\_DetailsPartial.cshtml" />
+    <Content Include="Views\PendingAccount\_Details.cshtml" />
     <Content Include="Views\PendingAccount\_EditPartial.cshtml" />
     <Content Include="Views\PendingAccount\_ActionModal.cshtml" />
     <Content Include="Views\ManualJournalEntry\_Confirmation.cshtml" />
@@ -10862,6 +10860,8 @@
     <Content Include="Views\AccountBlancklist\Index.cshtml" />
     <Content Include="Views\BranchAccount\_CreateRoot.cshtml" />
     <Content Include="Views\AffiliateAccount\_CreateAffiliateRoot.cshtml" />
+    <Content Include="Views\CashReconciliation\Index.cshtml" />
+    <Content Include="Views\CashReconciliation\_Initialise.cshtml" />
     <Content Include="Views\AccountBlancklist\List.cshtml" />
     <Content Include="Views\AccountBlancklist\_Data.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistDetailsModal.cshtml" />

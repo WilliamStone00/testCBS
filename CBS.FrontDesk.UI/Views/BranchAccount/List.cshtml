@@ -170,7 +170,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
   (function ($) {
-       'use strict';
+      'use strict';
 
        let table = null;
 
@@ -215,6 +215,8 @@
                   }
                 });
               } catch (e) { console.warn('select2 init failed', e); }
+
+
 
               (bootstrap.Modal.getInstance($('#branchEditModal')[0]) ||
                 new bootstrap.Modal($('#branchEditModal')[0], { backdrop: 'static' }))

@@ -191,13 +191,15 @@
                 {
                     <tr><th class="bg-label">Workflow Ticket Notes</th><td>@Model.WorkflowTicketNotes</td></tr>
                 }
-                @if (!string.IsNullOrWhiteSpace(Model.Narrative))
+                @*@if (!string.IsNullOrWhiteSpace(Model.Narrative))
                 {
                     <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
+                }*@
+                @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 {
-                    <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
+                    <tr><th class="bg-label">CreatedBy</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))
                 {
@@ -408,4 +410,81 @@
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
         <i class="mdi mdi-close"></i> Close
     </button>
+
+    <div>
+        <button type="button" id="btnApprove" class="btn btn-success">
+            <i class="mdi mdi-check-circle-outline"></i>
+            <span class="btn-text">Approve</span>
+        </button>
+    </div>
 </div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        const state = '@(Model?.PostMode ?? "")';
+
+        // Disable Approve button if state is APPROVED
+        if (state.toUpperCase() === 'APPROVED') {
+            $('#btnApprove')
+                .prop('disabled', true)
+                .addClass('btn-secondary')
+                .removeClass('btn-success');
+        }
+
+        $('#btnApprove').click(function (e) {
+            e.preventDefault();
+            const $btn = $(this);
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
+
+            // Show spinner
+            $btn.prop('disabled', true);
+            $icon.removeClass('mdi-check-circle-outline')
+                 .addClass('mdi-loading mdi-spin');
+            $text.text('Approving...');
+
+            const payload = {
+                Reference: '@Model.Reference',
+                BranchId: '@Model.BranchId',
+                Approver: '@User.Identity.Name'
+            };
+
+            $.ajax({
+                url: '@Url.Action("Approve", "JournalHead")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        // Keep disabled after approval
+                        $btn.prop('disabled', true);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle');
+                        $text.text('Approved');
+                    } else {
+                        toastr.error(response.message);
+                        // Re-enable if failed
+                        $btn.prop('disabled', false);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle-outline');
+                        $text.text('Approve');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("An error occurred: " + error);
+                    // Re-enable on error
+                    $btn.prop('disabled', false);
+                    $icon.removeClass('mdi-loading mdi-spin')
+                         .addClass('mdi-check-circle-outline');
+                    $text.text('Approve');
+                }
+            });
+        });
+    });
+</script>

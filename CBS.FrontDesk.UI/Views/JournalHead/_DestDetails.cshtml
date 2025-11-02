@@ -87,7 +87,7 @@
 
 @*===================== MAIN HEADER =====================*@
 <div class="header-viewer">
-    <h6><i class="mdi mdi-file-document-outline me-1"></i> Work ticket  & DETAILS</h6>
+    <h6><i class="mdi mdi-file-document-outline me-1"></i> JOURNAL REQUEST  & DETAILS</h6>
     <p class="mb-0">Detailed information for the selected journal entry.</p>
 </div>
 
@@ -110,7 +110,8 @@
                 <th class="bg-label">Remarks</th>
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
-
+            <tr><th class="bg-label">Total Debit</th><td>@Math.Abs(Model.TotalDebit).ToString("N0")</td></tr>
+            <tr><th class="bg-label">Total Credit</th><td>@Math.Abs(Model.TotalCredit).ToString("N0")</td></tr>
         </tbody>
     </table>
 
@@ -120,7 +121,7 @@
             <thead class="table-light">
                 <tr>
                     <th style="width:30%">@ManualEntry.Account</th>
-                    <th style="width:30%">@ManualEntry.Narration</th>
+                    <th style="width:30%">Memo</th>
                     <th style="width:15%">@ManualEntry.Debit</th>
                     <th style="width:15%">@ManualEntry.Credit</th>
                     <th style="width:10%">@ManualEntry.Actions</th>
@@ -154,11 +155,6 @@
         </div>
     </div>
 
-    @*================= MEMO =================*@
-    @*<div class="mt-4">
-            <label class="form-label fw-bold" for="Payload_Memo">@ManualEntry.Remark</label>
-            @Html.TextAreaFor(m => m.Payload.Memo, new { @class = "form-control shadow-sm", rows = "3", placeholder = @ManualEntry.Enter, required = "required", id = "Payload_Memo" })
-        </div>*@
 
 </div>
 
@@ -168,9 +164,7 @@
         <i class="mdi mdi-close"></i> Close
     </button>
     <div>
-        <button type="button" id="btnReject" class="btn btn-danger me-2">
-            <i class="mdi mdi-close-circle-outline"></i> Reject
-        </button>
+
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i> Approve
         </button>
@@ -182,48 +176,13 @@
 <script>
     $(document).ready(function () {
         let accounts = [];
-        const tableBody = $('#myDataTable tbody');
 
-        // ==================== Add Row ====================
-        function addRow() {
-            const index = tableBody.children('tr').length;
-            const row = `
-                <tr>
-                    <td>
-                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
-                            <option value="">Select Account</option>
-                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td>
-                        <textarea class="form-control narration-input"
-                                  name="Lines[${index}].Narration"
-                                  placeholder="Enter narration"
-                                  rows="1"
-                                  oninput="autoGrow(this)"
-                                  required></textarea>
-                    </td>
-                    <td><input type="number" step="0.01" class="form-control debit-input" name="Lines[${index}].Debit" placeholder="0.00" min="0" /></td>
-                    <td><input type="number" step="0.01" class="form-control credit-input" name="Lines[${index}].Credit" placeholder="0.00" min="0" /></td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </td>
-                </tr>`;
-            tableBody.append(row);
-
-            // ✅ Initialize select2 *only for this new row* and attach it to the modal
-            $('.account-select').last().select2({
-                width: '100%',
-                placeholder: 'Select Account',
-                allowClear: true,
-                dropdownParent: $('.modal.show') // ensures dropdown appears on top of modal
-            });
-        }
-
-        // ==================== Load Accounts ====================
-        function loadAccounts() {
+        // ✅ Load accounts (only once)
+        function loadAccounts(callback) {
+            if (accounts.length > 0) {
+                if (callback) callback();
+                return;
+            }
             $.ajax({
                 url: '/ManualJournalEntry/GetAccounts',
                 type: 'GET',
@@ -233,18 +192,11 @@
                         appalert(response.message || '⚠️ No accounts found.', 2, 1);
                         return;
                     }
-
-                    // ✅ Store accounts globally
                     accounts = response.data.map(a => ({
                         Value: a.Id,
                         Text: `${a.Code} - ${a.Name}`
                     }));
-
-                    // ✅ Refresh existing dropdowns if rows already exist
-                    tableBody.find('.account-select').each(function () {
-                        $(this).html('<option value="">Select Account</option>' +
-                            accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join(''));
-                    });
+                    if (callback) callback();
                 },
                 error: function (err) {
                     appalert("Error loading accounts: " + err.statusText, 0, 1);
@@ -252,81 +204,273 @@
             });
         }
 
-        // ==================== Initial Load ====================
-        loadAccounts();
-        addRow();
-
-        // ==================== Add Row Validation ====================
-        $('#addRowBtn').click(() => {
-            let canAdd = true;
-            tableBody.find('tr:last').find('input:enabled, select:enabled').each(function () {
-                if (!$(this).val()) {
-                    canAdd = false;
-                    $(this).addClass('is-invalid').css('border-color', 'red');
-                } else {
-                    $(this).removeClass('is-invalid').css('border-color', '');
-                }
+        // ✅ Initialize Select2 inside modal
+        function initSelect2(element) {
+            element.select2({
+                width: '100%',
+                placeholder: 'Select Account',
+                allowClear: true,
+                dropdownParent: $('#SourceDetailsModal') // restricted to modal
             });
-            if (!canAdd) {
-                appalert('Please fill all fields before adding a new row.', 2, 1);
-                return;
-            }
-            addRow();
-        });
-
-        // ==================== Delete Row ====================
-        tableBody.on('click', '.deleteRow', function () {
-            $(this).closest('tr').remove();
-            updateTotals();
-        });
-
-        // ==================== Clear All Rows ====================
-        $('#clearRowsBtn').click(() => {
-            tableBody.empty();
-            addRow();
-            updateTotals();
-        });
-
-        // ==================== Auto Grow Textarea ====================
-        window.autoGrow = function (element) {
-            element.style.height = "auto";
-            element.style.height = (element.scrollHeight) + "px";
         }
 
-        // ==================== Update Totals ====================
-        function updateTotals() {
+        // ✅ Auto-grow textarea for memo field
+        window.autoGrow = function (element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+
+        // ✅ Add a new row (WITH memo column)
+        function addRow(tableBody) {
+            const index = tableBody.children('tr').length;
+            const row = $(`
+                <tr>
+                    <td style="width: 35%;">
+                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
+                            <option value="">Select Account</option>
+                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td style="width: 25%;">
+                        <textarea class="form-control narration-input"
+                                  name="Lines[${index}].Narration"
+                                  placeholder="Enter memo"
+                                  rows="1"
+                                  oninput="autoGrow(this)"
+                                  required></textarea>
+                    </td>
+                    <td style="width: 15%;">
+                        <input type="number" step="0.01" class="form-control debit-input"
+                               name="Lines[${index}].Debit" placeholder="0.00" min="0" />
+                    </td>
+                    <td style="width: 15%;">
+                        <input type="number" step="0.01" class="form-control credit-input"
+                               name="Lines[${index}].Credit" placeholder="0.00" min="0" />
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+            tableBody.append(row);
+            initSelect2(row.find('.account-select'));
+        }
+
+        // ✅ Update debit/credit totals inside modal
+        function updateTotals(modal) {
+            const tableBody = modal.find('#myDataTable tbody');
             let debitTotal = 0, creditTotal = 0;
-            tableBody.find('.debit-input').each(function () { debitTotal += parseFloat($(this).val()) || 0; });
-            tableBody.find('.credit-input').each(function () { creditTotal += parseFloat($(this).val()) || 0; });
+
+            tableBody.find('.debit-input').each(function () {
+                debitTotal += parseFloat($(this).val()) || 0;
+            });
+            tableBody.find('.credit-input').each(function () {
+                creditTotal += parseFloat($(this).val()) || 0;
+            });
 
             const diff = debitTotal - creditTotal;
-            $('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
-            $('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
-            $('#difference')
+            modal.find('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
+            modal.find('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
+            modal.find('#difference')
                 .text(`Diff: XAF ${diff.toLocaleString()}`)
                 .toggleClass('text-danger', diff !== 0)
                 .toggleClass('text-success', diff === 0);
         }
 
-        // ==================== Handle Debit/Credit Exclusivity ====================
-        tableBody.on('input', '.debit-input, .credit-input', function () {
-            const row = $(this).closest('tr');
-            const debit = row.find('.debit-input');
-            const credit = row.find('.credit-input');
+        // ✅ When modal opens — initialize table setup
+        $('#SourceDetailsModal').on('shown.bs.modal', function () {
+            const modal = $(this);
+            const tableBody = modal.find('#myDataTable tbody');
 
-            if ($(this).hasClass('debit-input') && $(this).val()) {
-                credit.val('').prop('disabled', true);
-            } else if ($(this).hasClass('credit-input') && $(this).val()) {
-                debit.val('').prop('disabled', true);
-            } else {
-                debit.prop('disabled', false);
-                credit.prop('disabled', false);
-            }
+            // Clear previous rows to avoid duplicates
+            tableBody.empty();
 
-            updateTotals();
+            // Load accounts and add initial row
+            loadAccounts(() => {
+                addRow(tableBody);
+            });
+
+            // Add Row button inside modal
+            modal.find('#addRowBtn').off('click').on('click', function () {
+                addRow(tableBody);
+            });
+
+            // Delete Row
+            tableBody.off('click', '.deleteRow').on('click', '.deleteRow', function () {
+                $(this).closest('tr').remove();
+                updateTotals(modal);
+            });
+
+            // Recalculate totals on input
+            tableBody.on('input', '.debit-input, .credit-input', function () {
+                updateTotals(modal);
+            });
         });
-
-        window.updateTotals = updateTotals;
     });
 </script>
+<script>
+    $(document).ready(function () {
+        let accounts = [];
+
+        // ✅ Load accounts (only once)
+        function loadAccounts(callback) {
+            if (accounts.length > 0) {
+                if (callback) callback();
+                return;
+            }
+            $.ajax({
+                url: '/ManualJournalEntry/GetAccounts',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success || !response.data) {
+                        appalert(response.message || '⚠️ No accounts found.', 2, 1);
+                        return;
+                    }
+                    accounts = response.data.map(a => ({
+                        Value: a.Id,
+                        Text: `${a.Code} - ${a.Name}`
+                    }));
+                    if (callback) callback();
+                },
+                error: function (err) {
+                    appalert("Error loading accounts: " + err.statusText, 0, 1);
+                }
+            });
+        }
+
+        // ✅ Initialize Select2 inside modal
+        function initSelect2(element) {
+            element.select2({
+                width: '100%',
+                placeholder: 'Select Account',
+                allowClear: true,
+                dropdownParent: $('#SourceDetailsModal') // restricted to modal
+            });
+        }
+
+        // ✅ Auto-grow textarea for memo field
+        window.autoGrow = function (element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+
+        // ✅ Add a new row (WITH memo column)
+        function addRow(tableBody) {
+            const index = tableBody.children('tr').length;
+            const row = $(`
+                <tr>
+                    <td style="width: 35%;">
+                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
+                            <option value="">Select Account</option>
+                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td style="width: 25%;">
+                        <textarea class="form-control narration-input"
+                                  name="Lines[${index}].Narration"
+                                  placeholder="Enter memo"
+                                  rows="1"
+                                  oninput="autoGrow(this)"
+                                  required></textarea>
+                    </td>
+                    <td style="width: 15%;">
+                        <input type="number" step="0.01" class="form-control debit-input"
+                               name="Lines[${index}].Debit" placeholder="0.00" min="0" />
+                    </td>
+                    <td style="width: 15%;">
+                        <input type="number" step="0.01" class="form-control credit-input"
+                               name="Lines[${index}].Credit" placeholder="0.00" min="0" />
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+            tableBody.append(row);
+            initSelect2(row.find('.account-select'));
+        }
+
+        // ✅ Update debit/credit totals inside modal
+        function updateTotals(modal) {
+            const tableBody = modal.find('#myDataTable tbody');
+            let debitTotal = 0, creditTotal = 0;
+
+            tableBody.find('.debit-input').each(function () {
+                debitTotal += parseFloat($(this).val()) || 0;
+            });
+            tableBody.find('.credit-input').each(function () {
+                creditTotal += parseFloat($(this).val()) || 0;
+            });
+
+            const diff = debitTotal - creditTotal;
+            modal.find('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
+            modal.find('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
+            modal.find('#difference')
+                .text(`Diff: XAF ${diff.toLocaleString()}`)
+                .toggleClass('text-danger', diff !== 0)
+                .toggleClass('text-success', diff === 0);
+        }
+
+        // ✅ When modal opens — initialize table setup
+        $('#SourceDetailsModal').on('shown.bs.modal', function () {
+            const modal = $(this);
+            const tableBody = modal.find('#myDataTable tbody');
+
+            // Clear previous rows to avoid duplicates
+            tableBody.empty();
+
+            // Load accounts and add initial row
+            loadAccounts(() => {
+                addRow(tableBody);
+            });
+
+            // Add Row button inside modal
+            modal.find('#addRowBtn').off('click').on('click', function () {
+                addRow(tableBody);
+            });
+
+            // Delete Row
+            tableBody.off('click', '.deleteRow').on('click', '.deleteRow', function () {
+                $(this).closest('tr').remove();
+                updateTotals(modal);
+            });
+
+            // ✅ Debit/Credit logic: one disables the other
+            tableBody.on('input', '.debit-input', function () {
+                const $row = $(this).closest('tr');
+                const debitVal = parseFloat($(this).val()) || 0;
+                const $credit = $row.find('.credit-input');
+
+                if (debitVal > 0) {
+                    $credit.val('').prop('disabled', true);
+                } else {
+                    $credit.prop('disabled', false);
+                }
+                updateTotals(modal);
+            });
+
+            tableBody.on('input', '.credit-input', function () {
+                const $row = $(this).closest('tr');
+                const creditVal = parseFloat($(this).val()) || 0;
+                const $debit = $row.find('.debit-input');
+
+                if (creditVal > 0) {
+                    $debit.val('').prop('disabled', true);
+                } else {
+                    $debit.prop('disabled', false);
+                }
+                updateTotals(modal);
+            });
+        });
+    });
+</script>
+
+
+
+
 

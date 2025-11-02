@@ -447,6 +447,151 @@
                     </div>
 
 
+                    <script>
+                        (() => {
+                            // -------- Constants --------
+                            const LOAN_VAT_THRESHOLD = 2000000; // VAT applies only when loan amount >= 2,000,000
+                            const VAT_EXCLUSIVE_RATE = 19.25;   // VAT on net interest
+                            const VAT_INCLUSIVE_RATE = 16.1425; // VAT portion inside a VAT-inclusive amount
+
+                            // Safe number parser
+                            const toNumber = (v) => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+
+                            // VAT mode: 'exclusive' | 'inclusive' | null
+                            const getVatMode = () => {
+                                const r = document.querySelector('input[name="vatMode"]:checked');
+                                return r ? r.value : null;
+                            };
+
+                            // Called when user types interest — ONLY stores raw (gross) input, clears VAT
+                            function handleInterestInput(loanId) {
+                                const interestEl = document.getElementById(`interest-${loanId}`);
+                                if (!interestEl) return;
+
+                                const entered = toNumber(interestEl.value);
+                                interestEl.dataset.gross = String(entered);     // remember what user typed
+
+                                const vatEl = document.getElementById(`vat-${loanId}`);
+                                if (vatEl) vatEl.value = "0";                   // clear VAT until mode is applied
+
+                                updateRowTotal(loanId);
+                                updateGrandTotals();
+                            }
+
+                            // Apply VAT for a single row given a mode
+                            function applyVatForRow(loanId, mode) {
+                                const interestEl = document.getElementById(`interest-${loanId}`);
+                                const vatEl = document.getElementById(`vat-${loanId}`);
+                                if (!interestEl || !vatEl) return;
+
+                                const loanAmount = toNumber(interestEl.dataset.loanamount);
+                                let gross = toNumber(interestEl.dataset.gross);
+                                if (!gross) {                                   // fallback if user never typed yet
+                                    gross = toNumber(interestEl.value);
+                                    interestEl.dataset.gross = String(gross);
+                                }
+
+                                let vat = 0;
+
+                                if (loanAmount >= LOAN_VAT_THRESHOLD && (mode === 'exclusive' || mode === 'inclusive')) {
+                                    if (mode === 'exclusive') {
+                                        // Exclusive: interest remains gross; VAT is added separately
+                                        interestEl.value = Math.round(gross);
+                                        vat = Math.round(gross * (VAT_EXCLUSIVE_RATE / 100));
+                                    } else {
+                                        // Inclusive: compute VAT portion inside gross, reduce interest to net
+                                        vat = Math.round(gross * (VAT_INCLUSIVE_RATE / 100));
+                                        const net = Math.max(0, Math.round(gross - vat));
+                                        interestEl.value = net;
+                                    }
+                                } else {
+                                    // Not eligible => no VAT
+                                    interestEl.value = Math.round(gross);
+                                    vat = 0;
+                                }
+
+                                // Keep row VAT strictly numeric
+                                vatEl.value = String(vat);
+
+                                updateRowTotal(loanId);
+                            }
+
+                            // Apply the currently selected VAT mode to ALL rows
+                            function applyVatModeToAllRows() {
+                                const mode = getVatMode(); // may be null
+                                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                                    const loanId = row.id.replace('row-', '');
+                                    if (loanId) applyVatForRow(loanId, mode);
+                                });
+                                updateGrandTotals();
+                            }
+
+                            // Update one row total (capital + interest + vat + penalty)
+                            function updateRowTotal(loanId) {
+                                const interest = toNumber(document.getElementById(`interest-${loanId}`)?.value);
+                                const vat = toNumber(document.getElementById(`vat-${loanId}`)?.value);
+                                const capital = toNumber(document.getElementById(`capital-${loanId}`)?.value);
+                                const penalty = toNumber(document.getElementById(`penalty-${loanId}`)?.value);
+
+                                const total = capital + interest + vat + penalty;
+
+                                // Keep row TOTAL strictly numeric
+                                const span = document.getElementById(`total-${loanId}`);
+                                if (span) span.innerText = String(total);
+                            }
+
+                            // Grand totals (footer only)
+                            function updateGrandTotals() {
+                                let totalRepayment = 0;
+
+                                document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
+                                    const id = row.id.replace("row-", "");
+                                    const interest = toNumber(document.getElementById(`interest-${id}`)?.value);
+                                    const vat = toNumber(document.getElementById(`vat-${id}`)?.value);
+                                    const capital = toNumber(document.getElementById(`capital-${id}`)?.value);
+                                    const penalty = toNumber(document.getElementById(`penalty-${id}`)?.value);
+
+                                    totalRepayment += capital + interest + vat + penalty;
+                                });
+
+                                const totalCell = document.getElementById("totalRepaymentAmount");
+                                if (totalCell) {
+                                    totalCell.innerText = (typeof formatCurrencyNoName === 'function')
+                                        ? formatCurrencyNoName(totalRepayment)
+                                        : totalRepayment.toLocaleString('en-US');
+                                }
+                            }
+
+                            // Expose for inline calls
+                            window.handleInterestInput = handleInterestInput;
+                            window.applyVatModeToAllRows = applyVatModeToAllRows;
+                            window.updateTotals = function (loanId) { if (loanId) updateRowTotal(loanId); updateGrandTotals(); };
+
+                            // Wire listeners once DOM is ready
+                            document.addEventListener('DOMContentLoaded', () => {
+                                // Row listeners
+                                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
+                                    const id = row.id.replace('row-', '');
+                                    document.getElementById(`capital-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                                    document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
+                                    document.getElementById(`interest-${id}`)?.addEventListener('input', () => handleInterestInput(id));
+                                });
+
+                                // VAT radios (if you still have them hidden in the toolbar)
+                                document.querySelectorAll('input[name="vatMode"]').forEach(r => {
+                                    r.addEventListener('change', applyVatModeToAllRows);
+                                    r.addEventListener('click', applyVatModeToAllRows);
+                                });
+
+                                // Default to Inclusive
+                                const inclusiveRadio = document.getElementById('vatModeInclusive');
+                                if (inclusiveRadio) inclusiveRadio.checked = true;
+                                applyVatModeToAllRows();
+
+                                updateGrandTotals();
+                            });
+                        })();
+                    </script>
 
 
                 </div>
@@ -816,38 +961,75 @@ else if (ViewBag.Operation == "repayment")
         <fieldset class="fieldset-custom">
             <legend>LOAN REPAYMENT</legend>
             <hr style="border: 2px solid green;" />
+
             <div class="change-group">
                 <div class="row mt-2 gy-4">
                     <div class="col-md-8">
                         <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box float-start">@CashDesk_OperationForm.MemberName: @Model.Customer.name</span>
+                            <span class="formatted-amount shadow-box float-start">
+                                @CashDesk_OperationForm.MemberName: @Model.Customer.name
+                            </span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="form-floating form-floating-outline">
-                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@CashDesk_OperationForm.TotalAmount: 0.0</span>
-                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
-                            <input type="hidden" class="form-control vat-input shadow-input-boxes" id="vatRate" value="0"> <!-- Ensure the vatRate is set dynamically -->
+                        <div class="form-floating form-floating-outline d-flex flex-column align-items-end gap-2">
+                            <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">
+                                @CashDesk_OperationForm.TotalAmount: 0.0
+                            </span>
+                            <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0" />
+                            <input type="hidden" class="form-control vat-input shadow-input-boxes" id="vatRate" value="0" />
                         </div>
                     </div>
+
+                    <!-- ===== VAT MODE & COMPUTE SECTION (added) ===== -->
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div class="small text-muted">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                Choose the applicable <strong>VAT mode</strong> below. The system will automatically
+                                recalculate VAT and totals for all rows in real time.
+                            </div>
+
+
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="btn-group" role="group" aria-label="VAT Mode">
+                                    <input class="btn-check" type="radio" name="vatMode" id="vatModeExclusive"
+                                           value="exclusive"
+                                           onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                                    <label class="btn btn-outline-primary" for="vatModeExclusive">
+                                        VAT Exclusive (19.25%)
+                                    </label>
+
+                                    <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
+                                           value="inclusive" checked
+                                           onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
+                                    <label class="btn btn-outline-primary" for="vatModeInclusive">
+                                        VAT Inclusive (16.1425%)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ===== / VAT MODE & COMPUTE SECTION ===== -->
+
                     <div class="table-responsive" style="width: 100%;">
                         <table class="table table-hover" id="myDataTableT">
                             <thead class="table-light">
                                 <tr>
                                     <th style="display:none;">@CashDesk_OperationForm.LoanId</th>
                                     <th>@CashDesk_OperationForm.Date</th>
-                                    <th style="display:none;">@CashDesk_OperationForm.Amount</th> <!-- Hide Amount column -->
+                                    <th style="display:none;">@CashDesk_OperationForm.Amount</th>
                                     <th>@CashDesk_OperationForm.Balance</th>
                                     <th>@CashDesk_OperationForm.Int</th>
-                                    <th style="display:none;">@CashDesk_OperationForm.VRate</th> <!-- Hide V.Rate column -->
-                                    <th style="display:none;">@CashDesk_OperationForm.DueA</th> <!-- Hide Due A column -->
+                                    <th style="display:none;">@CashDesk_OperationForm.VRate</th>
+                                    <th style="display:none;">@CashDesk_OperationForm.DueA</th>
                                     <th>@CashDesk_OperationForm.EnterCapital</th>
                                     <th>@CashDesk_OperationForm.EnterInterest</th>
-                                    <th>@CashDesk_OperationForm.EnterPenalty</th> <!-- Added Penalty input column -->
+                                    <th>@CashDesk_OperationForm.EnterPenalty</th>
                                     <th>@CashDesk_OperationForm.Total</th>
                                     <th>@CashDesk_OperationForm.Conf</th>
-                                    <th>@CashDesk_OperationForm.VatIncExc</th>
+                                    <th>Vat rate</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -856,28 +1038,30 @@ else if (ViewBag.Operation == "repayment")
                                     <tr id="row-@d.Id">
                                         <td style="display:none;">@d.Id</td>
                                         <td>@d.LoanDate.ToString("dd/MM/yy")</td>
-                                        <td style="display:none;">@d.LoanAmount.ToString("N2")</td> <!-- Hide Amount column -->
+                                        <td style="display:none;">@d.LoanAmount.ToString("N2")</td>
                                         <td>@d.Balance.ToString("N2")</td>
                                         <td>@d.AccrualInterest.ToString("N2")</td>
-                                        <td style="display:none;">@d.VatRate.ToString("N20")</td> <!-- Hide V.Rate column -->
-                                        <td style="display:none;">@d.DueAmount.ToString("N2")</td> <!-- Hide Due A column -->
+                                        <td style="display:none;">@d.VatRate.ToString("N20")</td>
+                                        <td style="display:none;">@d.DueAmount.ToString("N2")</td>
                                         <td>
-                                            <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
+                                            <input type="number"
+                                                   class="form-control amount-input shadow-input-boxes"
+                                                   id="capital-@d.Id"
+                                                   value="0">
                                         </td>
                                         <td>
                                             <input type="number"
                                                    class="form-control interest-input shadow-input-boxes"
                                                    id="interest-@d.Id"
                                                    value="0"
-                                                   oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
-                                                   onblur="applyVatAdjustment('@d.Id')" />
-
-
-
+                                                   @*oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
+                                                   onblur="applyVatAdjustment('@d.Id')"*@ />
                                         </td>
                                         <td>
-                                            <!-- Penalty input field -->
-                                            <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
+                                            <input type="number"
+                                                   class="form-control penalty-input shadow-input-boxes"
+                                                   id="penalty-@d.Id"
+                                                   value="0">
                                         </td>
                                         <td>
                                             <span class="total-span" id="total-@d.Id">0</span>
@@ -885,35 +1069,34 @@ else if (ViewBag.Operation == "repayment")
                                         <td>
                                             <input type="checkbox" class="form-check-input">
                                         </td>
-                                        <td>
-                                            <input type="checkbox"
-                                                   class="form-check-input vat-exclusive-check"
-                                                   id="vatExclusive-@d.Id"
-                                                   onchange="handleVatToggle('@d.Id')" />
-                                        </td>
-
-
+                                        <td>@d.VatRate.ToString("N2")</td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Total:</strong></td>
+                                    <td colspan="6" style="text-align: right;">
+                                        <strong>@CashDesk_OperationForm.Total:</strong>
+                                    </td>
                                     <td id="tableTotal">0</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.Balance:</strong></td>
+                                    <td colspan="6" style="text-align: right;">
+                                        <strong>@CashDesk_OperationForm.Balance:</strong>
+                                    </td>
                                     <td id="tableBalance">0</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="text-align: right;"><strong>@CashDesk_OperationForm.CalculatedVAT:</strong></td>
-                                    <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
+                                    <td colspan="6" style="text-align: right;">
+                                        <strong>@CashDesk_OperationForm.CalculatedVAT:</strong>
+                                    </td>
+                                    <td id="calculatedVat">0</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
 
-                    <!-- Loan Details Modal -->
+                    <!-- Loan Details Modal (unchanged) -->
                     <div class="modal fade" id="loanDetailsModal" tabindex="-1" role="dialog" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content shadow-lg border-0">
@@ -922,7 +1105,7 @@ else if (ViewBag.Operation == "repayment")
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-4">
-                                    <!-- Loan Details Section -->
+                                    <!-- (content unchanged) -->
                                     <div class="row mb-4">
                                         <div class="col-6">
                                             <div class="card bg-light shadow-sm">
@@ -1005,8 +1188,8 @@ else if (ViewBag.Operation == "repayment")
                         </div>
                     </div>
 
-
                 </div>
+
                 <div class="header-buttons mt-4 float-end">
                     <input type="hidden" name="OperationType" value="LoanRepayment" id="OperationType" />
                     <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
@@ -1014,17 +1197,164 @@ else if (ViewBag.Operation == "repayment")
                         <i class="fas fa-money-bill-wave me-1"></i> @CashDesk_OperationForm.RePay
                     </button>
                     <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="ReprintLoan()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_OperationForm.RePrint
+                        <i class="fas a-print me-1"></i> @CashDesk_OperationForm.RePrint
                     </button>
                     <button type="reset" class="btn btn-outline-secondary">
                         <i class="fas fa-sync-alt me-1"></i> @CashDesk_OperationForm.Reset
                     </button>
                 </div>
+
                 <hr style="border: 2px solid green;" />
+                <script>
+                    (() => {
+                        const toN = v => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+                        const fmt = n => (n || 0).toLocaleString('en-US');
+                        const mode = () => (document.querySelector('input[name="vatMode"]:checked')?.value || null); // 'exclusive'|'inclusive'|null
+
+                        // VAT math using the row's VatRate% (last cell)
+                        function calcVat(interestGross, rate, m) {
+                            if (!(rate > 0) || (m !== 'exclusive' && m !== 'inclusive')) {
+                                return { vat: 0, net: interestGross };
+                            }
+                            if (m === 'exclusive') {
+                                const vat = Math.round(interestGross * (rate / 100));
+                                return { vat, net: interestGross };
+                            }
+                            // inclusive: VAT portion inside gross = gross * r/(100+r)
+                            const vat = Math.round(interestGross * (rate / (100 + rate)));
+                            return { vat, net: Math.max(0, Math.round(interestGross - vat)) };
+                        }
+
+                        function getRowRate(tr) {
+                            return toN(tr.querySelector('td:last-child')?.textContent);
+                        }
+
+                        // Ensure we always have the original GROSS the user typed
+                        function ensureGrossStored(input) {
+                            const v = toN(input.value);
+                            if (!input.dataset.gross) input.dataset.gross = String(v);
+                            return toN(input.dataset.gross);
+                        }
+
+                        // Recompute a single row & keep row total numeric (no formatting)
+                        function recomputeRow(tr) {
+                            const id = (tr.id || '').replace('row-', '');
+                            const $int = document.getElementById(`interest-${id}`);
+                            const $cap = document.getElementById(`capital-${id}`);
+                            const $pen = document.getElementById(`penalty-${id}`);
+
+                            if (!$int) return { total: 0, vat: 0, checked: false };
+
+                            const gross = ensureGrossStored($int);              // original gross the user entered
+                            const r = getRowRate(tr);
+                            const m = mode();
+
+                            const { vat, net } = calcVat(gross, r, m);
+
+                            // Apply display rule:
+                            // - Exclusive: show original gross (no change)
+                            // - Inclusive: show NET (once applied)
+                            if (m === 'exclusive') {
+                                $int.value = String(gross);
+                            } else if (m === 'inclusive') {
+                                $int.value = String(net);
+                            }
+
+                            tr.dataset.vat = String(vat);
+
+                            const cap = toN($cap?.value);
+                            const pen = toN($pen?.value);
+                            const interestForTotal = (m === 'inclusive') ? net : gross; // exclusive uses gross as entered
+
+                            const total = cap + interestForTotal + pen + vat;
+                            const $tot = document.getElementById(`total-${id}`);
+                            if ($tot) $tot.textContent = String(total);
+
+                            const checked = !!tr.querySelector('input.form-check-input')?.checked;
+                            return { total, vat, checked };
+                        }
+
+                        // Sum rule:
+                        // - If at least one row is checked -> sum ONLY checked
+                        // - Else -> sum ALL rows
+                        function recomputeFooters() {
+                            const rows = Array.from(document.querySelectorAll('#myDataTableT tbody tr'));
+                            const anyChecked = rows.some(tr => tr.querySelector('input.form-check-input')?.checked);
+
+                            let sumT = 0, sumV = 0;
+                            rows.forEach(tr => {
+                                const use = anyChecked ? (tr.querySelector('input.form-check-input')?.checked) : true;
+                                if (!use) return;
+                                sumT += toN(tr.querySelector('.total-span')?.textContent);
+                                sumV += toN(tr.dataset.vat);
+                            });
+
+                            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = fmt(val); };
+                            set('tableTotal', sumT);
+                            set('calculatedVat', sumV);
+
+                            const notes = toN(document.getElementById('totalNoteAmount')?.value);
+                            set('tableBalance', notes - sumT);
+                        }
+
+                        // Public hooks used by your markup
+                        window.previewVat = function (rowId, val) {
+                            const tr = document.getElementById(`row-${rowId}`);
+                            if (!tr) return;
+                            // store latest gross while typing
+                            const $int = document.getElementById(`interest-${rowId}`);
+                            if ($int) $int.dataset.gross = String(toN(val));
+                            // show a live preview based on current mode
+                            recomputeRow(tr);
+                            recomputeFooters();
+                        };
+
+                        window.applyVatAdjustment = function (rowId) {
+                            const tr = document.getElementById(`row-${rowId}`);
+                            if (!tr) return;
+                            // lock result for the chosen mode
+                            recomputeRow(tr);
+                            recomputeFooters();
+                        };
+
+                        window.applyVatModeToAllRows = function () {
+                            document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                                // On mode switch, we always recalc from stored gross (so exclusive restores it)
+                                recomputeRow(tr);
+                            });
+                            recomputeFooters();
+                        };
+
+                        // Wire up row inputs & checkboxes
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                                const id = (tr.id || '').replace('row-', '');
+
+                                // on first load, store the current interest as gross
+                                const $int = document.getElementById(`interest-${id}`);
+                                if ($int) ensureGrossStored($int);
+
+                                document.getElementById(`capital-${id}`)?.addEventListener('input', () => { recomputeRow(tr); recomputeFooters(); });
+                                document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { recomputeRow(tr); recomputeFooters(); });
+                                tr.querySelector('input.form-check-input')?.addEventListener('change', () => { recomputeRow(tr); recomputeFooters(); });
+                            });
+
+                            // Recompute immediately when VAT option is clicked/changed
+                            document.querySelectorAll('input[name="vatMode"]').forEach(r => {
+                                r.addEventListener('change', applyVatModeToAllRows);
+                                r.addEventListener('click', applyVatModeToAllRows);
+                            });
+
+                            // Initial pass (whatever default radio is)
+                            applyVatModeToAllRows();
+                        });
+                    })();
+                </script>
+
             </div>
         </fieldset>
-
     </div>
+
 
 }
 else if (ViewBag.Operation == "loanapplicationfeepayment")
@@ -1365,311 +1695,160 @@ else if (ViewBag.Operation == "loanapplicationfeepayment")
     // Bind button
     $(document).on("click", "#btnLoadMemberLoans", loadMemberLoans);
 </script>
-<script>
-    (() => {
-        // -------- Constants --------
-        const LOAN_VAT_THRESHOLD = 2000000; // VAT applies only when loan amount >= 2,000,000
-        const VAT_EXCLUSIVE_RATE = 19.25;   // VAT on net interest
-        const VAT_INCLUSIVE_RATE = 16.1425; // VAT portion inside a VAT-inclusive amount
 
-        // Safe number parser
-        const toNumber = (v) => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
 
-        // VAT mode: 'exclusive' | 'inclusive' | null
-        const getVatMode = () => {
-            const r = document.querySelector('input[name="vatMode"]:checked');
-            return r ? r.value : null;
-        };
-
-        // Called when user types interest — ONLY stores raw (gross) input, clears VAT
-        function handleInterestInput(loanId) {
-            const interestEl = document.getElementById(`interest-${loanId}`);
-            if (!interestEl) return;
-
-            const entered = toNumber(interestEl.value);
-            interestEl.dataset.gross = String(entered);     // remember what user typed
-
-            const vatEl = document.getElementById(`vat-${loanId}`);
-            if (vatEl) vatEl.value = "0";                   // clear VAT until mode is applied
-
-            updateRowTotal(loanId);
-            updateGrandTotals();
-        }
-
-        // Apply VAT for a single row given a mode
-        function applyVatForRow(loanId, mode) {
-            const interestEl = document.getElementById(`interest-${loanId}`);
-            const vatEl = document.getElementById(`vat-${loanId}`);
-            if (!interestEl || !vatEl) return;
-
-            const loanAmount = toNumber(interestEl.dataset.loanamount);
-            let gross = toNumber(interestEl.dataset.gross);
-            if (!gross) {                                   // fallback if user never typed yet
-                gross = toNumber(interestEl.value);
-                interestEl.dataset.gross = String(gross);
-            }
-
-            let vat = 0;
-
-            if (loanAmount >= LOAN_VAT_THRESHOLD && (mode === 'exclusive' || mode === 'inclusive')) {
-                if (mode === 'exclusive') {
-                    // Exclusive: interest remains gross; VAT is added separately
-                    interestEl.value = Math.round(gross);
-                    vat = Math.round(gross * (VAT_EXCLUSIVE_RATE / 100));
-                } else {
-                    // Inclusive: compute VAT portion inside gross, reduce interest to net
-                    vat = Math.round(gross * (VAT_INCLUSIVE_RATE / 100));
-                    const net = Math.max(0, Math.round(gross - vat));
-                    interestEl.value = net;
-                }
-            } else {
-                // Not eligible => no VAT
-                interestEl.value = Math.round(gross);
-                vat = 0;
-            }
-
-            // Keep row VAT strictly numeric
-            vatEl.value = String(vat);
-
-            updateRowTotal(loanId);
-        }
-
-        // Apply the currently selected VAT mode to ALL rows
-        function applyVatModeToAllRows() {
-            const mode = getVatMode(); // may be null
-            document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
-                const loanId = row.id.replace('row-', '');
-                if (loanId) applyVatForRow(loanId, mode);
-            });
-            updateGrandTotals();
-        }
-
-        // Update one row total (capital + interest + vat + penalty)
-        function updateRowTotal(loanId) {
-            const interest = toNumber(document.getElementById(`interest-${loanId}`)?.value);
-            const vat = toNumber(document.getElementById(`vat-${loanId}`)?.value);
-            const capital = toNumber(document.getElementById(`capital-${loanId}`)?.value);
-            const penalty = toNumber(document.getElementById(`penalty-${loanId}`)?.value);
-
-            const total = capital + interest + vat + penalty;
-
-            // Keep row TOTAL strictly numeric
-            const span = document.getElementById(`total-${loanId}`);
-            if (span) span.innerText = String(total);
-        }
-
-        // Grand totals (footer only)
-        function updateGrandTotals() {
-            let totalRepayment = 0;
-
-            document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
-                const id = row.id.replace("row-", "");
-                const interest = toNumber(document.getElementById(`interest-${id}`)?.value);
-                const vat = toNumber(document.getElementById(`vat-${id}`)?.value);
-                const capital = toNumber(document.getElementById(`capital-${id}`)?.value);
-                const penalty = toNumber(document.getElementById(`penalty-${id}`)?.value);
-
-                totalRepayment += capital + interest + vat + penalty;
-            });
-
-            const totalCell = document.getElementById("totalRepaymentAmount");
-            if (totalCell) {
-                totalCell.innerText = (typeof formatCurrencyNoName === 'function')
-                    ? formatCurrencyNoName(totalRepayment)
-                    : totalRepayment.toLocaleString('en-US');
-            }
-        }
-
-        // Expose for inline calls
-        window.handleInterestInput = handleInterestInput;
-        window.applyVatModeToAllRows = applyVatModeToAllRows;
-        window.updateTotals = function (loanId) { if (loanId) updateRowTotal(loanId); updateGrandTotals(); };
-
-        // Wire listeners once DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            // Row listeners
-            document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
-                const id = row.id.replace('row-', '');
-                document.getElementById(`capital-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
-                document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
-                document.getElementById(`interest-${id}`)?.addEventListener('input', () => handleInterestInput(id));
-            });
-
-            // VAT radios (if you still have them hidden in the toolbar)
-            document.querySelectorAll('input[name="vatMode"]').forEach(r => {
-                r.addEventListener('change', applyVatModeToAllRows);
-                r.addEventListener('click', applyVatModeToAllRows);
-            });
-
-            // Default to Inclusive
-            const inclusiveRadio = document.getElementById('vatModeInclusive');
-            if (inclusiveRadio) inclusiveRadio.checked = true;
-            applyVatModeToAllRows();
-
-            updateGrandTotals();
-        });
-    })();
-</script>
 
 @*<script>
-
         (() => {
-            // -------- Constants --------
-            const LOAN_VAT_THRESHOLD = 2000000; // VAT applies only when loan amount >= 2,000,000
-            const VAT_EXCLUSIVE_RATE = 19.25;   // VAT on net interest
-            const VAT_INCLUSIVE_RATE = 16.1425; // VAT portion inside a VAT-inclusive amount
+            // ---------- Constants ----------
+            const VAT_EXCLUSIVE_RATE = 19.25;     // applies ON interest (exclusive mode)
+            const VAT_INCLUSIVE_RATE = 16.1425;   // portion of gross interest that is VAT (inclusive mode)
 
-            // Safe number parser
-            const toNumber = (v) => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
-
-            // VAT mode: 'exclusive' | 'inclusive' | null
+            // ---------- Helpers ----------
+            const toNumber = v => (v == null ? 0 : (parseFloat(String(v).replace(/,/g, '')) || 0));
+            const fmt = n => n.toLocaleString('en-US');
             const getVatMode = () => {
                 const r = document.querySelector('input[name="vatMode"]:checked');
-                return r ? r.value : null;
+                return r ? r.value : null;   // 'exclusive' | 'inclusive' | null
             };
 
-            // Called when user types interest — ONLY stores raw (gross) input, clears VAT
-            function handleInterestInput(loanId) {
-                const interestEl = document.getElementById(`interest-${loanId}`);
-                if (!interestEl) return;
+            /**
+             * Compute VAT/net-interest for a row based on mode + row VatRate.
+             * NOTE: No threshold check. VAT applies iff rowVatRate > 0 and mode selected.
+             */
+            function computeVatForRow({ interestGross, rowVatRate, mode }) {
+                let vat = 0, interestNet = interestGross;
 
-                const entered = toNumber(interestEl.value);
-                interestEl.dataset.gross = String(entered);     // remember what user typed
-
-                const vatEl = document.getElementById(`vat-${loanId}`);
-                if (vatEl) vatEl.value = "0";                   // clear VAT until mode is applied
-
-                updateRowTotal(loanId);
-                updateGrandTotals();
-            }
-
-            // Apply VAT for a single row given a mode
-            function applyVatForRow(loanId, mode) {
-                const interestEl = document.getElementById(`interest-${loanId}`);
-                const vatEl = document.getElementById(`vat-${loanId}`);
-                if (!interestEl || !vatEl) return;
-
-                const loanAmount = toNumber(interestEl.dataset.loanamount);
-                let gross = toNumber(interestEl.dataset.gross);
-                if (!gross) {                                   // fallback if user never typed yet
-                    gross = toNumber(interestEl.value);
-                    interestEl.dataset.gross = String(gross);
-                }
-
-                let vat = 0;
-
-                if (loanAmount >= LOAN_VAT_THRESHOLD && (mode === 'exclusive' || mode === 'inclusive')) {
+                if (rowVatRate > 0 && (mode === 'exclusive' || mode === 'inclusive')) {
                     if (mode === 'exclusive') {
-                        // Interest field remains what user typed (gross)
-                        interestEl.value = Math.round(gross);
-                        vat = Math.round(gross * (VAT_EXCLUSIVE_RATE / 100));
+                        vat = Math.round(interestGross * (VAT_EXCLUSIVE_RATE / 100));
+                        interestNet = interestGross; // user-entered is net; VAT added on top
                     } else {
-                        // Inclusive: compute VAT inside gross, then reduce interest to net (once)
-                        vat = Math.round(gross * (VAT_INCLUSIVE_RATE / 100));
-                        const net = Math.max(0, Math.round(gross - vat));
-                        interestEl.value = net;
+                        // inclusive: interest entered is GROSS; extract VAT portion
+                        vat = Math.round(interestGross * (VAT_INCLUSIVE_RATE / 100));
+                        interestNet = Math.max(0, Math.round(interestGross - vat)); // show/store as net
                     }
-                } else {
-                    // Below threshold or no mode selected => no VAT, interest shows gross
-                    interestEl.value = Math.round(gross);
-                    vat = 0;
+                }
+                return { vat, interestNet };
+            }
+
+            // Recompute one row total (capital + net interest + penalty + vat)
+            function recomputeRowTotal(tr) {
+                const id = (tr.id || '').replace('row-', '');
+
+                const $interest = document.getElementById(`interest-${id}`);
+                const $capital = document.getElementById(`capital-${id}`);
+                const $penalty = document.getElementById(`penalty-${id}`);
+
+                const interestVal = toNumber($interest?.value);
+                const capitalVal = toNumber($capital?.value);
+                const penaltyVal = toNumber($penalty?.value);
+
+                // VatRate is shown in the last cell of the row in your markup
+                const rowVatRateCell = tr.querySelector('td:last-child');
+                const rowVatRate = toNumber(rowVatRateCell ? rowVatRateCell.textContent : 0);
+
+                const mode = getVatMode();
+                // if we stored a gross previously use it; else current input value
+                const gross = toNumber($interest?.dataset?.gross) || interestVal;
+
+                const { vat, interestNet } = computeVatForRow({
+                    interestGross: gross,
+                    rowVatRate,
+                    mode
+                });
+
+                // For inclusive mode, the input should show NET (once applied)
+                if (mode === 'inclusive' && $interest) {
+                    $interest.value = interestNet;
+                    $interest.dataset.gross = String(gross); // remember the user-entered gross
                 }
 
-                vatEl.value = vat.toLocaleString('en-US');
-                updateRowTotal(loanId);
+                // Keep VAT numeric in row state (no visible VAT column in this table)
+                tr.dataset.vat = String(vat);
+
+                const total = capitalVal + (mode === 'inclusive' ? interestNet : interestVal) + penaltyVal + vat;
+                const totalSpan = document.getElementById(`total-${id}`);
+                if (totalSpan) totalSpan.textContent = String(total); // keep numeric
+
+                return { total, vat };
             }
 
-            // Apply the currently selected VAT mode to ALL rows
-            function applyVatModeToAllRows() {
-                const mode = getVatMode(); // may be null
-                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
-                    const loanId = row.id.replace('row-', '');
-                    applyVatForRow(loanId, mode);
-                });
-                updateGrandTotals();
-            }
-
-            // Update one row total (capital + interest + vat + penalty)
-            function updateRowTotal(loanId) {
-                const interest = toNumber(document.getElementById(`interest-${loanId}`)?.value);
-                const vat = toNumber(document.getElementById(`vat-${loanId}`)?.value);
-                const capital = toNumber(document.getElementById(`capital-${loanId}`)?.value);
-                const penalty = toNumber(document.getElementById(`penalty-${loanId}`)?.value);
-
-                const total = capital + interest + vat + penalty;
-                const span = document.getElementById(`total-${loanId}`);
-                if (span) span.innerText = (typeof formatCurrencyNoName === 'function'
-                    ? formatCurrencyNoName(total)
-                    : total.toLocaleString('en-US'));
-            }
-
-            // Grand totals (bottom)
-            function updateGrandTotals() {
-                let totalRepayment = 0, totalVat = 0, totalDebited = 0;
-
-                document.querySelectorAll(".amount-input").forEach(i => totalDebited += toNumber(i.value));
-
-                document.querySelectorAll("#loanRepaymentTable tr").forEach(row => {
-                    const id = row.id.replace("row-", "");
-                    const interest = toNumber(document.getElementById(`interest-${id}`)?.value);
-                    const vat = toNumber(document.getElementById(`vat-${id}`)?.value);
-                    const capital = toNumber(document.getElementById(`capital-${id}`)?.value);
-                    const penalty = toNumber(document.getElementById(`penalty-${id}`)?.value);
-
-                    totalRepayment += capital + interest + vat + penalty;
-                    totalVat += vat;
+            // Recompute footer: Calculated VAT + Total (formatted)
+            function recomputeFooters() {
+                let sumTotal = 0, sumVat = 0;
+                document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                    sumTotal += toNumber(tr.querySelector('.total-span')?.textContent);
+                    sumVat += toNumber(tr.dataset?.vat);
                 });
 
-                const setText = (id, val, withName = false) => {
-                    const el = document.getElementById(id); if (!el) return;
-                    el.innerText = (withName && typeof formatCurrency === 'function')
-                        ? formatCurrency(val)
-                        : (typeof formatCurrencyNoName === 'function'
-                            ? formatCurrencyNoName(val)
-                            : val.toLocaleString('en-US'));
-                };
-
-                setText("totalRepaymentAmount", totalRepayment);
-                setText("calculatedVat", totalVat);
-                setText("totalDebitedAmount", totalDebited, true);
-
-                const balance = totalDebited - totalRepayment;
-                setText("remainingBalance", balance, true);
-
-                const ind = document.getElementById("balanceIndicator");
-                if (ind) { ind.innerHTML = (balance === 0 ? " ✅" : " ❌"); ind.style.color = (balance === 0 ? "green" : "red"); }
+                const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = fmt(val); };
+                setText('tableTotal', sumTotal);
+                setText('calculatedVat', sumVat);
+                // 'tableBalance' remains handled elsewhere
             }
 
-            // Expose functions used by inline attributes
-            window.handleInterestInput = handleInterestInput;
-            window.applyVatModeToAllRows = applyVatModeToAllRows;
-            window.updateTotals = function (loanId) { if (loanId) updateRowTotal(loanId); updateGrandTotals(); };
+            // --------- Functions referenced in your markup ---------
+            // While typing interest: preview VAT/total without forcing net value yet
+            window.previewVat = function (rowId, val /* , rowVatRate, loanAmount (ignored) */) {
+                const tr = document.getElementById(`row-${rowId}`);
+                if (!tr) return;
 
-            // Wire listeners once DOM is ready
+                const mode = getVatMode();
+                const interestGross = toNumber(val);
+
+                // Get row VatRate from the row’s last cell (authoritative)
+                const rowVatRate = toNumber(tr.querySelector('td:last-child')?.textContent);
+
+                const { vat, interestNet } = computeVatForRow({
+                    interestGross,
+                    rowVatRate,
+                    mode
+                });
+
+                // stash gross for blur-apply; during preview we DON'T overwrite the input
+                const $interest = document.getElementById(`interest-${rowId}`);
+                if ($interest) $interest.dataset.gross = String(interestGross);
+
+                tr.dataset.vat = String(vat);
+
+                const capitalVal = toNumber(document.getElementById(`capital-${rowId}`)?.value);
+                const penaltyVal = toNumber(document.getElementById(`penalty-${rowId}`)?.value);
+                const total = capitalVal + (mode === 'inclusive' ? interestNet : interestGross) + penaltyVal + vat;
+
+                const $total = document.getElementById(`total-${rowId}`);
+                if ($total) $total.textContent = String(total); // keep numeric
+                recomputeFooters();
+            };
+
+            // On blur: apply/lock the net (for inclusive) and recompute
+            window.applyVatAdjustment = function (rowId) {
+                const tr = document.getElementById(`row-${rowId}`);
+                if (!tr) return;
+                recomputeRowTotal(tr);
+                recomputeFooters();
+            };
+
+            // When user toggles VAT mode, apply to all rows
+            window.applyVatModeToAllRows = function () {
+                document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                    recomputeRowTotal(tr);
+                });
+                recomputeFooters();
+            };
+
+            // Wire input listeners so totals stay live
             document.addEventListener('DOMContentLoaded', () => {
-                // Capital / Penalty / Interest listeners
-                document.querySelectorAll('#loanRepaymentTable tr').forEach(row => {
-                    const id = row.id.replace('row-', '');
-                    document.getElementById(`capital-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
-                    document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { updateRowTotal(id); updateGrandTotals(); });
-                    document.getElementById(`interest-${id}`)?.addEventListener('input', () => handleInterestInput(id));
+                document.querySelectorAll('#myDataTableT tbody tr').forEach(tr => {
+                    const id = (tr.id || '').replace('row-', '');
+                    document.getElementById(`capital-${id}`)?.addEventListener('input', () => { recomputeRowTotal(tr); recomputeFooters(); });
+                    document.getElementById(`penalty-${id}`)?.addEventListener('input', () => { recomputeRowTotal(tr); recomputeFooters(); });
+                    // interest handled by previewVat()/applyVatAdjustment() via your existing inline handlers
                 });
 
-                // VAT mode toggle — apply on change AND on click (so re-click reapplies)
-                document.querySelectorAll('input[name="vatMode"]').forEach(r => {
-                    r.addEventListener('change', applyVatModeToAllRows);
-                    r.addEventListener('click', applyVatModeToAllRows);
-                });
-                // Make Inclusive the default and apply once on load
-                const inclusiveRadio = document.getElementById('vatModeInclusive');
-                if (inclusiveRadio) inclusiveRadio.checked = true;
+                // Apply once on load with current (inclusive) default
                 applyVatModeToAllRows();
-
-                // Initial totals only; DO NOT auto-apply VAT (wait for user choice)
-                updateGrandTotals();
             });
         })();
-
-
     </script>*@
 

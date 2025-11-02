@@ -205,7 +205,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                         model.ParentId = parent.Id;
                         model.Class = parent.Class;                 // inherit class
                         model.AffiliateId = parent.AffiliateId;     // inherit affiliate
+                        model.ParentAccountNumber = parent.Code;     // inherit affiliate
                         model.HoPcmfAccountId = parent.HoPcmfAccountId;
+                        model.Code = AccountManagementPositionCalculator.ComposeChildCode(parent.Code, "");
                     }
                 }
 

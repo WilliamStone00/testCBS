@@ -123,13 +123,15 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             return ExecutionMessage;
         }
 
-        public async Task<BranchAccountResponse> GetByIdAsync(string Id)
+        
+
+        public async Task<PendingAccountDto> GetByIdAsync(string Id)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(Id)) return null;
-                var endpoint = string.Format(APICallHelper.pendinggetbyid, Uri.EscapeDataString(Id));
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<BranchAccountResponse>>(endpoint);
+                var endpoint = string.Format(APICallHelper.AccountCreationRequestById, Uri.EscapeDataString(Id),GetUserLanguage());
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<PendingAccountDto>>(endpoint);
                 return response?.ApiResponseData?.Data;
             }
             catch (Exception ex)
@@ -139,11 +141,12 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             }
         }
 
-        public async Task<ExecutionMessages> ValidateRequestAsync(requestAction requestAction)
+        public async Task<ExecutionMessages> ValidateRequestAsync(RequestAction requestAction)
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.RejectCorrespondence, requestAction);
+                requestAction.Language = GetUserLanguage();
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.AccountCreationRequestApproval, requestAction);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -166,16 +169,17 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> RejectRequestAsync(requestAction requestAction)
+        public async Task<ExecutionMessages> RejectRequestAsync(RequestAction requestAction)
         {
             try
             {
-                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.RejectCorrespondence, requestAction);
+                requestAction.Language = GetUserLanguage();
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.AccountCreationRequestRejection, requestAction);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, requestAction.Id, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, null);
+                    GetExecutionMessages(response.ApiResponseData.Data, true, "Reject Pending Accounts", MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, "Success", null, "Pending Accounts rejected successfully.");
                 }
                 else
                 {
