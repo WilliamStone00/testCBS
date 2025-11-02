@@ -29,46 +29,46 @@ namespace CBS.BusinessService.AccountingV2
             _manualJournalEntryapiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
 
         }
-        //public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetaAccountsByBranchAsync()
-        //{
-        //    try
-        //    {
-        //        // ✅ Get required values
-        //        var branchId = GetBranchID();
-        //        var language = GetUserLanguage(); // e.g., "en"
+        public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetaAccountsByBranchAsync()
+        {
+            try
+            {
+                // ✅ Get required values
+                var branchId = GetBranchID();
+                var language = GetUserLanguage(); // e.g., "en"
 
-        //        // ✅ Validate before sending
-        //        if (string.IsNullOrWhiteSpace(branchId) || string.IsNullOrWhiteSpace(language))
-        //            return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
+                // ✅ Validate before sending
+                if (string.IsNullOrWhiteSpace(branchId) || string.IsNullOrWhiteSpace(language))
+                    return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
 
-        //        // ✅ Properly replace placeholders in endpoint
-        //        var endpoint = APICallHelper.GetAccountsByBranch
-        //            .Replace("{branchId}", branchId)
-        //            .Replace("{lang}", language);
+                // ✅ Properly replace placeholders in endpoint
+                var endpoint = APICallHelper.GetAccountsByBranch
+                    .Replace("{branchId}", branchId)
+                    .Replace("{lang}", language);
 
-        //        // ✅ Make API call
-        //        var apiResponse = await _manualJournalEntryapiCallerHelper
-        //            .GetAsync<ResponseObject<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>>>(endpoint);
+                // ✅ Make API call
+                var apiResponse = await _manualJournalEntryapiCallerHelper
+                    .GetAsync<ResponseObject<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>>>(endpoint);
 
-        //        // ✅ Return sorted results if successful
-        //        if (apiResponse.IsSuccess && apiResponse.ApiResponseData != null)
-        //        {
-        //            return apiResponse.ApiResponseData.Data
-        //                .OrderBy(x => x.Code)
-        //                .ToList();
-        //        }
+                // ✅ Return sorted results if successful
+                if (apiResponse.IsSuccess && apiResponse.ApiResponseData != null)
+                {
+                    return apiResponse.ApiResponseData.Data
+                        .OrderBy(x => x.Code)
+                        .ToList();
+                }
 
-        //        // ✅ Return empty list if no data
-        //        return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //  Proper logging
-        //        System.Diagnostics.Debug.WriteLine($"Error fetching accounts by branch: {ex.Message}");
-        //        throw;
-        //    }
-        //}
-        
+                // ✅ Return empty list if no data
+                return new List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>();
+            }
+            catch (Exception ex)
+            {
+                //  Proper logging
+                System.Diagnostics.Debug.WriteLine($"Error fetching accounts by branch: {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task<List<CBS.FrontDesk.Data.Entity.AccountingV2.AccountDto>> GetAccountsByBranchAsync()
         {
             // Simulate network latency
