@@ -57,11 +57,11 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Affiliate Service book service unavailable: {ex.Message}", ex);
+                throw new Exception($" service unavailable: {ex.Message}", ex);
             }
         }
 
-        public async Task<FileListing> GetByIdAsync(string id)
+        public async Task<FileUploadData> GetByIdAsync(string id)
         {
             try
             {
@@ -69,9 +69,9 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                     throw new ArgumentException("id is required", nameof(id));
 
                 var encodedId = Uri.EscapeDataString(id);
-                string formattedUrl = string.Format(APICallHelper.GetAffiliateById, encodedId);
+                string formattedUrl = string.Format(APICallHelper.GetReconciliationtById, encodedId);
 
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<FileListing>>(formattedUrl);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<FileUploadData>>(formattedUrl);
 
                 if (response.IsSuccess)
                 {

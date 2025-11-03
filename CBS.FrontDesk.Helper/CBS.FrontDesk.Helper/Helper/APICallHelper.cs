@@ -1558,7 +1558,8 @@ namespace CBS.FrontDesk.Helper
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
         public static string fileuploaddatatable = "/api/v1/FileUploads/datatable";
-        public static string FilegetbYId = "/api/v1/FileUploads/{id}";
+        public static string FilegetbYId = "/api/v1/FileUploads/{0}";
+        public static string GetReconciliationtById = "/api/v1/FileUploads/{0}";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
