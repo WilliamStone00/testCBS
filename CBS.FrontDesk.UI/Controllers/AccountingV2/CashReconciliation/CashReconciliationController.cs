@@ -86,93 +86,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
 
 
 
-        //[HttpGet]
-        //public ActionResult GetCashReconciliationAccounts(string branchId)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(branchId))
-        //        {
-        //            return Json(new
-        //            {
-        //                success = false,
-        //                message = "Branch ID is required."
-        //            }, JsonRequestBehavior.AllowGet);
-        //        }
-
-        //        // Call mock service
-        //        var data = _cashReconciliationService.GetCashReconciliationAccountsAsync(branchId);
-
-        //        if (data == null)
-        //        {
-        //            return Json(new
-        //            {
-        //                success = false,
-        //                message = "No account data found for this branch."
-        //            }, JsonRequestBehavior.AllowGet);
-        //        }
-
-        //        // Return mock data inside array so your JS can use response.data[0]
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            message = "Accounts retrieved successfully.",
-        //            data = new[] { data } // 👈 wrap inside array
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = "An unexpected error occurred. Please try again later.",
-        //            details = ex.Message
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
-
-        //[HttpGet]
-        //public JsonResult GetAccountsDropdown(string branchId)
-        //{
-        //    if (string.IsNullOrWhiteSpace(branchId))
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = "Branch ID is required."
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-
-        //    try
-        //    {
-        //        // Call service for Treasury
-        //        var treasuryDropdown = _cashReconciliationService.GetCashReconciliationAccountsAsync(branchId, "treasury");
-
-        //        // Call service for Deficit
-        //        var deficitDropdown = _cashReconciliationService.GetCashReconciliationAccountsAsync(branchId, "deficit");
-
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            message = "Accounts retrieved successfully.",
-        //            data = new
-        //            {
-        //                treasury = treasuryDropdown,
-        //                deficit = deficitDropdown
-        //            }
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Optional: log ex
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = "An error occurred while retrieving accounts."
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+      
 
         [HttpGet]
         public JsonResult GetAccountBalance(string accountId)
@@ -188,7 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         public async Task<ActionResult> SaveCashReconciliation(CashAndVaultInit model)
         {
             if (model == null)
-                return Json(new { success = false, message = "⚠️ Invalid or empty model." });
+                return Json(new { success = false, message = " Invalid or empty model." });
 
             try
             {
@@ -201,7 +115,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
                     return Json(new
                     {
                         success = false,
-                        message = execMessage.MessageString ?? "❌ Failed to save cash reconciliation.",
+                        message = execMessage.MessageString ?? " Failed to save cash reconciliation.",
                         data = execMessage.Data
                     });
 

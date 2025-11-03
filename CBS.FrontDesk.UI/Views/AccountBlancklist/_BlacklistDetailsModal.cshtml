@@ -1,0 +1,55 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklistresponse
+
+<div class="modal fade" id="blacklistDetailsModal" tabindex="-1" aria-labelledby="blacklistDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blacklistDetailsModalLabel"><i class="mdi mdi-eye me-2"></i> Blacklist Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @if (Model == null)
+                {
+                    <div class="text-center text-muted py-4">No details available.</div>
+                }
+                else
+                {
+            <dl class="row">
+                <dt class="col-sm-4">ID</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.Id)</dd>
+
+                <dt class="col-sm-4">Trial Balance Account</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.TrialBallanceAcc)</dd>
+
+                <dt class="col-sm-4">Branch ID</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchID)</dd>
+
+                <dt class="col-sm-4">Menu</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.Menu)</dd>
+
+                <dt class="col-sm-4">Branch Account ID</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.branchAccountId)</dd>
+
+                <dt class="col-sm-4">Affiliate Account ID</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(m => m.AffiliateAccountId)</dd>
+
+                <dt class="col-sm-4">Created Date (UTC)</dt>
+                <dd class="col-sm-8">
+                    @(Model.CreatedDate != default(DateTime))
+                </dd>
+
+
+                <dt class="col-sm-4">Notes</dt>
+                <dd class="col-sm-8">@Html.Raw(Html.Encode(Model.Notes))</dd>
+            </dl>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-edit-from-details" data-id="@Model?.Id">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>

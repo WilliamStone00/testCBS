@@ -1,0 +1,394 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileListingQuery
+@using Resources
+@{
+    ViewBag.Title = "Affiliate Overview - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 p-2">
+            <div class="card-body text-center py-2">
+                <h1 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-group me-2"></i>Reconciliation Listing
+                </h1>
+                <p class="card-text small mb-1">
+                    @AccountingV2.AffiliateManagementtext
+                </p>
+                <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-1">
+        <span class="small"><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseAffiliateTips" class="collapse">
+        <div class="card-body small py-2">
+            <ul class="mb-0">
+                <li class="mb-1"><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
+                <li class="mb-1"><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
+                <li class="mb-1"><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Filters (rearranged, compact spacing) -->
+<div class="card shadow p-2 mb-3">
+    <h5 class="text-primary mb-2 small">
+        <i class="mdi mdi-filter-outline me-1"></i> Filters
+    </h5>
+
+    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
+        <div class="card p-2 mb-2 bg-light">
+            <div class="row mb-2 g-1">
+
+                <!-- Branch (full width) -->
+                <div class="col-md-12">
+                    @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label small mb-1" })
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        new { @class = "form-select select2 form-select-sm", id = "BranchId", @aria_label = "Branch" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Category label above (full width) -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small mb-1" for="Category">Category</label>
+                    <select id="Category" name="Category" class="form-select select2 form-select-sm">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="Branch">Branch</option>
+                        <option value="Affiliate">Affiliate</option>
+                    </select>
+                </div>
+
+                <!-- Status (half width) -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small mb-1" for="Status">@AccountingV2.Status</label>
+                    <select id="Status" name="Status" class="form-select select2 form-select-sm">
+                        <option value="">@AccountingV2.All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                    </select>
+                </div>
+
+                <!-- Created Date toggle + tip (half width) -->
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check me-2">
+                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates" />
+                        <label class="form-check-label small" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                    </div>
+                    <small class="text-muted ms-auto">@AccountingV2.Affiliatetext1</small>
+                </div>
+            </div>
+
+            <!-- CreatedFromUtc, CreatedToUtc (hidden by toggle) -->
+            <div id="createdDateFilters" class="d-none">
+                <div class="row mb-2 g-1">
+                    <div class="col-md-6">
+                        <label class="form-label small mb-1" for="CreatedFromUtc">@AccountingV2.CreatedFrom (UTC)</label>
+                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small mb-1" for="CreatedToUtc">@AccountingV2.CreatedTo (UTC)</label>
+                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-1">
+            <div class="col-md-6 pe-1">
+                <button id="applyAffiliateFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+            </div>
+            <div class="col-md-6 ps-1">
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial placeholder -->
+<div id="datalistingview">
+    @Html.Partial("_Data")
+</div>
+
+<!-- DETAILS modal -->
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+            <div class="modal-footer py-1">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT modal -->
+<div class="modal fade" id="affiliateEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+(function ($) {
+  'use strict';
+
+  // ---------- ROUTES ----------
+  const dataUrl   = '@Url.Action("LoadData", "FileListing")';
+  const detailUrl = '@Url.Action("Details", "FileListing")';
+  const initUrl   = '@Url.Action("Initialize", "FileListing")'; // example
+  const deleteUrl = '@Url.Action("Delete", "FileListing")';
+
+  // ---------- STATE ----------
+  let table = null;
+  let tableInitialized = false;
+
+  // ---------- HELPERS ----------
+  function getFilters() {
+    return {
+      BranchId: $('#BranchId').val() || null,
+      Category: $('#Category').val() || null,
+      Status: $('#Status').val() || null,
+      CreatedFromUtc: $('#CreatedFromUtc').val() || null,
+      CreatedToUtc: $('#CreatedToUtc').val() || null,
+      Options: {}
+    };
+  }
+
+  function actionButtons(row) {
+    const id = encodeURIComponent(String(row.Id || row.id || ''));
+    return `
+      <div class="btn-group">
+        <button class="btn btn-sm btn-outline-primary btn-detail" data-id="${id}" title="Details">
+            <i class="mdi mdi-eye"></i>
+        </button>
+        <a href="/Reconciliation/Download/${id}" class="btn btn-sm btn-outline-secondary" title="Download">
+            <i class="mdi mdi-download"></i>
+        </a>
+      </div>
+    `;
+  }
+
+    function initDataTable() {
+        const selector = '#myDataTable';
+        console.log('initDataTable: checking selector', selector, 'exists?', $(selector).length);
+
+        if ($(selector).length === 0) {
+            console.error('initDataTable: myDataTable markup missing.');
+            return;
+        }
+
+        // Clean up existing table
+        if ($.fn.DataTable.isDataTable(selector)) {
+            try {
+                $(selector).DataTable().destroy();
+            } catch (e) { console.warn('destroy failed', e); }
+            $(selector + ' tbody').empty();
+        }
+
+        console.log('initDataTable: building DataTable...');
+        table = $(selector).DataTable({
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            pageLength: 10,
+            order: [[0, 'desc']],
+            ajax: {
+                url: dataUrl,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: function (d) {
+                    const filters = getFilters();
+                    filters.Options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        searchValue: d.search?.value || ''
+                    };
+                    console.log('initDataTable: sending AJAX payload', filters);
+                    return JSON.stringify(filters);
+                },
+                dataSrc: function (json) {
+                    console.log('initDataTable: dataSrc received', json);
+
+                    // Handle server-side errors
+                    if (json.error) {
+                        console.error('Server returned error:', json.error);
+                        return [];
+                    }
+
+                    // Standard DataTables response
+                    if (json.data && Array.isArray(json.data)) {
+                        console.log('initDataTable: Returning', json.data.length, 'items');
+                        return json.data;
+                    }
+
+                    console.warn('initDataTable: Unexpected response format', json);
+                    return [];
+                },
+                error: function (xhr, status, err) {
+                    console.error('initDataTable: AJAX error', status, err);
+                    if (xhr.responseText) {
+                        console.error('Response text:', xhr.responseText);
+                    }
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedDate',
+                    render: function (data, type, row) {
+                        const v = row.CreatedDate || row.createdDate;
+                        return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+                    }
+                },
+                {
+                    data: 'FileName',
+                    render: function (d, t, row) {
+                        return row.FileName || row.fileName || '';
+                    }
+                },
+                {
+                    data: 'BranchId',
+                    render: function (d, t, row) {
+                        return row.BranchName || row.branchName || row.BranchId || '';
+                    }
+                },
+                {
+                    data: null,
+                    render: function (d, t, row) {
+                        return (row.TrialBalanceRowCount || 0) + (row.MemberBalanceRowCount || 0);
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-end',
+                    render: function (d, t, row) {
+                        return actionButtons(row);
+                    }
+                }
+            ],
+            columnDefs: [{ targets: 4, width: '120px' }],
+            language: {
+                emptyTable: 'No files found',
+                processing: '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>'
+            }
+        });
+
+        tableInitialized = true;
+        console.log('initDataTable: done');
+    }
+
+  function destroyTable() {
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)) {
+      try { $(selector).DataTable().destroy(); } catch (e) { console.warn('destroy failed', e); }
+      $(selector + ' tbody').empty();
+    }
+    table = null;
+    tableInitialized = false;
+  }
+
+  // ---------- EVENTS ----------
+  $(function () {
+
+    // init select2 for compact inputs (if present)
+    if ($.fn.select2) {
+      try {
+        $('#BranchId,#Category,#Status').select2({ width: '100%' });
+      } catch (e) { console.warn('select2 init failed', e); }
+    }
+
+    // toggle created date filters
+    $('#toggleCreatedDates').on('change click', function () {
+      $('#createdDateFilters').toggleClass('d-none', !this.checked);
+    });
+
+    // Apply filters -> initialize or reload table
+    $('#applyAffiliateFilterBtn').on('click', function (e) {
+      e.preventDefault();
+
+      if (!tableInitialized) {
+        initDataTable();
+      } else {
+        try { if (table && table.ajax) table.ajax.reload(null, false); } catch (_) { initDataTable(); }
+      }
+    });
+
+    // Reset -> clear filters and destroy table so it doesn't show until user applies again
+    $('#resetAffiliateFilterBtn').on('click', function (e) {
+      e.preventDefault();
+      const $f = $('#affiliateFilterForm');
+      if ($f.length) $f[0].reset();
+
+      $('#createdDateFilters').addClass('d-none');
+
+      if ($.fn.select2) {
+        try { $('#BranchId,#Category,#Status').val(null).trigger('change'); } catch (_) {}
+      }
+
+      destroyTable();
+    });
+
+    // add root affiliate -> open edit modal (example)
+    $(document).on('click', '#btnAddRootAffiliate', function () {
+      // reuse your existing modal loader if you have it; quick fallback:
+      const url = initUrl;
+      $('#affiliateEditModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+      $('#affiliateEditModal').modal('show');
+      $.get(url, { KEY: '', partialView: '_CreateAffiliateRoot', path: 'new', serviceOption: 'root' })
+        .done(function (html) {
+          $('#affiliateEditModal .modal-body').html(html);
+        })
+        .fail(function () {
+          $('#affiliateEditModal .modal-body').html('<div class="p-3 text-danger">Unable to load content.</div>');
+        });
+    });
+
+    // Details -> load into details modal
+    $('#datalistingview').on('click', '.btn-detail', function () {
+      const id = $(this).data('id');
+      if (!id) return;
+      const $modal = $('#affiliateDetailsModal');
+      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+      $modal.modal('show');
+
+      $.get(detailUrl, { id: id })
+        .done(function (html) { $modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details.</div>'); })
+        .fail(function () { $modal.find('.modal-body').html('<div class="p-3 text-danger">Unable to load details.</div>'); });
+    });
+
+    // optional: wire edit/add buttons similarly (btn-add, btn-edit) if present in your rows...
+  });
+
+})(jQuery);
+    </script>
+}

@@ -1,0 +1,178 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileListing
+@using System.Globalization
+
+<div class="card border-0">
+    <div class="card-body">
+        <h4 class="mb-3 text-primary"><i class="mdi mdi-file-document-outline me-2"></i> File Details</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        <tr><td class="fw-bold">Id</td><td>@Html.Raw(Model?.Id ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Branch Id</td><td>@Html.Raw(Model?.BranchId ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Category</td><td>@Html.Raw(Model?.Category ?? "—")</td></tr>
+                        <tr><td class="fw-bold">File Name</td><td>@Html.Encode(Model?.FileName ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Original File</td><td>@Html.Encode(Model?.OriginalFileName ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Content Type</td><td>@Html.Encode(Model?.ContentType ?? "—")</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Size</td>
+                            <td>
+                                @{
+                                    var size = Model?.SizeBytes ?? 0L;
+                                    string hr;
+                                    if (size >= 1_000_000_000) { hr = (size / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
+                                    else if (size >= 1_000_000) { hr = (size / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
+                                    else if (size >= 1_000) { hr = (size / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
+                                    else { hr = size + " B"; }
+                                }
+                                @hr (@size bytes)
+                            </td>
+                        </tr>
+                        <tr><td class="fw-bold">Storage Key</td><td>@Html.Encode(Model?.StorageKey ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Checksum</td><td>@Html.Encode(Model?.Checksum ?? "—")</td></tr>
+                        <tr><td class="fw-bold">Status</td><td>@Html.Encode(Model?.Status ?? "—")</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold" style="width:200px;">Notes</td>
+                            <td>
+                                @Html.Raw(string.IsNullOrWhiteSpace(Model?.Notes ?? "") ? "—" : Html.Encode(Model.Notes))
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fw-bold">Error JSON</td>
+                            <td>
+                                @{
+                                    var ej = Model?.ErrorJson;
+                                    if (string.IsNullOrWhiteSpace(ej))
+                                    {
+                                        @:—
+                                    }
+                                    else
+                                    {
+                                        <pre class="small bg-light p-2">@Html.Encode(ej)</pre>
+                                    }
+                                }
+                            </td>
+                        </tr>
+
+                        <tr><td class="fw-bold">Trial Balance Rows</td><td>@(Model?.TrialBalanceRowCount ?? 0)</td></tr>
+                        <tr><td class="fw-bold">Member Balance Rows</td><td>@(Model?.MemberBalanceRowCount ?? 0)</td></tr>
+
+                        @{
+                            // Safely render CreatedDate and ModifiedDate for both DateTime and DateTime? model properties.
+                            string createdText = "—";
+                            string modifiedText = "—";
+
+                            if (Model != null)
+                            {
+                                var cdObj = Model?.CreatedDate;
+                                if (cdObj != null)
+                                {
+                                    DateTime parsed;
+                                    if (DateTime.TryParse(cdObj.ToString(), out parsed) && parsed != DateTime.MinValue)
+                                    {
+                                        createdText = parsed.ToString("yyyy-MM-dd HH:mm:ss K", CultureInfo.InvariantCulture);
+                                    }
+                                }
+
+                                var mdObj = Model?.ModifiedDate;
+                                if (mdObj != null)
+                                {
+                                    DateTime parsed2;
+                                    if (DateTime.TryParse(mdObj.ToString(), out parsed2) && parsed2 > DateTime.MinValue.AddYears(1))
+                                    {
+                                        modifiedText = parsed2.ToString("yyyy-MM-dd HH:mm:ss K", CultureInfo.InvariantCulture);
+                                    }
+                                }
+                            }
+                        }
+
+                        <tr>
+                            <td class="fw-bold">Created Date (UTC)</td>
+                            <td>@createdText</td>
+                        </tr>
+
+                        <tr>
+                            <td class="fw-bold">Modified Date (UTC)</td>
+                            <td>@modifiedText</td>
+                        </tr>
+
+                        <tr><td class="fw-bold">Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-end gap-2">
+                <button id="confirmUploadBtn" data-id="@Html.Raw(Model?.Id ?? "")" class="btn btn-success btn-sm">
+                    <i class="mdi mdi-check-circle-outline me-1"></i> Confirm
+                </button>
+                <a href="@Url.Action("Download", "Reconciliation", new { id = Model?.Id })" class="btn btn-primary btn-sm">
+                    <i class="mdi mdi-download me-1"></i> Download
+                </a>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+(function () {
+    const btn = document.getElementById('confirmUploadBtn');
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        if (!id) { alert('No id provided.'); return; }
+
+        this.disabled = true;
+        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Confirming...';
+
+        fetch('@Url.Action("ConfirmUpload","Reconciliation")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.success) {
+                try { if (window.table && window.table.ajax) window.table.ajax.reload(null, false); } catch(_) {}
+                const modalEl = document.getElementById('CorrespondanceDetailsModal');
+                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+            } else {
+                alert(data?.message || 'Confirm failed');
+            }
+        })
+        .catch(e => { console.error(e); alert('Error confirming'); })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="mdi mdi-check-circle-outline me-1"></i> Confirm';
+        });
+    });
+})();
+    </script>
+}

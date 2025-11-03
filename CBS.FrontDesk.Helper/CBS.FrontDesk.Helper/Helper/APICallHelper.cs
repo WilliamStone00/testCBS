@@ -1298,12 +1298,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetClearanceDataTable = "/api/v1/counter-clearance";
 
 
-        
-        public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
-        
-       
 
-        
+        public static string VerifyNotificationConfig = "/api/v1/verify-notification-config";
+
+
+
+
         //---------------------Notification History -----------------------
         public static string GetNotificationHistoryByBranch = "/api/v1/notification-history/by-branch/{0}";
         public static string GetNotificationHistoryByCustomer = "/api/v1/notification-history/by-customer/{0}";
@@ -1388,14 +1388,14 @@ namespace CBS.FrontDesk.Helper
         public static string RejectChequeCertification = "api/ChequeCertification/Reject/{0}";
         public static string DeleteChequeCertification = "api/ChequeCertification/Delete/{0}";
 
-    //    public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
-    //public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
-    //public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
-    //public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
-    //public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
-    //public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
+        //    public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+        //public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
+        //public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
+        //public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
+        //public static string RequestLossForCheckLeaf = "/api/lossmanagement/checkleaf/{0}/lossrequest";
+        //public static string SubmitLossRequest = "/api/lossmanagement/lossrequest/submit";
 
-       
+
         //public static string GetCustomerCheckbooks = "/api/v1/members/{0}/checkbooks";
         //public static string GetCheckLeavesByCheckbook = "/api/v1/checkbook-leave/data-table";
         //public static string GetCheckbookDetails = "/api/v1/checkbooks/{0}/checkleaves";
@@ -1469,10 +1469,12 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
         public static string GetJournalworkticketDataTable = "/api/v1/workticketflow/datatable";
         public static string ApproveJournalEntry = "/api/v1/ops/manual-entry/approve/source";
-       
+
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
         public static string GetJournalEntryTempById = "/api/v1/tempjournalheader/{0}";
+
+        //public static string GetAllJournalEntryTempById = "api/v1/tempjournalheader";
         public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
@@ -1555,6 +1557,8 @@ namespace CBS.FrontDesk.Helper
         //-------------------------- FileUpload ------------------------------------------
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
+        public static string fileuploaddatatable = "/api/v1/FileUploads/datatable";
+        public static string FilegetbYId = "/api/v1/FileUploads/{id}";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
@@ -1577,13 +1581,31 @@ namespace CBS.FrontDesk.Helper
         public static string AccountCreationRequestApproval = "/api/v1/AccountCreationRequest/approve";
         public static string AccountCreationRequestRejection = "/api/v1/AccountCreationRequest/reject";
 
-        //--------------------------- Member Reconciliation ------------------------------------------
-        public static string GetAllMemberReconciliation = "not yet availlable";
-        public static string MemberReconciliationdatatable = "not yet availlable";
+        //++++++++++++++++++++++++++++++++++ Reconciliation +++++++++++++++++++++++++++++++++++++++++
+        //------------------------ Member Reconciliation ------------------------------------
+        public static string GetMemeberAccountBalance = "/api/v1/BalanceSum/ByAccountType";
         public static string GetMemberReconciliationById = "not yet availlable";
-        public static string CreateMemberReconciliation = "not yet availlable";
+
+         public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
+         public static string FINALReconciliation = "/api/v1/TrialBalance/initiate-trial-balance-reconcilation";
+
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";
+        public static string MemberAccountType = "/api/v1/GetAccountTypes";
+
+        //--------------------------- Loan Reconciliation ------------------------------------------
+        public static string LoanAccountDROP = "/api/v1/EnumAggregates";       
+        public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
+        public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
+        //*************************** End of Reconciliation **************************************
+
+        //--------------------------- Account Black listing ------------------------------------------
+        public static string GetAllAccountBlacklist = "not yet availlable";
+        public static string AccountBlacklistdatatable = "not yet availlable";
+        public static string GetAccountBlacklistById = "not yet availlable";
+        public static string CreateAccountBlacklist = "not yet availlable";
+        public static string UpdateAccountBlacklist = "not yet availlable";
+        public static string DeactivateAccountBlacklist = "not yet availlable";      
 
         //*************************** End of Accounting V2 **************************************
 

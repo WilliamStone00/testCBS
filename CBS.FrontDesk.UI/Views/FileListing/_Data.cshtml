@@ -1,0 +1,31 @@
+﻿@using Resources
+@{
+    // optional: set title or other view data here
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="myDataTable" class="table table-striped table-hover table-bordered" style="width:100%">
+                <colgroup>
+                    <col style="width:18%" /> 
+                    <col style="width:20%" /> 
+                    <col style="width:30%" /> 
+                    <col style="width:15%" /> 
+                </colgroup>
+
+                <thead class="table-light">
+                    <tr>
+                        <th>@AccountingV2.CreatedDate</th>
+                        <th>FileName</th>
+                        <th>Branch</th>
+                        <th> Row Count</th>
+                        <th style="width:160px">@AccountingV2.Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>

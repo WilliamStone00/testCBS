@@ -25,11 +25,14 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
         public string AccountId { get; set; }
-        
+        public decimal Balance { get; set; }
+
     }
 
     public class AccountGroupDto
+
     {
+        public decimal Balance { get; set; }
         public List<AccountDetailDto> TreasuryAccounts { get; set; }
         public List<AccountDetailDto> DeficitAccounts { get; set; }
     }

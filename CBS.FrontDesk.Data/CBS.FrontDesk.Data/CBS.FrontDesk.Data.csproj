@@ -118,6 +118,9 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
+    <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
+    <Compile Include="Entity\Accounting V2\Reconciliation\Reconciliation.cs" />
+    <Compile Include="Entity\AccountingTypes.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />

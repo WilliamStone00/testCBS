@@ -116,7 +116,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.CashInHandAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Cash in Hand Account (Till) --",
                                     new { @class = "form-select select2", id = "CashInHandAccountId", required = "required" }
                                 )
@@ -131,7 +131,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.VaultAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Vault Account --",
                                     new { @class = "form-select select2", id = "VaultAccountId", required = "required" }
                                 )
@@ -146,7 +146,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.SurplusIncomeAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Surplus Income Account --",
                                     new { @class = "form-select select2", id = "SurplusIncomeAccountId", required = "required" }
                                 )
@@ -161,7 +161,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.ShortageExpenseAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Shortage Expense Account --",
                                     new { @class = "form-select select2", id = "ShortageExpenseAccountId", required = "required" }
                                 )
@@ -176,7 +176,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.RevenueAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Revenue Account (Optional) --",
                                     new { @class = "form-select select2", id = "RevenueAccountId" }
                                 )
@@ -191,7 +191,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.PartnerAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Partner Account (Optional) --",
                                     new { @class = "form-select select2", id = "PartnerAccountId" }
                                 )
@@ -206,7 +206,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.CamcculAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select CamCCUL Account (Optional) --",
                                     new { @class = "form-select select2", id = "CamcculAccountId" }
                                 )
@@ -221,7 +221,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.HeadOfficeLiaisonAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Head Office Liaison Account --",
                                     new { @class = "form-select select2", id = "HeadOfficeLiaisonAccountId", required = "required" }
                                 )
@@ -236,7 +236,7 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.FormFeeIncomeAccountId,
-                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Id", "Name"),
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
                                     "-- Select Form Fee Income Account (Optional) --",
                                     new { @class = "form-select select2", id = "FormFeeIncomeAccountId" }
                                 )
