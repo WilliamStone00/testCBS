@@ -118,8 +118,8 @@ namespace CBS.BusinessService.AccountingV2.MobileMoneyV2
 		{
 			try
 			{
-				var response = await _accountingV2ConfigApiHelper.PostAsync<ServiceResponse<MobileMoney>>(APICallHelper.CreateMobileMoneyV2, model);
-				if (response.ApiResponseData != null)
+				var response = await _accountingV2ConfigApiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.CreateMobileMoneyV2, model);
+				if (response.IsSuccess)
 				{
 					// Successful creation
 					GetExecutionMessages(response, true, null, MessagesResults.Success,
@@ -145,8 +145,8 @@ namespace CBS.BusinessService.AccountingV2.MobileMoneyV2
 		{
 			try
 			{
-				var response = await _accountingV2ConfigApiHelper.PostAsync<ServiceResponse<MobileMoney>>(string.Format(APICallHelper.UpdateMobileMoneyV2, model.Id), model);
-				if (response.ApiResponseData != null)
+				var response = await _accountingV2ConfigApiHelper.PutAsync<ServiceResponse<MobileMoney>>(string.Format(APICallHelper.UpdateMobileMoneyV2, model.Id), model);
+				if (response.IsSuccess)
 				{
 					// Successful creation
 					GetExecutionMessages(response, true, null, MessagesResults.Success,

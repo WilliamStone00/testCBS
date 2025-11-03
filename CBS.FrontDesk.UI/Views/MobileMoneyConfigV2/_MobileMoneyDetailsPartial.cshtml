@@ -1,0 +1,105 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
+
+@{
+    var vm = Model;
+}
+
+<style>
+    .detail-card {
+        border: 1px solid #e5e7eb;
+        border-radius: .5rem;
+    }
+
+    .detail-header {
+        background: #f8fafc;
+        border-bottom: 1px solid #e5e7eb;
+        padding: .75rem 1rem;
+    }
+
+    .pill {
+        display: inline-block;
+        padding: .15rem .5rem;
+        border-radius: 999px;
+        font-size: .75rem;
+    }
+
+    .pill-success {
+        background: #ecfdf5;
+        color: #065f46;
+    }
+
+    .pair-label {
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .pair-name {
+        display: block;
+    }
+
+    .pair-no {
+        display: block;
+        color: #6b7280;
+        font-size: .85rem;
+    }
+
+    .grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem 1rem;
+    }
+
+    @@media (max-width: 768px) {
+        .grid-2col {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="detail-card">
+    <div class="detail-header d-flex justify-content-between align-items-center">
+        <div>
+            <div class="fw-bold">Mobile Money Details</div>
+        </div>
+    </div>
+
+    <div class="p-3">
+        <div class="mb-3">
+            <span class="pair-label">Holder Name:</span>
+            <span class="ms-1">@vm.Name</span>
+        </div>
+
+        <div class="grid-2col">
+            <div>
+                <div class="pair-label">Phone Number:</div>
+                <span class="pair-name">@vm.TelNumber</span>
+            </div>
+
+            <div>
+                <div class="pair-label">Branch Code:</div>
+                <span class="pair-name">@vm.BranchCode</span>
+            </div>
+
+            <div>
+                <div class="pair-label">Branch Name:</div>
+                <span class="pair-name">@vm.BranchName</span>
+            </div>
+
+            <div>
+                <div class="pair-label">Branch Account GL:</div>
+                <span class="pair-name">@vm.BranchAccount.Name</span>
+            </div>
+
+            <div>
+                <div class="pair-label">Status:</div>
+                <span class="pair-name">@vm.ActiveStatus</span>
+            </div>
+            <div>
+                <div class="pair-label">Creation Date:</div>
+                <span class="pair-name">@vm.CreatedDate</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+

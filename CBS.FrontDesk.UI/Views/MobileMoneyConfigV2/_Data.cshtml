@@ -12,15 +12,16 @@
     else
     {
         <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered align-middle" id="myDataTable">
+            <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 25%;">Account Name</th>
+                        <th style="width: 12%;">Creation Date</th>
+                        <th style="width: 18%;">Account Name</th>
                         <th style="width: 15%;">Phone Number</th>
-                        <th style="width: 10%;">Branch Code</th>
-                        <th style="width: 30%;">Branch Name</th>
+                        <th style="width: 12%;">Branch Code</th>
+                        <th style="width: 18%;">Branch Name</th>
                         <th style="width: 10%;" class="text-center">Status</th>
-                        <th style="width: 20%;" class="text-center">Actions</th>
+                        <th style="width: 15%;" class="text-center">Actions</th>
                     </tr>
                 </thead>
 
@@ -28,6 +29,7 @@
                     @foreach (var mobileMoney in Model)
                     {
                         <tr>
+                            <td>@mobileMoney.CreatedDate</td>
                             <td>@mobileMoney.Name</td>
                             <td>@mobileMoney.TelNumber</td>
                             <td>@mobileMoney.BranchCode</td>
@@ -68,7 +70,7 @@
                                         <i class="fas fa-info-circle me-1"></i> Details
                                     </button>
 
-                                   
+
                                 </div>
                             </td>
                         </tr>
@@ -79,12 +81,104 @@
     }
 </fieldset>
 
+<style>
+    body {
+        background-color: #f9fafb;
+    }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .fieldset-custom {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    legend {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #676dff;
+        padding: 0 0.5rem;
+    }
+
+    .form-floating-outline label {
+        font-size: 0.95rem;
+    }
+
+    .table thead th {
+        background-color: #f1f3f5;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.05rem;
+    }
+
+    .table tbody td {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.6em;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-info {
+        border-radius: 6px;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-outline-info:hover {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+    .accordion-button {
+        background-color: #f8f9fa !important;
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+        .accordion-button:not(.collapsed) {
+            color: #fff;
+            background-color: #676dff !important;
+        }
+
+        .accordion-button i {
+            font-size: 1.2rem;
+        }
+
+    .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+    }
+
+        .modal-header h4 {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+
+</style>
+
+
 <script>
     function showMobileMoneyDetails(id) {
         $('#mobileMoneyDetailsContent').html('<p>Loading...</p>');
 
         $.ajax({
-            url: '/MobileMoney/GetDetailsPartial',
+            url: '/MobileMoneyConfigV2/GetMobileMoneyPartialView',
             type: 'GET',
             data: { Key: id },
             success: function (html) {
