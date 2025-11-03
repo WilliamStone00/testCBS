@@ -82,6 +82,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
             public bool IsReconciled { get; set; }
             public bool IsCurrentlyActive { get; set; }
             public string FileUploadId { get; set; } = string.Empty;
+            public string ReconcilationStatus { get; set; }
             public DateTime CreatedDate { get; set; }
             public DateTime ModifiedDate { get; set; }
             public bool IsDeleted { get; set; }
@@ -100,11 +101,52 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
             public string RecocilationStatus { get; set; } = string.Empty;
             public string ReconciledBy { get; set; } = string.Empty;
             public decimal Balance { get; set; }
+            public string ReconcilationStatus { get; set; }
             public string FileUploadId { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; }
             public DateTime ModifiedDate { get; set; }
             public bool IsDeleted { get; set; }
         }
     }
+        public class GLHistoryListingQuery
+        {
+            public DataTableOptions Options { get; set; }
+            public GLHistoryListingQuery() { Options = new DataTableOptions(); }
+
+            public string BranchAccountId { get; set; } = string.Empty;
+            public string BranchId { get; set; } = string.Empty;
+            public string ReconciliationType { get; set; } = string.Empty;
+            public DateTime? InitiationDate { get; set; }
+            public string OwnerName { get; set; } = string.Empty;
+            public decimal DifferenceInAmount { get; set; }
+        }
+
+        public class GLHistoryDto
+        {
+            public string OwnerName { get; set; }
+            public string InitiatorName { get; set; }
+            public DateTime InitiationDate { get; set; }
+            public string ApprovedByName { get; set; }
+            public DateTime? ApprovalDate { get; set; }
+            public string TillName { get; set; }
+            public string ReconciliationType { get; set; }
+            public string Narration { get; set; }
+            public decimal GlBalance { get; set; }
+            public decimal DifferenceInAmount { get; set; }
+            public DateTime AccountingDate { get; set; }
+            public string BranchId { get; set; }
+            public decimal CashInHand { get; set; }
+            public string BranchName { get; set; }
+            public string BranchCode { get; set; }
+            public string SourceGLId { get; set; }
+            public string SglName { get; set; }
+            public string DestinationGLId { get; set; }
+            public string DestinationGLName { get; set; }
+            public string ReconciliationReference { get; set; }
+            public string JournalHeaderId { get; set; }
+        }
+
+
+    
 }
 

@@ -10868,8 +10868,11 @@
     <Content Include="Views\Reconciliation\Index.cshtml" />
     <Content Include="Views\Reconciliation\_ReconciliationResult.cshtml" />
     <Content Include="Views\FileListing\List.cshtml" />
-    <Content Include="Views\FileListing\_Data.cshtml" />
+    <Content Include="Views\FileListing\_DataGLH.cshtml" />
     <Content Include="Views\FileListing\_Details.cshtml" />
+    <Content Include="Views\FileListing\GLhistory.cshtml" />
+    <Content Include="Views\FileListing\_Data.cshtml" />
+    <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

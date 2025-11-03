@@ -5,6 +5,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
+using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileUploadData;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
 {
@@ -75,13 +77,69 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 });
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> GLhistory()
+        {
+            await loader();
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadData2(GLHistoryListingQuery query)
+        {
+            //await loader();
+            try
+            {
+
+                var data = await _fileListingService.DataTableAsync2(query);
+
+                var result = JsonConvert.DeserializeObject<List<GLHistoryDto>>(JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    draw = data.draw,
+                    recordsTotal = data.recordsTotal,
+                    recordsFiltered = data.recordsFiltered,
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // return a DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
 
         public async Task<ActionResult> Details(string id, string partialView = null)
-        {                       
-                var data = await _fileListingService.GetByIdAsync(id);
-                return PartialView(partialView, data);
-                      
+        {
+            var data = await _fileListingService.GetByIdAsync(id);
+            return PartialView(partialView, data);
+
         }
-        
+        public async Task<ActionResult> DetailsGLH(string id, string partialView = null)
+        {
+            var data = await _fileListingService.GetGLHByIdAsync(id);
+            return PartialView(partialView, data);
+
+        }
+
+        [HttpPost]
+         public async Task<ActionResult> ConfirmUpload(string id)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+
+            var result = await _fileListingService.ConfirmReconciliation(id);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+        }
+
     }
 }
