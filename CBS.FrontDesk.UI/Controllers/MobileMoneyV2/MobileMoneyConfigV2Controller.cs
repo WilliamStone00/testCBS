@@ -3,6 +3,7 @@ using CBS.BusinessService.AccountingV2.MobileMoneyV2;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Helper;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -50,6 +51,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 			// If the Id is null, it's a new holiday entry, so call the Create service
 			if (model.Id == null)
 			{
+				// Adding Created Date
+				model.CreatedDate = BaseUtilities.UtcToLocal();
+
 				var data = await _services.Create(model);
 				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 			}

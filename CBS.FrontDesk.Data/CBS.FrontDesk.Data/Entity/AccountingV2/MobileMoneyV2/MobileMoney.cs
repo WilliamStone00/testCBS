@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using System;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2
 {
@@ -17,5 +18,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2
 
 		public string BranchAccountId { get; set; }
 		public BranchAccount BranchAccount { get; set; }
+
+		public DateTime? CreatedDate { get; set; }
 	}
 }

@@ -10870,6 +10870,7 @@
     <Content Include="Views\FileListing\List.cshtml" />
     <Content Include="Views\FileListing\_Data.cshtml" />
     <Content Include="Views\FileListing\_Details.cshtml" />
+    <Content Include="Views\MobileMoneyConfigV2\_MobileMoneyDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
