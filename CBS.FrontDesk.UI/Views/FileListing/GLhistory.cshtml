@@ -1,0 +1,399 @@
+﻿
+@{
+    ViewBag.Title = "GLhistory";
+}
+@using Resources;
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.GLHistoryListingQuery
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 p-2">
+            <div class="card-body text-center py-2">
+                <h1 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-bank-transfer me-2"></i>GL History Listing
+                </h1>
+                <p class="card-text small mb-1">
+                    @AccountingV2.AffiliateManagementtext
+                </p>
+                <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-1">
+        <span class="small"><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGLHistoryTips" aria-expanded="false" aria-controls="collapseGLHistoryTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseGLHistoryTips" class="collapse">
+        <div class="card-body small py-2">
+            <ul class="mb-0">
+                <li class="mb-1"><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Code:</strong> GL history code</li>
+                <li class="mb-1"><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>Name:</strong> GL history name</li>
+                <li class="mb-1"><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>Status:</strong> filter by status</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>Created Dates:</strong> use the initiation date filter below</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Filters (GL History) -->
+<div class="card shadow p-2 mb-3">
+    <h5 class="text-primary mb-2 small">
+        <i class="mdi mdi-filter-outline me-1"></i> Filters
+    </h5>
+
+    @* The form posts to Index (or your GLHistory controller action). Use GET for simple listing/filtering. *@
+    <form id="glHistoryFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
+        <div class="card p-2 mb-2 bg-light">
+            <div class="row mb-2 g-1">
+
+                <!-- BranchAccount (full width on small, half on md+) -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="BranchAccountId">Branch Account</label>
+                    @* ViewBag.BranchAccounts should contain SelectList/List<SelectListItem> *@
+                    @Html.DropDownList("BranchAccountId",
+                        new SelectList(ViewBag.BranchAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Select Branch Account ---",
+                        new { @class = "form-select select2 form-select-sm", id = "BranchAccountId" })
+                </div>
+
+                <!-- Branch -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="BranchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-select select2 form-select-sm", id = "BranchId" })
+                </div>
+
+                <!-- Reconciliation Type -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="ReconciliationType">Reconciliation Type</label>
+                    <select id="ReconciliationType" name="ReconciliationType" class="form-select select2 form-select-sm">
+                        <option value="">All</option>
+                        <option value="VAULT_CASH">VAULT_CASH</option>
+                        <option value="TRIAL_BALANCE">TRIAL_BALANCE</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                </div>
+
+                <!-- Initiation Date -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="InitiationDate">Initiation Date</label>
+                    <input type="date" id="InitiationDate" name="InitiationDate" class="form-control form-control-sm" />
+                </div>
+
+                <!-- Owner Name -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="OwnerName">Owner Name</label>
+                    <input type="text" id="OwnerName" name="OwnerName" class="form-control form-control-sm" placeholder="Owner name" />
+                </div>
+
+                <!-- Difference in Amount -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="DifferenceInAmount">Difference Amount (exact)</label>
+                    <input type="number" step="0.01" id="DifferenceInAmount" name="DifferenceInAmount" class="form-control form-control-sm" placeholder="e.g. 1500.75" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row g-1">
+            <div class="col-md-6 pe-1">
+                <button id="applyGLHistoryFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+            </div>
+            <div class="col-md-6 ps-1">
+                <button id="resetGLHistoryFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial placeholder -->
+<div id="datalistingview">
+    @Html.Partial("_DataGLH")
+</div>
+
+<!-- DETAILS modal (external) -->
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+(function ($) {
+  'use strict';
+
+  // ---------- ROUTES ----------
+  const dataUrl   = '@Url.Action("LoadData1", "FileListing")';
+  const detailUrl = '@Url.Action("DetailsGLH", "FileListing")';
+
+  // ---------- STATE ----------
+  let table = null;
+  let tableInitialized = false;
+  window.table = window.table || null;
+  window.tableInitialized = window.tableInitialized || false;
+
+  // ---------- UTIL ----------
+  function safeParseUnobtrusive($scope) {
+    try {
+      if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
+        $.validator.unobtrusive.parse($scope);
+        return true;
+      }
+    } catch (e) { console.warn('unobtrusive.parse failed', e); }
+    return false;
+  }
+
+  // ---------- FILTERS ----------
+  function getGLHistoryFilters() {
+    const initiationDate = $('#InitiationDate').val();
+    const differenceAmount = $('#DifferenceInAmount').val();
+
+    return {
+      Options: {},
+      BranchAccountId: $('#BranchAccountId').val() || null,
+      BranchId: $('#BranchId').val() || null,
+      ReconciliationType: $('#ReconciliationType').val() || null,
+      InitiationDate: initiationDate || null,
+      OwnerName: $.trim($('#OwnerName').val()) || null,
+      DifferenceInAmount: differenceAmount ? parseFloat(differenceAmount) : null
+    };
+  }
+
+  // ---------- MODAL FUNCTIONS ----------
+  function showDetailsModalLoading() {
+    $('#affiliateDetailsModal .modal-body').html(
+      '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
+    );
+    (bootstrap.Modal.getInstance($('#affiliateDetailsModal')[0]) ||
+      new bootstrap.Modal($('#affiliateDetailsModal')[0], { backdrop: 'static' })
+    ).show();
+  }
+
+  function loadIntoDetailsModal(url, data) {
+    showDetailsModalLoading();
+    $.get(url, data)
+      .done(function (html) {
+        $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details.</div>');
+      })
+      .fail(function () {
+        $('#affiliateDetailsModal .modal-body')
+          .html('<div class="p-3 text-danger">Failed to load details.</div>');
+      });
+  }
+
+  // ---------- ROW ACTION BUTTONS RENDER ----------
+  function actionButtons(row) {
+    const id = encodeURIComponent(String(row.Id || ''));
+    const fileName = String(row.FileName || '').replace(/"/g, '&quot;');
+    const btnId = 'act_' + (row.Id || Math.random().toString(36).slice(2));
+
+    return `
+      <div class="dropdown text-center">
+        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-cog-outline"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+          <li>
+            <button type="button" class="dropdown-item btn-detail" data-id="${id}" title="Details &quot;${fileName}&quot;">
+              <i class="mdi mdi-eye me-1 text-primary"></i> Details
+            </button>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // ---------- DATATABLE ----------
+  function initDataTable() {
+    const selector = '#myDataTable';
+    if ($.fn.DataTable.isDataTable(selector)) {
+      try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
+      $(selector + ' tbody').empty();
+    }
+
+    table = $(selector).DataTable({
+      serverSide: true,
+      processing: false,
+      responsive: true,
+      autoWidth: false,
+      pageLength: 10,
+      order: [[0, 'desc']],
+      columnDefs: [
+        { targets: 0, width: '18%' },
+        { targets: 1, width: '25%' },
+        { targets: 2, width: '21%' },
+        { targets: 3, width: '13%' },
+        { targets: 4, width: '13%' },
+        { targets: 5, width: '10%', className: 'text-end', orderable: false, searchable: false }
+      ],
+      ajax: {
+        url: dataUrl,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: function (d) {
+          const filters = getGLHistoryFilters();
+          filters.Options = {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            skip: d.start,
+            pageSize: d.length,
+            searchValue: d.search?.value || '',
+            sortColumnName: '',
+            sortColumnDirection: ''
+          };
+          return JSON.stringify(filters);
+        },
+        dataSrc: function (json) {
+          if (!json) return [];
+          if (Array.isArray(json.data)) return json.data;
+          if (Array.isArray(json.result)) return json.result;
+          if (Array.isArray(json.items)) return json.items;
+          for (var k in json) { if (Array.isArray(json[k])) return json[k]; }
+          return [];
+        },
+        error: function () {
+          $(selector + ' tbody').html('<tr><td colspan="6" class="text-center text-danger">Failed to load data.</td></tr>');
+        }
+      },
+      columns: [
+        {
+          data: 'CreatedDate',
+          name: 'CreatedDate',
+          render: function (data, type, row) {
+            const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
+            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+          }
+        },
+        {
+            data: 'BranchName',
+            name: 'BranchName',
+          render: function (data, type, row) {
+              return row.BranchName || row.BranchName || '';
+          }
+        },
+        {
+            data: 'GlBalance',
+            name: 'GlBalance',
+          render: function (data, type, row) {
+              return row.GlBalance || row.GlBalance || '';
+          }
+        },
+        {
+          data: 'DifferenceInAmount',
+          name: 'DifferenceInAmount',
+          render: function (data, type, row) {
+            return (row.DifferenceInAmount != null) ? String(row.DifferenceInAmount) : '-';
+          }
+        },
+        {
+          data: 'ReconciliationReference',
+          name: 'ReconciliationReference',
+          render: function (data, type, row) {
+            return (row.ReconciliationReference != null) ? String(row.ReconciliationReference) : '-';
+          }
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: 'text-end',
+          render: (d, t, row) => actionButtons(row)
+        }
+      ],
+      language: { emptyTable: 'No GL History records found' }
+    });
+
+    tableInitialized = true;
+    window.table = table;
+    window.tableInitialized = true;
+  }
+
+  function reloadTable() {
+    if (!tableInitialized) {
+      if ($('#myDataTable').length === 0) {
+        console.error('myDataTable markup missing. Ensure _DataGLH partial is present.');
+        return;
+      }
+      initDataTable();
+    } else if (table && table.ajax) {
+      table.ajax.reload(null, false);
+    }
+  }
+
+  // ---------- INIT + EVENTS ----------
+  $(document).ready(function () {
+    // Initialize select2 if available
+    if ($.fn.select2) {
+      try {
+        $('#BranchAccountId,#BranchId,#ReconciliationType').select2({
+          width: '100%',
+          dropdownParent: $('body') // Ensure proper dropdown positioning
+        });
+      } catch(e){ console.warn('select2 init failed', e); }
+    }
+
+    // Apply Filter Button
+    $('#applyGLHistoryFilterBtn').on('click', function (e) {
+      e.preventDefault();
+      reloadTable();
+    });
+
+    // Reset Filter Button
+    $('#resetGLHistoryFilterBtn').on('click', function () {
+      $('#glHistoryFilterForm')[0].reset();
+      if ($.fn.select2) {
+        try {
+          $('#BranchAccountId,#BranchId,#ReconciliationType').val(null).trigger('change');
+        } catch(_){}
+      }
+      reloadTable();
+    });
+
+    // Enter key support in filter form
+    $('#glHistoryFilterForm').on('keypress', 'input,select', function (e) {
+      if (e.which === 13) {
+        e.preventDefault();
+        reloadTable();
+      }
+    });
+
+    // Row: Details -> DETAILS modal
+    $('#datalistingview').on('click', '.btn-detail', function () {
+      const id = $(this).data('id');
+      if (!id) return;
+      loadIntoDetailsModal(detailUrl, { id: id, partialView: '_DetailsGLH' });
+    });
+
+    // Initialize the DataTable on page load
+    if ($('#myDataTable').length) {
+      //initDataTable();
+    }
+  });
+
+})(jQuery);
+    </script>
+}

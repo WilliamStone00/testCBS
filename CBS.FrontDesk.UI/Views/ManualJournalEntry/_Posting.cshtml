@@ -1,6 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntryPayload
 @using Resources
-
 @{
     ViewBag.Title = "Manual Journal Entry";
 }
@@ -9,48 +8,63 @@
     new { enctype = "multipart/form-data", id = "journalForm", onsubmit = "return journalEntrySubmitAjax(this);" }))
 {
     <div class="card shadow-sm mt-3">
-        <div class="card-body">
+        <!-- Added padding here -->
+        <div class="card-body p-4">
 
             <!-- ================= HEADER ================= -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
-                    <i class="mdi mdi-book-plus-outline me-2"></i> @ManualEntry.ManualJournalEntry
+                    <i class="mdi mdi-book-plus-outline me-2"></i>
+                    @ManualEntry.ManualJournalEntry
                 </h4>
 
                 <div class="col-md-4 text-end">
                     <label class="form-label fw-bold me-2">@ManualEntry.AccountingDate</label>
-                    @Html.TextBoxFor(m => m.AccountingDate, new
-                    {
-                        @class = "form-control form-control-sm d-inline-block accounting-date",
-                        style = "width: 180px",
-                        type = "date",
-                        value = Model.AccountingDate.HasValue
-                            ? Model.AccountingDate.Value.ToString("yyyy-MM-dd")
-                            : "",
-                        data_date_default = "today",
-                        data_date_max = "today"
-                    })
+                    @Html.TextBoxFor(m => m.AccountingDate,
+                        new
+                        {
+                            @class = "form-control form-control-sm d-inline-block accounting-date",
+                            style = "width: 180px",
+                            type = "date",
+                            value = Model.AccountingDate.HasValue ? Model.AccountingDate.Value.ToString("yyyy-MM-dd") : "",
+                            data_date_default = "today",
+                            data_date_max = "today"
+                        })
                     @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <!-- ================= INTERBRANCH ================= -->
-            <div class="row mb-4 align-items-end">
-                <div class="col-md-4 mb-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="enableInterbranch">
-                        <label class="form-check-label fw-bold" for="enableInterbranch">
-                            @ManualEntry.EnableInterbranchTransaction
-                        </label>
-                    </div>
+            <div class="mb-2">
+                <!-- Interbranch toggle (on its own line) -->
+                <div class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="enableInterbranch">
+                    <label class="form-check-label fw-bold" for="enableInterbranch">
+                        @ManualEntry.EnableInterbranchTransaction
+                    </label>
                 </div>
 
-                <div class="col-md-12 mb-3" id="counterpartyBranchDiv" style="display:none;">
-                    <label class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
-                    @Html.DropDownList("CounterpartyBranchId",
-                        new SelectList(ViewBag.Branches, "Id", "Name", Model?.BranchId),
-                        "Select Counterparty Branch",
-                        new { @class = "form-control select2", id = "CounterpartyBranchId" })
+                <!-- Branch + Counterparty Branch side by side -->
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-6">
+                        @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                        @Html.DropDownList(
+                            "BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2", id = "BranchId", required = "required", onchange = "loadReconciliationAccounts(this.value)" }
+                        )
+                    </div>
+
+                    <div class="col-md-6" id="counterpartyBranchDiv" style="display:none;">
+                        <label for="CounterpartyBranchId" class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
+                        @Html.DropDownList(
+                            "CounterpartyBranchId",
+                            new SelectList(ViewBag.Branches, "Id", "Name", Model?.BranchId),
+                            "Select Counterparty Branch",
+                            new { @class = "form-control select2", id = "CounterpartyBranchId" }
+                        )
+                    </div>
                 </div>
             </div>
 
@@ -112,18 +126,10 @@
             <!-- ================= SUBMIT ================= -->
             <div class="mt-4 text-end">
                 <button type="submit" id="postEntriesBtn" class="btn btn-primary px-4" disabled>
-                    <i class="mdi mdi-check-circle-outline me-1"></i> @ManualEntry.PostEntries
+                    <i class="mdi mdi-check-circle-outline me-1"></i>
+                    @ManualEntry.PostEntries
                 </button>
             </div>
         </div>
     </div>
 }
-
-
-
-
-
-
-
-
-

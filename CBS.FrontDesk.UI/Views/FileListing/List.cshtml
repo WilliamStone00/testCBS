@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileListingQuery
 @using Resources
 @{
-    ViewBag.Title = "Affiliate Overview - Filters";
+    ViewBag.Title = "Reconciliation File Listing Overview - Filters";
 }
 
 <div class="row">
@@ -9,7 +9,7 @@
         <div class="card bg-light mb-2 p-2">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                    <i class="mdi mdi-account-group me-2"></i>Reconciliation Listing
                 </h1>
                 <p class="card-text small mb-1">
                     @AccountingV2.AffiliateManagementtext
@@ -44,7 +44,7 @@
 <!-- Filters (rearranged, compact spacing) -->
 <div class="card shadow p-2 mb-3">
     <h5 class="text-primary mb-2 small">
-        <i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters
+        <i class="mdi mdi-filter-outline me-1"></i> Filters
     </h5>
 
     <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
@@ -63,7 +63,7 @@
                 </div>
 
                 <!-- Category label above (full width) -->
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label class="form-label fw-bold small mb-1" for="Category">Category</label>
                     <select id="Category" name="Category" class="form-select select2 form-select-sm">
                         <option value="">@AccountingV2.All</option>
@@ -122,12 +122,6 @@
     </form>
 </div>
 
-<div class="d-flex justify-content-end mb-2">
-    <button id="btnAddRootAffiliate" type="button" class="btn btn-success btn-sm">
-        <i class="mdi mdi-plus-circle-outline me-1"></i> Add Root Affiliate Account
-    </button>
-</div>
-
 <!-- DataTable Partial placeholder -->
 <div id="datalistingview">
     @Html.Partial("_Data")
@@ -161,191 +155,338 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-(function ($) {
-  'use strict';
+<script>
+    (function ($) {
+      'use strict';
 
-  // ---------- ROUTES ----------
-  const dataUrl   = '@Url.Action("LoadData", "FileListing")';
-  const detailUrl = '@Url.Action("Details", "FileListing")';
-  const initUrl   = '@Url.Action("Initialize", "FileListing")'; // example
-  const deleteUrl = '@Url.Action("Delete", "FileListing")';
+      // ---------- ROUTES ----------
+      const dataUrl     = '@Url.Action("LoadData", "FileListing")';
+      const detailUrl   = '@Url.Action("Details", "FileListing")';
+      const initUrl     = '@Url.Action("InitializeFile", "FileListing")';
+      const deleteUrl   = '@Url.Action("DeleteFile", "FileListing")';
+      const downloadUrl = '@Url.Action("DownloadFile", "FileListing")';
 
-  // ---------- STATE ----------
-  let table = null;
-  let tableInitialized = false;
+      // ---------- STATE ----------
+      let table = null;
+      let tableInitialized = false;
 
-  // ---------- HELPERS ----------
-  function getFilters() {
-    return {
-      BranchId: $('#BranchId').val() || null,
-      Category: $('#Category').val() || null,
-      Status: $('#Status').val() || null,
-      CreatedFromUtc: $('#CreatedFromUtc').val() || null,
-      CreatedToUtc: $('#CreatedToUtc').val() || null,
-      IncludeDeleted: $('#IncludeDeleted').is(':checked') || false,
-      Options: {}
-    };
-  }
-
-  function actionButtons(row) {
-    const id = encodeURIComponent(String(row.Id || row.id || ''));
-    return `
-      <div class="btn-group">
-        <button class="btn btn-sm btn-outline-primary btn-detail" data-id="${id}" title="Details">
-            <i class="mdi mdi-eye"></i>
-        </button>
-        <a href="/Reconciliation/Download/${id}" class="btn btn-sm btn-outline-secondary" title="Download">
-            <i class="mdi mdi-download"></i>
-        </a>
-      </div>
-    `;
-  }
-
-  // ---------- DATATABLE ----------
-  function initDataTable() {
-    const selector = '#myDataTable';
-    // ensure markup present
-    if ($(selector).length === 0) {
-      console.error('myDataTable markup missing. Ensure _Data partial contains #myDataTable.');
-      return;
-    }
-
-    if ($.fn.DataTable.isDataTable(selector)) {
-      try { $(selector).DataTable().destroy(); } catch(e) { console.warn('destroy failed', e); }
-      $(selector + ' tbody').empty();
-    }
-
-    table = $(selector).DataTable({
-      serverSide: true,
-      responsive: true,
-      pageLength: 10,
-      order: [[0, 'desc']],
-      ajax: {
-        url: dataUrl,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: function (d) {
-          const filters = getFilters();
-          filters.Options = {
-            draw: d.draw,
-            start: d.start,
-            length: d.length,
-            searchValue: d.search?.value || ''
-          };
-          return JSON.stringify(filters);
-        },
-        dataSrc: function (json) {
-          if (!json) return [];
-          return Array.isArray(json.data) ? json.data : (Array.isArray(json.items) ? json.items : []);
-        },
-        error: function () {
-          $(selector + ' tbody').html('<tr><td colspan="5" class="text-center text-danger">Failed to load data.</td></tr>');
-        }
-      },
-      columns: [
-        {
-          data: 'CreatedDate',
-          render: function (data, type, row) {
-            const v = row.CreatedDate || row.createdDate;
-            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+      // ---------- UTIL ----------
+      function safeParseUnobtrusive($scope) {
+        try {
+          if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
+            $.validator.unobtrusive.parse($scope);
+            return true;
           }
-        },
-        { data: 'FileName', render: function (d,t,row) { return row.FileName || row.fileName || ''; } },
-        { data: 'BranchId', render: function (d,t,row) { return row.BranchName || row.branchName || row.BranchId || ''; } },
-        { data: null, render: function (d,t,row) { return (row.TrialBalanceRowCount || 0) + (row.MemberBalanceRowCount || 0); } },
-        { data: null, orderable: false, searchable: false, className: 'text-end', render: function (d,t,row) { return actionButtons(row); } }
-      ],
-      columnDefs: [{ targets: 4, width: '120px' }],
-      language: { emptyTable: 'No files found' }
-    });
-
-    tableInitialized = true;
-  }
-
-  function destroyTable() {
-    const selector = '#myDataTable';
-    if ($.fn.DataTable.isDataTable(selector)) {
-      try { $(selector).DataTable().destroy(); } catch (e) { console.warn('destroy failed', e); }
-      $(selector + ' tbody').empty();
-    }
-    table = null;
-    tableInitialized = false;
-  }
-
-  // ---------- EVENTS ----------
-  $(function () {
-
-    // init select2 for compact inputs (if present)
-    if ($.fn.select2) {
-      try {
-        $('#BranchId,#Category,#Status').select2({ width: '100%' });
-      } catch (e) { console.warn('select2 init failed', e); }
-    }
-
-    // toggle created date filters
-    $('#toggleCreatedDates').on('change click', function () {
-      $('#createdDateFilters').toggleClass('d-none', !this.checked);
-    });
-
-    // Apply filters -> initialize or reload table
-    $('#applyAffiliateFilterBtn').on('click', function (e) {
-      e.preventDefault();
-
-      if (!tableInitialized) {
-        initDataTable();
-      } else {
-        try { if (table && table.ajax) table.ajax.reload(null, false); } catch (_) { initDataTable(); }
-      }
-    });
-
-    // Reset -> clear filters and destroy table so it doesn't show until user applies again
-    $('#resetAffiliateFilterBtn').on('click', function (e) {
-      e.preventDefault();
-      const $f = $('#affiliateFilterForm');
-      if ($f.length) $f[0].reset();
-
-      $('#createdDateFilters').addClass('d-none');
-
-      if ($.fn.select2) {
-        try { $('#BranchId,#Category,#Status').val(null).trigger('change'); } catch (_) {}
+        } catch (e) { console.warn('unobtrusive.parse failed', e); }
+        return false;
       }
 
-      destroyTable();
-    });
+      // ---------- FILTERS ----------
+      function getFilters() {
+        const createdFrom = $('#CreatedFromUtc').val();
+        const createdTo   = $('#CreatedToUtc').val();
+        const categoryRaw = $('#Category').val();
+        const statusRaw   = $('#Status').val();
 
-    // add root affiliate -> open edit modal (example)
-    $(document).on('click', '#btnAddRootAffiliate', function () {
-      // reuse your existing modal loader if you have it; quick fallback:
-      const url = initUrl;
-      $('#affiliateEditModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-      $('#affiliateEditModal').modal('show');
-      $.get(url, { KEY: '', partialView: '_CreateAffiliateRoot', path: 'new', serviceOption: 'root' })
-        .done(function (html) {
-          $('#affiliateEditModal .modal-body').html(html);
-        })
-        .fail(function () {
-          $('#affiliateEditModal .modal-body').html('<div class="p-3 text-danger">Unable to load content.</div>');
+        return {
+          DataTableOptions: {},
+          BranchId: $('#BranchId').val() || null,
+          Category: categoryRaw || null,
+          Status: statusRaw || null,
+          CreatedFromUtc: createdFrom || null,
+          CreatedToUtc: createdTo || null,
+          IncludeDeleted: $('#IncludeDeleted').is(':checked'),
+          SearchText: $.trim($('#SearchText').val()) || null
+        };
+      }
+
+      // ---------- MODALS ----------
+      function showModalLoading(modalId) {
+        $(modalId + ' .modal-body').html(
+          '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
+        );
+        (bootstrap.Modal.getInstance($(modalId)[0]) ||
+          new bootstrap.Modal($(modalId)[0], { backdrop: 'static' })
+        ).show();
+      }
+
+      function loadIntoModal(modalId, url, data, onSuccess) {
+        showModalLoading(modalId);
+        $.get(url, data)
+          .done(function (html) {
+            $(modalId + ' .modal-body').html(html);
+            if (onSuccess) onSuccess(modalId);
+          })
+          .fail(function () {
+            $(modalId + ' .modal-body')
+              .html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>');
+          });
+      }
+
+      function wireModalFormSubmit($modal) {
+        $modal.off('submit', 'form').on('submit', 'form', function (e) {
+          if (typeof window.AjaxPost === 'function') {
+            return window.AjaxPost(this);
+          }
+
+          e.preventDefault();
+          const $form = $(this);
+          safeParseUnobtrusive($form);
+
+          const hasFiles = ($form.attr('enctype') || '').toLowerCase().includes('multipart');
+          const ajaxOptions = {
+            url: $form.attr('action'),
+            type: ($form.attr('method') || 'POST').toUpperCase(),
+            success: function (res) {
+              if (res && typeof res === 'object' && ('success' in res)) {
+                if (res.success) {
+                  try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (_) { $modal.modal('hide'); }
+                  reloadTable();
+                } else {
+                  $modal.find('.modal-body').prepend(
+                    `<div class="alert alert-danger mb-2">${res.message || 'Save failed'}</div>`
+                  );
+                }
+              } else {
+                $modal.find('.modal-body').html(res);
+                safeParseUnobtrusive($modal);
+                wireModalFormSubmit($modal);
+              }
+            },
+            error: function () {
+              $modal.find('.modal-body').prepend(
+                '<div class="alert alert-danger mb-2">Submit failed. Try again.</div>'
+              );
+            }
+          };
+
+          if (hasFiles) {
+            const fd = new FormData($form[0]);
+            ajaxOptions.data = fd;
+            ajaxOptions.processData = false;
+            ajaxOptions.contentType = false;
+          } else {
+            ajaxOptions.data = $form.serialize();
+          }
+
+          $.ajax(ajaxOptions);
+          return false;
         });
-    });
+      }
 
-    // Details -> load into details modal
-    $('#datalistingview').on('click', '.btn-detail', function () {
-      const id = $(this).data('id');
-      if (!id) return;
-      const $modal = $('#affiliateDetailsModal');
-      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-      $modal.modal('show');
+      // ---------- ROW ACTIONS ----------
+      function actionButtons(row) {
+        const id = encodeURIComponent(String(row.Id || ''));
+        const name = String(row.FileName || row.Name || '').replace(/"/g, '&quot;');
+        const btnId = 'act_' + (row.Id || Math.random().toString(36).slice(2));
+        const downloadLink = downloadUrl + '?id=' + id;
 
-      $.get(detailUrl, { id: id })
-        .done(function (html) { $modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details.</div>'); })
-        .fail(function () { $modal.find('.modal-body').html('<div class="p-3 text-danger">Unable to load details.</div>'); });
-    });
+        return `
+          <div class="dropdown text-center">
+            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
+                    id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="mdi mdi-cog-outline"></i> Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+              <li>
+                <button type="button" class="dropdown-item btn-detail" data-id="${id}" title="Details &quot;${name}&quot;">
+                  <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                </button>
+              </li>
+              <li>
+                <a class="dropdown-item" href="${downloadLink}" target="_blank" title="Download &quot;${name}&quot;">
+                  <i class="mdi mdi-download me-1 text-success"></i> Download
+                </a>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item btn-delete" data-id="${id}" title="Delete &quot;${name}&quot;">
+                  <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                </button>
+              </li>
+            </ul>
+          </div>
+        `;
+      }
 
-    // optional: wire edit/add buttons similarly (btn-add, btn-edit) if present in your rows...
-  });
+      // ---------- DATATABLE ----------
+      function initDataTable() {
+        const selector = '#myDataTable';
+        if ($.fn.DataTable.isDataTable(selector)) {
+          try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
+          $(selector + ' tbody').empty();
+        }
 
-})(jQuery);
-    </script>
+        table = $(selector).DataTable({
+          serverSide: true,
+          responsive: true,
+          autoWidth: false,
+          pageLength: 10,
+          order: [[0, 'desc']],
+          columnDefs: [
+            { targets: 0, width: '18%' },
+            { targets: 1, width: '25%' },
+            { targets: 2, width: '21%' },
+            { targets: 3, width: '13%' },
+            { targets: 4, width: '13%' },
+            { targets: 5, width: '10%', className: 'text-end', orderable: false, searchable: false }
+          ],
+          ajax: {
+            url: dataUrl,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: function (d) {
+              const filters = getFilters();
+              filters.DataTableOptions = {
+                draw: d.draw,
+                start: d.start,
+                length: d.length,
+                searchValue: d.search?.value || '',
+                sortColumnName: '',
+                sortColumnDirection: ''
+              };
+              return JSON.stringify(filters);
+            },
+            dataSrc: function (json) {
+              if (!json) return [];
+              if (Array.isArray(json.data)) return json.data;
+              if (Array.isArray(json.result)) return json.result;
+              return [];
+            },
+            error: function () {
+              $(selector + ' tbody').html('<tr><td colspan="6" class="text-center text-danger">Failed to load data.</td></tr>');
+            }
+          },
+          columns: [
+            {
+              data: 'CreatedDate',
+              render: function (data, type, row) {
+                const v = row.CreatedDate || row.CreatedOn;
+                return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+              }
+            },
+            {
+              data: 'OriginalFileName',
+              render: function (data, type, row) {
+                  return row.OriginalFileName || row.OriginalFileName || '';
+              }
+            },
+            {
+              data: 'Category',
+              render: function (data, type, row) {
+                  return row.Category || row.Category || '';
+              }
+            },
+            {
+              data: 'TrialBalanceRowCount',
+              render: function (data, type, row) {
+                  return (row.TrialBalanceRowCount != null) ? String(row.TrialBalanceRowCount) : '-';
+              }
+            },
+            {
+              data: 'MemberBalanceRowCount',
+              render: function (data, type, row) {
+                  return (row.MemberBalanceRowCount != null) ? String(row.MemberBalanceRowCount) : '-';
+              }
+            },
+            {
+              data: null,
+              orderable: false,
+              searchable: false,
+              className: 'text-end',
+              render: (d, t, row) => actionButtons(row)
+            }
+          ],
+          language: { emptyTable: 'No files found' }
+        });
+
+        tableInitialized = true;
+      }
+
+      function reloadTable() {
+        if (!tableInitialized) {
+          initDataTable();
+        } else if (table && table.ajax) {
+          table.ajax.reload(null, false);
+        }
+      }
+
+      // ---------- INIT + EVENTS ----------
+      $(document).ready(function () {
+        if ($.fn.select2) {
+          try { $('#BranchId,#Category,#Status').select2({ width: '100%' }); } catch(e){}
+        }
+
+        $('#toggleCreatedDates').on('change', function () {
+          if ($(this).is(':checked')) $('#createdDateFilters').removeClass('d-none');
+          else $('#createdDateFilters').addClass('d-none');
+        });
+
+        $('#applyAffiliateFilterBtn').on('click', function (e) {
+          e.preventDefault();
+          reloadTable();
+        });
+
+        $('#resetAffiliateFilterBtn').on('click', function () {
+          $('#affiliateFilterForm')[0].reset();
+          if ($.fn.select2) {
+            try { $('#BranchId,#Category,#Status').val(null).trigger('change'); } catch(_){}
+          }
+          $('#createdDateFilters').addClass('d-none');
+          reloadTable();
+        });
+
+        $('#affiliateFilterForm').on('keypress', 'input,select', function (e) {
+          if (e.which === 13) { e.preventDefault(); reloadTable(); }
+        });
+
+        // Upload File
+        $(document).on('click', '#btnUploadFile', function () {
+          loadIntoModal('#affiliateEditModal', initUrl, { KEY: '', partialView: '_UploadFile', path: 'new' },
+            function(modalId) {
+              safeParseUnobtrusive($(modalId));
+              if ($.fn.select2) {
+                try {
+                  $(modalId + ' .select2').each(function () {
+                    if (!$(this).hasClass('select2-hidden-accessible')) {
+                      $(this).select2({ dropdownParent: $(modalId) });
+                    }
+                  });
+                } catch (e) { console.warn('select2 in modal init failed', e); }
+              }
+              wireModalFormSubmit($(modalId));
+            }
+          );
+        });
+
+        // Row: Details
+        $('#datalistingview').on('click', '.btn-detail', function () {
+          const id = $(this).data('id');
+          if (!id) return;
+          loadIntoModal('#affiliateDetailsModal', detailUrl, { id: id, partialView: '_Details' });
+        });
+
+        // Row: Delete
+        $('#datalistingview').on('click', '.btn-delete', function () {
+          const id = $(this).data('id');
+          if (!id || !confirm('Are you sure you want to delete this file?')) return;
+
+          $.post(deleteUrl, { id: decodeURIComponent(String(id)) })
+            .done(function (res) {
+              if (res && res.success) {
+                reloadTable();
+              } else {
+                alert(res?.message || 'Delete failed');
+              }
+            })
+            .fail(function () {
+              alert('Delete request failed. Try again.');
+            });
+        });
+
+        // Initialize table only when Apply Filter is clicked
+        // Table won't load until first filter application
+      });
+
+    })(jQuery);
+</script>
 }

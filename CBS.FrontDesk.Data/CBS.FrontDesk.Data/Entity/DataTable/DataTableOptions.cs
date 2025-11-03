@@ -11,8 +11,8 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
     public class DataTableOptions
     {
         public int start { get; set; }
-        public string draw { get; set; } 
-        public int length { get; set; }  
+        public string draw { get; set; }
+        public int length { get; set; } = 1;
         public string sortColumnName { get; set; } // Change type to int?
         public string sortColumnDirection { get; set; }
         public string searchValue { get; set; }

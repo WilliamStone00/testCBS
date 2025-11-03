@@ -247,29 +247,48 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
 
-        // =========================
-        // REJECT ENTRY
-        // =========================
         [HttpPost]
-        public async Task<ActionResult> Reject(string id)
+        public async Task<ActionResult> ApproveDestination(DestinationApproval model)
         {
-            if (string.IsNullOrEmpty(id))
-                return Json(new { success = false, message = "Journal Entry ID is required" });
+            if (model == null || string.IsNullOrEmpty(model.Reference))
+                return Json(new { success = false, message = "Destination Reference is required" });
 
             try
             {
-                bool result = await _journalHeadService.RejectAsync(id);
-                return Json(new { success = result, message = result ? "Rejected successfully" : "Rejection failed" });
+                var result = await _journalHeadService.ApproveDestinationAsync(model);
+
+                if (result == null)
+                    return Json(new { success = false, message = "No response from destination approval service." });
+
+                return Json(new
+                {
+                    success = true,
+                    statusCode = 200,
+                    message = result.Message ?? "Destination approved successfully",
+                    data = new
+                    {
+                        result.Reference,
+                        result.BranchId,
+                        result.TicketId,
+                        result.TicketState,
+                        result.JournalId
+                    }
+                });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Destination approval failed: {ex.Message}"
+                });
             }
         }
 
 
 
-        
+
         //[HttpGet]
         //public async Task<ActionResult> Details(string id)
         //{
@@ -310,6 +329,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             }
 
             //return View(entry); // MVC 5 expects Details.cshtml
+            await loader();
             return PartialView("_DestDetails", entry);
         }
 

@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.ManualDailycollection;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -38,35 +39,56 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                     }
                 _apiCallerHelper2 = new ApiCallerHelper(baseUrl2);
             }
-           
 
-                public async Task<IEnumerable<GetBalance>> GetAccountBalanceAsync(GetBalance payload)
+
+
+        public async Task<IEnumerable<GetBalance>> GetAccountBalanceAsync(GetBalance payload)
+        {
+            try
+            {
+                payload.BranchId = GetBankID();
+                 payload.includeOnlyActive = false;
+                payload.Status = "";
+
+                // Request with generic that allows us to get the raw 'data' token
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<JToken>>(APICallHelper.GetMemeberAccountBalance, payload);
+
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    try
+
+                    JToken data = response.ApiResponseData.Data;
+
+                    if (data.Type == JTokenType.Array)
                     {
-                    payload.BranchId = GetBankID();
-                    payload.includeOnlyActive = false;
-                    payload.Status = "";
+                        // deserialize array to list
+                        var list = data.ToObject<List<GetBalance>>();
+                        return list ?? new List<GetBalance>();
+                    }
+                    else if (data.Type == JTokenType.Object)
+                    {
+                        // single object -> wrap into a list
+                        var single = data.ToObject<GetBalance>();
+                        return single != null ? new List<GetBalance> { single } : new List<GetBalance>();
+                    }
+                    else if (data.Type == JTokenType.Null)
+                    {
+                        return new List<GetBalance>();
+                    }
 
-                    // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<GetBalance>>>(APICallHelper.GetMemeberAccountBalance,payload);
-
-                            // CORRECTED: Access the final payload via .ApiResponseData.Data
-                            if (response.IsSuccess && response.ApiResponseData?.Data != null)
-                            {
-                                return response.ApiResponseData.Data;
-                            }
-                            return new List<GetBalance>();
-                        }
-                        catch (Exception ex)
-                        {
-                            // In a real scenario, log 'ex'
-                            throw;
-                        }
+                    // fallback: try to convert generically
+                    return data.ToObject<List<GetBalance>>() ?? new List<GetBalance>();
                 }
 
-        
-            public async Task<Affiliateresponse> GetByIdAsync(string id)
+                return new List<GetBalance>();
+            }
+            catch (Exception ex)
+            {
+                // log ex
+                throw;
+            }
+        }
+
+        public async Task<Affiliateresponse> GetByIdAsync(string id)
             {
                 try
                 {
@@ -93,34 +115,38 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
 
 
 
-        public async Task<ExecutionMessages> ReconcileTrialBalance(GetBalance model)
+        //public async Task<TrialBalanceReconciliationData> ReconcileTrialBalance(GetBalance model)
+        //{
+        //     try
+        //     {
+        //        model.Language = GetLanguage();
+        //        var response = await _apiCallerHelper2.PostAsync<ServiceResponse<TrialBalanceReconciliationData>>(APICallHelper.Reconciliation, model);
+
+        //        // For now, return success (replace with actual service call)
+
+        //       return response?.ApiResponseData?.Data;
+        //     }
+        //    catch (Exception ex)
+        //     {
+        //        throw new Exception(ex.Message);
+        //    }
+
+        //}
+
+        public async Task<TrialBalanceReconciliationData> ReconcileTrialBalance(GetBalance model)
         {
+            model.Language = GetLanguage();
 
+            var response = await _apiCallerHelper2.PostAsync<ServiceResponse<TrialBalanceReconciliationData>>(APICallHelper.Reconciliation, model);
 
-            try
+            // check response for success / nulls
+            if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
             {
-                model.Language = GetLanguage();
-                var response = await _apiCallerHelper2.PostAsync<ServiceResponse<TrialBalanceReconciliationData>>(APICallHelper.Reconciliation, model);
+                // optionally throw or return null and let caller handle
+                return null;
+            }
 
-                // For now, return success (replace with actual service call)
-              
-                if (response.IsSuccess)
-                {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.BranchId, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
-                }
-                else
-                {
-                    GetExecutionMessages(model, false, model.BranchId, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-                }
-            }
-            catch (Exception ex)
-            {
-                GetExecutionMessages(model, false, model.BranchId, MessagesResults.Error,
-                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-            }
-            return ExecutionMessage;
+            return response.ApiResponseData.Data;
         }
 
 
@@ -205,29 +231,29 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
 
                 return ExecutionMessage;
             }
-
-        public async Task<List<StringValues>> MemberAccountTypesAsync(string branchId)
-        {
-            try
+      
+            public async Task<List<StringValues>> MemberAccountTypesAsync(string branchId)
             {
-                var Build = new GetBalance()
+                try
                 {
-                    BranchId = branchId,
-                    Status = "Active",
-                    includeOnlyActive = false
-                };
+                    var Build = new GetBalance()
+                    {
+                        BranchId = branchId,
+                        Status = "Active",
+                        includeOnlyActive = false
+                    };
 
-                string formattedUrl = string.Format(APICallHelper.MemberAccountType);
+                    string formattedUrl = string.Format(APICallHelper.MemberAccountType);
 
-                var response = await _apiCallerHelper.PostAsync<ResponseObject<AccountingTypes>>(formattedUrl,Build);
+                    var response = await _apiCallerHelper.PostAsync<ResponseObject<AccountingTypes>>(formattedUrl,Build);
 
-                return response?.ApiResponseData?.Data?.AccountTypes ?? new List<StringValues>();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }        
+                    return response?.ApiResponseData?.Data?.AccountTypes ?? new List<StringValues>();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }        
     }
 }
 

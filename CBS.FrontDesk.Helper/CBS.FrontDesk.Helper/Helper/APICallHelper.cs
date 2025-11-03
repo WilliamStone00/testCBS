@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.VariantTypes;
 using System.CodeDom;
@@ -1469,6 +1470,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
         public static string GetJournalworkticketDataTable = "/api/v1/workticketflow/datatable";
         public static string ApproveJournalEntry = "/api/v1/ops/manual-entry/approve/source";
+        public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
 
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
@@ -1558,7 +1560,11 @@ namespace CBS.FrontDesk.Helper
         public static string AffiliateUpload = "/api/v1/FileUploads/affiliates/{0}";
         public static string BranchUpload = "/api/v1/FileUploads/trial-balance";
         public static string fileuploaddatatable = "/api/v1/FileUploads/datatable";
-        public static string FilegetbYId = "/api/v1/FileUploads/{id}";
+        public static string GLhistorydatatable = "/api/v1/CashAndVaultInit/datatable";
+        public static string FilegetbYId = "/api/v1/FileUploads/{0}";
+        public static string GetReconciliationtById = "/api/v1/FileUploads/{0}";
+        public static string GetGLHById = "/api/v1/FileUploads/{0}";
+        public static string ReconciliationConfirmation = " Not yet Available ";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
@@ -1587,7 +1593,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetMemberReconciliationById = "not yet availlable";
 
          public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
-         public static string FINALReconciliation = "Not yet available";
+         public static string FINALReconciliation = "/api/v1/TrialBalance/initiate-trial-balance-reconcilation";
 
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";
@@ -1611,6 +1617,9 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
+        public const string GetAccountBalance = "/api/v1/TrialBalance/balance/{0}";
+        public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
+
 
     }
 }

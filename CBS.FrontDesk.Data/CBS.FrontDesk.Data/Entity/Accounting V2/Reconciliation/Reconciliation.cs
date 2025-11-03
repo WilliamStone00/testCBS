@@ -91,8 +91,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
 
         //---------- others ---------------
         public string mode { get; set; }
+        public decimal Amount { get; set; }
         public string accountTypeId { get; set; }
-        public string BranchAccount { get; set; }
+        public string BranchAccountId { get; set; }
         public string LoanAccountType { get; set; }
         public string MemberAccountType { get; set; }
         public string Language { get; set; }
@@ -110,6 +111,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
     public class TrialBalanceReconciliationData
     {
         public string BranchId { get; set; }
+        public string  DiffBranchAccountId { get; set; }
         public string BranchCode { get; set; }
         public string BranchAccountId { get; set; }
         public string TrialBalanceStagingId { get; set; }
@@ -118,17 +120,22 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public string TrialSide { get; set; }
         public bool IsMemberBalanceGreater { get; set; }
         public string Statement { get; set; }
+        public string Memo { get; set; }
+        public string reference { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public string AccountType { get; set; }
     }
 
     public class FinalReconciliationRequest
     {
         public string BranchId { get; set; }
-        public string SourceBranchAccountId { get; set; }
-        public string SelectedBranchAccountId { get; set; }
-        public string SurplusDeficit { get; set; } // "surplus" or "deficit"
+        public string TrialBalanceBranchAccountId { get; set; }
+        public string DiffBranchAccountId { get; set; }
+        public string AccountType { get; set; }
+        public DateTime AccountingDate { get; set; }
         public decimal MemberBalance { get; set; }
-        public decimal TrialBalanceBalance { get; set; }
-        public decimal Difference { get; set; }
-        public string TrialBalanceStagingId { get; set; }
+          public string Memo { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string ReconciliationKind { get; set; }
     }
 }
