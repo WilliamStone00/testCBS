@@ -9,7 +9,7 @@
         <div class="card bg-light mb-2 p-2">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                    <i class="mdi mdi-account-group me-2"></i>Reconciliation Listing
                 </h1>
                 <p class="card-text small mb-1">
                     @AccountingV2.AffiliateManagementtext
@@ -44,7 +44,7 @@
 <!-- Filters (rearranged, compact spacing) -->
 <div class="card shadow p-2 mb-3">
     <h5 class="text-primary mb-2 small">
-        <i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters
+        <i class="mdi mdi-filter-outline me-1"></i> Filters
     </h5>
 
     <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
@@ -63,7 +63,7 @@
                 </div>
 
                 <!-- Category label above (full width) -->
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label class="form-label fw-bold small mb-1" for="Category">Category</label>
                     <select id="Category" name="Category" class="form-select select2 form-select-sm">
                         <option value="">@AccountingV2.All</option>
@@ -122,12 +122,6 @@
     </form>
 </div>
 
-<div class="d-flex justify-content-end mb-2">
-    <button id="btnAddRootAffiliate" type="button" class="btn btn-success btn-sm">
-        <i class="mdi mdi-plus-circle-outline me-1"></i> Add Root Affiliate Account
-    </button>
-</div>
-
 <!-- DataTable Partial placeholder -->
 <div id="datalistingview">
     @Html.Partial("_Data")
@@ -184,7 +178,6 @@
       Status: $('#Status').val() || null,
       CreatedFromUtc: $('#CreatedFromUtc').val() || null,
       CreatedToUtc: $('#CreatedToUtc').val() || null,
-      IncludeDeleted: $('#IncludeDeleted').is(':checked') || false,
       Options: {}
     };
   }
@@ -203,66 +196,116 @@
     `;
   }
 
-  // ---------- DATATABLE ----------
-  function initDataTable() {
-    const selector = '#myDataTable';
-    // ensure markup present
-    if ($(selector).length === 0) {
-      console.error('myDataTable markup missing. Ensure _Data partial contains #myDataTable.');
-      return;
-    }
+    function initDataTable() {
+        const selector = '#myDataTable';
+        console.log('initDataTable: checking selector', selector, 'exists?', $(selector).length);
 
-    if ($.fn.DataTable.isDataTable(selector)) {
-      try { $(selector).DataTable().destroy(); } catch(e) { console.warn('destroy failed', e); }
-      $(selector + ' tbody').empty();
-    }
-
-    table = $(selector).DataTable({
-      serverSide: true,
-      responsive: true,
-      pageLength: 10,
-      order: [[0, 'desc']],
-      ajax: {
-        url: dataUrl,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: function (d) {
-          const filters = getFilters();
-          filters.Options = {
-            draw: d.draw,
-            start: d.start,
-            length: d.length,
-            searchValue: d.search?.value || ''
-          };
-          return JSON.stringify(filters);
-        },
-        dataSrc: function (json) {
-          if (!json) return [];
-          return Array.isArray(json.data) ? json.data : (Array.isArray(json.items) ? json.items : []);
-        },
-        error: function () {
-          $(selector + ' tbody').html('<tr><td colspan="5" class="text-center text-danger">Failed to load data.</td></tr>');
+        if ($(selector).length === 0) {
+            console.error('initDataTable: myDataTable markup missing.');
+            return;
         }
-      },
-      columns: [
-        {
-          data: 'CreatedDate',
-          render: function (data, type, row) {
-            const v = row.CreatedDate || row.createdDate;
-            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
-          }
-        },
-        { data: 'FileName', render: function (d,t,row) { return row.FileName || row.fileName || ''; } },
-        { data: 'BranchId', render: function (d,t,row) { return row.BranchName || row.branchName || row.BranchId || ''; } },
-        { data: null, render: function (d,t,row) { return (row.TrialBalanceRowCount || 0) + (row.MemberBalanceRowCount || 0); } },
-        { data: null, orderable: false, searchable: false, className: 'text-end', render: function (d,t,row) { return actionButtons(row); } }
-      ],
-      columnDefs: [{ targets: 4, width: '120px' }],
-      language: { emptyTable: 'No files found' }
-    });
 
-    tableInitialized = true;
-  }
+        // Clean up existing table
+        if ($.fn.DataTable.isDataTable(selector)) {
+            try {
+                $(selector).DataTable().destroy();
+            } catch (e) { console.warn('destroy failed', e); }
+            $(selector + ' tbody').empty();
+        }
+
+        console.log('initDataTable: building DataTable...');
+        table = $(selector).DataTable({
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            pageLength: 10,
+            order: [[0, 'desc']],
+            ajax: {
+                url: dataUrl,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: function (d) {
+                    const filters = getFilters();
+                    filters.Options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        searchValue: d.search?.value || ''
+                    };
+                    console.log('initDataTable: sending AJAX payload', filters);
+                    return JSON.stringify(filters);
+                },
+                dataSrc: function (json) {
+                    console.log('initDataTable: dataSrc received', json);
+
+                    // Handle server-side errors
+                    if (json.error) {
+                        console.error('Server returned error:', json.error);
+                        return [];
+                    }
+
+                    // Standard DataTables response
+                    if (json.data && Array.isArray(json.data)) {
+                        console.log('initDataTable: Returning', json.data.length, 'items');
+                        return json.data;
+                    }
+
+                    console.warn('initDataTable: Unexpected response format', json);
+                    return [];
+                },
+                error: function (xhr, status, err) {
+                    console.error('initDataTable: AJAX error', status, err);
+                    if (xhr.responseText) {
+                        console.error('Response text:', xhr.responseText);
+                    }
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedDate',
+                    render: function (data, type, row) {
+                        const v = row.CreatedDate || row.createdDate;
+                        return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+                    }
+                },
+                {
+                    data: 'FileName',
+                    render: function (d, t, row) {
+                        return row.FileName || row.fileName || '';
+                    }
+                },
+                {
+                    data: 'BranchId',
+                    render: function (d, t, row) {
+                        return row.BranchName || row.branchName || row.BranchId || '';
+                    }
+                },
+                {
+                    data: null,
+                    render: function (d, t, row) {
+                        return (row.TrialBalanceRowCount || 0) + (row.MemberBalanceRowCount || 0);
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-end',
+                    render: function (d, t, row) {
+                        return actionButtons(row);
+                    }
+                }
+            ],
+            columnDefs: [{ targets: 4, width: '120px' }],
+            language: {
+                emptyTable: 'No files found',
+                processing: '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>'
+            }
+        });
+
+        tableInitialized = true;
+        console.log('initDataTable: done');
+    }
 
   function destroyTable() {
     const selector = '#myDataTable';

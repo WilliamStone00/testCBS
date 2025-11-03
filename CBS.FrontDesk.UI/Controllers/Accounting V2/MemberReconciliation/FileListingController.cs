@@ -52,14 +52,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
 
                 var data = await _fileListingService.DataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List<FileListing>>(JsonConvert.SerializeObject(data.data));
+                var result = JsonConvert.DeserializeObject<List<FileListing>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
-                    draw = data.Options.draw,
+                    draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Affiliate
+                    data = result
                 });
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
+                    draw = query?.DataTableOptions?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),

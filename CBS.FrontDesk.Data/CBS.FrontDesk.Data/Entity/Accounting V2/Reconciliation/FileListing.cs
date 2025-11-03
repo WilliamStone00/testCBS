@@ -31,15 +31,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
 
     public class FileListingQuery
     {
-        public DataTableOptions Options { get; set; }
-        public FileListingQuery() { Options = new DataTableOptions(); }
+        public DataTableOptions DataTableOptions { get; set; }
+        public FileListingQuery() { DataTableOptions = new DataTableOptions(); }
 
         public string BranchId { get; set; }
         public string Category { get; set; }
         public string Status { get; set; }
-        public DateTime CreatedFromUtc { get; set; }
-        public DateTime CreatedToUtc { get; set; }
-        public bool IncludeDeleted { get; set; }
+        public DateTime? CreatedFromUtc { get; set; }
+        public DateTime? CreatedToUtc { get; set; }
+        //public bool? IncludeDeleted { get; set; }
 
     }
 }

@@ -1587,7 +1587,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetMemberReconciliationById = "not yet availlable";
 
          public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
-         public static string FINALReconciliation = "Not yet available";
+         public static string FINALReconciliation = "/api/v1/TrialBalance/initiate-trial-balance-reconcilation";
 
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";

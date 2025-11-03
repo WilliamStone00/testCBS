@@ -31,11 +31,11 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
 
        
 
-        public async Task<CustomDataTable2> DataTableAsync(FileListingQuery query)
+        public async Task<CustomDataTable> DataTableAsync(FileListingQuery query)
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.fileuploaddatatable, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception

@@ -1,20 +1,13 @@
-﻿using CBS.BusinessService.Accounting_V2.Affiliate;
-using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
-using CBS.BusinessService.Accounting_V2.BranchAccountService;
+﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
-using Microsoft.AspNet.SignalR.Hosting;
-using Microsoft.Owin.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
 {
@@ -131,37 +124,48 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 });
             }
         }
+             
+        [HttpPost]
+        public async Task<ActionResult> ReconcileTrialBalance(string BranchId, string BranchAccountId, decimal TotalBalance, int AccountCount, int LoanCount, string mode, string accountTypeId)
+        {
+            try
+            {
+                var balance = new GetBalance
+                {
+                    BranchId = BranchId,
+                    BranchAccountId = BranchAccountId,
+                    Amount = TotalBalance,
+                    AccountCount = AccountCount,
+                    LoanCount = LoanCount,
+                    mode = mode,
+                    accountTypeId = accountTypeId
+                };
 
-        //[HttpPost]
-        //public async Task<ActionResult> ReconcileTrialBalance(string BranchId, string BranchAccountId, decimal TotalBalance, int AccountCount, int LoanCount, string mode, string accountTypeId)
-        //{
-        //    try
-        //    {
-        //        // Create the balance object with all required data
-        //        var balance = new GetBalance
-        //        {
-        //            BranchId = BranchId,
-        //            BranchAccount = BranchAccountId,
-        //            TotalBalance = TotalBalance,
-        //        };
-
-        //        var response = await _MemberReferenceService.ReconcileTrialBalance(balance);
-
+                var result = await _MemberReferenceService.ReconcileTrialBalance(balance);
                
 
-        //        return Json(new { success = false, message = response.ApiResponseData?.Message ?? response.Message });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = "Failed to reconcile trial balance",
-        //            error = ex.Message
-        //        });
-        //    }
-        //}
+                if (result == null)
+                {
+                    return Json(new { success = false, message = "No reconciliation data returned from service." });
+                }
+
+                var DiffBrachAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(balance.BranchId);
+                ViewBag.DiifBrachAccounts = DiffBrachAccounts;
+                result.AccountType = accountTypeId;
+                return PartialView("_ReconciliationResult", result);
+                //return Json(new { success = true, message = "Reconciliation completed.", data = result });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use your logger)
+                return Json(new
+                {
+                    success = false,
+                    message = "Failed to reconcile trial balance",
+                    error = ex.Message
+                });
+            }
+        }
 
         [HttpPost]
         public async Task<JsonResult> FinalizeReconciliation(FinalReconciliationRequest request)
@@ -195,20 +199,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             try
             {
                 // Get member account types filtered by branch
-                var memberAccounts = await _MemberReferenceService.MemberAccountTypesAsync(branchId);
+                var data = await _MemberReferenceService.MemberAccountTypesAsync(branchId);
 
-                // Convert to SelectListItem format
-                //var accountTypes = memberAccounts.Select(x => new SelectListItem
-                //{
-                //    Value = x.Value?.ToString() ?? x.Id?.ToString() ?? "",
-                //    Text = x.Text ?? x.Name ?? "Unknown"
-                //}).ToList();
 
-                return Json(new { success = true, data = memberAccounts });
+                return Json(new { success = true,message="Success", data },JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {               
-                return Json(new { success = false, message = "Error loading account types" });
+                return Json(new { success = false, message = "Error loading account types" }, JsonRequestBehavior.AllowGet);
             }
         }
     }
