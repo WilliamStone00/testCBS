@@ -18,7 +18,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 {
-    //[CheckSessionTimeOut]
+    [CheckSessionTimeOut]
     public class AffiliateAccountController : Controller
     {
 

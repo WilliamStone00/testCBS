@@ -1,0 +1,121 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.GLHistoryDto
+@using System.Globalization
+@using Resources
+
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary fw-bold mb-2">
+            <i class="mdi mdi-bank-transfer me-2"></i>GL History Details
+        </h1>
+        <p class="card-text text-muted mb-1">
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>@ChequeManagements.BasicInformation</h6>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Owner Name:</td>
+                    <td>@Html.Encode(Model?.OwnerName ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Initiator Name:</td>
+                    <td>@Html.Encode(Model?.InitiatorName ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Initiation Date:</td>
+                    <td>@(Model != null ? Model.InitiationDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Approved By:</td>
+                    <td>@Html.Encode(Model?.ApprovedByName ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Approval Date:</td>
+                    <td>@(Model?.ApprovalDate.HasValue == true ? Model.ApprovalDate.Value.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Till Name:</td>
+                    <td>@Html.Encode(Model?.TillName ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Reconciliation Type:</td>
+                    <td>@Html.Encode(Model?.ReconciliationType ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Narration:</td>
+                    <td>@Html.Encode(Model?.Narration ?? "-")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>@ChequeManagements.FeeSettings</h6>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="fw-bold">GL Balance:</td>
+                    <td>@(Model != null ? Model.GlBalance.ToString("N2", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Difference Amount:</td>
+                    <td>@(Model != null ? Model.DifferenceInAmount.ToString("N2", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Accounting Date:</td>
+                    <td>@(Model != null ? Model.AccountingDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch Id:</td>
+                    <td>@Html.Encode(Model?.BranchId ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Cash In Hand:</td>
+                    <td>@(Model != null ? Model.CashInHand.ToString("N2", CultureInfo.InvariantCulture) : "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch Name:</td>
+                    <td>@Html.Encode(Model?.BranchName ?? "-")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Branch Code:</td>
+                    <td>@Html.Encode(Model?.BranchCode ?? "-")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <h6 class="text-primary"><i class="mdi mdi-table-large me-2"></i>GL Mapping</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Source GL Id</th>
+                        <th>SGL Name</th>
+                        <th>Destination GL Id</th>
+                        <th>Destination GL Name</th>
+                        <th>Reconciliation Ref</th>
+                        <th>Journal Header Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.Encode(Model?.SourceGLId ?? "-")</td>
+                        <td>@Html.Encode(Model?.SglName ?? "-")</td>
+                        <td>@Html.Encode(Model?.DestinationGLId ?? "-")</td>
+                        <td>@Html.Encode(Model?.DestinationGLName ?? "-")</td>
+                        <td>@Html.Encode(Model?.ReconciliationReference ?? "-")</td>
+                        <td>@Html.Encode(Model?.JournalHeaderId ?? "-")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

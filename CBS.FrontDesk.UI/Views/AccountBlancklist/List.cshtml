@@ -1,0 +1,492 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklistQuery
+@using Resources
+@{
+    ViewBag.Title = "Account Black Listing - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-cancel me-2"></i> Account Black Listing
+                </h1>
+                <p class="card-text">
+                    This View is used for the display and filtering of Accounts which have been Black Listing and the menu's on which they were Block listed '
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlacklistTips" aria-expanded="false" aria-controls="collapseBlacklistTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseBlacklistTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><i class="mdi mdi-receipt-check-outline text-success me-2"></i> <strong>Trial Balance Account:</strong> Select the trial balance account to filter.</li>
+                <li><i class="mdi mdi-office-building-outline text-primary me-2"></i> <strong>Branch:</strong> Filter by branch ID.</li>
+                <li><i class="mdi mdi-apps-box text-secondary me-2"></i> <strong>Menu:</strong> Choose the menu/context.</li>
+                <li><i class="mdi mdi-bank-transfer-in text-info me-2"></i> <strong>Branch Account:</strong> Select the branch-specific account.</li>
+                <li><i class="mdi mdi-account-group-outline text-warning me-2"></i> <strong>Affiliate Account:</strong> Select the affiliate account ID.</li>
+                <li><i class="mdi mdi-calendar-range text-muted me-2"></i> <strong>Created Dates:</strong> Use creation date filters (UTC).</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Blacklist Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Black List Filters</h5>
+
+    <form id="blacklistFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="col-md-8 branch-dropdown">
+                            <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                            @Html.DropDownListFor(m => m.BranchID,
+                                new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                                new { @class = "form-control select2", id = "BranchId" })
+                            @Html.ValidationMessageFor(m => m.BranchID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-8">
+                            @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
+                            @Html.DropDownListFor(
+                                m => m.Menu,
+                                new SelectList(ViewBag.Menu ?? new List<SelectListItem>(), "Value", "Text"),
+                                "--- Select Menu ---",
+                                new { @class = "form-select select2", Id = "TransactionTypeLocal" })
+                            @Html.ValidationMessageFor(m => m.Menu, "", new { @class = "text-danger" })
+                        </div>
+
+                       <div class="col-md-8">
+                            @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account", new { @class = "form-label" })
+                            @Html.DropDownListFor(
+                                m => m.AffiliateAccountId,
+                                new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Id", "Name"),
+                                "--- Select Affiliate Account (Chart of Account) ---",
+                                new { @class = "form-select select2", @aria_label = "Affiliate Account" })
+                            @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Created Date Filters toggle -->
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates" onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small class="text-muted">Blacklist.FiltersHelp</small>
+                </div>
+            </div>
+
+            <div id="createdDateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@AccountingV2.CreatedFrom (UTC)</label>
+                        <input type="date" id="createdFromUtc" name="CreatedFromUtc" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@AccountingV2.CreatedTo (UTC)</label>
+                        <input type="date" id="createdToUtc" name="CreatedToUtc" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyBlacklistFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                </button>
+                <button id="resetBlacklistFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="blacklistListingView">
+    @Html.Partial("_Data")
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+
+            // build action URLs server-side to avoid typos / 404s
+            const ajaxLoadUrl = '@Url.Action("LoadData", "AccountBlancklist")';
+            const ajaxInitializeUrl = '@Url.Action("InitializeData", "AccountBlancklist")';
+            const getBranchAccountsUrl = '@Url.Action("GetBranchAccountsByBranch", "AccountBlancklist")';
+            const ajaxDeleteUrl = '@Url.Action("Delete", "AccountBlancklist")';
+            const ajaxUpdateUrl = '@Url.Action("Update", "AccountBlancklist")';
+
+            const detailsModalSelector = '#blacklistDetailsModal';
+            const editModalSelector = '#blacklistEditModal';
+            const tableSelector = '#myDataTable';
+            window.blackListTable = window.blackListTable || null;
+
+            // helpers
+            const $ = window.$;
+            const isFn = v => typeof v === 'function';
+            const emptyToNull = v => (v === undefined || v === null || v === '') ? null : v;
+            const escapeHtml = s => (s == null) ? '' : String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            const showAppAlert = (msg, type) => { if (isFn(window.appalert)) appalert(msg, type === 3 ? 3 : 0, 1); else try { alert(msg); } catch (e) { console.log(msg); } };
+            const ajaxFail = (xhr, fallback) => { try { showAppAlert(xhr.responseJSON?.message || fallback, 0); } catch (e) { showAppAlert(fallback, 0); } };
+
+            // select2 init
+            //function initSelect2() {
+            //    try {
+            //        if ($.fn.select2) {
+            //            $('.select2').each(function () {
+            //                if (!$(this).data('select2')) {
+            //                    try { $(this).select2({ width: '100%' }); } catch (e) { /* ignore */ }
+            //                }
+            //            });
+            //        }
+            //    } catch (e) { console.warn('select2 init failed', e); }
+            //}
+
+            // repair Select2 sizing for specific selector (used after async loads)
+            function fixSelect2(selector) {
+                try {
+                    var $s = $(selector);
+                    if (!$s || $s.length === 0) return;
+                    if ($.fn.select2 && $s.data('select2')) {
+                        try { $s.select2('destroy'); } catch (e) { }
+                    }
+                    // ensure visible for sizing calc
+                    if ($s.is(':hidden')) $s.css('display', 'block');
+                    if ($.fn.select2) $s.select2({ width: '100%' });
+                    try { $s.trigger('change.select2'); } catch (e) { $s.trigger('change'); }
+                } catch (e) { console.warn('fixSelect2 error', e); }
+            }
+
+            /**
+             * loadBranchAccounts(branchId, $targetDropdown?)
+             * - uses server-generated URL getBranchAccountsUrl
+             */
+            function loadBranchAccounts(branchId, $targetDropdown) {
+                $targetDropdown = $targetDropdown || $('#BranchAccountId');
+                if (!$targetDropdown || !$targetDropdown.length) return;
+
+                const placeholderLoading = 'Loading branch accounts...';
+                const placeholderEmpty = '--- Select Branch Account reference ---';
+                const placeholderNoItems = 'No branch accounts available';
+                const placeholderError = 'Error loading branch accounts';
+
+                $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(placeholderLoading));
+
+                if (!branchId) {
+                    $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(placeholderEmpty));
+                    try { if ($.fn.select2) $targetDropdown.trigger('change.select2'); } catch (e) { }
+                    $(document).trigger('branchAccountsLoaded');
+                    return;
+                }
+
+                // use jQuery get for broad compatibility with older MVC projects
+                $.get(getBranchAccountsUrl, { branchId: branchId })
+                    .done(function (list) {
+                        $targetDropdown.empty().prop('disabled', false);
+                        $targetDropdown.append($('<option>').val('').text(placeholderEmpty));
+
+                        // list might be an array of { Id, Name } or SelectListItem, handle both
+                        if (Array.isArray(list) && list.length) {
+                            list.forEach(function (it) {
+                                var v = it.Id || it.id || it.Value || it.value || it.ValueId || it.valueId || '';
+                                var t = it.Name || it.name || it.Text || it.text || it.Description || v;
+                                $targetDropdown.append($('<option>').val(v).text(t));
+                            });
+                        } else {
+                            // no items
+                            $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(placeholderNoItems));
+                        }
+
+                        // re-init select2 to ensure it's sized & shows text
+                        try { fixSelect2('#BranchAccountId'); } catch (e) { /* ignore */ }
+
+                        // notify other handlers (if any)
+                        $(document).trigger('branchAccountsLoaded');
+                    })
+                    .fail(function (xhr) {
+                        console.error('Error loading branch accounts:', xhr);
+                        $targetDropdown.empty().prop('disabled', false).append($('<option>').val('').text(placeholderError));
+                        try { if ($.fn.select2) $targetDropdown.trigger('change.select2'); } catch (e) { }
+                        $(document).trigger('branchAccountsLoaded');
+                    });
+            }
+
+            // collect filters payload
+            function collectFilters() {
+                return {
+                    BranchID: emptyToNull($('#BranchId').val() || $('#BranchID').val()),
+                    Menu: emptyToNull($('#TransactionTypeLocal').val() || $('#Menu').val()),
+                    branchAccountId: emptyToNull($('#BranchAccountId').val() || $('#branchAccountId').val()),
+                    AffiliateAccountId: emptyToNull($('#AffiliateAccountId').val() || $('[name="AffiliateAccountId"]').val()),
+                    CreatedFromUtc: emptyToNull($('#createdFromUtc').val() || $('#CreatedFromUtc').val()),
+                    CreatedToUtc: emptyToNull($('#createdToUtc').val() || $('#CreatedToUtc').val()),
+                    Options: {}
+                };
+            }
+
+            // dataTable init (lazy)
+            function initTable() {
+                if ($.fn.DataTable.isDataTable(tableSelector) && window.blackListTable) return;
+                if (!$(tableSelector).length) { showAppAlert('Table element ' + tableSelector + ' not found', 0); return; }
+
+                window.blackListTable = $(tableSelector).DataTable({
+                    serverSide: true,
+                    searching: false,
+                    responsive: true,
+                    order: [[0, 'desc']],
+                    ajax: {
+                        url: ajaxLoadUrl,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: function (d) {
+                            var payload = collectFilters();
+                            payload.Options = {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: (d.search && d.search.value) ? d.search.value : '',
+                                sortColumnName: 'CreatedDate',
+                                sortColumnDirection: 'desc'
+                            };
+                            return JSON.stringify(payload);
+                        },
+                        error: function (xhr) { ajaxFail(xhr, 'Failed to load blacklist data. Please try again.'); }
+                    },
+                    columns: [
+                        {
+                            data: 'CreatedDate',
+                            name: 'CreatedDate',
+                            render: function (data, type) {
+                                if (type === 'display' || type === 'filter') {
+                                    if (!data) return '-';
+                                    try {
+                                        if (window.moment) return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                                        return new Date(data).toLocaleString();
+                                    } catch (e) { return data; }
+                                }
+                                return data;
+                            }
+                        },
+                        { data: 'BranchName', name: 'BranchName', defaultContent: '-' },
+                        { data: 'Menu', name: 'Menu', defaultContent: '-' },
+                        { data: 'AffiliateAccountName', name: 'AffiliateAccountName', defaultContent: '-' },
+                        { data: 'branchAccountName', name: 'branchAccountName', defaultContent: '-' },
+                        {
+                            data: 'Id',
+                            orderable: false,
+                            searchable: false,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                var rawId = String(row.Id || row.id || data || '');
+                                var recordId = encodeURIComponent(rawId);
+                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                var btnId = 'actionDropdown_' + safeId;
+                                var name = escapeHtml(row.AffiliateAccountName || row.AffiliateAccountId || row.branchAccountName || '');
+                                var detailsBtn = '<button type="button" class="dropdown-item btn-details" data-id="' + recordId + '" data-name="' + name + '"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button>';
+                                var editBtn = '<button type="button" class="dropdown-item btn-edit" data-id="' + recordId + '" data-name="' + name + '"><i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit</button>';
+                                var deleteBtn = '<button type="button" class="dropdown-item btn-delete text-danger" data-id="' + recordId + '" data-name="' + name + '"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button>';
+
+                                return '\
+                            <div class="dropdown text-center">\
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="' + btnId + '" data-bs-toggle="dropdown" aria-expanded="false">\
+                                    <i class="mdi mdi-cog-outline"></i> Actions\
+                                </button>\
+                                <ul class="dropdown-menu" aria-labelledby="' + btnId + '">\
+                                    <li>' + detailsBtn + '</li>\
+                                    <li><hr class="dropdown-divider"></li>\
+                                    <li>' + editBtn + '</li>\
+                                    <li>' + deleteBtn + '</li>\
+                                </ul>\
+                            </div>'.trim();
+                            }
+                        }
+                    ],
+                    lengthMenu: [10, 25, 50],
+                    pageLength: 10,
+                    language: { emptyTable: 'No records found' },
+                    initComplete: function () {
+                        try {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                    new bootstrap.Tooltip(el);
+                                });
+                            }
+                        } catch (e) { /* ignore */ }
+                    }
+                });
+            }
+
+            // load partial into modal
+            function loadPartialIntoModal(selector, key, partialName, cb) {
+                var $modal = $(selector);
+                if (!$modal.length) { showAppAlert('Modal not found', 0); return; }
+                $(selector + ' .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status" aria-hidden="true"></div></div>');
+                try { new bootstrap.Modal(document.querySelector(selector)).show(); } catch (e) { /* ignore */ }
+                $.get(ajaxInitializeUrl, { KEY: key, partialView: partialName, path: 'get' })
+                    .done(function (html) {
+                        $(selector + ' .modal-body').html(html || '<div class="text-center text-muted">No content available.</div>');
+                        if (isFn(cb)) cb();
+                    })
+                    .fail(function (xhr) {
+                        $(selector + ' .modal-body').html('<div class="text-center text-danger">Error loading content</div>');
+                        ajaxFail(xhr, 'Failed to load content');
+                    });
+            }
+
+            function doDelete(id) {
+                if (!confirm('Are you sure you want to delete this record?')) return;
+                $.post(ajaxDeleteUrl, { KEY: id })
+                    .done(function (res) {
+                        if (res && res.success) {
+                            if (window.blackListTable) window.blackListTable.ajax.reload(null, false);
+                            showAppAlert(res.message || 'Deleted', 3);
+                        } else {
+                            showAppAlert(res?.message || 'Delete failed', 0);
+                        }
+                    })
+                    .fail(function (xhr) { ajaxFail(xhr, 'Delete request failed'); });
+            }
+
+            // edit submit binding (delegated)
+            function bindEditSubmit() {
+                $(document).off('submit', '#editBlacklistForm').on('submit', '#editBlacklistForm', function (e) {
+                    e.preventDefault();
+                    var $form = $(this);
+                    var $btn = $form.find('#saveButton');
+                    var original = $btn.html();
+                    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving');
+                    var token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                    $.ajax({
+                        url: ajaxUpdateUrl,
+                        type: 'POST',
+                        data: $form.serialize(),
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+                        success: function (res) {
+                            $btn.prop('disabled', false).html(original);
+                            if (res && res.success) {
+                                try {
+                                    var modalEl = document.getElementById('blacklistEditModal');
+                                    var bs = bootstrap.Modal.getInstance(modalEl);
+                                    if (bs) bs.hide();
+                                } catch (e) { /* ignore */ }
+                                if (window.blackListTable) window.blackListTable.ajax.reload(null, false);
+                                showAppAlert(res.message || 'Saved', 3);
+                            } else {
+                                showAppAlert(res?.message || 'Save failed', 0);
+                            }
+                        },
+                        error: function (xhr) {
+                            $btn.prop('disabled', false).html(original);
+                            ajaxFail(xhr, 'Save request failed');
+                        }
+                    });
+                });
+            }
+
+            // wiring
+            $(document).ready(function () {
+                initSelect2();
+
+                // branch change handler
+                $(document).off('change', '#BranchId').on('change', '#BranchId', function () {
+                    var branchId = $(this).val();
+                    loadBranchAccounts(branchId, $('#BranchAccountId'));
+                });
+
+                bindEditSubmit();
+
+                // APPLY
+                $(document).off('click', '#applyBlacklistFilterBtn').on('click', '#applyBlacklistFilterBtn', function (e) {
+                    e.preventDefault();
+                    if (!window.blackListTable) initTable();
+                    if (window.blackListTable) window.blackListTable.ajax.reload(null, false);
+                });
+
+                // RESET
+                $(document).off('click', '#resetBlacklistFilterBtn').on('click', '#resetBlacklistFilterBtn', function (e) {
+                    e.preventDefault();
+                    var form = document.getElementById('blacklistFilterForm');
+                    if (form) form.reset();
+                    $('#createdDateFilters').addClass('d-none');
+                    $('#toggleCreatedDates').prop('checked', false);
+                    try {
+                        if ($.fn.select2) $('#BranchId, #TransactionTypeLocal, #BranchAccountId, #AffiliateAccountId').each(function () { if ($(this).data('select2')) $(this).val('').trigger('change'); });
+                    } catch (e) { /* ignore */ }
+                    if (window.blackListTable) window.blackListTable.ajax.reload(null, false);
+                    showAppAlert('Filters reset', 3);
+                });
+
+                // Enter apply
+                $(document).off('keypress', '#blacklistFilterForm input').on('keypress', '#blacklistFilterForm input', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        if (window.blackListTable) window.blackListTable.ajax.reload(null, false);
+                        else $('#applyBlacklistFilterBtn').trigger('click');
+                    }
+                });
+
+                // delegated details/edit/delete
+                $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    if (!id) return showAppAlert('Missing id for details', 0);
+                    loadPartialIntoModal(detailsModalSelector, id, '_DetailsPartial');
+                });
+
+                $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    if (!id) return showAppAlert('Missing id for edit', 0);
+                    loadPartialIntoModal(editModalSelector, id, '_EditPartial', function () { initSelect2(); });
+                });
+
+                $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    if (!id) return showAppAlert('Missing id for delete', 0);
+                    doDelete(id);
+                });
+
+                // ensure BranchAccount select2 is valid after async load (if any)
+                $(document).off('branchAccountsLoaded').on('branchAccountsLoaded', function () {
+                    try { fixSelect2('#BranchAccountId'); } catch (e) { /* ignore */ }
+                });
+
+                // If a branch value is present on load and you want to auto-load its accounts:
+                var preBranch = $('#BranchId').val();
+                if (preBranch) {
+                    loadBranchAccounts(preBranch, $('#BranchAccountId'));
+                }
+            });
+        })();
+    </script>
+}

@@ -10,6 +10,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
+using Microsoft.AspNet.SignalR.Messaging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Error Getting Pending Account Creation Request : {ex.Message}", ex);
+                throw new Exception($"service unavailable: {ex.Message}", ex);
             }
         }
 
@@ -149,19 +150,19 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, "Validate Pending Account request", MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, "Success", null, "Account Creation Request Validated successfully.");
+                    GetExecutionMessages(response.ApiResponseData.Data, true,requestAction.Id, MessagesResults.Success,
+                        ExecutionProcessOption.UpdateUpject, "Success", null);
                 }
                 else
                 {
-                    var message = response?.ApiResponseData?.Message ?? response?.Message ?? "Validation operation failed";
-                    GetExecutionMessages(requestAction, false, "Validate Pending Account ", MessagesResults.Failed,
+                    var message = response?.ApiResponseData?.Message ?? response?.Message;
+                    GetExecutionMessages(requestAction, false, requestAction.Id, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, "Failed", null, message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(requestAction, false, "Validate Pending Account request", MessagesResults.Error,
+                GetExecutionMessages(requestAction, false,requestAction.Id, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
             }
 
@@ -178,19 +179,20 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true, "Reject Pending Accounts", MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, "Success", null, "Account Creation Request rejected successfully.");
+                        ExecutionProcessOption.UpdateUpject, "Success", null, "Pending Accounts rejected successfully.");
                 }
                 else
                 {
-                    var message = response?.ApiResponseData?.Message ?? response?.Message ?? "Reject operation failed";
-                    GetExecutionMessages(requestAction, false, "Reject Correspondence", MessagesResults.Failed,
-                        ExecutionProcessOption.UpdateUpject, "Failed", null, message);
+                    var message = response?.ApiResponseData?.Message ?? response?.Message ;
+                    GetExecutionMessages(requestAction, false, requestAction.Id, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(requestAction, false, "Reject Correspondence", MessagesResults.Error,
-                    ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+                // Log and handle exception
+                GetExecutionMessages(null, false, null, MessagesResults.Error, ExecutionProcessOption.TryCatch,
+                    SystemMessageStatus.Failed.ToString(), ex);
             }
 
             return ExecutionMessage;

@@ -79,7 +79,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                throw new Exception($"Affiliate Service book service unavailable: {ex.Message}", ex);
             }
         }
 
