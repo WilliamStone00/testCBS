@@ -39,9 +39,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation
         public decimal CashInHand { get; set; }
         public decimal GlBalance { get; set; }
         public string SourceGLId { get; set; }
-        public string SglName { get; set; }
+       
         public string DestinationGLId { get; set; }
-        public string DestinationGLName { get; set; }
+       
         public decimal OGlBalance { get; set; }
     }
 
