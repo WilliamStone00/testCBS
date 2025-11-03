@@ -7,96 +7,128 @@
         {
             @Html.HiddenFor(model => model.Id)
 
-        <div class="row mt-3 gy-3">
+            <!-- ========================= -->
+            <!-- 🔹 HOLDER INFORMATION -->
+            <!-- ========================= -->
+            <fieldset class="border rounded p-3 mb-4">
+                <legend class="float-none w-auto px-2 text-primary fw-bold">Holder Information</legend>
 
-            <!-- Branch Selection -->
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.BranchId,
-                        new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control select2", id = "BranchId", @search = "true" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Select Branch</label>
+                <div class="row gy-3">
+                    <!-- Holder Name -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Holder Name" })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            <label for="Name">Holder Name</label>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                            <label for="Address">Address</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </fieldset>
 
-            <!-- Operator Name -->
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label for="Name">Phone holder or keepers name</label>
+
+            <!-- ========================= -->
+            <!-- 🔹 MOBILE MONEY INFO -->
+            <!-- ========================= -->
+            <fieldset class="border rounded p-3 mb-4">
+                <legend class="float-none w-auto px-2 text-primary fw-bold">Mobile Money Info</legend>
+
+                <div class="row gy-3">
+                    <!-- Operator Type -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.OperatorType,
+                                new SelectList(new List<string> { "MTN", "Orange", "Camtel" }),
+                                "--- Select Operator ---",
+                                new { @class = "form-control select2", id = "OperatorType", @search = "true" }
+                            )
+                            @Html.ValidationMessageFor(m => m.OperatorType, "", new { @class = "text-danger" })
+                            <label for="OperatorType">Operator Type</label>
+                        </div>
+                    </div>
+
+                    <!-- Merchant Number -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.TelNumber, new { @class = "form-control", placeholder = "Merchant/MoMo Number" })
+                            @Html.ValidationMessageFor(m => m.TelNumber, "", new { @class = "text-danger" })
+                            <label for="TelNumber">Merchant/MoMo/Orange Number</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- Telephone Number -->
-            <div class="col-md-3">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.TelNumber, new { @class = "form-control", placeholder = "Telephone Number" })
-                    @Html.ValidationMessageFor(m => m.TelNumber, "", new { @class = "text-danger" })
-                    <label for="TelNumber">Merchant/MoMo/Orange Number</label>
+            </fieldset>
+
+
+            <!-- ========================= -->
+            <!-- 🔹 ACCOUNTS GL INFO -->
+            <!-- ========================= -->
+            <fieldset class="border rounded p-3 mb-4">
+                <legend class="float-none w-auto px-2 text-primary fw-bold">Accounts GL Info</legend>
+
+                <div class="row gy-3">
+                    <!-- Branch -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.BranchId,
+                                new SelectList(ViewBag.Branches, "Id", "Name"),
+                                "--- Select Branch ---",
+                                new { @class = "form-control select2", id = "BranchId", @search = "true", @onchange = "LoadBranchAccounts(this.value)" }
+                            )
+                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                            <label for="BranchId">Select Branch</label>
+                        </div>
+                    </div>
+
+                    <!-- Branch Account -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.DropDownListFor(
+                                m => m.BranchAccountId,
+                                new SelectList(ViewBag.Accounts, "Value", "Text"),
+                                "--- Select Branch Account ---",
+                                new { @class = "form-control select2", @id = "BranchAccountId", @search = "true" }
+                            )
+                            @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                            <label for="BranchAccountId">Branch Account GL</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- Operator Type -->
-            <div class="col-md-9">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.OperatorType,
-                        new SelectList(
-                            new List<string> { "MTN", "Orange", "Camtel" }
-                        ),
-                        "--- Select Operator ---",
-                        new { @class = "form-control select2", id = "OperatorType", @search = "true" }
-                    )
-                    @Html.ValidationMessageFor(m => m.OperatorType, "", new { @class = "text-danger" })
-                    <label for="OperatorType">Operator Type (e.g., MTN, Orange, Camtel)</label>
-                </div>
-            </div>
+            </fieldset>
 
 
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.BranchAccountId,
-                        new SelectList(ViewBag.Accounts, "Id", "Name"),
-                        "--- Select account ---",
-                        new { @class = "form-control select2", id = "BranchId", @search = "true" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Select Branch Account GL</label>
-                </div>
-            </div>
-
-
-            <!-- Address -->
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
-                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                    <label for="Address">Address</label>
-                </div>
-            </div>
-
-            <!-- Active Status -->
-            <div class="col-md-12">
-                <div class="form-check">
+            <!-- ========================= -->
+            <!-- 🔹 SETTINGS -->
+            <!-- ========================= -->
+            <fieldset class="border rounded p-3 mb-4">
+                <legend class="float-none w-auto px-2 text-primary fw-bold">Settings</legend>
+                <div class="form-check ms-2 mt-1">
                     @Html.CheckBoxFor(m => m.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
-                    <label class="form-check-label" for="ActiveStatus">Active Status</label>
+                    <label class="form-check-label ms-1" for="ActiveStatus">Active Status</label>
                 </div>
-            </div>
-        </div>
+            </fieldset>
 
-            <!-- Action Buttons -->
-            <div class="mt-4">
+
+            <!-- ========================= -->
+            <!-- 🔹 ACTION BUTTONS -->
+            <!-- ========================= -->
+            <div class="mt-4 d-flex justify-content-end gap-2">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                     <button type="reset" class="btn btn-outline-secondary">Reset</button>
                 }
             </div>

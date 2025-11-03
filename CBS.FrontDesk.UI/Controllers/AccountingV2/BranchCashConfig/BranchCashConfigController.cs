@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
             // Fetch raw configs
             var configs = await _branchCashConfigService.GetBranchCashConfigsAsync();
             var branches = await _branchServices.GetBranches();
-            var accounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync("");
+			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
 
             string BranchNameOf(string id) =>
                 string.IsNullOrWhiteSpace(id) ? "" : (branches.FirstOrDefault(b => b.Id == id)?.Name ?? "");
@@ -165,8 +165,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
 
             // New config for a specific branch
             var existing = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
-            ViewBag.BranchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
-            ViewBag.CurrentBranchName = ResolveBranchName(model.BranchId);
+			var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+			var accountsDto = _branchAccountService.DroupDownGen(listing.ToList());
+            ViewBag.BranchAccounts = accountsDto;
+			ViewBag.CurrentBranchName = ResolveBranchName(model.BranchId);
 
             if (existing != null)
             {
@@ -222,10 +224,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
 
             try
             {
-                var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
-                var accountsDto = branchAccounts.Select(a => new { id = a.Id, name = a.Name }).ToList();
-
-                var config = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
+                //var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
+                //var accountsDto = branchAccounts.Select(a => new { id = a.Id, name = a.Name }).ToList();
+				var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+				var accountsDto = _branchAccountService.DroupDownGen(listing.ToList());
+				var config = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
 
                 if (config != null)
                 {

@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
@@ -148,9 +149,30 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             }
         }
 
+		public List<StringValues> DroupDownGen(List<BranchAccountResponse> branchAccounts)
+		{
+			try
+			{
+				List<StringValues> stringValues;
 
-        //get Branch Accounts for dro down 
-        public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
+				stringValues = (from a in branchAccounts
+								select new StringValues
+								{
+									Text = $"{a.Name}",
+									Value = $"{a.Id}",
+								}).ToList();
+
+				return stringValues;
+			}
+			catch (Exception ex)
+			{
+				// Log and rethrow exception
+				throw ex;
+			}
+		}
+
+		//get Branch Accounts for dro down 
+		public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -158,7 +180,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                 if (IsHeadOffice())
                 {
                     if (string.IsNullOrWhiteSpace(branchId))
-                        branchId = "all"; // ensure API understands this convention
+                        branchId = null; // ensure API understands this convention
                                           // Head Office may keep a specific branchId if passed
                 }
                 else
