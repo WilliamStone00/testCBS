@@ -1,136 +1,602 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileListing
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.FileUploadData
 @using System.Globalization
 
-<div class="card border-0">
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 p-2">
+            <div class="card-body text-center py-2">
+                <h1 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-group me-2"></i>Reconciliation File Details
+                </h1>
+                <p class="card-text small mb-1">
+                    On this page we have the details of a reconciliation file and we have the possibility to confirm the reconciliation
+                </p>
+                <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card border-0 shadow-sm mb-4">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips" aria-expanded="false" aria-controls="collapseLoanTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseReconciliationTips" class="collapse">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-file-document-outline me-2"></i> File Details
+                        </h6>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2">
+                                <i class="mdi mdi-information-outline text-info me-2"></i>
+                                <strong>Summary Cards:</strong> Quick overview of key metrics at the top
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-tab text-primary me-2"></i>
+                                <strong>Tab Navigation:</strong> Switch between Basic Info and Technical Details
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                <strong>Status Indicators:</strong> Color-coded badges show file processing state
+                            </li>
+                            <li>
+                                <i class="mdi mdi-download-outline text-success me-2"></i>
+                                <strong>File Information:</strong> Check file size, type, and upload timestamps
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-success mb-2">
+                            <i class="mdi mdi-check-circle-outline me-2"></i> Confirmation Process
+                        </h6>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2">
+                                <i class="mdi mdi-eye-outline text-info me-2"></i>
+                                <strong>Review Data:</strong> Always verify Trial and Member Balance data before confirming
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-alert-outline text-warning me-2"></i>
+                                <strong>Irreversible Action:</strong> Reconciliation cannot be undone once confirmed
+                            </li>
+                            <li>
+                                <i class="mdi mdi-backup-restore text-secondary me-2"></i>
+                                <strong>Data Backup:</strong> Ensure you have backups before proceeding
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h6 class="text-primary mb-2">
+                            <i class="mdi mdi-table-eye me-2"></i> Data Tables
+                        </h6>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2">
+                                <i class="mdi mdi-chevron-double-down text-info me-2"></i>
+                                <strong>Expand/Collapse:</strong> Click section headers to show/hide data tables
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-magnify text-success me-2"></i>
+                                <strong>Search & Filter:</strong> Use search boxes to find specific records
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-sort text-warning me-2"></i>
+                                <strong>Sorting:</strong> Click column headers to sort data
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-eye-outline text-primary me-2"></i>
+                                <strong>Row Details:</strong> Click "View" buttons to see complete record information
+                            </li>
+                            <li>
+                                <i class="mdi mdi-database-outline text-secondary me-2"></i>
+                                <strong>Pagination:</strong> Navigate through large datasets using page controls
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-warning mb-2">
+                            <i class="mdi mdi-alert-box-outline me-2"></i> Common Issues
+                        </h6>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2">
+                                <i class="mdi mdi-file-alert-outline text-danger me-2"></i>
+                                <strong>Error JSON:</strong> Check technical details tab for processing errors
+                            </li>
+                            <li class="mb-2">
+                                <i class="mdi mdi-account-alert-outline text-warning me-2"></i>
+                                <strong>Member Data:</strong> Verify all member IDs and account numbers are valid
+                            </li>
+                            <li>
+                                <i class="mdi mdi-cash-multiple text-info me-2"></i>
+                                <strong>Balance Validation:</strong> Ensure debit/credit totals match expected values
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-light border">
+                        <h6 class="text-dark mb-2">
+                            <i class="mdi mdi-rocket-launch-outline text-primary me-2"></i> Quick Steps
+                        </h6>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="border rounded p-2 bg-white">
+                                    <i class="mdi mdi-file-check-outline text-primary fs-4 d-block mb-1"></i>
+                                    <small class="text-muted">1. Review File Details</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-2 bg-white">
+                                    <i class="mdi mdi-table-eye-outline text-info fs-4 d-block mb-1"></i>
+                                    <small class="text-muted">2. Verify Data Tables</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-2 bg-white">
+                                    <i class="mdi mdi-account-check-outline text-warning fs-4 d-block mb-1"></i>
+                                    <small class="text-muted">3. Check Balances</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-2 bg-white">
+                                    <i class="mdi mdi-check-all text-success fs-4 d-block mb-1"></i>
+                                    <small class="text-muted">4. Confirm Reconciliation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Legend -->
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h6 class="text-dark mb-2">
+                        <i class="mdi mdi-palette-outline text-primary me-2"></i> Status Legend
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-success">Completed</span>
+                        <span class="badge bg-warning">Pending/Processing</span>
+                        <span class="badge bg-danger">Error/Failed</span>
+                        <span class="badge bg-info">Active</span>
+                        <span class="badge bg-secondary">Inactive/Unknown</span>
+                        <span class="badge bg-primary">Reconciled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    @*<div class="card-header bg-primary text-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="mdi mdi-file-document-outline me-2"></i> File Details</h4>
+                <span class="badge bg-light text-primary fs-6">@Model.Status</span>
+            </div>
+        </div>*@
     <div class="card-body">
-        <h4 class="mb-3 text-primary"><i class="mdi mdi-file-document-outline me-2"></i> File Details</h4>
-
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-sm table-borderless">
-                    <tbody>
-                        <tr><td class="fw-bold">Id</td><td>@Html.Raw(Model?.Id ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Branch Id</td><td>@Html.Raw(Model?.BranchId ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Category</td><td>@Html.Raw(Model?.Category ?? "—")</td></tr>
-                        <tr><td class="fw-bold">File Name</td><td>@Html.Encode(Model?.FileName ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Original File</td><td>@Html.Encode(Model?.OriginalFileName ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Content Type</td><td>@Html.Encode(Model?.ContentType ?? "—")</td></tr>
-                    </tbody>
-                </table>
+        <!-- File Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-light border-0 h-100">
+                    <div class="card-body text-center">
+                        <i class="mdi mdi-file-table-outline text-primary fs-1 mb-2"></i>
+                        <h5 class="text-muted">Trial Balance</h5>
+                        <h3 class="text-primary">@(Model?.TrialBalanceRowCount ?? 0)</h3>
+                        <small class="text-muted">Rows</small>
+                    </div>
+                </div>
             </div>
-
-            <div class="col-md-6">
-                <table class="table table-sm table-borderless">
-                    <tbody>
-                        <tr>
-                            <td class="fw-bold">Size</td>
-                            <td>
-                                @{
-                                    var size = Model?.SizeBytes ?? 0L;
-                                    string hr;
-                                    if (size >= 1_000_000_000) { hr = (size / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
-                                    else if (size >= 1_000_000) { hr = (size / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
-                                    else if (size >= 1_000) { hr = (size / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
-                                    else { hr = size + " B"; }
-                                }
-                                @hr (@size bytes)
-                            </td>
-                        </tr>
-                        <tr><td class="fw-bold">Storage Key</td><td>@Html.Encode(Model?.StorageKey ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Checksum</td><td>@Html.Encode(Model?.Checksum ?? "—")</td></tr>
-                        <tr><td class="fw-bold">Status</td><td>@Html.Encode(Model?.Status ?? "—")</td></tr>
-                    </tbody>
-                </table>
+            <div class="col-md-3">
+                <div class="card bg-light border-0 h-100">
+                    <div class="card-body text-center">
+                        <i class="mdi mdi-account-group-outline text-success fs-1 mb-2"></i>
+                        <h5 class="text-muted">Member Balance</h5>
+                        <h3 class="text-success">@(Model?.MemberBalanceRowCount ?? 0)</h3>
+                        <small class="text-muted">Rows</small>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-12">
-                <table class="table table-sm table-borderless">
-                    <tbody>
-                        <tr>
-                            <td class="fw-bold" style="width:200px;">Notes</td>
-                            <td>
-                                @Html.Raw(string.IsNullOrWhiteSpace(Model?.Notes ?? "") ? "—" : Html.Encode(Model.Notes))
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="fw-bold">Error JSON</td>
-                            <td>
-                                @{
-                                    var ej = Model?.ErrorJson;
-                                    if (string.IsNullOrWhiteSpace(ej))
-                                    {
-                                        @:—
-                                    }
-                                    else
-                                    {
-                                        <pre class="small bg-light p-2">@Html.Encode(ej)</pre>
-                                    }
-                                }
-                            </td>
-                        </tr>
-
-                        <tr><td class="fw-bold">Trial Balance Rows</td><td>@(Model?.TrialBalanceRowCount ?? 0)</td></tr>
-                        <tr><td class="fw-bold">Member Balance Rows</td><td>@(Model?.MemberBalanceRowCount ?? 0)</td></tr>
-
-                        @{
-                            // Safely render CreatedDate and ModifiedDate for both DateTime and DateTime? model properties.
-                            string createdText = "—";
-                            string modifiedText = "—";
-
-                            if (Model != null)
+            <div class="col-md-3">
+                <div class="card bg-light border-0 h-100">
+                    <div class="card-body text-center">
+                        <i class="mdi mdi-calendar-check-outline text-info fs-1 mb-2"></i>
+                        <h5 class="text-muted">Created</h5>
+                        <h6 class="text-info">
+                            @if (Model?.CreatedDate != DateTime.MinValue)
                             {
-                                var cdObj = Model?.CreatedDate;
-                                if (cdObj != null)
-                                {
-                                    DateTime parsed;
-                                    if (DateTime.TryParse(cdObj.ToString(), out parsed) && parsed != DateTime.MinValue)
-                                    {
-                                        createdText = parsed.ToString("yyyy-MM-dd HH:mm:ss K", CultureInfo.InvariantCulture);
-                                    }
-                                }
-
-                                var mdObj = Model?.ModifiedDate;
-                                if (mdObj != null)
-                                {
-                                    DateTime parsed2;
-                                    if (DateTime.TryParse(mdObj.ToString(), out parsed2) && parsed2 > DateTime.MinValue.AddYears(1))
-                                    {
-                                        modifiedText = parsed2.ToString("yyyy-MM-dd HH:mm:ss K", CultureInfo.InvariantCulture);
-                                    }
-                                }
+                                @Model.CreatedDate.ToString("MMM dd, yyyy")
                             }
-                        }
-
-                        <tr>
-                            <td class="fw-bold">Created Date (UTC)</td>
-                            <td>@createdText</td>
-                        </tr>
-
-                        <tr>
-                            <td class="fw-bold">Modified Date (UTC)</td>
-                            <td>@modifiedText</td>
-                        </tr>
-
-                        <tr><td class="fw-bold">Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>
-                    </tbody>
-                </table>
+                            else
+                            {
+                                @:"—"
+                            }
+                        </h6>
+                        <small class="text-muted">Date</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light border-0 h-100">
+                    <div class="card-body text-center">
+                        <i class="mdi mdi-file-download-outline text-warning fs-1 mb-2"></i>
+                        <h5 class="text-muted">File Size</h5>
+                        <h6 class="text-warning">
+                            @{
+                                var size = Model?.SizeBytes ?? 0L;
+                                string hr;
+                                if (size >= 1_000_000_000) { hr = (size / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
+                                else if (size >= 1_000_000) { hr = (size / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
+                                else if (size >= 1_000) { hr = (size / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
+                                else { hr = size + " B"; }
+                            }
+                            @hr
+                        </h6>
+                        <small class="text-muted">Size</small>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row mt-3">
-            <div class="col-12 d-flex justify-content-end gap-2">
-                <button id="confirmUploadBtn" data-id="@Html.Raw(Model?.Id ?? "")" class="btn btn-success btn-sm">
-                    <i class="mdi mdi-check-circle-outline me-1"></i> Confirm
-                </button>
-                <a href="@Url.Action("Download", "Reconciliation", new { id = Model?.Id })" class="btn btn-primary btn-sm">
-                    <i class="mdi mdi-download me-1"></i> Download
-                </a>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
-                </button>
+        <!-- File Details in Tabs -->
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="fileDetailsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab">
+                            <i class="mdi mdi-information-outline me-1"></i> Basic Info
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="technical-tab" data-bs-toggle="tab" data-bs-target="#technical" type="button" role="tab">
+                            <i class="mdi mdi-cog-outline me-1"></i> Technical Details
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content border border-top-0 rounded-bottom" id="fileDetailsTabsContent">
+                    <!-- Basic Info Tab -->
+                    <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">File Name</td>
+                                        <td style="width: 25%;">@Html.Encode(Model?.FileName ?? "—")</td>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">Created Date</td>
+                                        <td style="width: 25%;">
+                                            @if (Model?.CreatedDate != DateTime.MinValue)
+                                            {
+                                                @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                            }
+                                            else
+                                            {
+                                                @:"—"
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted small">Original File</td>
+                                        <td>@Html.Encode(Model?.OriginalFileName ?? "—")</td>
+                                        <td class="fw-bold text-muted small">Modified Date</td>
+                                        <td>
+                                            @if (Model?.ModifiedDate != DateTime.MinValue && Model.ModifiedDate > DateTime.MinValue.AddYears(1))
+                                            {
+                                                @Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                            }
+                                            else
+                                            {
+                                                @:"—"
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted small">Branch ID</td>
+                                        <td>@Html.Raw(Model?.BranchId ?? "—")</td>
+                                        <td class="fw-bold text-muted small">Status</td>
+                                        <td>
+                                            <span class="badge
+                                @(Model?.Status?.ToLower() == "completed" ? "bg-success" :
+                                  Model?.Status?.ToLower() == "processing" ? "bg-warning" :
+                                  Model?.Status?.ToLower() == "error" ? "bg-danger" : "bg-secondary")">
+                                                @Html.Encode(Model?.Status ?? "—")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted small">Category</td>
+                                        <td>@Html.Raw(Model?.Category ?? "—")</td>
+                                        <td class="fw-bold text-muted small">Deleted</td>
+                                        <td>
+                                            <span class="badge @(Model?.IsDeleted == true ? "bg-danger" : "bg-success")">
+                                                @(Model?.IsDeleted == true ? "Yes" : "No")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Technical Details Tab -->
+                    <div class="tab-pane fade" id="technical" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">Content Type</td>
+                                        <td style="width: 25%;">@Html.Encode(Model?.ContentType ?? "—")</td>
+                                        <td class="fw-bold text-muted small" style="width: 25%;">File ID</td>
+                                        <td style="width: 25%;" class="font-monospace small">@Html.Raw(Model?.Id ?? "—")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted small">Storage Key</td>
+                                        <td class="font-monospace small">@Html.Encode(Model?.StorageKey ?? "—")</td>
+                                        <td class="fw-bold text-muted small">Notes</td>
+                                        <td>@Html.Raw(string.IsNullOrWhiteSpace(Model?.Notes ?? "") ? "—" : Html.Encode(Model.Notes))</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-muted small">Checksum</td>
+                                        <td class="font-monospace small">@Html.Encode(Model?.Checksum ?? "—")</td>
+                                        <td class="fw-bold text-muted small align-top">Error JSON</td>
+                                        <td>
+                                            @{
+                                                var ej = Model?.ErrorJson;
+                                                if (string.IsNullOrWhiteSpace(ej))
+                                                {
+                                                    @:—
+                                                }
+                                                else
+                                                {
+                                                    <pre class="small bg-light p-2 rounded border mb-0">@Html.Encode(ej)</pre>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Trial Balance Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-light text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="mdi mdi-file-table-outline me-2"></i>
+                                Trial Balance Data
+                                <span class="badge bg-light text-primary ms-2">@Model.TrialBalanceRows.Count rows</span>
+                            </h5>
+                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#trialBalanceSection">
+                                <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="trialBalanceSection" class="collapse">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="trialBalanceTable" class="table table-hover table-striped" style="width:100%">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th><i class="mdi mdi-code-braces me-1"></i>Source Code</th>
+                                            <th><i class="mdi mdi-text-box-outline me-1"></i>Source Name</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-plus me-1"></i>Opening Debit</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-minus me-1"></i>Opening Credit</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-plus me-1"></i>Movement Debit</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-minus me-1"></i>Movement Credit</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-plus me-1"></i>End Debit</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-minus me-1"></i>End Credit</th>
+                                            <th><i class="mdi mdi-check-circle-outline me-1"></i>Reconciled</th>
+                                            <th><i class="mdi mdi-play-circle-outline me-1"></i>Active</th>
+                                            <th class="text-center"><i class="mdi mdi-cog-outline me-1"></i>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model?.TrialBalanceRows != null)
+                                        {
+                                            foreach (var row in Model.TrialBalanceRows)
+                                            {
+                                                <tr>
+                                                    <td><span class="fw-bold text-primary">@row.SourceCode</span></td>
+                                                    <td>@row.SourceName</td>
+                                                    <td class="text-end">@row.OpeningDebit.ToString("N2")</td>
+                                                    <td class="text-end">@row.OpeningCredit.ToString("N2")</td>
+                                                    <td class="text-end">@row.MovementDebit.ToString("N2")</td>
+                                                    <td class="text-end">@row.MovementCredit.ToString("N2")</td>
+                                                    <td class="text-end fw-bold">@row.EndDebit.ToString("N2")</td>
+                                                    <td class="text-end fw-bold">@row.EndCredit.ToString("N2")</td>
+                                                    <td>
+                                                        <span class="badge @(row.IsReconciled ? "bg-success" : "bg-secondary")">
+                                                            @(row.IsReconciled ? "Yes" : "No")
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge @(row.IsCurrentlyActive ? "bg-info" : "bg-warning")">
+                                                            @(row.IsCurrentlyActive ? "Yes" : "No")
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-outline-primary btn-trial-details"
+                                                                data-row-id="@row.Id"
+                                                                data-source-code="@row.SourceCode"
+                                                                data-source-name="@row.SourceName"
+                                                                data-opening-debit="@row.OpeningDebit"
+                                                                data-opening-credit="@row.OpeningCredit"
+                                                                data-movement-debit="@row.MovementDebit"
+                                                                data-movement-credit="@row.MovementCredit"
+                                                                data-end-debit="@row.EndDebit"
+                                                                data-end-credit="@row.EndCredit"
+                                                                data-branch-account-id="@row.BranchAccountId"
+                                                                data-is-reconciled="@row.IsReconciled"
+                                                                data-is-active="@row.IsCurrentlyActive"
+                                                                data-created-date="@row.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")"
+                                                                data-modified-date="@row.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")">
+                                                            <i class="mdi mdi-eye-outline"></i> View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Balance Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-light text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="mdi mdi-account-group-outline me-2"></i>
+                                Member Balance Data
+                                <span class="badge bg-light text-success ms-2">@Model.MemberBalanceRows.Count rows</span>
+                            </h5>
+                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#memberBalanceSection">
+                                <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="memberBalanceSection" class="collapse">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="memberBalanceTable" class="table table-hover table-striped" style="width:100%">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th><i class="mdi mdi-identifier me-1"></i>Member ID</th>
+                                            <th><i class="mdi mdi-account-cog-outline me-1"></i>Account Type</th>
+                                            <th><i class="mdi mdi-credit-card-outline me-1"></i>Account Number</th>
+                                            <th><i class="mdi mdi-office-building-outline me-1"></i>Branch Code</th>
+                                            <th><i class="mdi mdi-bank-outline me-1"></i>Branch Name</th>
+                                            <th class="text-end"><i class="mdi mdi-cash-multiple me-1"></i>Balance</th>
+                                            <th><i class="mdi mdi-progress-check me-1"></i>Reconciliation Status</th>
+                                            <th><i class="mdi mdi-account-check-outline me-1"></i>Reconciled By</th>
+                                            <th class="text-center"><i class="mdi mdi-cog-outline me-1"></i>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model?.MemberBalanceRows != null)
+                                        {
+                                            foreach (var row in Model.MemberBalanceRows)
+                                            {
+                                                <tr>
+                                                    <td><span class="fw-bold text-success">@row.MemberId</span></td>
+                                                    <td>@row.AccountType</td>
+                                                    <td>@row.AccountNumber</td>
+                                                    <td>@row.BranchCode</td>
+                                                    <td>@row.BranchName</td>
+                                                    <td class="text-end fw-bold">@row.Balance.ToString("N2")</td>
+                                                    <td>
+                                                        <span class="badge
+                                                            @(row.RecocilationStatus?.ToLower() == "completed" ? "bg-success" :
+                                                              row.RecocilationStatus?.ToLower() == "pending" ? "bg-warning" :
+                                                              row.RecocilationStatus?.ToLower() == "failed" ? "bg-danger" : "bg-secondary")">
+                                                            @row.RecocilationStatus
+                                                        </span>
+                                                    </td>
+                                                    <td>@(string.IsNullOrEmpty(row.ReconciledBy) ? "—" : row.ReconciledBy)</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-outline-success btn-member-details"
+                                                                data-row-id="@row.Id"
+                                                                data-member-id="@row.MemberId"
+                                                                data-account-type="@row.AccountType"
+                                                                data-account-number="@row.AccountNumber"
+                                                                data-branch-code="@row.BranchCode"
+                                                                data-branch-name="@row.BranchName"
+                                                                data-balance="@row.Balance"
+                                                                data-reconciliation-status="@row.RecocilationStatus"
+                                                                data-reconciled-by="@row.ReconciledBy"
+                                                                data-created-date="@row.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")"
+                                                                data-modified-date="@row.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")">
+                                                            <i class="mdi mdi-eye-outline"></i> View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Reconciliation Button -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <div class="card border-0 bg-light">
+                    <div class="card-body py-4">
+                        <h4 class="text-muted mb-3">Ready to Complete Reconciliation?</h4>
+                        <p class="text-muted mb-4">Once confirmed, the reconciliation process will be finalized and cannot be undone.</p>
+                        <button id="confirmReconciliationBtn" data-id="@Html.Raw(Model?.Id ?? "")" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation
+                        </button>
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                This will update all records and mark the file as processed
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Modals -->
+<div class="modal fade" id="trialBalanceDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="mdi mdi-file-table-outline me-2"></i>Trial Balance Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="trialBalanceDetailsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="memberBalanceDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="memberBalanceDetailsContent">
+                <!-- Content will be populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -138,41 +604,269 @@
 
 @section Scripts {
     <script>
-(function () {
-    const btn = document.getElementById('confirmUploadBtn');
-    if (!btn) return;
+        $(document).ready(function () {
+            // Initialize DataTables with enhanced options
+            $('#trialBalanceTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                order: [[0, 'asc']],
+                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search trial balance...",
+                    lengthMenu: "_MENU_ records per page"
+                }
+            });
 
-    btn.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-        if (!id) { alert('No id provided.'); return; }
+            $('#memberBalanceTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                order: [[0, 'asc']],
+                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search member balance...",
+                    lengthMenu: "_MENU_ records per page"
+                }
+            });
 
-        this.disabled = true;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Confirming...';
+            // Enhanced Trial Balance Details
+            $('.btn-trial-details').on('click', function () {
+                const $btn = $(this);
+                const isReconciled = $btn.data('is-reconciled');
+                const isActive = $btn.data('is-active');
 
-        fetch('@Url.Action("ConfirmUpload","Reconciliation")', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
-            },
-            body: JSON.stringify({ id: id })
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data && data.success) {
-                try { if (window.table && window.table.ajax) window.table.ajax.reload(null, false); } catch(_) {}
-                const modalEl = document.getElementById('CorrespondanceDetailsModal');
-                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
-            } else {
-                alert(data?.message || 'Confirm failed');
+                const detailsHtml = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary mb-3"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr><td class="fw-bold text-muted small">ID:</td><td class="font-monospace">${$btn.data('row-id')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Source Code:</td><td><span class="badge bg-primary">${$btn.data('source-code')}</span></td></tr>
+                                        <tr><td class="fw-bold text-muted small">Source Name:</td><td>${$btn.data('source-name')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Branch Account ID:</td><td>${$btn.data('branch-account-id') || '—'}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary mb-3"><i class="mdi mdi-account-check-outline me-2"></i>Status</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td class="fw-bold text-muted small">Reconciled:</td>
+                                            <td><span class="badge ${isReconciled ? 'bg-success' : 'bg-secondary'}">${isReconciled ? 'Yes' : 'No'}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-muted small">Active:</td>
+                                            <td><span class="badge ${isActive ? 'bg-info' : 'bg-warning'}">${isActive ? 'Yes' : 'No'}</span></td>
+                                        </tr>
+                                        <tr><td class="fw-bold text-muted small">Created:</td><td>${$btn.data('created-date')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Modified:</td><td>${$btn.data('modified-date')}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card border-0">
+                                <div class="card-header bg-white">
+                                    <h6 class="card-title mb-0 text-primary"><i class="mdi mdi-cash-multiple me-2"></i>Financial Details</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-md-3">
+                                            <div class="border rounded p-3">
+                                                <div class="text-muted small">Opening Debit</div>
+                                                <div class="h5 text-primary fw-bold">${parseFloat($btn.data('opening-debit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="border rounded p-3">
+                                                <div class="text-muted small">Opening Credit</div>
+                                                <div class="h5 text-success fw-bold">${parseFloat($btn.data('opening-credit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="border rounded p-3">
+                                                <div class="text-muted small">End Debit</div>
+                                                <div class="h5 text-primary fw-bold">${parseFloat($btn.data('end-debit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="border rounded p-3">
+                                                <div class="text-muted small">End Credit</div>
+                                                <div class="h5 text-success fw-bold">${parseFloat($btn.data('end-credit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('#trialBalanceDetailsContent').html(detailsHtml);
+                new bootstrap.Modal(document.getElementById('trialBalanceDetailsModal')).show();
+            });
+
+            // Enhanced Member Balance Details
+            $('.btn-member-details').on('click', function () {
+                const $btn = $(this);
+                const reconciliationStatus = $btn.data('reconciliation-status');
+                const statusBadgeClass =
+                    reconciliationStatus?.toLowerCase() === 'completed' ? 'bg-success' :
+                    reconciliationStatus?.toLowerCase() === 'pending' ? 'bg-warning' :
+                    reconciliationStatus?.toLowerCase() === 'failed' ? 'bg-danger' : 'bg-secondary';
+
+                const detailsHtml = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success mb-3"><i class="mdi mdi-account-outline me-2"></i>Member Information</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr><td class="fw-bold text-muted small">ID:</td><td class="font-monospace">${$btn.data('row-id')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Member ID:</td><td><span class="badge bg-success">${$btn.data('member-id')}</span></td></tr>
+                                        <tr><td class="fw-bold text-muted small">Account Type:</td><td>${$btn.data('account-type')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Account Number:</td><td>${$btn.data('account-number')}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success mb-3"><i class="mdi mdi-bank-outline me-2"></i>Branch & Status</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr><td class="fw-bold text-muted small">Branch Code:</td><td>${$btn.data('branch-code')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Branch Name:</td><td>${$btn.data('branch-name')}</td></tr>
+                                        <tr>
+                                            <td class="fw-bold text-muted small">Status:</td>
+                                            <td><span class="badge ${statusBadgeClass}">${reconciliationStatus}</span></td>
+                                        </tr>
+                                        <tr><td class="fw-bold text-muted small">Reconciled By:</td><td>${$btn.data('reconciled-by') || '—'}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card border-0">
+                                <div class="card-header bg-white">
+                                    <h6 class="card-title mb-0 text-success"><i class="mdi mdi-finance me-2"></i>Financial Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <table class="table table-sm table-borderless">
+                                                <tr><td class="fw-bold text-muted small">Current Balance:</td></tr>
+                                                <tr><td class="h2 text-success fw-bold">${parseFloat($btn.data('balance')).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</td></tr>
+                                                <tr><td class="text-muted small">As of ${$btn.data('modified-date')}</td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <div class="border-start ps-3">
+                                                <div class="text-muted small">Created</div>
+                                                <div class="fw-bold">${$btn.data('created-date')}</div>
+                                                <div class="text-muted small mt-2">Modified</div>
+                                                <div class="fw-bold">${$btn.data('modified-date')}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('#memberBalanceDetailsContent').html(detailsHtml);
+                new bootstrap.Modal(document.getElementById('memberBalanceDetailsModal')).show();
+            });
+
+            // Enhanced Confirm Reconciliation with Sweet Alert
+            $('#confirmReconciliationBtn').on('click', function () {
+                const $btn = $(this);
+                const id = $btn.data('id');
+
+                if (!id) {
+                    showAlert('error', 'Error', 'No file ID provided.');
+                    return;
+                }
+
+                // Using SweetAlert for better confirmation dialog
+                Swal.fire({
+                    title: 'Confirm Reconciliation?',
+                    html: `Are you sure you want to confirm reconciliation for this file?<br><br>
+                          <small class="text-muted">This action will finalize the reconciliation process and cannot be undone.</small>`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Confirm Reconciliation',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#198754',
+                    cancelButtonColor: '#6c757d',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        performReconciliation($btn, id);
+                    }
+                });
+            });
+
+            function performReconciliation($btn, id) {
+                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status"></span> Processing...');
+
+                fetch('@Url.Action("ConfirmUpload","Reconciliation")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.success) {
+                        showAlert('success', 'Success!', 'Reconciliation confirmed successfully!');
+                        // Refresh parent table if exists
+                        if (window.table && typeof window.table.ajax === 'function') {
+                            window.table.ajax.reload(null, false);
+                        }
+                        // Close the modal if we're in one
+                        const modalEl = document.getElementById('CorrespondanceDetailsModal');
+                        if (modalEl) {
+                            bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+                        }
+                    } else {
+                        showAlert('error', 'Failed!', data?.message || 'Reconciliation confirmation failed');
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    showAlert('error', 'Error!', 'Error confirming reconciliation. Please try again.');
+                })
+                .finally(() => {
+                    $btn.prop('disabled', false).html('<i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation');
+                });
             }
-        })
-        .catch(e => { console.error(e); alert('Error confirming'); })
-        .finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="mdi mdi-check-circle-outline me-1"></i> Confirm';
+
+            function showAlert(icon, title, text) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: icon,
+                        title: title,
+                        text: text,
+                        confirmButtonColor: '#198754'
+                    });
+                } else {
+                    alert(text);
+                }
+            }
         });
-    });
-})();
     </script>
 }
