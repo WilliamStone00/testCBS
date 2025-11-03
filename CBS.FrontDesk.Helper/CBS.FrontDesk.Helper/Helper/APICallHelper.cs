@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.VariantTypes;
 using System.CodeDom;
@@ -1469,7 +1470,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalHeaderDataTable = "api/v1/tempjournalhead/datatable";
         public static string GetJournalworkticketDataTable = "/api/v1/workticketflow/datatable";
         public static string ApproveJournalEntry = "/api/v1/ops/manual-entry/approve/source";
-       
+        public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
         public static string RejectJournalEntry = "api/manualjournalentry/post";
         
         public static string GetJournalEntryTempById = "/api/v1/tempjournalheader/{0}";
@@ -1589,6 +1590,9 @@ namespace CBS.FrontDesk.Helper
 
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
+        public const string GetAccountBalance = "/api/v1/TrialBalance/balance/{0}";
+        public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
+
 
     }
 }

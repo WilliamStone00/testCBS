@@ -52,7 +52,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         (function () {
             "use strict";
 
@@ -89,22 +89,25 @@
                     if (!accountId) return;
 
                     $.ajax({
-                        url: '@Url.Action("GetAccountBalance", "CashReconciliation")',
-                        type: 'GET',
-                        data: { accountId },
-                        success: function (response) {
-                            if (response && response.success) {
-                                treasuryBalance = parseFloat(response.balance) || 0;
-                                $("#Balance").val(formatNumber(treasuryBalance));
-                                recalcCashDiff();
-                            } else {
-                                appalert(response?.message || "Balance not found.", 3, 1);
-                            }
-                        },
-                        error: function () {
-                            appalert("Failed to get balance.", 0, 1);
+                    url: '@Url.Action("GetAccountBalance", "CashReconciliation")',
+                    type: 'GET',
+                    data: { accountId },
+                    success: function (response) {
+                        if (response && response.success) {
+                            // access the actual decimal value
+                            treasuryBalance = parseFloat(response.balance.TrialBalanceBalance) || 0;
+                            $("#Balance").val(formatNumber(treasuryBalance));
+                            $("#GlBalance").val(treasuryBalance);
+                            recalcCashDiff();
+                        } else {
+                            appalert(response?.message || "Balance not found.", 3, 1);
                         }
-                    });
+                    },
+                    error: function () {
+                        appalert("Failed to get balance.", 0, 1);
+                    }
+                });
+
                 });
 
                 // amount typing -> recalc diff
@@ -112,8 +115,19 @@
 
                 function recalcCashDiff() {
                     const amount = parseNumber($("#Amount").val());
-                    const diff = treasuryBalance - amount; // GL − counted
+                    const diff = amount - treasuryBalance; // GL − counted
                     $("#CashDiff").val(formatNumber(diff));
+
+                    const $indicator = $("#CashDiffIndicator");
+                    $indicator.removeClass("text-success text-danger");
+
+                    if (diff === 0) {
+                        $indicator.text("✔").addClass("text-success");  // green check
+                    } else if (diff < 0) {
+                        $indicator.text("✖").addClass("text-danger");   // red X
+                    } else {
+                        $indicator.text("");  
+                    }
                 }
 
                 // expose globally for onchange on Branch
@@ -276,5 +290,5 @@
                 };
             });
         })();
-    </script>
+</script>
 }

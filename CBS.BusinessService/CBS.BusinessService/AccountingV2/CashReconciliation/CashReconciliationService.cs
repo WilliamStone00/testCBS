@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.AndriodApp;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Microsoft.AspNet.SignalR.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,7 +32,7 @@ namespace CBS.BusinessService.AccountingV2.CashReconciliation
 
         }
 
-        public async Task<AccountGroupDto> GetCashReconciliationAccountsAsync(string branchId)
+        public async Task<AccountGroupDto> GetCashReconciliationAccountsAsync(string branchId)  
         {
             try
             {
@@ -48,13 +49,13 @@ namespace CBS.BusinessService.AccountingV2.CashReconciliation
             }
         }
 
-        public async Task<AccountGroupDto> GetAccountBalarnce(string accountId)
+        public async Task<TrialBalanceEntry> GetAccountBalance(string accountId)
         {
             try
             {
-                var api = string.Format(APICallHelper.GetCashReconciliationAccounts, accountId);
-                var apiResponse = await _CashapiCallerHelper.GetAsync<ResponseObject<AccountGroupDto>>(api);
-                var accountBalance = apiResponse?.ApiResponseData?.Data ?? new AccountGroupDto();
+                var api = string.Format(APICallHelper.GetAccountBalance, accountId);
+                var apiResponse = await _CashapiCallerHelper.GetAsync<ResponseObject<TrialBalanceEntry>>(api);
+                var accountBalance = apiResponse?.ApiResponseData?.Data ?? new TrialBalanceEntry();
 
                 return accountBalance;
 
@@ -68,28 +69,34 @@ namespace CBS.BusinessService.AccountingV2.CashReconciliation
 
 
 
-        public decimal GetAccountBalance(string accountId)
-        {
-            var balances = new Dictionary<string, decimal>
-        {
-            { "293595619306904", 120000.50m },
-            { "378663546416125", 54000.75m },
-            { "781320160686593", 7800.00m },
-            { "931321352267142", 45000.25m },
-            { "949938076276909", 100000.00m },
+        //public decimal GetAccountBalance(string accountId)
+        //{
+        //    var balances = new Dictionary<string, decimal>
+        //{
+        //    { "293595619306904", 120000.50m },
+        //    { "378663546416125", 54000.75m },
+        //    { "781320160686593", 7800.00m },
+        //    { "571000907171642", 45000.25m },
+        //    { "949938076276909", 100000.00m },
 
-            { "971854780649377", 2500.10m }
-        };
+        //    { "971854780649377", 2500.10m }
+        //};
 
-            return balances.ContainsKey(accountId) ? balances[accountId] : 0m;
-        }
+        //    return balances.ContainsKey(accountId) ? balances[accountId] : 0m;
+        //}
 
         public async Task<ExecutionMessages> Create(CashAndVaultInit model)
         {
             try
             {
-                var response = await _CashapiCallerHelper.PostAsync<ServiceResponse<CashAndVaultInit>>(APICallHelper.AddOrUpdateAndriodVersion, model);
+
+                model.GlBalance = model.OGlBalance;
+                model.DifferenceInAmount= model.CashInHand - model.GlBalance;
+                string jsonData = JsonConvert.SerializeObject(model);
+                var response = await _CashapiCallerHelper.PostAsync<ServiceResponse<CashAndVaultInit>>(APICallHelper.SaveReconciliation, model);
+                 
                 if (response.ApiResponseData != null)
+
                 {
                     // Successful creation
                     GetExecutionMessages(response, true, null, MessagesResults.Success,

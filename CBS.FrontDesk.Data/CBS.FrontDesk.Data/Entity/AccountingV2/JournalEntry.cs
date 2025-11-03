@@ -246,6 +246,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalCredit { get; set; }
         public decimal TotalDebit { get; set; }
     }
+    
 
     // ==============================================
     // RECEIPT
