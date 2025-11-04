@@ -11,7 +11,7 @@
 
     <div class="card shadow-sm mt-3">
         <div class="card-body">
-            @Html.TextBoxFor(m => m.OGlBalance, new { @class = "form-control", id = "GlBalance" })
+            @Html.HiddenFor(m => m.OGlBalance, new { @class = "form-control", id = "GlBalance" })
 
             <!-- Header / Accounting Date -->
             <div class="d-flex justify-content-between align-items-center mb-3">
