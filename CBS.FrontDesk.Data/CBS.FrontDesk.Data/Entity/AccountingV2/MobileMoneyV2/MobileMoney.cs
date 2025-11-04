@@ -17,7 +17,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2
 		public bool ActiveStatus { get; set; }
 
 		public string BranchAccountId { get; set; }
-		public BranchAccount BranchAccount { get; set; }
+		public string COAName { get; set; }
+		public string COANumber { get; set; }
 
 		public DateTime? CreatedDate { get; set; }
 	}
