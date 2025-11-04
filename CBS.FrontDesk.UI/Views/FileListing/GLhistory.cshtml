@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "GLhistory";
 }
 @using Resources;
@@ -10,7 +9,7 @@
         <div class="card bg-light mb-2 p-2">
             <div class="card-body text-center py-2">
                 <h1 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-bank-transfer me-2"></i>GL History Listing
+                    <i class="mdi mdi-bank-transfer me-2"></i>Migration GLs Histories
                 </h1>
                 <p class="card-text small mb-1">
                     @AccountingV2.AffiliateManagementtext
@@ -50,8 +49,18 @@
 
     @* The form posts to Index (or your GLHistory controller action). Use GET for simple listing/filtering. *@
     <form id="glHistoryFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")" class="mb-0">
+        @Html.AntiForgeryToken()
         <div class="card p-2 mb-2 bg-light">
             <div class="row mb-2 g-1">
+
+                <!-- Branch -->
+                <div class="col-md-6">
+                    <label class="form-label small mb-1" for="BranchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-select select2 form-select-sm", id = "BranchId" })
+                </div>
 
                 <!-- BranchAccount (full width on small, half on md+) -->
                 <div class="col-md-6">
@@ -61,15 +70,6 @@
                         new SelectList(ViewBag.BranchAccounts ?? new List<SelectListItem>(), "Value", "Text"),
                         "--- Select Branch Account ---",
                         new { @class = "form-select select2 form-select-sm", id = "BranchAccountId" })
-                </div>
-
-                <!-- Branch -->
-                <div class="col-md-6">
-                    <label class="form-label small mb-1" for="BranchId">Branch</label>
-                    @Html.DropDownList("BranchId",
-                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-select select2 form-select-sm", id = "BranchId" })
                 </div>
 
                 <!-- Reconciliation Type -->
@@ -142,257 +142,223 @@
 @section Scripts {
     <script>
 (function ($) {
-  'use strict';
+    'use strict';
 
-  // ---------- ROUTES ----------
-  const dataUrl   = '@Url.Action("LoadData1", "FileListing")';
-  const detailUrl = '@Url.Action("DetailsGLH", "FileListing")';
+    // FIXED: Use correct controller URL - adjust to match your actual controller
+     const dataUrl = '@Url.Action("LoadData2", "FileListing")'; // Changed to GLHistory controller
+  const detailUrl = '@Url.Action("DetailsGLH", "FileListing")'; // Changed to GLHistory controller
 
-  // ---------- STATE ----------
-  let table = null;
-  let tableInitialized = false;
-  window.table = window.table || null;
-  window.tableInitialized = window.tableInitialized || false;
+    const tableSelector = '#myDataTable';
+    let table = null;
 
-  // ---------- UTIL ----------
-  function safeParseUnobtrusive($scope) {
-    try {
-      if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
-        $.validator.unobtrusive.parse($scope);
-        return true;
-      }
-    } catch (e) { console.warn('unobtrusive.parse failed', e); }
-    return false;
-  }
+    // ------------------- FILTERS -------------------
+    function getFilters() {
+        const formData = $('#glHistoryFilterForm').serializeArray();
+        const filters = {};
 
-  // ---------- FILTERS ----------
-  function getGLHistoryFilters() {
-    const initiationDate = $('#InitiationDate').val();
-    const differenceAmount = $('#DifferenceInAmount').val();
-
-    return {
-      Options: {},
-      BranchAccountId: $('#BranchAccountId').val() || null,
-      BranchId: $('#BranchId').val() || null,
-      ReconciliationType: $('#ReconciliationType').val() || null,
-      InitiationDate: initiationDate || null,
-      OwnerName: $.trim($('#OwnerName').val()) || null,
-      DifferenceInAmount: differenceAmount ? parseFloat(differenceAmount) : null
-    };
-  }
-
-  // ---------- MODAL FUNCTIONS ----------
-  function showDetailsModalLoading() {
-    $('#affiliateDetailsModal .modal-body').html(
-      '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
-    );
-    (bootstrap.Modal.getInstance($('#affiliateDetailsModal')[0]) ||
-      new bootstrap.Modal($('#affiliateDetailsModal')[0], { backdrop: 'static' })
-    ).show();
-  }
-
-  function loadIntoDetailsModal(url, data) {
-    showDetailsModalLoading();
-    $.get(url, data)
-      .done(function (html) {
-        $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details.</div>');
-      })
-      .fail(function () {
-        $('#affiliateDetailsModal .modal-body')
-          .html('<div class="p-3 text-danger">Failed to load details.</div>');
-      });
-  }
-
-  // ---------- ROW ACTION BUTTONS RENDER ----------
-  function actionButtons(row) {
-    const id = encodeURIComponent(String(row.Id || ''));
-    const fileName = String(row.FileName || '').replace(/"/g, '&quot;');
-    const btnId = 'act_' + (row.Id || Math.random().toString(36).slice(2));
-
-    return `
-      <div class="dropdown text-center">
-        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="mdi mdi-cog-outline"></i> Actions
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-          <li>
-            <button type="button" class="dropdown-item btn-detail" data-id="${id}" title="Details &quot;${fileName}&quot;">
-              <i class="mdi mdi-eye me-1 text-primary"></i> Details
-            </button>
-          </li>
-        </ul>
-      </div>
-    `;
-  }
-
-  // ---------- DATATABLE ----------
-  function initDataTable() {
-    const selector = '#myDataTable';
-    if ($.fn.DataTable.isDataTable(selector)) {
-      try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
-      $(selector + ' tbody').empty();
-    }
-
-    table = $(selector).DataTable({
-      serverSide: true,
-      processing: false,
-      responsive: true,
-      autoWidth: false,
-      pageLength: 10,
-      order: [[0, 'desc']],
-      columnDefs: [
-        { targets: 0, width: '18%' },
-        { targets: 1, width: '25%' },
-        { targets: 2, width: '21%' },
-        { targets: 3, width: '13%' },
-        { targets: 4, width: '13%' },
-        { targets: 5, width: '10%', className: 'text-end', orderable: false, searchable: false }
-      ],
-      ajax: {
-        url: dataUrl,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: function (d) {
-          const filters = getGLHistoryFilters();
-          filters.Options = {
-            draw: d.draw,
-            start: d.start,
-            length: d.length,
-            skip: d.start,
-            pageSize: d.length,
-            searchValue: d.search?.value || '',
-            sortColumnName: '',
-            sortColumnDirection: ''
-          };
-          return JSON.stringify(filters);
-        },
-        dataSrc: function (json) {
-          if (!json) return [];
-          if (Array.isArray(json.data)) return json.data;
-          if (Array.isArray(json.result)) return json.result;
-          if (Array.isArray(json.items)) return json.items;
-          for (var k in json) { if (Array.isArray(json[k])) return json[k]; }
-          return [];
-        },
-        error: function () {
-          $(selector + ' tbody').html('<tr><td colspan="6" class="text-center text-danger">Failed to load data.</td></tr>');
-        }
-      },
-      columns: [
-        {
-          data: 'CreatedDate',
-          name: 'CreatedDate',
-          render: function (data, type, row) {
-            const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
-            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
-          }
-        },
-        {
-            data: 'BranchName',
-            name: 'BranchName',
-          render: function (data, type, row) {
-              return row.BranchName || row.BranchName || '';
-          }
-        },
-        {
-            data: 'GlBalance',
-            name: 'GlBalance',
-          render: function (data, type, row) {
-              return row.GlBalance || row.GlBalance || '';
-          }
-        },
-        {
-          data: 'DifferenceInAmount',
-          name: 'DifferenceInAmount',
-          render: function (data, type, row) {
-            return (row.DifferenceInAmount != null) ? String(row.DifferenceInAmount) : '-';
-          }
-        },
-        {
-          data: 'ReconciliationReference',
-          name: 'ReconciliationReference',
-          render: function (data, type, row) {
-            return (row.ReconciliationReference != null) ? String(row.ReconciliationReference) : '-';
-          }
-        },
-        {
-          data: null,
-          orderable: false,
-          searchable: false,
-          className: 'text-end',
-          render: (d, t, row) => actionButtons(row)
-        }
-      ],
-      language: { emptyTable: 'No GL History records found' }
-    });
-
-    tableInitialized = true;
-    window.table = table;
-    window.tableInitialized = true;
-  }
-
-  function reloadTable() {
-    if (!tableInitialized) {
-      if ($('#myDataTable').length === 0) {
-        console.error('myDataTable markup missing. Ensure _DataGLH partial is present.');
-        return;
-      }
-      initDataTable();
-    } else if (table && table.ajax) {
-      table.ajax.reload(null, false);
-    }
-  }
-
-  // ---------- INIT + EVENTS ----------
-  $(document).ready(function () {
-    // Initialize select2 if available
-    if ($.fn.select2) {
-      try {
-        $('#BranchAccountId,#BranchId,#ReconciliationType').select2({
-          width: '100%',
-          dropdownParent: $('body') // Ensure proper dropdown positioning
+        formData.forEach(item => {
+            if (item.value) {
+                filters[item.name] = item.value;
+            }
         });
-      } catch(e){ console.warn('select2 init failed', e); }
+
+        if (filters.DifferenceInAmount) {
+            filters.DifferenceInAmount = parseFloat(filters.DifferenceInAmount);
+        }
+
+        return filters;
     }
 
-    // Apply Filter Button
-    $('#applyGLHistoryFilterBtn').on('click', function (e) {
-      e.preventDefault();
-      reloadTable();
-    });
+    // ------------------- MODAL -------------------
+    function loadDetailsModal(id) {
+        const modal = $('#affiliateDetailsModal');
+        modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border"></div></div>');
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modal[0]);
+        modalInstance.show();
 
-    // Reset Filter Button
-    $('#resetGLHistoryFilterBtn').on('click', function () {
-      $('#glHistoryFilterForm')[0].reset();
-      if ($.fn.select2) {
-        try {
-          $('#BranchAccountId,#BranchId,#ReconciliationType').val(null).trigger('change');
-        } catch(_){}
-      }
-      reloadTable();
-    });
-
-    // Enter key support in filter form
-    $('#glHistoryFilterForm').on('keypress', 'input,select', function (e) {
-      if (e.which === 13) {
-        e.preventDefault();
-        reloadTable();
-      }
-    });
-
-    // Row: Details -> DETAILS modal
-    $('#datalistingview').on('click', '.btn-detail', function () {
-      const id = $(this).data('id');
-      if (!id) return;
-      loadIntoDetailsModal(detailUrl, { id: id, partialView: '_DetailsGLH' });
-    });
-
-    // Initialize the DataTable on page load
-    if ($('#myDataTable').length) {
-      //initDataTable();
+        $.get(detailUrl, { id: id })
+            .done(html => {
+                modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+            })
+            .fail((xhr, status, error) => {
+                console.error('Error loading details:', error);
+                modal.find('.modal-body').html('<div class="p-3 text-danger">Failed to load details. Please try again.</div>');
+            });
     }
-  });
+
+    // ------------------- ACTION BUTTON -------------------
+    function actionButtons(data, type, row, meta) {
+        if (type !== 'display') return '';
+
+        const id = encodeURIComponent(String(row.Id || row.id || ''));
+        return `<div class="dropdown text-center">
+            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown">
+                <i class="mdi mdi-cog-outline"></i> Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="dropdown-item btn-detail" type="button" data-id="${id}" title="Details">
+                    <i class="mdi mdi-eye me-1 text-primary"></i>Details
+                </button></li>
+            </ul>
+        </div>`;
+    }
+
+    // ------------------- DATATABLE -------------------
+    function initDataTable() {
+        if ($(tableSelector).length === 0) {
+            console.warn('initDataTable: table markup not found:', tableSelector);
+            return;
+        }
+
+        // If an instance exists, destroy cleanly first
+        if ($.fn.DataTable.isDataTable(tableSelector)) {
+            try {
+                $(tableSelector).DataTable().clear().destroy();
+            } catch (err) {
+                console.warn('Error during DataTable destroy:', err);
+            }
+            $(tableSelector).empty();
+        }
+
+        table = $(tableSelector).DataTable({
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            pageLength: 10,
+            order: [[0, 'desc']],
+            ajax: {
+                url: dataUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                data: function (d) {
+                    const filters = getFilters();
+                    return JSON.stringify({
+                        ...filters,
+                        Options: {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            searchValue: d.search.value || '',
+                            sortColumnName: d.columns && d.order && d.order.length > 0 ? d.columns[d.order[0].column].data : '',
+                            sortColumnDirection: d.order && d.order.length > 0 ? d.order[0].dir : 'desc'
+                        }
+                    });
+                },
+                dataSrc: function (json) {
+                    if (json.data) return json.data;
+                    if (json.result) return json.result;
+                    if (json.items) return json.items;
+                    return [];
+                },
+                error: function (xhr, error, thrown) {
+                    console.error('DataTable AJAX error:', error, thrown);
+                    $(tableSelector + ' tbody').html(
+                        '<tr><td colspan="6" class="text-center text-danger">Failed to load data. Please try again.</td></tr>'
+                    );
+                }
+            },
+            columns: [
+                {
+                    data: 'InitiationDate',
+                    name: 'InitiationDate',
+                    render: function (data, type, row) {
+                        if (!data) return '-';
+                        if (window.moment && moment(data).isValid()) {
+                            return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                        }
+                        return data;
+                    }
+                },
+                { data: 'BranchName', name: 'BranchName' },
+                { data: 'GlBalance', name: 'GlBalance' },
+                {
+                    data: 'DifferenceInAmount',
+                    name: 'DifferenceInAmount',
+                    render: function (data) {
+                        return data != null ? data : '-';
+                    }
+                },
+                {
+                    data: 'ReconciliationReference',
+                    name: 'ReconciliationReference',
+                    render: function (data) {
+                        return data != null ? data : '-';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-end',
+                    render: actionButtons
+                }
+            ],
+            language: {
+                emptyTable: 'No GL History records found',
+            }
+        });
+
+        // ensure table variable is the DataTable API instance
+        table = $(tableSelector).DataTable();
+    }
+
+    // ------------------- EVENTS -------------------
+    $(document).ready(function(){
+        // Initialize select2 if available
+        if ($.fn.select2) {
+            $('#BranchAccountId, #BranchId, #ReconciliationType').select2({
+                width: '100%',
+                dropdownParent: $('body')
+            });
+        }
+
+        // Apply Filter Button - now checks the DOM instance properly
+        $('#applyGLHistoryFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            if ($.fn.DataTable.isDataTable(tableSelector)) {
+                $(tableSelector).DataTable().ajax.reload();
+            } else {
+                initDataTable();
+            }
+        });
+
+        // Reset Filter Button
+        $('#resetGLHistoryFilterBtn').on('click', function(){
+            $('#glHistoryFilterForm')[0].reset();
+            if ($.fn.select2) {
+                $('#BranchAccountId, #BranchId, #ReconciliationType').val(null).trigger('change');
+            }
+            if ($.fn.DataTable.isDataTable(tableSelector)) {
+                $(tableSelector).DataTable().ajax.reload();
+            }
+        });
+
+        // Enter key support in filters
+        $('#glHistoryFilterForm').on('keypress', 'input, select', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                $('#applyGLHistoryFilterBtn').click();
+            }
+        });
+
+        // Details modal event delegation
+        $(document).on('click', '.btn-detail', function(){
+            const id = $(this).data('id');
+            if (id) {
+                loadDetailsModal(id);
+            }
+        });
+
+        // Initialize DataTable on page load (if table markup exists)
+        if ($(tableSelector).length) {
+          //  initDataTable();
+        } else {
+            console.warn('DataTable init skipped: table element not found:', tableSelector);
+        }
+    });
 
 })(jQuery);
     </script>

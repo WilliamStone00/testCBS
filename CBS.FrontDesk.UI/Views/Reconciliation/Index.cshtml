@@ -336,6 +336,9 @@
 
 @section Scripts {
     <script>
+
+      
+
         (function ($) {
             'use strict';
 
@@ -1006,7 +1009,7 @@
 
                 const message = `Do you want to reconcile the trial balance for?\n` +
                               `Branch Account: ${branchAccountText}\n` +
-                              `Balance: $${balanceAmount.toLocaleString()}\n` +
+                              `Balance: ${balanceAmount.toLocaleString()}\n` +
                               `Count: ${count}\n` +
                               `Mode: ${currentMode}`;
 
@@ -1052,7 +1055,7 @@
                 try {
                     return new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'USD'
+                      /*  currency: 'USD'*/
                     }).format(value);
                 } catch (e) {
                     return value;
@@ -1071,7 +1074,7 @@
                 }
 
                 // Display TotalBalance for both modes
-                $('#balanceDisplay').text(formatCurrency(data.TotalBalance));
+                $('#balanceDisplay').text(data.TotalBalance);
 
                 // Display different counts based on mode
                 if (currentMode === 'loan') {
