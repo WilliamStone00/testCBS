@@ -1,4 +1,10 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
+﻿
+
+
+
+
+
+@model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
 @using Resources;
 
 <style>
@@ -115,6 +121,24 @@
         </tbody>
     </table>
 
+
+    @if (!string.Equals(Model?.State, "Approved", StringComparison.OrdinalIgnoreCase))
+    {
+        <div class="row mb-2 align-items-end">
+            <div class="col-md-12 mb-2">
+                @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                @Html.DropDownList(
+                    "BranchId",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
+                )
+            </div>
+        </div>
+    }
+
+
+
     @*================= TABLE =================*@
     <div class="table-responsive">
         <table class="table table-bordered align-middle text-center" id="myDataTable">
@@ -165,74 +189,91 @@
     </button>
     <div>
 
-        <button type="button" id="btnApprove" class="btn btn-success">
-            <i class="mdi mdi-check-circle-outline"></i> Approve
-        </button>
+
+
+
+        <div class="mt-3 d-flex justify-content-end">
+            <button type="button" id="btnApproveDestination" class="btn btn-success">
+                <i class="mdi mdi-check-circle-outline"></i>
+                <span class="btn-text">Approve</span>
+            </button>
+        </div>
+
     </div>
 </div>
 
 
 
+
+
+
+
 <script>
     $(document).ready(function () {
         let accounts = [];
 
-        // ✅ Load accounts (only once)
-        function loadAccounts(callback) {
-            if (accounts.length > 0) {
-                if (callback) callback();
+        // ==========================
+        // Utility functions
+        // ==========================
+
+        function initSelect2(element) {
+            element.select2({
+                width: '100%',
+                placeholder: 'Select Account',
+                allowClear: true,
+                dropdownParent: $('#SourceDetailsModal')
+            });
+        }
+
+        window.autoGrow = function (element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+
+        function loadAccounts(branchId, callback) {
+            if (!branchId) {
+                appalert("⚠️ Please select a branch first.", 2, 1);
                 return;
             }
-            $.ajax({
+            if (loadAccounts.request) loadAccounts.request.abort();
+
+            loadAccounts.request = $.ajax({
                 url: '/ManualJournalEntry/GetAccounts',
                 type: 'GET',
+                data: { branchId: branchId },
                 dataType: 'json',
                 success: function (response) {
                     if (!response.success || !response.data) {
-                        appalert(response.message || '⚠️ No accounts found.', 2, 1);
+                        appalert(response.message || '⚠️ No accounts found for this branch.', 2, 1);
+                        accounts = [];
                         return;
                     }
                     accounts = response.data.map(a => ({
                         Value: a.Id,
                         Text: `${a.Code} - ${a.Name}`
                     }));
+                    appalert('✅ Accounts loaded successfully for selected branch.', 1, 1);
                     if (callback) callback();
                 },
                 error: function (err) {
-                    appalert("Error loading accounts: " + err.statusText, 0, 1);
+                    if (err.statusText !== 'abort')
+                        appalert("Error loading accounts: " + err.statusText, 0, 1);
                 }
             });
         }
 
-        // ✅ Initialize Select2 inside modal
-        function initSelect2(element) {
-            element.select2({
-                width: '100%',
-                placeholder: 'Select Account',
-                allowClear: true,
-                dropdownParent: $('#SourceDetailsModal') // restricted to modal
-            });
-        }
-
-        // ✅ Auto-grow textarea for memo field
-        window.autoGrow = function (element) {
-            element.style.height = 'auto';
-            element.style.height = (element.scrollHeight) + 'px';
-        }
-
-        // ✅ Add a new row (WITH memo column)
         function addRow(tableBody) {
             const index = tableBody.children('tr').length;
             const row = $(`
                 <tr>
                     <td style="width: 35%;">
-                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
+                        <select name="Lines[${index}].AccountId" class="form-select account-select account-id" required>
                             <option value="">Select Account</option>
                             ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
                         </select>
                     </td>
                     <td style="width: 25%;">
-                        <textarea class="form-control narration-input"
+                        <textarea class="form-control memo"
                                   name="Lines[${index}].Narration"
                                   placeholder="Enter memo"
                                   rows="1"
@@ -240,11 +281,11 @@
                                   required></textarea>
                     </td>
                     <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control debit-input"
+                        <input type="number" step="0.01" class="form-control debit-input amount"
                                name="Lines[${index}].Debit" placeholder="0.00" min="0" />
                     </td>
                     <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control credit-input"
+                        <input type="number" step="0.01" class="form-control credit-input amount"
                                name="Lines[${index}].Credit" placeholder="0.00" min="0" />
                     </td>
                     <td class="text-center" style="width: 10%;">
@@ -258,7 +299,6 @@
             initSelect2(row.find('.account-select'));
         }
 
-        // ✅ Update debit/credit totals inside modal
         function updateTotals(modal) {
             const tableBody = modal.find('#myDataTable tbody');
             let debitTotal = 0, creditTotal = 0;
@@ -279,196 +319,160 @@
                 .toggleClass('text-success', diff === 0);
         }
 
-        // ✅ When modal opens — initialize table setup
-        $('#SourceDetailsModal').on('shown.bs.modal', function () {
+        // ==========================
+        // Modal events
+        // ==========================
+
+        $('#SourceDetailsModal').off('shown.bs.modal').on('shown.bs.modal', function () {
             const modal = $(this);
             const tableBody = modal.find('#myDataTable tbody');
-
-            // Clear previous rows to avoid duplicates
             tableBody.empty();
 
-            // Load accounts and add initial row
-            loadAccounts(() => {
-                addRow(tableBody);
-            });
-
-            // Add Row button inside modal
-            modal.find('#addRowBtn').off('click').on('click', function () {
-                addRow(tableBody);
-            });
-
-            // Delete Row
-            tableBody.off('click', '.deleteRow').on('click', '.deleteRow', function () {
-                $(this).closest('tr').remove();
-                updateTotals(modal);
-            });
-
-            // Recalculate totals on input
-            tableBody.on('input', '.debit-input, .credit-input', function () {
-                updateTotals(modal);
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        let accounts = [];
-
-        // ✅ Load accounts (only once)
-        function loadAccounts(callback) {
-            if (accounts.length > 0) {
-                if (callback) callback();
+            const branchId = $('#BranchId').val();
+            if (!branchId) {
+                appalert("⚠️ Please select a branch before adding journal entries.", 2, 1);
                 return;
             }
-            $.ajax({
-                url: '/ManualJournalEntry/GetAccounts',
-                type: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    if (!response.success || !response.data) {
-                        appalert(response.message || '⚠️ No accounts found.', 2, 1);
-                        return;
-                    }
-                    accounts = response.data.map(a => ({
-                        Value: a.Id,
-                        Text: `${a.Code} - ${a.Name}`
-                    }));
-                    if (callback) callback();
-                },
-                error: function (err) {
-                    appalert("Error loading accounts: " + err.statusText, 0, 1);
-                }
-            });
-        }
 
-        // ✅ Initialize Select2 inside modal
-        function initSelect2(element) {
-            element.select2({
-                width: '100%',
-                placeholder: 'Select Account',
-                allowClear: true,
-                dropdownParent: $('#SourceDetailsModal') // restricted to modal
-            });
-        }
+            loadAccounts(branchId, () => addRow(tableBody));
 
-        // ✅ Auto-grow textarea for memo field
-        window.autoGrow = function (element) {
-            element.style.height = 'auto';
-            element.style.height = (element.scrollHeight) + 'px';
-        }
-
-        // ✅ Add a new row (WITH memo column)
-        function addRow(tableBody) {
-            const index = tableBody.children('tr').length;
-            const row = $(`
-                <tr>
-                    <td style="width: 35%;">
-                        <select name="Lines[${index}].AccountId" class="form-select account-select" required>
-                            <option value="">Select Account</option>
-                            ${accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td style="width: 25%;">
-                        <textarea class="form-control narration-input"
-                                  name="Lines[${index}].Narration"
-                                  placeholder="Enter memo"
-                                  rows="1"
-                                  oninput="autoGrow(this)"
-                                  required></textarea>
-                    </td>
-                    <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control debit-input"
-                               name="Lines[${index}].Debit" placeholder="0.00" min="0" />
-                    </td>
-                    <td style="width: 15%;">
-                        <input type="number" step="0.01" class="form-control credit-input"
-                               name="Lines[${index}].Credit" placeholder="0.00" min="0" />
-                    </td>
-                    <td class="text-center" style="width: 10%;">
-                        <button type="button" class="btn btn-sm btn-outline-danger deleteRow">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </td>
-                </tr>
-            `);
-            tableBody.append(row);
-            initSelect2(row.find('.account-select'));
-        }
-
-        // ✅ Update debit/credit totals inside modal
-        function updateTotals(modal) {
-            const tableBody = modal.find('#myDataTable tbody');
-            let debitTotal = 0, creditTotal = 0;
-
-            tableBody.find('.debit-input').each(function () {
-                debitTotal += parseFloat($(this).val()) || 0;
-            });
-            tableBody.find('.credit-input').each(function () {
-                creditTotal += parseFloat($(this).val()) || 0;
-            });
-
-            const diff = debitTotal - creditTotal;
-            modal.find('#totalDebit').text(`XAF ${debitTotal.toLocaleString()}`);
-            modal.find('#totalCredit').text(`XAF ${creditTotal.toLocaleString()}`);
-            modal.find('#difference')
-                .text(`Diff: XAF ${diff.toLocaleString()}`)
-                .toggleClass('text-danger', diff !== 0)
-                .toggleClass('text-success', diff === 0);
-        }
-
-        // ✅ When modal opens — initialize table setup
-        $('#SourceDetailsModal').on('shown.bs.modal', function () {
-            const modal = $(this);
-            const tableBody = modal.find('#myDataTable tbody');
-
-            // Clear previous rows to avoid duplicates
-            tableBody.empty();
-
-            // Load accounts and add initial row
-            loadAccounts(() => {
-                addRow(tableBody);
-            });
-
-            // Add Row button inside modal
             modal.find('#addRowBtn').off('click').on('click', function () {
+                if (accounts.length === 0) {
+                    appalert("⚠️ Please select a branch first to load accounts.", 2, 1);
+                    return;
+                }
                 addRow(tableBody);
             });
 
-            // Delete Row
             tableBody.off('click', '.deleteRow').on('click', '.deleteRow', function () {
                 $(this).closest('tr').remove();
                 updateTotals(modal);
             });
 
-            // ✅ Debit/Credit logic: one disables the other
-            tableBody.on('input', '.debit-input', function () {
+            tableBody.off('input', '.debit-input').on('input', '.debit-input', function () {
                 const $row = $(this).closest('tr');
                 const debitVal = parseFloat($(this).val()) || 0;
                 const $credit = $row.find('.credit-input');
-
-                if (debitVal > 0) {
-                    $credit.val('').prop('disabled', true);
-                } else {
-                    $credit.prop('disabled', false);
-                }
+                $credit.prop('disabled', debitVal > 0).val(debitVal > 0 ? '' : $credit.val());
                 updateTotals(modal);
             });
 
-            tableBody.on('input', '.credit-input', function () {
+            tableBody.off('input', '.credit-input').on('input', '.credit-input', function () {
                 const $row = $(this).closest('tr');
                 const creditVal = parseFloat($(this).val()) || 0;
                 const $debit = $row.find('.debit-input');
-
-                if (creditVal > 0) {
-                    $debit.val('').prop('disabled', true);
-                } else {
-                    $debit.prop('disabled', false);
-                }
+                $debit.prop('disabled', creditVal > 0).val(creditVal > 0 ? '' : $debit.val());
                 updateTotals(modal);
             });
         });
+
+        // ==========================
+        // Branch change
+        // ==========================
+
+        $('#BranchId').off('change').on('change', function () {
+            const branchId = $(this).val();
+            accounts = [];
+            if (branchId) loadAccounts(branchId);
+        });
+
+        // ==========================
+        // Approve Destination with confirmation
+        // ==========================
+
+        const destState = '@(Model?.State ?? "")';
+        if (["APPROVED", "RECONCILED"].includes(destState.toUpperCase())) {
+            $('#btnApproveDestination')
+                .prop('disabled', true)
+                .addClass('btn-secondary')
+                .removeClass('btn-success');
+        }
+
+        $('#btnApproveDestination').click(function (e) {
+            e.preventDefault();
+
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to approve this journal entry?",
+                function () {
+                    // User clicked OK, proceed with AJAX
+                    const $btn = $('#btnApproveDestination');
+                    const $icon = $btn.find('i');
+                    const $text = $btn.find('.btn-text');
+
+                    $btn.prop('disabled', true);
+                    $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
+                    $text.text('Approving...');
+
+                    const payload = {
+                        Reference: '@Model.Reference',
+                        BranchId: $('#BranchId').val(),
+                        Approver: '@User.Identity.Name',
+                        Lines: []
+                    };
+
+                    $('#myDataTable tbody tr').each(function () {
+                        const $row = $(this);
+                        const accountId = $row.find('.account-id').val();
+                        const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
+                        const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
+
+                        if (accountId && (debitVal > 0 || creditVal > 0)) {
+                            payload.Lines.push({
+                                AccountId: accountId,
+                                DrCr: debitVal > 0 ? 'Debit' : 'Credit',
+                                Amount: debitVal > 0 ? debitVal : creditVal,
+                                Memo: $row.find('.memo').val()
+                            });
+                        }
+                    });
+
+                    $.ajax({
+                        url: '@Url.Action("ApproveDestination", "JournalHead")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(payload),
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+                                $btn.prop('disabled', true);
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                                $text.text('Approved');
+                            } else {
+                                toastr.error(response.message);
+                                $btn.prop('disabled', false);
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                                $text.text('Approve');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            toastr.error("An error occurred: " + error);
+                            $btn.prop('disabled', false);
+                            $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                            $text.text('Approve');
+                        }
+                    });
+                },
+                function () {
+                    // User clicked Cancel, do nothing
+                }
+            ).set('labels', {ok:'Yes', cancel:'No'});
+        });
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

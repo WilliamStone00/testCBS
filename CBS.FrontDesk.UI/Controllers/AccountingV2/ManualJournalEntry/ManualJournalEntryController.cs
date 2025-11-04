@@ -55,15 +55,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
             return true;
         }
 
-        public async Task<ActionResult> GetAccounts()
+        [HttpGet]
+        public async Task<ActionResult> GetAccounts(string branchId)
         {
             try
             {
-                // ✅ Await the async method
-                var result = await _manualJournalEntryService.GetAccountsByBranchAsync();
+                if (string.IsNullOrWhiteSpace(branchId))
+                    return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
+
+                var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);
 
                 if (result == null || !result.Any())
-                    return Json(new { success = false, message = "⚠️ No accounts found for your branch." }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "⚠️ No accounts found for this branch." }, JsonRequestBehavior.AllowGet);
 
                 return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
             }
@@ -76,6 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
                 return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult> PostJournalEntry(JournalEntryPayload model)

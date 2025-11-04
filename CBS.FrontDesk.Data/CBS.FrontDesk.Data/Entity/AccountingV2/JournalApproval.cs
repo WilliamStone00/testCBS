@@ -24,6 +24,22 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string JournalId { get; set; }
         public string Message { get; set; }
     }
+    public class DestinationJournalineApproval
+    {
+        public string AccountId { get; set; }
+        public string DrCr { get; set; }
+        public decimal Amount { get; set; }
+        public string Memo { get; set; }
+    }
+
+    public class DestinationApproval
+    {
+        public string Reference { get; set; }
+        public string BranchId { get; set; }
+        public string Approver { get; set; }
+        public List<DestinationJournalineApproval> Lines { get; set; }
+    }
+
 
 
 }

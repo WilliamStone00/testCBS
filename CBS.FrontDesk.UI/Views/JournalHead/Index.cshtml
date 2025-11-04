@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div class="card mb-3">
+<div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
@@ -43,8 +43,8 @@
 
 
 
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3">
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
         <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
     </h5>
 
@@ -57,7 +57,7 @@
         <input type="hidden" name="Options.Sort" value="" />
 
         <!-- Main Filters Card -->
-        <div class="card p-3 mb-3 bg-light">
+        <div class="card p-3 mb-2 bg-light">
 
             <!-- 🔹 Branch & Date Toggles -->
             <div class="row mb-2 align-items-center">
@@ -201,7 +201,7 @@
                 serverSide: true,
                 destroy: true,
                 responsive: true,
-                searching: true,
+                searching: false,
                 order: [[0, 'desc']], // ✅ Sort by CreatedAt (most recent first)
                 ajax: {
                     url: '/JournalHead/LoadJournalHeaderData',
