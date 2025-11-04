@@ -459,11 +459,20 @@
         });
 
         // Row: Details
-        $('#datalistingview').on('click', '.btn-detail', function () {
-          const id = $(this).data('id');
-          if (!id) return;
-          loadIntoModal('#affiliateDetailsModal', detailUrl, { id: id, partialView: '_Details' });
-        });
+        //$('#datalistingview').on('click', '.btn-detail', function () {
+        //  const id = $(this).data('id');
+        //  if (!id) return;
+        //  loadIntoModal('#affiliateDetailsModal', detailUrl, { id: id, partialView: '_Details' });
+        //});
+
+          $('#datalistingview').on('click', '.btn-detail', function () {
+              const id = $(this).data('id');
+              if (!id) return;
+
+              const url = detailUrl + '?id=' + encodeURIComponent(id); // partialView omitted -> full page
+              window.open(url, '_blank');
+          });
+
 
         // Row: Delete
         $('#datalistingview').on('click', '.btn-delete', function () {

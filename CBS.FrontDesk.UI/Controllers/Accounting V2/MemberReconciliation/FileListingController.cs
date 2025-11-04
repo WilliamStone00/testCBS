@@ -118,15 +118,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             }
         }
 
+        //public async Task<ActionResult>Details(string id, string partialView = null)
+        //{
+        //    var data = await _fileListingService.GetByIdAsync(id);
+        //    return PartialView(partialView, data);
+
+        //}
+
         public async Task<ActionResult> Details(string id, string partialView = null)
         {
             var data = await _fileListingService.GetByIdAsync(id);
-            return PartialView(partialView, data);
 
+            // If no partialView requested, return a full page
+            if (string.IsNullOrEmpty(partialView))
+            {
+                // Option A: return a View named "Details" (create Views/FileListing/Details.cshtml)
+                // return View("Details", data);
+
+                // Option B: return a wrapper page (recommended if you want a specific page)
+                return View("_Details", data); // create Views/FileListing/DetailsPage.cshtml
+            }
+
+            // Partial request (AJAX/modal)
+            return PartialView(partialView, data);
         }
+
+
         public async Task<ActionResult> DetailsGLH(string id, string partialView = null)
         {
-            var data = await _fileListingService.GetGLHByIdAsync(id);
+            var data = await _fileListingService.GetByIdAsync(id);
             return PartialView(partialView, data);
 
         }
