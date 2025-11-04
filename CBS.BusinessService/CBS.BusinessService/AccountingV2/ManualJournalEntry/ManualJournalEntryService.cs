@@ -20,9 +20,9 @@ namespace CBS.BusinessService.AccountingV2
     public class ManualJournalEntryService : BaseService
     {
         private readonly ApiCallerHelper _manualJournalEntryapiCallerHelper;
-        
 
-       // private readonly List<JournalEntry> _mockClearances;
+
+        // private readonly List<JournalEntry> _mockClearances;
         public ManualJournalEntryService()
         {
 
