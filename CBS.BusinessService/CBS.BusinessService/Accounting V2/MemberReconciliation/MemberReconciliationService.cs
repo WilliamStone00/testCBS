@@ -46,7 +46,6 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
         {
             try
             {
-                payload.BranchId = GetBankID();
                  payload.includeOnlyActive = false;
                 payload.Status = "";
 

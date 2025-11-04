@@ -64,13 +64,19 @@
                             </div>
                             <div class="card-body">
                                 <div class="row text-center">
-                                    <div class="col-6">
+                                    <div class="col-4">
+                                        <div class="border-end">
+                                            <h5 class="text-warning">@Model.AccountType</h5>
+                                            <small class="text-muted">Account Type Selected</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
                                         <div class="border-end">
                                             <h5 class="text-primary">@Model.MemberBalance.ToString("C")</h5>
                                             <small class="text-muted">Member Balance</small>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <div>
                                             <h5 class="text-info">@Model.TrialBalanceBalance.ToString("C")</h5>
                                             <small class="text-muted">Trial Balance</small>
@@ -126,23 +132,23 @@
                 <!-- Memo & Accounting Date aligned perfectly -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <div class="row align-items-center g-3">
-                            <div class="col-12 col-md-8">
+                        <div class="row g-3 align-items-end">
+                            <!-- Memo Field -->
+                            <div class="col-12 col-md-8 d-flex flex-column">
                                 @Html.LabelFor(m => m.Memo, new { @class = "form-label mb-1" })
                                 @Html.TextBoxFor(m => m.Memo, new { @class = "form-control", placeholder = "Memo", maxlength = "80" })
                                 @Html.ValidationMessageFor(m => m.Memo, "", new { @class = "text-danger" })
                             </div>
 
-                            <div class="col-12 col-md-4">
-                                @* Use d-flex and justify-content-end for small alignment of label/input on md+ *@
-                                <label for="AccountingDay" class="form-label mb-1 d-block text-md-end">
+                            <!-- Accounting Date Field -->
+                            <div class="col-12 col-md-4 d-flex flex-column align-items-md-end">
+                                <label for="AccountingDay" class="form-label mb-1">
                                     📅 Accounting Date
                                 </label>
-
                                 @Html.TextBoxFor(
                                     m => m.AccountingDate,
                                     new
-                                         {
+                                    {
                                         @class = "form-control accounting-date",
                                         type = "date",
                                         id = "AccountingDay",
@@ -150,14 +156,12 @@
                                         value = DateTime.Today.ToString("yyyy-MM-dd"),
                                         max = DateTime.Today.ToString("yyyy-MM-dd")
                                     })
-                                <small class="text-muted d-block text-md-end">
-                                    Select the posting (accounting) date for this upload.
-                                </small>
-                                @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger d-block text-md-end" })
+                                                                @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger d-block" })
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Adjustment Section — only rendered when there is a difference (your original logic) -->
                 @if (Model.MemberBalance != Model.TrialBalanceBalance)
@@ -185,13 +189,16 @@
                                         <label class="form-label fw-semibold">Adjustment Type</label>
                                         <div class="mt-2">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="adjustmentType" id="surplus" value="surplus" @(Model.IsMemberBalanceGreater ? "checked" : "")>
+                                                <input class="form-check-input" type="radio" name="adjustmentType" id="surplus" value="surplus"
+                                                       @(Model.IsMemberBalanceGreater ? "checked" : "")>
                                                 <label class="form-check-label text-success" for="surplus">
                                                     <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
                                                 </label>
                                             </div>
+
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="adjustmentType" id="deficit" value="deficit" @(!Model.IsMemberBalanceGreater ? "checked" : "")>
+                                                <input class="form-check-input" type="radio" name="adjustmentType" id="deficit" value="deficit"
+                                                       @(!Model.IsMemberBalanceGreater ? "checked" : "")>
                                                 <label class="form-check-label text-warning" for="deficit">
                                                     <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
                                                 </label>
@@ -241,6 +248,10 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+
     $(function () {
         console.log('Reconciliation modal script loaded');
 
@@ -255,8 +266,18 @@
         $('#btnFinalReconcile').on('click', function () {
             finalizeReconciliation();
         });
+
     });
 
+    function ensureSelect2Init(selectorOrJq) {
+        var $el = (selectorOrJq && selectorOrJq.jquery) ? selectorOrJq : $(selectorOrJq);
+        if (!$el || $el.length === 0) return;
+        if ($.fn.select2 && !$el.data('select2')) {
+            try { $el.select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+        }
+    }
+
+    
     function finalizeReconciliation() {
         const selectedAccount = $('#DiffBranchAccountId').val();
         const adjustmentType = $('input[name="adjustmentType"]:checked').val();
@@ -303,12 +324,32 @@
             AccountType: '@Model.AccountType'
         };
 
-        const message = `Are you sure you want to reconcile with the following details?\n\n` +
-            `Source GL: ${sourceBranchAccountId}\n` +
-            `Adjustment GL: ${$('#DiffBranchAccountId option:selected').text()}\n` +
-            `Adjustment Type: ${adjustmentType.toUpperCase()}\n` +
-            `Difference Amount: ${difference.toLocaleString()}\n\n` +
-            `This action will balance the accounts.`;
+        const message = `
+        <table style="width:100%; border-collapse: collapse;">
+            <tr>
+                <th style="text-align:left; padding:4px; border-bottom:1px solid #ccc;">Field</th>
+                <th style="text-align:left; padding:4px; border-bottom:1px solid #ccc;">Value</th>
+            </tr>
+            <tr>
+                <td style="padding:4px;">Source GL</td>
+                <td style="padding:4px;">${sourceBranchAccountId}</td>
+            </tr>
+            <tr>
+                <td style="padding:4px;">Adjustment GL</td>
+                <td style="padding:4px;">${$('#DiffBranchAccountId option:selected').text()}</td>
+            </tr>
+            <tr>
+                <td style="padding:4px;">Adjustment Type</td>
+                <td style="padding:4px;">${adjustmentType.toUpperCase()}</td>
+            </tr>
+            <tr>
+                <td style="padding:4px;">Difference Amount</td>
+                <td style="padding:4px;">${difference.toLocaleString()}</td>
+            </tr>
+        </table>
+        <p>This action will balance the accounts.</p>
+    `;
+
 
         // Use the same pattern as showReconciliationConfirmation
         if (typeof alertify !== 'undefined' && alertify.confirm) {

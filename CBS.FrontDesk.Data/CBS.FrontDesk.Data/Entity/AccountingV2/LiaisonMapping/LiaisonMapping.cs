@@ -2,36 +2,10 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping
 {
-    public class LiaisonMappingModel
-    {
-        public string Id { get; set; }
-
-        public string BranchId { get; set; }
-
-        public string BranchName { get; set; }
-
-        public string CounterpartyBranchId { get; set; }
-
-        public string CounterpartyBranchName { get; set; }
-
-        public string DueFromAssetAccountId { get; set; }
-
-        public string DueFromAssetAccountName { get; set; }
-
-        public string DueToLiabilityAccountId { get; set; }
-
-        public string DueToLiabilityAccountName { get; set; }
-    }
-
-    public class LiaisonMappingDto
+    public class LiaisonMapping
     {
         public string Id { get; set; }
         public string BranchId { get; set; }
@@ -87,7 +61,6 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping
         public string CounterpartyBranchId { get; set; }
         public string DueFromAssetAccountId { get; set; }
         public string DueToLiabilityAccountId { get; set; }
-        public string TargetBranchId { get; set; }
     }
 
     public class BranchAccount

@@ -52,8 +52,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 			if (model.Id == null)
 			{
 				// Adding Created Date
-				model.CreatedDate = BaseUtilities.UtcToLocal();
-
 				var data = await _services.Create(model);
 				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 			}
