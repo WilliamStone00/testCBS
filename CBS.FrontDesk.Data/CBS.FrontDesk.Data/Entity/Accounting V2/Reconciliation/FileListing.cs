@@ -148,7 +148,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
 
         public class finalize
         {
-                public string  Id { get; set; }
+                public string  Reference { get; set; }
                 public string ApprovedByName { get; set; }
               public string BranchId { get; set; }
     } 

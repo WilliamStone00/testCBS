@@ -145,7 +145,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
             {
                 var payload = new finalize()
                 {
-                    Id = id,
+                    Reference = id,
                     ApprovedByName = GetUserFullName(),
                     BranchId = branch
                 }; 
