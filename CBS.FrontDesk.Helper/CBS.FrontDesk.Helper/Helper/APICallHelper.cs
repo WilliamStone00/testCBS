@@ -1478,6 +1478,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetJournalSourceById = "/api/v1/workticketflow/{0}";
 
 
+        public const string GetAccountBalance = "/api/v1/TrialBalance/balance/{0}";
+public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
+ public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
+
 		//---------------------------Mobile MoneyV2--------------------------------------//
 
 
@@ -1570,12 +1574,14 @@ namespace CBS.FrontDesk.Helper
         public static string GetawaitingcorrespondanceById = "/api/v1/AccountAwaitingCorrespondence/{0}";
         public static string GetAllawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/list";
         public static string awaitingcorrespondancedatatable = "/api/v1/AccountAwaitingCorrespondence/datatable";
-        public static string createCorrespondanceRequest = "/api/v1/CorrespondenceRequest";
+
         public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
 
+
+        public static string createCorrespondanceRequest = "/api/v1/CorrespondenceRequest?lang={0}";
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
-        public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
-        public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/datatable";
+        public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/{0}/reject?lang={1}";
+        public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/{0}/approve?lang={1}";
 
         //--------------------------- Account pending Request ------------------------------------------
         public static string Datatable = "/api/v1/AccountCreationRequest/datatable";
