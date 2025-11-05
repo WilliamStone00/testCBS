@@ -69,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 		{
 			var branches = await _branchServices.GetBranches();
 			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync("");
-			var newlistng = _branchAccountService.DroupDownGen(accounts.ToList());
+			var newlistng = _branchAccountService.DropDownGen(accounts.ToList());
 			ViewBag.Branches = branches;
 			ViewBag.Accounts = newlistng;
 		}
@@ -125,7 +125,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 			if (Key != null)
 			{
 				var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(Key);
-				var newlistng = _branchAccountService.DroupDownGen(listing.ToList());
+				var newlistng = _branchAccountService.DropDownGen(listing.ToList());
 				return Json(newlistng, JsonRequestBehavior.AllowGet);
 			}
 			return Json(null, JsonRequestBehavior.AllowGet);

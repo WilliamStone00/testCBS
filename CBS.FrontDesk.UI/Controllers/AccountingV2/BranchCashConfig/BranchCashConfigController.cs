@@ -12,8 +12,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
 	using System.Threading.Tasks;
 	using System.Web.Mvc;
 	using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV;
+    using System;
 
-	public class BranchCashConfigController : BaseController
+    public class BranchCashConfigController : BaseController
     {
         private readonly BranchCashConfigService _branchCashConfigService;
         private readonly BranchServices _branchServices;
