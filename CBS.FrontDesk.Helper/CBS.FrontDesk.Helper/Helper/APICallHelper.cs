@@ -1435,16 +1435,7 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
         public static string ValidateBranchConfig = "api/branchcashconfig/validate";
 
-        //****************** Liaison Mapping **********************************//
-        public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
-        public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
-        public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
-        public const string GetLiaisonMappingsByBranch = "api/liaisonmapping/bybranch";
-        public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
-        public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
+
 
         //************************************Role Gl Resolution Endpoints  ********************************************////
 
@@ -1490,6 +1481,15 @@ namespace CBS.FrontDesk.Helper
 
 		public static string GetAllMobileMoneyV2 = "/api/v1/MobileMoney";
 		public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
+
+
+		//****************** Liaison Mapping **********************************//
+
+		public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+		public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
+		public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+		public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+		public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
 
 
 
