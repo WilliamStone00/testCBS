@@ -425,16 +425,16 @@
 
 <script>
     $(document).ready(function () {
+     // Get Stage value from model
+         const stage = '@(Model?.Stage ?? "")'.toUpperCase();
 
-        const state = '@(Model?.PostMode ?? "")';
-
-        // Disable Approve button if state is APPROVED or RECONCILED
-        if (["APPROVED", "RECONCILED"].includes(state.toUpperCase())) {
-            $('#btnApprove')
-                .prop('disabled', true)
-                .addClass('btn-secondary')
-                .removeClass('btn-success');
-        }
+         // Disable Approve button if Stage is APPROVED or RECONCILED
+         if (["APPROVED", "RECONCILED"].includes(stage)) {
+             $('#btnApprove')
+                 .prop('disabled', true)
+                 .addClass('btn-secondary')
+                 .removeClass('btn-success');
+         }
 
         $('#btnApprove').click(function (e) {
             e.preventDefault();

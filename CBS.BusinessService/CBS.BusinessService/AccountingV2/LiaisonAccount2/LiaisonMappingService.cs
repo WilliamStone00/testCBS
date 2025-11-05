@@ -80,11 +80,11 @@ namespace CBS.BusinessService.AccountingV2.LiaisonAccount2
             }
         }
 
-        public async Task<LiaisonMappingDto> GetLiaisonMappingAsync(string id)
+        public async Task<LiaisonMapping> GetLiaisonMappingAsync(string id)
         {
             try
             {
-                var response = await _apiCaller.GetAsync<ResponseObject<LiaisonMappingDto>>($"{APICallHelper.GetLiaisonMapping}/{id}");
+                var response = await _apiCaller.GetAsync<ResponseObject<LiaisonMapping>>($"{APICallHelper.GetLiaisonMapping}/{id}");
                 return response.IsSuccess ? response.ApiResponseData.Data : null;
             }
             catch (Exception ex)

@@ -249,8 +249,8 @@
                         return;
                     }
                     accounts = response.data.map(a => ({
-                        Value: a.Id,
-                        Text: `${a.Code} - ${a.Name}`
+                        Value: a.Value,
+                        Text: `${a.Text}`
                     }));
                     appalert('✅ Accounts loaded successfully for selected branch.', 1, 1);
                     if (callback) callback();
@@ -377,11 +377,11 @@
         });
 
         // ==========================
-        // Approve Destination with confirmation
+        // Approve Destination
         // ==========================
 
         const destState = '@(Model?.State ?? "")';
-        if (["APPROVED", "RECONCILED"].includes(destState.toUpperCase())) {
+        if (destState.toUpperCase() === 'APPROVED') {
             $('#btnApproveDestination')
                 .prop('disabled', true)
                 .addClass('btn-secondary')
@@ -391,73 +391,65 @@
         $('#btnApproveDestination').click(function (e) {
             e.preventDefault();
 
-            alertify.confirm(
-                "Confirmation",
-                "Are you sure you want to approve this journal entry?",
-                function () {
-                    // User clicked OK, proceed with AJAX
-                    const $btn = $('#btnApproveDestination');
-                    const $icon = $btn.find('i');
-                    const $text = $btn.find('.btn-text');
+            const $btn = $(this);
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
 
-                    $btn.prop('disabled', true);
-                    $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
-                    $text.text('Approving...');
+            $btn.prop('disabled', true);
+            $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
+            $text.text('Approving...');
 
-                    const payload = {
-                        Reference: '@Model.Reference',
-                        BranchId: $('#BranchId').val(),
-                        Approver: '@User.Identity.Name',
-                        Lines: []
-                    };
+            const payload = {
+                Reference: '@Model.Reference',
+                BranchId: $('#BranchId').val(),
+                Approver: '@User.Identity.Name',
+                Lines: []
+            };
 
-                    $('#myDataTable tbody tr').each(function () {
-                        const $row = $(this);
-                        const accountId = $row.find('.account-id').val();
-                        const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
-                        const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
+            // Only include rows with account selected and amount > 0
+            $('#myDataTable tbody tr').each(function () {
+                const $row = $(this);
+                const accountId = $row.find('.account-id').val();
+                const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
+                const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
 
-                        if (accountId && (debitVal > 0 || creditVal > 0)) {
-                            payload.Lines.push({
-                                AccountId: accountId,
-                                DrCr: debitVal > 0 ? 'Debit' : 'Credit',
-                                Amount: debitVal > 0 ? debitVal : creditVal,
-                                Memo: $row.find('.memo').val()
-                            });
-                        }
+                if (accountId && (debitVal > 0 || creditVal > 0)) {
+                    payload.Lines.push({
+                        AccountId: accountId,
+                        DrCr: debitVal > 0 ? 'Debit' : 'Credit',
+                        Amount: debitVal > 0 ? debitVal : creditVal,
+                        Memo: $row.find('.memo').val()
                     });
-
-                    $.ajax({
-                        url: '@Url.Action("ApproveDestination", "JournalHead")',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(payload),
-                        success: function (response) {
-                            if (response.success) {
-                                toastr.success(response.message);
-                                $btn.prop('disabled', true);
-                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
-                                $text.text('Approved');
-                            } else {
-                                toastr.error(response.message);
-                                $btn.prop('disabled', false);
-                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
-                                $text.text('Approve');
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            toastr.error("An error occurred: " + error);
-                            $btn.prop('disabled', false);
-                            $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
-                            $text.text('Approve');
-                        }
-                    });
-                },
-                function () {
-                    // User clicked Cancel, do nothing
                 }
-            ).set('labels', {ok:'Yes', cancel:'No'});
+            });
+
+            $.ajax({
+                url: '@Url.Action("ApproveDestination", "JournalHead")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        $btn.prop('disabled', true);
+                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                        $text.text('Approved');
+                    } else {
+                        toastr.error(response.message);
+                        $btn.prop('disabled', false);
+                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                        $text.text('Approve');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("An error occurred: " + error);
+                    $btn.prop('disabled', false);
+                    $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                    $text.text('Approve');
+                }
+            });
         });
+
     });
 </script>
 

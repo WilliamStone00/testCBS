@@ -33,8 +33,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
             //BranchCashConfigService branchCashConfig
             )
         {
-            //_branchCashConfig = branchCashConfig;
-            _liaisonMappingService = liaisonMappingService;
+			//_branchCashConfig = branchCashConfigLiaisonMappingModel
+			_liaisonMappingService = liaisonMappingService;
             _branchServices = branchServices;
             _branchAccountService = branchAccountService;
         }
@@ -53,7 +53,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
                 var dataTable = await _liaisonMappingService.GetDataTableAsync(query);
 
                 var mappingList = JsonConvert.DeserializeObject<
-                    List<CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping.LiaisonMappingModel>
+                    List<LiaisonMapping>
                 >(JsonConvert.SerializeObject(dataTable.data));
 
                 return Json(new
@@ -77,12 +77,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
         {
             try
             {
-                LiaisonMappingModel model;
+                LiaisonMapping model;
 
                 if (!string.IsNullOrEmpty(id))
                 {
                     var existingMapping = await _liaisonMappingService.GetLiaisonMappingAsync(id);
-                    model = new LiaisonMappingModel
+                    model = new LiaisonMapping
                     {
                         Id = existingMapping.Id,
                         BranchId = existingMapping.BranchId,
@@ -93,7 +93,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonAccount2
                 }
                 else
                 {
-                    model = new LiaisonMappingModel();
+                    model = new LiaisonMapping();
                 }
 
                 await PopulateViewBags(Branchid);
