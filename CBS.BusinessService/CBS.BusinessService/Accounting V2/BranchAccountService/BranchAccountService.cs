@@ -81,7 +81,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                     // Re-throw to trigger fallback
-                    throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                    throw new Exception($"service unavailable: {ex.Message}", ex);
                 }
             }
 

@@ -505,7 +505,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             ViewBag.ChartOfAccountPcmf = accountPcmf;
 
             // get full flat list (service can supply)
-            var affiliateAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();
+            var affiliateAccounts = await _affiliateAccountService.GetAllAffiliateAccounts1();
 
             ViewBag.ChartOfAccountMFI= affiliateAccounts;
             // Build the model for the partial

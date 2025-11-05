@@ -13,7 +13,7 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    @using (Html.BeginForm("CreateCorrespondence", "FileUpload", FormMethod.Post,
+    @using (Html.BeginForm("Addcorrespondance", "FileUpload", FormMethod.Post,
         new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         @Html.AntiForgeryToken()

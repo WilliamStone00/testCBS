@@ -46,7 +46,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
         {
             try
             {
-                 payload.includeOnlyActive = false;
+                payload.includeOnlyActive = false;
                 payload.Status = "";
 
                 // Request with generic that allows us to get the raw 'data' token
@@ -88,7 +88,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
         }
 
         public async Task<Affiliateresponse> GetByIdAsync(string id)
-            {
+        {
                 try
                 {
                     if (string.IsNullOrWhiteSpace(id))

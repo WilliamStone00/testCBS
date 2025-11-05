@@ -337,7 +337,7 @@
 @section Scripts {
     <script>
 
-      
+
 
         (function ($) {
             'use strict';
@@ -512,8 +512,8 @@
                     }
                     return false;
                 }
-                return true;
-            }
+                return true;            }
+
 
             function validateBranchAccountSelected() {
                 const branchAccountId = $('#BranchAccountId').val();
@@ -720,108 +720,125 @@
             // -----------------------------
             // MODIFIED: Reconciliation Functionality with PartialView support
             // -----------------------------
-            async function reconcileTrialBalance() {
-                const branchId = $('#BranchId').val();
-                const branchAccountId = $('#BranchAccountId').val();
 
-                if (!branchId || !branchAccountId || !currentBalanceData) {
-                    console.error('Missing required data for reconciliation');
-                    return false;
-                }
+                async function reconcileTrialBalance() {
+                    const branchId = $('#BranchId').val();
+                    const branchAccountId = $('#BranchAccountId').val();
 
-                // Show loading state
-                $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
+                    // Extract branch account name from the selected option text
+                    const branchAccountName = $('#BranchAccountId option:selected').text();
 
-                try {
-                    const formData = new FormData();
-                    formData.append('BranchId', branchId);
-                    formData.append('BranchAccountId', branchAccountId);
-                    formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
-                    formData.append('AccountCount', currentBalanceData.AccountCount || 0);
-                    formData.append('LoanCount', currentBalanceData.LoanCount || 0);
-                    formData.append('mode', currentMode);
-                    formData.append('accountTypeId', currentAccountTypeId);
+                    const BRANCHName = $('#BranchId option:selected').text();
 
-                    if (currentMode === 'member') {
-                        formData.append('AccountType', currentAccountTypeId);
-                        formData.append('member', 'true');
-                    } else if (currentMode === 'loan') {
-                        formData.append('LoanType', currentAccountTypeId);
-                        formData.append('loan', 'true');
-                    }
+                    // Skip if it's a placeholder/loading text
+                    const branchName = (branchAccountName.includes('--- Select') ||
+                                       branchAccountName.includes('Loading') ||
+                                       branchAccountName.includes('Error')) ? '' : branchAccountName;
 
-                    const tokenInput = $('input[name="__RequestVerificationToken"]');
-                    const token = tokenInput.length ? tokenInput.val() : '';
+                    const branchName2 = (BRANCHName.includes('--- Select') ||
+                                         BRANCHName.includes('Loading') ||
+                                         BRANCHName.includes('Error')) ? '' : BRANCHName;
 
-                    const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
-                    const resp = await fetch(url, {
-                        method: 'POST',
-                        credentials: 'same-origin',
-                        headers: {
-                            'Accept': 'text/html',
-                            'RequestVerificationToken': token
-                        },
-                        body: formData
-                    });
-
-                    if (!resp.ok) {
-                        const txt = await resp.text().catch(() => '');
-                        console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
+                    if (!branchId || !branchAccountId || !currentBalanceData) {
+                        console.error('Missing required data for reconciliation');
                         return false;
                     }
 
-                    // MODIFIED: Get response as HTML text instead of JSON since controller returns PartialView
-                    const html = await resp.text();
+                    // Show loading state
+                    $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
 
-                    console.log('Reconciliation response received as HTML');
+                    try {
+                        const formData = new FormData();
+                        formData.append('BranchId', branchId);
+                        formData.append('BRANCHName', branchName2);
+                        formData.append('BranchAccountId', branchAccountId);
+                        formData.append('BranchAccountName', branchName); // Send the branch account name
+                        formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
+                        formData.append('AccountCount', currentBalanceData.AccountCount || 0);
+                        formData.append('LoanCount', currentBalanceData.LoanCount || 0);
+                        formData.append('mode', currentMode);
+                        formData.append('accountTypeId', currentAccountTypeId);
 
-                    // MODIFIED: Check if we got valid HTML content
-                    if (html && html.trim().length > 0) {
-                        // Remove existing modal if any
-                        $('#reconciliationResultModal').remove();
+                        if (currentMode === 'member') {
+                            formData.append('AccountType', currentAccountTypeId);
+                            formData.append('member', 'true');
+                        } else if (currentMode === 'loan') {
+                            formData.append('LoanType', currentAccountTypeId);
+                            formData.append('loan', 'true');
+                        }
 
-                        // Add the new modal HTML to the body
-                        $('body').append(html);
+                        const tokenInput = $('input[name="__RequestVerificationToken"]');
+                        const token = tokenInput.length ? tokenInput.val() : '';
 
-                        // MODIFIED: Use Bootstrap 5 modal API to properly show the modal
-                        const modalElement = document.getElementById('reconciliationResultModal');
-                        if (modalElement) {
-                            const modal = new bootstrap.Modal(modalElement);
-                            modal.show();
+                        const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
+                        const resp = await fetch(url, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Accept': 'text/html',
+                                'RequestVerificationToken': token
+                            },
+                            body: formData
+                        });
 
-                            // MODIFIED: Re-initialize any scripts inside the modal after it's appended
-                            initializeModalScripts();
-                            return true;
+                        if (!resp.ok) {
+                            const txt = await resp.text().catch(() => '');
+                            console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
+                            return false;
+                        }
+
+                        // MODIFIED: Get response as HTML text instead of JSON since controller returns PartialView
+                        const html = await resp.text();
+
+                        console.log('Reconciliation response received as HTML');
+
+                        // MODIFIED: Check if we got valid HTML content
+                        if (html && html.trim().length > 0) {
+                            // Remove existing modal if any
+                            $('#reconciliationResultModal').remove();
+
+                            // Add the new modal HTML to the body
+                            $('body').append(html);
+
+                            // MODIFIED: Use Bootstrap 5 modal API to properly show the modal
+                            const modalElement = document.getElementById('reconciliationResultModal');
+                            if (modalElement) {
+                                const modal = new bootstrap.Modal(modalElement);
+                                modal.show();
+
+                                // MODIFIED: Re-initialize any scripts inside the modal after it's appended
+                                initializeModalScripts();
+                                return true;
+                            } else {
+                                console.error('Modal element not found in HTML response');
+                                if (typeof appalert === 'function') {
+                                    appalert('Error: Could not load reconciliation results', 2, 1);
+                                }
+                                return false;
+                            }
                         } else {
-                            console.error('Modal element not found in HTML response');
+                            console.error('Empty HTML response received');
                             if (typeof appalert === 'function') {
-                                appalert('Error: Could not load reconciliation results', 2, 1);
+                                appalert('No reconciliation data received from server', 2, 1);
+                            } else {
+                                alert('No reconciliation data received from server');
                             }
                             return false;
                         }
-                    } else {
-                        console.error('Empty HTML response received');
+
+                    } catch (err) {
+                        console.error('Error during reconciliation:', err);
                         if (typeof appalert === 'function') {
-                            appalert('No reconciliation data received from server', 2, 1);
+                            appalert('Error during reconciliation: ' + err.message, 2, 1);
                         } else {
-                            alert('No reconciliation data received from server');
+                            alert('Error during reconciliation: ' + err.message);
                         }
                         return false;
+                    } finally {
+                        // Reset button state
+                        $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
                     }
-
-                } catch (err) {
-                    console.error('Error during reconciliation:', err);
-                    if (typeof appalert === 'function') {
-                        appalert('Error during reconciliation: ' + err.message, 2, 1);
-                    } else {
-                        alert('Error during reconciliation: ' + err.message);
-                    }
-                    return false;
-                } finally {
-                    // Reset button state
-                    $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
                 }
-            }
 
             // NEW: Function to re-initialize scripts inside the modal after it's loaded
             function initializeModalScripts() {
@@ -875,123 +892,6 @@
                     }
                 });
             }
-
-            //// NEW: Function to handle final reconciliation (called from modal)
-            //async function finalizeReconciliation() {
-            //    const selectedAccount = $('#adjustmentBranchAccounts').val();
-            //    const adjustmentType = $('input[name="adjustmentType"]:checked').val();
-            //    const modal = $('#reconciliationResultModal');
-            //    const branchId = modal.data('branchid');
-            //    const sourceBranchAccountId = modal.data('branchaccountid');
-
-            //    // Validation
-            //    if (!selectedAccount) {
-            //        if (typeof appalert === 'function') {
-            //            appalert('Please select a GL account for adjustment.', 3, 1);
-            //        } else {
-            //            alert('Please select a GL account for adjustment.');
-            //        }
-            //        return;
-            //    }
-
-            //    if (!adjustmentType) {
-            //        if (typeof appalert === 'function') {
-            //            appalert('Please select adjustment type (Surplus or Deficit).', 3, 1);
-            //        } else {
-            //            alert('Please select adjustment type (Surplus or Deficit).');
-            //        }
-            //        return;
-            //    }
-
-            //    // Get difference amount from the modal data or calculate it
-            //    const memberBalance = parseFloat(modal.find('[data-member-balance]').data('member-balance') || 0);
-            //    const trialBalance = parseFloat(modal.find('[data-trial-balance]').data('trial-balance') || 0);
-            //    const difference = Math.abs(memberBalance - trialBalance);
-
-            //    const requestData = {
-            //        BranchId: branchId,
-            //        SourceBranchAccountId: sourceBranchAccountId,
-            //        SelectedBranchAccountId: selectedAccount,
-            //        SurplusDeficit: adjustmentType,
-            //        MemberBalance: memberBalance,
-            //        TrialBalanceBalance: trialBalance,
-            //        Difference: difference,
-            //        TrialBalanceStagingId: modal.data('trialbalancestagingid') || ''
-            //    };
-
-            //    const message = `Are you sure you want to reconcile with the following details?\n\n` +
-            //                   `Source GL: ${sourceBranchAccountId}\n` +
-            //                   `Adjustment GL: ${$('#adjustmentBranchAccounts option:selected').text()}\n` +
-            //                   `Adjustment Type: ${adjustmentType.toUpperCase()}\n` +
-            //                   `Difference Amount: $${difference.toLocaleString()}\n\n` +
-            //                   `This action will balance the accounts.`;
-
-            //    if (typeof appalert === 'function') {
-            //        appalert.confirm(
-            //            "Confirm Final Reconciliation",
-            //            message,
-            //            async function (ok) {
-            //                if (ok) {
-            //                    await performFinalReconciliation(requestData);
-            //                }
-            //            }
-            //        );
-            //    } else {
-            //        if (confirm(message)) {
-            //            performFinalReconciliation(requestData);
-            //        }
-            //    }
-            //}
-
-            @*// NEW: Function to perform the final reconciliation API call
-            async function performFinalReconciliation(requestData) {
-                try {
-                    // Show loading state
-                    $('#btnFinalReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
-
-                    const response = await fetch('@Url.Action("FinalizeReconciliation", "Reconciliation")', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                        },
-                        body: JSON.stringify(requestData)
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        if (typeof appalert === 'function') {
-                            appalert(result.message || 'Reconciliation completed successfully!', 1, 1);
-                        } else {
-                            alert(result.message || 'Reconciliation completed successfully!');
-                        }
-
-                        // Close the modal
-                        $('#reconciliationResultModal').modal('hide');
-
-                        // Optional: Refresh the page or update UI
-                        setTimeout(() => {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        if (typeof appalert === 'function') {
-                            appalert(result.message || 'Reconciliation failed!', 2, 1);
-                        } else {
-                            alert(result.message || 'Reconciliation failed!');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Final reconciliation error:', error);
-                    if (typeof appalert === 'function') {
-                        appalert('Error during final reconciliation: ' + error.message, 2, 1);
-                    } else {
-                        alert('Error during final reconciliation: ' + error.message);
-                    }
-                } finally {
-                    $('#btnFinalReconcile').prop('disabled', false).html('<i class="mdi mdi-check-all me-1"></i>Reconcile');
-                }
-            }*@
 
             function showReconciliationConfirmation() {
                 if (!currentBalanceData) {
@@ -1074,14 +974,14 @@
                 }
 
                 // Display TotalBalance for both modes
-                $('#balanceDisplay').text(data.TotalBalance);
+                $('#balanceDisplay').text(data.TotalBalance.toLocaleString());
 
                 // Display different counts based on mode
                 if (currentMode === 'loan') {
-                    $('#accountIdDisplay').text(data.LoanCount !== undefined ? data.LoanCount : '-');
+                    $('#accountIdDisplay').text(data.LoanCount.toLocaleString() !== undefined ? data.LoanCount : '-');
                     $('#accountIdDisplay').closest('.row').find('.col-6:first strong').text('Loan Count:');
                 } else {
-                    $('#accountIdDisplay').text(data.AccountCount !== undefined ? data.AccountCount : '-');
+                    $('#accountIdDisplay').text(data.AccountCount.toLocaleString() !== undefined ? data.AccountCount : '-');
                     $('#accountIdDisplay').closest('.row').find('.col-6:first strong').text('Account Count:');
                 }
 

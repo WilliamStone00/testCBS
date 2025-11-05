@@ -126,7 +126,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         }
              
         [HttpPost]
-        public async Task<ActionResult> ReconcileTrialBalance(string BranchId, string BranchAccountId, decimal TotalBalance, int AccountCount, int LoanCount, string mode, string accountTypeId)
+        public async Task<ActionResult> ReconcileTrialBalance(string BranchId, string BranchAccountId, decimal TotalBalance, int AccountCount, int LoanCount, string mode, string accountTypeId,string branchAccountName, string BRANCHName)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                     AccountCount = AccountCount,
                     LoanCount = LoanCount,
                     mode = mode,
-                    accountTypeId = accountTypeId
+                    accountTypeId = accountTypeId,
                 };
 
                 var result = await _MemberReferenceService.ReconcileTrialBalance(balance);
@@ -152,6 +152,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 var DiffBrachAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(balance.BranchId);
                 ViewBag.DiifBrachAccounts = DiffBrachAccounts;
                 result.AccountType = accountTypeId;
+                result.BranchAccountName = branchAccountName;
+                result.Mode = mode;
+                result.BRANCHName = BRANCHName;
                 return PartialView("_ReconciliationResult", result);
                 //return Json(new { success = true, message = "Reconciliation completed.", data = result });
             }
