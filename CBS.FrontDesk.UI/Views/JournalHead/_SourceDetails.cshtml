@@ -74,6 +74,10 @@
     }
 </style>
 
+
+
+
+
 @if (Model == null)
 {
 <div class="alert alert-danger text-center">
@@ -254,7 +258,6 @@
 
 
 
-<!-- ===================== Optional Script ===================== -->
 <script>
     $(document).ready(function () {
 
@@ -289,7 +292,8 @@
                     const payload = {
                         Reference: '@Model.Reference',
                         BranchId: '@Model.BranchId',
-                        Approver: '@User.Identity.Name'
+                        Approver: '@User.Identity.Name',
+                        TicketType: '@Model.TicketType'
                     };
 
                     $.ajax({
