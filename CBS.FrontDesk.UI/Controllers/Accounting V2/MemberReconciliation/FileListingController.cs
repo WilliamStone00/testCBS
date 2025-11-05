@@ -118,7 +118,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             }
         }
 
-        //public async Task<ActionResult>Details(string id, string partialView = null)
+        //public async Task<ActionResult> Details(string id, string partialView = null)
         //{
         //    var data = await _fileListingService.GetByIdAsync(id);
         //    return PartialView(partialView, data);
@@ -152,12 +152,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         }
 
         [HttpPost]
-         public async Task<ActionResult> ConfirmUpload(string id)
+         public async Task<ActionResult> ConfirmUpload(string id,string branch)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _fileListingService.ConfirmReconciliation(id);
+            var result = await _fileListingService.ConfirmReconciliation(id, branch);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
