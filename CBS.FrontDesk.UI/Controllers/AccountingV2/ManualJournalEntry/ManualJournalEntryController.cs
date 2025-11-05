@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
                     return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
 
                 var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
-                var result =  _branchAccountService.DroupDownGen(branchAccounts.ToList());
+                var result =  _branchAccountService.DropDownGen(branchAccounts.ToList());
 
 
                // var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);

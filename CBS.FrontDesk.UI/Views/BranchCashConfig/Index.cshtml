@@ -113,68 +113,88 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+  // items can be [{ text, value }] or MVC's { Text, Value }
+  function fillSelect($el, items, placeholder, selectedValue) {
+    const getText  = (x) => x?.text  ?? x?.Text  ?? '';
+    const getValue = (x) => x?.value ?? x?.Value ?? '';
 
-          // Rebuild a select with items [{ id, name }]
-          function fillSelect($select, items, placeholder, selectedId) {
-              const wasSelect2 = $select.hasClass('select2');
-              if (wasSelect2 && $select.data('select2')) { $select.select2('destroy'); }
-              $select.empty();
-              if (placeholder) { $select.append($('<option>', { value: '', text: placeholder })); }
-              if (Array.isArray(items)) {
-                  for (const x of items) { $select.append($('<option>', { value: x.id, text: x.name })); }
-              }
-              if (selectedId) { $select.val(selectedId); }
-              if (wasSelect2) { $select.select2(); }
-          }
+    $el.empty();
+    if (placeholder) {
+      $el.append($('<option>').val('').text(placeholder));
+    }
 
-            // EXPOSE GLOBALLY so inline onchange="fetchBranchDetails(...)" can find it
-        function fetchBranchDetails(branchId)
-            {
-              if (!branchId) return;
+    (items || []).forEach(it => {
+      $el.append($('<option>').val(getValue(it)).text(getText(it)));
+    });
 
-              $.ajax({
-                  url: '@Url.Action("GetByBranch", "BranchCashConfig")',
-                  type: 'POST',
-                  data: { branchId: branchId },
-                  success: function (res) {
-                      if (!res || res.success !== true) {
-                          if (window.toastr) toastr.error(res && res.message ? res.message : 'Failed to load branch configuration.');
-                          return;
-                      }
+    if (selectedValue) {
+      $el.val(selectedValue);
+    } else {
+      // ensure placeholder is selected visually
+      $el.val('');
+    }
 
-                      const accounts = res.accounts || [];
+    // If using Select2, refresh it
+    if ($el.hasClass('select2')) {
+      $el.trigger('change.select2');
+    } else {
+      $el.trigger('change');
+    }
+  }
 
-                      fillSelect($('#CashInHandAccountId'),        accounts, '-- Select Cash in Hand Account (Till) --',        res.data && res.data.cashInHandAccountId);
-                      fillSelect($('#VaultAccountId'),             accounts, '-- Select Vault Account --',                       res.data && res.data.vaultAccountId);
-                      fillSelect($('#SurplusIncomeAccountId'),     accounts, '-- Select Surplus Income Account --',              res.data && res.data.surplusIncomeAccountId);
-                      fillSelect($('#ShortageExpenseAccountId'),   accounts, '-- Select Shortage Expense Account --',            res.data && res.data.shortageExpenseAccountId);
-                      fillSelect($('#RevenueAccountId'),           accounts, '-- Select Revenue Account (Optional) --',          res.data && res.data.revenueAccountId);
-                      fillSelect($('#PartnerAccountId'),           accounts, '-- Select Partner Account (Optional) --',          res.data && res.data.partnerAccountId);
-                      fillSelect($('#CamcculAccountId'),           accounts, '-- Select CamCCUL Account (Optional) --',          res.data && res.data.camcculAccountId);
-                      fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --',         res.data && res.data.headOfficeLiaisonAccountId);
-                      fillSelect($('#FormFeeIncomeAccountId'),     accounts, '-- Select Form Fee Income Account (Optional) --',  res.data && res.data.formFeeIncomeAccountId);
+  // Exposed globally in your snippet already
+  function fetchBranchDetails(branchId) {
+    if (!branchId) return;
 
-                      $('#RealTimeCashPosting').prop('checked',
-                          typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true);
+    $.ajax({
+      url: '@Url.Action("GetByBranch", "BranchCashConfig")',
+      type: 'POST',
+      data: { branchId },
+      // include anti-forgery if enabled:
+      // headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+      success: function (res) {
+        if (!res || res.success !== true) {
+          if (window.toastr) toastr.error(res && res.message ? res.message : 'Failed to load branch configuration.');
+          return;
+        }
 
-                      $('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
+        const accounts = res.accounts || [];
 
-                      if (res.branchCode) { $('#BranchCode').val(res.branchCode); }
+        fillSelect($('#CashInHandAccountId'),        accounts, '-- Select Cash in Hand Account (Till) --',        res.data?.cashInHandAccountId);
+        fillSelect($('#VaultAccountId'),             accounts, '-- Select Vault Account --',                       res.data?.vaultAccountId);
+        fillSelect($('#SurplusIncomeAccountId'),     accounts, '-- Select Surplus Income Account --',              res.data?.surplusIncomeAccountId);
+        fillSelect($('#ShortageExpenseAccountId'),   accounts, '-- Select Shortage Expense Account --',            res.data?.shortageExpenseAccountId);
+        fillSelect($('#RevenueAccountId'),           accounts, '-- Select Revenue Account (Optional) --',          res.data?.revenueAccountId);
+        fillSelect($('#PartnerAccountId'),           accounts, '-- Select Partner Account (Optional) --',          res.data?.partnerAccountId);
+        fillSelect($('#CamcculAccountId'),           accounts, '-- Select CamCCUL Account (Optional) --',          res.data?.camcculAccountId);
+        fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --',         res.data?.headOfficeLiaisonAccountId);
+        fillSelect($('#FormFeeIncomeAccountId'),     accounts, '-- Select Form Fee Income Account (Optional) --',  res.data?.formFeeIncomeAccountId);
 
-                      $('input[name="BranchCashConfig.Id"]').val(res.data && res.data.id ? res.data.id : '');
-                  },
-                  error: function () {
-                      if (window.toastr) toastr.error('Error loading branch configuration.');
-                  }
-              });
-          };
+        $('#RealTimeCashPosting').prop('checked',
+          typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true
+        );
 
-      // If preselected, auto-load once
-          $(function () {
-              var initBranch = $('#BranchId').val();
-              if (initBranch) { window.fetchBranchDetails(initBranch); }
-          });
+        //$('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
+
+        //if (res.branchCode) { $('#BranchCode').val(res.branchCode); }
+        //$('input[name="BranchCashConfig.Id"]').val(res.data?.id || '');
+      },
+      error: function () {
+        if (window.toastr) toastr.error('Error loading branch configuration.');
+      }
+    });
+  }
+
+  // If you’re in EDIT mode (BranchId readonly), auto-load accounts on page load:
+  $(function () {
+    const $branchSelect = $('#BranchId');
+    if ($branchSelect.length === 0) {
+      const fixedBranchId = $('input[name="BranchCashConfig.BranchId"]').val();
+      if (fixedBranchId) fetchBranchDetails(fixedBranchId);
+    }
+  });
     </script>
+
 
     <script>
   // GET /BranchCashConfig/_Data
@@ -229,5 +249,6 @@
     AddORUpdateGen(id, 'datalistingview', '_Create', 'edit', 'BranchCashConfig');
     $('#cashConfigDetailsModal').modal('hide');
   });
-    </script>}
+    </script>
+}
 

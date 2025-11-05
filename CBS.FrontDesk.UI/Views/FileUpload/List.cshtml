@@ -482,8 +482,8 @@
 
               if ($.fn.select2) {
                   try {
-                      $('#HoPcmfAccountId').select2({ width: '100%', placeholder: 'Select HO PCMF Account', allowClear: true });
-                      $('#AffiliateAccountId').select2({ width: '100%', placeholder: 'Select Affiliate Account', allowClear: true });
+                      $('#HoPcmfAccountId').select2();
+                      $('#AffiliateAccountId').select2();
                   } catch (e) { console.warn('select2 init failed', e); }
               }
 

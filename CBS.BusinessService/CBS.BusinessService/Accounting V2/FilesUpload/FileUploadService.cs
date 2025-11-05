@@ -402,7 +402,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
         {
             try
             {
-                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(APICallHelper.createCorrespondanceRequest, model);
+                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(string.Format(APICallHelper.createCorrespondanceRequest,GetUserLanguage()), model);
 
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
