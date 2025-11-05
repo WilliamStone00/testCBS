@@ -299,7 +299,19 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string TicketSource { get; set; } 
     }
 
+    public class GetallWorkFlowTicketsQuery
+    {
 
+        // Optional filters
+
+        public DataTableOptions DataTableOptions { get; set; }
+        public string BranchId { get; set; }
+        public string State { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public string TicketType { get; set; }
+    }
     //public class AccountDto
     //{
     //    public string Id { get; set; }

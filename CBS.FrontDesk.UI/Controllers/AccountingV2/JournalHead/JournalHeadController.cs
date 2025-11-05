@@ -2,6 +2,7 @@
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CrystalDecisions.ReportAppServer.ReportDefModel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
@@ -158,6 +159,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
+              
+
                 var data = await _journalHeadService.GetJournalSourceDataTableAsync(query);
                
 
