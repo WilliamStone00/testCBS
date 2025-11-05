@@ -148,8 +148,8 @@
                         }
 
                         accounts = response.data.map(a => ({
-                            Value: a.Id,
-                            Text: `${a.Code} - ${a.Name}`
+                            Value: a.Value,
+                            Text: `${a.Text}`
                         }));
 
                         const options = accounts.map(a => `<option value="${a.Value}">${a.Text}</option>`).join('');
@@ -168,7 +168,7 @@
             }
 
             // ==================== Branch Selection Event ====================
-            $("#BranchId").on("change", function () {
+            $("#BranchId").on("change", function () { // ✅ Matches Razor ID
                 const branchId = $(this).val();
                 if (branchId) {
                     loadAccounts(branchId);
@@ -328,7 +328,7 @@
             // ==================== Initialize Page ====================
             initSelect2();
             addRow();
-            $('#addRowBtn, #postEntriesBtn').prop('disabled', true); // Disable until branch selected
+            $('#addRowBtn, #postEntriesBtn').prop('disabled', true);
         });
 
         // ==================== AJAX Submit ====================

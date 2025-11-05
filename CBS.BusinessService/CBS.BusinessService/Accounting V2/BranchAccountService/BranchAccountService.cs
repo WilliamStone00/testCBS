@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
@@ -170,9 +171,30 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
 				throw ex;
 			}
 		}
+        public List<AccountDto> DroupDownGenAccounts(List<BranchAccountResponse> branchAccounts)
+        {
+            try
+            {
+                List<AccountDto> stringValues;
 
-		//get Branch Accounts for dro down 
-		public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
+                stringValues = (from a in branchAccounts
+                                select new AccountDto
+                                {
+                                    AccountNumber = $"{a.Id}",
+                                    AccountName = $"{a.Name}",
+                                }).ToList();
+
+                return stringValues;
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow exception
+                throw ex;
+            }
+        }
+
+        //get Branch Accounts for dro down 
+        public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
         {
             try
             {
