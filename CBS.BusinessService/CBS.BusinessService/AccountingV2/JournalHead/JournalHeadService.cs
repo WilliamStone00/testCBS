@@ -170,7 +170,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
        
-        public async Task<JournalApprovalResponse> ApproveAsync(JournalApproval model)
+        public async Task<JournalApprovalResponse> ApproveSourceAsync(JournalApproval model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -178,7 +178,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             try
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
-                    APICallHelper.ApproveJournalEntry, model); // now sending full model
+                    APICallHelper.ApproveSourceJournalEntry, model); // now sending full model
                 return apiResponse.ApiResponseData.Data;
             }
             catch (Exception ex)
@@ -187,13 +187,16 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<JournalApprovalResponse> ApproveDestinationAsync(DestinationApproval model)
+        public async Task<JournalApprovalResponse> ApproveDestinationAsync(JournalApproval model)
         {
+          
+            model.DestinationBranchId = model.BranchId;
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
             try
             {
+            
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveDestinationJournalEntry, // your destination endpoint
                     model
@@ -211,20 +214,39 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
         // REJECT Journal Entry
-        public async Task<bool> RejectAsync(string id)
+        public async Task<JournalApprovalResponse> ApproveMemberReconciliationAsync(JournalApproval model)
         {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
             try
             {
-                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<bool>>(
-                    APICallHelper.RejectJournalEntry, new { Id = id });
+                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
+                    APICallHelper.ApproveMemberReconciliation, model); // now sending full model
                 return apiResponse.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to reject journal entry: {ex.Message}", ex);
+                throw ex;
             }
         }
 
-        
+        public async Task<JournalApprovalResponse> ApproveCashReconciliationAsync(JournalApproval model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
+                    APICallHelper.ApproveCashReconciliation, model); // now sending full model
+                return apiResponse.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

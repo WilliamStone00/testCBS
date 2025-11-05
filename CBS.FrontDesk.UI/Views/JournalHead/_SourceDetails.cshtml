@@ -76,9 +76,9 @@
 
 @if (Model == null)
 {
-    <div class="alert alert-danger text-center">
-        Journal entry data could not be loaded.
-    </div>
+<div class="alert alert-danger text-center">
+    Journal entry data could not be loaded.
+</div>
     return;
 }
 
@@ -140,8 +140,8 @@
     <div class="card border-0 mb-3">
         <div class="card-body card-body-tight">
             @{
-                decimal totalDebit = 0;
-                decimal totalCredit = 0;
+            decimal totalDebit = 0;
+            decimal totalCredit = 0;
             }
             <table class="table table-hover table-striped mb-0">
                 <thead>
@@ -156,31 +156,31 @@
                 <tbody>
                     @if (Model.JournalLines != null && Model.JournalLines.Any())
                     {
-                        foreach (var line in Model.JournalLines)
-                        {
-                            var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                            var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
-                            totalDebit += debit;
-                            totalCredit += credit;
+                    foreach (var line in Model.JournalLines)
+                    {
+                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
+                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+                    totalDebit += debit;
+                    totalCredit += credit;
 
-                            <tr>
-                                <td>@line.AccountNumber</td>
-                                <td>@line.AccountName</td>
-                                <td>@line.Description</td>
-                                <td>@debit.ToString("N0")</td>
-                                <td>@credit.ToString("N0")</td>
-                            </tr>
-                        }
+                    <tr>
+                        <td>@line.AccountNumber</td>
+                        <td>@line.AccountName</td>
+                        <td>@line.Description</td>
+                        <td>@debit.ToString("N0")</td>
+                        <td>@credit.ToString("N0")</td>
+                    </tr>
+                    }
 
-                        <tr class="fw-bold bg-light">
-                            <td colspan="3" class="text-end">Totals</td>
-                            <td>@totalDebit.ToString("N0")</td>
-                            <td>@totalCredit.ToString("N0")</td>
-                        </tr>
+                    <tr class="fw-bold bg-light">
+                        <td colspan="3" class="text-end">Totals</td>
+                        <td>@totalDebit.ToString("N0")</td>
+                        <td>@totalCredit.ToString("N0")</td>
+                    </tr>
                     }
                     else
                     {
-                        <tr><td colspan="5" class="text-center text-muted">No journal line entries found</td></tr>
+                    <tr><td colspan="5" class="text-center text-muted">No journal line entries found</td></tr>
                     }
                 </tbody>
             </table>
@@ -190,56 +190,56 @@
     <!-- ===================== TEMP JOURNAL LINES ===================== -->
     @if (Model.TempJournalHeader != null && Model.TempJournalHeader.Lines != null && Model.TempJournalHeader.Lines.Any())
     {
-        <h6 class="fw-bold text-success border-bottom pb-1 mb-2">
-            <i class="mdi mdi-table me-1"></i> Temp Journal Lines (Pending / Destination)
-        </h6>
-        <div class="card border-0 mb-3">
-            <div class="card-body card-body-tight">
-                @{
-                    decimal tempDebit = 0;
-                    decimal tempCredit = 0;
-                }
-                <table class="table table-hover table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th>Account Number</th>
-                            <th>Account Name</th>
-                            <th>Description</th>
-                            <th>Debit (FCFA)</th>
-                            <th>Credit (FCFA)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var line in Model.TempJournalHeader.Lines)
-                        {
-                            var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                            var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
-                            tempDebit += debit;
-                            tempCredit += credit;
+    <h6 class="fw-bold text-success border-bottom pb-1 mb-2">
+        <i class="mdi mdi-table me-1"></i> Temp Journal Lines (Pending / Destination)
+    </h6>
+    <div class="card border-0 mb-3">
+        <div class="card-body card-body-tight">
+            @{
+            decimal tempDebit = 0;
+            decimal tempCredit = 0;
+            }
+            <table class="table table-hover table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Account Number</th>
+                        <th>Account Name</th>
+                        <th>Description</th>
+                        <th>Debit (FCFA)</th>
+                        <th>Credit (FCFA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in Model.TempJournalHeader.Lines)
+                    {
+                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
+                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+                    tempDebit += debit;
+                    tempCredit += credit;
 
-                            <tr>
-                                <td>@line.AccountNumber</td>
-                                <td>@line.AccountName</td>
-                                <td>@line.Description</td>
-                                <td>@debit.ToString("N0")</td>
-                                <td>@credit.ToString("N0")</td>
-                            </tr>
-                        }
+                    <tr>
+                        <td>@line.AccountNumber</td>
+                        <td>@line.AccountName</td>
+                        <td>@line.Description</td>
+                        <td>@debit.ToString("N0")</td>
+                        <td>@credit.ToString("N0")</td>
+                    </tr>
+                    }
 
-                        <tr class="fw-bold bg-light">
-                            <td colspan="3" class="text-end">Totals</td>
-                            <td>@tempDebit.ToString("N0")</td>
-                            <td>@tempCredit.ToString("N0")</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <tr class="fw-bold bg-light">
+                        <td colspan="3" class="text-end">Totals</td>
+                        <td>@tempDebit.ToString("N0")</td>
+                        <td>@tempCredit.ToString("N0")</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
     }
 </div>
 
 
-@*===================== MODAL FOOTER =====================*@
+
 <div class="modal-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
         <i class="mdi mdi-close"></i> Close
