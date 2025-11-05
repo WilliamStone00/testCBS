@@ -99,6 +99,10 @@
                 {
                     <tr><th class="bg-label">Reference</th><td>@Model.Reference</td></tr>
                 }
+                @if (!string.IsNullOrWhiteSpace(Model.TicketType))
+                {
+                    <tr><th class="bg-label">Ticket Type</th><td>@Model.TicketType</td></tr>
+                }
                 @if (!string.IsNullOrWhiteSpace(Model.Stage))
                 {
                     <tr><th class="bg-label">Stage</th><td>@Model.Stage</td></tr>
@@ -191,12 +195,18 @@
                 {
                     <tr><th class="bg-label">Workflow Ticket Notes</th><td>@Model.WorkflowTicketNotes</td></tr>
                 }
+
+
+
+                <tr><th class="bg-label">Ticket Type</th><td>@Model.TicketType</td></tr>
                 @*@if (!string.IsNullOrWhiteSpace(Model.Narrative))
-                    {
-                        <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
-                    }*@
+
+
+        {
+            <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
+        }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 {
                     <tr><th class="bg-label">CreatedBy</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
@@ -425,16 +435,16 @@
 
 <script>
     $(document).ready(function () {
+     // Get Stage value from model
+         const stage = '@(Model?.Stage ?? "")'.toUpperCase();
 
-        const state = '@(Model?.PostMode ?? "")';
-
-        // Disable Approve button if state is APPROVED or RECONCILED
-        if (["APPROVED", "RECONCILED"].includes(state.toUpperCase())) {
-            $('#btnApprove')
-                .prop('disabled', true)
-                .addClass('btn-secondary')
-                .removeClass('btn-success');
-        }
+         // Disable Approve button if Stage is APPROVED or RECONCILED
+         if (["APPROVED", "RECONCILED"].includes(stage)) {
+             $('#btnApprove')
+                 .prop('disabled', true)
+                 .addClass('btn-secondary')
+                 .removeClass('btn-success');
+         }
 
         $('#btnApprove').click(function (e) {
             e.preventDefault();

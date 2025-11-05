@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CBS.BusinessService.Accounting_V2.BranchAccountService
 {
@@ -81,7 +83,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                     System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                     // Re-throw to trigger fallback
-                    throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                    throw new Exception($"service unavailable: {ex.Message}", ex);
                 }
             }
 
@@ -149,30 +151,52 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
             }
         }
 
-		public List<StringValues> DroupDownGen(List<BranchAccountResponse> branchAccounts)
-		{
-			try
-			{
-				List<StringValues> stringValues;
 
-				stringValues = (from a in branchAccounts
-								select new StringValues
-								{
-									Text = $"{a.Name}",
-									Value = $"{a.Id}",
-								}).ToList();
+public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccounts)
+    {
+        if (branchAccounts is null) return new List<SelectListItem>();
 
-				return stringValues;
-			}
-			catch (Exception ex)
-			{
-				// Log and rethrow exception
-				throw ex;
-			}
-		}
+        // Sort & distinct (optional: by Id)
+        var items = branchAccounts
+            .Where(a => a != null && !string.IsNullOrWhiteSpace(a.Id))
+            .GroupBy(a => a.Id)
+            .Select(g => g.First())
+            .OrderBy(a => a.Name ?? string.Empty)
+            .Select(a => new SelectListItem
+            {
+                // Show number if you have it; remove if not applicable
+                Text = string.IsNullOrWhiteSpace(a.Code) ? $"{a.Name}" : $"{a.Name}",
+                Value = a.Id
+            })
+            .ToList();
 
-		//get Branch Accounts for dro down 
-		public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
+        return items;
+    }
+
+    public List<AccountDto> DroupDownGenAccounts(List<BranchAccountResponse> branchAccounts)
+        {
+            try
+            {
+                List<AccountDto> stringValues;
+
+                stringValues = (from a in branchAccounts
+                                select new AccountDto
+                                {
+                                    AccountNumber = $"{a.Id}",
+                                    AccountName = $"{a.Name}",
+                                }).ToList();
+
+                return stringValues;
+            }
+            catch (Exception ex)
+            {
+                // Log and rethrow exception
+                throw ex;
+            }
+        }
+
+        //get Branch Accounts for dro down 
+        public async Task<IEnumerable<BranchAccountResponse>> GetAllBranchAccountsFromDataTableAsync(string branchId, CancellationToken cancellationToken = default)
         {
             try
             {

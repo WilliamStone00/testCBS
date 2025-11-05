@@ -97,6 +97,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public string LoanAccountType { get; set; }
         public string MemberAccountType { get; set; }
         public string Language { get; set; }
+        public string BranchAccountName { get; set; }
     }
 
     public class TrialBalanceReconciliationResponse
@@ -124,6 +125,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public string reference { get; set; }
         public DateTime AccountingDate { get; set; }
         public string AccountType { get; set; }
+        public string BranchAccountName { get; set; }
+        public string Mode { get; set; }
+        public string BRANCHName { get; set; }
     }
 
     public class FinalReconciliationRequest

@@ -3,17 +3,20 @@ using CBS.API.Helper;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
@@ -81,10 +84,71 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                 System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
 
                 // Re-throw to trigger fallback
-                throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
+                throw new Exception($"service unavailable: {ex.Message}", ex);
             }
         }
 
+        public async Task<IEnumerable<AffiliateAccountDto>> GetAllAffiliateAccounts1()
+        {
+            try
+            {               
+
+                var query = new AffiliateAccountQuery
+                {
+                    
+                    AffiliateId = "1"
+                };
+
+                // Reuse existing method which calls the API datatable endpoint
+                var dataTable = await GetcategoryDataTableAsync(query);
+
+                // Convert datatable.data to strongly-typed list safely
+                List<AffiliateAccountDto> branchList = new List<AffiliateAccountDto>();
+
+                if (dataTable?.data is JToken token)
+                {
+                    branchList = token.ToObject<List<AffiliateAccountDto>>() ?? new List<AffiliateAccountDto>();
+                }
+                else if (dataTable?.data != null)
+                {
+                    // Fallback if data is plain object
+                    branchList = JsonConvert.DeserializeObject<List<AffiliateAccountDto>>(JsonConvert.SerializeObject(dataTable.data))
+                                 ?? new List<AffiliateAccountDto>();
+                }
+
+                // Optional: server may already have enforced branch filtering. If you still want to
+                // double-check client-side for non-HO users, do case-insensitive compare:
+                if (!IsHeadOffice())
+                {
+                    var currentBranch = GetBranchID();
+                    branchList = branchList.Where(a => string.Equals(a.Id, currentBranch, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+                else
+                {
+                    // Ensure "All" entry exists for HO users
+                    var defaultAffiliate = new AffiliateAccountDto { Id = "All", Name = "All Branches", Code = "ALL" };
+                    if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
+                        branchList.Insert(0, defaultAffiliate);
+                }
+
+                var formatted = branchList
+                    .Select(a => new AffiliateAccountDto
+                    {
+                        Id = a.Id,
+                        Code = a.Code,
+                        Name = $"[{a.Code}] - {a.Name}".Trim()
+                    })
+                    .OrderBy(a => a.Name) // nicer UX for dropdown; change if you prefer Id
+                    .ToList();
+
+                return formatted;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public async Task<List<AffiliateAccountDto>> GetAllAffiliateAccounts()
         {
@@ -105,7 +169,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                     return new List<AffiliateAccountDto>();
                 }
 
-                
+
                 var affiliateAccounts = JsonConvert.DeserializeObject<List<AffiliateAccountDto>>(JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
 
                 return affiliateAccounts;
@@ -115,6 +179,8 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                 return new List<AffiliateAccountDto>();
             }
         }
+
+
 
         //tree structure 
         public async Task<AffiliateAccountDto> GetByIdAsync(string id)

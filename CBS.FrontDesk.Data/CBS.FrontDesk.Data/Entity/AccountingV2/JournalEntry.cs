@@ -126,6 +126,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal CashDenomsTotal { get; set; }
         public string BranchName { get; set; }
         public DateTime? ClosedAtUtc { get; set; }
+        public string TicketType { get; set; }
 
 
         public List<JournalLine> Lines { get; set; } 
@@ -245,6 +246,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime RejectedDate { get; set; }
         public decimal TotalCredit { get; set; }
         public decimal TotalDebit { get; set; }
+        public string TicketType { get; set; } 
     }
     
 
@@ -297,7 +299,19 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string TicketSource { get; set; } 
     }
 
+    public class GetallWorkFlowTicketsQuery
+    {
 
+        // Optional filters
+
+        public DataTableOptions DataTableOptions { get; set; }
+        public string BranchId { get; set; }
+        public string State { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public string TicketType { get; set; }
+    }
     //public class AccountDto
     //{
     //    public string Id { get; set; }

@@ -1,4 +1,5 @@
 ﻿
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
 using CBS.BusinessService.AccountingV2.JournalHead;
@@ -26,17 +27,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
     {
         private readonly BranchServices _branchServices;
         private readonly ManualJournalEntryService _manualJournalEntryService;
+        private readonly BranchAccountService _branchAccountService;
 
-        public ManualJournalEntryController(BranchServices branchServices, ManualJournalEntryService manualJournalEntryService)
+
+        public ManualJournalEntryController(BranchServices branchServices, ManualJournalEntryService manualJournalEntryService, BranchAccountService branchAccountService)
         {
 
             _branchServices = branchServices;
             _manualJournalEntryService = manualJournalEntryService;
-
-
+            _branchAccountService = branchAccountService;
         }
         // GET: ManualJournalEntry
-        
+
 
         public async Task<ActionResult> Index()
         {
@@ -63,7 +65,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
                 if (string.IsNullOrWhiteSpace(branchId))
                     return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
 
-                var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);
+                var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                var result =  _branchAccountService.DropDownGen(branchAccounts.ToList());
+
+
+               // var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);
 
                 if (result == null || !result.Any())
                     return Json(new { success = false, message = "⚠️ No accounts found for this branch." }, JsonRequestBehavior.AllowGet);

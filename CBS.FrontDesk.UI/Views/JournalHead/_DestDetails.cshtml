@@ -1,9 +1,6 @@
 ﻿
 
 
-
-
-
 @model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
 @using Resources;
 
@@ -108,6 +105,7 @@
             <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             <tr>
                 <th class="bg-label">Accounting Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
@@ -207,7 +205,6 @@
 
 
 
-
 <script>
     $(document).ready(function () {
         let accounts = [];
@@ -249,8 +246,8 @@
                         return;
                     }
                     accounts = response.data.map(a => ({
-                        Value: a.Id,
-                        Text: `${a.Code} - ${a.Name}`
+                        Value: a.Value,
+                        Text: `${a.Text}`
                     }));
                     appalert('✅ Accounts loaded successfully for selected branch.', 1, 1);
                     if (callback) callback();
@@ -317,6 +314,18 @@
                 .text(`Diff: XAF ${diff.toLocaleString()}`)
                 .toggleClass('text-danger', diff !== 0)
                 .toggleClass('text-success', diff === 0);
+
+            // ✅ Enable Approve button only if difference is zero
+            const approveBtn = $('#btnApproveDestination');
+            if (diff === 0 && debitTotal > 0) {
+                approveBtn.prop('disabled', false)
+                    .removeClass('btn-secondary')
+                    .addClass('btn-success');
+            } else {
+                approveBtn.prop('disabled', true)
+                    .removeClass('btn-success')
+                    .addClass('btn-secondary');
+            }
         }
 
         // ==========================
@@ -377,11 +386,11 @@
         });
 
         // ==========================
-        // Approve Destination with confirmation
+        // Approve Destination
         // ==========================
 
         const destState = '@(Model?.State ?? "")';
-        if (["APPROVED", "RECONCILED"].includes(destState.toUpperCase())) {
+        if (destState.toUpperCase() === 'APPROVED') {
             $('#btnApproveDestination')
                 .prop('disabled', true)
                 .addClass('btn-secondary')
@@ -391,11 +400,11 @@
         $('#btnApproveDestination').click(function (e) {
             e.preventDefault();
 
+            // ✅ Confirmation before approving
             alertify.confirm(
                 "Confirmation",
                 "Are you sure you want to approve this journal entry?",
                 function () {
-                    // User clicked OK, proceed with AJAX
                     const $btn = $('#btnApproveDestination');
                     const $icon = $btn.find('i');
                     const $text = $btn.find('.btn-text');
@@ -406,7 +415,7 @@
 
                     const payload = {
                         Reference: '@Model.Reference',
-                        BranchId: $('#BranchId').val(),
+                        BranchId: $('#BranchId').val() || '@Model.BranchId',
                         Approver: '@User.Identity.Name',
                         Lines: []
                     };
@@ -454,10 +463,12 @@
                     });
                 },
                 function () {
-                    // User clicked Cancel, do nothing
+                    // Cancelled
+                    toastr.info("Approval cancelled.");
                 }
-            ).set('labels', {ok:'Yes', cancel:'No'});
+            );
         });
+
     });
 </script>
 
