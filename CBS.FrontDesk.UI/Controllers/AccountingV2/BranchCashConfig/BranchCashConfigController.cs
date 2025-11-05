@@ -150,13 +150,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 if (model == null) return PartialView("_Error", "Configuration not found.");
 
                 // load branch accounts for the model’s branch
-                ViewBag.BranchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(model.BranchId);
+                var listing1 = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(model.BranchId);
+                ViewBag.BranchAccounts = _branchAccountService.DropDownGen(listing1.ToList());
+
                 ViewBag.CurrentBranchName = ResolveBranchName(model.BranchId);
                 ViewBag.Id = id;
                 return PartialView("_Create", new BranchCashConfigManagement { BranchCashConfig = model });
             }
 
-            if (string.IsNullOrWhiteSpace(branchId))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 // No context → empty form; accounts remain empty until user picks branch
                 ViewBag.BranchAccounts = Enumerable.Empty<object>();
@@ -166,7 +168,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
             // New config for a specific branch
             var existing = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
 			var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
-			var accountsDto = _branchAccountService.DroupDownGen(listing.ToList());
+			var accountsDto = _branchAccountService.DropDownGen(listing.ToList());
             ViewBag.BranchAccounts = accountsDto;
 			ViewBag.CurrentBranchName = ResolveBranchName(model.BranchId);
 
@@ -219,16 +221,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         [HttpPost]
         public async Task<ActionResult> GetByBranch(string branchId)
         {
-            if (string.IsNullOrEmpty(branchId))
+            if (string.IsNullOrWhiteSpace(branchId))
                 return Json(new { success = false, message = "Branch ID is required." });
 
             try
             {
-                //var branchAccounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync(branchId);
-                //var accountsDto = branchAccounts.Select(a => new { id = a.Id, name = a.Name }).ToList();
-				var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
-				var accountsDto = _branchAccountService.DroupDownGen(listing.ToList());
-				var config = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
+                // Load accounts for the branch (shape: IEnumerable<BranchAccountResponse>)
+                var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+
+                // Convert to SelectListItem for UI
+                var accounts = _branchAccountService.DropDownGen(listing.ToList());
+
+                // Load existing config (if any)
+                var config = await _branchCashConfigService.GetBranchCashConfigByBranchIdAsync(branchId);
 
                 if (config != null)
                 {
@@ -251,20 +256,21 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                             formFeeIncomeAccountId = config.FormFeeIncomeAccountId,
                             realTimeCashPosting = config.RealTimeCashPosting
                         },
-                        accounts = accountsDto
+                        // send as simple array of {text, value} for the client
+                        accounts = accounts
                     });
                 }
 
-                // new config for this branch
+                // New config for this branch
                 return Json(new
                 {
                     success = true,
                     exists = false,
                     data = new { id = (string)null, branchId, realTimeCashPosting = true },
-                    accounts = accountsDto
+                    accounts = accounts
                 });
             }
-            catch
+            catch (Exception)
             {
                 return Json(new { success = false, message = "Error loading branch configuration." });
             }
@@ -346,7 +352,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 return Content("<div class='text-warning p-2'>Configuration not found.</div>");
 
             var branches = await _branchServices.GetBranches();
-            var accounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync("");
+            //var accounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync("");
+
+            var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(c.BranchId);
+
+            // Convert to SelectListItem for UI
+            //var accounts = _branchAccountService.DropDownGen(listing.ToList());
+
 
 
             string BranchNameOf(string bid) =>

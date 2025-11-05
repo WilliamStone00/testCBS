@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2
 {
-    public class JournalApproval
-    {
-        public string Reference { get; set; }
-        public string SourceBranchId { get; set; }
-        public string  BranchId { get; set; }
-        public string Approver { get; set; }
-    }
+    //public class JournalApproval
+    //{
+    //    public string Reference { get; set; }
+    //    public string SourceBranchId { get; set; }
+    //    public string  BranchId { get; set; }
+    //    public string Approver { get; set; }
+    //}
 
 
     public class JournalApprovalResponse
@@ -24,7 +24,38 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string JournalId { get; set; }
         public string Message { get; set; }
     }
-    public class DestinationJournalineApproval
+    //public class DestinationJournalineApproval
+    //{
+    //    public string AccountId { get; set; }
+    //    public string DrCr { get; set; }
+    //    public decimal Amount { get; set; }
+    //    public string Memo { get; set; }
+    //}
+
+    //public class DestinationApproval
+    //{
+    //    public string Reference { get; set; }
+    //    public string BranchId { get; set; }
+    //    public string Approver { get; set; }
+    //    public string DestinationBranchId { get; set; }
+    //    public List<DestinationJournalineApproval> Lines { get; set; }
+    //}
+
+    public class JournalApproval
+    {
+        // ===== Journal Header Information =====
+        public string Reference { get; set; }
+        public string SourceBranchId { get; set; }
+        public string BranchId { get; set; }
+        public string Approver { get; set; }
+        public string DestinationBranchId { get; set; }
+        public string TicketType { get; set; }
+
+        // ===== Journal Line Details =====
+        public List<DestinationJournalLineApproval> Lines { get; set; }
+    }
+
+    public class DestinationJournalLineApproval
     {
         public string AccountId { get; set; }
         public string DrCr { get; set; }
@@ -32,13 +63,6 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Memo { get; set; }
     }
 
-    public class DestinationApproval
-    {
-        public string Reference { get; set; }
-        public string BranchId { get; set; }
-        public string Approver { get; set; }
-        public List<DestinationJournalineApproval> Lines { get; set; }
-    }
 
 
 

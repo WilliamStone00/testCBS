@@ -2,6 +2,8 @@
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -187,33 +189,41 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 });
             }
         }
-        //[HttpPost]
-        //public async Task<ActionResult> Approve(JournalApproval model)
-        //{
-        //    if (model == null || string.IsNullOrEmpty(model.Reference))
-        //        return Json(new { success = false, message = "Journal Reference is required" });
-
-        //    try
-        //    {
-        //        var result = await _journalHeadService.ApproveAsync(model);
-        //        return Json(new { success = result, message = result ? "Approved successfully" : "Approval failed" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
 
         [HttpPost]
         public async Task<ActionResult> Approve(JournalApproval model)
         {
             if (model == null || string.IsNullOrEmpty(model.Reference))
                 return Json(new { success = false, message = "Journal Reference is required" });
+
             model.SourceBranchId = model.BranchId;
+            model.DestinationBranchId = model.BranchId;
             try
             {
-                // ✅ Get the response object instead of a bool
-                var result = await _journalHeadService.ApproveAsync(model);
+                object result = null;
+
+                // ✅ Route to the correct service based on ticket type
+                switch (model.TicketType?.ToUpperInvariant())
+                {
+                    case "SOURCE":
+                        result = await _journalHeadService.ApproveSourceAsync(model);
+                        break;
+
+                    case "DESTINATION":
+                        result = await _journalHeadService.ApproveDestinationAsync(model);
+                        break;
+
+                    case "MEMBER RECONCILIATION":
+                        result = await _journalHeadService.ApproveMemberReconciliationAsync(model);
+                        break;
+
+                    case "CASH RECONCILIATION":
+                        result = await _journalHeadService.ApproveCashReconciliationAsync(model);
+                        break;
+
+                    default:
+                        return Json(new { success = false, message = "Unknown Ticket Type." });
+                }
 
                 if (result == null)
                     return Json(new { success = false, message = "No response from approval service." });
@@ -223,15 +233,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 {
                     success = true,
                     statusCode = 200,
-                    message = result.Message ?? "Approved successfully",
-                    data = new
-                    {
-                        result.Reference,
-                        result.BranchId,
-                        result.TicketId,
-                        result.TicketState,
-                        result.JournalId
-                    }
+                    message = (result as dynamic)?.Message ?? "Approved successfully",
+                    data = result
                 });
             }
             catch (Exception ex)
@@ -247,9 +250,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
 
+
         [HttpPost]
-        public async Task<ActionResult> ApproveDestination(DestinationApproval model)
+        public async Task<ActionResult> ApproveDestination(JournalApproval model)
         {
+
+
             if (model == null || string.IsNullOrEmpty(model.Reference))
                 return Json(new { success = false, message = "Destination Reference is required" });
 

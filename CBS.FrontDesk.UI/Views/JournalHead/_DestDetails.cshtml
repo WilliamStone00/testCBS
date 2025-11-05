@@ -1,9 +1,6 @@
 ﻿
 
 
-
-
-
 @model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
 @using Resources;
 
@@ -108,6 +105,7 @@
             <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             <tr>
                 <th class="bg-label">Accounting Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
@@ -201,7 +199,6 @@
 
     </div>
 </div>
-
 
 
 
@@ -317,6 +314,18 @@
                 .text(`Diff: XAF ${diff.toLocaleString()}`)
                 .toggleClass('text-danger', diff !== 0)
                 .toggleClass('text-success', diff === 0);
+
+            // ✅ Enable Approve button only if difference is zero
+            const approveBtn = $('#btnApproveDestination');
+            if (diff === 0 && debitTotal > 0) {
+                approveBtn.prop('disabled', false)
+                    .removeClass('btn-secondary')
+                    .addClass('btn-success');
+            } else {
+                approveBtn.prop('disabled', true)
+                    .removeClass('btn-success')
+                    .addClass('btn-secondary');
+            }
         }
 
         // ==========================
@@ -391,63 +400,73 @@
         $('#btnApproveDestination').click(function (e) {
             e.preventDefault();
 
-            const $btn = $(this);
-            const $icon = $btn.find('i');
-            const $text = $btn.find('.btn-text');
+            // ✅ Confirmation before approving
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to approve this journal entry?",
+                function () {
+                    const $btn = $('#btnApproveDestination');
+                    const $icon = $btn.find('i');
+                    const $text = $btn.find('.btn-text');
 
-            $btn.prop('disabled', true);
-            $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
-            $text.text('Approving...');
+                    $btn.prop('disabled', true);
+                    $icon.removeClass('mdi-check-circle-outline').addClass('mdi-loading mdi-spin');
+                    $text.text('Approving...');
 
-            const payload = {
-                Reference: '@Model.Reference',
-                BranchId: $('#BranchId').val(),
-                Approver: '@User.Identity.Name',
-                Lines: []
-            };
+                    const payload = {
+                        Reference: '@Model.Reference',
+                        BranchId: $('#BranchId').val() || '@Model.BranchId',
+                        Approver: '@User.Identity.Name',
+                        Lines: []
+                    };
 
-            // Only include rows with account selected and amount > 0
-            $('#myDataTable tbody tr').each(function () {
-                const $row = $(this);
-                const accountId = $row.find('.account-id').val();
-                const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
-                const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
+                    $('#myDataTable tbody tr').each(function () {
+                        const $row = $(this);
+                        const accountId = $row.find('.account-id').val();
+                        const debitVal = parseFloat($row.find('.debit-input').val()) || 0;
+                        const creditVal = parseFloat($row.find('.credit-input').val()) || 0;
 
-                if (accountId && (debitVal > 0 || creditVal > 0)) {
-                    payload.Lines.push({
-                        AccountId: accountId,
-                        DrCr: debitVal > 0 ? 'Debit' : 'Credit',
-                        Amount: debitVal > 0 ? debitVal : creditVal,
-                        Memo: $row.find('.memo').val()
+                        if (accountId && (debitVal > 0 || creditVal > 0)) {
+                            payload.Lines.push({
+                                AccountId: accountId,
+                                DrCr: debitVal > 0 ? 'Debit' : 'Credit',
+                                Amount: debitVal > 0 ? debitVal : creditVal,
+                                Memo: $row.find('.memo').val()
+                            });
+                        }
                     });
-                }
-            });
 
-            $.ajax({
-                url: '@Url.Action("ApproveDestination", "JournalHead")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(payload),
-                success: function (response) {
-                    if (response.success) {
-                        toastr.success(response.message);
-                        $btn.prop('disabled', true);
-                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
-                        $text.text('Approved');
-                    } else {
-                        toastr.error(response.message);
-                        $btn.prop('disabled', false);
-                        $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
-                        $text.text('Approve');
-                    }
+                    $.ajax({
+                        url: '@Url.Action("ApproveDestination", "JournalHead")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(payload),
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+                                $btn.prop('disabled', true);
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle');
+                                $text.text('Approved');
+                            } else {
+                                toastr.error(response.message);
+                                $btn.prop('disabled', false);
+                                $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                                $text.text('Approve');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            toastr.error("An error occurred: " + error);
+                            $btn.prop('disabled', false);
+                            $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
+                            $text.text('Approve');
+                        }
+                    });
                 },
-                error: function (xhr, status, error) {
-                    toastr.error("An error occurred: " + error);
-                    $btn.prop('disabled', false);
-                    $icon.removeClass('mdi-loading mdi-spin').addClass('mdi-check-circle-outline');
-                    $text.text('Approve');
+                function () {
+                    // Cancelled
+                    toastr.info("Approval cancelled.");
                 }
-            });
+            );
         });
 
     });
