@@ -378,7 +378,6 @@
                         appalert(res.message || 'Journal entry posted successfully', 1, 1);
                         $('#journalForm')[0].reset();
                         $('#myDataTable tbody').empty();
-                        addRow();
                         $('#addRowBtn, #postEntriesBtn').prop('disabled', true);
                     } else {
                         appalert(res.message || 'Failed to post journal entry', 2, 1);
