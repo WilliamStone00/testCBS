@@ -146,7 +146,12 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
             public string JournalHeaderId { get; set; }
         }
 
-
+        public class finalize
+        {
+                public string  Id { get; set; }
+                public string ApprovedByName { get; set; }
+              public string BranchId { get; set; }
+    } 
     
 }
 

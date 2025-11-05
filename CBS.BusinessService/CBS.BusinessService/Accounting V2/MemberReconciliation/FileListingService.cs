@@ -139,11 +139,18 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
             }
         }
 
-        public async Task<ExecutionMessages> ConfirmReconciliation(string id)
+        public async Task<ExecutionMessages> ConfirmReconciliation(string id, string branch)
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, id);
+                var payload = new finalize()
+                {
+                    Id = id,
+                    ApprovedByName = GetUserFullName(),
+                    BranchId = branch
+                }; 
+
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, payload);
 
                 if (response.IsSuccess)
                 {
