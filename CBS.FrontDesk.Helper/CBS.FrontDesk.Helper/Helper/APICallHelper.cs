@@ -1483,7 +1483,7 @@ namespace CBS.FrontDesk.Helper
 
         public const string GetAccountBalance = "/api/v1/TrialBalance/balance/{0}";
 public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
- public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
+ 
 
 		//---------------------------Mobile MoneyV2--------------------------------------//
 
