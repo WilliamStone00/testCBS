@@ -96,7 +96,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             //var affiliate = await _AffiliateService.GetAsync();
             //ViewBag.Affiliates = affiliate;
 
-            var Chartofaccount = await _AffiliateAccountService.GetAllAffiliateAccounts();
+            var Chartofaccount = await _AffiliateAccountService.GetAllAffiliateAccounts1();
             ViewBag.ChartAccount = Chartofaccount;
 
             var pcmfs = await _chartOfAccountsV.GetAllPCMFAccounts();

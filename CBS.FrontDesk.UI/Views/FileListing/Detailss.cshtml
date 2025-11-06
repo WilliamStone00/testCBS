@@ -219,11 +219,11 @@
                         <h6 class="text-info">
                             @if (Model?.CreatedDate != DateTime.MinValue)
                             {
-                                @Model.CreatedDate.ToString("MMM dd, yyyy")
+                            @Model.CreatedDate.ToString("MMM dd, yyyy")
                             }
                             else
                             {
-                                @:"—"
+                            @:"—"
                             }
                         </h6>
                         <small class="text-muted">Date</small>
@@ -237,12 +237,12 @@
                         <h5 class="text-muted">File Size</h5>
                         <h6 class="text-warning">
                             @{
-                                var fileSizeBytes = Model?.SizeBytes ?? 0L;
-                                string fileSizeDisplay;
-                                if (fileSizeBytes >= 1_000_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
-                                else if (fileSizeBytes >= 1_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
-                                else if (fileSizeBytes >= 1_000) { fileSizeDisplay = (fileSizeBytes / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
-                                else { fileSizeDisplay = fileSizeBytes + " B"; }
+                            var fileSizeBytes = Model?.SizeBytes ?? 0L;
+                            string fileSizeDisplay;
+                            if (fileSizeBytes >= 1_000_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
+                            else if (fileSizeBytes >= 1_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
+                            else if (fileSizeBytes >= 1_000) { fileSizeDisplay = (fileSizeBytes / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
+                            else { fileSizeDisplay = fileSizeBytes + " B"; }
                             }
                             @fileSizeDisplay
                         </h6>
@@ -281,11 +281,11 @@
                                         <td style="width: 25%;">
                                             @if (Model?.CreatedDate != DateTime.MinValue)
                                             {
-                                                @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                            @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss K")
                                             }
                                             else
                                             {
-                                                @:"—"
+                                            @:"—"
                                             }
                                         </td>
                                     </tr>
@@ -296,11 +296,11 @@
                                         <td>
                                             @if (Model?.ModifiedDate != DateTime.MinValue && Model.ModifiedDate > DateTime.MinValue.AddYears(1))
                                             {
-                                                @Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                            @Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss K")
                                             }
                                             else
                                             {
-                                                @:"—"
+                                            @:"—"
                                             }
                                         </td>
                                     </tr>
@@ -309,12 +309,12 @@
                                         <td>@Html.Raw(Model?.BranchId ?? "—")</td>
                                         <td class="fw-bold text-muted small">Status</td>
                                         <td>
-                                            <span class="badge
-                                            @(Model?.Status?.ToLower() == "completed" ? "bg-success" :
-                                              Model?.Status?.ToLower() == "processing" ? "bg-warning" :
-                                              Model?.Status?.ToLower() == "error" ? "bg-danger" : "bg-secondary")">
+                                            <span class="badge @( (Model?.Status ?? " ").ToLowerInvariant().Trim() == " completed" ? "bg-success" :
+                                                  (Model?.Status ?? "" ).ToLowerInvariant().Trim()= ="processing" ? "bg-warning" :
+                                                  (Model?.Status ?? "" ).ToLowerInvariant().Trim()= ="error" ? "bg-danger" : "bg-secondary" )">
                                                 @Html.Encode(Model?.Status ?? "—")
                                             </span>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -322,7 +322,7 @@
                                         <td>@Html.Raw(Model?.Category ?? "—")</td>
                                         <td class="fw-bold text-muted small">Deleted</td>
                                         <td>
-                                            <span class="badge @(Model?.IsDeleted == true ? "bg-danger" : "bg-success")">
+                                            <span class="badge @(Model?.IsDeleted == true ? " bg-danger" : "bg-success" )">
                                                 @(Model?.IsDeleted == true ? "Yes" : "No")
                                             </span>
                                         </td>
@@ -355,15 +355,15 @@
                                         <td class="fw-bold text-muted small align-top">Error JSON</td>
                                         <td>
                                             @{
-                                                var errorJson = Model?.ErrorJson;
-                                                if (string.IsNullOrWhiteSpace(errorJson))
-                                                {
-                                                    @:—
-                                                }
-                                                else
-                                                {
-                                                    <pre class="small bg-light p-2 rounded border mb-0">@Html.Encode(errorJson)</pre>
-                                                }
+                                            var errorJson = Model?.ErrorJson;
+                                            if (string.IsNullOrWhiteSpace(errorJson))
+                                            {
+                                            @:—
+                                            }
+                                            else
+                                            {
+                                            <pre class="small bg-light p-2 rounded border mb-0">@Html.Encode(errorJson)</pre>
+                                            }
                                             }
                                         </td>
                                     </tr>
@@ -473,7 +473,7 @@
                     <div class="card-body py-4">
                         <h4 class="text-muted mb-3">Ready to Complete Reconciliation?</h4>
                         <p class="text-muted mb-4">Once confirmed, the reconciliation process will be finalized and cannot be undone.</p>
-                        <button id="confirmReconciliationBtn" data-id="@Html.Raw(Model?.Id ?? "")" data-branch="@Html.Raw(Model?.BranchId ?? "")" class="btn btn-primary btn-lg px-5 py-3">
+                        <button id="confirmReconciliationBtn" data-id="@Html.Raw(Model?.Id ?? " ")" data-branch="@Html.Raw(Model?.BranchId ?? " ")" class="btn btn-primary btn-lg px-5 py-3">
                             <i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation
                         </button>
                         <div class="mt-2">
@@ -494,9 +494,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             @*<div class="modal-header bg-primary text-white">
-            <h5 class="modal-title"><i class="mdi mdi-file-table-outline me-2"></i>Trial Balance Details</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>*@
+                <h5 class="modal-title"><i class="mdi mdi-file-table-outline me-2"></i>Trial Balance Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>*@
 
             <div class="row">
                 <div class="col-12">
@@ -522,9 +522,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             @*<div class="modal-header bg-success text-white">
-            <h5 class="modal-title"><i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>*@
+                <h5 class="modal-title"><i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>*@
             <div class="row">
                 <div class="col-12">
                     <div class="card bg-light mb-2 p-2">
@@ -533,7 +533,7 @@
                                 <i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </h1>
-                             <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
+                            <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
                         </div>
                     </div>
                 </div>
@@ -545,8 +545,28 @@
     </div>
 </div>
 
+<!-- Modal container that will be populated with the partial -->
+<div id="confirmReconciliationModalContainer">
+    <!-- partial will be injected here -->
+</div>
+<!-- DETAILS modal -->
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+            <div class="modal-footer py-1">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
-    <script>
+<script>
     $(document).ready(function () {
         // Prepare data for DataTables
         const trialBalanceData = [
@@ -788,8 +808,8 @@
                                 <h6 class="card-title text-primary mb-3"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
                                 <table class="table table-sm table-borderless">
                                     <tr><td class="fw-bold text-muted small">ID:</td><td class="font-monospace">${$btn.data('row-id')}</td></tr>
-                                    <tr><td class="fw-bold text-muted small">Source Code:</td><td><span class="badge bg-primary">${$btn.data('source-code')}</span></td></tr>
-                                    <tr><td class="fw-bold text-muted small">Source Name:</td><td>${$btn.data('source-name')}</td></tr>
+                                    <tr><td class="fw-bold text-muted small">Branch Code:</td><td><span class="badge bg-primary">${$btn.data('source-code')}</span></td></tr>
+                                    <tr><td class="fw-bold text-muted small">Branch Name:</td><td>${$btn.data('source-name')}</td></tr>
                                     <tr><td class="fw-bold text-muted small">Branch Account ID:</td><td>${$btn.data('branch-account-id') || '—'}</td></tr>
                                 </table>
                             </div>
@@ -932,91 +952,10 @@
             new bootstrap.Modal(document.getElementById('memberBalanceDetailsModal')).show();
         });
 
-
-        // Confirm Reconciliation Button
-        $('#confirmReconciliationBtn').on('click', function () {
-            console.log('Confirm button clicked');
-            const $btn = $(this);
-            const id = $btn.data('id');
-            const branch = $btn.data('branch');
-
-            if (!id) {
-                if (typeof appalert === 'function') {
-                    appalert('No file ID provided.', 3, 1);
-                } else {
-                    alert('No file ID provided.');
-                }
-                return;
-            }
-
-            const message = `Are you sure you want to confirm reconciliation for this file?\n\n` +
-                `This action will finalize the reconciliation process and cannot be undone.`;
-
-            if (typeof alertify !== 'undefined' && alertify.confirm) {
-                alertify.confirm(
-                    "Confirm Reconciliation",
-                    message,
-                    function () {
-                        if (typeof appalert === 'function') {
-                            appalert('Processing reconciliation...', 0, 0);
-                        }
-                        performReconciliation($btn, id, branch); // Fixed: added branch parameter
-                    },
-                    function () {
-                        if (typeof appalert === 'function') {
-                            appalert('Reconciliation cancelled', 3, 1);
-                        }
-                    }
-                );
-            } else {
-                if (confirm(message)) {
-                    if (typeof appalert === 'function') {
-                        appalert('Processing reconciliation...', 0, 0);
-                    }
-                    performReconciliation($btn, id, branch); // Fixed: added branch parameter
-                }
-            }
+         $('#confirmReconciliationModalContainer').on('click', '#confirmReconciliationBtn', function () {
+          const id = $(this).data('id');
+           if (!id) return;
+           loadIntoModal('#affiliateDetailsModal', detailUrl, { id: id, partialView: '_Details' });
         });
-
-        function performReconciliation($btn, id, branch) {
-                console.log('Performing reconciliation for:', { id, branch });
-
-                // Disable button to prevent multiple clicks
-                $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
-
-                // Your AJAX call should include both id and branch
-                $.ajax({
-                    url: '/FileListing/ConfirmUpload',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        branch: branch,
-                       
-                    },
-                    success: function(response) {
-                        if (response.success) {
-
-                            appalert(response.message, 1, 1);
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 1500);
-                        } else {
-                            appalert(response.message, 2, 1);
-                        }
-                     
-                        // Redirect or update UI
-                      
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Reconciliation error:', error);
-                        if (typeof appalert === 'function') {
-                            appalert('Reconciliation failed: ' + (xhr.responseJSON?.message || error), 3, 1);
-                        }
-                        // Re-enable button on error
-                        $btn.prop('disabled', false).html('<i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation');
-                    }
-                });
-         }
-    });
-    </script>
+</script>
     }

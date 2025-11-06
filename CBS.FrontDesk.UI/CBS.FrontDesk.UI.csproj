@@ -2090,7 +2090,6 @@
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
-    <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
@@ -10868,15 +10867,17 @@
     <Content Include="Views\Reconciliation\_ReconciliationResult.cshtml" />
     <Content Include="Views\FileListing\List.cshtml" />
     <Content Include="Views\FileListing\_DataGLH.cshtml" />
-    <Content Include="Views\FileListing\_Details.cshtml" />
     <Content Include="Views\FileListing\GLhistory.cshtml" />
     <Content Include="Views\FileListing\_Data.cshtml" />
-    <Content Include="Views\FileListing\_Details.cshtml" />
+    <Content Include="Views\FileListing\Detailss.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_MobileMoneyDetailsPartial.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\Index.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_Create.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_Data.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDetailsPartial.cshtml" />
+    <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
+    <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
+    <Content Include="Views\FileListing\_Validation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

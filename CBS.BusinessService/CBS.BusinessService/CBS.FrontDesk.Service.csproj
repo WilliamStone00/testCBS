@@ -259,7 +259,6 @@
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\MockBranchCashConfigService.cs" />
-    <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
     <Compile Include="AccountingV2\MobileMoneyV2\MobileMoneyService.cs" />
     <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
     <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
@@ -513,6 +512,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Accounting V2\DaillyCollectorSummary\" />
     <Folder Include="BankZone\" />
     <Folder Include="bin\Debug\ca\" />
     <Folder Include="bin\Debug\de\" />

@@ -69,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
             ViewBag.HoPcmfAccountId = Chartofaccount;*/
 
-            var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts();
+            var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts1();
             ViewBag.AffiliateAccounts = affiliateAccounts;
 
             var classes = _chartOfAccountsV.GetAllClass2();
