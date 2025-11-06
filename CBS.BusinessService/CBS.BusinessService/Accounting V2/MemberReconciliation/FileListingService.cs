@@ -139,33 +139,25 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
             }
         }
 
-        public async Task<ExecutionMessages> ConfirmReconciliation(string id, string branch)
+        public async Task<ExecutionMessages> ConfirmReconciliation(ConfirmReconciliation payload)
         {
-            try
-            {
-                var payload = new finalize()
-                {
-                    Reference = id,
-                    ApprovedByName = GetUserFullName(),
-                    BranchId = branch
-                }; 
-
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, payload);
+            try            {               
+                  var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, payload);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, id, MessagesResults.Success,
+                    GetExecutionMessages(response.ApiResponseData.Data, true, payload.Id, MessagesResults.Success,
                         ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(id, false, id, MessagesResults.Failed,
+                    GetExecutionMessages(payload.Id, false, payload.Id, MessagesResults.Failed,
                         ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(id, false, id, MessagesResults.Error,
+                GetExecutionMessages(payload.Id, false, payload.Id, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
