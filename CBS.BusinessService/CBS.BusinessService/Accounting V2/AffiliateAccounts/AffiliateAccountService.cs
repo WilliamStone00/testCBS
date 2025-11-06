@@ -126,7 +126,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                 else
                 {
                     // Ensure "All" entry exists for HO users
-                    var defaultAffiliate = new AffiliateAccountDto { Id = "All", Name = "All Branches", Code = "ALL" };
+                    var defaultAffiliate = new AffiliateAccountDto { Id = "All", Name = "All Affiliates", Code = "ALL" };
                     if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
                         branchList.Insert(0, defaultAffiliate);
                 }

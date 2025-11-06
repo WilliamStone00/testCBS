@@ -308,6 +308,120 @@
         `;
       }
 
+        function mapFileUploadStatus(value) {
+            if (value == null) return { label: 'Unknown', class: 'bg-secondary' };
+
+            const v = String(value).trim().toLowerCase();
+
+            switch (v) {
+                case '1':
+                case 'received':
+                    return { label: 'Received', class: 'bg-primary' };
+                case '2':
+                case 'validating':
+                    return { label: 'Validating', class: 'bg-warning text-dark' };
+                case '3':
+                case 'parsed':
+                    return { label: 'Parsed', class: 'bg-info' };
+                case '4':
+                case 'mapped':
+                    return { label: 'Mapped', class: 'bg-info' };
+                case '5':
+                case 'processing':
+                    return { label: 'Processing', class: 'bg-warning text-dark' };
+                case '6':
+                case 'completed':
+                    return { label: 'Completed', class: 'bg-success' };
+                case '7':
+                case 'failed':
+                    return { label: 'Failed', class: 'bg-danger' };
+                case '8':
+                case 'cancelled':
+                case 'canceled':
+                    return { label: 'Cancelled', class: 'bg-secondary' };
+                default:
+                    return { label: String(value), class: 'bg-secondary' };
+            }
+        }
+
+        function mapReconciliationStatus(value) {
+            if (value == null) return { label: 'Unknown', class: 'bg-secondary' };
+
+            const v = String(value).trim().toLowerCase();
+
+            switch (v) {
+                case '0':
+                case 'notstarted':
+                case 'not_started':
+                case 'not started':
+                    return { label: 'Not Started', class: 'bg-secondary' };
+                case '1':
+                case 'pending':
+                    return { label: 'Pending', class: 'bg-warning text-dark' };
+                case '2':
+                case 'partialinitiation':
+                case 'partial_initiation':
+                case 'partial initiation':
+                    return { label: 'Partial Initiation', class: 'bg-info' };
+                case '3':
+                case 'finalinitiation':
+                case 'final_initiation':
+                case 'final initiation':
+                    return { label: 'Final Initiation', class: 'bg-primary' };
+                case '4':
+                case 'reconciled':
+                    return { label: 'Reconciled', class: 'bg-success' };
+                default:
+                    return { label: String(value), class: 'bg-secondary' };
+            }
+        }
+
+        function mapFileUploadCategory(value) {
+            if (value == null) return { label: 'Unknown', class: 'bg-secondary' };
+            const v = String(value).trim().toLowerCase();
+
+            switch (v) {
+                case '1':
+                case 'hocoa':
+                case 'ho_coa':
+                    return { label: 'HoCoa', class: 'bg-primary' };
+                case '2':
+                case 'affiliatecoa':
+                case 'affiliate_coa':
+                    return { label: 'AffiliateCoa', class: 'bg-info' };
+                case '3':
+                case 'branchcoa':
+                case 'branch_coa':
+                    return { label: 'BranchCoa', class: 'bg-info' };
+                case '4':
+                case 'trialbalance':
+                case 'trial_balance':
+                    return { label: 'Trial Balance', class: 'bg-warning text-dark' };
+                case '5':
+                case 'memberbalances':
+                case 'member_balances':
+                    return { label: 'Member Balances', class: 'bg-success' };
+                case '6':
+                case 'postingrules':
+                    return { label: 'Posting Rules', class: 'bg-secondary' };
+                case '7':
+                case 'branchcashconfig':
+                    return { label: 'Branch Cash Config', class: 'bg-secondary' };
+                case '8':
+                case 'liaisonmapping':
+                    return { label: 'Liaison Mapping', class: 'bg-secondary' };
+                case '99':
+                case 'other':
+                    return { label: 'Other', class: 'bg-dark' };
+                case '100':
+                case 'affiliateaccount':
+                case 'affiliate_account':
+                    return { label: 'Affiliate Account', class: 'bg-info' };
+                default:
+                    return { label: String(value), class: 'bg-secondary' };
+            }
+        }
+
       // ---------- DATATABLE ----------
       function initDataTable() {
         const selector = '#myDataTable';
@@ -340,6 +454,7 @@
                 draw: d.draw,
                 start: d.start,
                 length: d.length,
+                pageSize: d.length,
                 searchValue: d.search?.value || '',
                 sortColumnName: '',
                 sortColumnDirection: ''
@@ -370,24 +485,35 @@
                   return row.OriginalFileName || row.OriginalFileName || '';
               }
             },
-            {
-              data: 'Category',
-              render: function (data, type, row) {
-                  return row.Category || row.Category || '';
-              }
-            },
-            {
-              data: 'TrialBalanceRowCount',
-              render: function (data, type, row) {
-                  return (row.TrialBalanceRowCount != null) ? String(row.TrialBalanceRowCount) : '-';
-              }
-            },
-            {
-              data: 'MemberBalanceRowCount',
-              render: function (data, type, row) {
-                  return (row.MemberBalanceRowCount != null) ? String(row.MemberBalanceRowCount) : '-';
-              }
-            },
+              {
+                  data: 'Category',
+                  render: function (data, type, row) {
+                      const info = mapFileUploadCategory(data);
+                      return `<span class="badge ${info.class}">${info.label}</span>`;
+                  }
+              },
+              {
+                  data: 'BranchName',
+                  render: function (data, type, row) {
+                      const info = mapFileUploadCategory(data);
+                      return `<span class="badge ${info.class}">${info.label}</span>`;
+                  }
+              },
+              {
+                  data: 'Status',
+                  render: function (data, type, row) {
+                      // data could be numeric (1..8) or string ('Completed')
+                      const info = mapFileUploadStatus(data);
+                      return `<span class="badge ${info.class}">${info.label}</span>`;
+                  }
+              },
+              {
+                  data: 'ReconciliationStatus',
+                  render: function (data, type, row) {
+                      const info = mapReconciliationStatus(data);
+                     return `<span class="badge ${info.class}">${info.label}</span>`;
+                  }
+              },
             {
               data: null,
               orderable: false,

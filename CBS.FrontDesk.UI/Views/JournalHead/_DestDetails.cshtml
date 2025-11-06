@@ -105,6 +105,26 @@ else
     @*===================== MODAL BODY =====================*@
     <div class="modal-body">
 
+    JOURNAL HEADER INFO
+    <h6 class="fw-bold text-primary border-bottom pb-1 mb-2"><i class="mdi mdi-file-document me-1"></i> Journal Header</h6>
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
+            <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
+            <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
+            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
+            <tr>
+                <th class="bg-label">Accounting Date</th>
+                <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Remarks</th>
+                <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
+            </tr>
+            <tr><th class="bg-label">Initiated Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
+        </tbody>
+    </table>
         JOURNAL HEADER INFO
         <h6 class="fw-bold text-primary border-bottom pb-1 mb-2"><i class="mdi mdi-file-document me-1"></i> Journal Header</h6>
         <table class="table table-sm table-bordered mb-3">

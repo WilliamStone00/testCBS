@@ -11,6 +11,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
     {
         public string Id { get; set; }
         public string BranchId { get; set; }
+        public string  BranchCode { get; set; }
+        public string  BranchName { get; set; }
         public string Category { get; set; }
         public string FileName { get; set; }
         public string OriginalFileName { get; set; }
@@ -21,6 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public string Status { get; set; }
         public string Notes { get; set; }
         public string ErrorJson { get; set; }
+        public string ReconciliationStatus { get; set; }
         public int TrialBalanceRowCount { get; set; }
         public int MemberBalanceRowCount { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -146,12 +149,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
             public string JournalHeaderId { get; set; }
         }
 
-        public class finalize
-        {
-                public string  Reference { get; set; }
-                public string ApprovedByName { get; set; }
-              public string BranchId { get; set; }
-    } 
-    
+    public class ConfirmReconciliation
+    {
+        public string Id { get; set; }              
+        public string BranchId { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public string Memo { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string ReconciliationKind { get; set; }
+        public string ReconciledBy { get; set; }
+    }
+
+
 }
 
