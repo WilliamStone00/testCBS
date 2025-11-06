@@ -5,6 +5,7 @@ using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -38,6 +39,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
+
+
+            var glAccounts = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "OTHER GL ", Text = "OTHER GL " },
+        new SelectListItem { Value = "CASH RECONCILIATION", Text = "CASH RECONCILIATION " },
+        new SelectListItem { Value = "VAULT RECONCILIATION ", Text = "VAULT RECONCILIATION " }
+    };
+
+            ViewBag.DifferenceGLs = glAccounts;
             return true;
         }
 
@@ -89,12 +100,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
       
 
         [HttpGet]
-        public JsonResult GetAccountBalance(string accountId)
+        public async Task<ActionResult> GetAccountBalance(string accountId)
         {
             if (string.IsNullOrWhiteSpace(accountId))
                 return Json(new { success = false, message = "Account ID is required" }, JsonRequestBehavior.AllowGet);
 
-            var balance = _cashReconciliationService.GetAccountBalance(accountId);
+            var balance = await _cashReconciliationService.GetAccountBalance(accountId);
             return Json(new { success = true, balance = balance }, JsonRequestBehavior.AllowGet);
         }
 

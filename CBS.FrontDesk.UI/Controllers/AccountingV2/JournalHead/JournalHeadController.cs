@@ -215,7 +215,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                         result = await _journalHeadService.ApproveDestinationAsync(model);
                         break;
 
-                    case "MEMBER RECONCILIATION":
+                    case "SOURCE_MEMBERS_BALANCE_RECONCILIATION":
                         result = await _journalHeadService.ApproveMemberReconciliationAsync(model);
                         break;
 

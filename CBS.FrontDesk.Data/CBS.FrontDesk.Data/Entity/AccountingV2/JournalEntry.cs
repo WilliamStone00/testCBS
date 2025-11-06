@@ -246,7 +246,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime RejectedDate { get; set; }
         public decimal TotalCredit { get; set; }
         public decimal TotalDebit { get; set; }
-        public string TicketType { get; set; } 
+        public string TicketType { get; set; }
+        public decimal InitiatedAmount { get; set; }
     }
     
 
