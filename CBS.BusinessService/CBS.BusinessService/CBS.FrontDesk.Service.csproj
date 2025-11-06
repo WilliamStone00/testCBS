@@ -515,6 +515,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Accounting V2\DaillyCollectorSummary\" />
     <Folder Include="BankZone\" />
     <Folder Include="bin\Debug\ca\" />
     <Folder Include="bin\Debug\de\" />

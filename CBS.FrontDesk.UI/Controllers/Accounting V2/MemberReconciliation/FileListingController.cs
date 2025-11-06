@@ -152,14 +152,24 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         }
 
         [HttpPost]
-         public async Task<ActionResult> ConfirmUpload(string id,string branch)
+        public async Task<ActionResult> ConfirmUpload(ConfirmReconciliation modal)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _fileListingService.ConfirmReconciliation(id, branch);
+            var result = await _fileListingService.ConfirmReconciliation(modal);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+
+        //public async Task<ActionResult> ConfirmUpload(string id, string branch)
+        //{
+        //    var data = new ConfirmReconciliation
+        //    {
+        //        Id 
+        //    };
+        //    return PartialView("_Validation", data);
+
+        //}
 
     }
 }

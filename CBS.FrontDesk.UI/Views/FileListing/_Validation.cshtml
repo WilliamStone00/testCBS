@@ -1,0 +1,76 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.ConfirmReconciliation
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "confirmReconciliationForm", @class = "needs-validation", novalidate = "novalidate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title"><i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        @* Hidden fields *@
+        @Html.HiddenFor(m => m.Id)
+        <div class="mb-3">
+            <label class="form-label small fw-bold">Branch ID</label>
+            @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <!-- Memo Field -->
+                    <div class="col-12 col-md-8 d-flex flex-column">
+                        @Html.LabelFor(m => m.Memo, new { @class = "form-label mb-1" })
+                        @Html.TextBoxFor(m => m.Memo, new { @class = "form-control", placeholder = "Memo", maxlength = "80" })
+                        @Html.ValidationMessageFor(m => m.Memo, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Accounting Date Field -->
+                    <div class="col-12 col-md-4 d-flex flex-column align-items-md-end">
+                        <label for="AccountingDay" class="form-label mb-1">
+                            📅 Accounting Date
+                        </label>
+                        @Html.TextBoxFor(
+                            m => m.AccountingDate,
+                            new
+                            {
+                                @class = "form-control accounting-date",
+                                type = "date",
+                                id = "AccountingDay",
+                                required = "required",
+                                value = DateTime.Today.ToString("yyyy-MM-dd"),
+                                max = DateTime.Today.ToString("yyyy-MM-dd")
+                            })
+                        @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger d-block" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="mb-3">
+            <label class="form-label small fw-bold">External Application</label>
+            @Html.TextBoxFor(m => m.ExternalApplicationName, new { @class = "form-control", placeholder = "e.g. ImportTool" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold">Reconciliation Kind</label>
+            @Html.TextBoxFor(m => m.ReconciliationKind, new { @class = "form-control", placeholder = "e.g. TrialBalance" })
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold">Reconciled By</label>
+            @Html.TextBoxFor(m => m.ReconciledBy, new { @class = "form-control", placeholder = "User performing reconciliation" })
+        </div>*@
+
+        <div id="confirmFormAlert" class="d-none alert" role="alert"></div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" id="confirmModalSubmitBtn" class="btn btn-primary">
+            <i class="mdi mdi-check-all me-1"></i> Confirm
+        </button>
+    </div>
+}
+

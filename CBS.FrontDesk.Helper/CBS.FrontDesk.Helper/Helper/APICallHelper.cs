@@ -1567,7 +1567,7 @@ namespace CBS.FrontDesk.Helper
         public static string FilegetbYId = "/api/v1/FileUploads/{0}";
         public static string GetReconciliationtById = "/api/v1/FileUploads/{0}";
         public static string GetGLHById = "/api/v1/FileUploads/{0}";
-        public static string ReconciliationConfirmation = "/api/v1/TrialBalance/reconciliation/finalize";
+        public static string ReconciliationConfirmation = "/api/v1/TrialBalance/initialization/final/broadforward/push";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
