@@ -144,7 +144,7 @@ namespace CBS.BusinessService.AccountingV2
                 //model.CorrelationId = "CORR-IB-20251013-01";
                 //model.AuxiliaryReference = "AUX-IB-RECLASS-10";
 
-
+                
                 // ✅ Call API
                 var response = await _manualJournalEntryapiCallerHelper
                     .PostAsync<ServiceResponse<ManualEntryresponnse>>(APICallHelper.PostManualJournalEntry, model);

@@ -131,7 +131,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         // Non-HO + Destination: filter by CounterpartyBranchId only
                         query.CounterpartyBranchId = myBranchId;
                         query.BranchId = null; // ensure BranchId is NOT set
-                        query.TicketType = "Destination";
                     }
                     else
                     {
