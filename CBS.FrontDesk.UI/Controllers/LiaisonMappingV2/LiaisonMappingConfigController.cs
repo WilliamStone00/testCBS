@@ -68,10 +68,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 		private async Task GetValues()
 		{
 			var branches = await _branchServices.GetBranches();
-			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var CounterpartyBranches = await _branchServices.GetCounterpartyBranches();
+            var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
 			var newlistng = _branchAccountService.DropDownGen(accounts.ToList());
 			ViewBag.Branches = branches;
-			ViewBag.Accounts = newlistng;
+            ViewBag.CounterpartyBranches = CounterpartyBranches;
+            ViewBag.Accounts = newlistng;
 		}
 		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
 		{

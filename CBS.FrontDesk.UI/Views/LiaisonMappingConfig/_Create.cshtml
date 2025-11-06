@@ -27,7 +27,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(
                         m => m.CounterpartyBranchId,
-                        new SelectList(ViewBag.Branches, "Id", "Name"),
+                        new SelectList(ViewBag.CounterpartyBranches, "Id", "Name"),
                         "--- Select Counterparty Branch ---",
                         new { @class = "form-control select2", id = "CounterpartyBranchId" }
                     )
