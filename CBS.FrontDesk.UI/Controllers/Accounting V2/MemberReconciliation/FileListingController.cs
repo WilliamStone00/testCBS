@@ -136,7 +136,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 // return View("Details", data);
 
                 // Option B: return a wrapper page (recommended if you want a specific page)
-                return View("_Details", data); // create Views/FileListing/DetailsPage.cshtml
+                return View("Detailss", data); // create Views/FileListing/DetailsPage.cshtml
             }
 
             // Partial request (AJAX/modal)
@@ -161,15 +161,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        //public async Task<ActionResult> ConfirmUpload(string id, string branch)
-        //{
-        //    var data = new ConfirmReconciliation
-        //    {
-        //        Id 
-        //    };
-        //    return PartialView("_Validation", data);
+        [HttpGet]
+        public async Task<ActionResult> ConfirmUpload(string id, string branch)
+        {
+            var data = new ConfirmReconciliation
+            {
+               Id = id,
+               BranchId = branch
+            };
+            return PartialView("_Validation", data);
 
-        //}
+        }
 
     }
 }
