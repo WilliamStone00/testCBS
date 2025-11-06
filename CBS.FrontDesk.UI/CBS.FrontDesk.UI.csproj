@@ -10871,6 +10871,12 @@
     <Content Include="Views\FileListing\_Data.cshtml" />
     <Content Include="Views\FileListing\Detailss.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_MobileMoneyDetailsPartial.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\Index.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_Create.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_Data.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDetailsPartial.cshtml" />
+    <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
+    <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
   </ItemGroup>
   <ItemGroup>
