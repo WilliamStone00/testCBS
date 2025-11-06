@@ -122,8 +122,7 @@ else
                 <th class="bg-label">Remarks</th>
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
-            <tr><th class="bg-label">Total Debit</th><td>@Math.Abs(Model.TotalDebit).ToString("N0")</td></tr>
-            <tr><th class="bg-label">Total Credit</th><td>@Math.Abs(Model.TotalCredit).ToString("N0")</td></tr>
+            <tr><th class="bg-label">Initiated Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
         </tbody>
     </table>
 

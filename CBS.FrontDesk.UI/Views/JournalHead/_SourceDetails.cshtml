@@ -132,8 +132,7 @@
                 <th class="bg-label">Rejected Date</th>
                 <td>@(Model?.RejectedDate != DateTime.MinValue ? Model.RejectedDate.ToString("dd/MM/yyyy HH:mm") : "-")</td>
             </tr>
-            <tr><th class="bg-label">Total Debit</th><td>@Math.Abs(Model.TotalDebit).ToString("N0")</td></tr>
-            <tr><th class="bg-label">Total Credit</th><td>@Math.Abs(Model.TotalCredit).ToString("N0")</td></tr>
+            <tr><th class="bg-label">Initiated Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
         </tbody>
     </table>
 
