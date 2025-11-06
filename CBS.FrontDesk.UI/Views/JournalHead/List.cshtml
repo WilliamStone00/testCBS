@@ -124,15 +124,15 @@
                     <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
                 </div>
 
-                <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Operation Type</label>
-                    @Html.DropDownList("OperationType",
-                        new SelectList(ViewBag.OperationTypes, "Value", "Text"),
-                        "Select Operation Type",
-                        new { @class = "form-control select2 mb-1", @id = "OperationType" })
-                </div>
+               <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold">Ticket Source</label>
+                    @Html.DropDownList("TicketSource",
+                        new SelectList(ViewBag.TicketSource, "Value", "Text"),
+                        "Select Ticket Source",
+                        new { @class = "form-control select2 mb-1", @id = "TicketSource" })
+               </div>
             </div>
-            <div class="row mb-1">
+            @*<div class="row mb-1">
                 <div class="col-md-6 mb-1">
                     <label class="form-label fw-bold">Reconciliation Status</label>
                     @Html.DropDownList("OperationCode",
@@ -149,7 +149,7 @@
                         new { @class = "form-control select2 mb-1", @id = "TicketSource" })
                 </div>
 
-            </div>
+            </div>*@
 
         </div>     <!-- Action Buttons -->
         <div class="row mt-2">
