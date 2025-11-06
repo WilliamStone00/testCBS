@@ -10877,6 +10877,8 @@
     <Content Include="Views\LiaisonMappingConfig\_Create.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_Data.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDetailsPartial.cshtml" />
+    <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
+    <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
