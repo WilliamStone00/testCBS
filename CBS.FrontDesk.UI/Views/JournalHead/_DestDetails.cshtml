@@ -86,6 +86,14 @@
     return;
 }
 
+@if (Model.TicketType == "SOURCE")
+{
+    @Html.Partial("_SourceDetails")
+}
+else
+{
+
+
 
 
 @*===================== MAIN HEADER =====================*@
@@ -126,11 +134,11 @@
             <div class="col-md-12 mb-2">
                 @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
                 @Html.DropDownList(
-                    "BranchId",
-                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                    "--- Select Branch ---",
-                    new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
-                )
+                 "BranchId",
+                 new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                 "--- Select Branch ---",
+                 new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
+             )
             </div>
         </div>
     }
@@ -200,7 +208,7 @@
     </div>
 </div>
 
-
+}
 
 
 
@@ -437,7 +445,7 @@
                     });
 
                     $.ajax({
-                        url: '@Url.Action("ApproveDestination", "JournalHead")',
+                        url: '@Url.Action("Approve", "JournalHead")',
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(payload),

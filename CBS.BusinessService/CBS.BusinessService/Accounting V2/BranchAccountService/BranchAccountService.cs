@@ -234,21 +234,6 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
                                  ?? new List<BranchAccountResponse>();
                 }
 
-                // Optional: server may already have enforced branch filtering. If you still want to
-                // double-check client-side for non-HO users, do case-insensitive compare:
-                if (!IsHeadOffice())
-                {
-                    var currentBranch = GetBranchID();
-                    branchList = branchList.Where(a => string.Equals(a.Id, currentBranch, StringComparison.OrdinalIgnoreCase)).ToList();
-                }
-                else
-                {
-                    // Ensure "All" entry exists for HO users
-                    var defaultAffiliate = new BranchAccountResponse { Id = "All", Name = "All Branches", Code = "ALL" };
-                    if (!branchList.Any(x => string.Equals(x.Id, defaultAffiliate.Id, StringComparison.OrdinalIgnoreCase)))
-                        branchList.Insert(0, defaultAffiliate);
-                }
-
                 var formatted = branchList
                     .Select(a => new BranchAccountResponse
                     {

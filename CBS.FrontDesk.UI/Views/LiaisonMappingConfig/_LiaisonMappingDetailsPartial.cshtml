@@ -1,0 +1,8 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping
+
+<div class="detail-card p-3">
+    <div class="mb-3"><strong>Branch:</strong> @Model.BranchName (@Model.BranchCode)</div>
+    <div class="mb-3"><strong>Counterparty Branch:</strong> @Model.CounterpartyBranchName</div>
+    <div class="mb-3"><strong>Due From Asset Account:</strong> @Model.DueFromAssetAccountName (@Model.DueFromAssetAccountNumber)</div>
+    <div class="mb-3"><strong>Due To Liability Account:</strong> @Model.DueToLiabilityAccountName (@Model.DueToLiabilityAccountNumber)</div>
+</div>

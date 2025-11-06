@@ -158,6 +158,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
+              
+
                 var data = await _journalHeadService.GetJournalSourceDataTableAsync(query);
                
 

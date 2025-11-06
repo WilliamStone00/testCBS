@@ -61,7 +61,7 @@
                         <label for="CounterpartyBranchId" class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
                         @Html.DropDownList(
                             "CounterpartyBranchId",
-                            new SelectList(ViewBag.Branches, "Id", "Name", Model?.BranchId),
+                            new SelectList(ViewBag.CounterBranches, "Id", "Name", Model?.CounterpartyBranchId),
                             "Select Counterparty Branch",
                             new { @class = "form-control select2", id = "CounterpartyBranchId" }
                         )

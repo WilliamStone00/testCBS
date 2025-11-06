@@ -20,7 +20,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
     {
 
         private readonly ApiCallerHelper _JournalheadapiCallerHelper;
-        
+
 
         public JournalHeadService()
         {
@@ -33,7 +33,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         {
             try
             {
-               
+
                 query.Options.sortColumnName = "";
                 query.Options.sortColumnDirection = "";
 
@@ -72,7 +72,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
                 // ✅ Make API call
-                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(string.Format(APICallHelper.GetJournalEntryTempById,id));
+                var response = await _JournalheadapiCallerHelper.GetAsync<ResponseObject<FrontDesk.Data.Entity.AccountingV2.JournalHead>>(string.Format(APICallHelper.GetJournalEntryTempById, id));
 
                 // ✅ Validate response
                 if (!response.IsSuccess)
@@ -96,30 +96,60 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        public async Task<CustomDataTable2> GetJournalSourceDataTableAsync(JournalEntryQuery query)
+        public async Task<CustomDataTable2> GetJournalSourceDataTableAsync(JournalEntryQuery journalEntry)
         {
             try
             {
+                // Build the base query
+                var query = new GetallWorkFlowTicketsQuery
+                {
+                    BranchId = journalEntry.BranchId, // decide below
+                    CounterpartyBranchId = null, // decide below
+                    TicketType = journalEntry.TicketSource, // server will filter by TicketType
+                    FromDate = journalEntry.StartDate,
+                    ToDate = journalEntry.EndDate,
+                    State = null,
+                    DataTableOptions = journalEntry.Options ?? new DataTableOptions()
+                };
 
-                query.Options.sortColumnName = "";
-                query.Options.sortColumnDirection = "";
+                // Force client-side sort params empty; server orders by OpenedAtUtc
+                query.DataTableOptions.sortColumnName = string.Empty;
+                query.DataTableOptions.sortColumnDirection = string.Empty;
 
-                var journalHeaders = (
-                   JsonConvert.SerializeObject(query));
+                // Apply branch filters per rules
+                if (IsHeadOffice())
+                {
+                    // Head Office: get ALL — leave BranchId & CounterpartyBranchId as null
+                }
+                else
+                {
+                    var myBranchId = GetBranchID();
+                    var isDestination = string.Equals(journalEntry.TicketSource, "Destination", StringComparison.OrdinalIgnoreCase);
+
+                    if (isDestination)
+                    {
+                        // Non-HO + Destination: filter by CounterpartyBranchId only
+                        query.CounterpartyBranchId = myBranchId;
+                        query.BranchId = null; // ensure BranchId is NOT set
+                        query.TicketType = "Destination";
+                    }
+                    else
+                    {
+                        // Non-HO + Source (or anything else): filter by BranchId only
+                        query.BranchId = myBranchId;
+                        query.CounterpartyBranchId = null; // ensure Counterparty is NOT set
+                        query.TicketType = "Source";
+                    }
+                }
 
                 var response = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.GetJournalworkticketDataTable, query);
 
-                // If API call fails or response unsuccessful
                 if (!response.IsSuccess)
-                {
                     throw new Exception($"API call failed: {response.Message}");
-                }
 
                 if (response.ApiResponseData == null)
-                {
                     throw new Exception("API returned null data");
-                }
 
                 return response.ApiResponseData.Data;
             }
@@ -169,7 +199,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw;
             }
         }
-       
+
         public async Task<JournalApprovalResponse> ApproveSourceAsync(JournalApproval model)
         {
             if (model == null)
@@ -189,14 +219,14 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
         public async Task<JournalApprovalResponse> ApproveDestinationAsync(JournalApproval model)
         {
-          
+
             model.DestinationBranchId = model.BranchId;
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
             try
             {
-            
+
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveDestinationJournalEntry, // your destination endpoint
                     model

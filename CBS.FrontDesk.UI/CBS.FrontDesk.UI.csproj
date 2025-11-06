@@ -2038,8 +2038,6 @@
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
-    <Compile Include="Controllers\AccountingV2\LiaisonAccount2\LiaisonMappingController.cs" />
-    <Compile Include="Controllers\AccountingV2\LiaisonAccount\LiaisonAccountConfigurationController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
     <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
@@ -2092,6 +2090,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
+    <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
@@ -10874,6 +10873,10 @@
     <Content Include="Views\FileListing\_Details.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_MobileMoneyDetailsPartial.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\Index.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_Create.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_Data.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

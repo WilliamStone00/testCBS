@@ -50,10 +50,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2
 
         public async Task<bool> loader()
         {
-            var branches = await _branchServices.GetCounterpartyBranches();
+            var CounterBranches = await _branchServices.GetCounterpartyBranches();
+            ViewBag.CounterBranches = CounterBranches;
+            var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            
+
             return true;
         }
 
