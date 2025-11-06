@@ -68,7 +68,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 		private async Task GetValues()
 		{
 			var branches = await _branchServices.GetBranches();
-			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync("");
+			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
 			var newlistng = _branchAccountService.DropDownGen(accounts.ToList());
 			ViewBag.Branches = branches;
 			ViewBag.Accounts = newlistng;
