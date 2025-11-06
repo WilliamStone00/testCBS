@@ -141,7 +141,8 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
 
         public async Task<ExecutionMessages> ConfirmReconciliation(ConfirmReconciliation payload)
         {
-            try            {               
+            try            {
+                payload.ReconciledBy = GetUserFullName();
                   var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, payload);
 
                 if (response.IsSuccess)
