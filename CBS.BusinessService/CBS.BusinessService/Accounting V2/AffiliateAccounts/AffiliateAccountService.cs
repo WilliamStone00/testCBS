@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
@@ -150,7 +151,40 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
             }
         }
 
-        public async Task<List<AffiliateAccountDto>> GetAllAffiliateAccounts()
+        public async Task<List<StringValues>> GetAllAffiliateAccountListByClass(string cls)
+        {
+            try
+            {
+                AffiliateAccountQuery query = new AffiliateAccountQuery()
+                {
+                    Options = new DataTableOptions() { lang = GetUserLanguage() },
+                    AffiliateId = "1",
+                    Class=cls
+                    
+
+                };
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.AffiliateAccountdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess || response.ApiResponseData == null)
+                {
+                    return new List<StringValues>();
+                }
+
+
+                var affiliateAccounts = JsonConvert.DeserializeObject<List<AffiliateAccountDto>>(JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
+
+                return affiliateAccounts.Select(x=> new StringValues() { Value = x.Id, Text = x.Code + " — " + x.Name }).ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<StringValues>();
+            }
+        }
+
+
+        public async Task<List<StringValues>> GetAllAffiliateAccounts()
         {
             try
             {
@@ -166,17 +200,17 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
                 if (!response.IsSuccess || response.ApiResponseData == null)
                 {
-                    return new List<AffiliateAccountDto>();
+                    return new List<StringValues>();
                 }
 
 
                 var affiliateAccounts = JsonConvert.DeserializeObject<List<AffiliateAccountDto>>(JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
 
-                return affiliateAccounts;
+                return affiliateAccounts.Select(x => new StringValues() { Value = x.Id, Text = x.Code + " — " + x.Name }).ToList();
             }
             catch (Exception ex)
             {
-                return new List<AffiliateAccountDto>();
+                return new List<StringValues>();
             }
         }
 
