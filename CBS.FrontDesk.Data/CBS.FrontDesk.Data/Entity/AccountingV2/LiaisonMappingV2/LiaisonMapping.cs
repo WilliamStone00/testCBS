@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2
 {
@@ -26,4 +27,21 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2
 
 		public DateTime? CreatedDate { get; set; }
 	}
+	
+	public class LiaisonMappingQuery
+	{
+		public DataTableOptions Options { get; set; }
+		public LiaisonMappingQuery() { Options = new DataTableOptions(); }
+
+		public string BranchId { get; set; }
+		public string CounterpartyBranchId { get; set; } 
+		public string DueFromAssetAccountId { get; set; }
+		public string DueToLiabilityAccountId { get; set; }
+
+		public DateTime? CreatedFromUtc { get; set; }
+		public DateTime? CreatedToUtc { get; set; }
+	}
+
+		
+
 }

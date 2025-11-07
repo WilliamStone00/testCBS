@@ -10880,6 +10880,8 @@
     <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
     <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\List.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

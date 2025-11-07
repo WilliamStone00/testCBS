@@ -1495,6 +1495,7 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
 		public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
 		public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
 		public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
+		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
 
 

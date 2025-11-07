@@ -1,0 +1,233 @@
+﻿@* Liaison Mapping Filters - minimal fields to match LiaisonMappingConfigQuery *@
+@using Resources
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> Liaison Mapping Configuration
+                </h1>
+                <p class="card-text text-muted">
+                    Manage liaison mappings between branches and GL accounts efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLiaisonTips" aria-expanded="false" aria-controls="collapseLiaisonTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLiaisonTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure branch and account details are correct before saving.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Prevent duplicate mappings between the same branches.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Only authorized staff can modify mappings.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the status checkbox to enable or disable a mapping.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Liaison Mapping Filters</h5>
+
+    <form id="liaisonFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+
+            <!-- Toggle switches for optional filter groups -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Filter (togglable) -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Branch</label>
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
+                    </div>
+                    @*<div class="col-md-6">
+                        <label class="form-label fw-bold">Counterparty Branch</label>
+                        @Html.DropDownList("CounterpartyBranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Counterparty Branch ---", new { @class = "form-control select2" })
+                    </div>*@
+                </div>
+            </div>
+
+            <!-- Account Filters -->
+            <!--<div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Due From Asset Account</label>
+                    @Html.DropDownList("DueFromAssetAccountId", new SelectList(ViewBag.AssetAccounts ?? new List<object>(), "Id", "Name"), "--- Select Account ---", new { @class = "form-control select2" })
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Due To Liability Account</label>
+                    @Html.DropDownList("DueToLiabilityAccountId", new SelectList(ViewBag.LiabilityAccounts ?? new List<object>(), "Id", "Name"), "--- Select Account ---", new { @class = "form-control select2" })
+                </div>
+            </div>-->
+
+            <!-- Date Filters (togglable) -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created From</label>
+                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Created To</label>
+                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_LiaisonMappingDataTable")
+</div>
+
+
+@section Scripts {
+    <script>
+        var liaisonTable = null;
+
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function collectLiaisonFilters() {
+            return {
+                BranchId: emptyToNull($('#BranchId').val()),
+                CounterpartyBranchId: emptyToNull($('#CounterpartyBranchId').val()),
+                DueFromAssetAccountId: emptyToNull($('#DueFromAssetAccountId').val()),
+                DueToLiabilityAccountId: emptyToNull($('#DueToLiabilityAccountId').val()),
+                CreatedFromUtc: emptyToNull($('#CreatedFromUtc').val()),
+                CreatedToUtc: emptyToNull($('#CreatedToUtc').val()),
+                options: {}
+            };
+        }
+
+        function initLiaisonDataTable() {
+            if ($.fn.DataTable.isDataTable('#myDataTable') && liaisonTable) return;
+
+            liaisonTable = $('#myDataTable').DataTable({
+                serverSide: true,
+                searching: false,
+                responsive: true,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/LiaisonMappingConfig/LoadLiaisonMappingData', // adjust your action
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectLiaisonFilters();
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: 'CreatedDate',
+                            sortColumnDirection: 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (jqXHR) {
+                        var msg = 'Failed to load data';
+                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
+                        appalert(msg, 0, 1);
+                    }
+                },
+                columns: [
+                    { data: 'CreatedDate', render: function (d) { return d ? moment(d).format('DD/MM/YYYY') : '-'; } },
+                    { data: 'BranchName', name: 'BranchName' },
+                    { data: 'CounterpartyBranchName', name: 'CounterpartyBranchName' },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            const recordId = encodeURIComponent(data);
+                            return `
+                                    <button class="btn btn-sm btn-outline-primary text-center"
+                                            onclick="AddORUpdateGen('${recordId}','datalistingview','_Create','update','LiaisonMappingConfig')">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </button>
+                                `;
+                        }
+                    }
+                ],
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                language: { emptyTable: 'No records found' }
+            });
+        }
+
+        function loadLiaisonData() {
+            initLiaisonDataTable();
+            if (liaisonTable) liaisonTable.ajax.reload(null, false);
+        }
+
+        function resetLiaisonFilters() {
+            $('#liaisonFilterForm')[0].reset();
+            $('#branchFilter, #dateFilters').addClass('d-none');
+            if (liaisonTable) liaisonTable.ajax.reload(null, false);
+            appalert('Filters reset', 3, 1);
+        }
+
+        $(document).ready(function () {
+            $('#applyFilterBtn').on('click', function (e) { e.preventDefault(); loadLiaisonData(); });
+            $('#resetFilterBtn').on('click', function (e) { e.preventDefault(); resetLiaisonFilters(); });
+
+            // Enter key triggers apply
+            $('#liaisonFilterForm input').on('keypress', function (e) {
+                if (e.which === 13) { e.preventDefault(); loadLiaisonData(); }
+            });
+
+            // Initialize Select2 for dropdowns
+            if ($.fn.select2) {
+                $('.select2').select2({ width: '100%' });
+            }
+
+            // Initialize the table on page load
+            initLiaisonDataTable();
+        });
+    </script>
+}
