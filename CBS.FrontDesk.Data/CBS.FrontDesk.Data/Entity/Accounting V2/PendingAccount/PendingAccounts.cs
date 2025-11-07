@@ -111,8 +111,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
             AffiliateAccountId = affiliateAccountDto.Id;
             HoPcmfAccountId = affiliateAccountDto.HoPcmfAccountId;
             Code = affiliateAccountDto.Code;
-            NameEn = affiliateAccountDto.NameEn;
-            NameFr = affiliateAccountDto.NameFr;
+            NameEn = affiliateAccountDto.Name;
+            NameFr = affiliateAccountDto.Name;
             Class = affiliateAccountDto.Class;
             ParentId = affiliateAccountDto.ParentId;
             ParentAccountNumber = parentAccountNumber;
@@ -133,8 +133,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
             AffiliateAccountId = branchAccount.AffiliateAccountId;
             HoPcmfAccountId = null;
             Code = branchAccount.Code;
-            NameEn = branchAccount.NameEn;
-            NameFr = branchAccount.NameFr;
+            NameEn = branchAccount.Name;
+            NameFr = branchAccount.Name;
             Class = branchAccount.Class;
             ParentId = branchAccount.ParentId;
             ParentAccountNumber = null;
