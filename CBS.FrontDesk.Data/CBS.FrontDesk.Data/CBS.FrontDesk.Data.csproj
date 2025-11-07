@@ -121,6 +121,7 @@
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\Reconciliation.cs" />
     <Compile Include="Entity\AccountingTypes.cs" />
+    <Compile Include="Entity\AccountingV2Reporting\ReconciledLedgerLinesR\ReconciledLedgerLineRptDS.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
