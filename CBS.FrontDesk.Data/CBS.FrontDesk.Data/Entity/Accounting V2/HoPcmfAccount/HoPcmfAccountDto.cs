@@ -87,10 +87,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.HoPcmfAccount
         public string Language { get; set; } = "en";
     }
 
-    public class COADATATABLE_Query
+    public class GetHoPcmfCoaQuery
     {
         public DataTableOptions Options { get; set; }
-        public COADATATABLE_Query() { Options = new DataTableOptions(); }
+        public GetHoPcmfCoaQuery() { Options = new DataTableOptions(); }
        
             public string Code { get; set; }
             public string Name { get; set; }

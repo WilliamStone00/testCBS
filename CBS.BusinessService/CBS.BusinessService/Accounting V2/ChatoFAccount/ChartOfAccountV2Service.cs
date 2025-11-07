@@ -130,7 +130,7 @@ namespace CBS.BusinessService.Accounting_V2
             }
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(COADATATABLE_Query query)
+        public async Task<CustomDataTable> GetDataTableAsync(GetHoPcmfCoaQuery query)
         {
             try
             {
@@ -159,6 +159,84 @@ namespace CBS.BusinessService.Accounting_V2
                 throw new Exception($"Cheque book service unavailable: {ex.Message}", ex);
             }
         }
+
+        public string GetClassNumericValue(string textValue)
+        {
+            if (string.IsNullOrWhiteSpace(textValue))
+                return "0";
+
+            switch (textValue.Trim().ToUpperInvariant())
+            {
+                case "EQUITY":
+                    return "1";
+
+                case "FIXED ASSETS":
+                    return "2";
+
+                case "MEMBERS":
+                    return "3";
+
+                case "THIRD PARTIES":
+                    return "4";
+
+                case "TREASURY":
+                    return "5";
+
+                case "EXPENSES":
+                    return "6";
+
+                case "REVENUE":
+                    return "7";
+
+                case "OUTSIDE ORDINARY ACTIVITIES (OOA)":
+                    return "8";
+
+                case "MANAGEMENT":
+                    return "9";
+
+                default:
+                    return "0"; // fallback for unrecognized or invalid text
+            }
+        }
+
+
+        public string GetClassTextValue(string numericValue)
+        {
+            switch (numericValue)
+            {
+                case "1":
+                    return "EQUITY";
+
+                case "2":
+                    return "FIXED ASSETS";
+
+                case "3":
+                    return "MEMBERS";
+
+                case "4":
+                    return "THIRD PARTIES";
+
+                case "5":
+                    return "TREASURY";
+
+                case "6":
+                    return "EXPENSES";
+
+                case "7":
+                    return "REVENUE";
+
+                case "8":
+                    return "OUTSIDE ORDINARY ACTIVITIES (OOA)";
+
+                case "9":
+                    return "MANAGEMENT";
+
+                default:
+                    return "UNKNOWN"; // fallback for invalid or unmapped values
+            }
+        }
+
+
 
         public List<StringValues> GetAllClass()
         {
@@ -197,11 +275,53 @@ namespace CBS.BusinessService.Accounting_V2
         {
             try
             {
-                COADATATABLE_Query query = new COADATATABLE_Query()
+                GetHoPcmfCoaQuery query = new GetHoPcmfCoaQuery()
                 {
                     Options = new DataTableOptions() { lang=GetUserLanguage() }
 
                 };
+                var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.COAdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess || response.ApiResponseData == null)
+                {
+                    return new List<StringValues>();
+                }
+
+
+                var serialise = JsonConvert.DeserializeObject<List<HoPcmfAccountTreeDto>>(
+                    JsonConvert.SerializeObject(response.ApiResponseData.Data.data));
+
+                // Convert HoPcmfAccount to StringValues
+                var stringValuesList = serialise.Select(account => new StringValues
+                {
+                    Text = account.Code+"-"+ account.Name, // or account.NameFr based on your language preference
+                    Value = account.Id     // or account.Code depending on what you want as value
+                }).ToList();
+
+                return stringValuesList;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                return new List<StringValues>();
+            }
+        }
+        public async Task<List<StringValues>> GetAllPCMFAccountsByClass(string cls)
+        {
+            try
+            {
+                GetHoPcmfCoaQuery query = new GetHoPcmfCoaQuery()
+                {
+                    Options = new DataTableOptions() { lang=GetUserLanguage() },
+                    Class=cls
+
+                };
+
+                query.Options.pageSize = 30000;
                 var response = await _apiHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.COAdatatable, query);
 
