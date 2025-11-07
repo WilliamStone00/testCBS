@@ -359,7 +359,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             try
             {
-
+                if(model.affiliateId == null)
+                {
+                    model.affiliateId = "1";
+                }
                 if (model.file == null)
                     return Json(new { success = false, message = "No file provided." });
                 if (model.isAffiliate == true)

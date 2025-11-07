@@ -54,7 +54,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountBlackListing
             var Menu = await Menudropdown();
             ViewBag.Menu = Menu;
 
-            var affiliateAccounts = await _AffiliateAccountsServices.GetAllAffiliateAccounts1();
+            var affiliateAccounts = await _AffiliateAccountsServices.GetAllAffiliateAccounts();
             ViewBag.AffiliateAccounts = affiliateAccounts;
             return true;
         }

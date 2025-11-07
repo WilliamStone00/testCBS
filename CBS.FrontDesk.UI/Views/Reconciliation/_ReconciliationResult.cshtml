@@ -23,7 +23,7 @@
                 @Html.AntiForgeryToken()
 
                 <!-- Tips Section -->
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
                         <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips</span>
                         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse"
@@ -56,7 +56,7 @@
                 </div>
 
                 <!-- Reconciliation Results -->
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col-md-6">
                         <div class="card h-100">
                             <div class="card-header bg-light">
@@ -104,11 +104,11 @@
                             <div class="card-body">
                                 <table class="table table-sm table-borderless mb-0">
                                     <tr>
-                                        <td><strong>Branch Code:</strong></td>
+                                        <td><strong>Branch Reference:</strong></td>
                                         <td>@Model.BRANCHName</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Source GL:</strong></td>
+                                        <td><strong>Branch Account Ref.:</strong></td>
                                         <td>@Model.BranchAccountName</td>
                                     </tr>
                                     <tr>
@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- Memo & Accounting Date aligned perfectly -->
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <div class="card-body">
                         <div class="row g-3 align-items-end">
                             <!-- Memo Field -->
@@ -354,176 +354,202 @@
         const status = adjustmentType === 'surplus' ? 'Surplus' : 'Deficit';
 
         const message = `
-        <div style="max-height: 600px; overflow-y: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            <!-- Header -->
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0; margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="mdi mdi-shield-check" style="font-size: 20px;"></i>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0; font-weight: 600; font-size: 1.4rem;">Confirm Reconciliation</h3>
-                        <p style="margin: 4px 0 0 0; opacity: 0.9; font-size: 0.9rem;">Review all details before proceeding</p>
-                    </div>
-                </div>
+    <div class="container-fluid p-0" style="max-height: 600px; overflow-y: auto;">
+    <!-- Header -->
+    <div class="bg-light border-bottom rounded-top p-4 mb-4">
+        <div class="d-flex align-items-center">
+            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <i class="mdi mdi-shield-check fs-4 text-secondary"></i>
             </div>
-
-            <!-- Summary Cards -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                <!-- Configuration Card -->
-                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 16px;">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                        <i class="mdi mdi-cog-outline" style="color: #667eea; font-size: 18px;"></i>
-                        <h4 style="margin: 0; color: #495057; font-size: 1rem; font-weight: 600;">Configuration</h4>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-weight: 500; width: 40%;">Mode:</td>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6;">
-                                <span style="background: #667eea; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">${mode.toUpperCase()}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-weight: 500;">Account Type:</td>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: 500;">${accountType}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px 8px; color: #6c757d; font-weight: 500;">Adjustment:</td>
-                            <td style="padding: 10px 8px;">
-                                <span style="background: ${status === 'Surplus' ? '#28a745' : '#ffc107'}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
-                                    ${status.toUpperCase()}
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <!-- Amounts Card -->
-                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 16px;">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                        <i class="mdi mdi-calculator" style="color: #667eea; font-size: 18px;"></i>
-                        <h4 style="margin: 0; color: #495057; font-size: 1rem; font-weight: 600;">Amounts</h4>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-weight: 500; width: 40%;">Member Balance:</td>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: 600; text-align: right;">${memberBalance.toLocaleString()}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-weight: 500;">Trial Balance:</td>
-                            <td style="padding: 10px 8px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: 600; text-align: right;">${trialBalanceBalance.toLocaleString()}</td>
-                        </tr>
-                        <tr style="background: #f8f9fa;">
-                            <td style="padding: 12px 8px; color: #495057; font-weight: 600; border-top: 2px solid #dee2e6;">Difference:</td>
-                            <td style="padding: 12px 8px; color: ${difference > 0 ? '#dc3545' : '#28a745'}; font-weight: 700; font-size: 1.1rem; text-align: right; border-top: 2px solid #dee2e6;">
-                                ${difference.toLocaleString()}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+            <div>
+                <h3 class="h4 mb-1 text-primary fw-bold ">Confirm Reconciliation</h3>
+                <p class="text-muted mb-0">Review all details before proceeding</p>
             </div>
+        </div>
+    </div>
 
-            <!-- Account Details Card -->
-            <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                    <i class="mdi mdi-account-switch" style="color: #667eea; font-size: 18px;"></i>
-                    <h4 style="margin: 0; color: #495057; font-size: 1rem; font-weight: 600;">Account Details</h4>
-                </div>
-        
-                <!-- GL Accounts Table -->
-                <div style="margin-bottom: 16px;">
-                    <h5 style="color: #6c757d; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; padding-left: 8px;">GL Accounts</h5>
-                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden;">
-                        <thead>
-                            <tr style="background: #e9ecef;">
-                                <th style="padding: 12px; text-align: left; color: #495057; font-weight: 600; font-size: 0.85rem; width: 50%;">Account</th>
-                                <th style="padding: 12px; text-align: left; color: #495057; font-weight: 600; font-size: 0.85rem; width: 50%;">Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
-                                    <div style="font-weight: 600; color: #495057; margin-bottom: 4px;">Source GL</div>
-                                    <div style="font-size: 0.85rem; color: #6c757d;">ID: ${sourceBranchAccountId}</div>
-                                </td>
-                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
-                                    <div style="color: #495057; font-weight: 500;">${sourceBranchAccountName || 'N/A'}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 12px;">
-                                    <div style="font-weight: 600; color: #495057; margin-bottom: 4px;">Adjustment GL</div>
-                                    <div style="font-size: 0.85rem; color: #6c757d;">ID: ${selectedAccount}</div>
-                                </td>
-                                <td style="padding: 12px;">
-                                    <div style="color: #495057; font-weight: 500;">${selectedAccountText}</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Transaction Details Table -->
-                <div>
-                    <h5 style="color: #6c757d; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; padding-left: 8px;">Transaction Details</h5>
-                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden;">
-                        <thead>
-                            <tr style="background: #e9ecef;">
-                                <th style="padding: 12px; text-align: left; color: #495057; font-weight: 600; font-size: 0.85rem; width: 50%;">Field</th>
-                                <th style="padding: 12px; text-align: left; color: #495057; font-weight: 600; font-size: 0.85rem; width: 50%;">Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-weight: 500;">Memo</td>
-                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: 500;">${memo}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 12px; color: #6c757d; font-weight: 500;">Accounting Date</td>
-                                <td style="padding: 12px; color: #495057; font-weight: 500;">${accountingDay}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Confirmation Section -->
-            <div style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border: 1px solid #ffd43b; border-radius: 8px; padding: 20px; margin-bottom: 16px;">
-                <div style="display: flex; align-items: flex-start; gap: 12px;">
-                    <div style="flex-shrink: 0;">
-                        <input type="checkbox" id="confirmReconciliation" style="transform: scale(1.3); margin-top: 2px; accent-color: #28a745;">
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <!-- Configuration Card -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="mdi mdi-cog-outline text-muted fs-5 me-2"></i>
+                        <h5 class="card-title mb-0 text-dark">Configuration</h5>
                     </div>
-                    <div style="flex-grow: 1;">
-                        <label for="confirmReconciliation" style="font-weight: 600; color: #856404; margin: 0; cursor: pointer; line-height: 1.4;">
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                <i class="mdi mdi-shield-check-outline" style="font-size: 18px;"></i>
-                                Confirmation Required
-                            </div>
-                            <div style="color: #856404; font-weight: normal; font-size: 0.95rem;">
-                                I confirm that I have reviewed all the reconciliation details above and want to proceed with balancing the accounts. This action will create adjustment journal entries.
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <div id="confirmationError" style="color: #dc3545; font-size: 0.9rem; margin-top: 8px; display: none;">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i>Please check the confirmation box to proceed.
-                </div>
-            </div>
-
-            <!-- Warning Footer -->
-            <div style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 16px;">
-                <div style="display: flex; align-items: flex-start; gap: 12px;">
-                    <i class="mdi mdi-alert-circle-outline" style="color: #dc3545; font-size: 20px; flex-shrink: 0;"></i>
-                    <div>
-                        <strong style="color: #721c24; display: block; margin-bottom: 4px;">Important Notice</strong>
-                        <p style="color: #721c24; margin: 0; font-size: 0.9rem; line-height: 1.4;">
-                            This action will create permanent adjustment entries in the general ledger. Please ensure all details are correct before proceeding as this operation cannot be undone.
-                        </p>
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted fw-medium ps-0" style="width: 40%;">Mode:</td>
+                                    <td class="pe-0">
+                                        <span class="badge bg-light text-dark border">${mode.toUpperCase()}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted fw-medium ps-0">Account Type:</td>
+                                    <td class="text-dark fw-medium pe-0">${accountType}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted fw-medium ps-0">Adjustment:</td>
+                                    <td class="pe-0">
+                                        <span class="badge ${status === 'Surplus' ? 'bg-success bg-opacity-10 text-success' : 'bg-warning bg-opacity-10 text-warning'} border-0">
+                                            ${status.toUpperCase()}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        `;
+
+        <!-- Amounts Card -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="mdi mdi-calculator text-muted fs-5 me-2"></i>
+                        <h5 class="card-title mb-0 text-dark">Amounts</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted fw-medium ps-0" style="width: 40%;">Member Balance:</td>
+                                    <td class="text-dark fw-bold text-end pe-0">${memberBalance.toLocaleString()}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted fw-medium ps-0">Trial Balance:</td>
+                                    <td class="text-dark fw-bold text-end pe-0">${trialBalanceBalance.toLocaleString()}</td>
+                                </tr>
+                                <tr class="bg-light">
+                                    <td class="text-dark fw-bold ps-0 border-top">Difference:</td>
+                                    <td class="fw-bold fs-6 text-end pe-0 border-top ${difference > 0 ? 'text-danger' : 'text-success'}">
+                                        ${difference.toLocaleString()}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Details Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <i class="mdi mdi-account-switch text-muted fs-5 me-2"></i>
+                <h5 class="card-title mb-0 text-dark">Account Details</h5>
+            </div>
+
+            <!-- GL Accounts Table -->
+            <div class="mb-4">
+                <h6 class="text-muted fw-semibold mb-3">GL Accounts</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-light mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-dark fw-semibold border" style="width: 50%;">Account</th>
+                                <th class="text-dark fw-semibold border" style="width: 50%;">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border">
+                                    <div class="fw-bold text-dark mb-1">Branch Account Reference</div>
+                                    <div class="text-muted small">ID: ${sourceBranchAccountId}</div>
+                                </td>
+                                <td class="border">
+                                    <div class="text-dark fw-medium">${sourceBranchAccountName || 'N/A'}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border">
+                                    <div class="fw-bold text-dark mb-1">Adjustment Branch Account Ref.</div>
+                                    <div class="text-muted small">ID: ${selectedAccount}</div>
+                                </td>
+                                <td class="border">
+                                    <div class="text-dark fw-medium">${selectedAccountText}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transaction Details Table -->
+            <div>
+                <h6 class="text-muted fw-semibold mb-3">Transaction Details</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-light mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-dark fw-semibold border" style="width: 50%;">Field</th>
+                                <th class="text-dark fw-semibold border" style="width: 50%;">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-muted fw-medium border">Memo</td>
+                                <td class="text-dark fw-medium border">${memo}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-medium border">Accounting Date</td>
+                                <td class="text-dark fw-medium border">${accountingDay}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div class="card border-warning bg-warning bg-opacity-10 mb-3">
+        <div class="card-body">
+            <div class="d-flex align-items-start">
+                <div class="flex-shrink-0 mt-1">
+                    <input type="checkbox" id="confirmReconciliation" class="form-check-input" style="transform: scale(1.3);">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <label for="confirmReconciliation" class="form-check-label cursor-pointer">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="mdi mdi-shield-check-outline text-warning fs-5 me-2"></i>
+                            <span class="fw-bold text-dark">Confirmation Required</span>
+                        </div>
+                        <p class="text-muted mb-0">
+                            I confirm that I have reviewed all the reconciliation details above and want to proceed with balancing the accounts. This action will create adjustment journal entries.
+                        </p>
+                    </label>
+                </div>
+            </div>
+            <div id="confirmationError" class="text-danger small mt-2 d-none">
+                <i class="mdi mdi-alert-circle-outline me-1"></i>Please check the confirmation box to proceed.
+            </div>
+        </div>
+    </div>
+
+    <!-- Warning Footer -->
+    <div class="card border-secondary bg-light">
+        <div class="card-body">
+            <div class="d-flex align-items-start">
+                <i class="mdi mdi-information-outline text-muted fs-5 me-3 mt-1"></i>
+                <div>
+                    <strong class="text-dark d-block mb-2">Important Notice</strong>
+                    <p class="text-muted mb-0">
+                        This action will create permanent adjustment entries in the general ledger. Please ensure all details are correct before proceeding as this operation cannot be undone.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
 
                 // Add CSS for better checkbox styling and larger dialog size
                 const style = document.createElement('style');
@@ -563,7 +589,7 @@
         // Use the same pattern as showReconciliationConfirmation
         if (typeof alertify !== 'undefined' && alertify.confirm) {
             const alertifyDialog = alertify.confirm(
-                "Confirm Final Reconciliation",
+               /* "Confirm Final Reconciliation",*/
                 message,
                 function () {
                     // Check if confirmation checkbox is checked
@@ -644,7 +670,7 @@
         // Use the same pattern as showReconciliationConfirmation
         if (typeof alertify !== 'undefined' && alertify.confirm) {
             alertify.confirm(
-                "Confirm Final Reconciliation",
+              
                 message,
                 function () {
                     // Check if confirmation checkbox is checked
