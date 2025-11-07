@@ -20,7 +20,6 @@ namespace CBS.FrontDesk.Data.ReportDataSetDto.LoanDeliquentAnalysis
         public string HeadOfficeWebSite { get; set; }
         public string HeadOfficeInitial { get; set; }
         public string HeadOfficeCode { get; set; }
-
         public DateTime ReportDate { get; set; }
         public List<LoanDelinquencyCategorySummary> CategorySummaries { get; set; } = new List<LoanDelinquencyCategorySummary>();
         public List<DelinquencyByGenderSummary> GenderSummariesAfter60Days { get; set; } = new List<DelinquencyByGenderSummary>();

@@ -195,6 +195,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     // ==============================================
     public class ReconciledLedgerLine
     {
+
         public string BranchId { get; set; }
         //public string BranchAccountId { get; set; } = default!;
         //public BranchAccount? BranchAccount { get; set; }

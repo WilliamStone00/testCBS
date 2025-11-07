@@ -61,111 +61,113 @@
             @Html.HiddenFor(m => m.Language)
             @Html.HiddenFor(m => m.IsOrigin)
             @Html.HiddenFor(m => m.ParentId)
+            @Html.HiddenFor(m => m.UpdateReference)
+            @Html.HiddenFor(m => m.ChangeType)
             @Html.HiddenFor(m => m.RequiresMapping)
             @Html.Hidden("ParentId", null) @* ensure ROOT *@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger small mb-2" })
 
-        <div class="row g-1">
-            <!-- Parent (fixed root) -->
-            <div class="col-md-6">
-                @Html.LabelFor(m => m.ParentAccountNumber, "Parent Number", new { @class = "form-label small text-muted" })
-                <input type="text" class="form-control form-control-sm" readonly value="(ROOT)" />
+            <div class="row g-1">
+                <!-- Parent (fixed root) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ParentAccountNumber, "Parent Number", new { @class = "form-label small text-muted" })
+                    <input type="text" class="form-control form-control-sm" readonly value="(ROOT)" />
+                </div>
+
+                <!-- Scope (readonly) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted" })
+                    <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
+                </div>
+
+                <!-- Account Class -->
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.Class,
+                        new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Select Class ---",
+                        new
+                             {
+                            @class = "form-select form-select-sm select2",
+                            id = "Class",
+                            onchange = "onAffiliateClassChange(this.value)"   // inline onchange like Branch Account
+                        })
+                    @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- HO PCMF (optional) -->
+                <div class="col-md-5">
+                    @Html.LabelFor(m => m.HoPcmfAccountId, "HO PCMF (Optional)", new { @class = "form-label fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.HoPcmfAccountId,
+                        new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- Link to HO PCMF (optional) ---",
+                        new { @class = "form-select form-select-sm select2", id = "HoPcmfAccountId" })
+                    @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Account Number -->
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(
+                        m => m.Code,
+                        new
+                             {
+                            @class = "form-control form-control-sm",
+                            placeholder = "e.g., 100000000000",
+                            maxlength = "50",
+                            autocomplete = "off",
+                            inputmode = "numeric",
+                            pattern = "\\d{12,}",
+                            @data_val = "true",
+                            @data_val_regex = "Account Number must be numeric with at least 12 digits.",
+                            @data_val_regex_pattern = "^\\d{12,}$"
+                        })
+                    <div class="form-text small">Numeric only, at least 12 digits. Unique per Affiliate.</div>
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Affiliate -->
+                @* <div class="col-md-6">
+                    @Html.LabelFor(m => m.AffiliateId, "Affiliate (MFI)", new { @class = "form-label required fw-semibold small" })
+                    @Html.DropDownListFor(
+                        m => m.AffiliateId,
+                        new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Affiliate ---",
+                        new { @class = "form-select form-select-sm select2", id = "AffiliateId" })
+                    @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger small" })
+                </div>*@
+
+
+
+                <hr class="my-2" />
+
+                <!-- Name EN -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.NameEn, "Name (English)", new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "English name", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Name FR -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.NameFr, "Nom (Français)", new { @class = "form-label required fw-semibold small" })
+                    @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom en français", maxlength = "150" })
+                    @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Notes -->
+                <div class="col-12">
+                    @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label fw-semibold small" })
+                    @Html.TextBoxFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Short internal note (max 100 chars)", maxlength = "100" })
+                    @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger small" })
+                </div>
             </div>
-
-            <!-- Scope (readonly) -->
-            <div class="col-md-6">
-                @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted" })
-                <input type="text" class="form-control form-control-sm" readonly value="@Model.Scope" />
-            </div>
-
-            <!-- Account Class -->
-            <div class="col-md-4">
-                @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label required fw-semibold small" })
-                @Html.DropDownListFor(
-                    m => m.Class,
-                    new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
-                    "--- Select Class ---",
-                    new
-                         {
-                        @class = "form-select form-select-sm select2",
-                        id = "Class",
-                        onchange = "onAffiliateClassChange(this.value)"   // inline onchange like Branch Account
-                    })
-                @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- HO PCMF (optional) -->
-            <div class="col-md-5">
-                @Html.LabelFor(m => m.HoPcmfAccountId, "HO PCMF (Optional)", new { @class = "form-label fw-semibold small" })
-                @Html.DropDownListFor(
-                    m => m.HoPcmfAccountId,
-                    new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                    "--- Link to HO PCMF (optional) ---",
-                    new { @class = "form-select form-select-sm select2", id = "HoPcmfAccountId" })
-                @Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Account Number -->
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label required fw-semibold small" })
-                @Html.TextBoxFor(
-                    m => m.Code,
-                    new
-                         {
-                        @class = "form-control form-control-sm",
-                        placeholder = "e.g., 100000000000",
-                        maxlength = "50",
-                        autocomplete = "off",
-                        inputmode = "numeric",
-                        pattern = "\\d{12,}",
-                        @data_val = "true",
-                        @data_val_regex = "Account Number must be numeric with at least 12 digits.",
-                        @data_val_regex_pattern = "^\\d{12,}$"
-                    })
-                <div class="form-text small">Numeric only, at least 12 digits. Unique per Affiliate.</div>
-                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Affiliate -->
-            @* <div class="col-md-6">
-            @Html.LabelFor(m => m.AffiliateId, "Affiliate (MFI)", new { @class = "form-label required fw-semibold small" })
-            @Html.DropDownListFor(
-                m => m.AffiliateId,
-                new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
-                "--- Select Affiliate ---",
-                new { @class = "form-select form-select-sm select2", id = "AffiliateId" })
-            @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger small" })
-        </div>*@
-
-
-
-            <hr class="my-2" />
-
-            <!-- Name EN -->
-            <div class="col-md-6">
-                @Html.LabelFor(m => m.NameEn, "Name (English)", new { @class = "form-label required fw-semibold small" })
-                @Html.TextBoxFor(m => m.NameEn, new { @class = "form-control form-control-sm", placeholder = "English name", maxlength = "150" })
-                @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Name FR -->
-            <div class="col-md-6">
-                @Html.LabelFor(m => m.NameFr, "Nom (Français)", new { @class = "form-label required fw-semibold small" })
-                @Html.TextBoxFor(m => m.NameFr, new { @class = "form-control form-control-sm", placeholder = "Nom en français", maxlength = "150" })
-                @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger small" })
-            </div>
-
-            <!-- Notes -->
-            <div class="col-12">
-                @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label fw-semibold small" })
-                @Html.TextBoxFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Short internal note (max 100 chars)", maxlength = "100" })
-                @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger small" })
-            </div>
-        </div>
 
             <div class="d-flex justify-content-end gap-2 mt-2">
-                @if (string.IsNullOrWhiteSpace(Model?.UpdateId))
+                @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                 {
                     <button type="submit" class="btn btn-primary btn-sm"><i class="mdi mdi-content-save me-1"></i> Save</button>
                     <button type="reset" class="btn btn-outline-secondary btn-sm"><i class="mdi mdi-refresh me-1"></i> Reset</button>
