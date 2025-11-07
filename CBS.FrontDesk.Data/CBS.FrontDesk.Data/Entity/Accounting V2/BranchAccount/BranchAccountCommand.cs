@@ -74,6 +74,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount
         public bool RequiresMapping { get; set; }
         public DateTime? CreatedDate { get; set; }
         public bool? IsDeleted { get; set; }
+
+
     }
 
     public class BranchAccountQuery

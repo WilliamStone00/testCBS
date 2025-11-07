@@ -1,4 +1,7 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +92,58 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public bool RequiresMapping { get; set; } = false;
         public string Notes { get; set; }
         public string Language { get; set; }
+        public string UpdateId { get; set; }
+
+        public PendingAccountRequest()
+        {
+            
+        }
+
+        // Constructor that converts from AffiliateAccountDto
+        public PendingAccountRequest(AffiliateAccountDto affiliateAccountDto, string userLanguage=null,  string parentAccountNumber = null)
+        {
+
+            UpdateId = affiliateAccountDto.Id;
+            Scope = "Affiliate";
+            IsOrigin = false;
+            AffiliateId = affiliateAccountDto.AffiliateId;
+            BranchId = null;
+            AffiliateAccountId = affiliateAccountDto.Id;
+            HoPcmfAccountId = affiliateAccountDto.HoPcmfAccountId;
+            Code = affiliateAccountDto.Code;
+            NameEn = affiliateAccountDto.NameEn;
+            NameFr = affiliateAccountDto.NameFr;
+            Class = affiliateAccountDto.Class;
+            ParentId = affiliateAccountDto.ParentId;
+            ParentAccountNumber = parentAccountNumber;
+            PostingAllowed = affiliateAccountDto.PostingAllowed;
+            RequiresMapping = false;
+            Notes = $"Created from affiliate account: {affiliateAccountDto.Name}";
+            Language = userLanguage ??  "en";
+        }
+
+        public  PendingAccountRequest(BranchAccountResponse branchAccount, string userLanguage = null, bool isOrigin = false, string parentAccountNumber = null)
+        {
+
+            UpdateId = branchAccount.Id;
+            Scope = branchAccount.Scope ?? "Branch";
+            IsOrigin = isOrigin;
+            AffiliateId = branchAccount.BranchId;
+            BranchId = branchAccount.BranchId;
+            AffiliateAccountId = branchAccount.AffiliateAccountId;
+            HoPcmfAccountId = null;
+            Code = branchAccount.Code;
+            NameEn = branchAccount.NameEn;
+            NameFr = branchAccount.NameFr;
+            Class = branchAccount.Class;
+            ParentId = branchAccount.ParentId;
+            ParentAccountNumber = null;
+            PostingAllowed = branchAccount.PostingAllowed;
+            RequiresMapping = branchAccount.RequiresMapping;
+            Notes = branchAccount.Notes ?? $"Created from branch account: {branchAccount.Name}";
+            Language = userLanguage ?? branchAccount.Language ?? "en";
+           
+        }
     }
 
     public class RequestAction
