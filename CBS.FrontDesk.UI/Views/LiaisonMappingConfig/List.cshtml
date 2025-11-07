@@ -38,13 +38,14 @@
     </div>
 </div>
 
+<!-- Filters -->
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Liaison Mapping Filters</h5>
 
     <form id="liaisonFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
 
-            <!-- Toggle switches for optional filter groups -->
+            <!-- Toggle switches -->
             <div class="row mb-2">
                 <div class="col-md-6">
                     <div class="form-check">
@@ -61,33 +62,17 @@
                 </div>
             </div>
 
-            <!-- Branch Filter (togglable) -->
+            <!-- Branch Filter -->
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Branch</label>
                         @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
                     </div>
-                    @*<div class="col-md-6">
-                        <label class="form-label fw-bold">Counterparty Branch</label>
-                        @Html.DropDownList("CounterpartyBranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Counterparty Branch ---", new { @class = "form-control select2" })
-                    </div>*@
                 </div>
             </div>
 
-            <!-- Account Filters -->
-            <!--<div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Due From Asset Account</label>
-                    @Html.DropDownList("DueFromAssetAccountId", new SelectList(ViewBag.AssetAccounts ?? new List<object>(), "Id", "Name"), "--- Select Account ---", new { @class = "form-control select2" })
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Due To Liability Account</label>
-                    @Html.DropDownList("DueToLiabilityAccountId", new SelectList(ViewBag.LiabilityAccounts ?? new List<object>(), "Id", "Name"), "--- Select Account ---", new { @class = "form-control select2" })
-                </div>
-            </div>-->
-
-            <!-- Date Filters (togglable) -->
+            <!-- Date Filters -->
             <div id="dateFilters" class="d-none">
                 <div class="row mb-2">
                     <div class="col-md-6">
@@ -100,15 +85,14 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
+        <!-- Filter buttons -->
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
                     <i class="mdi mdi-magnify"></i> Apply Filter
                 </button>
-
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
                     <i class="mdi mdi-refresh"></i> Reset
                 </button>
@@ -117,9 +101,48 @@
     </form>
 </div>
 
+
+
+<!-- Add Button above DataTable -->
+<div class="d-flex justify-content-end mb-2">
+    <button type="button" class="btn btn-success" onclick="openLiaisonModalAdd()">
+        <i class="mdi mdi-plus me-1"></i> Add Mapping
+    </button>
+</div>
+
 <!-- DataTable Partial -->
 <div id="datalistingview">
     @Html.Partial("_LiaisonMappingDataTable")
+</div>
+
+<!-- ✅ MODAL SECTION -->
+<div class="modal fade" id="liaisonModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-bank-outline me-1"></i> Liaison Mapping
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="liaisonModalBody">
+                <div class="text-center p-3">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">Loading...</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="openLiaisonModalAdd()" data-bs-dismiss="modal">
+                    <i class="mdi mdi-content-save me-1"></i> Add New Mapping
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -127,22 +150,22 @@
     <script>
         var liaisonTable = null;
 
+        // Convert empty string to null
         function emptyToNull(v) {
             return (v === undefined || v === null || v === '') ? null : v;
         }
 
+        // Collect filters from form
         function collectLiaisonFilters() {
             return {
                 BranchId: emptyToNull($('#BranchId').val()),
-                CounterpartyBranchId: emptyToNull($('#CounterpartyBranchId').val()),
-                DueFromAssetAccountId: emptyToNull($('#DueFromAssetAccountId').val()),
-                DueToLiabilityAccountId: emptyToNull($('#DueToLiabilityAccountId').val()),
                 CreatedFromUtc: emptyToNull($('#CreatedFromUtc').val()),
                 CreatedToUtc: emptyToNull($('#CreatedToUtc').val()),
                 options: {}
             };
         }
 
+        // Initialize DataTable
         function initLiaisonDataTable() {
             if ($.fn.DataTable.isDataTable('#myDataTable') && liaisonTable) return;
 
@@ -152,7 +175,7 @@
                 responsive: true,
                 order: [[0, 'desc']],
                 ajax: {
-                    url: '/LiaisonMappingConfig/LoadLiaisonMappingData', // adjust your action
+                    url: '/LiaisonMappingConfig/LoadLiaisonMappingData',
                     type: 'POST',
                     contentType: 'application/json',
                     data: function (d) {
@@ -161,36 +184,33 @@
                             draw: d.draw,
                             start: d.start,
                             length: d.length,
-                            skip: d.start,
-                            pageSize: d.length,
                             searchValue: d.search?.value || '',
                             sortColumnName: 'CreatedDate',
                             sortColumnDirection: 'desc'
                         };
                         return JSON.stringify(filters);
                     },
-                    error: function (jqXHR) {
-                        var msg = 'Failed to load data';
-                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
-                        appalert(msg, 0, 1);
+                    error: function () {
+                        appalert('Failed to load data', 0, 1);
                     }
                 },
                 columns: [
-                    { data: 'CreatedDate', render: function (d) { return d ? moment(d).format('DD/MM/YYYY') : '-'; } },
-                    { data: 'BranchName', name: 'BranchName' },
-                    { data: 'CounterpartyBranchName', name: 'CounterpartyBranchName' },
+                    {
+                        data: 'CreatedDate',
+                        render: d => d ? moment(d).format('MM/DD/YYYY HH:mm:ss') : '-'
+                    },
+                    { data: 'BranchName' },
+                    { data: 'CounterpartyBranchName' },
                     {
                         data: 'Id',
                         orderable: false,
-                        searchable: false,
-                        render: function (data, type, row) {
+                        render: function (data) {
                             const recordId = encodeURIComponent(data);
                             return `
-                                    <button class="btn btn-sm btn-outline-primary text-center"
-                                            onclick="AddORUpdateGen('${recordId}','datalistingview','_Create','update','LiaisonMappingConfig')">
-                                        <i class="fas fa-edit me-1"></i> Edit
-                                    </button>
-                                `;
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    onclick="openLiaisonModal('${recordId}')">
+                                                    <i class='fas fa-edit me-1'></i> Edit
+                                                </button>`;
                         }
                     }
                 ],
@@ -200,11 +220,13 @@
             });
         }
 
+        // Reload DataTable
         function loadLiaisonData() {
             initLiaisonDataTable();
             if (liaisonTable) liaisonTable.ajax.reload(null, false);
         }
 
+        // Reset filters
         function resetLiaisonFilters() {
             $('#liaisonFilterForm')[0].reset();
             $('#branchFilter, #dateFilters').addClass('d-none');
@@ -212,22 +234,83 @@
             appalert('Filters reset', 3, 1);
         }
 
-        $(document).ready(function () {
-            $('#applyFilterBtn').on('click', function (e) { e.preventDefault(); loadLiaisonData(); });
-            $('#resetFilterBtn').on('click', function (e) { e.preventDefault(); resetLiaisonFilters(); });
-
-            // Enter key triggers apply
-            $('#liaisonFilterForm input').on('keypress', function (e) {
-                if (e.which === 13) { e.preventDefault(); loadLiaisonData(); }
+        // Initialize Select2 inside a modal
+        function initSelect2InModal(modalSelector) {
+            $(modalSelector).find('.select2').each(function () {
+                $(this).select2({
+                    width: '100%',
+                    dropdownParent: $(modalSelector) // attach dropdown to modal
+                });
             });
+        }
 
-            // Initialize Select2 for dropdowns
+        // Open modal and load _Create partial
+        function openLiaisonModal(recordId) {
+            const modalSelector = '#liaisonModal';
+                     /*       $('#liaisonModalBody').html(`
+                                <div class="text-center p-3">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                    <p class="mt-2 text-muted">Loading form...</p>
+                                </div>`)*/;
+
+
+
+            $.ajax({
+                url: '/LiaisonMappingConfig/InitializeData',
+                type: 'GET',
+                data: { KEY: recordId, partialView: '_Create', path: 'edit' },
+                success: function (data) {
+                    const modal = new bootstrap.Modal(document.getElementById('liaisonModal'));
+                    modal.show();
+                    $('#liaisonModalBody').html(data);
+                    initSelect2InModal(modalSelector); // initialize Select2 correctly
+                },
+                error: function () {
+                    $('#liaisonModalBody').html('<div class="alert alert-danger">Error loading form.</div>');
+                }
+            });
+        }
+
+
+        // Open modal and load _Create partial
+        function openLiaisonModalAdd() {
+            const modalSelector = '#liaisonModal';
+            /*     $('#liaisonModalBody').html(`
+                     <div class="text-center p-3">
+                         <div class="spinner-border text-primary" role="status"></div>
+                         <p class="mt-2 text-muted">Loading form...</p>
+                     </div>`);*/
+
+
+            $.ajax({
+                url: '/LiaisonMappingConfig/InitializeData',
+                type: 'GET',
+                data: { KEY: null, partialView: '_Create', path: 'new' },
+                success: function (data) {
+                    const modal = new bootstrap.Modal(document.getElementById('liaisonModal'));
+                    modal.show();
+                    $('#liaisonModalBody').html(data);
+                    initSelect2InModal(modalSelector); // initialize Select2 correctly
+                },
+                error: function () {
+                    $('#liaisonModalBody').html('<div class="alert alert-danger">Error loading form.</div>');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Filter buttons
+            $('#applyFilterBtn').click(e => { e.preventDefault(); loadLiaisonData(); });
+            $('#resetFilterBtn').click(e => { e.preventDefault(); resetLiaisonFilters(); });
+
+            // Enter key triggers apply filter
+            $('#liaisonFilterForm input').keypress(e => { if (e.which === 13) { e.preventDefault(); loadLiaisonData(); } });
+
+            // Initialize Select2 outside modal (filters)
             if ($.fn.select2) {
-                $('.select2').select2({ width: '100%' });
+                $('.select2').not('#liaisonModal .select2').select2({ width: '100%' });
             }
-
-            // Initialize the table on page load
-            initLiaisonDataTable();
         });
     </script>
+
 }

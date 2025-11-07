@@ -112,6 +112,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 			var data = await _services.GetById(Key);
 			return Json(data, JsonRequestBehavior.AllowGet);
 		}
+
+
+
+
 		public async Task<ActionResult> GetLiaisonMappingPartialView(string Key)
 		{
 			var data = await _services.GetById(Key);
