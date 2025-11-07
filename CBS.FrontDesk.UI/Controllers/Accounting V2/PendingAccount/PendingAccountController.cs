@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+﻿using CBS.BusinessService.Accounting_V2;
+using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.Pendingaccounts;
@@ -30,19 +31,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
         private readonly AffiliateService _AffiliateService;
         private readonly BranchServices _branchServices;
         private readonly PendingAccountsService _pendingAccount;
+        private readonly ChartOfAccountsV2Service _chartOfAccountsV;
 
 
         /// <summary>
         /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public PendingAccountController(PendingAccountsService pendingacountsservice, AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService)
+        public PendingAccountController(PendingAccountsService pendingacountsservice, AffiliateAccountService affiliateaccountService, BranchServices branchServices, AffiliateService affiliateService, AffiliateAccountMockService affiliateAccountMockService, ChartOfAccountsV2Service chartOfAccountsV)
         {
             _AffiliateAccountService = affiliateaccountService;
             _branchServices = branchServices;
             _AffiliateService = affiliateService;
             _affiliateAccountMockService = affiliateAccountMockService;
             _pendingAccount = pendingacountsservice;
+            _chartOfAccountsV = chartOfAccountsV;
         }
 
         [HttpGet]
@@ -61,11 +64,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
             var affiliate = await _AffiliateService.GetAsync();
             ViewBag.Affiliates = affiliate;
 
-            var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
-            ViewBag.HoPcmfAccountId = Chartofaccount;
+            var classes = _chartOfAccountsV.GetAllClass2();
+            ViewBag.Classes = classes;
+            /*
+                        var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
+                        ViewBag.HoPcmfAccountId = Chartofaccount;*/
 
             var affiliateAccounts = await _AffiliateAccountService.GetAffiliatesFromEndpointAsync();
-            ViewBag.HoPcmfAccountId = affiliateAccounts;
+            ViewBag.AffiliateAccounts = affiliateAccounts;
 
             return true;
 

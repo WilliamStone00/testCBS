@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.UI", "CBS.FrontDesk.UI\CBS.FrontDesk.UI.csproj", "{F172CEF7-2184-42D1-A424-96A61F821312}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C8E30E49-FC55-431E-9832-CF6F28E30C30} = {C8E30E49-FC55-431E-9832-CF6F28E30C30}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBS.FrontDesk.Service", "CBS.BusinessService\CBS.BusinessService\CBS.FrontDesk.Service.csproj", "{C8E30E49-FC55-431E-9832-CF6F28E30C30}"
 EndProject

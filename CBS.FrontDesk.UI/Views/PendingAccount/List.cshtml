@@ -2,217 +2,279 @@
 @using Resources
 @{
     ViewBag.Title = "Account Request - Filters";
+    // ViewBag.Classes expected as: IEnumerable<SelectListItem>
+    // e.g. in controller:
+    // var classes = _chartOfAccountsV.GetAllClass2();
+    // ViewBag.Classes = classes;
+    var scopeItems = new List<SelectListItem> {
+       new SelectListItem { Text = "All", Value = "" },
+       new SelectListItem { Text = "Branch", Value = "Branch" },
+       new SelectListItem { Text = "Affiliate", Value = "Affiliate" }
+   };
+
+    var statusItems = new List<SelectListItem> {
+       new SelectListItem { Text = "All", Value = "" },
+       new SelectListItem { Text = "Pending", Value = "Pending" },
+       new SelectListItem { Text = "Validated", Value = "Validated" },
+       new SelectListItem { Text = "Approved", Value = "Approved" },
+       new SelectListItem { Text = "Rejected", Value = "Rejected" }
+   };
+
+    var changeTypeItems = new List<SelectListItem> {
+       new SelectListItem { Text = "All", Value = "" },
+       new SelectListItem { Text = "Create Request", Value = "CreateRequest" },
+       new SelectListItem { Text = "Update Request", Value = "UpdateRequest" }
+   };
+
+    var languageItems = new List<SelectListItem> {
+       new SelectListItem { Text = "Default", Value = "" },
+       new SelectListItem { Text = "English", Value = "en" },
+       new SelectListItem { Text = "Français", Value = "fr" }
+   };
+
+  
+
 }
 
+<!-- Header (unchanged) -->
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-document-outline me-2"></i> Account Request Listing
-                </h1>
-                <p class="card-text">
-                    Use this form to filter account requests before validation, approval or rejection.
-                </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            <div class="card-body text-center py-3">
+                <h1 class="card-title text-primary mb-1"><i class="mdi mdi-file-document-outline me-2"></i> Account Request Listing</h1>
+                <p class="card-text mb-0">Use this form to filter account requests before validation, approval or rejection.</p>
+                <hr class="mt-3 mb-0" style="border: 2px solid rgba(128,128,128,.5);" />
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tips -->
+<!-- Tips (unchanged id fix) -->
 <div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-2">
+        <span class="fw-semibold"><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePendingAccountTips" aria-expanded="false" aria-controls="collapsePendingAccountTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-
-    <div id="collapseAffiliateTips" class="collapse">
+    <div id="collapsePendingAccountTips" class="collapse">
         <div class="card-body">
-            <ul>
+            <ul class="mb-0">
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Scope:</strong> Select the request scope to limit results.</li>
                 <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>Affiliate / Branch:</strong> Filter by ownership.</li>
-                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>Status:</strong> Pending, Approved, Rejected.</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Created Dates:</strong> Filter by submission window.</li>
-                <li><i class="mdi mdi-checkbox-marked-circle-outline text-success me-2"></i><strong>Include Deleted:</strong> Include soft-deleted requests.</li>
+                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>Status & Change Type:</strong> Pending/Approved/Rejected & Create/Update request.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Created Dates (UTC):</strong> Filter by submission window.</li>
+                <li><i class="mdi mdi-translate-variant text-info me-2"></i><strong>Language:</strong> Prefer EN/FR naming when searching by Name.</li>
             </ul>
         </div>
     </div>
 </div>
 
-<!-- Account Request Filters (organized) -->
+
 <div class="card shadow p-3 mb-4">
-    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
-        <div class="card p-3 mb-3 bg-light">
+    @using (Html.BeginForm("Index", "PendingAccount", FormMethod.Get, new { id = "affiliateFilterForm", autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
 
-            <!-- SECTION: Context -->
-            <div class="mb-1">
-                <div class="row g-2">
+        @* -------- CONTEXT -------- *@
+        <div class="mb-1">
+            <div class="row g-2">
+               @* <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.AffiliateId, "Affiliate", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.AffiliateId,
+                      new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name", Model?.AffiliateId),
+                      "--- Select Affiliate ---",
+                      new { @class = "form-select select2", id = "AffiliateId" })
+                    @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
+                </div>*@
 
-                    <!-- Affiliate -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        @Html.LabelFor(m => m.AffiliateId, "Affiliate", new { @class = "form-label fw-bold", @for = "AffiliateId" })
-                        @Html.DropDownListFor(
-                            m => m.AffiliateId,
-                            new SelectList(ViewBag.Affiliates ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- Select Affiliate ---",
-                            new { @class = "form-select select2", id = "AffiliateId" }
-                        )
-                        @Html.ValidationMessageFor(m => m.AffiliateId, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Branch -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        @Html.LabelFor(m => m.BranchId, GlobalUserManagement.Branch, new { @class = "form-label fw-bold", @for = "BranchId" })
-                        @Html.DropDownListFor(
-                            m => m.BranchId,
-                            new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                            new { @class = "form-select select2", id = "BranchId" }
-                        )
-                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Scope -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        <label class="form-label fw-bold" for="Scope">Scope</label>
-                        <select id="Scope" name="Scope" class="form-select select2">
-                            <option value="">All</option>
-                            <option value="Branch">Branch</option>
-                            <option value="Affiliate">Affiliate</option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- SECTION: Attributes -->
-            <div class="mb-1">
-                <div class="row g-2">
-
-                    <!-- Code -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        <label class="form-label fw-bold" for="Code">@AccountingV2.Code</label>
-                        <input type="text" id="Code" name="Code" class="form-control" placeholder="Affiliate code" />
-                    </div>
-
-                    <!-- Class -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        <label class="form-label fw-bold" for="Class">Class</label>
-                        @Html.DropDownList(
-                            "Class",
-                            new List<SelectListItem> {
-                                new SelectListItem { Text="--- Select Class ---", Value="" },
-                                new SelectListItem { Text="EQUITY", Value="1" },
-                                new SelectListItem { Text="FIXED ASSETS", Value="2" },
-                                new SelectListItem { Text="MEMBERS", Value="3" },
-                                new SelectListItem { Text="THIRD PARTIES", Value="4" },
-                                new SelectListItem { Text="TREASURY", Value="5" },
-                                new SelectListItem { Text="EXPENSES", Value="6" },
-                                new SelectListItem { Text="REVENUE", Value="7" },
-                                new SelectListItem { Text="OUTSIDE ORDINARY ACTIVITIES (OOA)", Value="8" },
-                                new SelectListItem { Text="MANAGEMENT", Value="9" }
-                            },
-                            new { @class = "form-select select2", id = "Class" }
-                        )
-                    </div>
-
-                    <!-- Status -->
-                    <div class="col-lg-4 col-md-6 mb-3">
-                        <label class="form-label fw-bold" for="Status">Status</label>
-                        <select id="Status" name="Status" class="form-select select2">
-                            <option value="">All</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- SECTION: Date Range -->
-            <div class="mb-1">
-                <div class="d-flex align-items-center justify-content-between">
-                    <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-calendar-range me-1"></i> Date Range (UTC)</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
-                               onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleCreatedDates">Show</label>
-                    </div>
+                <div class="col-lg-6 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.BranchId,
+                      new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name", Model?.BranchId),
+                      "--- Select Branch ---",
+                      new { @class = "form-select select2", id = "BranchId" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                 </div>
 
-                <div id="createdDateFilters" class="d-none">
-                    <div class="row g-2">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold" for="CreatedFromUtc">Created From (UTC)</label>
-                            <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold" for="CreatedToUtc">Created To (UTC)</label>
-                            <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION: Options -->
-            <div>
-                <div class="row g-2">
-                    <div class="col-md-4 d-flex align-items-center mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" />
-                            <label class="form-check-label fw-bold" for="IncludeDeleted">Include Deleted</label>
-                        </div>
-                    </div>
-                    <div class="col-md-8"><!-- reserved space --></div>
+                <div class="col-lg-6 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Scope, "Request Scope", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.Scope,
+                      new List<SelectListItem> {
+                        new SelectListItem { Text = "All", Value = "" },
+                        new SelectListItem { Text = "Branch", Value = "Branch" },
+                        new SelectListItem { Text = "Affiliate", Value = "Affiliate" }
+                      },
+                      new { @class = "form-select select2", id = "Scope" })
+                    @Html.ValidationMessageFor(m => m.Scope, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
+        @* -------- ATTRIBUTES -------- *@
+        <div class="mb-1">
+            <div class="row g-2">
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Code, "Account Code (requested)", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "e.g. 5121000000", id = "Code" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(
+                            m => m.Class,
+                            new SelectList(ViewBag.Classes, "Value", "Text"),
+                            "--- Select Class ---",
+                            new { @class = "form-select form-select-sm select2", id = "Class" })
+                 
+                    @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Status, "Request Status", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.Status,
+                      new List<SelectListItem> {
+                        new SelectListItem { Text = "All", Value = "" },
+                        new SelectListItem { Text = "Pending", Value = "Pending" },
+                        new SelectListItem { Text = "Validated", Value = "Validated" },
+                        new SelectListItem { Text = "Approved", Value = "Approved" },
+                        new SelectListItem { Text = "Rejected", Value = "Rejected" }
+                      },
+                      new { @class = "form-select select2", id = "Status" })
+                    @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.ChangeType, "Change Type", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.ChangeType,
+                      new List<SelectListItem> {
+                        new SelectListItem { Text = "All", Value = "" },
+                        new SelectListItem { Text = "CreateRequest", Value = "CreateRequest" },
+                        new SelectListItem { Text = "UpdateRequest", Value = "UpdateRequest" }
+                      },
+                      new { @class = "form-select select2", id = "ChangeType" })
+                    @Html.ValidationMessageFor(m => m.ChangeType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.UpdateReference, "Update Target (Id / Code)", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.UpdateReference, new { @class = "form-control", placeholder = "Only for UpdateRequest", id = "UpdateReference" })
+                    @Html.ValidationMessageFor(m => m.UpdateReference, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Name, "Account Name (search)", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Matches EN/FR based on Language", id = "Name" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.Language, "Preferred Name Language", new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(m => m.Language,
+                      new List<SelectListItem> {
+                        new SelectListItem { Text = "Default", Value = "" },
+                        new SelectListItem { Text = "English", Value = "en" },
+                        new SelectListItem { Text = "Français", Value = "fr" }
+                      },
+                      new { @class = "form-select select2", id = "Language" })
+                    @Html.ValidationMessageFor(m => m.Language, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.RequestedBy, "Requested By (user)", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.RequestedBy, new { @class = "form-control", placeholder = "Username / Id", id = "RequestedBy" })
+                    @Html.ValidationMessageFor(m => m.RequestedBy, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-2">
+                    @Html.LabelFor(m => m.ApprovedBy, "Approved By (user)", new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(m => m.ApprovedBy, new { @class = "form-control", placeholder = "Username / Id", id = "ApprovedBy" })
+                    @Html.ValidationMessageFor(m => m.ApprovedBy, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+        </div>
+
+        @* -------- DATE RANGE -------- *@
+        <div class="mb-1">
+            <div class="d-flex align-items-center justify-content-between">
+                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-calendar-range me-1"></i> Date Range (UTC)</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
+                           onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                    <label class="form-check-label fw-bold" for="toggleCreatedDates">Show</label>
+                </div>
+            </div>
+
+            <div id="createdDateFilters" class="d-none">
+                <div class="row g-2">
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(m => m.CreatedFromUtc, "Created From (UTC)", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CreatedFromUtc, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", id = "CreatedFromUtc" })
+                        @Html.ValidationMessageFor(m => m.CreatedFromUtc, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(m => m.CreatedToUtc, "Created To (UTC)", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CreatedToUtc, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", id = "CreatedToUtc" })
+                        @Html.ValidationMessageFor(m => m.CreatedToUtc, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* -------- OPTIONS -------- *@
+        <div>
+            <div class="row g-2 align-items-center">
+                <div class="col-md-6 mb-2">
+                    <div class="form-check">
+                        @{
+                            // Fix for bool? — use Html.CheckBox(name, isChecked, attrs)
+                            var includeDeletedChecked = Model?.IncludeDeleted ?? false;
+                        }
+                        @Html.CheckBox("IncludeDeleted", includeDeletedChecked, new { @class = "form-check-input", id = "IncludeDeleted" })
+                        @Html.Label("IncludeDeleted", "Include deleted requests (soft-deleted)", new { @class = "form-check-label fw-bold" })
+                    </div>
+                </div>
+                <div class="col-md-6"><!-- reserved --></div>
+            </div>
+        </div>
+
+        <!-- Actions -->
         <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
+            <div class="col-md-12 d-flex gap-2">
+                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary w-100">
                     <i class="mdi mdi-magnify"></i> Apply Filter
                 </button>
-                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100"
-                        onclick="document.getElementById('affiliateFilterForm').reset(); if (window.$ && $.fn.select2) { $('#AffiliateId,#BranchId,#Class,#Status,#Scope').val(null).trigger('change'); } document.getElementById('createdDateFilters').classList.add('d-none');">
+                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100">
                     <i class="mdi mdi-refresh"></i> Reset
                 </button>
             </div>
         </div>
-    </form>
+    }
 </div>
 
 
-<!-- DataTable Partial -->
+<!-- DataTable host -->
 <div id="datalistingview">
     @Html.Partial("_Data")
 </div>
 
-<!-- DETAILS modal -->
+<!-- Modal (unchanged structure) -->
 <div class="modal fade" id="accountRequestTModal" tabindex="-1" aria-labelledby="accountRequestTModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content position-relative">
-
-            <!-- Loader Overlay (toggle .d-none as needed) -->
             <div id="accountRequestTLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none" style="z-index:1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Loading details…</p>
+                    <p class="fw-semibold text-primary mb-0">Loading details…</p>
                 </div>
             </div>
-
-            <!-- Modal Header -->
             <div class="modal-header border-0">
-              
+                <h6 class="modal-title fw-semibold" id="accountRequestTModalLabel">Account Request</h6>
                 <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-         
-            <!-- Main Content (AJAX will replace this) -->
             <div class="modal-body p-4">
                 <div id="accountRequestTContent">
                     <div class="text-center py-4">
@@ -221,14 +283,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Footer -->
             <div class="modal-footer border-0 justify-content-between">
-              @*  <div>
-                    <span class="text-muted fw-semibold">
-                        Request ID: <span class="text-dark" id="accountRequestTIdDisplay">-</span>
-                    </span>
-                </div>*@
                 <div class="text-center w-100">
                     <small class="text-muted">Powered by FLX-CBS</small>
                 </div>
@@ -238,310 +293,308 @@
                     </button>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-(function ($) {
-  'use strict';
+<script>
+  (function ($) {
+    'use strict';
 
-  // ---------- Endpoints ----------
-  const dataUrl = '@Url.Action("LoadData", "PendingAccount")';
-  const initUrl = '@Url.Action("InitializeData", "PendingAccount")';
-  const deleteUrl = '@Url.Action("Delete", "PendingAccount")'; // (kept if you need it elsewhere)
+    // ----- Endpoints -----
+    const dataUrl = '@Url.Action("LoadData","PendingAccount")';
+    const initUrl = '@Url.Action("InitializeData","PendingAccount")';
 
-  // ---------- Modal (external) ----------
-  const MODAL_ID = '#accountRequestTModal';
-  $.ajaxSetup({ cache: false });
+    // ----- Modal -----
+    const MODAL_ID = '#accountRequestTModal';
+    const MODAL_LOADER = '#accountRequestTLoader';
+    let tableInitialized = false;
+    let table = null;
+    $.ajaxSetup({ cache: false });
 
-  // ---------- Globals ----------
-  window.tableInitialized = window.tableInitialized || false;
-  window.table = window.table || null;
+    // ----- Helpers -----
+    function antiForgeryToken() {
+      return $('input[name="__RequestVerificationToken"]').val();
+    }
 
-  // ---------- Helpers ----------
-  function initSelect2() {
-    if (!$.fn.select2) return;
-    try {
+    function initSelect2() {
+      if (!$.fn.select2) return;
       const opts = { width: '100%', allowClear: true };
-      $('#AffiliateId').select2({ ...opts, placeholder: 'Select Affiliate' });
-      $('#BranchId').select2({ ...opts, placeholder: 'Select Branch' });
-      $('#Scope').select2({ ...opts, placeholder: 'Select Scope' });
-      $('#Class').select2({ ...opts, placeholder: 'Select Class' });
-      $('#Status').select2({ ...opts, placeholder: 'Select Status' });
-    } catch (e) { console.warn('select2 init failed', e); }
-  }
+      try {
+        $('#AffiliateId').select2({ ...opts, placeholder: 'Select Affiliate' });
+        $('#BranchId').select2({ ...opts, placeholder: 'Select Branch' });
+        $('#Scope').select2({ ...opts, placeholder: 'Select Scope' });
+        $('#Class').select2({ ...opts, placeholder: 'Select Class' });
+        $('#Status').select2({ ...opts, placeholder: 'Select Status' });
+        $('#ChangeType').select2({ ...opts, placeholder: 'Select Change Type' });
+        $('#Language').select2({ ...opts, placeholder: 'Language' });
+      } catch(e){ console.warn('select2 init failed', e); }
+    }
 
-  function getFilters() {
-    return {
-      Options: {},
-      AffiliateId:    $('#AffiliateId').val() || null,
-      BranchId:       $('#BranchId').val() || null,
-      Scope:          $('#Scope').val() || null,
-      Code:           $.trim($('#Code').val() || '') || null,
-      Class:          $('#Class').val() || null,
-      Status:         $('#Status').val() || null,
-      CreatedFromUtc: $('#CreatedFromUtc').val() || null,
-      CreatedToUtc:   $('#CreatedToUtc').val() || null,
-      IncludeDeleted: !!$('#IncludeDeleted').is(':checked')
+    // Collect ALL PendingAccountQuery fields
+    function getFilters() {
+      return {
+        Options: {},
+        Scope:          $('#Scope').val() || null,
+        AffiliateId:    $('#AffiliateId').val() || null,
+        BranchId:       $('#BranchId').val() || null,
+        Status:         $('#Status').val() || null,
+        Code:           $('#Code').val()  || null,
+        ChangeType:     $('#ChangeType').val() || null,          // NEW
+        UpdateReference:$('#UpdateReference').val() || null, // NEW
+        Name:           $('#Name').val() || null,   // NEW
+        RequestedBy:    $('#RequestedBy').val() || null, // NEW
+        ApprovedBy:     $('#ApprovedBy').val() || null,  // NEW
+        Class:          $('#Class').val() || null,                // from ViewBag.Classes
+        CreatedFromUtc: $('#CreatedFromUtc').val() || null,
+        CreatedToUtc:   $('#CreatedToUtc').val() || null,
+        IncludeDeleted: $('#IncludeDeleted').is(':checked') === true,
+        Language:       $('#Language').val() || null              // NEW
+      };
+    }
+
+    function setModalBody(html, sizeClass) {
+      const $modal = $(MODAL_ID);
+      const $dlg = $modal.find('.modal-dialog');
+      $dlg.removeClass('modal-sm modal-lg modal-xl');
+      if (sizeClass) $dlg.addClass(sizeClass);
+      $('#accountRequestTContent').html(html);
+    }
+
+    function setModalLoading(isLoading) { $(MODAL_LOADER).toggleClass('d-none', !isLoading); }
+    function openModal(){ bootstrap.Modal.getOrCreateInstance($(MODAL_ID)[0], { backdrop: 'static' }).show(); }
+
+    function openPartialInModalWithInit(params, sizeClass = 'modal-lg') {
+      setModalBody(`<div class="text-center p-4"><div class="spinner-border" role="status"></div><div class="mt-2">Loading...</div></div>`, sizeClass);
+      setModalLoading(true);
+      openModal();
+      $.get(initUrl, params)
+        .done(function(html){
+          setModalBody(html, sizeClass);
+          setModalLoading(false);
+          try { $.validator?.unobtrusive?.parse($(MODAL_ID)); } catch(_) {}
+        })
+        .fail(function(xhr){
+          setModalBody(`<div class="alert alert-danger m-3">${xhr?.responseText || 'Unable to load content.'}</div>`, sizeClass);
+          setModalLoading(false);
+        });
+    }
+    window.openPartialInModalWithInit = openPartialInModalWithInit;
+
+    function renderStatusBadge(sRaw){
+      const s = (sRaw || '').toString();
+      if(!s) return '';
+      let cls = 'bg-secondary';
+      if (/pending/i.test(s)) cls = 'bg-warning';
+      if (/validated|approved/i.test(s)) cls = 'bg-success';
+      if (/rejected|invalid/i.test(s)) cls = 'bg-danger';
+      return `<span class="badge ${cls}">${s}</span>`;
+    }
+
+    function renderChangeTypeBadge(v){
+      const key = (v || '').toString().trim().toLowerCase();
+      if (key === 'createrequest') return `<span class="badge bg-primary">CreateRequest</span>`;
+      if (key === 'updaterequest') return `<span class="badge bg-info">UpdateRequest</span>`;
+      return v ? `<span class="badge bg-secondary">${v}</span>` : '';
+    }
+
+      // ----- DataTable -----
+      function initDataTable() {
+          const selector = '#myDataTable';
+
+          // Guard: ensure table exists
+          if (!$(selector).length) {
+              if (typeof appalert === 'function') appalert('Table element #myDataTable not found on page', 0, 1);
+              console.error('Table element #myDataTable not found.');
+              return;
+          }
+
+          // If already initialized, just reload
+          if ($.fn.DataTable.isDataTable(selector) && table) {
+              table.ajax.reload(null, false);
+              return;
+          }
+
+          // Safe destroy any zombie instance
+          try { $(selector).DataTable().destroy(); } catch (_) { }
+          $(selector + ' tbody').empty();
+
+          table = $(selector).DataTable({
+              serverSide: true,
+              searching: false,
+              responsive: true,
+              autoWidth: false,
+              pageLength: 10,
+              order: [[0, 'desc']],
+              columnDefs: [
+                  { targets: [0], width: '15%' },  // CreatedDate
+                  { targets: [1], width: '10%' },  // Scope
+                  { targets: [2], width: '12%' },  // Code
+                  { targets: [3], width: 'auto' }, // Name
+                  { targets: [4], width: '10%' },  // Class
+                  { targets: [5], width: '12%' },  // ChangeType
+                  { targets: [6], width: '12%' },  // Status
+                  { targets: [7], width: '16%', orderable: false, searchable: false, className: 'text-end' } // Actions
+              ],
+              ajax: {
+                  url: dataUrl,
+                  type: 'POST',
+                  contentType: 'application/json; charset=utf-8',
+                  headers: {
+                      // add anti-forgery when present
+                      'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                  },
+                  data: function (d) {
+                      const filters = getFilters();
+
+                      // Map sort to server: use the column "name" you set below
+                      let sortExpr = '';
+                      if (d.order && d.order.length && d.columns) {
+                          const ord = d.order[0];
+                          const colName = d.columns[ord.column]?.name || d.columns[ord.column]?.data || '';
+                          const dir = (ord.dir || 'asc').toLowerCase();
+                          if (colName) sortExpr = `${colName} ${dir}`;
+                      }
+
+                      // IMPORTANT: match your model casing => Options
+                      filters.Options = {
+                          Draw: d.draw,
+                          Page: Math.floor((d.start || 0) / (d.length || 10)) + 1,
+                          PageSize: d.length,
+                          Sort: sortExpr,
+                          // optional passthrough if your backend uses them
+                          Start: d.start,
+                          Length: d.length,
+                          SearchValue: d.search?.value || ''
+                      };
+
+                      return JSON.stringify(filters);
+                  },
+                  // Be lenient with the shape coming back
+                  dataSrc: function (json) {
+                      // DataTables expects draw/recordsTotal/recordsFiltered at the root.
+                      // If your server already returns exact shape, this is fine.
+                      if (!json) return [];
+
+                      // If your API nests the items, try common keys:
+                      if (Array.isArray(json.data)) return json.data;
+                      if (Array.isArray(json.result)) return json.result;
+                      if (Array.isArray(json.items)) return json.items;
+
+                      // Last resort: find the first array
+                      for (const k in json) { if (Array.isArray(json[k])) return json[k]; }
+
+                      return [];
+                  },
+                  error: function (xhr, status, err) {
+                      console.error('DataTables load error', status, err, xhr?.responseText);
+                      $(selector + ' tbody').html(
+                          '<tr><td colspan="8" class="text-center text-danger">Failed to load data.</td></tr>'
+                      );
+                  }
+              },
+              columns: [
+                  { // CreatedDate
+                      data: null, name: 'CreatedDate',
+                      render: function (_, __, row) {
+                          const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
+                          return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+                      }
+                  },
+                  { data: 'Scope', name: 'Scope', defaultContent: '-' },
+                  { data: 'Code', name: 'Code', defaultContent: '' },
+                  { // Name
+                      data: null, name: 'Name',
+                      render: function (_, __, row) {
+                          return row.Name || row.name || row.NameEn || row.nameEn || '';
+                      }
+                  },
+                  { data: 'Class', name: 'Class', defaultContent: '' },
+                  { // ChangeType
+                      data: null, name: 'ChangeType',
+                      render: function (_, __, row) {
+                          return renderChangeTypeBadge(row.ChangeType || row.changeType);
+                      }
+                  },
+                  { // Status
+                      data: null, name: 'Status',
+                      render: function (_, __, row) {
+                          return renderStatusBadge(row.Status || row.status);
+                      }
+                  },
+                  { // Actions
+                      data: null, orderable: false, searchable: false, className: 'text-end',
+                      render: function (_, __, row) {
+                          const id = row.Id || row.id;
+                          const btnId = 'act_' + (id || Math.random().toString(36).slice(2));
+                          return `
+            <div class="dropdown text-end">
+              <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-cog-outline"></i> Actions
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+                <li><button type="button" class="dropdown-item js-detail" data-id="${id}"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                <li><button type="button" class="dropdown-item js-validate" data-id="${id}"><i class="mdi mdi-check-circle-outline me-1 text-success"></i> Validate</button></li>
+                <li><button type="button" class="dropdown-item js-reject" data-id="${id}"><i class="mdi mdi-close-circle-outline me-1 text-warning"></i> Reject</button></li>
+              </ul>
+            </div>`;
+                      }
+                  }
+              ],
+              language: { emptyTable: 'No account requests found' }
+          });
+
+          tableInitialized = true;
+      }
+
+    // ----- Events -----
+    $(function(){
+      initSelect2();
+
+      $('#applyAffiliateFilterBtn').on('click', function(e){
+        e.preventDefault();
+        if (!tableInitialized) initDataTable();
+        else table.ajax.reload();
+      });
+
+      $('#resetAffiliateFilterBtn').on('click', function(){
+        const $f = $('#affiliateFilterForm');
+        if ($f.length) $f[0].reset();
+        $('#createdDateFilters').addClass('d-none');
+        if ($.fn.select2) $('#AffiliateId,#BranchId,#Class,#Status,#Scope,#ChangeType,#Language').val(null).trigger('change');
+        if (tableInitialized && table) table.ajax.reload(null, false);
+      });
+
+      const $host = $('#datalistingview');
+      $host.on('click','.js-detail',function(){
+        const id = $(this).data('id'); if (!id) return;
+        openPartialInModalWithInit({ KEY:id, partialView:'_Details', path:'get', serviceOption:'PendingAccount' }, 'modal-lg');
+      });
+      $host.on('click','.js-validate',function(){
+        const id = $(this).data('id'); if (!id) return;
+        openPartialInModalWithInit({ KEY:id, partialView:'_ActionModal', path:'validate', serviceOption:'validation' }, 'modal-lg');
+      });
+      $host.on('click','.js-reject',function(){
+        const id = $(this).data('id'); if (!id) return;
+        openPartialInModalWithInit({ KEY:id, partialView:'_ActionModal', path:'reject', serviceOption:'rejection' }, 'modal-lg');
+      });
+
+      // Enter -> Apply
+      $('#affiliateFilterForm').on('keypress','input,select',function(e){
+        if (e.which === 13) { e.preventDefault(); $('#applyAffiliateFilterBtn').trigger('click'); }
+      });
+    });
+
+    // public reload
+    window.reloadPendingAccountTable = window.reloadPendingAccountTable || function(){
+      try {
+        if (table?.ajax) table.ajax.reload(null,false);
+        else $('#applyAffiliateFilterBtn').trigger('click');
+      } catch(e){ console.warn('reloadPendingAccountTable error', e); }
     };
-  }
 
-  function setModalBody(html, sizeClass) {
-   // const $modal = $(MODAL_ID);
-  /*  const $dialog = $modal.find('.modal-dialog');
-    $dialog.removeClass('modal-sm modal-lg modal-xl');
-    if (sizeClass) $dialog.addClass(sizeClass);*/
-      var contentDiv = document.getElementById('accountRequestTContent')
-      contentDiv.innerHTML = html;
-
-     // $modal.find('.modal-content').html(`<div class="modal-body">${html}</div>`);
-  }
-
-  function showModalLoading(sizeClass) {
-    setModalBody(
-      `<div class="text-center p-4">
-         <div class="spinner-border" role="status"></div>
-         <div class="mt-2">Loading...</div>
-       </div>`,
-      sizeClass
-    );
-   // const inst = bootstrap.Modal.getOrCreateInstance($(MODAL_ID)[0], { backdrop:'static' });
-      var modal = new bootstrap.Modal(document.getElementById('accountRequestTModal'));
-      modal.show();
-  }
-
-  /**
-   * Always calls InitializeData with: KEY, partialView, path, serviceOption
-   * method stays GET since the action returns partials.
-   */
-  function openPartialInModalWithInit(params, sizeClass = 'modal-lg') {
-/*    showModalLoading(sizeClass);*/
-    $.get(initUrl, params)
-     .done(function (html) {
-       setModalBody(html, sizeClass);
-       try {
-         if ($.validator?.unobtrusive?.parse) $.validator.unobtrusive.parse($(MODAL_ID));
-       } catch (_) { /* no-op */ }
-     })
-     .fail(function (xhr) {
-       setModalBody(`<div class="alert alert-danger m-3">${xhr?.responseText || 'Unable to load content.'}</div>`, sizeClass);
-     });
-
-      var modal = new bootstrap.Modal(document.getElementById('accountRequestTModal'));
-      modal.show();
-  }
-
-  // also expose if you want
-  window.openPartialInModalWithInit = openPartialInModalWithInit;
-
-  // ---------- Actions dropdown ----------
-  function actionDropdown(row) {
-    const id = String(row.Id || row.id || '');
-    const btnId = 'act_' + (id || Math.random().toString(36).slice(2));
-    return `
-      <div class="dropdown text-end">
-        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="mdi mdi-cog-outline"></i> Actions
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-          <li>
-            <button type="button" class="dropdown-item js-detail" data-id="${id}">
-              <i class="mdi mdi-eye me-1 text-primary"></i> Details
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item js-validate" data-id="${id}">
-              <i class="mdi mdi-check-circle-outline me-1 text-success"></i> Validate
-            </button>
-          </li>
-          <li>
-            <button type="button" class="dropdown-item js-reject" data-id="${id}">
-              <i class="mdi mdi-close-circle-outline me-1 text-warning"></i> Reject
-            </button>
-          </li>
-        </ul>
-      </div>`;
-  }
-
-  // ---------- DataTable ----------
-  function initDataTable() {
-    const selector = '#myDataTable';
-
-    if (!$(selector).length) {
-      console.error('myDataTable markup missing. Ensure _Data partial is rendered.');
-      return;
-    }
-
-    if ($.fn.DataTable.isDataTable(selector)) {
-      try { $(selector).DataTable().destroy(); } catch (e) { console.warn('destroy failed', e); }
-      $(selector + ' tbody').empty();
-    }
-
-    window.table = $(selector).DataTable({
-      serverSide: true,
-      responsive: true,
-      autoWidth: false,
-      pageLength: 10,
-      order: [[0, 'desc']],
-      columnDefs: [
-        { targets: [0], width: '15%' }, // CreatedDate
-        { targets: [1], width: '10%' }, // Scope
-        { targets: [2], width: '12%' }, // Code
-        { targets: [3], width: 'auto' },// Name
-        { targets: [4], width: '12%' }, // Class
-        { targets: [5], width: '12%' }, // Status
-        { targets: [6], width: '16%', orderable: false, searchable: false, className: 'text-end' } // Actions
-      ],
-      ajax: {
-        url: dataUrl,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: function (d) {
-          const filters = getFilters();
-          const pageSize = d.length || 10;
-          const page = ((d.start || 0) / pageSize) + 1;
-
-          let sortExpr = '';
-          if (d.order?.length) {
-            const ord = d.order[0];
-            const col = d.columns?.[ord.column]?.name || d.columns?.[ord.column]?.data || '';
-            const dir = ord.dir || 'asc';
-            if (col) sortExpr = `${col} ${dir}`;
-          }
-
-          filters.Options = { Page: page, PageSize: pageSize, Draw: d.draw || 0, Sort: sortExpr };
-          return JSON.stringify(filters);
-        },
-        dataSrc: function (json) {
-          if (!json) return [];
-          if (Array.isArray(json.data)) return json.data;
-          if (Array.isArray(json.result)) return json.result;
-          if (Array.isArray(json.items)) return json.items;
-          for (var k in json) { if (Array.isArray(json[k])) return json[k]; }
-          return [];
-        },
-        error: function (xhr, status, err) {
-          console.error('Load error', xhr, status, err);
-          $(selector + ' tbody').html('<tr><td colspan="7" class="text-center text-danger">Failed to load data.</td></tr>');
-        }
-      },
-      columns: [
-        { // CreatedDate
-          data: null, name: 'CreatedDate',
-          render: function (_, __, row) {
-            const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
-            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
-          }
-        },
-        { data: 'Scope', name: 'Scope', defaultContent: '-' },
-        { data: 'Code',  name: 'Code',  defaultContent: '' },
-        { // Name
-          data: null, name: 'Name',
-          render: function (_, __, row) {
-            return row.Name || row.name || row.NameEn || row.nameEn || '';
-          }
-        },
-        { data: 'Class', name: 'Class', defaultContent: '' },
-        { // Status badge
-          data: null, name: 'Status',
-          render: function (_, __, row) {
-            const s = row.Status || row.status || '';
-            if (!s) return '';
-            let cls = 'bg-secondary';
-            if (/pending/i.test(s)) cls = 'bg-warning';
-            if (/validated|approved/i.test(s)) cls = 'bg-success';
-            if (/rejected|invalid/i.test(s)) cls = 'bg-danger';
-            return `<span class="badge ${cls}">${s}</span>`;
-          }
-        },
-        { // Actions dropdown
-          data: null, orderable: false, searchable: false, className: 'text-end',
-          render: function (_, __, row) { return actionDropdown(row); }
-        }
-      ],
-      language: { emptyTable: 'No account requests found' }
-    });
-
-    window.tableInitialized = true;
-  }
-
-  // ---------- Events ----------
-  $(function () {
-    initSelect2();
-
-    // Apply -> init or reload
-    $('#applyAffiliateFilterBtn').on('click', function (e) {
-      e.preventDefault();
-      if (!window.tableInitialized) initDataTable();
-      else window.table.ajax.reload();
-    });
-
-    // Reset
-    $('#resetAffiliateFilterBtn').on('click', function () {
-      const $form = $('#affiliateFilterForm');
-      if ($form.length) $form[0].reset();
-      $('#createdDateFilters').addClass('d-none');
-      if ($.fn.select2) $('#AffiliateId,#BranchId,#Class,#Status,#Scope').val(null).trigger('change');
-      if (window.tableInitialized && window.table) window.table.ajax.reload(null, false);
-    });
-
-    // Delegated row actions (ALL via InitializeData with KEY / partialView / path / serviceOption)
-    const $listHost = $('#datalistingview');
-
-    // View details
-    $listHost.on('click', '.js-detail', function () {
-      const id = $(this).data('id'); if (!id) return;
-      openPartialInModalWithInit({
-        KEY: id,
-        partialView: '_Details',
-        path: 'get',
-        serviceOption: 'PendingAccount'
-      }, 'modal-lg');
-    });
-
-    // Validate
-    $listHost.on('click', '.js-validate', function () {
-      const id = $(this).data('id'); if (!id) return;
-      openPartialInModalWithInit({
-        KEY: id,
-        partialView: '_ActionModal',
-        path: 'validate',          // <-- your controller can branch on this
-        serviceOption: 'validation'
-      }, 'modal-lg');
-    });
-
-    // Reject
-    $listHost.on('click', '.js-reject', function () {
-      const id = $(this).data('id'); if (!id) return;
-      openPartialInModalWithInit({
-        KEY: id,
-          partialView: '_ActionModal',
-        path: 'reject',            // <-- your controller can branch on this
-        serviceOption: 'rejection'
-      }, 'modal-lg');
-    });
-
-    // Enter -> Apply
-    $('#affiliateFilterForm').on('keypress', 'input,select', function (e) {
-      if (e.which === 13) { e.preventDefault(); $('#applyAffiliateFilterBtn').trigger('click'); }
-    });
-  });
-
-  // Safe external reload helper
-  window.reloadPendingAccountTable = window.reloadPendingAccountTable || function () {
-    try {
-      if (window.table?.ajax) window.table.ajax.reload(null, false);
-      else $('#applyAffiliateFilterBtn').trigger('click');
-    } catch (e) { console.warn('reloadPendingAccountTable error', e); }
-  };
-
-})(jQuery);
-    </script>
+  })(jQuery);
+</script>
 }
-

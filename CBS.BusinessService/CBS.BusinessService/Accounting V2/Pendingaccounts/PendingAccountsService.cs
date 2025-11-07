@@ -146,12 +146,12 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             try
             {
                 requestAction.Language = GetUserLanguage();
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.AccountCreationRequestApproval, requestAction);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<PendingAccountDto>>(APICallHelper.AccountCreationRequestApproval, requestAction);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     GetExecutionMessages(response.ApiResponseData.Data, true,requestAction.Id, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, "Success", null);
+                        ExecutionProcessOption.UpdateUpject, "Pending Accounts Validated successfully.", null);
                 }
                 else
                 {
@@ -174,7 +174,7 @@ namespace CBS.BusinessService.Accounting_V2.Pendingaccounts
             try
             {
                 requestAction.Language = GetUserLanguage();
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.AccountCreationRequestRejection, requestAction);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<PendingAccountDto>>(APICallHelper.AccountCreationRequestRejection, requestAction);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {

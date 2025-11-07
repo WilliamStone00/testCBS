@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.Expressions;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 {
@@ -136,6 +137,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                 model.RequiresMapping = false;
                 model.Language = _branchAccountService.GetUserLanguage();
                 model.AffiliateId = "1";
+                model.ChangeType = "CreateRequest";
 
 
                 if (serviceOption == "root")
