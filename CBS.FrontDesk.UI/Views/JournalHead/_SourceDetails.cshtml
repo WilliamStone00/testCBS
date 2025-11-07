@@ -106,7 +106,7 @@
             <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
             <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
-            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             <tr>
                 <th class="bg-label">Accounting Date</th>
@@ -190,55 +190,7 @@
         </div>
     </div>
 
-    <!-- ===================== TEMP JOURNAL LINES ===================== -->
-    @*@if (Model.TempJournalHeader != null && Model.TempJournalHeader.Lines != null && Model.TempJournalHeader.Lines.Any())
-    {
-    <h6 class="fw-bold text-success border-bottom pb-1 mb-2">
-        <i class="mdi mdi-table me-1"></i> Temp Journal Lines (Pending / Destination)
-    </h6>
-    <div class="card border-0 mb-3">
-        <div class="card-body card-body-tight">
-            @{
-            decimal tempDebit = 0;
-            decimal tempCredit = 0;
-            }
-            <table class="table table-hover table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th>Account Number</th>
-                        <th>Account Name</th>
-                        <th>Description</th>
-                        <th>Debit (FCFA)</th>
-                        <th>Credit (FCFA)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var line in Model.TempJournalHeader.Lines)
-                    {
-                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
-                    tempDebit += debit;
-                    tempCredit += credit;
-
-                    <tr>
-                        <td>@line.AccountNumber</td>
-                        <td>@line.AccountName</td>
-                        <td>@line.Description</td>
-                        <td>@debit.ToString("N0")</td>
-                        <td>@credit.ToString("N0")</td>
-                    </tr>
-                    }
-
-                    <tr class="fw-bold bg-light">
-                        <td colspan="3" class="text-end">Totals</td>
-                        <td>@tempDebit.ToString("N0")</td>
-                        <td>@tempCredit.ToString("N0")</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    }*@
+   
 </div>
 
 
@@ -248,6 +200,13 @@
         <i class="mdi mdi-close"></i> Close
     </button>
     <div>
+
+
+        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> Export Excel
+        </button>
+
+
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i>
             <span class="btn-text">Approve</span>
@@ -328,6 +287,17 @@
                     // User clicked Cancel, do nothing
                 }
             ).set('labels', {ok:'Yes', cancel:'No'}); // Optional: customize button labels
+        });
+
+
+        $('#btnExportExcel').click(function () {
+            const id = '@Model.Id';
+            if (!id) {
+                alert("Invalid journal ID!");
+                return;
+            }
+
+            window.location.href = '@Url.Action("DownloadJournalHeadExcel", "JournalHead")' + '?id=' + id;
         });
     });
 </script>

@@ -225,7 +225,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     // ==============================================
     public class WorkflowTicket
     {
-       public string BranchId { get; set; } 
+       public string BranchId { get; set; }
+        public string BranchName { get; set; }
         public string Reference { get; set; }
         public string State { get; set; } 
         public string OperationCode { get; set; } 
