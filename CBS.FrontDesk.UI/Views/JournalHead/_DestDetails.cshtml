@@ -135,7 +135,7 @@ else
         {
             <div class="row mb-2 align-items-end">
                 <div class="col-md-12 mb-2">
-                    @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                    @Html.Label("BranchId", "Destination Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
                     @Html.DropDownList(
                         "BranchId",
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
