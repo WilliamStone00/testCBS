@@ -263,7 +263,7 @@ namespace CBS.BusinessService.Accounting_V2
             return Task.FromResult(_mockAccountData.ToList());
         }
 
-        public async Task<CustomDataTable> GetDataTableAsync(COADATATABLE_Query query)
+        public async Task<CustomDataTable> GetDataTableAsync(GetHoPcmfCoaQuery query)
         {
             try
             {

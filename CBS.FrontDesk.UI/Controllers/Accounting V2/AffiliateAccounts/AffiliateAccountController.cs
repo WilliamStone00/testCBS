@@ -189,11 +189,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
             else if (path == "new")
             {
+
+                var aff =await _AffiliateService.GetAffiliateAsync();
                 var model = new PendingAccountRequest
                 {
                     Scope = "Affiliate",
                     Language = _AffiliateAccountService.GetUserLanguage(),
-                    RequiresMapping = false
+                    RequiresMapping = false,
+                    AffiliateId = aff == null ? "" : aff.Id
                 };
 
                 if (string.Equals(serviceOption, "root", StringComparison.OrdinalIgnoreCase))

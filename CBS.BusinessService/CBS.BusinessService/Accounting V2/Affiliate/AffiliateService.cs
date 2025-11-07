@@ -231,6 +231,26 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                throw;
             }
         }
+        public async Task<Affiliateresponse> GetAffiliateAsync()
+        {
+            try
+            {              
+                var isActive = true;
+                var includeDeleted = false;
+                string formattedUrl = string.Format(APICallHelper.GetAffiliatedropId, isActive, includeDeleted);
+
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(formattedUrl);
+                var affiliates = response?.ApiResponseData?.Data ?? new List<Affiliateresponse>();
+
+
+                // Optional: format name for display and order by Code
+                return affiliates.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+               throw;
+            }
+        }
 
     }
 }
