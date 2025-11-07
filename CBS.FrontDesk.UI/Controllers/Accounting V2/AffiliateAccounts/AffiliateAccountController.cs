@@ -197,7 +197,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                     Scope = "Affiliate",
                     Language = _AffiliateAccountService.GetUserLanguage(),
                     RequiresMapping = false,
-                    AffiliateId = aff == null ? "" : aff.Id
+                    AffiliateId = aff == null ? "" : aff.Id,
+                    ChangeType= "CreateRequest"
                 };
 
                 if (string.Equals(serviceOption, "root", StringComparison.OrdinalIgnoreCase))
@@ -231,11 +232,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                 // Get the AffiliateAccountDto from service
                 var entity = await _AffiliateAccountService.GetByIdAsync(KEY);
 
-                if (entity == null)
-                {
-                    // Handle not found case
-                    return Content("Affiliate not found");
-                }
                 var model = new PendingAccountRequest(entity);
 
                 if (!string.IsNullOrWhiteSpace(entity?.ParentId))
