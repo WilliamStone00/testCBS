@@ -22,7 +22,6 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
         {
             _seedNowUtc = DateTime.UtcNow;
             _mockAccounts = GenerateMockAccounts();
-            _mockAffiliates = GenerateMockAffiliates();
             
         }
 
@@ -42,99 +41,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
             };
         }
 
-        private List<Affiliateresponse> GenerateMockAffiliates()
-        {
-            return new List<Affiliateresponse>
-            {
-                new Affiliateresponse
-                {
-                    Id = "01589560",
-                    Code = "1",
-                    Class = "1",
-                    Depth = 0,
-                    PostingAllowed = true,
-                    ParentId = null,
-                    Path = "/1/",
-                    Name = "CAPITAL FUNDS ACCOUNTS",
-                    NameEn = "CAPITAL FUNDS ACCOUNTS",
-                    NameFr = "COMPTES DE FONDS DE CAPITAL",
-                    IsActive = true,
-                    IsHeadOffice = true,
-                    CreatedDate = _seedNowUtc,
-                    ModifiedDate = _seedNowUtc
-                },
-                new Affiliateresponse
-                {
-                    Id = "54231400",
-                    Code = "10",
-                    Class = "1",
-                    Depth = 1,
-                    PostingAllowed = false,
-                    Path = "/1/10/",
-                    ParentId = "01589560",
-                    Name = "CAPITAL, SHARES AND ALLOTMENTS",
-                    NameEn = "CAPITAL, SHARES AND ALLOTMENTS",
-                    NameFr = "CAPITAL, PARTS SOCIALES ET DOTATIONS",
-                    IsActive = true,
-                    IsHeadOffice = false,
-                    CreatedDate = _seedNowUtc,
-                    ModifiedDate = _seedNowUtc
-                },
-                new Affiliateresponse
-                {
-                    Id = "95726915",
-                    Code = "11",
-                    Class = "1",
-                    PostingAllowed = true,
-                    Path = "/1/11/",
-                    Depth = 1,
-                    ParentId = "01589560",
-                    Name = "RESERVES",
-                    NameEn = "RESERVES",
-                    NameFr = "RESERVES",
-                    IsActive = true,
-                    IsHeadOffice = false,
-                    CreatedDate = _seedNowUtc,
-                    ModifiedDate = _seedNowUtc
-                },
-                new Affiliateresponse
-                {
-                    Id = "63866761",
-                    Code = "14",
-                    Class = "1",
-                    PostingAllowed = false,
-                    Path = "/1/11/",
-                    Depth = 2,
-                    ParentId = "01589560",
-                    Name = "REGULATED PROVISIONS AND RESERVES",
-                    NameEn = "REGULATED PROVISIONS AND RESERVES",
-                    NameFr = "PROVISIONS ET RESERVES REGLEMENTEES",
-                    IsActive = false,
-                    IsHeadOffice = false,
-                    CreatedDate = _seedNowUtc,
-                    ModifiedDate = _seedNowUtc
-                },
-                new Affiliateresponse
-                {
-                    Id = "70869153",
-                    Code = "14",
-                    Class = "1",
-                    PostingAllowed = false,
-                    Path = "/1/11/",
-                    Depth = 2,
-                    ParentId = "01589560",
-                    Name = "REGULATED PROVISIONS AND RESERVES",
-                    NameEn = "REGULATED PROVISIONS AND RESERVES",
-                    NameFr = "PROVISIONS ET RESERVES REGLEMENTEES",
-                    IsActive = false,
-                    IsHeadOffice = false,
-                    CreatedDate = _seedNowUtc,
-                    ModifiedDate = _seedNowUtc
-                },
-
-            };
-        }
-
+       
          public async Task<IEnumerable<Affiliateresponse>> GetAsync()
         {
             // Simulate async operation
@@ -209,8 +116,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
             while (current != null)
             {
                 chain.Add(current);
-                if (string.IsNullOrEmpty(current.ParentId)) break;
-                if (!list.TryGetValue(current.ParentId, out current)) break;
+               
             }
             chain.Reverse(); 
             return chain;
@@ -224,7 +130,7 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
 
             // Exclude groups where ParentId == null to avoid a null dictionary key
             var lookup = list
-                .GroupBy(a => a.ParentId)
+                .GroupBy(a => a.Code)
                 .Where(g => g.Key != null)
                 .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Code).ToList());
 
@@ -291,8 +197,6 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
                     Id = Guid.NewGuid().ToString("N").Substring(0, 8),
                     Code = model.Code,
                     Name = model.Name,
-                    NameEn = model.NameEn,
-                    NameFr = model.NameFr,
                     IsActive = true,
                     IsHeadOffice = model.IsHeadOffice,
                     CreatedDate = DateTime.UtcNow,
@@ -331,8 +235,6 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
 
                 // Update properties
                 existingAffiliate.Name = model.Name;
-                existingAffiliate.NameEn = model.NameEn;
-                existingAffiliate.NameFr = model.NameFr;
                 existingAffiliate.Code = model.Code;
                 existingAffiliate.IsHeadOffice = model.IsHeadOffice;
                 existingAffiliate.ModifiedDate = DateTime.UtcNow;
@@ -434,7 +336,6 @@ namespace CBS.BusinessService.Accounting_V2.AffiliateAccounts
         public void ResetData()
         {
             _mockAffiliates.Clear();
-            _mockAffiliates.AddRange(GenerateMockAffiliates());
         }
 
         public async Task<IEnumerable<Affiliateresponse>> GetAffiliatesFromMockAsync()

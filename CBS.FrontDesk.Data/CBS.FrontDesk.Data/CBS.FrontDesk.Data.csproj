@@ -125,7 +125,6 @@
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
-    <Compile Include="Entity\AccountingV2\LiaisonMappingV2\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
     <Compile Include="Entity\AccountingV2\RoleGlResolution\RoleGlResolutionModel.cs" />
@@ -451,6 +450,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entity\Accounting V2\DaillyCollectorCommission\" />
     <Folder Include="Entity\Accounting V2\Reporting\Configurations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

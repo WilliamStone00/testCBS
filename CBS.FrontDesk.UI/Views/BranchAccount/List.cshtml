@@ -1,136 +1,151 @@
-﻿@* ----------------------- BranchAccount Index (filters + scripts) ----------------------- *@
+﻿@* ----------------------- BranchAccount Index (compact, no PostingAllowed) ----------------------- *@
 @model CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount.BranchAccountQuery
 @using Resources
 @{
     ViewBag.Title = "Branch Account Filters";
 }
 
-<div class="row mb-3">
-    <div class="col-12">
-        <div class="card bg-light">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group me-2"></i>@ViewBag.Title
-                </h1>
-                <p class="card-text">Use the filters below to search and manage Branch Accounts.</p>
-                <hr />
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important;
+    }
 
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i>@AccountingV2.Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseTips" class="collapse">
-        <div class="card-body">
-            <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
-                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
-                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
-            </ul>
-        </div>
-    </div>
-</div>
+    .compact .card-body {
+        padding: .75rem !important;
+    }
 
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+    .compact .card-header {
+        padding: .5rem .75rem !important;
+    }
 
-    <form id="affiliateFilterForm" autocomplete="off">
-        <div class="row g-2">
+    .compact .form-label {
+        margin-bottom: .2rem !important;
+    }
 
-            <!-- Branch -->
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.BranchId, GlobalUserManagement.Branch, new { @class = "form-label" })
-                @Html.DropDownListFor(
-                    m => m.BranchId,
-                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                    "--- " + @GlobalUserManagement.SelectBranch + " ---",
-                    new { @class = "form-select select2", id = "BranchId" })
-                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-            </div>
+    .compact .form-check {
+        margin-bottom: 0 !important;
+    }
 
-            <!-- Chart Of Account (MFI / AffiliateAccountId) -->
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.AffiliateAccountId, "Chart Of Account (MFI)", new { @class = "form-label" })
-                @Html.DropDownListFor(
-                    m => m.AffiliateAccountId,
-                    new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Id", "Name"),
-                    "--- Chart Of Account ---",
-                    new { @class = "form-select select2", id = "AffiliateAccountId" })
-                @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
-            </div>
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem;
+    }
+</style>
 
-            <!-- Code (Account Number) -->
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Account Number", id = "AccountNumber" })
-            </div>
+<div class="compact">
 
-            <!-- Name (Account Name) -->
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.Name, "Account Name", new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Account Name", id = "AccountName" })
-            </div>
-
-            <!-- Posting Allowed -->
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="PostingAllowed">Posting Allowed</label>
-                @Html.DropDownList("PostingAllowed",
-                    new List<SelectListItem> {
-                        new SelectListItem { Text = "Any", Value = "" },
-                        new SelectListItem { Text = "Yes", Value = "true" },
-                        new SelectListItem { Text = "No",  Value = "false" }
-                    },
-                    new { @class = "form-select", id = "PostingAllowed" })
-            </div>
-
-            <!-- Include Deleted -->
-            <div class="col-md-6 d-flex align-items-end mb-3">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.IncludeDeleted, new { @class = "form-check-input", id = "IncludeDeleted" })
-                    <label class="form-check-label ms-2" for="IncludeDeleted">@AccountingV2.IncludeDeleted</label>
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-account-group me-2"></i>@ViewBag.Title
+                    </h5>
+                    <p class="card-text small mb-0">Use the filters below to search and manage Branch Accounts.</p>
                 </div>
             </div>
-
-            <!-- Created From / To (UTC) -->
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.CreatedFromUtc, @AccountingV2.CreatedFrom + " (UTC)", new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.CreatedFromUtc, new { @class = "form-control", type = "date", placeholder = "Created From (UTC)", id = "CreatedFromUtc" })
-            </div>
-
-            <div class="col-md-6 mb-3">
-                @Html.LabelFor(m => m.CreatedToUtc, @AccountingV2.CreatedTo + " (UTC)", new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.CreatedToUtc, new { @class = "form-control", type = "date", placeholder = "Created To (UTC)", id = "CreatedToUtc" })
-            </div>
-
         </div>
+    </div>
 
-        <div class="row mt-3">
-            <div class="col-md-12 d-flex">
-                <button id="applyBranchFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
-                </button>
-                <button id="resetBranchFilterBtn" type="button" class="btn btn-secondary w-100">
-                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
-                </button>
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>@AccountingV2.Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body py-2">
+                <ul class="mb-0 small">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
+                    <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
+                    <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+                </ul>
             </div>
         </div>
-    </form>
-</div>
+    </div>
 
+    <div class="card shadow-sm p-2 mb-2">
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>Filters</h6>
 
+        <form id="affiliateFilterForm" autocomplete="off">
+            <div class="row g-1">
 
-<!-- Global actions -->
-<div class="d-flex justify-content-end gap-2 mb-2">
-    <button id="btnAddRootBranch" type="button" class="btn btn-success">
-        <i class="mdi mdi-bank-plus me-1"></i> Add Root Branch Account
-    </button>
+                <!-- Branch -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.BranchId, GlobalUserManagement.Branch, new { @class = "form-label small" })
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                        new { @class = "form-select form-select-sm select2", id = "BranchId" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Chart Of Account (MFI / AffiliateAccountId) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.AffiliateAccountId, "Chart Of Account (MFI)", new { @class = "form-label small" })
+                    @Html.DropDownListFor(
+                        m => m.AffiliateAccountId,
+                        new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"),
+                        "--- Chart Of Account ---",
+                        new { @class = "form-select form-select-sm select2", id = "AffiliateAccountId" })
+                    @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- Code (Account Number) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Code, "Account Number", new { @class = "form-label small" })
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", placeholder = "Account Number", id = "AccountNumber" })
+                </div>
+
+                <!-- Name (Account Name) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Name, "Account Name", new { @class = "form-label small" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm", placeholder = "Account Name", id = "AccountName" })
+                </div>
+
+                <!-- Created From / To (UTC) -->
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.CreatedFromUtc, @AccountingV2.CreatedFrom + " (UTC)", new { @class = "form-label small" })
+                    @Html.TextBoxFor(m => m.CreatedFromUtc, new { @class = "form-control form-control-sm", type = "date", placeholder = "Created From (UTC)", id = "CreatedFromUtc" })
+                </div>
+
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.CreatedToUtc, @AccountingV2.CreatedTo + " (UTC)", new { @class = "form-label small" })
+                    @Html.TextBoxFor(m => m.CreatedToUtc, new { @class = "form-control form-control-sm", type = "date", placeholder = "Created To (UTC)", id = "CreatedToUtc" })
+                </div>
+
+                <!-- Include Deleted -->
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IncludeDeleted, new { @class = "form-check-input", id = "IncludeDeleted" })
+                        <label class="form-check-label ms-2 small" for="IncludeDeleted">@AccountingV2.IncludeDeleted</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applyBranchFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                        <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                    </button>
+                    <button id="resetBranchFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                        <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Global actions -->
+    <div class="d-flex justify-content-end gap-2 mb-2">
+        <button id="btnAddRootBranch" type="button" class="btn btn-success btn-sm">
+            <i class="mdi mdi-bank-plus me-1"></i> Add Management Account
+        </button>
+    </div>
+
 </div>
 
 
@@ -170,252 +185,365 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
   (function ($) {
-      'use strict';
+    'use strict';
 
-       let table = null;
+    let table = null;
 
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Delegated change: fire when Class changes INSIDE the edit modal (AJAX-loaded)
+    // ─────────────────────────────────────────────────────────────────────────────
+    $(document).on('change', '#branchEditModal #Class', function () {
+      const $scope = $('#branchEditModal');
+      onClassChanged(this.value, $scope);
+    });
 
-       // --- Root creation: load _CreateRoot with no ParentId (root node) ---
-        const branchRootPartialName = '_CreateRoot';
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Root creation: load _CreateRoot with no ParentId (root node)
+    // ─────────────────────────────────────────────────────────────────────────────
+    const branchRootPartialName = '_CreateRoot';
 
-        $(document).on('click', '#btnAddRootBranch', function (e) {
-          e.preventDefault();
-          openBranchRootForm();
-        });
+    $(document).on('click', '#btnAddRootBranch', function (e) {
+      e.preventDefault();
+      openBranchRootForm();
+    });
 
+    function openBranchRootForm() {
+      const data = {
+        KEY: '',
+        path: 'new',
+        partialView: branchRootPartialName,
+        serviceOption: 'root'
+      };
 
+      $('#branchEditModal .modal-body').html(
+        '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
+      );
 
-        function openBranchRootForm() {
-          const data = {
-            KEY: '',                  // empty = no parent
-            path: 'new',              // create mode
-            partialView: branchRootPartialName,
-            serviceOption: 'root'     // optional hint to server (safe if ignored)
-          };
+      $.get('@Url.Action("InitializeData", "BranchAccount")', data)
+        .done(function (html) {
+          const $modal = $('#branchEditModal');
+          $modal.find('.modal-body').html(html);
 
-          $('#branchEditModal .modal-body')
-            .html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+          // Force ParentId to null/empty (ensure ROOT)
+          try {
+            $modal.find('input[name$="ParentId"], select[name$="ParentId"], #ParentId')
+                  .val('').trigger('change');
+          } catch (_) { /* no-op */ }
 
-          $.get('@Url.Action("InitializeData", "BranchAccount")', data)
-            .done(function (html) {
-              $('#branchEditModal .modal-body').html(html);
-
-              // Force ParentId to null/empty regardless of what the partial contains
-              try {
-                $('#branchEditModal')
-                  .find('input[name$="ParentId"], select[name$="ParentId"], input#ParentId, select#ParentId')
-                  .each(function () { $(this).val('').trigger('change'); });
-              } catch (_) { /* no-op */ }
-
-              // If you use Select2 inside the modal, ensure dropdown parent is the modal
-              try {
-                $('#branchEditModal .select2').each(function () {
-                  if (!$(this).hasClass('select2-hidden-accessible')) {
-                    $(this).select2({ dropdownParent: $('#branchEditModal') });
-                  }
-                });
-              } catch (e) { console.warn('select2 init failed', e); }
-
-
-
-              (bootstrap.Modal.getInstance($('#branchEditModal')[0]) ||
-                new bootstrap.Modal($('#branchEditModal')[0], { backdrop: 'static' }))
-                .show();
-            })
-            .fail(function (xhr) {
-              $('#branchEditModal .modal-body')
-                .html('<div class="alert alert-danger">Unable to load form. ' + (xhr.responseText || '') + '</div>');
+          // Modal-safe Select2 init (idempotent)
+          try {
+            $modal.find('.select2').each(function () {
+              const $s = $(this);
+              if (!$s.data('select2')) $s.select2({ dropdownParent: $modal });
             });
-        }
+          } catch (e) { console.warn('select2 init failed', e); }
 
+          // If Class already has a value (server populated), preload affiliates within this scope
+          const clsVal = $modal.find('#Class').val();
+          if (clsVal) onClassChanged(clsVal, $modal);
 
-      // ---------- Collect branch filters ----------
-      function collectBranchFilters() {
-        return {
-          BranchId:           $('#BranchId').val() || null,
-          AffiliateAccountId: $('#AffiliateAccountId').val() || null,
-          Code:               $.trim($('#AccountNumber').val()) || null,
-          Name:               $.trim($('#AccountName').val()) || null,
-          PostingAllowed:     $('#PostingAllowed').val() || null,
-          IncludeDeleted:     $('#IncludeDeleted').is(':checked'),
-          CreatedFromUtc:     $('#CreatedFromUtc').val() || null,
-          CreatedToUtc:       $('#CreatedToUtc').val() || null
-        };
+          (bootstrap.Modal.getInstance($modal[0]) ||
+            new bootstrap.Modal($modal[0], { backdrop: 'static' })
+          ).show();
+        })
+        .fail(function (xhr) {
+          $('#branchEditModal .modal-body').html(
+            '<div class="alert alert-danger">Unable to load form. ' + (xhr.responseText || '') + '</div>'
+          );
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Collect branch filters
+    // ─────────────────────────────────────────────────────────────────────────────
+    function collectBranchFilters() {
+      return {
+        BranchId:           $('#BranchId').val() || null,
+        AffiliateAccountId: $('#AffiliateAccountId').val() || null,
+        Code:               $.trim($('#AccountNumber').val()) || null,
+        Name:               $.trim($('#AccountName').val()) || null,
+        PostingAllowed:     $('#PostingAllowed').val() || null,
+        IncludeDeleted:     $('#IncludeDeleted').is(':checked'),
+        CreatedFromUtc:     $('#CreatedFromUtc').val() || null,
+        CreatedToUtc:       $('#CreatedToUtc').val() || null
+      };
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Init DataTable
+    // ─────────────────────────────────────────────────────────────────────────────
+    function initTableIfNeeded() {
+      if (table && $.fn.DataTable.isDataTable('#myDataTable')) return;
+
+      table = $('#myDataTable').DataTable({
+        serverSide: true,
+        responsive: true,
+        destroy: true,
+        ajax: {
+          url: '@Url.Action("LoadBranchData", "BranchAccount")',
+          type: 'POST',
+          contentType: 'application/json; charset=utf-8',
+          data: function (d) {
+            const filters = collectBranchFilters();
+            filters.options = {
+              draw: d.draw,
+              start: d.start,
+              length: d.length,
+              skip: d.start,
+              pageSize: d.length,
+              searchValue: d.search?.value || '',
+              sortColumnName: '',
+              sortColumnDirection: ''
+            };
+            return JSON.stringify(filters);
+          }
+        },
+        columns: [
+          {
+            data: 'CreatedDate',
+            name: 'CreatedDate',
+            render: function (val) {
+              return val ? (window.moment ? moment(val).format('DD/MM/YYYY HH:mm:ss') : val) : '-';
+            }
+          },
+          { data: 'Code', name: 'Code' },
+          { data: 'Name', name: 'Name' },
+          { data: 'Class', name: 'Class' },
+          { data: 'AffiliateAccountName', name: 'AffiliateAccountName' },
+          {
+            data: null,
+            orderable: false,
+            searchable: false,
+            render: function (row) {
+              const id   = encodeURIComponent(String(row.Id || ''));
+              const name = String(row.Name || '').replace(/"/g, '&quot;');
+              const btnId = 'act_' + (row.Id || 'x');
+              return `
+                <div class="dropdown text-center">
+                  <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-cog-outline"></i> Actions
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                    <li>
+                      <button type="button" class="dropdown-item btn-details" data-id="${id}" data-name="${name}">
+                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item btn-edit" data-id="${id}" data-name="${name}">
+                        <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item btn-add-branch" data-parent-id="${id}">
+                        <i class="mdi mdi-bank-plus me-1 text-success"></i> Add Branch Account Node
+                      </button>
+                    </li>
+                  </ul>
+                </div>`;
+            }
+          }
+        ],
+        order: [[0, 'desc']],
+        lengthMenu: [10, 25, 50, 100],
+        pageLength: 10,
+        language: { emptyTable: 'No records found' }
+      });
+    }
+
+    function reloadTable() {
+      initTableIfNeeded();
+      table.ajax.reload(null, false);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Filter buttons (⚠ fixed form id to #affiliateFilterForm)
+    // ─────────────────────────────────────────────────────────────────────────────
+    $('#applyBranchFilterBtn').on('click', function (e) {
+      e.preventDefault();
+      reloadTable();
+    });
+
+    $('#resetBranchFilterBtn').on('click', function (e) {
+      e.preventDefault();
+      const $f = $('#affiliateFilterForm'); // ✅ fixed
+      if ($f.length && $f[0]) $f[0].reset();
+      if ($.fn.select2) $('#BranchId,#AffiliateAccountId').val(null).trigger('change');
+      if (table) table.ajax.reload(null, false);
+    });
+
+    // Enter to apply filters (⚠ fixed form id)
+    $('#affiliateFilterForm').on('keypress', 'input,select', function (e) {
+      if (e.which === 13) { e.preventDefault(); reloadTable(); }
+    });
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Optional Select2 on the page-level filters
+    // ─────────────────────────────────────────────────────────────────────────────
+    if ($.fn.select2) {
+      try {
+        $('#BranchId').select2({ width: '100%', placeholder: '@GlobalUserManagement.SelectBranch' });
+        $('#AffiliateAccountId').select2({ width: '100%', placeholder: 'Chart Of Account' });
+      } catch (e) { console.warn('select2 init failed', e); }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Details (view-only modal)
+    // ─────────────────────────────────────────────────────────────────────────────
+    $(document).on('click', '.btn-details', function (e) {
+      e.preventDefault();
+      const id = decodeURIComponent($(this).data('id') || '');
+      if (!id) return;
+      const $modal = $('#branchDetailsModal');
+      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+      new bootstrap.Modal($modal[0]).show();
+      $.get('/BranchAccount/InitializeData2', { KEY: id, partialView: '_DetailsPartial', path: 'get' })
+        .done(html => $modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details.</div>'))
+        .fail(() => $modal.find('.modal-body').html('<div class="text-danger p-3">Failed to load details.</div>'));
+    });
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Edit / Add (loads _Create) – modal-safe select2 + preload
+    // ─────────────────────────────────────────────────────────────────────────────
+    const branchFormUrl = '@Url.Action("InitializeData", "BranchAccount")';
+    const branchPartialName = '_Create';
+
+    // Toolbar action (not shown in your markup, kept for completeness)
+    $(document).on('click', '#actionsAddBranch', function (e) {
+      e.preventDefault();
+      const parentId = $('#AffiliateAccountId').val() || '';
+      openBranchForm({ key: parentId, path: 'new' });
+    });
+
+    // Per-row add/edit
+    $(document).on('click', '.btn-add-branch, .btn-edit', function (e) {
+      e.preventDefault();
+      const $btn = $(this);
+      if ($btn.hasClass('btn-add-branch')) {
+        const parentId = $btn.data('parent-id') ? decodeURIComponent(String($btn.data('parent-id'))) : '';
+        openBranchForm({ key: parentId, path: 'new' });
+      } else {
+        const id = $btn.data('id') ? decodeURIComponent(String($btn.data('id'))) : '';
+        openBranchForm({ key: id, path: 'edit' });
+      }
+    });
+
+    function openBranchForm({ key, path }) {
+      const data = {
+        KEY: key || '',
+        path: path || 'new',
+        partialView: branchPartialName,
+        serviceOption: ''
+      };
+
+      const $modal = $('#branchEditModal');
+      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+
+      $.get(branchFormUrl, data)
+        .done(function (html) {
+          $modal.find('.modal-body').html(html);
+
+          // Modal-safe Select2 init (idempotent)
+          try {
+            $modal.find('.select2').each(function () {
+              const $s = $(this);
+              if (!$s.data('select2')) $s.select2({ dropdownParent: $modal });
+            });
+          } catch (_) {}
+
+          // If Class already set (edit), preload affiliate list in SCOPE
+          const clsVal = $modal.find('#Class').val();
+          if (clsVal) onClassChanged(clsVal, $modal);
+
+          (bootstrap.Modal.getInstance($modal[0]) ||
+            new bootstrap.Modal($modal[0], { backdrop: 'static' })
+          ).show();
+        })
+        .fail(function (xhr) {
+          $modal.find('.modal-body').html(
+            '<div class="alert alert-danger">Unable to load form. ' + (xhr.responseText || '') + '</div>'
+          );
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Utilities: normalize items + build options
+    // ─────────────────────────────────────────────────────────────────────────────
+    function normalizeItems(res) {
+      if (!res) return [];
+      if (typeof res === "string") { try { return JSON.parse(res); } catch { return []; } }
+      if (Array.isArray(res)) return res;
+      if (res.items && Array.isArray(res.items)) return res.items;
+      if (res.data  && Array.isArray(res.data))  return res.data;
+      if (typeof res === "object") return Object.keys(res).map(k => res[k]);
+      return [];
+    }
+
+    function buildOptionsHtml(items, placeholder) {
+      let src = `<option value="">${placeholder}</option>`;
+      const arr = normalizeItems(items);
+
+      arr.forEach(function (x) {
+        const id = x.Value ?? x.Id ?? "";
+        const name = x.Text ?? "";
+        if (id) src += `<option value="${String(id)}">${String(name)}</option>`;
+      });
+
+      return src;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Scope-aware onClassChanged (works for page or modal)
+    // cls: selected value; $scope: jQuery scope (modal) or omitted for document
+    // ─────────────────────────────────────────────────────────────────────────────
+    window.onClassChanged = function (cls, $scope) {
+      const $root = ($scope && $scope.length) ? $scope : $(document);
+      const $aff  = $root.find('#AffiliateAccountId');
+      const $cls  = $root.find('#Class');
+
+      const url = $cls.data('url') || '@Url.Action("ListByClass", "AffiliateAccount")';
+
+      if (!cls) {
+        const html = buildOptionsHtml([], '--- Select Affiliate Account (Chart of Account) ---');
+        $aff.html(html).prop('disabled', true).trigger('change');
+        return;
       }
 
-          // ---------- Init DataTable ----------
-          function initTableIfNeeded() {
-            if (table && $.fn.DataTable.isDataTable('#myDataTable')) return;
+      $aff.prop('disabled', true)
+          .html('<option value="">Loading…</option>')
+          .trigger('change');
 
-            table = $('#myDataTable').DataTable({
-              serverSide: true,
-              responsive: true,
-              destroy: true,
-              ajax: {
-                url: '@Url.Action("LoadBranchData", "BranchAccount")',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                data: function (d) {
-                  const filters = collectBranchFilters();
-                  filters.options = {
-                    draw: d.draw,
-                    start: d.start,
-                    length: d.length,
-                    skip: d.start,
-                    pageSize: d.length,
-                    searchValue: d.search?.value || '',
-                    sortColumnName: '',
-                    sortColumnDirection: ''
-                  };
-                  return JSON.stringify(filters);
-                }
-              },
-              columns: [
-                {
-                  data: 'CreatedDate',
-                  name: 'CreatedDate',
-                  render: function (val) {
-                    return val ? (window.moment ? moment(val).format('DD/MM/YYYY HH:mm:ss') : val) : '-';
-                  }
-                },
-                { data: 'Code', name: 'Code' },
-                { data: 'Name', name: 'Name' },
-                { data: 'Class', name: 'Class' },
-                { data: 'AffiliateAccountName', name: 'AffiliateAccountName' },
-                {
-                  data: null,
-                  orderable: false,
-                  searchable: false,
-                  render: function (row) {
-                    const id   = encodeURIComponent(String(row.Id || ''));
-                    const name = String(row.Name || '').replace(/"/g, '&quot;');
-                    const parentAffId = encodeURIComponent(String(row.AffiliateAccountId || ''));
-                    const btnId = 'act_' + (row.Id || 'x');
-                    return `
-                      <div class="dropdown text-center">
-                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="mdi mdi-cog-outline"></i> Actions
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                          <li>
-                            <button type="button" class="dropdown-item btn-details" data-id="${id}" data-name="${name}">
-                              <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                            </button>
-                          </li>
-                          <li>
-                            <button type="button" class="dropdown-item btn-edit" data-id="${id}" data-name="${name}">
-                              <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                            </button>
-                          </li>
-                          <li>
-                            <button type="button" class="dropdown-item btn-add-branch" data-parent-id="${id}">
-                              <i class="mdi mdi-bank-plus me-1 text-success"></i> Add Branch Account Node
-                            </button>
-                          </li>
-                        </ul>
-                      </div>`;
-                  }
-                }
-              ],
-              order: [[0, 'desc']],
-              lengthMenu: [10, 25, 50, 100],
-              pageLength: 10,
-              language: { emptyTable: 'No records found' }
-            });
-          }
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        data: { cls: cls },
+        success: function (res) {
+          const html = buildOptionsHtml(res, '--- Select Affiliate Account (Chart of Account) ---');
+          $aff.html(html).prop('disabled', false).trigger('change');
+        },
+        error: function (xhr) {
+          console.error('ListByClass error:', xhr?.responseText || xhr);
+          $aff.html('<option value="">Failed to load. Choose class again.</option>')
+              .prop('disabled', true)
+              .trigger('change');
+        }
+      });
+    };
 
-                  function reloadTable() {
-                    initTableIfNeeded();
-                    table.ajax.reload(null, false);
-                  }
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Optional: preload on full page (non-modal) edit pages
+    // ─────────────────────────────────────────────────────────────────────────────
+    $(function () {
+      const $cls = $('#Class');
+      if ($cls.length) {
+        const val = $cls.val();
+        if (val) onClassChanged(val); // document scope
+      }
+    });
 
-                  // ---------- Filter buttons ----------
-                  $('#applyBranchFilterBtn').on('click', function (e) {
-                    e.preventDefault(); reloadTable();
-                  });
-
-                  $('#resetBranchFilterBtn').on('click', function (e) {
-                    e.preventDefault();
-                    const $f = $('#branchFilterForm');
-                    $f[0].reset();
-                    if ($.fn.select2) $('#BranchId,#AffiliateAccountId').val(null).trigger('change');
-                    if (table) table.ajax.reload(null, false);
-                  });
-
-                  // Enter to apply filters
-                  $('#branchFilterForm').on('keypress', 'input,select', function (e) {
-                    if (e.which === 13) { e.preventDefault(); reloadTable(); }
-                  });
-
-                  // ---------- Select2 (optional) ----------
-                  if ($.fn.select2) {
-                    try {
-                      $('#BranchId').select2({ width: '100%', placeholder: '@GlobalUserManagement.SelectBranch' });
-                      $('#AffiliateAccountId').select2({ width: '100%', placeholder: 'Chart Of Account' });
-                    } catch (e) { console.warn('select2 init failed', e); }
-                  }
-
-                  // ---------- Details ----------
-                  $(document).on('click', '.btn-details', function (e) {
-                    e.preventDefault();
-                    const id = decodeURIComponent($(this).data('id') || '');
-                    if (!id) return;
-                    const $modal = $('#branchDetailsModal');
-                    $('#branchDetailsModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-                    new bootstrap.Modal($modal[0]).show();
-                    $.get('/BranchAccount/InitializeData2', { KEY: id, partialView: '_DetailsPartial', path: 'get' })
-                      .done(html => $('#branchDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details.</div>'))
-                      .fail(() => $('#branchDetailsModal .modal-body').html('<div class="text-danger p-3">Failed to load details.</div>'));
-                  });
-
-                  // ---------- Edit / Add (loads _Create) ----------
-                  const branchFormUrl = '@Url.Action("InitializeData", "BranchAccount")';
-                  const branchPartialName = '_Create';
-
-                  // Global action toolbar: pick selected AffiliateAccount as parent
-                  $(document).on('click', '#actionsAddBranch', function (e) {
-                    e.preventDefault();
-                    const parentId = $('#AffiliateAccountId').val() || '';
-                    openBranchForm({ key: parentId, path: 'new' });
-                  });
-
-                  // Per-row add/edit
-                  $(document).on('click', '.btn-add-branch, .btn-edit', function (e) {
-                    e.preventDefault();
-                    const $btn = $(this);
-                    if ($btn.hasClass('btn-add-branch')) {
-                      const parentId = $btn.data('parent-id') ? decodeURIComponent(String($btn.data('parent-id'))) : '';
-                      openBranchForm({ key: parentId, path: 'new' });
-                    } else {
-                      const id = $btn.data('id') ? decodeURIComponent(String($btn.data('id'))) : '';
-                      openBranchForm({ key: id, path: 'edit' });
-                    }
-                  });
-
-                  function openBranchForm({ key, path }) {
-                    const data = { KEY: key || '', path: path || 'new', partialView: branchPartialName, serviceOption: '' };
-                    $('#branchEditModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-                    $.get(branchFormUrl, data)
-                      .done(function (html) {
-                        $('#branchEditModal .modal-body').html(html);
-                        // Ensure the form posts to BranchAccount/CreateOrUpdate and uses AjaxPost
-                        try {
-                          $('#branchEditModal .select2').each(function () {
-                            if (!$(this).hasClass('select2-hidden-accessible'))
-                              $(this).select2({ dropdownParent: $('#branchEditModal') });
-                          });
-                        } catch (_) {}
-                        (bootstrap.Modal.getInstance($('#branchEditModal')[0]) || new bootstrap.Modal($('#branchEditModal')[0], { backdrop: 'static' })).show();
-                      })
-                      .fail(function (xhr) {
-                        $('#branchEditModal .modal-body').html('<div class="alert alert-danger">Unable to load form. ' + (xhr.responseText || '') + '</div>');
-                      });
-                  }
-
-                  // ---------- Initialize ----------
-                 // initTableIfNeeded();
-
-        })(jQuery);
+  })(jQuery);
     </script>
 }
+
 

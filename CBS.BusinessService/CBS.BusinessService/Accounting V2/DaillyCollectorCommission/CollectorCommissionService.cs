@@ -17,17 +17,17 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.Affiliate
 {
-    public class AffiliateService : BaseService
+    public class CollectorCommissionService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
 
-        public AffiliateService()
+        public CollectorCommissionService()
         {
             //change the base url to the actual base url
-            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+            string baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The baseUrl is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
@@ -225,26 +225,6 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                     })
                     .OrderBy(a => a.Id)
                     .ToList();
-            }
-            catch (Exception ex)
-            {
-               throw;
-            }
-        }
-        public async Task<Affiliateresponse> GetAffiliateAsync()
-        {
-            try
-            {              
-                var isActive = true;
-                var includeDeleted = false;
-                string formattedUrl = string.Format(APICallHelper.GetAffiliatedropId, isActive, includeDeleted);
-
-                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<Affiliateresponse>>>(formattedUrl);
-                var affiliates = response?.ApiResponseData?.Data ?? new List<Affiliateresponse>();
-
-
-                // Optional: format name for display and order by Code
-                return affiliates.FirstOrDefault();
             }
             catch (Exception ex)
             {

@@ -9,25 +9,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate
 {
     public class Affiliateresponse
     {
-        public string Id { get; set; }
+        public string Id { get; set; } 
         public string Code { get; set; }
-
-        //added for mock data
-
-        public string Class { get; set; }
-        public string ParentId { get; set; }
-        public string Path { get; set; }
-        public int Depth { get; set; }
-        public bool PostingAllowed { get; set; }
-
-        //
         public string Name { get; set; }
-        public string NameFr { get; set; }
-        public string NameEn { get; set; }
         public bool IsActive { get; set; }
         public bool IsHeadOffice { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
     }
     
