@@ -1,0 +1,493 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-cash me-2"></i>Collector Commission Management
+                </h1>
+                <p class="card-text">
+                    @*CollectorCommissionText*@
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    we are going to manage Dailly Collector Commissions on this page
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseCommissionTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-calendar-month text-success me-2"></i>
+                    <strong>MonthYear:</strong> MonthYearText1 <code>09/2025</code> MonthYearText2.
+                </li>
+                <li>
+                    <i class="mdi mdi-account-group text-info me-2"></i>
+                    <strong>Collector:</strong> CollectorText1 <code>SelectCollector</code> CollectorText2.
+                </li>
+                <li>
+                    <i class="mdi mdi-office-building text-warning me-2"></i>
+                    <strong>Branch:</strong> BranchText
+                </li>
+                <li>
+                    <i class="mdi mdi-cash-sync text-primary me-2"></i>
+                    <strong>OperationType:</strong> OperationTypeText
+                </li>
+                <li>
+                    <i class="mdi mdi-download-box text-secondary me-2"></i>
+                    <strong>Export:</strong> Click <strong>Export</strong> ExportText
+                </li>
+                <li>
+                    <i class="mdi mdi-cash-check text-success me-2"></i>
+                    <strong>Treatment:</strong> TreatmentText
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Commission Filter Card -->
+<div class="card mb-2">
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Get Commission </h6>
+    </div>
+
+    <div class="card-body">
+        <!-- Branch selector (full width) -->
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <div class="form-group mb-2">
+                    <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2", id = "BranchId" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    <div class="mt-1 small text-muted">
+                        Choose a branch to continue and load branch accounts.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collector and MonthYear row -->
+        <div class="row mb-2">
+            <div class="col-md-6 mb-2">
+                <div class="form-group mb-2">
+                    <label for="CollectorId" class="form-label fw-semibold">👤 Collector</label>
+                    @Html.DropDownList("CollectorId",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
+                        new { @class = "form-control select2", id = "CollectorId" })
+                    <div id="collectorLoader" class="spinner-border spinner-border-sm text-primary d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <div class="form-group mb-2">
+                    <label for="MonthYear" class="form-label fw-semibold">📅 Month / Year</label>
+                    <input type="month" id="MonthYear" name="MonthYear" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="row mb-2">
+            <div class="col-12 text-end">
+                <button type="button" id="btnGetCommission" class="btn btn-primary me-2">
+                    <i class="mdi mdi-search me-1"></i> Get Commission
+                </button>
+                <button type="button" id="btnReset" class="btn btn-secondary">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-2">
+    <!-- Commission Summary Card -->
+    <div id="commissionSummary" class="card mb-4 d-none">
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Commission Summary </h6>
+        </div>
+        <div class="card-body">
+            <div class="row" id="summaryContent">
+                <!-- Summary content will be loaded here -->
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-end">
+                    <button type="button" id="btnExport" class="btn btn-success me-2">
+                        <i class="mdi mdi-export me-1"></i>Export
+                    </button>
+                    <button type="button" id="btnTreatment" class="btn btn-warning">
+                        <i class="mdi mdi-cash-check me-1"></i>Treatment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Commission Details Table -->
+    <div id="commissionDetails" class="card d-none">
+        <div class="col-12">
+            <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Commission Details </h6>
+        </div>
+        <div class="card-body">
+            <table id="commissionTable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Member Id</th>
+                        <th>Member Name</th>
+                        <th>Account Number</th>
+                        <th>Total Activity Amount</th>
+                        <th>Fee Charged</th>
+                        <th>Actual Balance</th>
+                        <th>Last Transaction Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportCommission")
+        </div>
+    </div>
+</div>
+
+<!-- Treatment Modal -->
+<div class="modal fade" id="treatmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_CommissionTreatment")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Declare commissionTable globally with null initialization
+        var commissionTable = null;
+
+        $(document).ready(function () {
+            console.log('Document ready - initializing DataTable...');
+
+            // Initialize DataTable with error handling
+            try {
+                commissionTable = $('#commissionTable').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                    "language": {
+                        "emptyTable": "No commission data available"
+                    }
+                });
+                console.log('DataTable initialized successfully');
+            } catch (error) {
+                console.error('Error initializing DataTable:', error);
+                // Fallback: initialize as regular table
+                $('#commissionTable').addClass('table table-striped table-bordered');
+            }
+
+            // Branch change event
+            $('#BranchId').change(function () {
+                var branchId = $(this).val();
+                if (branchId) {
+                    loadCollectors(branchId);
+                } else {
+                    $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
+                    if ($.fn.select2) {
+                        $('#CollectorId').select2();
+                    }
+                }
+            });
+
+            // Get Commission button click
+            $('#btnGetCommission').click(function () {
+                // Validate required fields
+                if (!$('#BranchId').val()) {
+                    appalert('Please select a branch', 3, 1);
+                    return;
+                }
+                if (!$('#CollectorId').val()) {
+                    appalert('Please select a collector', 3, 1);
+                    return;
+                }
+                if (!$('#MonthYear').val()) {
+                    appalert('Please select month and year', 3, 1);
+                    return;
+                }
+                getCommissionData();
+            });
+
+            // Reset button click
+            $('#btnReset').click(function () {
+                resetForm();
+            });
+
+            // Export button click
+            $('#btnExport').click(function () {
+                $('#exportModal').modal('show');
+            });
+
+            // Treatment button click
+            $('#btnTreatment').click(function () {
+                $('#treatmentModal').modal('show');
+            });
+        });
+
+        function loadCollectors(branchId) {
+            $('#collectorLoader').removeClass('d-none');
+            $('#CollectorId').prop('disabled', true);
+
+            $.ajax({
+                url: '@Url.Action("GetCollectorsByBranch", "CollectorCommission")',
+                type: 'GET',
+                data: { branchId: branchId },
+                success: function (response) {
+                    console.log('Collectors response:', response);
+
+                    var options = '<option value="">--- Select Collector ---</option>';
+
+                    if (response && response.length > 0) {
+                        $.each(response, function (index, collector) {
+                            var collectorId = collector.CustomerId || collector.collectorId || collector.Id;
+                            var collectorName = collector.FullName || collector.collectorName || collector.Name;
+
+                            if (collectorId && collectorName && collectorId !== "All") {
+                                options += '<option value="' + collectorId + '">' + collectorName + '</option>';
+                            }
+                        });
+                    }
+
+                    $('#CollectorId').html(options);
+
+                    // Re-initialize Select2 if you're using it
+                    if ($.fn.select2) {
+                        $('#CollectorId').select2();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading collectors:', error);
+                    appalert('Error loading collectors. Please try again.', 4, 1);
+                },
+                complete: function () {
+                    $('#collectorLoader').addClass('d-none');
+                    $('#CollectorId').prop('disabled', false);
+                }
+            });
+        }
+
+        function getCommissionData() {
+            var monthYear = $('#MonthYear').val();
+            if (!monthYear) {
+                appalert('Please select Month and Year', 3, 1);
+                return;
+            }
+
+            var parts = monthYear.split('-');
+            var year = parseInt(parts[0]);
+            var month = parseInt(parts[1]);
+
+            var model = {
+                Year: year,
+                Month: month,
+                CollectorId: $('#CollectorId').val(),
+                BranchId: $('#BranchId').val()
+            };
+
+            console.log('Sending request with model:', model);
+
+            $.ajax({
+                url: '@Url.Action("GetCommissionData", "CollectorCommission")',
+                type: 'POST',
+                data: JSON.stringify(model),
+                contentType: 'application/json',
+                beforeSend: function () {
+                    $('#commissionSummary').addClass('d-none');
+                    $('#commissionDetails').addClass('d-none');
+                },
+                success: function (response) {
+                    console.log('Commission response:', response);
+
+                    if (response && response.success) {
+                        displayCommissionData(response.data);
+                    } else {
+                        appalert(response.message || 'Error loading commission data', 4, 1);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading commission data:', error);
+                    appalert('Error loading commission data: ' + error, 4, 1);
+                }
+            });
+        }
+
+        function displayCommissionData(data) {
+            console.log('Displaying commission data:', data);
+
+            if (!data) {
+                appalert('No commission data available', 3, 1);
+                return;
+            }
+
+            // Update summary - handle potential null/undefined values
+            var summaryHtml = `
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <h6 class="text-muted">Collector</h6>
+                        <h4>${data.CollectorName || 'N/A'}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <h6 class="text-muted">Branch</h6>
+                        <h4>${data.BranchName || 'N/A'} (${data.BranchCode || 'N/A'})</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <h6 class="text-muted">Period</h6>
+                        <h4>${data.Month || 'N/A'}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <h6 class="text-muted">Total Members</h6>
+                        <h4>${(data.MemberStats && data.MemberStats.length) ? data.MemberStats.length : 0}</h4>
+                    </div>
+                </div>
+            `;
+
+            $('#summaryContent').html(summaryHtml);
+            $('#commissionSummary').removeClass('d-none');
+
+            // Update table - safely handle DataTable operations
+            try {
+                if (commissionTable && typeof commissionTable.clear === 'function') {
+                    // Use DataTable API if available
+                    commissionTable.clear();
+
+                    if (data.memberStats && data.memberStats.length > 0) {
+                        $.each(data.memberStats, function (index, member) {
+                            commissionTable.row.add([
+                                member.memberId || '-',
+                                member.memberName || '-',
+                                member.accountNumber || '-',
+                                formatCurrency(member.totalActivityAmount || 0),
+                                formatCurrency(member.feeCharged || 0),
+                                formatCurrency(member.actualBalance || 0),
+                                member.lastTransactionDate ? formatDate(member.lastTransactionDate) : '-'
+                            ]);
+                        });
+                    } else {
+                        // Add a "no data" row if memberStats is empty
+                        commissionTable.row.add([
+                            'No data', 'No data', 'No data', 'No data', 'No data', 'No data', 'No data'
+                        ]);
+                    }
+
+                    commissionTable.draw();
+                } else {
+                    // Fallback: manual table update if DataTable not available
+                    console.warn('DataTable not available, using manual table update');
+                    var tbody = $('#commissionTable tbody');
+                    tbody.empty();
+
+                    if (data.memberStats && data.memberStats.length > 0) {
+                        $.each(data.memberStats, function (index, member) {
+                            var row = '<tr>' +
+                                '<td>' + (member.memberId || '-') + '</td>' +
+                                '<td>' + (member.memberName || '-') + '</td>' +
+                                '<td>' + (member.accountNumber || '-') + '</td>' +
+                                '<td>' + formatCurrency(member.totalActivityAmount || 0) + '</td>' +
+                                '<td>' + formatCurrency(member.feeCharged || 0) + '</td>' +
+                                '<td>' + formatCurrency(member.actualBalance || 0) + '</td>' +
+                                '<td>' + (member.lastTransactionDate ? formatDate(member.lastTransactionDate) : '-') + '</td>' +
+                                '</tr>';
+                            tbody.append(row);
+                        });
+                    } else {
+                        tbody.append('<tr><td colspan="7" class="text-center">No commission data available</td></tr>');
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating commission table:', error);
+                // Final fallback: simple alert
+                appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
+            }
+
+            $('#commissionDetails').removeClass('d-none');
+        }
+
+        function resetForm() {
+            $('#BranchId').val('');
+            $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
+            $('#MonthYear').val('');
+            $('#commissionSummary').addClass('d-none');
+            $('#commissionDetails').addClass('d-none');
+
+            try {
+                if (commissionTable && typeof commissionTable.clear === 'function') {
+                    commissionTable.clear().draw();
+                } else {
+                    $('#commissionTable tbody').empty();
+                }
+            } catch (error) {
+                console.error('Error resetting table:', error);
+                $('#commissionTable tbody').empty();
+            }
+
+            // Re-initialize Select2 if needed
+            if ($.fn.select2) {
+                $('#CollectorId').select2();
+            }
+        }
+
+        function formatCurrency(amount) {
+            try {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(amount);
+            } catch (e) {
+                return '$' + (amount || 0).toFixed(2);
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                return new Date(dateString).toLocaleDateString();
+            } catch (e) {
+                return '-';
+            }
+        }
+    </script>
+}

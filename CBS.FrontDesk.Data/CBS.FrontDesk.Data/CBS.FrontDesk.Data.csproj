@@ -117,10 +117,12 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
+    <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\clientComissions.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\Reconciliation.cs" />
     <Compile Include="Entity\AccountingTypes.cs" />
+    <Compile Include="Entity\AccountingV2Reporting\ReconciledLedgerLinesR\ReconciledLedgerLineRptDS.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
@@ -451,7 +453,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entity\Accounting V2\DaillyCollectorCommission\" />
     <Folder Include="Entity\Accounting V2\Reporting\Configurations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,13 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.AccountingV2.LiaisonMappingV2;
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -107,6 +112,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 			var data = await _services.GetById(Key);
 			return Json(data, JsonRequestBehavior.AllowGet);
 		}
+
+
+
+
 		public async Task<ActionResult> GetLiaisonMappingPartialView(string Key)
 		{
 			var data = await _services.GetById(Key);
@@ -131,6 +140,45 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 				return Json(newlistng, JsonRequestBehavior.AllowGet);
 			}
 			return Json(null, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> List()
+		{
+			await GetValues();
+			return View();
+		}
+
+		// Note: use [FromBody] so model binder reads the JSON DataTables sends.
+		[HttpPost]
+		public async Task<JsonResult> LoadLiaisonMappingData(LiaisonMappingQuery query)
+		{
+			try
+			{
+				var data = await _services.GetLiaisonMappingDataTable(query);
+
+				var chequeBookscat = JsonConvert.DeserializeObject<List<LiaisonMapping>>(JsonConvert.SerializeObject(data.data));
+
+				return Json(new
+				{
+					draw = data.draw,
+					recordsTotal = data.recordsTotal,
+					recordsFiltered = data.recordsFiltered,
+					data = chequeBookscat
+				});
+			}
+			catch (Exception ex)
+			{
+				// return a DataTables-compatible empty result on error
+				return Json(new
+				{
+					draw = query?.Options?.draw ?? "1",
+					recordsTotal = 0,
+					recordsFiltered = 0,
+					data = new List<object>(),
+					error = ex.Message
+				});
+			}
 		}
 	}
 }
