@@ -48,6 +48,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string SourceBranchId { get; set; }
         public string BranchId { get; set; }
         public string Approver { get; set; }
+        public string ApprovalName { get; set; }
         public string DestinationBranchId { get; set; }
         public string TicketType { get; set; }
 
@@ -57,7 +58,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
     public class DestinationJournalLineApproval
     {
-        public string AccountId { get; set; }
+        public string AffiliateAccountId { get; set; }
         public string DrCr { get; set; }
         public decimal Amount { get; set; }
         public string Memo { get; set; }
