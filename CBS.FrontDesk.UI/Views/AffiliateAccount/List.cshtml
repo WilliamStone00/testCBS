@@ -282,9 +282,10 @@
   }
 
   function loadIntoEditModal(url, data){
-    showModalLoading('#affiliateEditModal');
+  
     $.get(url, data)
-      .done(html => {
+        .done(html => {
+        showModalLoading('#affiliateEditModal');
         $('#affiliateEditModal .modal-body').html(html);
         if ($.fn.select2){
           try {
@@ -303,9 +304,10 @@
   }
 
   function loadIntoDetailsModal(url, data){
-    showModalLoading('#affiliateDetailsModal');
+
     $.get(url, data)
-      .done(html => {
+        .done(html => {
+        showModalLoading('#affiliateDetailsModal');
         $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details.</div>');
         const cls = $('#affiliateDetailsModal #Class').val();
         if (cls) onAffiliateClassChange(cls);
