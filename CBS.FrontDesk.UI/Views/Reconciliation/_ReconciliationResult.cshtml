@@ -136,7 +136,14 @@
                             <!-- Memo Field -->
                             <div class="col-12 col-md-8 d-flex flex-column">
                                 @Html.LabelFor(m => m.Memo, new { @class = "form-label mb-1" })
-                                @Html.TextBoxFor(m => m.Memo, new { @class = "form-control", placeholder = "Memo", maxlength = "80" })
+                                @Html.TextBoxFor(m => m.Memo, new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Memo",
+                                    maxlength = "80",
+                                    data_val = "true",
+                                    data_val_required = "Memo is required"
+                                })
                                 @Html.ValidationMessageFor(m => m.Memo, "", new { @class = "text-danger" })
                             </div>
 
@@ -153,6 +160,8 @@
                                         type = "date",
                                         id = "AccountingDay",
                                         required = "required",
+                                        data_val = "true",
+                                        data_val_required = "Accounting date is required",
                                         value = DateTime.Today.ToString("yyyy-MM-dd"),
                                         max = DateTime.Today.ToString("yyyy-MM-dd")
                                     })
@@ -162,12 +171,12 @@
                     </div>
                 </div>
 
-                <!-- Adjustment Section — only rendered when there is a difference (your original logic) -->
+                <!-- Adjustment Section -->
                 @if (Model.MemberBalance != Model.TrialBalanceBalance)
                 {
                     <div class="card" id="adjustmentCard">
                         <div class="card-header bg-light">
-                            <h6 class="mb-0"><i class="mdi mdi-adjust me-2"></i>Reconciliation Adjustment</h6>
+                            <h6 class="mb-0"><i class="mdi mdi-adjust me-2"></i>Reconciliation Adjustmen</h6>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
@@ -177,7 +186,13 @@
                                         @Html.DropDownListFor(m => m.DiffBranchAccountId,
                                             new SelectList(ViewBag.DiifBrachAccounts ?? new List<SelectListItem>(), "Id", "Name"),
                                             "--- Select Branch Account ---",
-                                            new { @class = "form-control select2", id = "DiffBranchAccountId" })
+                                            new
+                                                 {
+                                                @class = "form-control select2",
+                                                id = "DiffBranchAccountId",
+                                                data_val = "true",
+                                                data_val_required = "GL Account is required"
+                                            })
                                         @Html.ValidationMessageFor(m => m.DiffBranchAccountId, "", new { @class = "text-danger" })
                                         <div class="form-text">Choose the GL account to apply the adjustment</div>
                                     </div>
@@ -189,6 +204,8 @@
                                         <div class="mt-2">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="adjustmentType" id="surplus" value="surplus"
+                                                       data-val="true"
+                                                       data-val-required="Adjustment type is required"
                                                        @(Model.IsMemberBalanceGreater ? "checked" : "")>
                                                 <label class="form-check-label text-success" for="surplus">
                                                     <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
@@ -197,12 +214,15 @@
 
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="adjustmentType" id="deficit" value="deficit"
+                                                       data-val="true"
+                                                       data-val-required="Adjustment type is required"
                                                        @(!Model.IsMemberBalanceGreater ? "checked" : "")>
                                                 <label class="form-check-label text-warning" for="deficit">
                                                     <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
                                                 </label>
                                             </div>
                                         </div>
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="adjustmentType" data-valmsg-replace="true"></span>
                                         <div class="form-text">
                                             @if (Model.IsMemberBalanceGreater)
                                             {
@@ -248,113 +268,257 @@
 
 <script>
     // Store server-side values in data attributes to avoid JavaScript injection issues
-    $('#reconciliationResultModal').data('memberbalance', @Model.MemberBalance)
-                                   .data('trialbalancebalance', @Model.TrialBalanceBalance)
-                                   .data('accounttype', '@Html.Raw(Model.AccountType)')
-                                   .data('branchaccountname', '@Html.Raw(Model.BranchAccountName)')
-                                   .data('mode', '@Model.Mode')
-                                   .data('trialbalancestagingid', '@(Model.TrialBalanceStagingId ?? "")');
+$('#reconciliationResultModal').data('memberbalance', @Model.MemberBalance)
+                               .data('trialbalancebalance', @Model.TrialBalanceBalance)
+                               .data('accounttype', '@Html.Raw(Model.AccountType)')
+                               .data('branchaccountname', '@Html.Raw(Model.BranchAccountName)')
+                               .data('mode', '@Model.Mode')
+                               .data('trialbalancestagingid', '@(Model.TrialBalanceStagingId ?? "")');
 
-    $(function () {
-        console.log('Reconciliation modal script loaded');
+$(function () {
+    console.log('Reconciliation modal script loaded');
 
-        // Grab modal and its data attributes
-        const $modal = $('#reconciliationResultModal');
-        const branchId = $modal.data('branchid');
-        const sourceBranchAccountId = $modal.data('branchaccountid');
+    // Initialize validation
+    initializeValidation();
 
-        console.log('Modal data - BranchId:', branchId, 'BranchAccountId:', sourceBranchAccountId);
+    // Grab modal and its data attributes
+    const $modal = $('#reconciliationResultModal');
+    const branchId = $modal.data('branchid');
+    const sourceBranchAccountId = $modal.data('branchaccountid');
 
-        // Bind finalize button (only exists when there is a difference)
-        $('#btnFinalReconcile').on('click', function () {
-            finalizeReconciliation();
-        });
+    console.log('Modal data - BranchId:', branchId, 'BranchAccountId:', sourceBranchAccountId);
+
+    // Bind finalize button (only exists when there is a difference)
+    $('#btnFinalReconcile').on('click', function () {
+        finalizeReconciliation();
     });
+});
 
-    function finalizeReconciliation() {
-        const selectedAccount = $('#DiffBranchAccountId').val();
-        const selectedAccountText = $('#DiffBranchAccountId option:selected').text();
-        const memo = $('#Memo').val();
-        const accountingDay = $('#AccountingDay').val();
-        const adjustmentType = $('input[name="adjustmentType"]:checked').val();
-        const modal = $('#reconciliationResultModal');
-        const branchId = modal.data('branchid');
-        const sourceBranchAccountId = modal.data('branchaccountid');
+function initializeValidation() {
+    // Check if jQuery Validation is available
+    if (typeof $.fn.validate !== 'function') {
+        console.warn('jQuery Validation plugin not loaded');
+        return;
+    }
 
-        console.log('Branch Account:', branchId, 'selectedAccount:', selectedAccount);
+    // Create a form wrapper for validation if it doesn't exist
+    if ($('#reconciliationForm').length === 0) {
+        $('.modal-body').wrapInner('<form id="reconciliationForm" novalidate="novalidate"></form>');
+    }
 
-        // Validation
-        if (!selectedAccount) {
-            console.log('checkfinal:', selectedAccount);
-            if (typeof appalert === 'function') {
-                appalert('Please select a GL account for adjustment.', 3, 1);
-            } else {
-                alert('Please select a GL account for adjustment.');
+    // Custom validator for radio buttons
+    $.validator.addMethod("requiredRadio", function(value, element) {
+        return $('input[name="' + element.name + '"]:checked').length > 0;
+    }, "Please select an option");
+
+    // Setup validation for the form
+    $('#reconciliationForm').validate({
+        rules: {
+            DiffBranchAccountId: {
+                required: true
+            },
+            Memo: {
+                required: true,
+                maxlength: 80
+            },
+            AccountingDate: {
+                required: true,
+                date: true
+            },
+            adjustmentType: {
+                requiredRadio: true
             }
-            return;
+        },
+        messages: {
+            DiffBranchAccountId: {
+                required: "Please select a GL account for adjustment"
+            },
+            Memo: {
+                required: "Please enter a memo",
+                maxlength: "Memo cannot exceed 80 characters"
+            },
+            AccountingDate: {
+                required: "Please select accounting date",
+                date: "Please enter a valid date"
+            },
+            adjustmentType: {
+                requiredRadio: "Please select adjustment type"
+            }
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("name") === "adjustmentType") {
+                error.insertAfter(element.closest('.mb-3'));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        submitHandler: function(form) {
+            // This will be called when form is valid
+            return false; // Prevent actual form submission
+        }
+    });
+}
+
+function validateForm() {
+    // Check if jQuery Validation is available
+    if (typeof $.fn.validate !== 'function') {
+        console.warn('jQuery Validation not available, using manual validation');
+        return manualValidateForm();
+    }
+
+    const $form = $('#reconciliationForm');
+
+    if (!$form.valid()) {
+        // Show first error field
+        const firstError = $form.find('.error:first, .text-danger:visible:first');
+        if (firstError.length) {
+            const errorElement = firstError.prev('input, select, textarea') || firstError.closest('.d-flex').find('input, select, textarea');
+            if (errorElement.length) {
+                $('html, body').animate({
+                    scrollTop: errorElement.offset().top - 100
+                }, 500);
+                errorElement.focus();
+            }
         }
 
-        if (!accountingDay) {
-            console.log('checkfinal:', accountingDay);
-            if (typeof appalert === 'function') {
-                appalert('Please select Accounting day.', 3, 1);
-            } else {
-                alert('Please select accounting day.');
-            }
-            return;
+        if (typeof appalert === 'function') {
+            appalert('Please fix the validation errors before proceeding.', 3, 1);
         }
-        if (!memo) {
-            console.log('checkfinal:', memo);
-            if (typeof appalert === 'function') {
-                appalert('Please Enter Memo.', 3, 1);
-            } else {
-                alert('Please Enter Memo.');
-            }
-            return;
+        return false;
+    }
+    return true;
+}
+
+function manualValidateForm() {
+    let isValid = true;
+    const errors = [];
+
+    // Clear previous validation styles
+    $('.is-invalid').removeClass('is-invalid');
+    $('.manual-validation-error').remove();
+
+    // Validate GL Account
+    const glAccount = $('#DiffBranchAccountId').val();
+    if (!glAccount) {
+        $('#DiffBranchAccountId').addClass('is-invalid');
+        $('#DiffBranchAccountId').after('<div class="manual-validation-error text-danger">Please select a GL account for adjustment</div>');
+        isValid = false;
+        errors.push('GL Account');
+    }
+
+    // Validate Memo
+    const memo = $('#Memo').val();
+    if (!memo || memo.trim() === '') {
+        $('#Memo').addClass('is-invalid');
+        $('#Memo').after('<div class="manual-validation-error text-danger">Please enter a memo</div>');
+        isValid = false;
+        errors.push('Memo');
+    } else if (memo.length > 80) {
+        $('#Memo').addClass('is-invalid');
+        $('#Memo').after('<div class="manual-validation-error text-danger">Memo cannot exceed 80 characters</div>');
+        isValid = false;
+        errors.push('Memo length');
+    }
+
+    // Validate Accounting Date
+    const accountingDate = $('#AccountingDay').val();
+    if (!accountingDate) {
+        $('#AccountingDay').addClass('is-invalid');
+        $('#AccountingDay').after('<div class="manual-validation-error text-danger">Please select accounting date</div>');
+        isValid = false;
+        errors.push('Accounting Date');
+    }
+
+    // Validate Adjustment Type
+    const adjustmentType = $('input[name="adjustmentType"]:checked').val();
+    if (!adjustmentType) {
+        $('input[name="adjustmentType"]').closest('.mb-3').addClass('is-invalid');
+        $('input[name="adjustmentType"]').closest('.mb-3').append('<div class="manual-validation-error text-danger">Please select adjustment type</div>');
+        isValid = false;
+        errors.push('Adjustment Type');
+    }
+
+    if (!isValid) {
+        // Scroll to first error
+        const firstError = $('.is-invalid:first');
+        if (firstError.length) {
+            $('html, body').animate({
+                scrollTop: firstError.offset().top - 100
+            }, 500);
+            firstError.focus();
         }
 
-        if (!adjustmentType) {
-            if (typeof appalert === 'function') {
-                appalert('Please select adjustment type (Surplus or Deficit).', 3, 1);
-            } else {
-                alert('Please select adjustment type (Surplus or Deficit).');
-            }
-            return;
+        if (typeof appalert === 'function') {
+            appalert('Please fix the following errors: ' + errors.join(', '), 3, 1);
         }
+    }
 
-        // Get server-side values from data attributes (safe approach)
-        const memberBalance = parseFloat(modal.data('memberbalance'));
-        const trialBalanceBalance = parseFloat(modal.data('trialbalancebalance'));
-        const difference = Math.abs(memberBalance - trialBalanceBalance);
+    return isValid;
+}
 
-        // Get string values from data attributes
-        const accountType = modal.data('accounttype');
-        const sourceBranchAccountName = modal.data('branchaccountname');
-        const mode = modal.data('mode'); // This is a string like "member" or "loan"
-        const trialBalanceStagingId = modal.data('trialbalancestagingid');
+function finalizeReconciliation() {
+    // Validate form before proceeding
+    if (!validateForm()) {
+        return;
+    }
 
-        const requestData = {
-            BranchId: branchId,
-            TrialBalanceBranchAccountId: sourceBranchAccountId,
-            DiffBranchAccountId: selectedAccount,
-            SurplusDeficit: adjustmentType,
-            MemberBalance: memberBalance,
-            TrialBalanceBalance: trialBalanceBalance,
-            Difference: difference,
-            TrialBalanceStagingId: trialBalanceStagingId,
-            Memo: memo,
-            AccountingDate: accountingDay,
-            AccountType: accountType,
-            Mode: mode,
-            SourceBranchAccountName: sourceBranchAccountName
-        };
+    const selectedAccount = $('#DiffBranchAccountId').val();
+    const selectedAccountText = $('#DiffBranchAccountId option:selected').text();
+    const memo = $('#Memo').val();
+    const accountingDay = $('#AccountingDay').val();
+    const adjustmentType = $('input[name="adjustmentType"]:checked').val();
+    const modal = $('#reconciliationResultModal');
+    const branchId = modal.data('branchid');
+    const sourceBranchAccountId = modal.data('branchaccountid');
 
-        console.log('Request data:', requestData);
+    console.log('Branch Account:', branchId, 'selectedAccount:', selectedAccount);
 
-        const status = adjustmentType === 'surplus' ? 'Surplus' : 'Deficit';
+    // Get server-side values from data attributes (safe approach)
+    const memberBalance = parseFloat(modal.data('memberbalance'));
+    const trialBalanceBalance = parseFloat(modal.data('trialbalancebalance'));
+    const difference = Math.abs(memberBalance - trialBalanceBalance);
 
-        const message = `
-    <div class="container-fluid p-0" style="max-height: 600px; overflow-y: auto;">
+    // Get string values from data attributes
+    const accountType = modal.data('accounttype');
+    const sourceBranchAccountName = modal.data('branchaccountname');
+    const mode = modal.data('mode');
+    const trialBalanceStagingId = modal.data('trialbalancestagingid');
+
+    const requestData = {
+        BranchId: branchId,
+        TrialBalanceBranchAccountId: sourceBranchAccountId,
+        DiffBranchAccountId: selectedAccount,
+        SurplusDeficit: adjustmentType,
+        MemberBalance: memberBalance,
+        TrialBalanceBalance: trialBalanceBalance,
+        Difference: difference,
+        TrialBalanceStagingId: trialBalanceStagingId,
+        Memo: memo,
+        AccountingDate: accountingDay,
+        AccountType: accountType,
+        Mode: mode,
+        SourceBranchAccountName: sourceBranchAccountName
+    };
+
+    console.log('Request data:', requestData);
+
+    showConfirmationDialog(requestData, selectedAccountText);
+}
+
+function generateConfirmationMessage(requestData, selectedAccountText) {
+    const modal = $('#reconciliationResultModal');
+    const sourceBranchAccountName = modal.data('branchaccountname');
+    const sourceBranchAccountId = modal.data('branchaccountid');
+    const status = requestData.SurplusDeficit === 'surplus' ? 'Surplus' : 'Deficit';
+
+    return `
+<div class="container-fluid p-0" style="max-height: 600px; overflow-y: auto;">
     <!-- Header -->
     <div class="bg-light border-bottom rounded-top p-4 mb-4">
         <div class="d-flex align-items-center">
@@ -362,7 +526,7 @@
                 <i class="mdi mdi-shield-check fs-4 text-secondary"></i>
             </div>
             <div>
-                <h3 class="h4 mb-1 text-primary fw-bold ">Confirm Reconciliation</h3>
+                <h3 class="h4 mb-1 text-primary fw-bold">Confirm Reconciliation</h3>
                 <p class="text-muted mb-0">Review all details before proceeding</p>
             </div>
         </div>
@@ -384,12 +548,12 @@
                                 <tr>
                                     <td class="text-muted fw-medium ps-0" style="width: 40%;">Mode:</td>
                                     <td class="pe-0">
-                                        <span class="badge bg-light text-dark border">${mode.toUpperCase()}</span>
+                                        <span class="badge bg-light text-dark border">${requestData.Mode.toUpperCase()}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted fw-medium ps-0">Account Type:</td>
-                                    <td class="text-dark fw-medium pe-0">${accountType}</td>
+                                    <td class="text-dark fw-medium pe-0">${requestData.AccountType}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted fw-medium ps-0">Adjustment:</td>
@@ -419,16 +583,16 @@
                             <tbody>
                                 <tr>
                                     <td class="text-muted fw-medium ps-0" style="width: 40%;">Member Balance:</td>
-                                    <td class="text-dark fw-bold text-end pe-0">${memberBalance.toLocaleString()}</td>
+                                    <td class="text-dark fw-bold text-end pe-0">${requestData.MemberBalance.toLocaleString()}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted fw-medium ps-0">Trial Balance:</td>
-                                    <td class="text-dark fw-bold text-end pe-0">${trialBalanceBalance.toLocaleString()}</td>
+                                    <td class="text-dark fw-bold text-end pe-0">${requestData.TrialBalanceBalance.toLocaleString()}</td>
                                 </tr>
                                 <tr class="bg-light">
                                     <td class="text-dark fw-bold ps-0 border-top">Difference:</td>
-                                    <td class="fw-bold fs-6 text-end pe-0 border-top ${difference > 0 ? 'text-danger' : 'text-success'}">
-                                        ${difference.toLocaleString()}
+                                    <td class="fw-bold fs-6 text-end pe-0 border-top ${requestData.Difference > 0 ? 'text-danger' : 'text-success'}">
+                                        ${requestData.Difference.toLocaleString()}
                                     </td>
                                 </tr>
                             </tbody>
@@ -449,7 +613,7 @@
 
             <!-- GL Accounts Table -->
             <div class="mb-4">
-                <h6 class="text-muted fw-semibold mb-3">GL Accounts</h6>
+                <h6 class="text-muted fw-semibold mb-3"> Accounts</h6>
                 <div class="table-responsive">
                     <table class="table table-bordered bg-light mb-0">
                         <thead class="table-light">
@@ -471,7 +635,7 @@
                             <tr>
                                 <td class="border">
                                     <div class="fw-bold text-dark mb-1">Adjustment Branch Account Ref.</div>
-                                    <div class="text-muted small">ID: ${selectedAccount}</div>
+                                    <div class="text-muted small">ID: ${requestData.DiffBranchAccountId}</div>
                                 </td>
                                 <td class="border">
                                     <div class="text-dark fw-medium">${selectedAccountText}</div>
@@ -496,11 +660,11 @@
                         <tbody>
                             <tr>
                                 <td class="text-muted fw-medium border">Memo</td>
-                                <td class="text-dark fw-medium border">${memo}</td>
+                                <td class="text-dark fw-medium border">${requestData.Memo}</td>
                             </tr>
                             <tr>
                                 <td class="text-muted fw-medium border">Accounting Date</td>
-                                <td class="text-dark fw-medium border">${accountingDay}</td>
+                                <td class="text-dark fw-medium border">${requestData.AccountingDate}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -548,110 +712,75 @@
             </div>
         </div>
     </div>
-</div>
-`;
+</div>`;
+}
 
-                // Add CSS for better checkbox styling and larger dialog size
-                const style = document.createElement('style');
-                style.textContent = `
-            .alertify .ajs-dialog {
-                max-width: 900px !important;
-                width: 90% !important;
-            }
-            .alertify .ajs-content {
-                padding: 20px !important;
-                max-height: 70vh !important;
-            }
-            .alertify .ajs-body {
-                max-height: 70vh !important;
-            }
-            .alertify .ajs-dialog .ajs-content input[type="checkbox"] {
-                transform: scale(1.2);
-                margin-right: 8px;
-            }
-            .alertify .ajs-header {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                color: white;
+function showConfirmationDialog(requestData, selectedAccountText) {
+    const message = generateConfirmationMessage(requestData, selectedAccountText);
+
+    // Add CSS for better checkbox styling and larger dialog size
+    const style = document.createElement('style');
+    style.textContent = `
+        .alertify .ajs-dialog {
+            max-width: 900px !important;
+            width: 90% !important;
+        }
+        .alertify .ajs-content {
+            padding: 20px !important;
+            max-height: 70vh !important;
+        }
+        .alertify .ajs-body {
+            max-height: 70vh !important;
+        }
+        .alertify .ajs-dialog .ajs-content input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 8px;
+        }
+       .alertify .ajs-header {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+                color: #212529 !important;
                 font-weight: 600;
                 font-size: 1.2rem;
                 padding: 20px !important;
             }
-            .alertify .ajs-footer {
-                padding: 15px 20px !important;
-            }
-            .alertify .ajs-commands button {
-                font-weight: 500 !important;
-                padding: 8px 20px !important;
-            }
-        `;
+        .alertify .ajs-footer {
+            padding: 15px 20px !important;
+        }
+        .alertify .ajs-commands button {
+            font-weight: 500 !important;
+            padding: 8px 20px !important;
+        }
+    `;
+
+    // Only add style once
+    if (!$('#reconciliation-modal-styles').length) {
+        style.id = 'reconciliation-modal-styles';
         document.head.appendChild(style);
+    }
 
-        // Use the same pattern as showReconciliationConfirmation
-        if (typeof alertify !== 'undefined' && alertify.confirm) {
-            const alertifyDialog = alertify.confirm(
-               /* "Confirm Final Reconciliation",*/
-                message,
-                function () {
-                    // Check if confirmation checkbox is checked
-                    const confirmCheckbox = document.getElementById('confirmReconciliation');
-                    const confirmationError = document.getElementById('confirmationError');
-
-                    if (!confirmCheckbox || !confirmCheckbox.checked) {
-                        // Show error message
-                        if (confirmationError) {
-                            confirmationError.style.display = 'block';
-                        }
-
-                        // Show additional alert message
-                        if (typeof appalert === 'function') {
-                            appalert('Please check the confirmation box to proceed.', 3, 1);
-                        } else {
-                            alert('Please check the confirmation box to proceed.');
-                        }
-
-                        // Return false to prevent dialog from closing
-                        return false;
-                    }
-
-                    if (typeof appalert === 'function') {
-                        appalert('Processing final reconciliation...', 0, 0);
-                    }
-                    performFinalReconciliation(requestData).then(success => {
-                        if (!success && typeof appalert === 'function') {
-                            appalert('Final reconciliation failed!', 2, 1);
-                        }
-                    });
-
-                    // Return true to allow dialog to close only when checkbox is checked
-                    return true;
-                },
-                function () {
-                    if (typeof appalert === 'function') {
-                        appalert('Final reconciliation cancelled', 3, 1);
-                    }
-                    // Return true to allow dialog to close on cancel
-                    return true;
-                }
-            ).set('closable', false); // Prevent closing via ESC or clicking outside
-
-            // Add event listener to reset error when checkbox is clicked
-            setTimeout(() => {
+    if (typeof alertify !== 'undefined' && alertify.confirm) {
+        const alertifyDialog = alertify.confirm(
+            message,
+            function (isConfirmed) {
+                // Check if confirmation checkbox is checked
                 const confirmCheckbox = document.getElementById('confirmReconciliation');
                 const confirmationError = document.getElementById('confirmationError');
 
-                if (confirmCheckbox && confirmationError) {
-                    confirmCheckbox.addEventListener('change', function () {
-                        if (this.checked) {
-                            confirmationError.style.display = 'none';
-                        }
-                    });
-                }
-            }, 100);
+                if (!confirmCheckbox || !confirmCheckbox.checked) {
+                    // Show error message
+                    if (confirmationError) {
+                        confirmationError.classList.remove('d-none');
+                    }
 
-        } else {
-            // Fallback for when alertify is not available
-            const userConfirmed = confirm("Confirm final reconciliation?");
-            if (userConfirmed) {
+                    // Show additional alert message
+                    if (typeof appalert === 'function') {
+                        appalert('Please check the confirmation box to proceed.', 3, 1);
+                    }
+
+                    // Return false to prevent dialog from closing
+                    return false;
+                }
+
                 if (typeof appalert === 'function') {
                     appalert('Processing final reconciliation...', 0, 0);
                 }
@@ -660,114 +789,94 @@
                         appalert('Final reconciliation failed!', 2, 1);
                     }
                 });
-            } else {
+
+                return true;
+            },
+            function () {
                 if (typeof appalert === 'function') {
                     appalert('Final reconciliation cancelled', 3, 1);
                 }
+                return true;
             }
-        }
+        ).set('closable', false);
 
-        // Use the same pattern as showReconciliationConfirmation
-        if (typeof alertify !== 'undefined' && alertify.confirm) {
-            alertify.confirm(
-              
-                message,
-                function () {
-                    // Check if confirmation checkbox is checked
-                    const confirmCheckbox = document.getElementById('confirmReconciliation');
-                    if (confirmCheckbox && !confirmCheckbox.checked) {
-                        if (typeof appalert === 'function') {
-                            appalert('Please check the confirmation box to proceed.', 3, 1);
-                        } else {
-                            alert('Please check the confirmation box to proceed.');
-                        }
-                        return;
-                    }
+        // Add event listener to reset error when checkbox is clicked
+        setTimeout(() => {
+            const confirmCheckbox = document.getElementById('confirmReconciliation');
+            const confirmationError = document.getElementById('confirmationError');
 
-                    if (typeof appalert === 'function') {
-                        appalert('Processing final reconciliation...', 0, 0);
-                    }
-                    performFinalReconciliation(requestData).then(success => {
-                        if (!success && typeof appalert === 'function') {
-                            appalert('Final reconciliation failed!', 2, 1);
-                        }
-                    });
-                },
-                function () {
-                    if (typeof appalert === 'function') {
-                        appalert('Final reconciliation cancelled', 3, 1);
-                    }
-                }
-            );
-        } else {
-            // Fallback for when alertify is not available
-            const userConfirmed = confirm("Confirm final reconciliation?");
-            if (userConfirmed) {
-                if (typeof appalert === 'function') {
-                    appalert('Processing final reconciliation...', 0, 0);
-                }
-                performFinalReconciliation(requestData).then(success => {
-                    if (!success && typeof appalert === 'function') {
-                        appalert('Final reconciliation failed!', 2, 1);
+            if (confirmCheckbox && confirmationError) {
+                confirmCheckbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        confirmationError.classList.add('d-none');
                     }
                 });
-            } else {
-                if (typeof appalert === 'function') {
-                    appalert('Final reconciliation cancelled', 3, 1);
+            }
+        }, 100);
+
+    } else {
+        // Fallback for when alertify is not available
+        const userConfirmed = confirm("Confirm final reconciliation?");
+        if (userConfirmed) {
+            if (typeof appalert === 'function') {
+                appalert('Processing final reconciliation...', 0, 0);
+            }
+            performFinalReconciliation(requestData).then(success => {
+                if (!success && typeof appalert === 'function') {
+                    appalert('Final reconciliation failed!', 2, 1);
                 }
+            });
+        } else {
+            if (typeof appalert === 'function') {
+                appalert('Final reconciliation cancelled', 3, 1);
             }
         }
     }
+}
 
-    async function performFinalReconciliation(requestData) {
-        try {
-            $('#btnFinalReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
+async function performFinalReconciliation(requestData) {
+    try {
+        $('#btnFinalReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
 
-            const token = $('input[name="__RequestVerificationToken"]').val();
+        const token = $('input[name="__RequestVerificationToken"]').val();
 
-            const response = await fetch('@Url.Action("FinalizeReconciliation", "Reconciliation")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': token
-                },
-                body: JSON.stringify(requestData)
-            });
+        const response = await fetch('@Url.Action("FinalizeReconciliation", "Reconciliation")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify(requestData)
+        });
 
-            const result = await response.json();
-            console.log('Final reconciliation response:', result);
+        const result = await response.json();
+        console.log('Final reconciliation response:', result);
 
-            if (result.success) {
-                if (typeof appalert === 'function') {
-                    appalert(result.message || 'Reconciliation completed successfully!', 1, 1);
-                } else {
-                    alert(result.message || 'Reconciliation completed successfully!');
-                }
-
-                // Close the modal
-                $('#reconciliationResultModal').modal('hide');
-
-                // refresh or update UI
-                setTimeout(() => location.reload(), 1200);
-                return true;
-            } else {
-                if (typeof appalert === 'function') {
-                    appalert(result.message || 'Reconciliation failed!', 2, 1);
-                } else {
-                    alert(result.message || 'Reconciliation failed!');
-                }
-                return false;
-            }
-        } catch (error) {
-            console.error('Final reconciliation error:', error);
+        if (result.success) {
             if (typeof appalert === 'function') {
-                appalert('Error during final reconciliation: ' + (error.message || error), 2, 1);
-            } else {
-                alert('Error during final reconciliation: ' + (error.message || error));
+                appalert(result.message || 'Reconciliation completed successfully!', 1, 1);
+            }
+
+            // Close the modal
+            $('#reconciliationResultModal').modal('hide');
+
+            // refresh or update UI
+            setTimeout(() => location.reload(), 1200);
+            return true;
+        } else {
+            if (typeof appalert === 'function') {
+                appalert(result.message || 'Reconciliation failed!', 2, 1);
             }
             return false;
-        } finally {
-            $('#btnFinalReconcile').prop('disabled', false).html('<i class="mdi mdi-check-all me-1"></i>Reconcile');
         }
+    } catch (error) {
+        console.error('Final reconciliation error:', error);
+        if (typeof appalert === 'function') {
+            appalert('Error during final reconciliation: ' + (error.message || error), 2, 1);
+        }
+        return false;
+    } finally {
+        $('#btnFinalReconcile').prop('disabled', false).html('<i class="mdi mdi-check-all me-1"></i>Reconcile');
     }
+}
 </script>

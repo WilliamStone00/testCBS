@@ -81,6 +81,8 @@
                 @Html.HiddenFor(m => m.Scope) @* "Affiliate" *@
                 @Html.HiddenFor(m => m.Language)
                 @Html.HiddenFor(m => m.Class)
+                @Html.HiddenFor(m => m.UpdateReference)
+                @Html.HiddenFor(m => m.ChangeType)
                 @Html.HiddenFor(m => m.IsOrigin)
                 @Html.HiddenFor(m => m.AffiliateId) @* usually set from context *@
                 @Html.HiddenFor(m => m.ParentId) @* set when KEY provided *@
@@ -175,7 +177,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 mt-2">
-                    @if (string.IsNullOrWhiteSpace(Model?.UpdateId))
+                    @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                     {
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="mdi mdi-content-save me-1"></i> Save

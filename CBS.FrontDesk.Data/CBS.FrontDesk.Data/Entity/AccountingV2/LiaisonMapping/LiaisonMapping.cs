@@ -79,4 +79,19 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping
         public List<BranchAccount> Children { get; set; } = new List<BranchAccount>();
     }
 
+   
+    public class LiaisonMappingQuery
+    {
+        public DataTableOptions Options { get; set; }
+        public LiaisonMappingQuery() { Options = new DataTableOptions(); }
+
+        public string BranchId { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public string DueFromAssetAccountId { get; set; }
+        public string DueToLiabilityAccountId { get; set; }
+
+        public DateTime? CreatedFromUtc { get; set; }
+        public DateTime? CreatedToUtc { get; set; }
+    }
+
 }
