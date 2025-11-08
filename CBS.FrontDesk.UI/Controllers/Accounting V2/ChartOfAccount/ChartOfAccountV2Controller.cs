@@ -42,6 +42,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             return View();
         }
 
+        [HttpGet]
+        public async Task<ActionResult> ListByClass(string cls)
+        {
+            var numericValue = _accountsService2.GetClassNumericValue(cls);
+            var items = await _accountsService2.GetAllPCMFAccountsByClass(numericValue);
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         public async Task<ActionResult> GetTreeData(string branchId = null)
@@ -83,7 +91,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
 
         // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
-        public async Task<JsonResult> LoadData(COADATATABLE_Query query)
+        public async Task<JsonResult> LoadData(GetHoPcmfCoaQuery query)
         { try
             {
 

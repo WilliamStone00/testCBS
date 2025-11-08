@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.Pendingaccounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
@@ -189,11 +190,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
             }
             else if (path == "new")
             {
+
+                var aff =await _AffiliateService.GetAffiliateAsync();
                 var model = new PendingAccountRequest
                 {
                     Scope = "Affiliate",
                     Language = _AffiliateAccountService.GetUserLanguage(),
-                    RequiresMapping = false
+                    RequiresMapping = false,
+                    AffiliateId = aff == null ? "" : aff.Id,
+                    ChangeType= "CreateRequest"
                 };
 
                 if (string.Equals(serviceOption, "root", StringComparison.OrdinalIgnoreCase))
@@ -227,13 +232,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                 // Get the AffiliateAccountDto from service
                 var entity = await _AffiliateAccountService.GetByIdAsync(KEY);
 
-                if (entity == null)
+                var model = new PendingAccountRequest(entity);
+
+                if (!string.IsNullOrWhiteSpace(entity?.ParentId))
                 {
-                    // Handle not found case
-                    return Content("Affiliate not found");
+                    var parent = await _AffiliateAccountService.GetByIdAsync(KEY);
+                    if (parent != null)
+                    {
+                        model.ParentId = parent.Id;
+                        model.ParentAccountNumber = parent.Code;     // inherit affiliate
+                        model.HoPcmfAccountId = parent.HoPcmfAccountId;
+                    }
+
+
                 }
 
-                return PartialView(partialView, entity);
+                
+                return PartialView(partialView, model);
             }
         }
 

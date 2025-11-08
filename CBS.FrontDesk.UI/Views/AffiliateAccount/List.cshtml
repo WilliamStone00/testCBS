@@ -1,425 +1,342 @@
-﻿@using Resources
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount.AffiliateAccountQuery
+@using Resources
 @{
     ViewBag.Title = "Affiliate Overview - Filters";
 }
-@using Resources
 
-<div class="row">
-    <div class="col-12">
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
-                </h1>
-                <p class="card-text">
-                    @AccountingV2.AffiliateManagementtext
-                </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+<style>
+    .compact .card {
+        margin-bottom: .5rem !important
+    }
+
+    .compact .card-body {
+        padding: .75rem !important
+    }
+
+    .compact .card-header {
+        padding: .5rem .75rem !important
+    }
+
+    .compact .form-label {
+        margin-bottom: .2rem !important
+    }
+
+    .compact .form-check {
+        margin-bottom: 0 !important
+    }
+
+    .compact .row.g-1 > [class^="col-"] {
+        margin-bottom: .5rem
+    }
+</style>
+
+<div class="compact">
+    <!-- Header -->
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title text-primary mb-1">
+                        <i class="mdi mdi-account-group me-2"></i>@AccountingV2.AffiliateAccountManagement
+                    </h5>
+                    <p class="card-text small mb-0">@AccountingV2.AffiliateManagementtext</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Tips -->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @AccountingV2.Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false" aria-controls="collapseAffiliateTips">
-            <i class="mdi mdi-chevron-down"></i>
+    <!-- Tips -->
+    <div class="card mb-2">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span class="small"><i class="mdi mdi-information-outline me-2"></i>@AccountingV2.Tips</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseAffiliateTips" class="collapse">
+            <div class="card-body py-2">
+                <ul class="mb-0 small">
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
+                    <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
+                    <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
+                    <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card shadow-sm p-2 mb-2">
+        <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i>@AccountingV2.AffiliateFilters</h6>
+
+        @using (Html.BeginForm("Index", "AffiliateAccount", FormMethod.Get, new { id = "affiliateFilterForm", autocomplete = "off" }))
+        {
+            <div class="card p-2 mb-2 bg-light">
+                <!-- Row 1 -->
+                <div class="row g-1">
+                    <div class="col-md-4">
+                        @Html.LabelFor(m => m.Class, "Class", new { @class = "form-label fw-bold small" })
+                        @Html.DropDownListFor(
+                          m => m.Class,
+                          new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
+                          "--- Select Class ---",
+                          new { @class = "form-select form-select-sm select2", id = "Class" }
+                        )
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(m => m.Code, @AccountingV2.Code, new { @class = "form-label fw-bold small" })
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", placeholder = "Account Number / Code" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(m => m.Name, @AccountingV2.Name, new { @class = "form-label fw-bold small" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm", placeholder = "Affiliate name" })
+                    </div>
+                </div>
+
+                <!-- Show Created Date toggle -->
+                @*<div class="row mt-2 align-items-center">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
+                                   onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
+                            <label class="form-check-label fw-bold small" for="toggleCreatedDates">@AccountingV2.ShowCreatedDateFilters</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <small class="text-muted">@AccountingV2.Affiliatetext1.</small>
+                    </div>
+                </div>*@
+
+                <!-- Created Dates -->
+               @*<div id="createdDateFilters" class="d-none">*@
+                    <div class="row g-1 mt-1">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.CreatedFromUtc, @AccountingV2.CreatedFrom + " (UTC)", new { @class = "form-label fw-bold small" })
+                            @Html.TextBoxFor(m => m.CreatedFromUtc, new { @class = "form-control form-control-sm", type = "date" })
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.CreatedToUtc, @AccountingV2.CreatedTo + " (UTC)", new { @class = "form-label fw-bold small" })
+                            @Html.TextBoxFor(m => m.CreatedToUtc, new { @class = "form-control form-control-sm", type = "date" })
+                        </div>
+                    </div>
+                @*</div>*@
+
+                <!-- Include Deleted -->
+                <div class="row g-1 mt-1">
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IncludeDeleted, new { @class = "form-check-input", id = "IncludeDeleted" })
+                            @Html.LabelFor(m => m.IncludeDeleted, @AccountingV2.IncludeDeleted, new { @class = "form-check-label fw-bold small" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex gap-2">
+                    <button id="applyAffiliateFilterBtn" type="button" class="btn btn-primary btn-sm flex-fill">
+                        <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
+                    </button>
+                    <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary btn-sm flex-fill">
+                        <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-end mb-2">
+        <button id="btnAddRootAffiliate" type="button" class="btn btn-success btn-sm">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add Account Number
         </button>
-    </h6>
-
-    <div id="collapseAffiliateTips" class="collapse">
-        <div class="card-body">
-            <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@AccountingV2.Code:</strong> @AccountingV2.codetext</li>
-                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i> <strong>@AccountingV2.Name:</strong> @AccountingV2.Nametext</li>
-                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i> <strong>@AccountingV2.Status:</strong> @AccountingV2.Statustext</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@AccountingV2.CreatedDates:</strong> @AccountingV2.CreatedDatestext</li>
-            </ul>
-        </div>
     </div>
-</div>
 
-<!-- Affiliate Filters (bound to AffiliateAccountQuery) -->
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> @AccountingV2.AffiliateFilters
-    </h5>
+    <!-- Data -->
+    <div id="datalistingview">
+        @Html.Partial("_Data")
+    </div>
 
-    <form id="affiliateFilterForm" autocomplete="off" method="get" action="@Url.Action("Index")">
-        <!-- Optional DataTable options -->
-        <div class="card p-3 mb-3 bg-light">
-
-            <!-- Row 1: AffiliateId, Code, Name -->
-            <div class="row mb-3 g-2">
-
-                <div class="col-md-6">
-                    <label class="form-label fw-bold" for="Code">@AccountingV2.Code</label>
-                    <input type="text" id="Code" name="Code" class="form-control" placeholder="Affiliate code" />
+    <!-- Details Modal -->
+    <div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-bold" for="Name">@AccountingV2.Name</label>
-                    <input type="text" id="Name" name="Name" class="form-control" placeholder="Affiliate name" />
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                 </div>
-            </div>
-
-            <!-- Row 2: Class (dropdown), ParentId, PostingAllowed -->
-            <div class="row mb-3 g-2">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold" for="Class">Class</label>
-                    @* Use your known classes as a dropdown *@
-                    @Html.DropDownList(
-                        "Class",
-                        new List<SelectListItem> {
-                            new SelectListItem { Text = "--- Select Class ---", Value = "" },
-                            new SelectListItem { Text = "EQUITY", Value = "1" },
-                            new SelectListItem { Text = "FIXED ASSETS", Value = "2" },
-                            new SelectListItem { Text = "MEMBERS", Value = "3" },
-                            new SelectListItem { Text = "THIRD PARTIES", Value = "4" },
-                            new SelectListItem { Text = "TREASURY", Value = "5" },
-                            new SelectListItem { Text = "EXPENSES", Value = "6" },
-                            new SelectListItem { Text = "REVENUE", Value = "7" },
-                            new SelectListItem { Text = "OUTSIDE ORDINARY ACTIVITIES (OOA)", Value = "8" },
-                            new SelectListItem { Text = "MANAGEMENT", Value = "9" }
-                        },
-                        new { @class = "form-select select2", id = "Class" }
-                    )
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold" for="ParentId">Parent Account</label>
-                    @* Replace ViewBag.ChartAccount with your actual list when available *@
-                    @Html.DropDownList(
-                        "ParentId",
-                        new SelectList(ViewBag.ChartAccount ?? new List<SelectListItem>(), "Id", "Name"),
-                        @AccountingV2.All,
-                        new { @class = "form-select select2", id = "ParentId" }
-                    )
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold" for="PostingAllowed">Posting Allowed</label>
-                    <select id="PostingAllowed" name="PostingAllowed" class="form-select select2">
-                        <option value="">@AccountingV2.All</option>
-                        <option value="true">@AccountingV2.Yes</option>
-                        <option value="false">@AccountingV2.No</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Row 3: Created Date Filters toggle + tip -->
-            <div class="row mb-3 align-items-center">
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
-                               onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleCreatedDates">
-                            @AccountingV2.ShowCreatedDateFilters
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-6 text-end">
-                    <small class="text-muted">@AccountingV2.Affiliatetext1.</small>
-                </div>
-            </div>
-
-            <!-- Row 4: CreatedFromUtc, CreatedToUtc -->
-            <div id="createdDateFilters" class="d-none">
-                <div class="row mb-3 g-2">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="CreatedFromUtc">@AccountingV2.CreatedFrom (UTC)</label>
-                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="CreatedToUtc">@AccountingV2.CreatedTo (UTC)</label>
-                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Row 5: IncludeDeleted -->
-            <div class="row g-2">
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" />
-                        <label class="form-check-label fw-bold" for="IncludeDeleted">
-                            @AccountingV2.IncludeDeleted
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-md-4"><!-- reserved space --></div>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> @AccountingV2.ApplyFilter
-                </button>
-                <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100"
-                        onclick="
-                          document.getElementById('affiliateFilterForm').reset();
-                          document.getElementById('createdDateFilters').classList.add('d-none');
-                          if (window.$ && $.fn.select2) { $('#Class,#ParentId,#PostingAllowed,#Language').val(null).trigger('change'); }
-                        ">
-                    <i class="mdi mdi-refresh"></i> @AccountingV2.Reset
-                </button>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div class="d-flex justify-content-end mb-3">
-    <button id="btnAddRootAffiliate" type="button" class="btn btn-success">
-        <i class="mdi mdi-plus-circle-outline me-1"></i>
-        Add Root Affiliate Account
-    </button>
-</div>
-
-
-<!-- DataTable Partial -->
-<div id="datalistingview">
-    @Html.Partial("_Data")
-</div>
-
-<!-- DETAILS modal (external) -->
-<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body"><!-- AJAX injects here --></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div>
 
-<!-- EDIT/CREATE modal (external) -->
-<div class="modal fade" id="affiliateEditModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Edit/Create Modal -->
+    <div class="modal fade" id="affiliateEditModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
             </div>
-            <div class="modal-body"><!-- AJAX injects here --></div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-   @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
-(function ($) {
+(function($, w){
   'use strict';
 
-  // ---------- ROUTES ----------
-  const dataUrl   = '@Url.Action("LoadAffiliateData", "AffiliateAccount")';
-  const detailUrl = '@Url.Action("DetailsPartial", "AffiliateAccount")';
-  const initUrl   = '@Url.Action("InitializeData", "AffiliateAccount")';
-  const deleteUrl = '@Url.Action("Delete", "AffiliateAccount")';
+  // ===== ROUTES =====
+  const dataUrl        = '@Url.Action("LoadAffiliateData", "AffiliateAccount")';
+  const detailUrl      = '@Url.Action("DetailsPartial", "AffiliateAccount")';
+  const initUrl        = '@Url.Action("InitializeData", "AffiliateAccount")';
+  const pcmfByClassUrl = '@Url.Action("ListByClass", "ChartOfAccountV2")';
 
-  // ---------- STATE ----------
-  let table = null;
-  let tableInitialized = false;
-  window.table = window.table || null;
-  window.tableInitialized = window.tableInitialized || false;
+  // ===== STATE =====
+  let table = null, tableInitialized = false;
 
-  // ---------- UTIL ----------
-  function safeParseUnobtrusive($scope) {
-    try {
-      if ($.validator && $.validator.unobtrusive && typeof $.validator.unobtrusive.parse === 'function') {
-        $.validator.unobtrusive.parse($scope);
-        return true;
-      }
-    } catch (e) { console.warn('unobtrusive.parse failed', e); }
-    return false;
+  // Delegate changes inside modals
+  $(document).on('change', '#affiliateEditModal #Class', function () {
+    onAffiliateClassChange(this.value);
+  });
+  $(document).on('change', '#affiliateDetailsModal #Class', function () {
+    onAffiliateClassChange(this.value);
+  });
+
+  // ===== UTIL =====
+  function normalizeItems(res){
+    if(!res) return [];
+    if (typeof res === 'string') { try { return JSON.parse(res); } catch { return []; } }
+    if (Array.isArray(res)) return res;
+    if (res.items && Array.isArray(res.items)) return res.items;
+    if (res.data  && Array.isArray(res.data))  return res.data;
+    if (typeof res === 'object') return Object.keys(res).map(k => res[k]);
+    return [];
   }
 
-  function safeValidate($form) {
-    try { if ($.validator && typeof $form.valid === 'function') return $form.valid(); }
-    catch (e) { console.warn('client validation check failed', e); }
-    return true;
+  function fillOptions($sel, items, placeholder){
+    $sel.empty();
+    if (placeholder) $sel.append(new Option(placeholder, ''));
+    normalizeItems(items).forEach(x => {
+      const id   = x.Value ?? x.Id ?? x.id ?? '';
+      const text = x.Text ?? x.text ?? (x.Code ? (x.Name ? (x.Code + ' - ' + x.Name) : x.Code) : (x.Name || ''));
+      $sel.append(new Option(text, id));
+    });
+    if ($.fn.select2 && $sel.hasClass('select2')) $sel.trigger('change.select2');
   }
 
-  // ---------- FILTERS ----------
-  function getFilters() {
+  // ===== CLASS → HO PCMF CHAINING =====
+  function loadPcmfByClass(cls){
+    const $pcmf = $('#HoPcmfAccountId');
+    if ($pcmf.length === 0) return;
+    if (!cls) { fillOptions($pcmf, [], '--- Link to HO PCMF (optional) ---'); return; }
+
+    $pcmf.prop('disabled', true)
+        .html('<option value="">Loading…</option>')
+        .trigger('change');
+
+    $.getJSON(pcmfByClassUrl, { cls: cls })
+      .done(res => {
+        fillOptions($pcmf, res, '--- Link to HO PCMF (optional) ---');
+        $pcmf.prop('disabled', false).trigger('change');
+      })
+      .fail(() => {
+        fillOptions($pcmf, [], '--- Link to HO PCMF (optional) ---');
+      });
+  }
+
+  // Expose inline handler (kept simple: value only)
+  w.onAffiliateClassChange = function (cls) { loadPcmfByClass(cls); };
+
+  // ===== FILTERS =====
+  function getFilters(){
     const createdFrom = $('#CreatedFromUtc').val();
     const createdTo   = $('#CreatedToUtc').val();
-    const postingRaw  = $('#PostingAllowed').val();
 
     return {
       Options: {},
-      AffiliateId: null,
       Code: $.trim($('#Code').val()) || null,
       Name: $.trim($('#Name').val()) || null,
-      Class: $('#Class').val() || null,
+      Class: $('#Class').val() || null, // filter control id
       ParentId: $('#ParentId').val() || null,
-      PostingAllowed: postingRaw === '' ? null : (postingRaw === 'true'),
+      HoPcmfAccountId: $('#HoPcmfAccountId').val() || null,
       CreatedFromUtc: createdFrom || null,
       CreatedToUtc: createdTo || null,
-      IncludeDeleted: $('#IncludeDeleted').is(':checked'),
-      Language: $('#Language').val ? ($('#Language').val() || null) : null
+      IncludeDeleted: $('#IncludeDeleted').is(':checked')
     };
   }
 
-  // ---------- FIXED MODALS (external) ----------
-  function showEditModalLoading() {
-    $('#affiliateEditModal .modal-body').html(
-      '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
-    );
-    (bootstrap.Modal.getInstance($('#affiliateEditModal')[0]) ||
-      new bootstrap.Modal($('#affiliateEditModal')[0], { backdrop: 'static' })
-    ).show();
+  // ===== MODALS =====
+  function showModalLoading(targetSel){
+    const $m = $(targetSel);
+    $(`${targetSel} .modal-body`).html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+    // If Class already set (edit), preload PCMF in this modal scope
+    const clsVal = $m.find('#Class').val();
+    if (clsVal) onAffiliateClassChange(clsVal);
+    (bootstrap.Modal.getInstance($m[0]) || new bootstrap.Modal($m[0], { backdrop: 'static' })).show();
   }
 
-  function showDetailsModalLoading() {
-    $('#affiliateDetailsModal .modal-body').html(
-      '<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>'
-    );
-    (bootstrap.Modal.getInstance($('#affiliateDetailsModal')[0]) ||
-      new bootstrap.Modal($('#affiliateDetailsModal')[0], { backdrop: 'static' })
-    ).show();
-  }
-
-  function loadIntoEditModal(url, data) {
-    showEditModalLoading();
+  function loadIntoEditModal(url, data){
+    showModalLoading('#affiliateEditModal');
     $.get(url, data)
-      .done(function (html) {
+      .done(html => {
         $('#affiliateEditModal .modal-body').html(html);
-
-        // ensure client validation on injected form
-        safeParseUnobtrusive($('#affiliateEditModal'));
-
-        // init select2 inside modal
-        if ($.fn.select2) {
+        if ($.fn.select2){
           try {
-            $('#affiliateEditModal .select2').each(function () {
-              if (!$(this).hasClass('select2-hidden-accessible')) {
+            $('#affiliateEditModal .select2').each(function(){
+              if (!$(this).hasClass('select2-hidden-accessible')){
                 $(this).select2({ dropdownParent: $('#affiliateEditModal') });
               }
             });
-          } catch (e) { console.warn('select2 in modal init failed', e); }
+          } catch(e){ console.warn('select2 in modal init failed', e); }
         }
-
-        wireModalFormSubmit($('#affiliateEditModal'));
+        // after load: if Class has value, chain PCMF
+        const cls = $('#affiliateEditModal #Class').val();
+        if (cls) onAffiliateClassChange(cls);
       })
-      .fail(function (xhr) {
-        $('#affiliateEditModal .modal-body')
-          .html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>');
-      });
+      .fail(() => $('#affiliateEditModal .modal-body').html('<div class="p-3 text-danger">Unable to load content. Please try again.</div>'));
   }
 
-  function loadIntoDetailsModal(url, data) {
-    showDetailsModalLoading();
+  function loadIntoDetailsModal(url, data){
+    showModalLoading('#affiliateDetailsModal');
     $.get(url, data)
-      .done(function (html) {
+      .done(html => {
         $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details.</div>');
+        const cls = $('#affiliateDetailsModal #Class').val();
+        if (cls) onAffiliateClassChange(cls);
       })
-      .fail(function () {
-        $('#affiliateDetailsModal .modal-body')
-          .html('<div class="p-3 text-danger">Failed to load details.</div>');
-      });
+      .fail(() => $('#affiliateDetailsModal .modal-body').html('<div class="p-3 text-danger">Failed to load details.</div>'));
   }
 
-  function wireModalFormSubmit($modal) {
-    $modal.off('submit', 'form').on('submit', 'form', function (e) {
-      if (typeof window.AjaxPost === 'function') {
-        return window.AjaxPost(this); // use your robust global
-      }
-
-      // fallback
-      e.preventDefault();
-      const $form = $(this);
-      safeParseUnobtrusive($form);
-      if (!safeValidate($form)) return false;
-
-      const hasFiles = ($form.attr('enctype') || '').toLowerCase().includes('multipart');
-      const ajaxOptions = {
-        url: $form.attr('action'),
-        type: ($form.attr('method') || 'POST').toUpperCase(),
-        success: function (res) {
-          if (res && typeof res === 'object' && ('success' in res)) {
-            if (res.success) {
-              try { bootstrap.Modal.getInstance($modal[0]).hide(); } catch (_) { $modal.modal('hide'); }
-              reloadTable();
-            } else {
-              $modal.find('.modal-body').prepend(
-                `<div class="alert alert-danger mb-2">${res.message || 'Save failed'}</div>`
-              );
-            }
-          } else {
-            $modal.find('.modal-body').html(res);
-            safeParseUnobtrusive($modal);
-            wireModalFormSubmit($modal);
-          }
-        },
-        error: function () {
-          $modal.find('.modal-body').prepend(
-            '<div class="alert alert-danger mb-2">Submit failed. Try again.</div>'
-          );
-        }
-      };
-
-      if (hasFiles) {
-        const fd = new FormData($form[0]);
-        ajaxOptions.data = fd;
-        ajaxOptions.processData = false;
-        ajaxOptions.contentType = false;
-      } else {
-        ajaxOptions.data = $form.serialize();
-        ajaxOptions.contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-      }
-
-      $.ajax(ajaxOptions);
-      return false;
-    });
+  // ===== ACTION BUTTONS =====
+  function actionButtons(row){
+    const id = encodeURIComponent(String(row.Id || ''));
+    const btnId = 'act_' + (row.Id || Math.random().toString(36).slice(2));
+    return `
+      <div class="dropdown text-center">
+        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-cog-outline"></i> Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
+          <li><button type="button" class="dropdown-item btn-detail" data-id="${id}">
+            <i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+          <li><button type="button" class="dropdown-item btn-add" data-parentid="${id}">
+            <i class="mdi mdi-plus me-1 text-success"></i> Add Affiliate Account Node</button></li>
+          <li><button type="button" class="dropdown-item btn-edit" data-id="${id}">
+            <i class="mdi mdi-pencil-outline me-1 text-info"></i> Edit</button></li>
+        </ul>
+      </div>`;
   }
 
-  // ---------- ROW ACTION BUTTONS RENDER ----------
-    // --- Replace existing actionButtons(row) with this dropdown version ---
-        function actionButtons(row) {
-            const id = encodeURIComponent(String(row.Id || ''));
-            const name = String(row.Name || row.NameEn || '').replace(/"/g, '&quot;');
-            const btnId = 'act_' + (row.Id || Math.random().toString(36).slice(2));
-
-            return `
-            <div class="dropdown text-center">
-              <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button"
-                      id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="mdi mdi-cog-outline"></i> Actions
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-                <li>
-                  <button type="button" class="dropdown-item btn-detail" data-id="${id}" title="Details &quot;${name}&quot;">
-                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item btn-add" data-parentid="${id}" title="Add Child under &quot;${name}&quot;">
-                    <i class="mdi mdi-plus me-1 text-success"></i> Add Affiliate Account Node
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="dropdown-item btn-edit" data-id="${id}" title="Edit &quot;${name}&quot;">
-                    <i class="mdi mdi-pencil-outline me-1 text-info"></i> Edit
-                  </button>
-                </li>
-              </ul>
-            </div>
-          `;
-        }
-
-
-  // ---------- DATATABLE ----------
-  function initDataTable() {
+  // ===== DATATABLE =====
+  function initDataTable(){
     const selector = '#myDataTable';
-    if ($.fn.DataTable.isDataTable(selector)) {
+    if ($.fn.DataTable.isDataTable(selector)){
       try { $(selector).DataTable().destroy(); } catch(e){ console.warn('destroy failed', e); }
       $(selector + ' tbody').empty();
     }
@@ -442,9 +359,9 @@
         url: dataUrl,
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
-        data: function (d) {
+        data: function(d){
           const filters = getFilters();
-          filters.options = {
+          filters.Options = {
             draw: d.draw,
             start: d.start,
             length: d.length,
@@ -456,129 +373,98 @@
           };
           return JSON.stringify(filters);
         },
-        dataSrc: function (json) {
+        dataSrc: function(json){
           if (!json) return [];
           if (Array.isArray(json.data)) return json.data;
           if (Array.isArray(json.result)) return json.result;
           if (Array.isArray(json.items)) return json.items;
-          for (var k in json) { if (Array.isArray(json[k])) return json[k]; }
+          for (var k in json){ if (Array.isArray(json[k])) return json[k]; }
           return [];
         },
-        error: function () {
+        error: function(){
           $(selector + ' tbody').html('<tr><td colspan="5" class="text-center text-danger">Failed to load data.</td></tr>');
         }
       },
       columns: [
         {
-          data: 'CreatedDate',
-          name: 'CreatedDate',
-          render: function (data, type, row) {
+          data: 'CreatedDate', name: 'CreatedDate',
+          render: function(data, type, row){
             const v = row.CreatedDate || row.createdDate || row.CreatedOn || row.createdOn;
             return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
           }
         },
         {
-          data: 'Code',
-          name: 'AccountNumber',
-          render: function (data, type, row) {
-            return row.AccountNumber || row.accountNumber || row.Code || row.code || '';
-          }
+          data: 'Code', name: 'AccountNumber',
+          render: function(d,t,row){ return row.AccountNumber || row.accountNumber || row.Code || row.code || ''; }
         },
-        {
-          data: 'Name',
-          name: 'Name',
-          render: function (data, type, row) {
-            return row.Name || row.name || row.NameEn || row.nameEn || '';
-          }
-        },
-        {
-          data: 'Class',
-          name: 'Class',
-          render: function (data, type, row) {
-            return row.Class || row.class || '';
-          }
-        },
-        {
-            data: null,
-            orderable: false,
-            searchable: false,
-            className: 'text-end',
-            render: (d, t, row) => actionButtons(row)
-        }
-
+        { data: 'Name',  name: 'Name',  render: (d,t,row) => row.Name || row.name || row.NameEn || row.nameEn || '' },
+        { data: 'Class', name: 'Class', render: (d,t,row) => row.Class || row.class || '' },
+        { data: null, orderable: false, searchable: false, className: 'text-end', render: (d,t,row) => actionButtons(row) }
       ],
       language: { emptyTable: 'No affiliates found' }
     });
 
     tableInitialized = true;
-    window.table = table;
-    window.tableInitialized = true;
   }
 
-  function reloadTable() {
-    if (!tableInitialized) {
-      if ($('#myDataTable').length === 0) {
-        console.error('myDataTable markup missing. Ensure _Data partial is present.');
-        return;
-      }
+  function reloadTable(){
+    if (!tableInitialized){
+      if ($('#myDataTable').length === 0){ console.error('myDataTable markup missing. Ensure _Data partial is present.'); return; }
       initDataTable();
-    } else if (table && table.ajax) {
+    } else if (table && table.ajax){
       table.ajax.reload(null, false);
     }
   }
 
-  // ---------- INIT + EVENTS ----------
-  $(document).ready(function () {
-    if ($.fn.select2) {
-      try { $('#Class,#ParentId,#PostingAllowed').select2({ width: '100%' }); } catch(e){ console.warn('select2 init failed', e); }
+  // ===== INIT + EVENTS =====
+  $(function(){
+    if ($.fn.select2){
+      try { $('#Class1,#ParentId,#HoPcmfAccountId').select2({ width:'100%' }); } catch(e){ console.warn('select2 init failed', e); }
     }
 
-    $('#applyAffiliateFilterBtn').on('click', function (e) { e.preventDefault(); reloadTable(); });
+    $('#applyAffiliateFilterBtn').on('click', function(e){ e.preventDefault(); reloadTable(); });
 
-    $('#resetAffiliateFilterBtn').on('click', function () {
-      const $f = $('#affiliateFilterForm');
-      if ($f.length) $f[0].reset();
-      if ($.fn.select2) { try { $('#Class,#ParentId,#PostingAllowed').val(null).trigger('change'); } catch(_){} }
+    $('#resetAffiliateFilterBtn').on('click', function(){
+      const $f = $('#affiliateFilterForm'); if ($f.length) $f[0].reset();
+      if ($.fn.select2){ try { $('#Class1,#ParentId,#HoPcmfAccountId').val(null).trigger('change'); } catch(_){} }
       $('#createdDateFilters').addClass('d-none');
       reloadTable();
     });
 
-    $('#affiliateFilterForm').on('keypress', 'input,select', function (e) {
-      if (e.which === 13) { e.preventDefault(); reloadTable(); }
+    $('#affiliateFilterForm').on('keypress', 'input,select', function(e){
+      if (e.which === 13){ e.preventDefault(); reloadTable(); }
     });
 
-    // Add Root Affiliate -> EDIT modal
-    $(document).on('click', '#btnAddRootAffiliate', function () {
-      loadIntoEditModal(
-        initUrl,
-        { KEY: '', partialView: '_CreateAffiliateRoot', path: 'new', serviceOption: 'root' }
-      );
+    // Buttons
+    $(document).on('click', '#btnAddRootAffiliate', function(){
+      loadIntoEditModal('@Url.Action("InitializeData", "AffiliateAccount")', { KEY:'', partialView:'_CreateAffiliateRoot', path:'new', serviceOption:'root' });
     });
 
-
-
-    // Row: Details -> DETAILS modal
-      $('#datalistingview').on('click', '.btn-detail', function () {
-      const id = $(this).data('id');
-      if (!id) return;
-      loadIntoDetailsModal(detailUrl, { id: id, partialView: '_AffiliateModals' });
+    $('#datalistingview').on('click', '.btn-detail', function(){
+      const id = $(this).data('id'); if (!id) return;
+      loadIntoDetailsModal('@Url.Action("DetailsPartial", "AffiliateAccount")', { id: id, partialView: '_AffiliateModals' });
     });
 
-    // Row: Add Child -> EDIT modal
-      $('#datalistingview').on('click', '.btn-add', function () {
+    $('#datalistingview').on('click', '.btn-add', function(){
       const parentId = $(this).data('parentid') || '';
-      loadIntoEditModal(initUrl, { KEY: parentId, partialView: '_CreateAffiliate', path: 'new', serviceOption: 'AffiliateAccount' });
+      loadIntoEditModal('@Url.Action("InitializeData", "AffiliateAccount")', { KEY: parentId, partialView: '_CreateAffiliate', path: 'new', serviceOption: 'AffiliateAccount' });
     });
 
-    // Row: Edit -> EDIT modal
-      $('#datalistingview').on('click', '.btn-edit', function () {
-      const id = $(this).data('id');
-      if (!id) return;
-      loadIntoEditModal(initUrl, { KEY: id, partialView: '_CreateAffiliate', path: 'get', serviceOption: 'AffiliateAccount' });
+    $('#datalistingview').on('click', '.btn-edit', function(){
+      const id = $(this).data('id'); if (!id) return;
+      loadIntoEditModal('@Url.Action("InitializeData", "AffiliateAccount")', { KEY: id, partialView: '_CreateAffiliate', path: 'get', serviceOption: 'AffiliateAccount' });
     });
   });
 
-})(jQuery);
+  // Optional: preload on full-page edit forms (not modal)
+  $(function () {
+    const $cls = $('#Class');
+    if ($cls.length) {
+      const val = $cls.val();
+      if (val) onAffiliateClassChange(val);
+    }
+  });
+
+})(jQuery, window);
     </script>
 }
-

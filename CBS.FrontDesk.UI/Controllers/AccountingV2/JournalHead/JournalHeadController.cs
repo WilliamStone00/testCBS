@@ -7,6 +7,7 @@ using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -341,6 +342,51 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             return PartialView("_DestDetails", entry);
         }
 
+
+
+
+        [HttpGet]
+       
+        public async Task<ActionResult> DownloadJournalHeadExcel(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction("Listing", new { error = "Invalid journal ID" });
+
+            try
+            {
+                // ✅ Fetch the journal entry by ID instead of by reference
+                var model = await _journalHeadService.GetJournalSourceByIdAsync(id);
+                if (model == null)
+                    return HttpNotFound();
+
+                // ✅ Prepare file name and paths
+                string fileName = $"JournalHead_{model.Reference}_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // ✅ Generate Excel file
+                JournalHeadExcelExportGenerator.GenerateJournalHeadExcel(model, filePath, exportedBy);
+
+                // ✅ Read and send file to browser
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+                // Delete temp file after sending
+                System.IO.File.Delete(filePath);
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle gracefully
+                Console.WriteLine($"Excel Export Error: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while exporting to Excel." }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

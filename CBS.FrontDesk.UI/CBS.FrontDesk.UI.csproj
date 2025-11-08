@@ -445,6 +445,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingV2DS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2091,6 +2102,7 @@
     <Compile Include="Controllers\DailyCollectorManagement\ManualDailyCollectionController.cs" />
     <Compile Include="Controllers\DailyCollectorManagement\TransactionDetailsController.cs" />
     <Compile Include="Controllers\DailySaverManagementP\DailySaverManagementController.cs" />
+    <Compile Include="Controllers\LiaisonMappingV2\LiaisonMappingConfigController.cs" />
     <Compile Include="Controllers\Loan\LoanAdjustmentP\LoanAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberAdjustmentConsole\MemberAdjustmentConsoleController.cs" />
     <Compile Include="Controllers\MemberReceiptsP\MemberReceiptController.cs" />
@@ -7693,6 +7705,17 @@
     <Content Include="Views\MobileMoneyConfigV2\Index.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Create.cshtml" />
     <Content Include="Views\MobileMoneyConfigV2\_Data.cshtml" />
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsc">
+      <DependentUpon>AccountingV2DS.xsd</DependentUpon>
+    </Content>
+    <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AccountingV2DS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xss">
+      <DependentUpon>AccountingV2DS.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -8667,6 +8690,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalEntries.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Accounting Journal Receipt.cs</LastGenOutput>
@@ -10879,6 +10906,8 @@
     <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
     <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\List.cshtml" />
+    <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDataTable.cshtml" />
     <Content Include="Views\CollectorCommission\Index.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
     <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />

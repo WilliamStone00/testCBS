@@ -10,6 +10,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.Expressions;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
 {
@@ -69,7 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             var Chartofaccount = await _affiliateAccountMockService.GetAffiliatesFromMockAsync();
             ViewBag.HoPcmfAccountId = Chartofaccount;*/
 
-            var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts1();
+            var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts();
             ViewBag.AffiliateAccounts = affiliateAccounts;
 
             var classes = _chartOfAccountsV.GetAllClass2();
@@ -135,6 +137,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                 model.RequiresMapping = false;
                 model.Language = _branchAccountService.GetUserLanguage();
                 model.AffiliateId = "1";
+                model.ChangeType = "CreateRequest";
 
 
                 if (serviceOption == "root")
@@ -167,7 +170,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             else
             {
                 var data = await _branchAccountService.GetByIdAsync(KEY);
-                return PartialView(partialView, data);
+
+                var model= new PendingAccountRequest(data);
+                if (!string.IsNullOrWhiteSpace(data?.ParentId))
+                {
+                    // set ParentId so the view receives it in the hidden field
+
+                    var parentData = await _branchAccountService.GetByIdAsync(data.ParentId);
+                    model.ParentId = parentData?.Id;
+                    model.ParentAccountNumber = parentData?.Code;
+
+
+                }
+
+                return PartialView(partialView, model);
 
             }
         }

@@ -1,4 +1,7 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +19,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string AffiliateId { get; set; }
         public string BranchId { get; set; }
         public string Status { get; set; }
-        public string Code { get; set; }
+        public string Code { get; set; }// Pending / Approved / Rejected / etc.
+        public string ChangeType { get; set; }            // CreateRequest / UpdateRequest
+        public string UpdateReference { get; set; }       // Target account Id or Code (for UpdateRequest)
+
+        // ---- Names (multilingual) ----
+        public string Name { get; set; }
+
+        // ---- Identity & meta ----
+        public string RequestedBy { get; set; }
+        public string ApprovedBy { get; set; }
         public string Class { get; set; }
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
-        public bool? IncludeDeleted { get; set; }
+        public bool IncludeDeleted { get; set; }
         public string Language { get; set; }
     }
 
@@ -32,12 +44,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string AffiliateName { get; set; }
         public string BranchId { get; set; }
         public string BranchName { get; set; }
+        public string BranchCode { get; set; }
         public string AffiliateAccountId { get; set; }
         public string AffiliateAccountName { get; set; }
         public string AffiliateAccountCode { get; set; }
         public string HoPcmfAccountId { get; set; }
         public string HoPcmfAccountName { get; set; }
         public string HoPcmfAccountCode { get; set; }
+        public string UpdateReference { get; set; }
+        public string ChangeType { get; set; }// UpdateRequest Or CreateRequest
+
 
         public string Code { get; set; } 
         public string NameEn { get; set; } 
@@ -48,6 +64,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string ParentId { get; set; }
         public string PathSeed { get; set; }
         public int? DepthSeed { get; set; }
+        public string ParentCode { get; set; }
+
 
         public bool PostingAllowed { get; set; }
         public bool RequiresMapping { get; set; }
@@ -89,6 +107,61 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public bool RequiresMapping { get; set; } = false;
         public string Notes { get; set; }
         public string Language { get; set; }
+        public string UpdateReference { get; set; }
+        public string ChangeType { get; set; }// UpdateRequest Or CreateRequest
+
+        public PendingAccountRequest()
+        {
+            
+        }
+
+        // Constructor that converts from AffiliateAccountDto
+        public PendingAccountRequest(AffiliateAccountDto affiliateAccountDto, string userLanguage=null,  string parentAccountNumber = null)
+        {
+
+            UpdateReference = affiliateAccountDto.Id;
+            Scope = "Affiliate";
+            IsOrigin = false;
+            AffiliateId = affiliateAccountDto.AffiliateId;
+            BranchId = null;
+            AffiliateAccountId = affiliateAccountDto.Id;
+            HoPcmfAccountId = affiliateAccountDto.HoPcmfAccountId;
+            Code = affiliateAccountDto.Code;
+            NameEn = affiliateAccountDto.Name;
+            NameFr = affiliateAccountDto.Name;
+            Class = affiliateAccountDto.Class;
+            ParentId = affiliateAccountDto.ParentId;
+            ParentAccountNumber = parentAccountNumber;
+            PostingAllowed = affiliateAccountDto.PostingAllowed;
+            RequiresMapping = false;
+            Notes = $"Created from affiliate account: {affiliateAccountDto.Name}";
+            Language = userLanguage ??  "en";
+            ChangeType = "UpdateRequest";
+        }
+
+        public  PendingAccountRequest(BranchAccountResponse branchAccount, string userLanguage = null, bool isOrigin = false, string parentAccountNumber = null)
+        {
+
+            UpdateReference = branchAccount.Id;
+            Scope = branchAccount.Scope ?? "Branch";
+            IsOrigin = isOrigin;
+            AffiliateId = branchAccount.BranchId;
+            BranchId = branchAccount.BranchId;
+            AffiliateAccountId = branchAccount.AffiliateAccountId;
+            HoPcmfAccountId = null;
+            Code = branchAccount.Code;
+            NameEn = branchAccount.Name;
+            NameFr = branchAccount.Name;
+            Class = branchAccount.Class;
+            ParentId = branchAccount.ParentId;
+            ParentAccountNumber = null;
+            PostingAllowed = branchAccount.PostingAllowed;
+            RequiresMapping = branchAccount.RequiresMapping;
+            Notes = branchAccount.Notes ?? $"Created from branch account: {branchAccount.Name}";
+            Language = userLanguage ?? branchAccount.Language ?? "en";
+            ChangeType = "UpdateRequest";
+
+        }
     }
 
     public class RequestAction
