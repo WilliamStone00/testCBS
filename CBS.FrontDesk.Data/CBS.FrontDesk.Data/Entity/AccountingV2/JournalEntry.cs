@@ -111,7 +111,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string ExternalOperationType { get; set; } = null;
         public string PostMode { get; set; } = null;
         public string OperationCode { get; set; } 
-        public string BranchId { get; set; } 
+        public string BranchId { get; set; }
+        public string BranchNamw { get; set; }
         public string Memo { get; set; } = null;
         public string Stage { get; set; }
         public string State { get; set; }
@@ -140,6 +141,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalCredit { get; set; }
         public string CorrelationId { get; set; } = null;
         public string CounterpartyBranchId { get; set; } = null;
+        public string CounterpartyBranchName { get; set; } = null;
         public string HeadOfficeBranchId { get; set; } = null;
         public string AuxiliaryRef { get; set; } = null;
         public bool IsInterBranch { get; set; }
@@ -216,7 +218,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
         public string AccountNumber  { get; set; }
         public string AccountName { get; set; }
-
+        public string BranchName { get; set; }
 
     }
 
@@ -249,8 +251,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalDebit { get; set; }
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
+
+        
     }
-    
+   
 
     // ==============================================
     // RECEIPT
