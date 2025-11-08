@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
+namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 {
     //[CheckSessionTimeOut]
     public class CollectorCommissionController : Controller

@@ -88,6 +88,15 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string Month { get; set; } = string.Empty;
         public string OperationType { get; set; } = string.Empty;
         public List<MemberStat> MemberStats { get; set; } = new List<MemberStat>();
+        public List<StakeholderShare> SharedAmounts = new List<StakeholderShare>();
+    }
+
+    public class StakeholderShare
+    {
+        public string StakeHolderId { get; set; }
+        public string Stakeholder { get; set; }
+        public decimal Percentage { get; set; }
+        public decimal Amount { get; set; }
     }
 
     public class MemberStat
