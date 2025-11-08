@@ -1,6 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;

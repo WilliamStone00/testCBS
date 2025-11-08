@@ -127,9 +127,94 @@
             <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-card-account-details-outline me-1"></i> Commission Summary </h6>
         </div>
         <div class="card-body">
-            <div class="row" id="summaryContent">
-                <!-- Summary content will be loaded here -->
+            <!-- Basic Information Section -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="mdi mdi-account-group me-2"></i>Collector Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-medium">Collector:</span>
+                                <span id="summaryCollectorName">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-medium">Branch:</span>
+                                <span id="summaryBranchName">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-medium">Period:</span>
+                                <span id="summaryPeriod">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card h-100 border">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="mdi mdi-chart-bar me-2"></i>Activity Overview</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3 mb-2">
+                                    <div class="border rounded p-3">
+                                        <h5 class="text-primary mb-1" id="summaryTotalMembers">0</h5>
+                                        <small class="text-muted">Total Members with Activity</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <div class="border rounded p-3">
+                                        <h5 class="text-primary mb-1" id="summaryTotalValue">$0.00</h5>
+                                        <small class="text-muted">Total Value Collected</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <div class="border rounded p-3">
+                                        <h5 class="text-primary mb-1" id="summaryTotalFee">$0.00</h5>
+                                        <small class="text-muted">Total Fee Charged</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <div class="border rounded p-3">
+                                        <h5 class="text-primary mb-1" id="summaryTotalToDistribute">$0.00</h5>
+                                        <small class="text-muted">Amount to Distribute</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Distribution Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="mdi mdi-cash-multiple me-2"></i>Distribution Breakdown</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="distributionTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Stakeholder</th>
+                                            <th class="text-end">Percentage</th>
+                                            <th class="text-end">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Distribution data will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mt-3">
                 <div class="col-12 text-end">
                     <button type="button" id="btnExport" class="btn btn-success me-2">
@@ -277,10 +362,11 @@
 
                     if (response && response.length > 0) {
                         $.each(response, function (index, collector) {
-                            var collectorId = collector.CustomerId || collector.collectorId || collector.Id;
-                            var collectorName = collector.FullName || collector.collectorName || collector.Name;
+                            // Since response is SelectListItem, use Value and Text properties
+                            var collectorId = collector.Value; // This will be "CustomerId|UserId"
+                            var collectorName = collector.Text; // This will be "CustomerId|FullName"
 
-                            if (collectorId && collectorName && collectorId !== "All") {
+                            if (collectorId && collectorName) {
                                 options += '<option value="' + collectorId + '">' + collectorName + '</option>';
                             }
                         });
@@ -357,35 +443,34 @@
                 return;
             }
 
-            // Update summary - handle potential null/undefined values
-            var summaryHtml = `
-                <div class="col-md-3">
-                    <div class="text-center">
-                        <h6 class="text-muted">Collector</h6>
-                        <h4>${data.CollectorName || 'N/A'}</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center">
-                        <h6 class="text-muted">Branch</h6>
-                        <h4>${data.BranchName || 'N/A'} (${data.BranchCode || 'N/A'})</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center">
-                        <h6 class="text-muted">Period</h6>
-                        <h4>${data.Month || 'N/A'}</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="text-center">
-                        <h6 class="text-muted">Total Members</h6>
-                        <h4>${(data.MemberStats && data.MemberStats.length) ? data.MemberStats.length : 0}</h4>
-                    </div>
-                </div>
-            `;
+            // Update basic information
+            $('#summaryCollectorName').text(data.CollectorName || 'N/A');
+            $('#summaryBranchName').text(data.BranchName || 'N/A');
+            $('#summaryPeriod').text(data.Month || 'N/A');
 
-            $('#summaryContent').html(summaryHtml);
+            // Update activity overview
+            $('#summaryTotalMembers').text(data.totalMembersWithActivity || 0);
+            $('#summaryTotalValue').text(formatCurrency(data.totalValueCollected || 0));
+            $('#summaryTotalFee').text(formatCurrency(data.totalFeeCharged || 0));
+            $('#summaryTotalToDistribute').text(formatCurrency(data.totalAmountToDistribute || 0));
+
+            // Update distribution table
+            var distributionTable = $('#distributionTable tbody');
+            distributionTable.empty();
+
+            if (data.sharedAmounts && data.sharedAmounts.length > 0) {
+                $.each(data.sharedAmounts, function(index, item) {
+                    var row = '<tr>' +
+                        '<td>' + (item.stakeholder || 'N/A') + '</td>' +
+                        '<td class="text-end">' + (item.percentage ? item.percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
+                        '<td class="text-end">' + formatCurrency(item.amount || 0) + '</td>' +
+                        '</tr>';
+                    distributionTable.append(row);
+                });
+            } else {
+                distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
+            }
+
             $('#commissionSummary').removeClass('d-none');
 
             // Update table - safely handle DataTable operations

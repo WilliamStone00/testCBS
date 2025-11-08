@@ -706,8 +706,12 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
             }
             var response = await _customerApiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(string.Format(APICallHelper.GetDaillycollectors, branchId));
 
+
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {
+
+               
+
                 return response.ApiResponseData.Data.Where(x=>x.BranchId==branchId).Select(c => new SelectListItem
                 {
                     Value = $"{c.CustomerId}|{c.UserId}",
