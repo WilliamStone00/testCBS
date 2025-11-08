@@ -2028,7 +2028,7 @@
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
@@ -10879,6 +10879,9 @@
     <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
     <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
+    <Content Include="Views\CollectorCommission\Index.cshtml" />
+    <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
+    <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
