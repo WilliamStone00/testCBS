@@ -115,8 +115,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate
             {
             try
             {
+                int order = 2;
                 // This would call your service to get collectors by branch
-                var collectors = await _manualService.GetCollectorsAsSelectListAsync(branchId);
+                var collectors = await _manualService.GetCollectorsAsSelectListAsync(branchId,order);
 
                 return Json(collectors, JsonRequestBehavior.AllowGet);
                 }

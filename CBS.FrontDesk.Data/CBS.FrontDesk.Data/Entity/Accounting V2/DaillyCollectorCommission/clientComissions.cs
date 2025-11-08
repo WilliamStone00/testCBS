@@ -70,6 +70,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public double BranchShare { get; set; }
         public double PaymentGl { get; set; }
 
+        public string TotalMembersWithActivity { get; set; }
+        public string TotalValueCollected { get; set; }
+        public string TotalFeeCharged { get; set; }
+        public string TotalAmountToDistribute { get; set; }
+
+        public string Stakeholder { get; set; }
+        public string Percentage { get; set; }
+        public string Amount { get; set; }
+
+
         public string CollectorId { get; set; } = string.Empty;
         public string CollectorName { get; set; } = string.Empty;
         public string BranchId { get; set; } = string.Empty;

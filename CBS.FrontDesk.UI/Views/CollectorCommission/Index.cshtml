@@ -239,11 +239,9 @@
                     <tr>
                         <th>Member Id</th>
                         <th>Member Name</th>
-                        <th>Account Number</th>
                         <th>Total Activity Amount</th>
                         <th>Fee Charged</th>
-                        <th>Actual Balance</th>
-                        <th>Last Transaction Date</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -449,21 +447,21 @@
             $('#summaryPeriod').text(data.Month || 'N/A');
 
             // Update activity overview
-            $('#summaryTotalMembers').text(data.totalMembersWithActivity || 0);
-            $('#summaryTotalValue').text(formatCurrency(data.totalValueCollected || 0));
-            $('#summaryTotalFee').text(formatCurrency(data.totalFeeCharged || 0));
-            $('#summaryTotalToDistribute').text(formatCurrency(data.totalAmountToDistribute || 0));
+            $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
+            $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
+            $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
+            $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
 
             // Update distribution table
             var distributionTable = $('#distributionTable tbody');
             distributionTable.empty();
 
-            if (data.sharedAmounts && data.sharedAmounts.length > 0) {
-                $.each(data.sharedAmounts, function(index, item) {
+            if (data.SharedAmounts && data.SharedAmounts.length > 0) {
+                $.each(data.SharedAmounts, function(index, item) {
                     var row = '<tr>' +
-                        '<td>' + (item.stakeholder || 'N/A') + '</td>' +
-                        '<td class="text-end">' + (item.percentage ? item.percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
-                        '<td class="text-end">' + formatCurrency(item.amount || 0) + '</td>' +
+                        '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
+                        '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
+                        '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
                         '</tr>';
                     distributionTable.append(row);
                 });
@@ -479,16 +477,13 @@
                     // Use DataTable API if available
                     commissionTable.clear();
 
-                    if (data.memberStats && data.memberStats.length > 0) {
-                        $.each(data.memberStats, function (index, member) {
+                    if (data.MemberStats && data.MemberStats.length > 0) {
+                        $.each(data.MemberStats, function (index, member) {
                             commissionTable.row.add([
-                                member.memberId || '-',
-                                member.memberName || '-',
-                                member.accountNumber || '-',
-                                formatCurrency(member.totalActivityAmount || 0),
-                                formatCurrency(member.feeCharged || 0),
-                                formatCurrency(member.actualBalance || 0),
-                                member.lastTransactionDate ? formatDate(member.lastTransactionDate) : '-'
+                                member.MemberId || '-',
+                                member.MemberName || '-',
+                                formatCurrency(member.TotalActivityAmount || 0),
+                                formatCurrency(member.FeeCharged || 0),
                             ]);
                         });
                     } else {
