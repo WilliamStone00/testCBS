@@ -79,30 +79,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
 
-            //this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            //this.HttpContext.Session["ReportName"] = $"TrialBalance6Columns.rpt";
-            //this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt";
-            //this.HttpContext.Session["rpttitle"] = $"TB6";
-
-
-            //if (path == "loan")
-            //{
-            //    this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            //    this.HttpContext.Session["ReportName"] = $"MainReportLoan.rpt";
-            //    this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt";
-            //    this.HttpContext.Session["rpttitle"] = $"MemberLoanReceipts";
-            //    return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
-
-            //}
-            //else
-            //{
-            //    this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            //    this.HttpContext.Session["ReportName"] = $"MainReport.rpt";
-            //    this.HttpContext.Session["rptpath"] = $"~/AppFiles/Reporting/Transactions/Payment/MainReport.rpt";
-            //    this.HttpContext.Session["rpttitle"] = $"MemberReceipts";
-            //    return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
-
-            //}
         }
 
 
