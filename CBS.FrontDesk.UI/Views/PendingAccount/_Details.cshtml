@@ -26,9 +26,14 @@
                 <tr><td class="fw-bold">Name (FR)</td><td>@(Model?.NameFr ?? "-")</td></tr>
                 <tr><td class="fw-bold">Class</td><td>@(Model?.Class ?? "-")</td></tr>
                 <tr><td class="fw-bold">Display Name</td><td>@(Model?.Name ?? "-")</td></tr>
+
+                <!-- ✅ Fixed: show ParentId correctly, and also show ParentCode -->
                 <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>
-                @*<tr><td class="fw-bold">Path Seed</td><td>@(Model?.PathSeed ?? "-")</td></tr>*@
-                @*<tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
+                <tr><td class="fw-bold">Parent Code</td><td>@(Model?.ParentCode ?? "-")</td></tr>
+
+                <!-- ✅ Re-enabled seeds for hierarchy tracking -->
+               @* <tr><td class="fw-bold">Path Seed</td><td>@(Model?.PathSeed ?? "-")</td></tr>
+                <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
             </table>
         </div>
 
@@ -38,15 +43,16 @@
             <table class="table table-sm table-bordered">
                 <tr>
                     <td class="fw-bold">Affiliate</td>
-                    <td>
-                        @((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")
-                    </td>
+                    <td>@((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Branch</td>
-                    <td>
-                        @((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")
-                    </td>
+                    <td>@((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")</td>
+                </tr>
+                <!-- ✅ New: show BranchCode explicitly -->
+                <tr>
+                    <td class="fw-bold">Branch Code</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchCode) ? "-" : Model.BranchCode)</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Affiliate Account</td>
@@ -74,31 +80,47 @@
                         @Html.Raw(hoText + hoCode)
                     </td>
                 </tr>
+
+                <!-- ✅ New: Change type + Update reference -->
+                <tr>
+                    <td class="fw-bold">Change Type</td>
+                    <td>
+                        @{
+                            var ct = Model?.ChangeType ?? "";
+                            var ctCls = "bg-secondary";
+                            if (System.Text.RegularExpressions.Regex.IsMatch(ct, "create", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                ctCls = "bg-primary";
+                            }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(ct, "update", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                            {
+                                ctCls = "bg-info";
+                            }
+                        }
+                        <span class="badge @ctCls">@(!string.IsNullOrWhiteSpace(ct) ? ct : "-")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Update Reference</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.UpdateReference) ? "-" : Model.UpdateReference)</td>
+                </tr>
+
                 <tr><td class="fw-bold">Posting Allowed</td><td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td></tr>
                 <tr><td class="fw-bold">Requires Mapping</td><td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td></tr>
+
+                <!-- Keep Request Reference here for quick access -->
                 <tr><td class="fw-bold">Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
-                @*<tr><td class="fw-bold">Correlation Id</td><td>@(Model?.CorrelationId ?? "-")</td></tr>*@
+
+                <!-- Primary status badge -->
                 <tr>
                     <td class="fw-bold">Status</td>
                     <td>
                         @{
                             var s = Model?.Status ?? string.Empty;
                             var cls = "bg-secondary";
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls = "bg-warning";
-                            }
-
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls = "bg-success";
-                            }
-
-
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls = "bg-danger";
-                            }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-warning"; }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-success"; }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-danger"; }
                         }
                         <span class="badge @cls">@(!string.IsNullOrWhiteSpace(s) ? s : "-")</span>
                     </td>
@@ -106,6 +128,7 @@
             </table>
         </div>
     </div>
+
     <!-- Request / Approval Section -->
     <div class="row mt-3">
         <div class="col-12">
@@ -150,7 +173,6 @@
         </div>
     </div>
 
-
     <!-- Audit & Lifecycle Section -->
     <div class="row mt-3">
         <div class="col-md-6">
@@ -179,21 +201,9 @@
                         @{
                             var s2 = Model?.Status ?? string.Empty;
                             var cls2 = "bg-secondary";
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls2 = "bg-warning";
-                            }
-
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls2 = "bg-success";
-                            }
-
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                cls2 = "bg-danger";
-                            }
-
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-warning"; }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-success"; }
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-danger"; }
                         }
                         <span class="badge @cls2">@(!string.IsNullOrWhiteSpace(s2) ? s2 : "-")</span>
                     </td>

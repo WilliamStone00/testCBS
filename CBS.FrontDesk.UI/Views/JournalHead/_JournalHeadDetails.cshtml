@@ -115,9 +115,17 @@
                 {
                     <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
                 }
+                @if (!string.IsNullOrWhiteSpace(Model.BranchName))
+                {
+                    <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
+                }
                 @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
                 {
                     <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchName))
+                {
+                    <tr><th class="bg-label">Counterparty Branch Name</th><td>@Model.CounterpartyBranchName</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.HeadOfficeBranchId))
                 {
@@ -195,21 +203,9 @@
                 {
                     <tr><th class="bg-label">Workflow Ticket Notes</th><td>@Model.WorkflowTicketNotes</td></tr>
                 }
-
-
-
-                <tr><th class="bg-label">Ticket Type</th><td>@Model.TicketType</td></tr>
-                @*@if (!string.IsNullOrWhiteSpace(Model.Narrative))
-
-
-        {
-            <tr><th class="bg-label">Narration</th><td>@Html.Raw(Model.Narrative)</td></tr>
-        }
-        @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
-        }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 {
-                    <tr><th class="bg-label">CreatedBy</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
+                    <tr><th class="bg-label">Created By</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))
                 {
@@ -253,13 +249,64 @@
         </table>
     }
 
+    <!-- ================= RECONCILED LEDGER LINES ================= -->
+    @if (Model.ReconciledLedgerLines != null && Model.ReconciledLedgerLines.Any(r =>
+        !string.IsNullOrWhiteSpace(r.BranchId) || !string.IsNullOrWhiteSpace(r.DrCr) || r.DebitAmount != 0 || r.CreditAmount != 0))
+    {
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+            <i class="mdi mdi-book-account-outline me-1"></i> Journal Entries
+        </h6>
+        <table class="table table-sm table-bordered mb-3 align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Branch</th>
+                    <th>Account Number</th>
+                    <th>Account Name</th>
+                    <th>Description</th>
+                    <th>Auxiliary Ref</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal totalDebit = 0;
+                    decimal totalCredit = 0;
+                    var sortedLines = Model.ReconciledLedgerLines
+                        .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) || !string.IsNullOrWhiteSpace(r.DrCr) || r.DebitAmount != 0 || r.CreditAmount != 0)
+                        .OrderBy(r => r.Seq)
+                        .ToList();
+                }
 
+                @foreach (var rline in sortedLines)
+                {
+                    totalDebit += Math.Abs(rline.DebitAmount);
+                    totalCredit += Math.Abs(rline.CreditAmount);
 
-
-    <!-- ================= JOURNAL LINE ENTRIES ================= -->
-    @if (Model.Lines != null && Model.Lines.Any(l =>
+                    <tr>
+                        <td>@rline.BranchId</td>
+                        <td>@rline.AccountNumber</td>
+                        <td>@rline.AccountName</td>
+                        <td>@rline.Description</td>
+                        <td>@rline.AuxiliaryRef</td>
+                        <td>@Math.Abs(rline.DebitAmount).ToString("N0")</td>
+                        <td>@Math.Abs(rline.CreditAmount).ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="fw-bold bg-light">
+                    <td colspan="5" class="text-end">Total:</td>
+                    <td>@totalDebit.ToString("N0")</td>
+                    <td>@totalCredit.ToString("N0")</td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+    else if (Model.Lines != null && Model.Lines.Any(l =>
         !string.IsNullOrWhiteSpace(l.AccountName) || !string.IsNullOrWhiteSpace(l.Description) || l.Amount != 0))
     {
+        <!-- ================= JOURNAL LINE ENTRIES ================= -->
         <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
             <i class="mdi mdi-table me-1"></i> Journal Line Entries
         </h6>
@@ -309,62 +356,6 @@
             </div>
         </div>
     }
-
-    <!-- ================= RECONCILED LEDGER LINES ================= -->
-    @if (Model.ReconciledLedgerLines != null && Model.ReconciledLedgerLines.Any(r =>
-        !string.IsNullOrWhiteSpace(r.BranchId) || !string.IsNullOrWhiteSpace(r.DrCr) || r.DebitAmount != 0 || r.CreditAmount != 0))
-    {
-        <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-            <i class="mdi mdi-book-account-outline me-1"></i> Reconciled Ledger Lines
-        </h6>
-        <table class="table table-sm table-bordered mb-3 align-middle text-center">
-            <thead class="table-light">
-                <tr>
-                    <th>Branch</th>
-                    <th>Account Number</th>
-                    <th>Account Name</th>
-                    <th>Description</th>
-                    <th>Auxiliary Ref</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    decimal totalDebit = 0;
-                    decimal totalCredit = 0;
-                    var sortedLines = Model.ReconciledLedgerLines
-                        .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) || !string.IsNullOrWhiteSpace(r.DrCr) || r.DebitAmount != 0 || r.CreditAmount != 0)
-                        .OrderBy(r => r.Seq)
-                        .ToList();
-                }
-
-                @foreach (var rline in sortedLines)
-                {
-                    totalDebit += Math.Abs(rline.DebitAmount);
-                    totalCredit += Math.Abs(rline.CreditAmount);
-
-                    <tr>
-                        <td>@rline.BranchId</td>
-                        <td>@rline.AccountNumber</td>
-                        <td>@rline.AccountName</td>
-                        <td>@rline.Description</td>
-                        <td>@rline.AuxiliaryRef</td>
-                        <td>@Math.Abs(rline.DebitAmount).ToString("N0")</td>
-                        <td>@Math.Abs(rline.CreditAmount).ToString("N0")</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr class="fw-bold bg-light">
-                    <td colspan="5" class="text-end">Total:</td>
-                    <td>@totalDebit.ToString("N0")</td>
-                    <td>@totalCredit.ToString("N0")</td>
-                </tr>
-            </tfoot>
-        </table>
-    }
-
 
     <!-- ================= RECEIPT ================= -->
     @if (Model.Receipt != null &&
@@ -422,13 +413,19 @@
     </button>
 
     <div>
+
+
+
+        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> Export Excel
+        </button>
+
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i>
             <span class="btn-text">Approve</span>
         </button>
     </div>
 </div>
-
 
 
 
@@ -464,10 +461,11 @@
                          .addClass('mdi-loading mdi-spin');
                     $text.text('Approving...');
 
-                    const payload = {
+                   const payload = {
                         Reference: '@Model.Reference',
                         BranchId: '@Model.BranchId',
-                        Approver: '@User.Identity.Name'
+                        Approver: '@User.Identity.Name',
+                        TicketType: 'SOURCE'
                     };
 
                     $.ajax({
@@ -505,5 +503,16 @@
                 }
             ).set('labels', {ok:'Yes', cancel:'No'}); // Customize buttons
         });
+
+
+          $('#btnExportExcel').click(function () {
+             const id = '@Model.Id';
+             if (!id) {
+                 alert("Invalid journal ID!");
+                 return;
+             }
+
+             window.location.href = '@Url.Action("DownloadJournalHeadExcelSheet", "JournalHead")' + '?id=' + id;
+         });
     });
 </script>

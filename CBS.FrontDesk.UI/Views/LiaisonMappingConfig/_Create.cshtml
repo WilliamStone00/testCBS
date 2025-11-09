@@ -1,7 +1,42 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping
+<!-- Header -->
+<div class="row mb-2">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body text-center py-2">
+                <h5 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-bank-outline me-2"></i> Liaison Mapping Configuration
+                </h5>
+                <p class="small mb-0">
+                    Create or edit a liaison mapping between branches and GL accounts.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Tips -->
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Liaison Mapping</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLiaisonTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLiaisonTips" class="collapse">
+        <div class="card-body py-2">
+            <ul class="mb-0 small">
+                <li><strong>Branch:</strong> Select the main branch for the mapping.</li>
+                <li><strong>Counterparty Branch:</strong> Select the branch to map against.</li>
+                <li><strong>Accounts:</strong> Assign correct asset and liability accounts.</li>
+                <li><strong>Status:</strong> Only authorized users can modify mappings.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Form -->
 <fieldset class="fieldset-custom">
-    <legend>Liaison Mapping Configuration</legend>
 
     @using (Html.BeginForm("Create", "LiaisonMappingConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
@@ -10,58 +45,50 @@
         <div class="row gy-3">
             <!-- Branch -->
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.BranchId,
-                        new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control select2", @id = "BranchId", @onchange = "LoadBranchAccounts(this.value)" }
-                    )
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                    <label for="BranchId">Branch</label>
-                </div>
+                @Html.LabelFor(m => m.BranchId, "Select Branch", htmlAttributes: new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.BranchId,
+                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2", @id = "BranchId", @onchange = "LoadBranchAccounts(this.value)" }
+                )
+                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
             </div>
 
             <!-- Counterparty Branch -->
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.CounterpartyBranchId,
-                        new SelectList(ViewBag.CounterpartyBranches, "Id", "Name"),
-                        "--- Select Counterparty Branch ---",
-                        new { @class = "form-control select2", id = "CounterpartyBranchId" }
-                    )
-                    @Html.ValidationMessageFor(m => m.CounterpartyBranchId, "", new { @class = "text-danger" })
-                    <label for="CounterpartyBranchId">Counterparty Branch</label>
-                </div>
+                @Html.LabelFor(m => m.CounterpartyBranchId, "Select Counterparty Branch", htmlAttributes: new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.CounterpartyBranchId,
+                    new SelectList(ViewBag.CounterpartyBranches, "Id", "Name"),
+                    "--- Select Counterparty Branch ---",
+                    new { @class = "form-control select2", @id = "CounterpartyBranchId" }
+                )
+                @Html.ValidationMessageFor(m => m.CounterpartyBranchId, "", new { @class = "text-danger" })
             </div>
 
             <!-- Due From Asset Account -->
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.DueFromAssetAccountId,
-                        new SelectList(ViewBag.Accounts, "Value", "Text"),
-                        "--- Select Due From Account ---",
-                        new { @class = "form-control select2", id = "DueFromAssetAccountId" }
-                    )
-                    @Html.ValidationMessageFor(m => m.DueFromAssetAccountId, "", new { @class = "text-danger" })
-                    <label for="DueFromAssetAccountId">Due From Asset Account</label>
-                </div>
+                @Html.LabelFor(m => m.DueFromAssetAccountId, "Due From Asset Account", htmlAttributes: new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.DueFromAssetAccountId,
+                    new SelectList(ViewBag.Accounts, "Value", "Text"),
+                    "--- Select Due From Account ---",
+                    new { @class = "form-control select2", @id = "DueFromAssetAccountId" }
+                )
+                @Html.ValidationMessageFor(m => m.DueFromAssetAccountId, "", new { @class = "text-danger" })
             </div>
 
             <!-- Due To Liability Account -->
             <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(
-                        m => m.DueToLiabilityAccountId,
-                        new SelectList(ViewBag.Accounts, "Value", "Text"),
-                        "--- Select Due To Account ---",
-                        new { @class = "form-control select2", id = "DueToLiabilityAccountId" }
-                    )
-                    @Html.ValidationMessageFor(m => m.DueToLiabilityAccountId, "", new { @class = "text-danger" })
-                    <label for="DueToLiabilityAccountId">Due To Liability Account</label>
-                </div>
+                @Html.LabelFor(m => m.DueToLiabilityAccountId, "Due To Liability Account", htmlAttributes: new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.DueToLiabilityAccountId,
+                    new SelectList(ViewBag.Accounts, "Value", "Text"),
+                    "--- Select Due To Account ---",
+                    new { @class = "form-control select2", @id = "DueToLiabilityAccountId" }
+                )
+                @Html.ValidationMessageFor(m => m.DueToLiabilityAccountId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -69,11 +96,11 @@
         <div class="mt-4 d-flex justify-content-end gap-2">
             @if (ViewBag.Key != null)
             {
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
             }
             else
             {
-                <button type="submit" class="btn btn-primary">Save Mapping</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save Mapping</button>
                 <button type="reset" class="btn btn-outline-secondary">Reset</button>
             }
         </div>
@@ -82,53 +109,53 @@
 
 
 <script>
-    // Charger les comptes en fonction de la branche sélectionnée
-    function LoadBranchAccounts(branchId) {
-        if (!branchId) {
-            ResetAccountDropdowns();
-            return;
+        // Charger les comptes en fonction de la branche sélectionnée
+        function LoadBranchAccounts(branchId) {
+            if (!branchId) {
+                ResetAccountDropdowns();
+                return;
+            }
+
+            $('#DueFromAssetAccountId, #DueToLiabilityAccountId')
+                .empty()
+                .append('<option value="">Loading...</option>')
+                .prop('disabled', true);
+
+            $.ajax({
+                url: '@Url.Action("Ajaxloader", "LiaisonMappingConfig")',
+                type: 'GET',
+                data: { Key: branchId },
+                success: function (data) {
+                    ResetAccountDropdowns();
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            $('#DueFromAssetAccountId').append($('<option>', { value: item.Value, text: item.Text }));
+                            $('#DueToLiabilityAccountId').append($('<option>', { value: item.Value, text: item.Text }));
+                        });
+                    } else {
+                        $('#DueFromAssetAccountId').append('<option value="">No accounts found</option>');
+                        $('#DueToLiabilityAccountId').append('<option value="">No accounts found</option>');
+                    }
+
+                    $('#DueFromAssetAccountId, #DueToLiabilityAccountId').prop('disabled', false);
+
+                    if ($('.select2').length) {
+                        $('#DueFromAssetAccountId').trigger('change.select2');
+                        $('#DueToLiabilityAccountId').trigger('change.select2');
+                    }
+                },
+                error: function () {
+                    alert('Error loading branch accounts.');
+                    ResetAccountDropdowns();
+                }
+            });
         }
 
-        $('#DueFromAssetAccountId, #DueToLiabilityAccountId')
-            .empty()
-            .append('<option value="">Loading...</option>')
-            .prop('disabled', true);
-
-        $.ajax({
-            url: '@Url.Action("Ajaxloader", "LiaisonMappingConfig")',
-            type: 'GET',
-            data: { Key: branchId },
-            success: function (data) {
-                ResetAccountDropdowns();
-
-                if (data && data.length > 0) {
-                    $.each(data, function (i, item) {
-                        $('#DueFromAssetAccountId').append($('<option>', { value: item.Value, text: item.Text }));
-                        $('#DueToLiabilityAccountId').append($('<option>', { value: item.Value, text: item.Text }));
-                    });
-                } else {
-                    $('#DueFromAssetAccountId').append('<option value="">No accounts found</option>');
-                    $('#DueToLiabilityAccountId').append('<option value="">No accounts found</option>');
-                }
-
-                $('#DueFromAssetAccountId, #DueToLiabilityAccountId').prop('disabled', false);
-
-                if ($('.select2').length) {
-                    $('#DueFromAssetAccountId').trigger('change.select2');
-                    $('#DueToLiabilityAccountId').trigger('change.select2');
-                }
-            },
-            error: function () {
-                alert('Error loading branch accounts.');
-                ResetAccountDropdowns();
-            }
-        });
-    }
-
-    function ResetAccountDropdowns() {
-        $('#DueFromAssetAccountId').empty().append('<option value="">--- Select Due From Account ---</option>');
-        $('#DueToLiabilityAccountId').empty().append('<option value="">--- Select Due To Account ---</option>');
-    }
+        function ResetAccountDropdowns() {
+            $('#DueFromAssetAccountId').empty().append('<option value="">--- Select Due From Account ---</option>');
+            $('#DueToLiabilityAccountId').empty().append('<option value="">--- Select Due To Account ---</option>');
+        }
 
 </script>
 

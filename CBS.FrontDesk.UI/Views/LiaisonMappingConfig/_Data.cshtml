@@ -1,6 +1,6 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping>
+﻿@*@model List<CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping>*@
 
-<fieldset class="fieldset-custom">
+@*<fieldset class="fieldset-custom">
     <legend>Liaison Mappings</legend>
 
     @if (!Model.Any())
@@ -49,11 +49,11 @@
                                 <button class="btn btn-sm btn-outline-primary"
                                         onclick="AddORUpdateGen('@item.Id','datalistingview','_Create','update','LiaisonMappingConfig')">
                                     <i class="fas fa-edit me-1"></i> Edit
-                                </button>
-                                @*<button class="btn btn-sm btn-outline-info"
+                                </button>-->-->
+                                <button class="btn btn-sm btn-outline-info"
                                         onclick="showLiaisonMappingDetails('@item.Id')">
                                     <i class="fas fa-info-circle me-1"></i> Details
-                                </button>*@
+                                </button>
                             </td>
                         </tr>
                     }
@@ -61,10 +61,10 @@
             </table>
         </div>
     }
-</fieldset>
+</fieldset>*@
 
 
-<script>
+@*<script>
     function showLiaisonMappingDetails(id) {
         $('#liaisonMappingDetailsContent').html('<p>Loading...</p>');
 
@@ -82,4 +82,4 @@
             }
         });
     }
-</script>
+</script>*@

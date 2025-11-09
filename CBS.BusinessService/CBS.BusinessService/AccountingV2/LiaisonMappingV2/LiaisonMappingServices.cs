@@ -1,6 +1,8 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -165,6 +167,38 @@ namespace CBS.BusinessService.AccountingV2.LiaisonMappingV2
 			}
 			return ExecutionMessage;
 		}
+
+
+		public async Task<CustomDataTable> GetLiaisonMappingDataTable(LiaisonMappingQuery query)
+		{
+			try
+			{
+				var response = await _accountingV2ConfigApiHelper.PostAsync<ResponseObject<CustomDataTable>>(
+					APICallHelper.LiaisonMappingDatatable, query);
+
+				// ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+				if (!response.IsSuccess)
+				{
+					throw new Exception($"API call failed: {response.Message}");
+				}
+
+				if (response.ApiResponseData == null)
+				{
+					throw new Exception("API returned null data");
+				}
+
+				return response.ApiResponseData.Data;
+			}
+			catch (Exception ex)
+			{
+				// Log the original exception
+				System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+				// Re-throw to trigger fallback
+				throw new Exception($"Liaison Mapping service unavailable: {ex.Message}", ex);
+			}
+		}
+
 
 	}
 }
