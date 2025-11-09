@@ -1,0 +1,30 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<div>
+    
+
+</div>
+
+
+@section Scripts{
+
+    <script>
+
+
+        function Reprint() {
+            //window.open(redirectUrl, '_blank');\
+
+            ReportView("TrialBalance", null, "GetReport", null, null, "receipts", "ReportParameterLess");
+        }
+
+
+        const btn = document.querySelector('#downloadReport');
+        btn.addEventListener('click', () => {
+            axios.post('/TrialBalance/GenerateTrialBalance').then(() => {
+                Reprint();
+            })
+        });
+    </script>
+
+
+}

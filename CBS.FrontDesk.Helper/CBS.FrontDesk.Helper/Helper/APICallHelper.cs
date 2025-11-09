@@ -1625,5 +1625,16 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
+
+
+        //------------------------ Trial Balance ------------------------
+
+        // Get all trial balances
+        public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
+
+
+
+
+
     }
 }
