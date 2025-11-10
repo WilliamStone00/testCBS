@@ -1625,6 +1625,18 @@ namespace CBS.FrontDesk.Helper
         public static string PostPayment = "Cant find it";
         public static string DailyCollectorcommissiondata = "not yet Availlable";
 
+        //--------------------------- API KEY MANAGEMENT ----------------------------------------  
+            public const string GetAllApiKeys = "/api/apikeys";
+            public const string GetApiKeyById = "/api/apikeys/{0}";
+            public const string GetApiKeysByUserName = "/api/apikeys/user/{0}";
+            public const string ApiKeysDataTable = "/api/apikeys/datatable";
+            public const string CreateApiKey = "/api/apikeys/generate";
+            public const string RenewApiKey = "/api/apikeys/renew";
+            public const string RevokeApiKey = "/api/apikeys/revoke";
+            public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
+            public const string DeleteApiKey = "/api/apikeys/{0}";
+        
+
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------

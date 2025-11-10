@@ -1,0 +1,230 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.CreateApiKeyRequest
+@{
+    ViewBag.Title = "API Key Management - Create";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-key-chain me-2"></i>API Key Management
+                </h1>
+                <p class="card-text">
+                    Manage and secure your API keys for system integration and external access.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Create, renew, revoke, and monitor your API keys with comprehensive security controls.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> API Key Creation Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiKeyTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseApiKeyTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li>
+                    <i class="mdi mdi-account-outline text-success me-2"></i>
+                    <strong>User Name:</strong> Associate API keys with specific users for better tracking and management.
+                </li>
+                <li>
+                    <i class="mdi mdi-key-star text-info me-2"></i>
+                    <strong>Key Security:</strong> Store API keys securely and never expose them in client-side code.
+                </li>
+                <li>
+                    <i class="mdi mdi-calendar-clock text-warning me-2"></i>
+                    <strong>Expiration:</strong> API keys are created with 5-year expiration by default.
+                </li>
+                <li>
+                    <i class="mdi mdi-shield-account text-primary me-2"></i>
+                    <strong>Key Length:</strong> Choose appropriate key length (32-256 characters) based on security requirements.
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-octagon text-danger me-2"></i>
+                    <strong>Save Securely:</strong> Copy and store the raw key immediately after creation - it won't be shown again.
+                </li>
+                <li>
+                    <i class="mdi mdi-content-save text-secondary me-2"></i>
+                    <strong>Management:</strong> Use the list view to manage existing keys, renew, revoke, or change status.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Create Form -->
+<div class="card shadow p-3 mb-4">
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <a href="@Url.Action("List", "ApiKey")"
+               class="btn btn-label-primary btn-sm me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="View API Keys List">
+                <i class="mdi mdi-view-list mdi-18px"></i> View List
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-key-plus me-2"></i>Create New API Key</h5>
+
+        <form id="createApiKeyForm" method="post" action="@Url.Action("Create", "ApiKey")"
+              onsubmit="return handleFormSubmit(this, 'API Key created successfully! Make sure to copy and store the raw key securely.')">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
+                        <label for="UserName">User Name *</label>
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Length, new { @class = "form-control", type = "number", min = "32", max = "256", value = "64", placeholder = "Key Length" })
+                        <label for="Length">Key Length (32-256)</label>
+                        @Html.ValidationMessageFor(m => m.Length, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="mdi mdi-key-plus me-1"></i> Create API Key
+                </button>
+                <button type="reset" class="btn btn-light">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // handleFormSubmit: posts the form and uses appalert(...) for user messages.
+        // Usage: <form onsubmit="return handleFormSubmit(this, 'Created successfully')">
+        async function handleFormSubmit(form, successMessage) {
+            event.preventDefault();
+            if (!form) return false;
+
+            const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+            const origBtnHtml = submitBtn ? (submitBtn.innerHTML || '') : null;
+
+            try {
+                // disable submit button & show spinner text
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    try { submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'; } catch (e) { }
+                }
+
+                const formData = new FormData(form);
+
+                const res = await fetch(form.action, {
+                    method: form.method || 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                // try parse JSON
+                let data;
+                try {
+                    data = await res.json();
+                } catch (err) {
+                    // If response is not JSON, show error
+                    appalert('Server returned an unexpected response.', 0, 1);
+                    return false;
+                }
+
+                if (data && data.success) {
+                    // success: use appalert -> state 1, alertType 1 (normal UI)
+                    appalert(successMessage || data.message || 'Operation successful', 1, 1);
+
+                    // If rawKey exists, ask user to copy it.
+                    if (data.data && data.data.rawKey) {
+                        const rawKey = data.data.rawKey;
+                        const confirmMsg = 'API Key created successfully!\n\nRaw key: ' + rawKey + '\n\nClick OK to copy to clipboard, or Cancel to continue.';
+
+                        // Prefer alertify confirm if available (appalert uses alertify for alertType 2),
+                        // otherwise fallback to native confirm.
+                        if (window.alertify && typeof alertify.confirm === 'function') {
+                            alertify.confirm("API Key", confirmMsg,
+                                async function () {
+                                    try {
+                                        await navigator.clipboard.writeText(rawKey);
+                                        appalert('Raw key copied to clipboard!', 1, 1);
+                                    } catch (e) {
+                                        appalert('Failed to copy to clipboard — copy manually: ' + rawKey, 0, 1);
+                                    }
+                                },
+                                function () {
+                                    // cancelled — nothing to do
+                                }
+                            );
+                        } else {
+                            // fallback native confirm
+                            const wantCopy = window.confirm(confirmMsg);
+                            if (wantCopy) {
+                                try {
+                                    await navigator.clipboard.writeText(rawKey);
+                                    appalert('Raw key copied to clipboard!', 1, 1);
+                                } catch (e) {
+                                    appalert('Failed to copy to clipboard — copy manually: ' + rawKey, 0, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // reset form on success
+                    try { form.reset(); } catch (e) { /* ignore */ }
+                } else {
+                    // server-side validation / error - show error via appalert state "danger" (use 0 or other)
+                    const msg = (data && data.message) ? data.message : 'Unknown error';
+                    // use state 0 -> falls into "else" branch => danger
+                    appalert('Error: ' + msg, 0, 1);
+                }
+            } catch (error) {
+                console.error('handleFormSubmit error', error);
+                const errMsg = (error && error.message) ? error.message : String(error);
+                appalert('An error occurred: ' + errMsg, 0, 1);
+            } finally {
+                // restore submit button
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    try { submitBtn.innerHTML = origBtnHtml; } catch (e) { }
+                }
+            }
+
+            return false;
+        }
+
+        // Tooltip initialization (Bootstrap)
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            } catch (err) {
+                // if tooltip init fails, notify via appalert as example
+                appalert('select2 init failed: ' + (err && err.message ? err.message : err), 2, 1);
+                console.warn('Tooltip init failed', err);
+            }
+        });
+    </script>
+}

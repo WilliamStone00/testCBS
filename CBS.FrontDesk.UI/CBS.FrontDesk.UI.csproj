@@ -2037,6 +2037,7 @@
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
@@ -10911,6 +10912,14 @@
     <Content Include="Views\CollectorCommission\Index.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
     <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />
+    <Content Include="Views\APIKey\Index.cshtml" />
+    <Content Include="Views\APIKey\_ActionDropdown.cshtml" />
+    <Content Include="Views\APIKey\List.cshtml" />
+    <Content Include="Views\APIKey\_Create.cshtml" />
+    <Content Include="Views\APIKey\_Renew.cshtml" />
+    <Content Include="Views\APIKey\_Revoke.cshtml" />
+    <Content Include="Views\APIKey\_ChangeStatus.cshtml" />
+    <Content Include="Views\APIKey\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
