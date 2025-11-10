@@ -1498,6 +1498,42 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
 		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
 
+		//****************** REPORT DEFINITION **********************************//
+
+		public static string DeleteReportDefinition = "/api/v1/ReportDefinitions/{0}";
+		public static string CreateReportDefinition = "/api/v1/ReportDefinitions";
+		public static string UpdateReportDefinition = "/api/v1/ReportDefinitions/{0}";
+		public static string GetAllReportDefinition = "/api/v1/ReportDefinitions";
+		public static string GetReportDefinitionById = "/api/v1/ReportDefinitions/{0}";
+
+
+		//****************** REPORT LINE MAPPING **********************************//
+
+		public static string DeleteReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+		public static string CreateReportLineMapping = "/api/v1/ReportLineMappings";
+		public static string UpdateReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+		public static string GetAllReportLineMapping = "/api/v1/ReportLineMappings";
+		public static string GetReportLineMappingById = "/api/v1/ReportLineMappings/{0}";
+
+
+		//****************** REPORT LINE **********************************//
+
+		public static string DeleteReportLine = "/api/v1/ReportLines/{0}";
+		public static string CreateReportLine = "/api/v1/ReportLines";
+		public static string UpdateReportLine = "/api/v1/ReportLines/{0}";
+		public static string GetAllReportLine = "/api/v1/ReportLines";
+		public static string GetReportLineById = "/api/v1/ReportLines/{0}";
+
+
+		//****************** REPORT SECTION **********************************//
+
+		public static string DeleteReportSection = "/api/v1/ReportSections/{0}";
+		public static string CreateReportSection = "/api/v1/ReportSections";
+		public static string UpdateReportSection = "/api/v1/ReportSections/{0}";
+		public static string GetAllReportSection = "/api/v1/ReportSections";
+		public static string GetReportSectionById = "/api/v1/ReportSections/{0}";
+
+
 
 		//*************************** CHEQUE BOOK ******************************
 

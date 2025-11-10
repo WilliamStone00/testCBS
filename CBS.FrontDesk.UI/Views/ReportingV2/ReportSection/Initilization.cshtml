@@ -1,0 +1,54 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection
+
+<div class="card border-light shadow-sm">
+    <div class="card-header bg-light fw-bold text-success">
+        <i class="mdi mdi-view-list-outline me-1"></i> Report Section Management
+    </div>
+    <div class="card-body">
+        <form id="reportSectionForm">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label">Report Definition</label>
+                    <select name="ReportId" id="ReportId" class="form-select">
+                        <option value="">-- Select Report --</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Section Code</label>
+                    <input type="text" name="Code" class="form-control" placeholder="ASSETS" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Section Name</label>
+                    <input type="text" name="Name" class="form-control" placeholder="Assets" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Sort Order</label>
+                    <input type="number" name="SortOrder" class="form-control" placeholder="1" />
+                </div>
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="mdi mdi-content-save"></i> Save Section
+                </button>
+            </div>
+        </form>
+
+        <hr />
+
+        <table class="table table-sm table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>CODE</th>
+                    <th>NAME</th>
+                    <th>SORT ORDER</th>
+                    <th>REPORT</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody id="sectionList">
+                <!-- Dynamic Data -->
+            </tbody>
+        </table>
+    </div>
+</div>

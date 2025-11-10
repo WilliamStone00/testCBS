@@ -2164,6 +2164,10 @@
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportDefinitionController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportLineController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportLineMappingController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportSectionController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuTranslationController.cs" />
@@ -10908,6 +10912,11 @@
     <Content Include="Views\FileListing\_Validation.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\List.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDataTable.cshtml" />
+    <Content Include="Views\ReportingV2\Index.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\Initilization.cshtml" />
+    <Content Include="Views\ReportingV2\ReportSection\Initilization.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10938,6 +10947,9 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\ReportLineMapping\" />
+    <Folder Include="Views\ReportLinet\" />
+    <Folder Include="Views\ReportSection\" />
     <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>
