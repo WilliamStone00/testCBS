@@ -1,6 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
 
-<div class="modal-header bg-success text-white">
+<div class="modal-header bg-primary text-white">
     <h5 class="modal-title">
         <i class="mdi mdi-export me-2"></i>ExportCommission
     </h5>
@@ -54,21 +54,10 @@
     </button>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#btnConfirmExport').click(function () {
-            var exportData = {
-                format: $('#exportFormat').val(),
-                includeSummary: $('#includeSummary').is(':checked'),
-                startDate: $('#startDate').val(),
-                endDate: $('#endDate').val(),
-                fileName: $('#fileName').val() || 'Commission_Report'
-            };
-
-            // Here you would make an AJAX call to export the data
-            alert('Export functionality would be implemented here with parameters: ' + JSON.stringify(exportData));
-
-            $('#exportModal').modal('hide');
-        });
-    });
-</script>
+<!-- Export Progress -->
+<div id="exportProgress" class="mt-3 d-none">
+    <div class="progress mb-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+    </div>
+    <small class="text-muted" id="progressText">Preparing export...</small>
+</div>

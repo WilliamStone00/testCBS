@@ -76,7 +76,7 @@
                             @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account", new { @class = "form-label" })
                             @Html.DropDownListFor(
                                 m => m.AffiliateAccountId,
-                                new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Id", "Name"),
+                                new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Value", "Text"),
                                 "--- Select Affiliate Account (Chart of Account) ---",
                                 new { @class = "form-select select2", @aria_label = "Affiliate Account" })
                             @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })

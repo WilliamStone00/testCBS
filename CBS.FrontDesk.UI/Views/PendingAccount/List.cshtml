@@ -395,10 +395,36 @@
 
     function renderChangeTypeBadge(v){
       const key = (v || '').toString().trim().toLowerCase();
-      if (key === 'createrequest') return `<span class="badge bg-primary">CreateRequest</span>`;
-      if (key === 'updaterequest') return `<span class="badge bg-info">UpdateRequest</span>`;
+      if (key === 'createrequest') return `<span class="badge bg-primary">Create Request</span>`;
+      if (key === 'updaterequest') return `<span class="badge bg-info">Update Request</span>`;
       return v ? `<span class="badge bg-secondary">${v}</span>` : '';
-    }
+      }
+    function renderScopeTypeBadge(v){
+      const key = (v || '').toString().trim().toLowerCase();
+      if (key === 'affiliate') return `<span class="badge bg-primary">Affiliate</span>`;
+      if (key === 'branch') return `<span class="badge bg-info">Branch</span>`;
+      return v ? `<span class="badge bg-secondary">${v}</span>` : '';
+      }
+
+      function renderUpdateTypeBadge(v) {
+          const key = (v || '').toString().trim().toLowerCase();
+          if (!key) return '';
+
+          // Map known values to label + bootstrap class
+          const map = {
+              'code': { text: 'Code only', cls: 'bg-warning text-dark' },
+              'nameen': { text: 'Name (English) only', cls: 'bg-success' },
+              'namefr': { text: 'Name (French) only', cls: 'bg-success' },
+              'names': { text: 'Names (English & French)', cls: 'bg-info' },
+              'codeandnames': { text: 'Code + Names', cls: 'bg-danger' }
+          };
+
+          const m = map[key];
+          return m
+              ? `<span class="badge ${m.cls}">${m.text}</span>`
+              : `<span class="badge bg-secondary">${v}</span>`;
+      }
+
 
       // ----- DataTable -----
       function initDataTable() {
@@ -434,9 +460,10 @@
                   { targets: [2], width: '12%' },  // Code
                   { targets: [3], width: 'auto' }, // Name
                   { targets: [4], width: '10%' },  // Class
-                  { targets: [5], width: '12%' },  // ChangeType
-                  { targets: [6], width: '12%' },  // Status
-                  { targets: [7], width: '16%', orderable: false, searchable: false, className: 'text-end' } // Actions
+                  { targets: [5], width: '10%' },  // ChangeType
+                  { targets: [6], width: '10%' },  // AccountUpdateType
+                  { targets: [7], width: '10%' },  // Status
+                  { targets: [8], width: '10%', orderable: false, searchable: false, className: 'text-end' } // Actions
               ],
               ajax: {
                   url: dataUrl,
@@ -503,7 +530,11 @@
                           return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
                       }
                   },
-                  { data: 'Scope', name: 'Scope', defaultContent: '-' },
+                  { data: null, name: 'Scope',
+                          render: function (_, __, row) {
+                              return renderScopeTypeBadge(row.Scope || row.Scope);
+                          } 
+                  },
                   { data: 'Code', name: 'Code', defaultContent: '' },
                   { // Name
                       data: null, name: 'Name',
@@ -516,6 +547,12 @@
                       data: null, name: 'ChangeType',
                       render: function (_, __, row) {
                           return renderChangeTypeBadge(row.ChangeType || row.changeType);
+                      }
+                  },
+                  { // AccountUpdateKind
+                      data: null, name: 'Update Kind',
+                      render: function (_, __, row) {
+                          return renderUpdateTypeBadge(row.AccountUpdateKind || row.AccountUpdateKind);
                       }
                   },
                   { // Status

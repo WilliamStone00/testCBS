@@ -236,7 +236,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
 
                 if (!string.IsNullOrWhiteSpace(entity?.ParentId))
                 {
-                    var parent = await _AffiliateAccountService.GetByIdAsync(KEY);
+                    var parent = await _AffiliateAccountService.GetByIdAsync(entity?.ParentId);
                     if (parent != null)
                     {
                         model.ParentId = parent.Id;
@@ -271,8 +271,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AffiliateAccounts
                         errorsHtml
                     });
                 }
-
-                var result = await _pendingAccountsService.CreateAsync(model);
+            model.AccountUpdateKind = model.ChangeType == "CreateRequest" ? "None" : model.AccountUpdateKind;
+            var result = await _pendingAccountsService.CreateAsync(model);
 
                 // Map your ExecutionMessages -> JSON. Adjust field names as needed based on your ExecutionMessages.
                 // Here I assume result.Result is a bool indicating success and result may carry messages.
