@@ -394,11 +394,14 @@
       e.preventDefault();
       const id = decodeURIComponent($(this).data('id') || '');
       if (!id) return;
-      const $modal = $('#branchDetailsModal');
-      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-      new bootstrap.Modal($modal[0]).show();
+
       $.get('/BranchAccount/InitializeData2', { KEY: id, partialView: '_DetailsPartial', path: 'get' })
-        .done(html => $modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details.</div>'))
+          .done(html => {
+              const $modal = $('#branchDetailsModal');
+              $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+              new bootstrap.Modal($modal[0]).show();
+              $modal.find('.modal-body').html(html || '<div class="text-center text-muted">No details.</div>')
+          })
         .fail(() => $modal.find('.modal-body').html('<div class="text-danger p-3">Failed to load details.</div>'));
     });
 
@@ -436,11 +439,13 @@
         serviceOption: ''
       };
 
-      const $modal = $('#branchEditModal');
-      $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
 
       $.get(branchFormUrl, data)
-        .done(function (html) {
+          .done(function (html) {
+
+            const $modal = $('#branchEditModal');
+            $modal.find('.modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+
           $modal.find('.modal-body').html(html);
 
           // Modal-safe Select2 init (idempotent)

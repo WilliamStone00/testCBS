@@ -698,7 +698,7 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
 
         #region Helpers for Dropdowns
 
-        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null)
+        public async Task<IEnumerable<SelectListItem>> GetCollectorsAsSelectListAsync(string branchId = null,int order=1)
         {
             if (branchId==null)
             {
@@ -706,13 +706,28 @@ namespace CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Serv
             }
             var response = await _customerApiHelper.GetAsync<ResponseObject<List<CollectorDto>>>(string.Format(APICallHelper.GetDaillycollectors, branchId));
 
+
             if (response.IsSuccess && response.ApiResponseData?.Data != null)
             {
-                return response.ApiResponseData.Data.Where(x=>x.BranchId==branchId).Select(c => new SelectListItem
+
+                switch (order)
                 {
-                    Value = $"{c.CustomerId}|{c.UserId}",
-                    Text = $"{c.CustomerId}|{c.FullName}",
-                }).ToList();
+                    case 1:
+                        return response.ApiResponseData.Data.Where(x => x.BranchId == branchId).Select(c => new SelectListItem
+                        {
+                            Value = $"{c.CustomerId}|{c.UserId}",
+                            Text = $"{c.CustomerId}|{c.FullName}",
+                        }).ToList();
+                    case 2:
+                        return response.ApiResponseData.Data.Where(x => x.BranchId == branchId).Select(c => new SelectListItem
+                        {
+                            Value = $"{c.UserId}",
+                            Text = $"{c.CustomerId}|{c.FullName}",
+                        }).ToList();
+                    default:
+                        break;
+                }
+                
             }
 
             return new List<SelectListItem>();

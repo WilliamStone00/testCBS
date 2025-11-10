@@ -1434,7 +1434,16 @@ namespace CBS.FrontDesk.Helper
         public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
         public static string ValidateBranchConfig = "api/branchcashconfig/validate";
 
-
+        //****************** Liaison Mapping **********************************//
+        public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
+        public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
+        public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
+        public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
+        public const string GetLiaisonMappingsByBranch = "api/liaisonmapping/bybranch";
+        public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
+        public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
 
         //************************************Role Gl Resolution Endpoints  ********************************************////
 
@@ -1473,29 +1482,17 @@ namespace CBS.FrontDesk.Helper
 
 
         public const string GetAccountBalance = "/api/v1/TrialBalance/balance/{0}";
-public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
- 
-
-		//---------------------------Mobile MoneyV2--------------------------------------//
+        public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
+        //---------------------------Mobile MoneyV2--------------------------------------//
 
 
-		public static string DeleteMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
-		public static string CreateMobileMoneyV2 = "/api/v1/MobileMoney";
+        public static string DeleteMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
+        public static string CreateMobileMoneyV2 = "/api/v1/MobileMoney";
 
-		public static string UpdateMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
+        public static string UpdateMobileMoneyV2 = "/api/v1/MobileMoney/{0}";
 
-		public static string GetAllMobileMoneyV2 = "/api/v1/MobileMoney";
-		public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
-
-
-		//****************** Liaison Mapping **********************************//
-
-		public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-		public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
-		public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-		public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
-		public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
-		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
+        public static string GetAllMobileMoneyV2 = "/api/v1/MobileMoney";
+        public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
 
 
 		//****************** REPORT DEFINITION **********************************//
@@ -1535,21 +1532,21 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
 
 
 
-		//*************************** CHEQUE BOOK ******************************
+        //*************************** CHEQUE BOOK ******************************
 
-		//public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
-		//public static string Createnot = "/api/v1/Notification/Config";
-		//public static string Updatenot = "/api/NotificationConfig/{0}";
-		//public static string Deletenot = "/api/NotificationConfig/{0}";
-
-
-
-		//************************** END CHEQUE BOOK *******************************
-
-		//*************************** MANUAL DAILLY COLLECTIONS ************************ 
+        //public static string GetNotificationTypes = "/api/v1/Notification/Aggregates";
+        //public static string Createnot = "/api/v1/Notification/Config";
+        //public static string Updatenot = "/api/NotificationConfig/{0}";
+        //public static string Deletenot = "/api/NotificationConfig/{0}";
 
 
-		public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
+
+        //************************** END CHEQUE BOOK *******************************
+
+        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+
+        public static string GetCustomerCheckbooks = "/api/lossmanagement/customer/{0}/checkbooks";
         public static string GetCheckLeavesByCheckbook = "/api/lossmanagement/checkbook/{0}/checkleaves";
         public static string GetCheckbookDetails = "/api/lossmanagement/checkbook/{0}/details";
         public static string RequestLossForCheckbook = "/api/lossmanagement/checkbook/{0}/lossrequest";
@@ -1636,15 +1633,15 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
         public static string GetMemeberAccountBalance = "/api/v1/BalanceSum/ByAccountType";
         public static string GetMemberReconciliationById = "not yet availlable";
 
-         public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
-         public static string FINALReconciliation = "/api/v1/TrialBalance/initiate-trial-balance-reconcilation";
+        public static string Reconciliation = "/api/v1/TrialBalance/compare-member-balance";
+        public static string FINALReconciliation = "/api/v1/TrialBalance/initiate-trial-balance-reconcilation";
 
         public static string UpdateMemberReconciliation = "not yet availlable";
         public static string DeleteMemberReconciliation = "not yet availlable";
         public static string MemberAccountType = "/api/v1/GetAccountTypes";
 
         //--------------------------- Loan Reconciliation ------------------------------------------
-        public static string LoanAccountDROP = "/api/v1/EnumAggregates";       
+        public static string LoanAccountDROP = "/api/v1/EnumAggregates";
         public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
         public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
         //*************************** End of Reconciliation **************************************
@@ -1655,12 +1652,35 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
         public static string GetAccountBlacklistById = "not yet availlable";
         public static string CreateAccountBlacklist = "not yet availlable";
         public static string UpdateAccountBlacklist = "not yet availlable";
-        public static string DeactivateAccountBlacklist = "not yet availlable";      
+        public static string DeactivateAccountBlacklist = "not yet availlable";
+
+        //-------------------------- Dailly Collector Commission ------------------------------------
+        public static string Customerdatatable = "/api/v1/customers/datatable";
+        public static string DaillyCollectorCommission = "/api/v1/DailySavingsBackOffice/CollectorCommissionSummary";
+        public static string getcustomerbyid = "/api/v1/Customer/{id}";
+        public static string PostPayment = "Cant find it";
+        public static string DailyCollectorcommissiondata = "not yet Availlable";
+
+        //--------------------------- API KEY MANAGEMENT ----------------------------------------  
+            public const string GetAllApiKeys = "/api/apikeys";
+            public const string GetApiKeyById = "/api/apikeys/{0}";
+            public const string GetApiKeysByUserName = "/api/apikeys/user/{0}";
+            public const string ApiKeysDataTable = "/api/apikeys/datatable";
+            public const string CreateApiKey = "/api/apikeys/generate";
+            public const string RenewApiKey = "/api/apikeys/renew";
+            public const string RevokeApiKey = "/api/apikeys/revoke";
+            public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
+            public const string DeleteApiKey = "/api/apikeys/{0}";
+        
 
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
+
+         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+        public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
+        public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
     }
 }
