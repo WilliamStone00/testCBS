@@ -1,5 +1,52 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountDto
 
+@functions{
+    private string ChangeTypeClass(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "bg-secondary";
+        var v = value.ToLowerInvariant();
+        if (v.Contains("create")) return "bg-primary";
+        if (v.Contains("update")) return "bg-info";
+        return "bg-secondary";
+    }
+
+    private string StatusClass(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "bg-secondary";
+        var v = value.ToLowerInvariant();
+        if (v.Contains("pending")) return "bg-warning";
+        if (v.Contains("validated") || v.Contains("approved")) return "bg-success";
+        if (v.Contains("rejected") || v.Contains("invalid")) return "bg-danger";
+        return "bg-secondary";
+    }
+
+    private string UpdateKindText(string value)
+    {
+        switch ((value ?? "").Trim().ToLowerInvariant())
+        {
+            case "code": return "Code only";
+            case "nameen": return "Name (English) only";
+            case "namefr": return "Name (French) only";
+            case "names": return "Names (EN & FR)";
+            case "codeandnames": return "Code + Names";
+            default: return string.IsNullOrWhiteSpace(value) ? "-" : value;
+        }
+    }
+
+    private string UpdateKindClass(string value)
+    {
+        switch ((value ?? "").Trim().ToLowerInvariant())
+        {
+            case "code": return "bg-warning text-dark";
+            case "nameen": return "bg-success";
+            case "namefr": return "bg-success";
+            case "names": return "bg-info";
+            case "codeandnames": return "bg-danger";
+            default: return "bg-secondary";
+        }
+    }
+}
+
 <fieldset class="fieldset-custom">
 
     <!-- Header Card -->
@@ -27,13 +74,11 @@
                 <tr><td class="fw-bold">Class</td><td>@(Model?.Class ?? "-")</td></tr>
                 <tr><td class="fw-bold">Display Name</td><td>@(Model?.Name ?? "-")</td></tr>
 
-                <!-- ✅ Fixed: show ParentId correctly, and also show ParentCode -->
                 <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>
                 <tr><td class="fw-bold">Parent Code</td><td>@(Model?.ParentCode ?? "-")</td></tr>
 
-                <!-- ✅ Re-enabled seeds for hierarchy tracking -->
-               @* <tr><td class="fw-bold">Path Seed</td><td>@(Model?.PathSeed ?? "-")</td></tr>
-                <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
+                <tr><td class="fw-bold">Path Seed</td><td>@(string.IsNullOrWhiteSpace(Model?.PathSeed) ? "-" : Model.PathSeed)</td></tr>
+                <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>
             </table>
         </div>
 
@@ -46,10 +91,17 @@
                     <td>@((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")</td>
                 </tr>
                 <tr>
+                    <td class="fw-bold">Affiliate Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateId) ? "-" : Model.AffiliateId)</td>
+                </tr>
+                <tr>
                     <td class="fw-bold">Branch</td>
                     <td>@((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")</td>
                 </tr>
-                <!-- ✅ New: show BranchCode explicitly -->
+                <tr>
+                    <td class="fw-bold">Branch Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchId) ? "-" : Model.BranchId)</td>
+                </tr>
                 <tr>
                     <td class="fw-bold">Branch Code</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchCode) ? "-" : Model.BranchCode)</td>
@@ -68,6 +120,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="fw-bold">Affiliate Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Model.AffiliateAccountId)</td>
+                </tr>
+                <tr>
                     <td class="fw-bold">HO PCMF Account</td>
                     <td>
                         @{
@@ -80,24 +136,20 @@
                         @Html.Raw(hoText + hoCode)
                     </td>
                 </tr>
+                <tr>
+                    <td class="fw-bold">HO PCMF Account Id</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Model.HoPcmfAccountId)</td>
+                </tr>
 
-                <!-- ✅ New: Change type + Update reference -->
+                <!-- Change type + Update reference -->
                 <tr>
                     <td class="fw-bold">Change Type</td>
                     <td>
                         @{
-                            var ct = Model?.ChangeType ?? "";
-                            var ctCls = "bg-secondary";
-                            if (System.Text.RegularExpressions.Regex.IsMatch(ct, "create", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                ctCls = "bg-primary";
-                            }
-                            if (System.Text.RegularExpressions.Regex.IsMatch(ct, "update", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                            {
-                                ctCls = "bg-info";
-                            }
+                            var changeTypeValLocal = Model?.ChangeType ?? "";
+                            var changeTypeClsLocal = ChangeTypeClass(changeTypeValLocal);
                         }
-                        <span class="badge @ctCls">@(!string.IsNullOrWhiteSpace(ct) ? ct : "-")</span>
+                        <span class="badge @changeTypeClsLocal">@(!string.IsNullOrWhiteSpace(changeTypeValLocal) ? changeTypeValLocal : "-")</span>
                     </td>
                 </tr>
                 <tr>
@@ -108,23 +160,41 @@
                 <tr><td class="fw-bold">Posting Allowed</td><td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td></tr>
                 <tr><td class="fw-bold">Requires Mapping</td><td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td></tr>
 
-                <!-- Keep Request Reference here for quick access -->
                 <tr><td class="fw-bold">Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
 
-                <!-- Primary status badge -->
                 <tr>
                     <td class="fw-bold">Status</td>
                     <td>
                         @{
-                            var s = Model?.Status ?? string.Empty;
-                            var cls = "bg-secondary";
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-warning"; }
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-success"; }
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls = "bg-danger"; }
+                            var statusValLocal = Model?.Status ?? string.Empty;
+                            var statusClsLocal = StatusClass(statusValLocal);
                         }
-                        <span class="badge @cls">@(!string.IsNullOrWhiteSpace(s) ? s : "-")</span>
+                        <span class="badge @statusClsLocal">@(!string.IsNullOrWhiteSpace(statusValLocal) ? statusValLocal : "-")</span>
                     </td>
                 </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Update Details (Old Values & Update Kind) -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-restore-alert me-2"></i> Update Details</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Account Update Type</td>
+                    <td>
+                        @{
+                            var ukValLocal = Model?.AccountUpdateKind ?? "";
+                            var ukTextLocal = UpdateKindText(ukValLocal);
+                            var ukClsLocal = UpdateKindClass(ukValLocal);
+                        }
+                        <span class="badge @ukClsLocal">@ukTextLocal</span>
+                    </td>
+                </tr>
+                <tr><td class="fw-bold">Old Account Number</td><td>@(string.IsNullOrWhiteSpace(Model?.CodeOld) ? "-" : Model.CodeOld)</td></tr>
+                <tr><td class="fw-bold">Old Name (EN)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameEnOld) ? "-" : Model.NameEnOld)</td></tr>
+                <tr><td class="fw-bold">Old Name (FR)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameFrOld) ? "-" : Model.NameFrOld)</td></tr>
             </table>
         </div>
     </div>
@@ -134,41 +204,14 @@
         <div class="col-12">
             <h6 class="text-primary"><i class="mdi mdi-account-check-outline me-2"></i> Request & Approval</h6>
             <table class="table table-sm table-bordered">
-                <tr>
-                    <td class="fw-bold">Requested By</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.RequestedBy) ? "-" : Model.RequestedBy)</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Requested At (UTC)</td>
-                    <td>@(Model?.RequestedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold">Approved By</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.ApprovedBy) ? "-" : Model.ApprovedBy)</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Approved At (UTC)</td>
-                    <td>@(Model?.ApprovedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold">Rejected By</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.RejectedBy) ? "-" : Model.RejectedBy)</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Rejected At (UTC)</td>
-                    <td>@(Model?.RejectedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold">Rejection Reason</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.RejectionReason) ? "-" : Model.RejectionReason)</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Request Notes</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.Notes) ? "-" : Model.Notes)</td>
-                </tr>
+                <tr><td class="fw-bold">Requested By</td><td>@(string.IsNullOrWhiteSpace(Model?.RequestedBy) ? "-" : Model.RequestedBy)</td></tr>
+                <tr><td class="fw-bold">Requested At (UTC)</td><td>@(Model?.RequestedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">Approved By</td><td>@(string.IsNullOrWhiteSpace(Model?.ApprovedBy) ? "-" : Model.ApprovedBy)</td></tr>
+                <tr><td class="fw-bold">Approved At (UTC)</td><td>@(Model?.ApprovedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">Rejected By</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectedBy) ? "-" : Model.RejectedBy)</td></tr>
+                <tr><td class="fw-bold">Rejected At (UTC)</td><td>@(Model?.RejectedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">Rejection Reason</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectionReason) ? "-" : Model.RejectionReason)</td></tr>
+                <tr><td class="fw-bold">Request Notes</td><td>@(string.IsNullOrWhiteSpace(Model?.Notes) ? "-" : Model.Notes)</td></tr>
             </table>
         </div>
     </div>
@@ -178,14 +221,8 @@
         <div class="col-md-6">
             <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Audit</h6>
             <table class="table table-sm table-bordered">
-                <tr>
-                    <td class="fw-bold">Created Date</td>
-                    <td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Modified Date</td>
-                    <td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td>
-                </tr>
+                <tr><td class="fw-bold">Created Date</td><td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">Modified Date</td><td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
                 <tr><td class="fw-bold">Is Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>
             </table>
         </div>
@@ -199,13 +236,10 @@
                     <td class="fw-bold">Status</td>
                     <td>
                         @{
-                            var s2 = Model?.Status ?? string.Empty;
-                            var cls2 = "bg-secondary";
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "pending", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-warning"; }
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "validated|approved", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-success"; }
-                            if (System.Text.RegularExpressions.Regex.IsMatch(s2 ?? "", "rejected|invalid", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { cls2 = "bg-danger"; }
+                            var statusValLocal2 = Model?.Status ?? string.Empty;
+                            var statusClsLocal2 = StatusClass(statusValLocal2);
                         }
-                        <span class="badge @cls2">@(!string.IsNullOrWhiteSpace(s2) ? s2 : "-")</span>
+                        <span class="badge @statusClsLocal2">@(!string.IsNullOrWhiteSpace(statusValLocal2) ? statusValLocal2 : "-")</span>
                     </td>
                 </tr>
             </table>

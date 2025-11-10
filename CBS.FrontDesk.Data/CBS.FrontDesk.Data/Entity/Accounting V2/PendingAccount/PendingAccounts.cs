@@ -54,7 +54,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string UpdateReference { get; set; }
         public string ChangeType { get; set; }// UpdateRequest Or CreateRequest
 
-
+        public string CodeOld { get; set; }
+        public string AccountUpdateKind { get; set; }//We can update code , Name (En or Fr or both)
+        public string NameEnOld { get; set; } 
+        public string NameFrOld { get; set; }
         public string Code { get; set; } 
         public string NameEn { get; set; } 
         public string NameFr { get; set; } 
@@ -103,6 +106,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
         public string Class { get; set; }
         public string ParentId { get; set; }
         public string ParentAccountNumber { get; set; }
+        public string CodeOld { get; set; }
+        public string AccountUpdateKind { get; set; }//We can update code , Name (En or Fr or both)
+        public string NameEnOld { get; set; }
+        public string NameFrOld { get; set; }
+
         public bool PostingAllowed { get; set; }
         public bool RequiresMapping { get; set; } = false;
         public string Notes { get; set; }
@@ -122,13 +130,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
             UpdateReference = affiliateAccountDto.Id;
             Scope = "Affiliate";
             IsOrigin = false;
+            AccountUpdateKind = "None";
             AffiliateId = affiliateAccountDto.AffiliateId;
             BranchId = null;
             AffiliateAccountId = affiliateAccountDto.Id;
             HoPcmfAccountId = affiliateAccountDto.HoPcmfAccountId;
             Code = affiliateAccountDto.Code;
-            NameEn = affiliateAccountDto.Name;
-            NameFr = affiliateAccountDto.Name;
+            CodeOld = affiliateAccountDto.Code;
+            NameEn = affiliateAccountDto.NameEn;
+            NameEnOld = affiliateAccountDto.NameEn;
+            NameFr = affiliateAccountDto.NameFr;
+            NameFrOld = affiliateAccountDto.NameFr;
             Class = affiliateAccountDto.Class;
             ParentId = affiliateAccountDto.ParentId;
             ParentAccountNumber = parentAccountNumber;
@@ -145,13 +157,17 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
             UpdateReference = branchAccount.Id;
             Scope = branchAccount.Scope ?? "Branch";
             IsOrigin = isOrigin;
+            AccountUpdateKind = "None";
             AffiliateId = branchAccount.BranchId;
             BranchId = branchAccount.BranchId;
             AffiliateAccountId = branchAccount.AffiliateAccountId;
             HoPcmfAccountId = null;
             Code = branchAccount.Code;
-            NameEn = branchAccount.Name;
-            NameFr = branchAccount.Name;
+            CodeOld = branchAccount.Code;
+            NameEn = branchAccount.NameEn;
+            NameEnOld = branchAccount.NameEn;
+            NameFr = branchAccount.NameFr;
+            NameFrOld = branchAccount.NameFr;
             Class = branchAccount.Class;
             ParentId = branchAccount.ParentId;
             ParentAccountNumber = null;
