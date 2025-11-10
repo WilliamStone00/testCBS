@@ -1,6 +1,8 @@
 
 
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Data.ReportDataSetDto;
@@ -23,10 +25,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
     public class TrialBalanceController : BaseController
     {
         private readonly TrialBalanceService _trialBalanceService;
+        private readonly BranchAccountService _branchAccountService;
+        private readonly BranchServices _branchServices;
+        
 
-        public TrialBalanceController(TrialBalanceService trialBalanceService)
+
+        public TrialBalanceController(TrialBalanceService trialBalanceService,
+            BranchServices branchServices,
+            BranchAccountService branchAccountService)
         {
+            _branchServices = branchServices;
             _trialBalanceService = trialBalanceService;
+            _branchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -39,8 +49,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         {
             try
             {
+                
                 var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
                 var response2 = await _trialBalanceService.GetTrialMockInformation();
+                
+                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
+
+
 
                 if (response == null || response.Lines == null || !response.Lines.Any())
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
@@ -54,7 +69,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     MovementDebit = x.PeriodDR ?? 0,
                     MovementCredit = x.PeriodCR ?? 0,
                     ClosingDebit = x.ClosingDR ?? 0,
-                    ClosingCredit = x.ClosingCR ?? 0
+                    ClosingCredit = x.ClosingCR ?? 0,
+                    BranchCode = BranchInformation.BranchCode,
+                    Phone = BranchInformation.Telephone,
+                    Address = BranchInformation.Address,
+                    BranchName = BranchInformation.Name,
+                    Username = _trialBalanceService.GetUserFullName(),
+                    From = model.From,
+                    To = model.To,
+
+
                 }).ToList();
                 Session["rptSource"] = data;
                 return Json(new { success = true, message = $"Report file not found." });
