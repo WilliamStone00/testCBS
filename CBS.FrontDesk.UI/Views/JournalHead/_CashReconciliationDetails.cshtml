@@ -109,8 +109,8 @@
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             @*<tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>
-            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.SourceGLId ?? "")</td></tr>
-            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>*@
+                <tr><th class="bg-label">Ticket Type</th><td>@(Model?.SourceGLId ?? "")</td></tr>
+                <tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>*@
             <tr>
                 <th class="bg-label">Accounting Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
@@ -193,7 +193,6 @@
             </table>
         </div>
     </div>-->
-
     <!-- ===================== TEMP JOURNAL LINES ===================== -->
     @*@if (Model.TempJournalHeader != null && Model.TempJournalHeader.Lines != null && Model.TempJournalHeader.Lines.Any())
         {
@@ -258,3 +257,79 @@
         </button>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+
+        const state = '@(Model?.State ?? "")';
+
+        // Disable Approve button if state is APPROVED or RECONCILED
+        if (["APPROVED", "RECONCILED"].includes(state.toUpperCase())) {
+            $('#btnApprove')
+                .prop('disabled', true)
+                .addClass('btn-secondary')
+                .removeClass('btn-success');
+        }
+
+        $('#btnApprove').click(function (e) {
+            e.preventDefault();
+
+            // Confirmation dialog before approval
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to approve this journal entry?",
+                function () {
+                    // User clicked OK, perform AJAX POST
+                    const $btn = $('#btnApprove');
+                    const $icon = $btn.find('i');
+                    const $text = $btn.find('.btn-text');
+
+                    $btn.prop('disabled', true);
+                    $icon.removeClass('mdi-check-circle-outline')
+                         .addClass('mdi-loading mdi-spin');
+                    $text.text('Approving...');
+
+                    const payload = {
+                        Reference: '@Model.Reference',
+                        BranchId: '@Model.BranchId',
+                        ApprovalName: '@User.Identity.Name',
+                        TicketType: '@Model.TicketType'
+                    };
+
+                    $.ajax({
+                        url: '@Url.Action("Approve", "JournalHead")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(payload),
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+                                $btn.prop('disabled', true);
+                                $icon.removeClass('mdi-loading mdi-spin')
+                                     .addClass('mdi-check-circle');
+                                $text.text('Approved');
+                            } else {
+                                toastr.error(response.message);
+                                $btn.prop('disabled', false);
+                                $icon.removeClass('mdi-loading mdi-spin')
+                                     .addClass('mdi-check-circle-outline');
+                                $text.text('Approve');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            toastr.error("An error occurred: " + error);
+                            $btn.prop('disabled', false);
+                            $icon.removeClass('mdi-loading mdi-spin')
+                                 .addClass('mdi-check-circle-outline');
+                            $text.text('Approve');
+                        }
+                    });
+                },
+                function () {
+                    // User clicked Cancel, do nothing
+                }
+            ).set('labels', {ok:'Yes', cancel:'No'}); // Optional: customize button labels
+        });
+    });
+</script>

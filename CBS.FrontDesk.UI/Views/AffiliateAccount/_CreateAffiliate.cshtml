@@ -1,6 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountRequest
 @using Resources
 
+@{
+    // Server-side helpers for conditional hints (no JS)
+    var updateType = (Model?.AccountUpdateKind ?? string.Empty).Trim();
+    var utUpper = updateType.ToUpperInvariant();
+
+    bool needsOldCode = utUpper.Contains("CODE");
+    bool needsOldNameEn = utUpper == "NAMEEN" || utUpper == "NAMES" || utUpper == "CODEANDNAMES";
+    bool needsOldNameFr = utUpper == "NAMEFR" || utUpper == "NAMES" || utUpper == "CODEANDNAMES";
+
+    var isUpdate = !string.IsNullOrWhiteSpace(Model?.UpdateReference) || !string.IsNullOrWhiteSpace(updateType);
+}
+
 <style>
     .compact .card {
         margin-bottom: .5rem !important
@@ -54,17 +66,14 @@
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
             <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Affiliate Account</span>
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAffiliateTips" aria-expanded="false">
-                <i class="mdi mdi-chevron-down"></i>
-            </button>
+            <span class="small text-muted">@((isUpdate ? "Update request" : "Create request"))</span>
         </h6>
-        <div id="collapseAffiliateTips" class="collapse">
-            <div class="card-body py-2">
-                <ul class="mb-0 small">
-                    <li><strong>Parent:</strong> inherited from the selected node.</li>
-                    <li><strong>Class:</strong> choose the correct account class; PCMF options will filter by class.</li>
-                </ul>
-            </div>
+        <div class="card-body py-2">
+            <ul class="mb-0 small">
+                <li><strong>Parent:</strong> inherited from the selected node.</li>
+                <li><strong>Class:</strong> choose the correct account class; PCMF options will filter by class.</li>
+                <li><strong>Update Type:</strong> choose what is changing (Code, Names, or both). Provide the corresponding previous values below.</li>
+            </ul>
         </div>
     </div>
 
@@ -90,35 +99,19 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger small mb-2" })
 
                 <div class="row g-1">
-                    <!-- Parent reference (readonly TextBoxFor) -->
+                    <!-- Parent reference (readonly) -->
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.ParentAccountNumber, "Parent Account Number", new { @class = "form-label small text-muted" })
                         @Html.TextBoxFor(m => m.ParentAccountNumber, new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
 
-                    <!-- Scope (readonly TextBoxFor) -->
+                    <!-- Scope (readonly) -->
                     <div class="col-md-6">
                         @Html.LabelFor(m => m.Scope, "Scope", new { @class = "form-label small text-muted" })
                         @Html.TextBoxFor(m => m.Scope, new { @class = "form-control form-control-sm", @readonly = "readonly" })
                     </div>
 
-                    <!-- Account Class (DropDownListFor like root, with inline onchange) -->
-                    @* <div class="col-md-4">
-                            @Html.LabelFor(m => m.Class, "Account Class", new { @class = "form-label required fw-semibold small" })
-                            @Html.DropDownListFor(
-                                m => m.Class,
-                                new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
-                                "--- Select Class ---",
-                                new
-                                     {
-                                    @class = "form-select form-select-sm select2",
-                                    id = "Class",
-                                    onchange = "onAffiliateClassChange(this.value)"   // inline onchange (BranchAccount style)
-                                })
-                            @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger small" })
-                        </div>*@
-
-                    <!-- HO PCMF (Optional) — refreshed when Class changes -->
+                    <!-- HO PCMF (Optional) -->
                     <div class="col-md-7">
                         @Html.LabelFor(m => m.HoPcmfAccountId, "HO PCMF (Optional)", new { @class = "form-label fw-semibold small" })
                         @Html.DropDownListFor(
@@ -150,7 +143,87 @@
                         @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
                     </div>
 
+                    @if (isUpdate)
+                    {
 
+
+                        <!-- ===== UPDATE SECTION (No JavaScript) ===== -->
+                        <div class="col-12">
+                            <div class="border rounded p-2 mt-1">
+                                <div class="row g-1">
+                                    <!-- Update Type -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.AccountUpdateKind, "Update Type", new { @class = "form-label fw-semibold small" + (isUpdate ? " required" : "") })
+                                        @Html.DropDownListFor(
+                                     m => m.AccountUpdateKind,
+                                     new SelectList(new[]
+                                     {
+                                                new { Value = "Code",         Text = "Code only" },
+                                                new { Value = "NameEn",       Text = "Name (English) only" },
+                                                new { Value = "NameFr",       Text = "Name (French) only" },
+                                                new { Value = "Names",        Text = "Names (English & French)" },
+                                                new { Value = "CodeAndNames", Text = "Code + Names" }
+                                     }, "Value", "Text", updateType), "--- Select update type ---",
+                                     new { @class = "form-select form-select-sm select2" })
+                                        <div class="form-text small">
+                                            Choose what is changing. Leave blank for create requests.
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.AccountUpdateKind, "", new { @class = "text-danger small" })
+                                    </div>
+
+                                    <!-- Old Account Number -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.CodeOld, "Old Account Number", new { @class = "form-label fw-semibold small" + (needsOldCode ? " required" : "") })
+                                        @Html.TextBoxFor(
+                                     m => m.CodeOld,
+                                     new
+                                     {
+                                         @class = "form-control form-control-sm",
+                                         placeholder = "Previous account number (≥12 digits)",
+                                         inputmode = "numeric",
+                                         pattern = "\\d{12,}",
+                                         autocomplete = "off"
+                                     })
+                                        <div class="form-text small">
+                                            Required only if Update Type includes <strong>Code</strong>.
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.CodeOld, "", new { @class = "text-danger small" })
+                                    </div>
+
+                                    <!-- Old Name (English) -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.NameEnOld, "Old Name (English)", new { @class = "form-label fw-semibold small" + (needsOldNameEn ? " required" : "") })
+                                        @Html.TextBoxFor(
+                                     m => m.NameEnOld,
+                                     new { @class = "form-control form-control-sm", placeholder = "Previous English name", maxlength = "150" })
+                                        <div class="form-text small">
+                                            Required if Update Type is <strong>NameEn</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.NameEnOld, "", new { @class = "text-danger small" })
+                                    </div>
+
+                                    <!-- Old Name (French) -->
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.NameFrOld, "Old Name (French)", new { @class = "form-label fw-semibold small" + (needsOldNameFr ? " required" : "") })
+                                        @Html.TextBoxFor(
+                                     m => m.NameFrOld,
+                                     new { @class = "form-control form-control-sm", placeholder = "Ancien nom en français", maxlength = "150" })
+                                        <div class="form-text small">
+                                            Required if Update Type is <strong>NameFr</strong>, <strong>Names</strong>, or <strong>CodeAndNames</strong>.
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.NameFrOld, "", new { @class = "text-danger small" })
+                                    </div>
+                                </div>
+
+                                <div class="small text-muted mt-1">
+                                    <strong>Note:</strong> For update requests, provide the previous values for each field you’re changing.
+                                    Your server-side validator will enforce the requirements based on the selected Update Type.
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- ===== /UPDATE SECTION ===== -->
 
                     <hr class="my-2" />
 
@@ -179,6 +252,7 @@
                 <div class="d-flex justify-content-end gap-2 mt-2">
                     @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                     {
+                       
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="mdi mdi-content-save me-1"></i> Save
                         </button>
@@ -191,9 +265,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="mdi mdi-refresh me-1"></i> Update
                         </button>
-                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
-                            Close
-                        </button>
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
                     }
                 </div>
             }

@@ -201,6 +201,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
         public async Task<JournalApprovalResponse> ApproveSourceAsync(JournalApproval model)
         {
+            model.BranchId = null;
+            model.DestinationBranchId = null;
+            model.TicketType = null;
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -220,6 +223,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         {
 
             model.DestinationBranchId = model.BranchId;
+            model.BranchId = null;
+            model.SourceBranchId = null;
+            model.TicketType = null;   
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -231,7 +237,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     model
                 );
 
-                return apiResponse.ApiResponseData.Data;
+                return apiResponse?.ApiResponseData?.Data;
             }
             catch (Exception ex)
             {
