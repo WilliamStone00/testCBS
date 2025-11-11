@@ -10911,6 +10911,7 @@
     <Content Include="Views\CollectorCommission\Index.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
     <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />
+    <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

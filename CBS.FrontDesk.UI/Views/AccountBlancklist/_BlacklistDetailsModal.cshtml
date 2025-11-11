@@ -15,40 +15,37 @@
                 }
                 else
                 {
-            <dl class="row">
-                <dt class="col-sm-4">ID</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.Id)</dd>
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(m => m.Id)</dd>
 
-                <dt class="col-sm-4">Trial Balance Account</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.TrialBallanceAcc)</dd>
+                        <dt class="col-sm-4">Branch</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchName)</dd>
 
-                <dt class="col-sm-4">Branch ID</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchID)</dd>
+                        <dt class="col-sm-4">Menu</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(m => m.Menu)</dd>
 
-                <dt class="col-sm-4">Menu</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.Menu)</dd>
+                        <dt class="col-sm-4">Affiliate Account</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(m => m.AffiliateAccountName)</dd>
 
-                <dt class="col-sm-4">Branch Account ID</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.branchAccountId)</dd>
+                        <dt class="col-sm-4">Branch Account</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchAccountName)</dd>
 
-                <dt class="col-sm-4">Affiliate Account ID</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(m => m.AffiliateAccountId)</dd>
+                        <dt class="col-sm-4">Created Date (UTC)</dt>
+                        <dd class="col-sm-8">
+                            @(Model.CreatedDate == default(DateTime) ? "-" : Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss"))
+                        </dd>
 
-                <dt class="col-sm-4">Created Date (UTC)</dt>
-                <dd class="col-sm-8">
-                    @(Model.CreatedDate != default(DateTime))
-                </dd>
-
-
-                <dt class="col-sm-4">Notes</dt>
-                <dd class="col-sm-8">@Html.Raw(Html.Encode(Model.Notes))</dd>
-            </dl>
+                        <dt class="col-sm-4">Notes</dt>
+                        <dd class="col-sm-8">@Html.Raw(Html.Encode(Model.Notes))</dd>
+                    </dl>
                 }
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-edit-from-details" data-id="@Model?.Id">Edit</button>
+                @if (Model != null)
+                {<button type="button" class="btn btn-primary btn-edit-from-details" data-id="@Model.Id">Edit</button>}
             </div>
         </div>
     </div>
