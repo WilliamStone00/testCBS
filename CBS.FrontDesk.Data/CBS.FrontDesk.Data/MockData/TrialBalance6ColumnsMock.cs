@@ -9,13 +9,13 @@ namespace CBS.FrontDesk.Data.MockData
 {
     public class TrialBalance6ColumnsMock
     {
-        public static TrialBalanceResponseDto GetMockData()
+        public static GenericReportResponseV2Dto GetMockData()
         {
-            return new TrialBalanceResponseDto
+            return new GenericReportResponseV2Dto
             {
-                Lines = new List<TrialBalanceDto>
+                Lines = new List<TrialBalanceV2Dto>
                 {
-                    new TrialBalanceDto
+                    new TrialBalanceV2Dto
                     {
                         AccountNumber = "100000000000",
                         AccountName = "Fully paid shares2",
@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.Data.MockData
                         ClosingDR = 727964220.00m,
                         ClosingCR = 0.00m
                     },
-                    new TrialBalanceDto
+                    new TrialBalanceV2Dto
                     {
                         AccountNumber = "111000000000",
                         AccountName = "LEGAL RESERVES",

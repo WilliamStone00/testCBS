@@ -456,10 +456,10 @@
       <DependentUpon>JournalEntries.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries2.cs">
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries2.rpt</DependentUpon>
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.cs">
@@ -8714,13 +8714,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries2.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries2.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TrialBalance6Columns.cs</LastGenOutput>
+      <LastGenOutput>TrialBalance6Columns1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

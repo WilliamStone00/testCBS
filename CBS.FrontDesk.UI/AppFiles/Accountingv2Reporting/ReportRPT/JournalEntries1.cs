@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class JournalEntries2 : ReportClass {
+    public class JournalEntries : ReportClass {
         
-        public JournalEntries2() {
+        public JournalEntries() {
         }
         
         public override string ResourceName {
             get {
-                return "JournalEntries2.rpt";
+                return "JournalEntries.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.JournalEntries2.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.JournalEntries.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,17 +82,25 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+            get {
+                return this.ReportDefinition.Sections[5];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedJournalEntries2 : Component, ICachedReport {
+    public class CachedJournalEntries : Component, ICachedReport {
         
-        public CachedJournalEntries2() {
+        public CachedJournalEntries() {
         }
         
         [Browsable(false)]
@@ -129,7 +137,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            JournalEntries2 rpt = new JournalEntries2();
+            JournalEntries rpt = new JournalEntries();
             rpt.Site = this.Site;
             return rpt;
         }

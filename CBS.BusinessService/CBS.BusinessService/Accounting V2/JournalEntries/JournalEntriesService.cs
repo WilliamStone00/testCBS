@@ -12,7 +12,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Accounting_V2.TrialBalance
+namespace CBS.BusinessService.Accounting_V2.JournalEntries
 {
     public class JournalEntriesService : BaseService
     {
@@ -36,8 +36,8 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
             {
                
                 // POST request to the API
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<TrialBalanceV2Dto>>>(
-                    APICallHelper.TrialBalance6,
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<JournalDtoEntriesV2Dto>>>(
+                    APICallHelper.JournalEntries,
                     filter
                 );
 
@@ -45,11 +45,11 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
 
                 if (response?.IsSuccess == true)
                 {
-                    result.Lines = response.ApiResponseData?.Data ?? new List<TrialBalanceV2Dto>();
+                    result.JournalEntries = response.ApiResponseData?.Data ?? new List<JournalDtoEntriesV2Dto>();
                 }
                 else
                 {
-                    result.Lines = new List<TrialBalanceV2Dto>();
+                    result.JournalEntries = new List<JournalDtoEntriesV2Dto>();
                     System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns: API returned failure ({response?.Message})");
                 }
 

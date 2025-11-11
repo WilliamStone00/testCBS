@@ -344,6 +344,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnDescription;
             
+            private global::System.Data.DataColumn columnEntryTime;
+            
+            private global::System.Data.DataColumn columnEntime;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public ReconciledLedgerLineRptDSDataTable() {
@@ -499,6 +503,22 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EntryTimeColumn {
+                get {
+                    return this.columnEntryTime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EntimeColumn {
+                get {
+                    return this.columnEntime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -534,7 +554,24 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public ReconciledLedgerLineRptDSRow AddReconciledLedgerLineRptDSRow(string Logo, string BranchName, string BranchCode, decimal Amount, int Seq, decimal DebitAmount, decimal CreditAmount, System.DateTime EntryDate, string AccountNumber, string AccountName, string DrCr, string OperationType, string ReferenceNumber, string AuxiliaryRef, string Description) {
+            public ReconciledLedgerLineRptDSRow AddReconciledLedgerLineRptDSRow(
+                        string Logo, 
+                        string BranchName, 
+                        string BranchCode, 
+                        decimal Amount, 
+                        int Seq, 
+                        decimal DebitAmount, 
+                        decimal CreditAmount, 
+                        System.DateTime EntryDate, 
+                        string AccountNumber, 
+                        string AccountName, 
+                        string DrCr, 
+                        string OperationType, 
+                        string ReferenceNumber, 
+                        string AuxiliaryRef, 
+                        string Description, 
+                        System.TimeSpan EntryTime, 
+                        System.TimeSpan Entime) {
                 ReconciledLedgerLineRptDSRow rowReconciledLedgerLineRptDSRow = ((ReconciledLedgerLineRptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Logo,
@@ -551,7 +588,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         OperationType,
                         ReferenceNumber,
                         AuxiliaryRef,
-                        Description};
+                        Description,
+                        EntryTime,
+                        Entime};
                 rowReconciledLedgerLineRptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowReconciledLedgerLineRptDSRow);
                 return rowReconciledLedgerLineRptDSRow;
@@ -589,6 +628,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnReferenceNumber = base.Columns["ReferenceNumber"];
                 this.columnAuxiliaryRef = base.Columns["AuxiliaryRef"];
                 this.columnDescription = base.Columns["Description"];
+                this.columnEntryTime = base.Columns["EntryTime"];
+                this.columnEntime = base.Columns["Entime"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -624,6 +665,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnAuxiliaryRef);
                 this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescription);
+                this.columnEntryTime = new global::System.Data.DataColumn("EntryTime", typeof(global::System.TimeSpan), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntryTime);
+                this.columnEntime = new global::System.Data.DataColumn("Entime", typeof(global::System.TimeSpan), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntime);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1534,6 +1579,38 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.TimeSpan EntryTime {
+                get {
+                    try {
+                        return ((global::System.TimeSpan)(this[this.tableReconciledLedgerLineRptDS.EntryTimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntryTime\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.EntryTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.TimeSpan Entime {
+                get {
+                    try {
+                        return ((global::System.TimeSpan)(this[this.tableReconciledLedgerLineRptDS.EntimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Entime\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.EntimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsLogoNull() {
                 return this.IsNull(this.tableReconciledLedgerLineRptDS.LogoColumn);
             }
@@ -1710,6 +1787,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetDescriptionNull() {
                 this[this.tableReconciledLedgerLineRptDS.DescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEntryTimeNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.EntryTimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEntryTimeNull() {
+                this[this.tableReconciledLedgerLineRptDS.EntryTimeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEntimeNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.EntimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEntimeNull() {
+                this[this.tableReconciledLedgerLineRptDS.EntimeColumn] = global::System.Convert.DBNull;
             }
         }
         

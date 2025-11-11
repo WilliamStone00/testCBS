@@ -1680,16 +1680,28 @@ namespace CBS.FrontDesk.Helper
 
 
 
-        //------------------------ Trial Balance ------------------------
+        // -----------------------------------------------------------------------------
+        //                          Accounting V2 Reports
+        // -----------------------------------------------------------------------------
 
-        // Get all trial balances
+        // ================ trial balance reports    =======================//
         public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
 
 
+        // ================ Journals   =======================//
+        public static string JournalEntries = "/api/v1/Reports/trial-balance6";
 
 
 
-         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+
+
+
+
+
+
+
+
+        public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 

@@ -124,7 +124,7 @@
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\Reconciliation.cs" />
-    <Compile Include="Entity\Accounting V2\TrialBalance\TrialBalanceResponseDto.cs" />
+    <Compile Include="Entity\Accounting V2\TrialBalance\GenericReportResponseV2Dto.cs" />
     <Compile Include="Entity\AccountingTypes.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />

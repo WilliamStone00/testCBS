@@ -1,8 +1,7 @@
-
-
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
+
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Data.ReportDataSetDto;
@@ -24,13 +23,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
     //[CheckSessionTimeOut]
     public class TrialBalanceController : BaseController
     {
-        private readonly TrialBalanceService _trialBalanceService;
+        private readonly JournalEntriesService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public TrialBalanceController(TrialBalanceService trialBalanceService,
+        public TrialBalanceController(JournalEntriesService trialBalanceService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
