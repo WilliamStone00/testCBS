@@ -95,9 +95,9 @@
                         @Html.DropDownList("CollectorId",
                             new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
                             new { @class = "form-control select2", id = "CollectorId" })
-                        <div id="collectorLoader" class="spinner-border spinner-border-sm text-primary d-none" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                        <span id="accountTypeLoading" class="text-info d-none">
+                            <i class="mdi mdi-loading mdi-spin me-1"></i>Loading Collector account ...
+                        </span>
                     </div>
                 </div>
 
@@ -291,697 +291,884 @@
     </div>
 </div>
 
-@section Scripts {
-    <style>
-        /* Fix Select2 dropdown z-index in Bootstrap modals */
-        .select2-container--open {
-            z-index: 99999 !important;
-        }
-
-        .select2-dropdown {
-            z-index: 99999 !important;
-        }
-    </style>
-
-    <script>
-        // =========================================================================
-        // GLOBAL VARIABLES
-        // =========================================================================
-        var commissionTable = null;
-        var currentCommissionData = null;
-        var treatmentCommissionData = null;
-
-        $(document).ready(function () {
-            console.log('Document ready - initializing DataTable...');
-
-            // Initialize DataTable with error handling
-            try {
-                commissionTable = $('#commissionTable').DataTable({
-                    "paging": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                    "responsive": true,
-                    "language": {
-                        "emptyTable": "No commission data available"
-                    },
-                    "footerCallback": function (row, data, start, end, display) {
-                        // Calculate totals for the current page
-                        var api = this.api();
-                        var totalActivity = 0;
-                        var totalFee = 0;
-
-                        // Remove formatting to get numeric data
-                        api.column(2, { page: 'current' }).data().each(function (value, index) {
-                            totalActivity += parseFloat(value.replace(/[^\d.-]/g, '')) || 0;
-                        });
-
-                        api.column(3, { page: 'current' }).data().each(function (value, index) {
-                            totalFee += parseFloat(value.replace(/[^\d.-]/g, '')) || 0;
-                        });
-
-                        // Update footer
-                        $('#totalActivityAmount').html(formatCurrency(totalActivity));
-                        $('#totalFeeAmount').html(formatCurrency(totalFee));
-                    }
-                });
-                console.log('DataTable initialized successfully');
-            } catch (error) {
-                console.error('Error initializing DataTable:', error);
-                $('#commissionTable').addClass('table table-striped table-bordered');
+    @section Scripts {
+        <style>
+            /* Fix Select2 dropdown z-index in Bootstrap modals */
+            .select2-container--open {
+                z-index: 99999 !important;
             }
 
-            // Initialize Select2 for main form dropdowns
-            if ($.fn.select2) {
-                $('#BranchId').select2();
-                $('#CollectorId').select2();
+            .select2-dropdown {
+                z-index: 99999 !important;
             }
 
-            // Branch change event
-            $('#BranchId').change(function () {
-                var branchId = $(this).val();
-                if (branchId) {
-                    loadCollectors(branchId);
-                } else {
-                    $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
-                    if ($.fn.select2) {
-                        $('#CollectorId').select2();
+            /* make sure select2 dropdown appears above the modal when appended to body */
+            .select2-container--open .select2-dropdown {
+                z-index: 3000 !important;
+            }
+
+            /* Style for formatted currency inputs */
+            .formatted-currency {
+                text-align: right;
+                font-family: monospace;
+            }
+
+            /* safe global rules to prevent flex children from causing overflow */
+            .input-group .form-control {
+                min-width: 0; /* allow the input to shrink inside a flex container */
+            }
+
+            .input-group {
+                max-width: 260px; /* limit width but allow shrink on small screens */
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+                .input-group .form-control {
+                    min-width: 0;
+                }
+        </style>
+
+        <script>
+    // =========================================================================
+    // GLOBAL VARIABLES
+    // =========================================================================
+    var commissionTable = null;
+    var currentCommissionData = null;
+    var treatmentCommissionData = null;
+
+    $(document).ready(function () {
+        console.log('Document ready - initializing DataTable...');
+
+        // Initialize DataTable with error handling
+        try {
+            commissionTable = $('#commissionTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "emptyTable": "No commission data available"
+                },
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
+
+                    function toNumber(val) {
+                        if (typeof val === 'string') {
+                            // remove HTML tags, trim, remove commas, handle parentheses
+                            val = val.replace(/<[^>]*>/g, '').trim();
+                            var isParens = /^\(.*\)$/.test(val);
+                            val = val.replace(/[(),]/g, ''); // remove commas and parentheses
+                            var n = parseFloat(val.replace(/[^\d.-]/g, '')) || 0;
+                            return isParens ? -n : n;
+                        }
+                        if (typeof val === 'number') return val;
+                        return 0;
                     }
+
+                    // Page totals
+                    var pageActivity = api.column(2, { page: 'current' }).data()
+                        .reduce(function (a, b) { return a + toNumber(b); }, 0);
+                    var pageFee = api.column(3, { page: 'current' }).data()
+                        .reduce(function (a, b) { return a + toNumber(b); }, 0);
+
+                    // Grand totals (all pages)
+                    var totalActivity = api.column(2, { page: 'all' }).data()
+                        .reduce(function (a, b) { return a + toNumber(b); }, 0);
+                    var totalFee = api.column(3, { page: 'all' }).data()
+                        .reduce(function (a, b) { return a + toNumber(b); }, 0);
+
+                    // Put results in footer (example: show "page / total")
+                    $('#totalActivityAmount').html(formatCurrency(pageActivity) + ' / ' + formatCurrency(totalActivity));
+                    $('#totalFeeAmount').html(formatCurrency(pageFee) + ' / ' + formatCurrency(totalFee));
                 }
             });
+            console.log('DataTable initialized successfully');
+        } catch (error) {
+            console.error('Error initializing DataTable:', error);
+            $('#commissionTable').addClass('table table-striped table-bordered');
+        }
 
-            // Get Commission button click
-            $('#btnGetCommission').click(function () {
-                // Validate required fields
-                if (!$('#BranchId').val()) {
-                    appalert('Please select a branch', 3, 1);
-                    return;
+        // Initialize Select2 for main form dropdowns
+        if ($.fn.select2) {
+            $('#BranchId').select2();
+            $('#CollectorId').select2();
+        }
+
+        // Branch change event
+        $('#BranchId').change(function () {
+            var branchId = $(this).val();
+            if (branchId) {
+                loadCollectors(branchId);
+            } else {
+                $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
+                if ($.fn.select2) {
+                    $('#CollectorId').select2();
                 }
-                if (!$('#CollectorId').val()) {
-                    appalert('Please select a collector', 3, 1);
-                    return;
-                }
-                if (!$('#MonthYear').val()) {
-                    appalert('Please select month and year', 3, 1);
-                    return;
-                }
-                getCommissionData();
-            });
-
-            // Reset button click
-            $('#btnReset').click(function () {
-                resetForm();
-            });
-
-            // Export button click
-            $('#btnExport').click(function () {
-                $('#exportModal').modal('show');
-            });
-
-            // Treatment button click
-            $('#btnTreatment').click(function () {
-                // Check if we have commission data
-                if (!currentCommissionData) {
-                    appalert('Please get commission data first', 3, 1);
-                    return;
-                }
-
-                // Reset the modal form first
-                resetPaymentForm();
-
-                // Set the data in the modal
-                if (typeof setCommissionData === 'function') {
-                    setCommissionData(currentCommissionData);
-                }
-
-                $('#treatmentModal').modal('show');
-            });
+            }
         });
 
-        // =========================================================================
-        // MAIN FORM FUNCTIONS
-        // =========================================================================
-
-        function loadCollectors(branchId) {
-            $('#collectorLoader').removeClass('d-none');
-            $('#CollectorId').prop('disabled', true);
-
-            $.ajax({
-                url: '@Url.Action("GetCollectorsByBranch", "CollectorCommission")',
-                type: 'GET',
-                data: { branchId: branchId },
-                success: function (response) {
-                    console.log('Collectors response:', response);
-
-                    var options = '<option value="">--- Select Collector ---</option>';
-
-                    if (response && response.length > 0) {
-                        $.each(response, function (index, collector) {
-                            var collectorId = collector.Value;
-                            var collectorName = collector.Text;
-
-                            if (collectorId && collectorName) {
-                                options += '<option value="' + collectorId + '">' + collectorName + '</option>';
-                            }
-                        });
-                    }
-
-                    $('#CollectorId').html(options);
-
-                    // Re-initialize Select2 if you're using it
-                    if ($.fn.select2) {
-                        $('#CollectorId').select2();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error loading collectors:', error);
-                    appalert('Error loading collectors. Please try again.', 4, 1);
-                },
-                complete: function () {
-                    $('#collectorLoader').addClass('d-none');
-                    $('#CollectorId').prop('disabled', false);
-                }
-            });
-        }
-
-   function getCommissionData() {
-    var monthYear = $('#MonthYear').val();
-    if (!monthYear) {
-        appalert('Please select Month and Year', 3, 1);
-        return;
-    }
-
-    var parts = monthYear.split('-');
-    var year = parseInt(parts[0]);
-    var month = parseInt(parts[1]);
-
-    var model = {
-        Year: year,
-        Month: month,
-        CollectorId: $('#CollectorId').val(),
-        BranchId: $('#BranchId').val()
-    };
-
-    console.log('Sending request with model:', model);
-
-    $.ajax({
-        url: '@Url.Action("GetCommissionData", "CollectorCommission")',
-        type: 'POST',
-        data: JSON.stringify(model),
-        contentType: 'application/json',
-        beforeSend: function () {
-            $('#commissionSummary').addClass('d-none');
-            $('#commissionDetails').addClass('d-none');
-        },
-        success: function (response) {
-            console.log('Full Commission response:', response);
-            console.log('MemberStats from response:', response.data?.MemberStats);
-            console.log('SharedAmounts from response:', response.data?.SharedAmounts);
-
-            if (response && response.success) {
-                // Store the complete response data
-                currentCommissionData = response.data;
-                displayCommissionData(response.data);
-            } else {
-                appalert(response.message || 'Error loading commission data', 4, 1);
+        // Get Commission button click
+        $('#btnGetCommission').click(function () {
+            // Validate required fields
+            if (!$('#BranchId').val()) {
+                appalert('Please select a branch', 3, 1);
+                return;
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error loading commission data:', error);
-            appalert('Error loading commission data: ' + error, 4, 1);
-        }
-    });
-}
+            if (!$('#CollectorId').val()) {
+                appalert('Please select a collector', 3, 1);
+                return;
+            }
+            if (!$('#MonthYear').val()) {
+                appalert('Please select month and year', 3, 1);
+                return;
+            }
+            getCommissionData();
+        });
 
-        function displayCommissionData(data) {
-            console.log('Displaying commission data:', data);
+        // Reset button click
+        $('#btnReset').click(function () {
+            resetForm();
+        });
 
-            if (!data) {
-                appalert('No commission data available', 3, 1);
+        // Export button click
+        $('#btnExport').click(function () {
+            $('#exportModal').modal('show');
+        });
+
+        // Treatment button click
+        $('#btnTreatment').click(function () {
+            // Check if we have commission data
+            if (!currentCommissionData) {
+                appalert('Please get commission data first', 3, 1);
                 return;
             }
 
-            // Update basic information
-            $('#summaryCollectorName').text(data.CollectorName || 'N/A');
-            $('#summaryBranchName').text(data.BranchName || 'N/A');
-            $('#summaryPeriod').text(data.Month || 'N/A');
-
-            // Update activity overview
-            $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
-            $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
-            $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
-            $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
-
-            // Update distribution table
-            var distributionTable = $('#distributionTable tbody');
-            distributionTable.empty();
-
-            if (data.SharedAmounts && data.SharedAmounts.length > 0) {
-                $.each(data.SharedAmounts, function(index, item) {
-                    var row = '<tr>' +
-                        '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
-                        '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
-                        '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
-                        '</tr>';
-                    distributionTable.append(row);
-                });
-            } else {
-                distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
+            // Get branch ID from the main form
+            var branchId = $('#BranchId').val();
+            if (!branchId) {
+                appalert('Please select a branch first', 3, 1);
+                return;
             }
 
-            $('#commissionSummary').removeClass('d-none');
+            // Load PCMF accounts for this branch before showing modal
+            loadPcmfAccountsByBranch(branchId);
+        });
+    });
 
-            // Update table - safely handle DataTable operations
-            try {
-                if (commissionTable && typeof commissionTable.clear === 'function') {
-                    // Use DataTable API if available
-                    commissionTable.clear();
+    // =========================================================================
+    // CURRENCY FORMATTING FUNCTIONS
+    // =========================================================================
 
-                    if (data.MemberStats && data.MemberStats.length > 0) {
-                        var totalActivity = 0;
-                        var totalFee = 0;
+    function formatCurrency(amount) {
+        try {
+            // If amount is a string with commas, remove them for parsing
+            if (typeof amount === 'string') {
+                amount = parseFloat(amount.replace(/,/g, '')) || 0;
+            }
 
-                        $.each(data.MemberStats, function (index, member) {
-                            var activityAmount = member.TotalActivityAmount || 0;
-                            var feeAmount = member.FeeCharged || 0;
+            // Format with commas for thousands separators
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount || 0);
+        } catch (e) {
+            // Fallback formatting
+            var num = parseFloat(amount) || 0;
+            return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+    }
 
-                            totalActivity += activityAmount;
-                            totalFee += feeAmount;
+    function parseFormattedCurrency(formattedValue) {
+        if (!formattedValue) return 0;
+        // Remove commas and parse as float
+        return parseFloat(formattedValue.toString().replace(/,/g, '')) || 0;
+    }
 
-                            commissionTable.row.add([
-                                member.MemberId || '-',
-                                member.MemberName || '-',
-                                formatCurrency(activityAmount),
-                                formatCurrency(feeAmount),
-                            ]);
-                        });
+    // =========================================================================
+    // MAIN FORM FUNCTIONS
+    // =========================================================================
 
-                        // Update totals in footer
-                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                        $('#totalFeeAmount').text(formatCurrency(totalFee));
-                    } else {
-                        // Add a "no data" row if memberStats is empty
-                        commissionTable.row.add([
-                            'No data', 'No data', 'No data', 'No data'
-                        ]);
-                    }
+    function loadCollectors(branchId) {
+        // show loader (your span is right under the Collector select)
+        $('#accountTypeLoading').removeClass('d-none').text('Loading Collector account ...');
+        $('#collectorLoader').removeClass('d-none');
+        $('#CollectorId').prop('disabled', true);
 
-                    commissionTable.draw();
+        $.ajax({
+            url: '@Url.Action("GetCollectorsByBranch", "CollectorCommission")',
+            type: 'GET',
+            data: { branchId: branchId },
+            success: function (response) {
+                console.log('Collectors response:', response);
+
+                var options = '<option value="">--- Select Collector ---</option>';
+
+                if (response && response.length > 0) {
+                    $.each(response, function (index, collector) {
+                        var collectorId = collector.Value;
+                        var collectorName = collector.Text;
+
+                        if (collectorId && collectorName) {
+                            options += '<option value="' + collectorId + '">' + collectorName + '</option>';
+                        }
+                    });
                 } else {
-                    // Fallback: manual table update if DataTable not available
-                    console.warn('DataTable not available, using manual table update');
-                    var tbody = $('#commissionTable tbody');
-                    tbody.empty();
-
-                    if (data.MemberStats && data.MemberStats.length > 0) {
-                        var totalActivity = 0;
-                        var totalFee = 0;
-
-                        $.each(data.MemberStats, function (index, member) {
-                            var activityAmount = member.TotalActivityAmount || 0;
-                            var feeAmount = member.FeeCharged || 0;
-
-                            totalActivity += activityAmount;
-                            totalFee += feeAmount;
-
-                            var row = '<tr>' +
-                                '<td>' + (member.MemberId || '-') + '</td>' +
-                                '<td>' + (member.MemberName || '-') + '</td>' +
-                                '<td>' + formatCurrency(activityAmount) + '</td>' +
-                                '<td>' + formatCurrency(feeAmount) + '</td>' +
-                                '</tr>';
-                            tbody.append(row);
-                        });
-
-                        // Update totals in footer
-                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                        $('#totalFeeAmount').text(formatCurrency(totalFee));
-                    } else {
-                        tbody.append('<tr><td colspan="4" class="text-center">No commission data available</td></tr>');
-                    }
+                    // no collectors found: show a short message in the loader span
+                    $('#accountTypeLoading').removeClass('d-none').text('No collectors found for this branch');
                 }
-            } catch (error) {
-                console.error('Error updating commission table:', error);
-                appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
-            }
 
-            $('#commissionDetails').removeClass('d-none');
+                $('#CollectorId').html(options);
+
+                // Re-initialize Select2 if you're using it
+                if ($.fn.select2) {
+                    $('#CollectorId').select2();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading collectors:', error);
+                appalert('Error loading collectors. Please try again.', 4, 1);
+                // show error message briefly
+                $('#accountTypeLoading').removeClass('d-none').text('Failed to load collectors');
+            },
+            complete: function () {
+                // hide the loader and re-enable control
+                setTimeout(function () { // small delay so user can read messages
+                    $('#accountTypeLoading').addClass('d-none').text('Loading Collector account ...');
+                }, 700);
+
+                $('#collectorLoader').addClass('d-none');
+                $('#CollectorId').prop('disabled', false);
+            }
+        });
+    }
+
+    function getCommissionData() {
+        var monthYear = $('#MonthYear').val();
+        if (!monthYear) {
+            appalert('Please select Month and Year', 3, 1);
+            return;
         }
 
-        function resetForm() {
-            $('#BranchId').val('');
-            $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
-            $('#MonthYear').val('');
-            $('#commissionSummary').addClass('d-none');
-            $('#commissionDetails').addClass('d-none');
-            currentCommissionData = null; // Clear stored data
+        var parts = monthYear.split('-');
+        var year = parseInt(parts[0]);
+        var month = parseInt(parts[1]);
 
-            try {
-                if (commissionTable && typeof commissionTable.clear === 'function') {
-                    commissionTable.clear().draw();
+        var model = {
+            Year: year,
+            Month: month,
+            CollectorId: $('#CollectorId').val(),
+            BranchId: $('#BranchId').val()
+        };
+
+        console.log('Sending request with model:', model);
+
+        $.ajax({
+            url: '@Url.Action("GetCommissionData", "CollectorCommission")',
+            type: 'POST',
+            data: JSON.stringify(model),
+            contentType: 'application/json',
+            beforeSend: function () {
+                $('#commissionSummary').addClass('d-none');
+                $('#commissionDetails').addClass('d-none');
+            },
+            success: function (response) {
+                console.log('Full Commission response:', response);
+                console.log('MemberStats from response:', response.data?.MemberStats);
+                console.log('SharedAmounts from response:', response.data?.SharedAmounts);
+
+                if (response && response.success) {
+                    // Store the complete response data
+                    currentCommissionData = response.data;
+                    displayCommissionData(response.data);
                 } else {
-                    $('#commissionTable tbody').empty();
+                    appalert(response.message || 'Error loading commission data', 4, 1);
                 }
-            } catch (error) {
-                console.error('Error resetting table:', error);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading commission data:', error);
+                appalert('Error loading commission data: ' + error, 4, 1);
+            }
+        });
+    }
+
+    function displayCommissionData(data) {
+        console.log('Displaying commission data:', data);
+
+        if (!data) {
+            appalert('No commission data available', 3, 1);
+            return;
+        }
+
+        // Update basic information
+        $('#summaryCollectorName').text(data.CollectorName || 'N/A');
+        $('#summaryBranchName').text(data.BranchName || 'N/A');
+        $('#summaryPeriod').text(data.Month || 'N/A');
+
+        // Update activity overview
+        $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
+        $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
+        $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
+        $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
+
+        // Update distribution table
+        var distributionTable = $('#distributionTable tbody');
+        distributionTable.empty();
+
+        if (data.SharedAmounts && data.SharedAmounts.length > 0) {
+            $.each(data.SharedAmounts, function(index, item) {
+                var row = '<tr>' +
+                    '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
+                    '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
+                    '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
+                    '</tr>';
+                distributionTable.append(row);
+            });
+        } else {
+            distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
+        }
+
+        $('#commissionSummary').removeClass('d-none');
+
+        // Update table - safely handle DataTable operations
+        try {
+            if (commissionTable && typeof commissionTable.clear === 'function') {
+                // Use DataTable API if available
+                commissionTable.clear();
+
+                if (data.MemberStats && data.MemberStats.length > 0) {
+                    var totalActivity = 0;
+                    var totalFee = 0;
+
+                    $.each(data.MemberStats, function (index, member) {
+                        var activityAmount = member.TotalActivityAmount || 0;
+                        var feeAmount = member.FeeCharged || 0;
+
+                        totalActivity += activityAmount;
+                        totalFee += feeAmount;
+
+                        commissionTable.row.add([
+                            member.MemberId || '-',
+                            member.MemberName || '-',
+                            formatCurrency(activityAmount),
+                            formatCurrency(feeAmount),
+                        ]);
+                    });
+
+                    // Update totals in footer
+                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                    $('#totalFeeAmount').text(formatCurrency(totalFee));
+                } else {
+                    // Add a "no data" row if memberStats is empty
+                    commissionTable.row.add([
+                        'No data', 'No data', 'No data', 'No data'
+                    ]);
+                }
+
+                commissionTable.draw();
+            } else {
+                // Fallback: manual table update if DataTable not available
+                console.warn('DataTable not available, using manual table update');
+                var tbody = $('#commissionTable tbody');
+                tbody.empty();
+
+                if (data.MemberStats && data.MemberStats.length > 0) {
+                    var totalActivity = 0;
+                    var totalFee = 0;
+
+                    $.each(data.MemberStats, function (index, member) {
+                        var activityAmount = member.TotalActivityAmount || 0;
+                        var feeAmount = member.FeeCharged || 0;
+
+                        totalActivity += activityAmount;
+                        totalFee += feeAmount;
+
+                        var row = '<tr>' +
+                            '<td>' + (member.MemberId || '-') + '</td>' +
+                            '<td>' + (member.MemberName || '-') + '</td>' +
+                            '<td>' + formatCurrency(activityAmount) + '</td>' +
+                            '<td>' + formatCurrency(feeAmount) + '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    // Update totals in footer
+                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                    $('#totalFeeAmount').text(formatCurrency(totalFee));
+                } else {
+                    tbody.append('<tr><td colspan="4" class="text-center">No commission data available</td></tr>');
+                }
+            }
+        } catch (error) {
+            console.error('Error updating commission table:', error);
+            appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
+        }
+
+        $('#commissionDetails').removeClass('d-none');
+    }
+
+    function resetForm() {
+        $('#BranchId').val('');
+        $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
+        $('#MonthYear').val('');
+        $('#commissionSummary').addClass('d-none');
+        $('#commissionDetails').addClass('d-none');
+        currentCommissionData = null; // Clear stored data
+
+        try {
+            if (commissionTable && typeof commissionTable.clear === 'function') {
+                commissionTable.clear().draw();
+            } else {
                 $('#commissionTable tbody').empty();
             }
-
-            // Reset totals
-            $('#totalActivityAmount').text('0.00');
-            $('#totalFeeAmount').text('0.00');
-
-            // Re-initialize Select2 if needed
-            if ($.fn.select2) {
-                $('#CollectorId').select2();
-            }
+        } catch (error) {
+            console.error('Error resetting table:', error);
+            $('#commissionTable tbody').empty();
         }
 
-        function formatCurrency(amount) {
-            try {
-                // Format without currency symbol, just the number with 2 decimal places
-                return new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(amount || 0);
-            } catch (e) {
-                return (amount || 0).toFixed(2);
-            }
+        // Reset totals
+        $('#totalActivityAmount').text('0.00');
+        $('#totalFeeAmount').text('0.00');
+
+        // Re-initialize Select2 if needed
+        if ($.fn.select2) {
+            $('#CollectorId').select2();
         }
+    }
 
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            try {
-                return new Date(dateString).toLocaleDateString();
-            } catch (e) {
-                return '-';
-            }
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        try {
+            return new Date(dateString).toLocaleDateString();
+        } catch (e) {
+            return '-';
         }
+    }
 
-        // =========================================================================
-        // TREATMENT MODAL FUNCTIONS
-        // =========================================================================
+    // =========================================================================
+    // PCMF ACCOUNTS FUNCTIONS
+    // =========================================================================
 
-        // Initialize treatment modal events when modal is shown
-        $(document).on('shown.bs.modal', '#treatmentModal', function () {
-            initializeTreatmentModal();
+    // Function to load PCMF accounts by branch
+    function loadPcmfAccountsByBranch(branchId) {
+        $.ajax({
+            url: '@Url.Action("GetPcmfAccountsByBranch", "CollectorCommission")',
+            type: 'GET',
+            data: { branchId: branchId },
+            beforeSend: function () {
+                // Show loading state
+                $('#btnTreatment').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Loading...');
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Store the accounts globally or pass to modal
+                    window.pcmfAccounts = response.accounts;
 
-            // Initialize Select2 dropdowns with modal as parent
-            if ($.fn.select2) {
-                $('#DailyCollectorAccount').select2({
-                    dropdownParent: $('#treatmentModal')
-                });
-                $('#PaymentGl').select2({
-                    dropdownParent: $('#treatmentModal')
-                });
-            }
-        });
+                    // Reset the modal form first
+                    resetPaymentForm();
 
-        // Event delegation for treatment modal elements
-        $(document).on('click', '#btnSearchCustomer', function () {
-            var customerRef = $('#customerReference').val();
-            if (customerRef) {
-                searchCustomer(customerRef);
-            } else {
-                appalert('Please enter a customer reference', 3, 1);
-            }
-        });
-
-        $(document).on('input', '#Incentives', function () {
-            calculateTotal();
-        });
-
-        $(document).on('change', '#DailyCollectorAccount', function () {
-            if ($(this).val()) {
-                $('#paymentDetails').removeClass('d-none');
-            } else {
-                $('#paymentDetails').addClass('d-none');
-            }
-        });
-
-        $(document).on('click', '#btnResetPayment', function () {
-            resetPaymentForm();
-        });
-
-        $(document).on('submit', '#paymentForm', function (e) {
-            e.preventDefault();
-            processPayment();
-        });
-
-        function initializeTreatmentModal() {
-            if (currentCommissionData) {
-                treatmentCommissionData = currentCommissionData;
-                populateCommissionAmounts();
-            }
-        }
-
-        function populateCommissionAmounts() {
-            if (!treatmentCommissionData || !treatmentCommissionData.SharedAmounts) return;
-
-            // Find Daily Collector and Branch amounts
-            var dailyCollectorAmount = 0;
-            var branchAmount = 0;
-
-            $.each(treatmentCommissionData.SharedAmounts, function(index, item) {
-                if (item.Stakeholder && item.Stakeholder.toLowerCase().includes('collector')) {
-                    dailyCollectorAmount = item.Amount || 0;
-                }
-                if (item.Stakeholder && item.Stakeholder.toLowerCase().includes('branch')) {
-                    branchAmount = item.Amount || 0;
-                }
-            });
-
-            // Set the values
-            $('#DaillyCollectorShare').val(dailyCollectorAmount.toFixed(2));
-            $('#BranchShare').val(branchAmount.toFixed(2));
-
-            // Calculate initial total (incentives + daily collector share)
-            calculateTotal();
-
-            // Set hidden fields
-            $('#CollectorId').val(treatmentCommissionData.CollectorId || '');
-            $('#BranchId').val(treatmentCommissionData.BranchId || '');
-            $('#Month').val(treatmentCommissionData.Month || '');
-            $('#Year').val(treatmentCommissionData.Year || '');
-        }
-
-        function calculateTotal() {
-            var incentives = parseFloat($('#Incentives').val()) || 0;
-            var collectorShare = parseFloat($('#DaillyCollectorShare').val()) || 0;
-            var total = incentives + collectorShare;
-            $('#Total').val(total.toFixed(2));
-        }
-
-        function searchCustomer(customerRef) {
-            $.ajax({
-                url: '@Url.Action("GetCustomerAccounts", "CollectorCommission")',
-                type: 'GET',
-                data: { customerId: customerRef },
-                beforeSend: function () {
-                    $('#btnSearchCustomer').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Searching...');
-                },
-                success: function (response) {
-                    if (response.success) {
-                        displayCustomerInfo(response.customer);
-                        populateAccounts(response.accounts);
-                        $('#accountSelection').removeClass('d-none');
-                    } else {
-                        alert('Customer not found: ' + response.message);
-                        $('#customerInfo').addClass('d-none');
-                        $('#accountSelection').addClass('d-none');
-                        $('#paymentDetails').addClass('d-none');
+                    // Set the data in the modal
+                    if (typeof setCommissionData === 'function') {
+                        setCommissionData(currentCommissionData);
                     }
-                },
-                error: function (xhr, status, error) {
-                    alert('Error searching customer: ' + error);
+
+                    // Populate PCMF dropdown in modal
+                    populatePcmfDropdown(response.accounts);
+
+                    // Show the modal
+                    $('#treatmentModal').modal('show');
+                } else {
+                    appalert('Error loading payment accounts: ' + response.message, 4, 1);
+                }
+            },
+            error: function (xhr, status, error) {
+                appalert('Error loading payment accounts: ' + error, 4, 1);
+            },
+            complete: function () {
+                $('#btnTreatment').prop('disabled', false).html('<i class="mdi mdi-cash-check me-1"></i> Treatment');
+            }
+        });
+    }
+
+    // Function to populate PCMF dropdown
+    function populatePcmfDropdown(accounts) {
+        var dropdown = $('#PaymentGl');
+
+        // destroy existing instance if any
+        if (dropdown.hasClass('select2-hidden-accessible')) {
+            dropdown.select2('destroy');
+        }
+
+        dropdown.empty().append('<option value="">--- Select Payment Account ---</option>');
+        if (accounts && accounts.length) {
+            $.each(accounts, function (index, account) {
+                dropdown.append($('<option>').val(account.Value).text(account.Text));
+            });
+        } else {
+            dropdown.append('<option value="">No accounts available</option>');
+        }
+
+        if ($.fn.select2) {
+            // append to body to avoid transform/overflow issues inside modal
+            dropdown.select2({
+                dropdownParent: $('body'),
+                width: '100%'
+            });
+        }
+    }
+
+    // =========================================================================
+    // TREATMENT MODAL FUNCTIONS
+    // =========================================================================
+
+    // Initialize treatment modal events when modal is shown
+    $(document).on('shown.bs.modal', '#treatmentModal', function () {
+        initializeTreatmentModal();
+
+        // Initialize Select2 dropdowns with modal as parent
+        if ($.fn.select2) {
+            $('#DailyCollectorAccount').select2({
+                dropdownParent: $('#treatmentModal')
+            });
+            $('#PaymentGl').select2({
+                dropdownParent: $('#treatmentModal')
+            });
+        }
+
+        // Add currency formatting to incentives input
+        $('#Incentives').on('input', function() {
+            formatIncentivesInput(this);
+        });
+
+        $('#Incentives').on('blur', function() {
+            finalizeIncentivesFormat(this);
+        });
+    });
+
+    // Event delegation for treatment modal elements
+    $(document).on('click', '#btnSearchCustomer', function () {
+        var customerRef = $('#customerReference').val();
+        if (customerRef) {
+            searchCustomer(customerRef);
+        } else {
+            appalert('Please enter a customer reference', 3, 1);
+        }
+    });
+
+    $(document).on('change', '#DailyCollectorAccount', function () {
+        if ($(this).val()) {
+            $('#paymentDetails').removeClass('d-none');
+        } else {
+            $('#paymentDetails').addClass('d-none');
+        }
+    });
+
+    $(document).on('click', '#btnResetPayment', function () {
+        resetPaymentForm();
+    });
+
+    $(document).on('submit', '#paymentForm', function (e) {
+        e.preventDefault();
+        processPayment();
+    });
+
+    function initializeTreatmentModal() {
+        if (currentCommissionData) {
+            treatmentCommissionData = currentCommissionData;
+            populateCommissionAmounts();
+        }
+    }
+
+    function populateCommissionAmounts() {
+        if (!treatmentCommissionData || !treatmentCommissionData.SharedAmounts) return;
+
+        // Find Daily Collector and Branch amounts
+        var dailyCollectorAmount = 0;
+        var branchAmount = 0;
+
+        $.each(treatmentCommissionData.SharedAmounts, function(index, item) {
+            if (item.Stakeholder && item.Stakeholder.toLowerCase().includes('collector')) {
+                dailyCollectorAmount = item.Amount || 0;
+            }
+            if (item.Stakeholder && item.Stakeholder.toLowerCase().includes('branch')) {
+                branchAmount = item.Amount || 0;
+            }
+        });
+
+        // Set the values with formatted currency
+        $('#DaillyCollectorShare').val(formatCurrency(dailyCollectorAmount));
+        $('#BranchShare').val(formatCurrency(branchAmount));
+
+        // Calculate initial total (incentives + daily collector share)
+        calculateTotal();
+
+        // Set hidden fields
+        $('#CollectorId').val(treatmentCommissionData.CollectorId || '');
+        $('#BranchId').val(treatmentCommissionData.BranchId || '');
+        $('#Month').val(treatmentCommissionData.Month || '');
+        $('#Year').val(treatmentCommissionData.Year || '');
+    }
+
+    function formatIncentivesInput(input) {
+        var value = input.value.replace(/,/g, '');
+        if (value === '' || value === '0') {
+            calculateTotal();
+            return;
+        }
+
+        var numberValue = parseFloat(value);
+        if (!isNaN(numberValue)) {
+            // Don't format while typing to avoid cursor jumping
+            // Just calculate the total
+            calculateTotal();
+        }
+    }
+
+    function finalizeIncentivesFormat(input) {
+        var value = input.value.replace(/,/g, '');
+        if (value === '') {
+            input.value = '0.00';
+        } else {
+            var numberValue = parseFloat(value);
+            if (!isNaN(numberValue)) {
+                input.value = formatCurrency(numberValue);
+            }
+        }
+        calculateTotal();
+    }
+
+    function calculateTotal() {
+        var incentives = parseFormattedCurrency($('#Incentives').val()) || 0;
+        var collectorShare = parseFormattedCurrency($('#DaillyCollectorShare').val()) || 0;
+        var total = incentives + collectorShare;
+        $('#Total').val(formatCurrency(total));
+    }
+
+    function searchCustomer(customerRef) {
+        $.ajax({
+            url: '@Url.Action("GetCustomerAccounts", "CollectorCommission")',
+            type: 'GET',
+            data: { customerId: customerRef },
+            beforeSend: function () {
+                $('#btnSearchCustomer').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Searching...');
+            },
+            success: function (response) {
+                if (response.success) {
+                    displayCustomerInfo(response.customer);
+                    populateAccounts(response.accounts);
+                    $('#accountSelection').removeClass('d-none');
+                } else {
+                    alert('Customer not found: ' + response.message);
                     $('#customerInfo').addClass('d-none');
                     $('#accountSelection').addClass('d-none');
                     $('#paymentDetails').addClass('d-none');
-                },
-                complete: function () {
-                    $('#btnSearchCustomer').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Search');
                 }
-            });
-        }
-
-        function displayCustomerInfo(customer) {
-            $('#customerName').text(customer.FirstName + ' ' + customer.LastName);
-            $('#customerId').text(customer.CustomerId);
-            $('#customerPhone').text(customer.Phone || 'N/A');
-            $('#customerEmail').text(customer.Email || 'N/A');
-            $('#customerInfo').removeClass('d-none');
-        }
-
-        function populateAccounts(accounts) {
-            var options = '<option value="">Select Account</option>';
-            $.each(accounts, function (index, account) {
-                options += '<option value="' + account.Value + '">' + account.Text + '</option>';
-            });
-            $('#DailyCollectorAccount').html(options);
-
-            // Re-initialize Select2 with modal as parent
-            if ($.fn.select2) {
-                $('#DailyCollectorAccount').select2({
-                    dropdownParent: $('#treatmentModal')
-                });
+            },
+            error: function (xhr, status, error) {
+                alert('Error searching customer: ' + error);
+                $('#customerInfo').addClass('d-none');
+                $('#accountSelection').addClass('d-none');
+                $('#paymentDetails').addClass('d-none');
+            },
+            complete: function () {
+                $('#btnSearchCustomer').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Search');
             }
-        }
-
-        function resetPaymentForm() {
-            $('#paymentForm')[0].reset();
-            $('#customerInfo').addClass('d-none');
-            $('#accountSelection').addClass('d-none');
-            $('#paymentDetails').addClass('d-none');
-            $('#DailyCollectorAccount').html('<option value="">Select Account</option>');
-            populateCommissionAmounts(); // Restore commission amounts
-        }
-
-        function processPayment() {
-            // Validate form
-            if (!$('#DailyCollectorAccount').val()) {
-                appalert('Please select a Daily Collector Account', 3, 1);
-                return;
-            }
-
-            var formData = $('#paymentForm').serialize();
-
-            $.ajax({
-                url: '@Url.Action("ProcessPayment", "CollectorCommission")',
-                type: 'POST',
-                data: formData,
-                beforeSend: function () {
-                    $('button[type="submit"]').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Processing...');
-                },
-                success: function (response) {
-                    if (response.success) {
-                        alert('Payment processed successfully!');
-                        $('#treatmentModal').modal('hide');
-                        resetPaymentForm();
-                        // Optionally refresh the main page data
-                        if (typeof getCommissionData === 'function') {
-                            getCommissionData();
-                        }
-                    } else {
-                        appalert('Error processing payment: ' + response.message, 4,1);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    alert('Error processing payment: ' + error);
-                },
-                complete: function () {
-                    $('button[type="submit"]').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
-                }
-            });
-        }
-
-        $(document).on('click', '#btnConfirmExport', function () {
-    var exportData = {
-        format: $('#exportFormat').val(),
-        includeSummary: $('#includeSummary').is(':checked'),
-        fileName: $('#fileName').val() || 'Commission_Report',
-        reportType: $('#reportType').val(),
-        commissionData: window.currentCommissionData // Use the global variable
-    };
-
-    // Validate commission data
-    if (!exportData.commissionData) {
-        appalert('Please load commission data first before exporting.', 3, 1);
-        return;
+        });
     }
 
-    // Show progress
-    $('#exportProgress').removeClass('d-none');
-    updateProgress(0, 'Preparing export data...');
+    function displayCustomerInfo(customer) {
+        $('#customerName').text(customer.FirstName + ' ' + customer.LastName);
+        $('#customerId').text(customer.CustomerId);
+        $('#customerPhone').text(customer.Phone || 'N/A');
+        $('#customerEmail').text(customer.Email || 'N/A');
+        $('#customerInfo').removeClass('d-none');
+    }
 
-    // Start export process
-    exportToExcel(exportData);
-});
+    function populateAccounts(accounts) {
+        var options = '<option value="">Select Account</option>';
+        $.each(accounts, function (index, account) {
+            options += '<option value="' + account.Value + '">' + account.Text + '</option>';
+        });
+        $('#DailyCollectorAccount').html(options);
 
-function updateProgress(percent, message) {
-    $('.progress-bar').css('width', percent + '%');
-    $('#progressText').text(message);
-}
-
-// Your existing exportToExcel function (already in your code)
-function exportToExcel(exportData) {
-    updateProgress(25, 'Generating Excel file...');
-
-    // Prepare the data for export - match the C# model structure
-    var exportPayload = {
-        CommissionData: exportData.commissionData,
-        ExportOptions: {
-            Format: exportData.format,
-            IncludeSummary: exportData.includeSummary,
-            FileName: exportData.fileName,
-            ReportType: exportData.reportType
+        // Re-initialize Select2 with modal as parent
+        if ($.fn.select2) {
+            $('#DailyCollectorAccount').select2({
+                dropdownParent: $('#treatmentModal')
+            });
         }
-    };
+    }
 
-    // Make AJAX call to export endpoint
-    $.ajax({
-        url: '@Url.Action("ExportCommissionToExcel", "CollectorCommission")',
-        type: 'POST',
-        data: JSON.stringify(exportPayload),
-        contentType: 'application/json',
-        xhrFields: {
-            responseType: 'blob' // Important for file download
-        },
-        beforeSend: function () {
-            $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
-        },
-        success: function (data, status, xhr) {
-            updateProgress(100, 'Download ready!');
+    function resetPaymentForm() {
+        $('#paymentForm')[0].reset();
+        $('#customerInfo').addClass('d-none');
+        $('#accountSelection').addClass('d-none');
+        $('#paymentDetails').addClass('d-none');
+        $('#DailyCollectorAccount').html('<option value="">Select Account</option>');
+        $('#Incentives').val('0.00');
+        populateCommissionAmounts(); // Restore commission amounts
+    }
 
-            // Get filename from response headers
-            var filename = 'Commission_Report.xlsx';
-            var disposition = xhr.getResponseHeader('Content-Disposition');
-            if (disposition && disposition.indexOf('attachment') !== -1) {
-                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                var matches = filenameRegex.exec(disposition);
-                if (matches != null && matches[1]) {
-                    filename = matches[1].replace(/['"]/g, '');
+    function processPayment() {
+        // Validate form
+        if (!$('#DailyCollectorAccount').val()) {
+            appalert('Please select a Daily Collector Account', 3, 1);
+            return;
+        }
+
+        // Create a temporary form to handle formatted values
+        var tempForm = $('#paymentForm').clone();
+
+        // Convert formatted values back to plain numbers for submission
+        tempForm.find('#Incentives').val(parseFormattedCurrency($('#Incentives').val()));
+        tempForm.find('#DaillyCollectorShare').val(parseFormattedCurrency($('#DaillyCollectorShare').val()));
+        tempForm.find('#BranchShare').val(parseFormattedCurrency($('#BranchShare').val()));
+        tempForm.find('#Total').val(parseFormattedCurrency($('#Total').val()));
+
+        var formData = tempForm.serialize();
+
+        $.ajax({
+            url: '@Url.Action("ProcessPayment", "CollectorCommission")',
+            type: 'POST',
+            data: formData,
+            beforeSend: function () {
+                $('button[type="submit"]').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Processing...');
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert('Payment processed successfully!');
+                    $('#treatmentModal').modal('hide');
+                    resetPaymentForm();
+                    // Optionally refresh the main page data
+                    if (typeof getCommissionData === 'function') {
+                        getCommissionData();
+                    }
+                } else {
+                    appalert('Error processing payment: ' + response.message, 4,1);
                 }
+            },
+            error: function (xhr, status, error) {
+                alert('Error processing payment: ' + error);
+            },
+            complete: function () {
+                $('button[type="submit"]').prop('disabled', false).html('<i class="mdi mdi-check-circle me-1"></i> Post');
             }
+        });
+    }
 
-            // Create blob and download
-            var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+    // =========================================================================
+    // EXPORT FUNCTIONS
+    // =========================================================================
 
-            // Close modal after successful export
-            setTimeout(function () {
-                $('#exportModal').modal('hide');
+    $(document).on('click', '#btnConfirmExport', function () {
+        var exportData = {
+            format: $('#exportFormat').val(),
+            includeSummary: $('#includeSummary').is(':checked'),
+            fileName: $('#fileName').val() || 'Commission_Report',
+            reportType: $('#reportType').val(),
+            commissionData: window.currentCommissionData // Use the global variable
+        };
+
+        // Validate commission data
+        if (!exportData.commissionData) {
+            appalert('Please load commission data first before exporting.', 3, 1);
+            return;
+        }
+
+        // Show progress
+        $('#exportProgress').removeClass('d-none');
+        updateProgress(0, 'Preparing export data...');
+
+        // Start export process
+        exportToExcel(exportData);
+    });
+
+    function updateProgress(percent, message) {
+        $('.progress-bar').css('width', percent + '%');
+        $('#progressText').text(message);
+    }
+
+    function exportToExcel(exportData) {
+        updateProgress(25, 'Generating Excel file...');
+
+        // Prepare the data for export - match the C# model structure
+        var exportPayload = {
+            CommissionData: exportData.commissionData,
+            ExportOptions: {
+                Format: exportData.format,
+                IncludeSummary: exportData.includeSummary,
+                FileName: exportData.fileName,
+                ReportType: exportData.reportType
+            }
+        };
+
+        // Make AJAX call to export endpoint
+        $.ajax({
+            url: '@Url.Action("ExportCommissionToExcel", "CollectorCommission")',
+            type: 'POST',
+            data: JSON.stringify(exportPayload),
+            contentType: 'application/json',
+            xhrFields: {
+                responseType: 'blob' // Important for file download
+            },
+            beforeSend: function () {
+                $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+            },
+            success: function (data, status, xhr) {
+                updateProgress(100, 'Download ready!');
+
+                // Get filename from response headers
+                var filename = 'Commission_Report.xlsx';
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) {
+                        filename = matches[1].replace(/['"]/g, '');
+                    }
+                }
+
+                // Create blob and download
+                var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Close modal after successful export
+                setTimeout(function () {
+                    $('#exportModal').modal('hide');
+                    $('#exportProgress').addClass('d-none');
+                    $('.progress-bar').css('width', '0%');
+                }, 1000);
+            },
+            error: function (xhr, status, error) {
+                appalert('Error exporting data: ' + error, 4, 1);
                 $('#exportProgress').addClass('d-none');
                 $('.progress-bar').css('width', '0%');
-            }, 1000);
-        },
-        error: function (xhr, status, error) {
-            appalert('Error exporting data: ' + error, 4, 1);
-            $('#exportProgress').addClass('d-none');
-            $('.progress-bar').css('width', '0%');
-        },
-        complete: function () {
-            $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-        }
+            },
+            complete: function () {
+                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            }
+        });
+    }
+
+    // Reset export form when modal is hidden
+    $(document).on('hidden.bs.modal', '#exportModal', function () {
+        $('#exportProgress').addClass('d-none');
+        $('.progress-bar').css('width', '0%');
+        $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
     });
-}
 
-// Reset export form when modal is hidden
-$(document).on('hidden.bs.modal', '#exportModal', function () {
-    $('#exportProgress').addClass('d-none');
-    $('.progress-bar').css('width', '0%');
-    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-});
-
-                // Function to set commission data from main form
-        function setCommissionData(data) {
-            treatmentCommissionData = data;
-            populateCommissionAmounts();
-        }
-    </script>
+    // Function to set commission data from main form
+    function setCommissionData(data) {
+        treatmentCommissionData = data;
+        populateCommissionAmounts();
+    }
+        </script>
+    
 }
