@@ -203,7 +203,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             {*/
                 if (!ModelState.IsValid)
                     return Json(new { success = false, message = "Validation failed." });
-
+                 model.AccountUpdateKind = model.ChangeType== "CreateRequest" ? "None" : model.AccountUpdateKind;
                 var result = await _pendingAccountsService.CreateAsync(model);
                 return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
            /* }

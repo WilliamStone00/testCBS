@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Report Configuration Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mt-3 shadow-sm border-0">
+    <div class="card-body">
+        <!-- Header -->
+        <div class="text-center mb-3">
+            <h3 class="text-success fw-bold">
+                <i class="mdi mdi-file-chart-outline me-2"></i> REPORT CONFIGURATION MANAGEMENT
+            </h3>
+            <p class="text-muted small mb-0">
+                Manage your report hierarchy: Definition → Section → Line → Mapping.
+            </p>
+            <p class="text-danger fw-bold mt-1">
+                ⚠ Ensure levels are created in order: Definition → Section → Line → Mapping.
+            </p>
+        </div>
+
+        <!-- Tips -->
+        <div class="alert alert-success py-2">
+            <i class="mdi mdi-lightbulb-on-outline me-1"></i>
+            <strong>Tip:</strong> Use clear codes and consistent sort orders for accurate financial reporting.
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3" id="reportTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#definitionTab">
+                    <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#sectionTab">
+                    <i class="mdi mdi-view-list-outline me-1"></i> Section
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#lineTab">
+                    <i class="mdi mdi-format-line-weight me-1"></i> Line
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#mappingTab">
+                    <i class="mdi mdi-link-variant me-1"></i> Mapping
+                </a>
+            </li>
+        </ul>
+
+        <!-- Tab Contents -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="definitionTab">
+                <div id="definitionContainer" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="sectionTab">
+                <div id="sectionContainer" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="lineTab">
+                <div id="lineContainer" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="mappingTab">
+                <div id="mappingContainer" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        // Load Definition tab on startup
+        loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
+
+        // Tab click events
+        $("#reportTabs a").on("click", function (e) {
+            e.preventDefault();
+            var target = $(this).attr("href");
+
+            switch (target) {
+                case "#definitionTab":
+                    loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
+                    break;
+                case "#sectionTab":
+                    loadTabContent("/ReportSection/Initilization", "#sectionContainer");
+                    break;
+                case "#lineTab":
+                    loadTabContent("/ReportLine/Initilization", "#lineContainer");
+                    break;
+                case "#mappingTab":
+                    loadTabContent("/ReportLineMapping/Initilization", "#mappingContainer");
+                    break;
+            }
+        });
+
+        function loadTabContent(url, target) {
+            $(target).html('<div class="text-center py-4"><div class="spinner-border text-success" role="status"></div></div>');
+            $.get(url, function (data) {
+                $(target).html(data);
+            });
+        }
+    });
+    </script>
+}

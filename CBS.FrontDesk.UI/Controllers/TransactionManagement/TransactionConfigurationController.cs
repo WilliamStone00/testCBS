@@ -1,4 +1,5 @@
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data;
 using CBS.FrontDesk.Data.Entity.Accounting;
@@ -16,7 +17,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
-    [CheckSessionTimeOutAttribute]
+    //[CheckSessionTimeOutAttribute]
 
     public class TransactionConfigurationController : BaseController
     {
@@ -35,11 +36,13 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly OperationFeeServices _operationFeeServices;
         private readonly SavingProductFeeServices _savingProductFeeServices;
         private readonly AccountingEntryRuleService _accountingEntryRuleService;
+
+        private readonly AffiliateAccountService _affiliateAccountService;
         private readonly ChartOfAccountManagementPositionService _accountConfiServices;
         private bool SavingDepositProductIsPayable = false;
         private bool SavingWithdrawalProductIsPayable = false;
         private List<ChartofAccountManagementPosition> ListOfChartOfAccount = new List<ChartofAccountManagementPosition>();
-        public TransactionConfigurationController(SavingProductServices savingProductServices, ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, DepositLimitServices depositLimitServices, TransferLimitServices transferLimitServices, WithdrawalLimitServices withdrawalLimitServices, AccountingEntryRuleService accountingEntryRuleService, ChartOfAccountManagementPositionService accountServices, ManagementFeeParameterServices managementFeeParameterServices = null, ReopenFeeParameterServices reopenFeeParameterServices = null, CloseFeeParameterServices closeFeeParameterServices = null, EntryFeeParameterServices entryFeeParameterServices = null, OperationFeeServices operationFeeServices = null, SavingProductFeeServices savingProductFeeServices = null)
+        public TransactionConfigurationController(SavingProductServices savingProductServices, ChartOfAccountServicesAnnex accountingServices, TellerServices tellerServices, DepositLimitServices depositLimitServices, TransferLimitServices transferLimitServices, WithdrawalLimitServices withdrawalLimitServices, AccountingEntryRuleService accountingEntryRuleService, ChartOfAccountManagementPositionService accountServices, ManagementFeeParameterServices managementFeeParameterServices = null, ReopenFeeParameterServices reopenFeeParameterServices = null, CloseFeeParameterServices closeFeeParameterServices = null, EntryFeeParameterServices entryFeeParameterServices = null, OperationFeeServices operationFeeServices = null, SavingProductFeeServices savingProductFeeServices = null, AffiliateAccountService affiliateAccountService = null)
         {
             _savingProductServices = savingProductServices;
             _accountingServices = accountingServices;
@@ -55,6 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             _savingProductFeeServices = savingProductFeeServices;
             _accountingEntryRuleService = accountingEntryRuleService;
             _accountConfiServices = accountServices;
+            _affiliateAccountService = affiliateAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -90,12 +94,21 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
 
         }
+        public async Task<ActionResult> AccountMappingvII(string Key)
+        {
+
+            await GetChartOfAccountsvII();
+            var savingProduct = await _savingProductServices.GetSavingProduct(Key);
+            return View(new SavingConfiguration { SavingProduct = savingProduct, SavingProductFee = new SavingProductFee { SavingProductId = savingProduct.Id }});
+
+
+        }
         public async Task<ActionResult> GetSavingProductAccountMapping()
         {
 
             List<ProductAccountingChart> AccountProductItems = await _accountConfiServices.GetProductAccountingBookByproducttype("Saving_Product");
-            return View(  new SavingConfiguration { ProductAccountingCharts = AccountProductItems });
-       
+            return View(new SavingConfiguration { ProductAccountingCharts = AccountProductItems });
+
 
         }
         public async Task<ActionResult> AccountMappingInfo(string key)
@@ -120,7 +133,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 if (data.Equals("daily savings"))
                 {
                     ViewBag.ProductName = savingProduct.Name;
-                    chartofAccountInfos  = await ProcessOfDailyCASHCollectionAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount());
+                    chartofAccountInfos = await ProcessOfDailyCASHCollectionAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount());
                     chartofAccountInfos.AddRange(await ProcessOfReturningTheDailyCASHCollectedCashToPrimaryTellAccountList(key, accountingRuleEntries, accountingConfigList.ToList(), rootAccount, await GetVirtualDailyCollectorAccount()));
                     var Entryrule = accountingRuleEntries.Where(e => e.EventCode.Equals(key + "@Commission_Account")).FirstOrDefault();
                     var account = ListOfChartOfAccount.Find(x => x.Id.Equals(Entryrule.DeterminationAccountId));
@@ -196,7 +209,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 }
             }
 
-            return View(new SavingConfiguration {AccountProducts= AccountProductItems, chartofAccountInfos = chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries, SavingDepositProductIsChargable = SavingDepositProductIsPayable, SavingWithdrwalProductIsChargable = SavingWithdrawalProductIsPayable });
+            return View(new SavingConfiguration { AccountProducts = AccountProductItems, chartofAccountInfos = chartofAccountInfos, AccountingRuleEntries = accountingRuleEntries, SavingDepositProductIsChargable = SavingDepositProductIsPayable, SavingWithdrwalProductIsChargable = SavingWithdrawalProductIsPayable });
 
         }
 
@@ -204,10 +217,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var chartOfAccounts = new List<ChartofAccountInfo>();
             var accphy = await GetPhysicalTellerAccount();
-            var accountPhy = chartofAccountManagementPositions.Where(  e => e.Id.Equals(accphy.DeterminationAccountId)).FirstOrDefault();
+            var accountPhy = chartofAccountManagementPositions.Where(e => e.Id.Equals(accphy.DeterminationAccountId)).FirstOrDefault();
             chartOfAccounts.Add(CreateChartOfAccountEntry(accountPhy, "DAILY COLLECTION", "DEBIT", "10000.0"));
             var accDailyCollector = await GetVirtualDailyCollectorAccount();
-            var DailyCollectorAccount= chartofAccountManagementPositions.Where(e => e.Id.Equals(accDailyCollector.DeterminationAccountId)).FirstOrDefault();
+            var DailyCollectorAccount = chartofAccountManagementPositions.Where(e => e.Id.Equals(accDailyCollector.DeterminationAccountId)).FirstOrDefault();
             chartOfAccounts.Add(CreateChartOfAccountEntry(DailyCollectorAccount, "DAILY COLLECTION", "CREDIT", "10000.0"));
 
 
@@ -254,8 +267,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private async Task<AccountingRuleEntry> GetPhysicalTellerAccount()
         {
             var data = await _accountingEntryRuleService.GetAccountingEntryRules();
-             return data.Where(e => e.EventCode.Contains("Physical_Teller")).FirstOrDefault();
-         //   return data.Where(e => e.EventCode.Equals("Physical_Teller")).FirstOrDefault();
+            return data.Where(e => e.EventCode.Contains("Physical_Teller")).FirstOrDefault();
+            //   return data.Where(e => e.EventCode.Equals("Physical_Teller")).FirstOrDefault();
         }
         private async Task<AccountingRuleEntry> GetVirtualDailyCollectorAccount()
         {
@@ -327,7 +340,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 var sourceAccount = accountingConfigList.Find(x => x.Id.Equals(physicalTellerAccount.DeterminationAccountId));
                 if (item.EventCode.Contains("Principal_Saving_Account"))
                 {
-                  chartOfAccounts.Add(CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DAILY COLLECTION", "DEBIT", "10000.0"));
+                    chartOfAccounts.Add(CreateChartOfAccountInfo(item, sourceAccount, rootAccount, "DAILY COLLECTION", "DEBIT", "10000.0"));
                 }
 
             }
@@ -335,7 +348,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return chartOfAccounts;
         }
 
- 
+
 
 
         private async Task<List<ChartofAccountInfo>> ProcessCASHOutLiaisonAccountList(string key, List<AccountingRuleEntry> accountingRuleEntries, List<ChartofAccountManagementPosition> accountingConfigList, ChartofAccountManagementPosition rootAccount, AccountingRuleEntry physicalTellerAccount)
@@ -697,6 +710,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _savingProductServices.UpdateProductAccountMapping(model.SavingProduct);
             }
+            else if (serviceOption == "accountmappingv2")
+            {
+                return () => _savingProductServices.UpdateProductAccountMappingV2(model.SavingProduct);
+            }
             else if (serviceOption == "mapformeventcharges")
             {
                 return () => _savingProductServices.UpdateProductEventMapping(model.SavingProduct);
@@ -731,7 +748,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             }
             else if (serviceOption == "teller")
             {
-                return () => _tellerServices.Update(model.Teller,null,false);
+                return () => _tellerServices.Update(model.Teller, null, false);
             }
             else
             {
@@ -792,11 +809,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
                     return async () =>
                     {
-                   
-                        
-            
+
+
+
                         List<ProductAccountingChart> AccountProductItems = await _accountConfiServices.GetProductAccountingBookByproducttype("Saving_Product");
-                        return PartialView(partialView, new SavingConfiguration { ProductAccountingCharts= AccountProductItems });
+                        return PartialView(partialView, new SavingConfiguration { ProductAccountingCharts = AccountProductItems });
 
                     };
                 }
@@ -1009,6 +1026,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             return true;
         }
+        public async Task<bool> GetChartOfAccountsvII()
+        {
+            var chartOfAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();
+            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            return true;
+        }
         public async Task<bool> GetListPolicies()
         {
             var conf = await _savingProductServices.GetSavingConfigurationAggregates();
@@ -1023,9 +1046,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var listing = await _accountingServices.GetEventAttributeByOperationTypeID(Key);
             return Json(listing, JsonRequestBehavior.AllowGet);
         }
-        public async Task<ActionResult> Delete(string Key,string path)
+        public async Task<ActionResult> Delete(string Key, string path)
         {
-            if (path== "cash_deposit_parameter")
+            if (path == "cash_deposit_parameter")
             {
                 var data = await _depositLimitServices.Delete(Key);
                 return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
