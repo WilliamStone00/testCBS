@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.AccountingV2.ReportingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine;
 using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping;
 using CBS.FrontDesk.Data.Message;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 
 		public ActionResult Initilization()
 		{
-			return View(new ReportLineMapping());
+			return PartialView("Initilization", new ReportLineMapping());
 		}
 
 		[HttpPost]

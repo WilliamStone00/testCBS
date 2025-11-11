@@ -25,7 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 
 		public ActionResult Initilization()
 		{
-			return View(new ReportLine());
+			return PartialView("_List", new ReportLine());
 		}
 
 		[HttpPost]
