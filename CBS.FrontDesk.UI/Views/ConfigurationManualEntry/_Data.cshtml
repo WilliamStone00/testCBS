@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var d in Model)
+                    @foreach (var d in Model) 
                     {
                         <tr data-id="@d.Id">
                             <td style="display:none;">@d.Id</td>
@@ -38,6 +38,7 @@
                             <td class="text-center">
                                 @if (d.UserRequiredApproval)
                                 {
+                                    <a href="~/Views/ConfigurationManualEntry/_Data.cshtml">~/Views/ConfigurationManualEntry/_Data.cshtml</a>
                                     <span class="badge bg-success bg-opacity-75 px-3">Yes</span>
                                 }
                                 else

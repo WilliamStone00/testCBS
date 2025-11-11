@@ -2046,6 +2046,7 @@
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\AccountingYear\AccountingYearController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
@@ -10911,6 +10912,9 @@
     <Content Include="Views\CollectorCommission\Index.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
     <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />
+    <Content Include="Views\AccountingYear\_Datatable.cshtml" />
+    <Content Include="Views\AccountingYear\Index.cshtml" />
+    <Content Include="Views\AccountingYear\_Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

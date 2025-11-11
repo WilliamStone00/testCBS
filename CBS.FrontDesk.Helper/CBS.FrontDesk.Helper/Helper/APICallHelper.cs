@@ -1634,5 +1634,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
+        //------------------------- Accounting Year --------------------
+        public static string SaveAccountingYear = "/api/v1/Accountingyear";
+        public static string GetAllAccoutingYear = "/api/v1/Accountingyears";
+
     }
 }
