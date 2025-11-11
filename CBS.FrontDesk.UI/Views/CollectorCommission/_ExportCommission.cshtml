@@ -1,0 +1,63 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="mdi mdi-export me-2"></i>ExportCommission
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="alert alert-info">
+        <i class="mdi mdi-information-outline me-2"></i>
+        ExportCommissionText
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">ExportFormat</label>
+            <select class="form-select" id="exportFormat">
+                <option value="excel">Excel (.xlsx)</option>
+                <option value="csv">CSV (.csv)</option>
+                <option value="pdf">PDF (.pdf)</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">IncludeSummary</label>
+            <div class="form-check form-switch mt-2">
+                <input class="form-check-input" type="checkbox" id="includeSummary" checked>
+                <label class="form-check-label" for="includeSummary">IncludeSummaryReport</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">DateRange</label>
+            <div class="input-group">
+                <input type="date" class="form-control" id="startDate">
+                <span class="input-group-text">To</span>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">FileName</label>
+            <input type="text" class="form-control" id="fileName" value="Commission_Report" placeholder="EnterFileName">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="mdi mdi-close me-1"></i>Cancel
+    </button>
+    <button type="button" class="btn btn-success" id="btnConfirmExport">
+        <i class="mdi mdi-export me-1"></i>Export
+    </button>
+</div>
+
+<!-- Export Progress -->
+<div id="exportProgress" class="mt-3 d-none">
+    <div class="progress mb-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+    </div>
+    <small class="text-muted" id="progressText">Preparing export...</small>
+</div>

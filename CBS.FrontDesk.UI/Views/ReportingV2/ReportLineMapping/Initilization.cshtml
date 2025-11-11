@@ -1,0 +1,81 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping
+
+<div class="card border-light shadow-sm">
+    <div class="card-header bg-light fw-bold text-success">
+        <i class="mdi mdi-link-variant me-1"></i> Report Line Mapping Management
+    </div>
+    <div class="card-body">
+        <form id="reportLineMappingForm">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">Report Line</label>
+                    <select name="LineId" id="LineId" class="form-select">
+                        <option value="">-- Select Line --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Match Type</label>
+                    <select name="MatchType" class="form-select">
+                        <option value="ACCOUNT">ACCOUNT</option>
+                        <option value="PREFIX">PREFIX</option>
+                        <option value="RANGE">RANGE</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">From Value</label>
+                    <input type="text" name="FromValue" class="form-control" placeholder="101000000" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">To Value</label>
+                    <input type="text" name="ToValue" class="form-control" placeholder="Optional" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">Side</label>
+                    <select name="Side" class="form-select">
+                        <option value="DR">DR</option>
+                        <option value="CR">CR</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">Sign</label>
+                    <select name="Sign" class="form-select">
+                        <option value="1">+1</option>
+                        <option value="-1">-1</option>
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" name="IncludeLiaison" />
+                        <label class="form-check-label">Liaison</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="mdi mdi-content-save"></i> Save Mapping
+                </button>
+            </div>
+        </form>
+
+        <hr />
+
+        <table class="table table-sm table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>MATCH TYPE</th>
+                    <th>FROM VALUE</th>
+                    <th>TO VALUE</th>
+                    <th>SIDE</th>
+                    <th>SIGN</th>
+                    <th>LIAISON</th>
+                    <th>LINE</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody id="mappingList">
+                <!-- Dynamic Data -->
+            </tbody>
+        </table>
+    </div>
+</div>
