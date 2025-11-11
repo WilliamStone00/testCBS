@@ -162,9 +162,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
-        }
+        }      
 
-        
-
-       }
+    }
 }

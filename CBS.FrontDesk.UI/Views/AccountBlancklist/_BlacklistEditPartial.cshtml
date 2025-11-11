@@ -1,0 +1,73 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklist
+
+<div class="modal fade" id="blacklistEditModal" tabindex="-1" aria-labelledby="blacklistEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blacklistEditModalLabel"><i class="mdi mdi-pencil-outline me-2"></i> Edit Blacklist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @using (Html.BeginForm("Update", "AccountBlancklist", FormMethod.Post, new { id = "editBlacklistForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.IsCentralized, new { @class = "form-check-input", id = "IsCentralizedEdit" })
+                                <label class="form-check-label" for="IsCentralizedEdit">Is Centralized (use centralized CoA)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Menu, new { @class = "form-control", placeholder = "ManualEntries / OtherCashIn / ..." })
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.BranchID, "Branch", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.BranchID, new { @class = "form-control", placeholder = "Branch ID (non-centralized)" })
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account Id", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.AffiliateAccountId, new { @class = "form-control", placeholder = "Affiliate Account Id (centralized)" })
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.BranchAccountId, "Branch Account Id", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.BranchAccountId, new { @class = "form-control", placeholder = "Branch Account Id (non-centralized)" })
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check form-check-inline">
+                                @Html.CheckBoxFor(m => m.IsBlacklisted, new { @class = "form-check-input", id = "IsBlacklistedEdit" })
+                                <label class="form-check-label" for="IsBlacklistedEdit">Is Blacklisted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActiveEdit" })
+                                <label class="form-check-label" for="IsActiveEdit">Is Active</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Notes, 4, 50, new { @class = "form-control", placeholder = "Optional notes" })
+                        </div>
+
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

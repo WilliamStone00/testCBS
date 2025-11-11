@@ -1648,11 +1648,11 @@ namespace CBS.FrontDesk.Helper
 
         //--------------------------- Account Black listing ------------------------------------------
         public static string GetAllAccountBlacklist = "not yet availlable";
-        public static string AccountBlacklistdatatable = "not yet availlable";
-        public static string GetAccountBlacklistById = "not yet availlable";
-        public static string CreateAccountBlacklist = "not yet availlable";
-        public static string UpdateAccountBlacklist = "not yet availlable";
-        public static string DeactivateAccountBlacklist = "not yet availlable";
+        public static string AccountBlacklistdatatable = "/api/v1/AccountMenuBlacklist/data";
+        public static string GetAccountBlacklistById = "/api/v1/AccountMenuBlacklist/{0}";
+        public static string CreateAccountBlacklist = "/api/v1/AccountMenuBlacklist";
+        public static string UpdateAccountBlacklist = "/api/v1/AccountMenuBlacklist/{0}";
+        public static string DeactivateAccountBlacklist = "/api/v1/AccountMenuBlacklist/{0}/active}";
 
         //-------------------------- Dailly Collector Commission ------------------------------------
         public static string Customerdatatable = "/api/v1/customers/datatable";
@@ -1702,8 +1702,14 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+        public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
+         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
+
+        //------------------------- Accounting Year --------------------
+        public static string SaveAccountingYear = "/api/v1/Accountingyear";
+        public static string GetAllAccoutingYear = "/api/v1/Accountingyears";
 
     }
 }
