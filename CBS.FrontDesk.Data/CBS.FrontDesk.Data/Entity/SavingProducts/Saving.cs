@@ -412,7 +412,30 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MemberAccountActivations = new List<MemberAccountActivation>();
         }
     }
+    public sealed class UpdateSavingProductAccountingV2MappingCommand
+    {
+        public string Id { get; set; }
 
+        // Toggle – if provided: when true we expect at least the principal account id
+        public bool? IsAccountingV2Mapping { get; set; }
+
+        public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
+        public string AccountingV2InterestAmountChartOfAccountId { get; set; }
+        public string AccountingV2TransitChartOfAccountId { get; set; }
+        public string AccountingV2CivilServantsSalarySourceChartofAccountId { get; set; }
+        public string AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
+        public string AccountingV2CivilServantsSalarySourceSalaryChartofaccountId { get; set; }
+        public string AccountingV2CivilServantsSalaryDestinationSalaryProductChartofAccountId { get; set; }
+
+        public string AccountingV2PrivateInstitutionSalarySourceChartofAccountId { get; set; }
+        public string AccountingV2PrivateInstitutionSalaryDestinationPayableChartofAccountId { get; set; }
+        public string AccountingV2PrivateInstitutionSalarySourceSalaryChartofAccountId { get; set; }
+        public string AccountingV2PrivateInstitutionDestinationSalaryProductChartofAccountId { get; set; }
+
+        public string AccountingV2PayOutNoneMemberSalaryChartofAccountId { get; set; }
+        public string AccountingV2PayOutCashTillChartofAccountId { get; set; }
+        public string AccountingV2SuspenseChartOfAccountId { get; set; }
+    }
     public class SavingProduct
     {
         public string Id { get; set; }
@@ -532,6 +555,26 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MinDailySaverSharesOpeningBalancePerson { get; set; }
         public decimal MinDailySaverSharesOpeningBalanceMoral { get; set; }
 
+        // Toggle – if provided: when true we expect at least the principal account id
+        public bool? IsAccountingV2Mapping { get; set; }
+
+        public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
+        public string AccountingV2InterestAmountChartOfAccountId { get; set; }
+        public string AccountingV2TransitChartOfAccountId { get; set; }
+
+        public string AccountingV2CivilServantsSalarySourceChartofAccountId { get; set; }
+        public string AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
+        public string AccountingV2CivilServantsSalarySourceSalaryChartofaccountId { get; set; }
+        public string AccountingV2CivilServantsSalaryDestinationSalaryProductChartofAccountId { get; set; }
+
+        public string AccountingV2PrivateInstitutionSalarySourceChartofAccountId { get; set; }
+        public string AccountingV2PrivateInstitutionSalaryDestinationPayableChartofAccountId { get; set; }
+        public string AccountingV2PrivateInstitutionSalarySourceSalaryChartofAccountId { get; set; }
+        public  string AccountingV2PrivateInstitutionDestinationSalaryProductChartofAccountId { get; set; }
+
+        public string AccountingV2PayOutNoneMemberSalaryChartofAccountId { get; set; }
+        public string AccountingV2PayOutCashTillChartofAccountId { get; set; }
+        public string AccountingV2SuspenseChartOfAccountId { get; set; }
         public SavingProduct()
         {
             AllowInterbranchTransfter = true;

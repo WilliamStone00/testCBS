@@ -1625,5 +1625,6 @@ public const string SaveReconciliation = "/api/v1/CashAndVaultInit/store";
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
+        public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
     }
 }

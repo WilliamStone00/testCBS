@@ -10906,6 +10906,21 @@
     <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
     <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
     <Content Include="Views\FileListing\_Validation.cshtml" />
+    <Content Include="Views\TransactionManagement\AccountDetails.cshtml" />
+    <Content Include="Views\TransactionManagement\AccountInfo.cshtml" />
+    <Content Include="Views\TransactionManagement\Operation.cshtml" />
+    <Content Include="Views\TransactionManagement\SavingAccounts.cshtml" />
+    <Content Include="Views\TransactionManagement\_AccountInfo.cshtml" />
+    <Content Include="Views\TransactionManagement\_CustomerCard.cshtml" />
+    <Content Include="Views\TransactionManagement\_Deposit.cshtml" />
+    <Content Include="Views\TransactionManagement\_OpenAccount.cshtml" />
+    <Content Include="Views\TransactionManagement\_Operation.cshtml" />
+    <Content Include="Views\TransactionManagement\_Product.cshtml" />
+    <Content Include="Views\TransactionManagement\_SavingAccountData.cshtml" />
+    <Content Include="Views\TransactionManagement\_Tabs.cshtml" />
+    <Content Include="Views\TransactionManagement\_Withdrawal.cshtml" />
+    <Content Include="Views\TransactionConfiguration\AccountMappingvII.cshtml" />
+    <Content Include="Views\TransactionConfiguration\_AccountMappingVII.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
