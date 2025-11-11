@@ -2217,6 +2217,11 @@
     <Compile Include="Controllers\TransactionManagement\WithdrawalNotificationController.cs" />
     <Compile Include="Controllers\UserManagement\MFAVerificationController.cs" />
     <Compile Include="Controllers\UserManagement\UserManagementController.cs" />
+    <Compile Include="DataSet\Accounting\AccountingDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet\Loan\DeliquentLoanSummaryDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -10944,6 +10949,7 @@
     <Content Include="Views\ReportingV2\ReportSection\Initilization.cshtml" />
     <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
     <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
+    <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
