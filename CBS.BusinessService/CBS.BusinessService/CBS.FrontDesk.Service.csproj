@@ -281,6 +281,10 @@
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
     <Compile Include="AccountingV2\MobileMoneyV2\MobileMoneyService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportDefinitionService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportLineMappingService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportLineService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportSectionService.cs" />
     <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
     <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />

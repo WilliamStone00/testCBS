@@ -129,6 +129,10 @@
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportDefinition\ReportDefinition.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportLineMapping\ReportLineMapping.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportLine\ReportLine.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportSection\ReportSection.cs" />
     <Compile Include="Entity\AccountingV2\RoleGlResolution\RoleGlResolutionModel.cs" />
     <Compile Include="Entity\Accounting V2\AffiliateAccount\AffiliateAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\Affiliate\AffiliateDto.cs" />

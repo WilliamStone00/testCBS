@@ -368,6 +368,71 @@ namespace CBS.BusinessService.Accounts
             }
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UpdateProductAccountMappingV2(SavingProduct model)
+        {
+            try
+            {
+                
+                // Build the Accounting V2 command from the current model
+                var command = BuildAccountingV2Cmd(model);
+
+                // Prepare endpoint
+                var url = string.Format(APICallHelper.Update_SavingProduct_AccountingV2Mapping, model.Id);
+
+                // Call API
+                var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(url, command);
+
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, model.Name, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+
+                // Failure
+                var errMsg = response?.Message ?? "Failed to update Accounting V2 mapping.";
+                GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(), null, errMsg);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex);
+            }
+
+            return ExecutionMessage;
+        }
+
+        private static UpdateSavingProductAccountingV2MappingCommand BuildAccountingV2Cmd(SavingProduct m)
+        {
+            return new UpdateSavingProductAccountingV2MappingCommand
+            {
+                Id = m.Id,
+                IsAccountingV2Mapping = m.IsAccountingV2Mapping,
+
+                AccountingV2PrincipalAmountChartOfAccountId = m.AccountingV2PrincipalAmountChartOfAccountId,
+                AccountingV2InterestAmountChartOfAccountId = m.AccountingV2InterestAmountChartOfAccountId,
+                AccountingV2TransitChartOfAccountId = m.AccountingV2TransitChartOfAccountId,
+
+                AccountingV2CivilServantsSalarySourceChartofAccountId = m.AccountingV2CivilServantsSalarySourceChartofAccountId,
+                AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId = m.AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId,
+                AccountingV2CivilServantsSalarySourceSalaryChartofaccountId = m.AccountingV2CivilServantsSalarySourceSalaryChartofaccountId,
+                AccountingV2CivilServantsSalaryDestinationSalaryProductChartofAccountId = m.AccountingV2CivilServantsSalaryDestinationSalaryProductChartofAccountId,
+
+                AccountingV2PrivateInstitutionSalarySourceChartofAccountId = m.AccountingV2PrivateInstitutionSalarySourceChartofAccountId,
+                AccountingV2PrivateInstitutionSalaryDestinationPayableChartofAccountId = m.AccountingV2PrivateInstitutionSalaryDestinationPayableChartofAccountId,
+                AccountingV2PrivateInstitutionSalarySourceSalaryChartofAccountId = m.AccountingV2PrivateInstitutionSalarySourceSalaryChartofAccountId,
+                AccountingV2PrivateInstitutionDestinationSalaryProductChartofAccountId = m.AccountingV2PrivateInstitutionDestinationSalaryProductChartofAccountId,
+
+                AccountingV2PayOutNoneMemberSalaryChartofAccountId = m.AccountingV2PayOutNoneMemberSalaryChartofAccountId,
+                AccountingV2PayOutCashTillChartofAccountId = m.AccountingV2PayOutCashTillChartofAccountId,
+                AccountingV2SuspenseChartOfAccountId = m.AccountingV2SuspenseChartOfAccountId,
+
+            };
+        }
+
         public async Task<ExecutionMessages> UpdateProductEventMapping(SavingProduct model)
         {
             try
