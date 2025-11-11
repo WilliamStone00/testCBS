@@ -1,13 +1,16 @@
 ﻿using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
+using CBS.FrontDesk.Data.Entity.Config;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -20,17 +23,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         private readonly CollectorCommissionService _collectorCommissionService;
         private readonly BranchServices _branchServices;
         private readonly ChartOfAccountsV2Service _chartOfAccountsV;
+        private readonly BranchAccountService _branchAccountService;
 
         /// <summary>
         /// Injects the required CollectorCommissionController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices)
+        public CollectorCommissionController(ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _collectorCommissionService = collectorCommissionService;
             _chartOfAccountsV = chartOfAccountsV2Service;
             _branchServices = branchServices;
             _manualService = manualDailyCollectionService;
+            _branchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -51,9 +56,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-
-            var pcmfs = await _chartOfAccountsV.GetAllPCMFAccounts();
-            ViewBag.HoPcmfAccounts = pcmfs;
             return true;
 
         }
@@ -145,13 +147,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 
         [HttpGet]
         public ActionResult ExportCommission()
-        {
+        { 
             return PartialView("_ExportCommission");
         }
 
         [HttpGet]
-        public ActionResult CommissionTreatment()
-        {
+        public async Task<ActionResult> CommissionTreatment(string BranchId)
+        {           
             return PartialView("_CommissionTreatment", new CollectorComissionResponse());
         }
 
@@ -241,6 +243,53 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 Console.WriteLine($"Excel Export Error: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 return Json(new { success = false, message = "An error occurred while exporting to Excel: " + ex.Message });
+            }
+        }
+
+        //[HttpGet]
+        //public async Task<JsonResult> GetPcmfAccountsByBranch(string branchId)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(branchId))
+        //        {
+        //            return Json(new { success = false, message = "Branch ID is required" }, JsonRequestBehavior.AllowGet);
+        //        }
+        //         var pcmfAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                
+        //        return Json(new { success = true, accounts = pcmfAccounts }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<JsonResult> GetPcmfAccountsByBranch(string branchId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(branchId))
+                {
+                    return Json(new { success = false, message = "Branch ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Get PCMF accounts for the branch
+                var pcmfAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+
+                // Convert to SelectList format with proper Text and Value
+                var selectList = pcmfAccounts.Select(a => new
+                {
+                    Value = a.Id?.ToString() ?? "",
+                    Text = $"{a.Name}" // Format the display text
+                }).ToList();
+
+                return Json(new { success = true, accounts = selectList }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
