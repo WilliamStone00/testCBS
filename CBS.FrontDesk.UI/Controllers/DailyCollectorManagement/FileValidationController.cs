@@ -524,9 +524,7 @@ namespace CBS.FrontDesk.UI.Controllers.DailyCollectorManagement
         //{
         //    var result = await _manualService.GetManualEntryDetailsForDataTableAsync(query);
         //    return Json(result);
-        //}     
-
-        
+        //}          
 
     }
 }

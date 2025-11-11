@@ -60,6 +60,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         {
             try
             {
+                
                 var response = await _apiCallerHelper1.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.Customerdatatable, query);
 
@@ -165,45 +166,43 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             return vm;
         }
 
-        //public async Task<ExecutionMessages> CreateAsync(Payment model)
-        //{
-        //    try
-        //    {
-        //        var response = await _apiCallerHelper1.PostAsync<ServiceResponse<Payment>>(APICallHelper.PostPayment, model);
-
-        //        if (response.IsSuccess)
-        //        {
-        //            GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-        //                ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
-        //        }
-        //        else
-        //        {
-        //            GetExecutionMessages(null, false, null, MessagesResults.Failed,
-        //                ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        GetExecutionMessages(null, false, null, MessagesResults.Error,
-        //            ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-        //    }
-        //    return ExecutionMessage;
-        //}
-
-        public async Task<CollectorComissionResponse> CreateAsync(CollectorComissionResponse model)
+        public async Task<ExecutionMessages> CreateAsync(CollectorComissionResponse model)
         {
-           
-            var response = await _apiCallerHelper2.PostAsync<ServiceResponse<CollectorComissionResponse>>(APICallHelper.Reconciliation, model);
-
-            // check response for success / nulls
-            if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
+            try
             {
-                // optionally throw or return null and let caller handle
-                return null;
-            }
+                var response = await _apiCallerHelper1.PostAsync<ServiceResponse<Payment>>(APICallHelper.PostPayment, model);
 
-            return response.ApiResponseData.Data;
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
         }
+
+        //public async Task<CollectorComissionResponse> CreateAsync(CollectorComissionResponse model)
+        //{
+           
+        //    var response = await _apiCallerHelper2.PostAsync<ServiceResponse<CollectorComissionResponse>>(APICallHelper.Reconciliation, model);
+
+        //    if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    return response.ApiResponseData.Data;
+        //}
 
         public async Task<CustomDataTable> CommisionDataTableAsync(commisionQuery query)
         {

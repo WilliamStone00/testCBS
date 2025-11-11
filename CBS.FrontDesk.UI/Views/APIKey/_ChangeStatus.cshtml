@@ -1,0 +1,33 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.ChangeStatusRequest
+<form method="post" action="@Url.Action("ChangeStatus", "ApiKey")"
+      onsubmit="return handleFormSubmit(this, 'API Key status updated successfully!')">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IsActive)
+
+    <div class="alert alert-info">
+        <i class="mdi mdi-information-outline me-2"></i>
+        @if (Model.IsActive)
+        {
+            <text>Activate this API key to allow its usage.</text>
+        }
+        else
+        {
+            <text>Deactivate this API key to temporarily prevent its usage.</text>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Status Change Reason *</label>
+        @Html.TextAreaFor(m => m.Reason, new { @class = "form-control", rows = "3", placeholder = "Enter reason for changing the status...", required = "required" })
+        @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn @(Model.IsActive ? "btn-success" : "btn-warning")">
+            <i class="mdi mdi-toggle-switch @(Model.IsActive ? "mdi-toggle-switch" : "mdi-toggle-switch-off") me-1"></i>
+            @(Model.IsActive ? "Activate Key" : "Deactivate Key")
+        </button>
+    </div>
+</form>

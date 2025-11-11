@@ -1495,6 +1495,42 @@ namespace CBS.FrontDesk.Helper
         public static string GetMobileMoneyByIdV2 = "/api/v1/MobileMoney/{0}";
 
 
+		//****************** REPORT DEFINITION **********************************//
+
+		public static string DeleteReportDefinition = "/api/v1/ReportDefinitions/{0}";
+		public static string CreateReportDefinition = "/api/v1/ReportDefinitions";
+		public static string UpdateReportDefinition = "/api/v1/ReportDefinitions/{0}";
+		public static string GetAllReportDefinition = "/api/v1/ReportDefinitions";
+		public static string GetReportDefinitionById = "/api/v1/ReportDefinitions/{0}";
+
+
+		//****************** REPORT LINE MAPPING **********************************//
+
+		public static string DeleteReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+		public static string CreateReportLineMapping = "/api/v1/ReportLineMappings";
+		public static string UpdateReportLineMapping = "/api/v1/ReportLineMappings/{0}";
+		public static string GetAllReportLineMapping = "/api/v1/ReportLineMappings";
+		public static string GetReportLineMappingById = "/api/v1/ReportLineMappings/{0}";
+
+
+		//****************** REPORT LINE **********************************//
+
+		public static string DeleteReportLine = "/api/v1/ReportLines/{0}";
+		public static string CreateReportLine = "/api/v1/ReportLines";
+		public static string UpdateReportLine = "/api/v1/ReportLines/{0}";
+		public static string GetAllReportLine = "/api/v1/ReportLines";
+		public static string GetReportLineById = "/api/v1/ReportLines/{0}";
+
+
+		//****************** REPORT SECTION **********************************//
+
+		public static string DeleteReportSection = "/api/v1/ReportSections/{0}";
+		public static string CreateReportSection = "/api/v1/ReportSections";
+		public static string UpdateReportSection = "/api/v1/ReportSections/{0}";
+		public static string GetAllReportSection = "/api/v1/ReportSections";
+		public static string GetReportSectionById = "/api/v1/ReportSections/{0}";
+
+
 
         //*************************** CHEQUE BOOK ******************************
 
@@ -1625,11 +1661,24 @@ namespace CBS.FrontDesk.Helper
         public static string PostPayment = "Cant find it";
         public static string DailyCollectorcommissiondata = "not yet Availlable";
 
+        //--------------------------- API KEY MANAGEMENT ----------------------------------------  
+            public const string GetAllApiKeys = "/api/apikeys";
+            public const string GetApiKeyById = "/api/apikeys/{0}";
+            public const string GetApiKeysByUserName = "/api/apikeys/user/{0}";
+            public const string ApiKeysDataTable = "/api/apikeys/datatable";
+            public const string CreateApiKey = "/api/apikeys/generate";
+            public const string RenewApiKey = "/api/apikeys/renew";
+            public const string RevokeApiKey = "/api/apikeys/revoke";
+            public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
+            public const string DeleteApiKey = "/api/apikeys/{0}";
+        
+
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
+        public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
          public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";

@@ -49,6 +49,15 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=7.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.7.1.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
@@ -80,6 +89,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -107,6 +119,7 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="SharpCompress, Version=0.30.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpCompress.0.30.1\lib\net461\SharpCompress.dll</HintPath>
     </Reference>
@@ -119,6 +132,9 @@
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -246,10 +262,12 @@
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountMockService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
     <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
+    <Compile Include="Accounting V2\API\ApiKeyService.cs" />
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
+    <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\FileListingService.cs" />
@@ -263,6 +281,10 @@
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
     <Compile Include="AccountingV2\MobileMoneyV2\MobileMoneyService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportDefinitionService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportLineMappingService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportLineService.cs" />
+    <Compile Include="AccountingV2\ReportingV2\ReportSectionService.cs" />
     <Compile Include="AccountingV2\RoleGlResolution\RoleGlResolutionService.cs" />
     <Compile Include="AccountingV2\ConfigurationsManualEntry\ConfigurationManualEntryService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadService.cs" />

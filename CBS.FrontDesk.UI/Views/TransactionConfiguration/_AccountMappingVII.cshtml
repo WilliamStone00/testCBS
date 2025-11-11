@@ -1,0 +1,245 @@
+﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
+@using Resources
+<div class="col">
+
+    <div class="row my-4">
+        <div class="accordion" id="collapsibleSection">
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingDeliveryAddress">
+                    <button type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDeliveryAddress"
+                            aria-expanded="true"
+                            aria-controls="collapseDeliveryAddress">
+                        Mapping ordinary accounts to the account chart.
+                    </button>
+                </h2>
+
+                <div id="collapseDeliveryAddress"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+
+                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+
+                                <input type="hidden" name="ServiceOption" value="accountmappingv2" id="ServiceOption" />
+
+                                <!-- Product context (readonly) -->
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.SavingProduct.Code, new { @class = "form-control", @readonly = true })
+                                            <label>Product code</label>
+                                            <small class="form-text text-muted">Unique product identifier used across the accounting configuration.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                            <label>Product name</label>
+                                            <small class="form-text text-muted">Human-readable name of the product you are mapping to the GL.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SECTION 1: Principals & Interest -->
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-12"><h6 class="text-primary mb-2">Principals & Interest</h6></div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2PrincipalAmountChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Principal account</label>
+                                            <small class="form-text text-muted">Member liability balance for the product (savings principal / core balance).</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2InterestAmountChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Interest account</label>
+                                            <small class="form-text text-muted">GL to recognize interest accrued/paid related to this product.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SECTION 2: Transits -->
+                                <div class="row mt-2 gy-4">
+                                    <div class="col-md-12"><h6 class="text-primary mb-2">Transits</h6></div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2TransitChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Transit account (local use)</label>
+                                            <small class="form-text text-muted">Temporary holding account for in-process movements within the same branch (e.g., teller handover).</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                if (Model.SavingProduct.AccountType.Contains("Salary"))
+                                {
+                                    <!-- SECTION 3: Civil servants -->
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12"><h6 class="text-primary mb-2">Civil servants</h6></div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2CivilServantsSalarySourceChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Salary source account</label>
+                                                <small class="form-text text-muted">Bank/agency current account that funds civil servant salary batches (credit origin).</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Salary destination payable account</label>
+                                                <small class="form-text text-muted">Interim payable that holds the batch total before distribution to member accounts.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2CivilServantsSalarySourceSalaryChartofaccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Source salary account</label>
+                                                <small class="form-text text-muted">Account debited when releasing funds from the payable to individual members.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2CivilServantsSalaryDestinationSalaryProductChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Destination salary product account</label>
+                                                <small class="form-text text-muted">Member product GL (credit) used when posting the salary to the beneficiary account.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SECTION 4: Private institutions -->
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12"><h6 class="text-primary mb-2">Private institutions</h6></div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2PrivateInstitutionSalarySourceChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Salary source account</label>
+                                                <small class="form-text text-muted">Funding account for private institution payroll batches.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2PrivateInstitutionSalaryDestinationPayableChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Salary destination payable account</label>
+                                                <small class="form-text text-muted">Temporary payable for private payroll totals before member posting.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2PrivateInstitutionSalarySourceSalaryChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Source salary account</label>
+                                                <small class="form-text text-muted">GL debited when moving private payroll from payable to members.</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2PrivateInstitutionDestinationSalaryProductChartofAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Destination salary product account</label>
+                                                <small class="form-text text-muted">Member product GL credited for private payroll beneficiaries.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- SECTION 5: Suspense -->
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12"><h6 class="text-primary mb-2">Suspense account</h6></div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2SuspenseChartOfAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Suspense account</label>
+                                                <small class="form-text text-muted">Holds unidentified/unbalanced items (e.g., unmatched salary lines) pending investigation.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+
+                                <div class="mt-2">
+                                    @if (Model.SavingProduct?.Id == null)
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="Action" value="insert" id="Action" />
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-primary me-2">Map accounts</button>
+                                        @Html.HiddenFor(m => m.SavingProduct.Id)
+                                        <input type="hidden" name="Action" value="update" id="Action" />
+                                    }
+                                </div>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

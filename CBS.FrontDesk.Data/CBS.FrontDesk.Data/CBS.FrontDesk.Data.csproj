@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
+    <Compile Include="Entity\Accounting V2\API\APiKey.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\clientComissions.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
@@ -126,9 +127,12 @@
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
-    <Compile Include="Entity\AccountingV2\LiaisonMappingV2\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportDefinition\ReportDefinition.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportLineMapping\ReportLineMapping.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportLine\ReportLine.cs" />
+    <Compile Include="Entity\AccountingV2\ReportingV2\ReportSection\ReportSection.cs" />
     <Compile Include="Entity\AccountingV2\RoleGlResolution\RoleGlResolutionModel.cs" />
     <Compile Include="Entity\Accounting V2\AffiliateAccount\AffiliateAccountDto.cs" />
     <Compile Include="Entity\Accounting V2\Affiliate\AffiliateDto.cs" />

@@ -63,6 +63,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         //public string BranchId { get; set; }    
 
         //payment
+        public string AccountingDate { get; set; } = string.Empty;
         public string Incentives { get; set; } = string.Empty;
         public string DaillyCollectorShare { get; set; }
         public string Total { get; set; }
@@ -75,11 +76,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string TotalFeeCharged { get; set; }
         public string TotalAmountToDistribute { get; set; }
 
-        public string Stakeholder { get; set; }
-        public string Percentage { get; set; }
-        public string Amount { get; set; }
-
-
+        
         public string CollectorId { get; set; } = string.Empty;
         public string CollectorName { get; set; } = string.Empty;
         public string BranchId { get; set; } = string.Empty;
@@ -105,9 +102,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string AccountId { get; set; }
         public string AccountNumber { get; set; }
         public string MemberName { get; set; } = string.Empty;
-        public double TotalActivityAmount { get; set; }
-        public double FeeCharged { get; set; }
-        public double ActualBalance { get; set; }
+        public decimal TotalActivityAmount { get; set; }
+        public decimal FeeCharged { get; set; }
+        public decimal ActualBalance { get; set; }
         public DateTime LastTransactionDate { get; set; }
     }
 
@@ -159,5 +156,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
        public string BranchId { get; set; }
     }
 
+    public class ExportCommissionRequest
+    {
+        public CollectorComissionResponse CommissionData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+    }
+
+    public class ExportOptions
+    {
+        public string Format { get; set; }
+        public bool IncludeSummary { get; set; }
+        public string FileName { get; set; }
+        public string ReportType { get; set; }
+    }
 
 }

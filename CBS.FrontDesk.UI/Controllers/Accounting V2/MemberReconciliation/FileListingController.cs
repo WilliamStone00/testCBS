@@ -82,7 +82,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         {
             await loader();
             return View();
-
         }
 
         [HttpPost]
@@ -91,11 +90,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             //await loader();
             try
             {
-
                 var data = await _fileListingService.DataTableAsync2(query);
-
                 var result = JsonConvert.DeserializeObject<List<GLHistoryDto>>(JsonConvert.SerializeObject(data.data));
-
                 return Json(new
                 {
                     draw = data.draw,
@@ -106,8 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             }
             catch (Exception ex)
             {
-                // return a DataTables-compatible empty result on error
-                return Json(new
+               return Json(new
                 {
                     draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
@@ -128,21 +123,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         public async Task<ActionResult> Details(string id, string partialView = null)
         {
             var data = await _fileListingService.GetByIdAsync(id);
-
-            // If no partialView requested, return a full page
             if (string.IsNullOrEmpty(partialView))
             {
-                // Option A: return a View named "Details" (create Views/FileListing/Details.cshtml)
-                // return View("Details", data);
-
-                // Option B: return a wrapper page (recommended if you want a specific page)
-                return View("Detailss", data); // create Views/FileListing/DetailsPage.cshtml
+               return View("Detailss", data); 
             }
-
-            // Partial request (AJAX/modal)
-            return PartialView(partialView, data);
+           return PartialView(partialView, data);
         }
-
 
         public async Task<ActionResult> DetailsGLH(string id, string partialView = null)
         {
