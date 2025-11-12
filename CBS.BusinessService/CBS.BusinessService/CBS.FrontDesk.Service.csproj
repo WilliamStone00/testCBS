@@ -517,7 +517,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
-      <Project>{7789DE1E-5232-46A6-9A96-1DD39E708EEB}</Project>
+      <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
       <Name>CBS.API.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
