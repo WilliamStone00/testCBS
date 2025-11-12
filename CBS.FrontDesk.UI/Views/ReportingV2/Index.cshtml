@@ -1,7 +1,9 @@
-﻿
+﻿@{
+    ViewBag.Title = "Report Configuration";
+}
+
 <div class="row">
     <div class="col-12">
-        <!-- Page Header -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
@@ -16,76 +18,45 @@
     </div>
 </div>
 
-<!-- Tips Card -->
-<div class="card mb-1">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLiaisonTips" aria-expanded="false" aria-controls="collapseLiaisonTips">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseLiaisonTips" class="collapse">
-        <div class="card-body">
-            <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure branch and account details are correct before saving.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Prevent duplicate mappings between the same branches.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Only authorized staff can modify mappings.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the status checkbox to enable or disable a mapping.</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- Tips -->
-<div class="alert alert-success py-2">
-    <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-    <strong>Tip:</strong> Use clear codes and consistent sort orders for accurate financial reporting.
-</div>
-
 <!-- Tabs -->
 <ul class="nav nav-tabs mb-3" id="reportTabs">
     <li class="nav-item">
         <a class="nav-link active"
            data-bs-toggle="tab"
-           href="#definitionTab"
-           data-url="/ReportDefinition/Initilization"
-           data-target="#definitionContainer"
-           data-params='{"path":"list"}'>
+           href="#definitionContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"definition","partialView":"ReportingV2/ReportDefinition/_List"}'>
             <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link"
            data-bs-toggle="tab"
-           href="#sectionTab"
-           data-url="/ReportSection/Initilization"
-           data-target="#sectionContainer"
-           data-params='{"path":"list"}'>
+           href="#sectionContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"section","partialView":"ReportingV2/ReportSection/_List"}'>
             <i class="mdi mdi-view-list-outline me-1"></i> Section
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link"
            data-bs-toggle="tab"
-           href="#lineTab"
-           data-url="/ReportLine/Initilization"
-           data-target="#lineContainer"
-           data-params='{"path":"list"}'>
+           href="#lineContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"line","partialView":"ReportingV2/ReportLine/_List"}'>
             <i class="mdi mdi-format-line-weight me-1"></i> Line
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link"
            data-bs-toggle="tab"
-           href="#mappingTab"
-           data-url="/ReportLineMapping/Initilization"
-           data-target="#mappingContainer"
-           data-params='{"path":"list"}'>
+           href="#mappingContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"line_mapping","partialView":"ReportingV2/ReportLineMapping/_List"}'>
             <i class="mdi mdi-link-variant me-1"></i> Mapping
         </a>
     </li>
 </ul>
-
 
 <!-- Tab Contents -->
 <div class="tab-content">
@@ -95,45 +66,58 @@
     <div class="tab-pane fade" id="mappingContainer"></div>
 </div>
 
-
-
 @section Scripts {
-<script>
-$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
 
-    // Fonction générique pour charger une partial view
-    function loadPartialView(url, target, data = {}) {
-        $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
+            function loadPartialView(url, target, data = {}) {
+                console.log("%c[AJAX LOAD]", "color: #28a745; font-weight: bold;", {
+                    url: url,
+                    target: target,
+                    data: data
+                });
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: data,
-            success: function (html) {
-                $(target).html(html);
-            },
-            error: function (xhr) {
-                $(target).html('<div class="alert alert-danger">Erreur: ' + xhr.status + '</div>');
+               // $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: data,
+                    success: function (html) {
+                        console.log("%c[LOAD SUCCESS]", "color: #007bff; font-weight: bold;", { target: target });
+                        $(target).html(html);
+                    },
+                    error: function (xhr) {
+                        console.error("[LOAD ERROR]", xhr);
+                        $(target).html('<div class="alert alert-danger">Error loading partial: ' + xhr.status + '</div>');
+                    }
+                });
             }
+
+            // Load the first tab when page loads
+            const firstTab = $('#reportTabs a.active');
+            const firstParams = JSON.parse(firstTab.attr('data-params'));
+            loadPartialView(firstTab.data('url'), firstTab.attr('href'), firstParams);
+
+            // When switching tabs
+            $('#reportTabs a').on('shown.bs.tab', function (e) {
+                const tab = $(this);
+                const target = tab.attr('href');
+                const url = tab.data('url');
+                const params = JSON.parse(tab.attr('data-params'));
+
+                console.log("%c[TAB CLICKED]", "color: #ffc107; font-weight: bold;", {
+                    tab: tab.text().trim(),
+                    target: target,
+                    params: params
+                });
+
+                // Load only if empty
+                if ($(target).is(':empty')) {
+                    loadPartialView(url, target, params);
+                }
+            });
+
         });
-    }
-
-    // Charger le premier onglet au démarrage
-    var firstTab = $('#reportTabs a.active');
-    loadPartialView(firstTab.data('url'), firstTab.data('target'), JSON.parse(firstTab.attr('data-params')));
-
-    // Événement click sur tous les onglets
-    $('#reportTabs a').on('shown.bs.tab', function(e) {
-        var target = $(this).data('target');
-        var url = $(this).data('url');
-        var params = JSON.parse($(this).attr('data-params'));
-
-        // Ne recharge que si le container est vide
-        if ($(target).is(':empty')) {
-            loadPartialView(url, target, params);
-        }
-    });
-
-});
-</script>
+    </script>
 }
