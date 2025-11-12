@@ -1,4 +1,4 @@
-﻿/*using CBS.BusinessService.AccountingV2.AccountingYear;
+﻿using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
 using CBS.BusinessService.Config;
@@ -28,7 +28,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View();*//**//*
+            return View(); *//**//*
         }
 
 
@@ -54,7 +54,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                   })
                   .ToList();
             return true;
-            
+
         }
 
 
@@ -140,4 +140,4 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
         }
 
     }
-}*/
+}
