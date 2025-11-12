@@ -1689,7 +1689,11 @@ namespace CBS.FrontDesk.Helper
 
 
         // ================ Journals   =======================//
-        public static string JournalEntries = "/api/v1/Reports/trial-balance6";
+        public static string JournalEntries = "/api/v1/Reports/Journal";
+
+
+        // ================ Accnts  Statements   =======================//
+        public static string AccntsStatements = "/api/v1/Reports/account-statement";
 
 
 

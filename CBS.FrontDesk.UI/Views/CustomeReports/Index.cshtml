@@ -4,6 +4,7 @@
 }
 
 
+<!-- Title Section -->
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-3 shadow-sm">
@@ -25,6 +26,7 @@
 </div>
 
 <!-- Tips Section -->
+<!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Better Reporting</span>
@@ -36,14 +38,34 @@
     </div>
     <div id="collapseTips" class="collapse">
         <div class="card-body">
-            <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Filter by Branch:</strong> Focus reports on specific branches.</li>
-                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i><strong>Date Range:</strong> Select a start and end date to narrow results.</li>
-                <li><i class="mdi mdi-file-export-outline text-info me-2"></i><strong>Export:</strong> Download reports in Excel or PDF format.</li>
+            <ul class="mb-0" style="line-height: 1.6;">
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <strong>Filter by Branch:</strong> Select one or multiple branches to focus the report on specific locations. Ideal for analyzing performance or transactions at individual branches.
+                </li>
+                <li>
+                    <i class="mdi mdi-calendar-month-outline text-primary me-2"></i>
+                    <strong>Date Range:</strong> Use the 'From' and 'To' fields to narrow the report to a specific period. This is essential for monthly, quarterly, or yearly analysis.
+                </li>
+                <li>
+                    <i class="mdi mdi-account-outline text-info me-2"></i>
+                    <strong>Filter by Account:</strong> Enable this option to select specific accounts. Multi-select allows targeting multiple accounts at once for focused insights.
+                </li>
+                <li>
+                    <i class="mdi mdi-file-export-outline text-warning me-2"></i>
+                    <strong>Export Reports:</strong> Download the report in Excel or PDF format for sharing, presentation, or record-keeping. Always export for audits or team review.
+                </li>
+                <li>
+                    <i class="mdi mdi-filter-outline text-secondary me-2"></i>
+                    <strong>Source Mode:</strong> Choose between Temporary, Reconciled, Auto, or RealTime data. Selecting the appropriate mode ensures your report reflects the correct state of transactions.
+                </li>
             </ul>
         </div>
     </div>
 </div>
+
+
+
 
 <!-- Filters -->
 <div class="card shadow p-3 mb-4">
@@ -55,6 +77,28 @@
         <form id="reportFilterForm">
             <div class="row g-3">
 
+                <!-- Branch (full row) -->
+                @*<div class="col-12 mb-3">
+                        @Html.Label("Branch", new { @class = "form-label fw-semibold" })
+                        @Html.DropDownList(
+                            "BranchId",
+                            (IEnumerable<SelectListItem>)ViewBag.Branches,
+                            "--- Select Branch ---",
+                            new { @class = "form-select select2 branches_custome", multiple = "multiple" }
+                        )
+                    </div>*@
+
+                <div class="col-12 mb-3">
+                    <label for="BranchId" class="form-label fw-semibold">Select Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 branches_custome", multiple = "multiple", id = "BranchId" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+
+                </div>
+
+                <!-- Other filters in row -->
                 <!-- Report Type -->
                 <div class="col-md-4">
                     @Html.Label("Report Type", new { @class = "form-label fw-semibold" })
@@ -62,31 +106,20 @@
                         "ReportType",
                         (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
                         "--- Select Report Type ---",
-                        new { @class = "form-select" }
-                    )
-                </div>
-
-                <!-- Branch -->
-                <div class="col-md-4">
-                    @Html.Label("Branch", new { @class = "form-label fw-semibold" })
-                    @Html.DropDownList(
-                        "BranchId",
-                        (IEnumerable<SelectListItem>)ViewBag.Branches,
-                        "--- Select Branch ---",
-                        new { @class = "form-select" }
+                        new { @class = "form-select select2 reportype_custome" }
                     )
                 </div>
 
                 <!-- Date From -->
                 <div class="col-md-4">
                     @Html.Label("Date From", new { @class = "form-label fw-semibold" })
-                    @Html.TextBox("DateFrom", null, new { @class = "form-control", type = "date" })
+                    @Html.TextBox("DateFrom", null, new { @class = "form-control datefrom_custome ", type = "date" })
                 </div>
 
                 <!-- Date To -->
                 <div class="col-md-4">
                     @Html.Label("Date To", new { @class = "form-label fw-semibold" })
-                    @Html.TextBox("DateTo", null, new { @class = "form-control", type = "date" })
+                    @Html.TextBox("DateTo", null, new { @class = "form-control dateto_custome", type = "date" })
                 </div>
 
                 <!-- Source Mode -->
@@ -96,24 +129,71 @@
                         "SourceMode",
                         new List<SelectListItem> {
                             new SelectListItem { Text = "Temporary", Value = "Temp" },
-                            new SelectListItem { Text = "Reconciled ", Value = "Reconciled" },
+                            new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
                             new SelectListItem { Text = "Auto", Value = "Auto" },
                             new SelectListItem { Text = "RealTime", Value = "RealTime" }
                         },
                         "--- Select Source Mode ---",
-                        new { @class = "form-select" }
+                        new { @class = "form-select select2 source_custome" }
                     )
                 </div>
 
-                <!-- Search Button -->
+                <!-- Exclude Liaison/Internal -->
+                <div class="col-md-4">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input excludeLiaisonInternal_custome" id="excludeLiaisonInternal" name="ExcludeLiaisonInternal" />
+                        <label class="form-check-label fw-semibold" for="excludeLiaisonInternal">
+                            Exclude Liaison/Internal
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filter by Account -->
+                <div class="col-md-4">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input filterByAccount_custome " id="filterByAccount" />
+                        <label class="form-check-label fw-semibold " for="filterByAccount">
+                            Filter by Account
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Account Multi-select -->
+                <div class="col-md-8" id="accountNumberContainer" style="display: none;">
+                    @Html.Label("Accounts", new { @class = "form-label fw-semibold" })
+                    @Html.ListBox(
+                        "AccountIds",
+                        (IEnumerable<SelectListItem>)ViewBag.AccountNumbers,
+                        new { @class = "form-select select2", multiple = "multiple", style = "width:100%;" }
+                    )
+                </div>
+
+                <!-- Consolidated -->
+                <div class="col-md-4">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input consolidated_custome" id="consolidated " name="Consolidated" />
+                        <label class="form-check-label fw-semibold" for="consolidated">
+                            Consolidated Report
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Hidden Pagination & Sorting -->
+                <input type="hidden" name="Page" value="0" />
+                <input type="hidden" name="PageSize" value="0" />
+                <input type="hidden" name="SortBy" value="" />
+                <input type="hidden" name="SortDir" value="" />
+
+                <!-- Buttons -->
                 <div class="col-12 text-end mt-3">
-                    <button type="submit" class="btn btn-primary px-4">
+                    <button id="submitBtn" type="submit" class="btn btn-primary px-4">
                         <i class="mdi mdi-magnify me-1"></i> Search
                     </button>
                     <button type="reset" class="btn btn-outline-secondary px-4">
                         <i class="mdi mdi-refresh me-1"></i> Reset
                     </button>
                 </div>
+
             </div>
         </form>
     </div>
@@ -125,6 +205,38 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/Js/main.js/AccountingReports.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2
+            $('.select2').select2({
+                placeholder: "--- Select ---",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Show/Hide account select
+            $('#filterByAccount').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('#accountNumberContainer').slideDown();
+                } else {
+                    $('#accountNumberContainer').slideUp();
+                    $('#AccountIds').val(null).trigger('change'); // clear selections
+                }
+            });
+        });
+
+
+
+
+
+
+
+    </script>
+
+
 }
+<script src="~/Scripts/Js/Accounting_V2/axios.js"></script>
+<script src="~/Scripts/Js/Accounting_V2/customeReports.js"></script>

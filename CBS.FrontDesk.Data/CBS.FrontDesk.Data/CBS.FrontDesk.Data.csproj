@@ -119,7 +119,7 @@
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
     <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
-    <Compile Include="Entity\Accounting V2\Queries\TrialBalanceFilterQuery.cs" />
+    <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilter.cs" />
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\clientComissions.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />

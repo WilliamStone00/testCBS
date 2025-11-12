@@ -462,30 +462,6 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\JournalEntries.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\JournalEntries1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3406,6 +3382,8 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Accounting_V2\axios.js" />
+    <Content Include="Scripts\Js\Accounting_V2\customeReports.js" />
     <Content Include="Scripts\Js\Crud\AccountingV2\Accountingv2chart.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
@@ -8741,10 +8719,6 @@
       <LastGenOutput>AccStatement.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries1.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
     </EmbeddedResource>

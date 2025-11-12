@@ -23,13 +23,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
     //[CheckSessionTimeOut]
     public class TrialBalanceController : BaseController
     {
-        private readonly JournalEntriesService _trialBalanceService;
+        private readonly TrialBalancesService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public TrialBalanceController(JournalEntriesService trialBalanceService,
+        public TrialBalanceController(TrialBalancesService trialBalanceService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         }
 
         [HttpPost]
-        public async Task<ActionResult> GenerateTrialBalance(TrialBalanceFilterQuery model)
+        public async Task<ActionResult> GenerateTrialBalance(AccountingV2ReportsFilter model)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         [HttpPost]
         public ActionResult GetReport(string path)
         {
-
+            
             this.HttpContext.Session["rptType"] = "ReportParameterLess";
             this.HttpContext.Session["ReportName"] = $"TrialBalance6Columns.rpt";
             this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt";

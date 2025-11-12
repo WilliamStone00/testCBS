@@ -12,7 +12,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CBS.BusinessService.Accounting_V2.JournalEntries
+namespace CBS.BusinessService.Accounting_V2.AccntStatements
 {
     public class AccntStatementService : BaseService
     {
@@ -37,7 +37,7 @@ namespace CBS.BusinessService.Accounting_V2.JournalEntries
                
                 // POST request to the API
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<JournalDtoEntriesV2Dto>>>(
-                    APICallHelper.JournalEntries,
+                    APICallHelper.AccntsStatements,
                     filter
                 );
 
@@ -45,7 +45,6 @@ namespace CBS.BusinessService.Accounting_V2.JournalEntries
 
                 if (response?.IsSuccess == true)
                 {
-
                     result.JournalEntries = response.ApiResponseData?.Data ?? new List<JournalDtoEntriesV2Dto>();
                 }
                 else

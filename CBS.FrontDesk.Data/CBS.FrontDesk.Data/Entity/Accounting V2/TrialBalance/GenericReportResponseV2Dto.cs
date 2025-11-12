@@ -13,6 +13,8 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         // Response metadata
     }
 
+   
+
 
 
     public class JournalDtoEntriesV2Dto

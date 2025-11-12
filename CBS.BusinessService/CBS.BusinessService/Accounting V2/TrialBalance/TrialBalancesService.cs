@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.TrialBalance
 {
-    public class JournalEntriesService : BaseService
+    public class TrialBalancesService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
         private readonly TrialBalance6ColumnsMock _trialBalance6ColumnsMock;
 
-        public JournalEntriesService()
+        public TrialBalancesService()
         {
             // Hardcoded base URL (intentionally allowed)
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
@@ -30,7 +30,7 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
         /// <summary>
         /// Fetch trial balances using provided filter (6-column format).
         /// </summary>
-        public async Task<GenericReportResponseV2Dto> GetTrialBalancesAsync6columns(TrialBalanceFilterQuery filter)
+        public async Task<GenericReportResponseV2Dto> GetTrialBalancesAsync6columns(AccountingV2ReportsFilter filter)
         {
             try
             {

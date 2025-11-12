@@ -1,48 +1,65 @@
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Base;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
 {
-
-
     public class CustomeReportsController : BaseController
     {
-        public CustomeReportsController()
+        private readonly BranchAccountService _branchAccountService;
+        private readonly BranchServices _branchServices;
+
+        public CustomeReportsController(BranchAccountService branchAccountService, BranchServices branchServices)
         {
+            _branchAccountService = branchAccountService;
+            _branchServices = branchServices;
         }
 
         public async Task<ActionResult> Index()
         {
             ReportTypes();
+            await LoadBranchesAsync();
+            await LoadAccountsAsync();
             return View();
         }
 
-
-        public void  ReportTypes()
+        private async Task LoadBranchesAsync()
         {
-            ViewBag.reportTypes = new List<SelectListItem>() {
-            new SelectListItem { Value = "Trial Balance 6 Columns", Text = "Trial Balance 6 Columns" },
-            new SelectListItem { Value = "Trial Balance 4 Columns", Text = "Trial Balance 4 Columns" },
-            new SelectListItem { Value = "General Ledger", Text = "General Ledger" },
-            new SelectListItem { Value = "Balance Sheet", Text = "Balance Sheet" },
-            new SelectListItem { Value = "Income Statement", Text = "Income Statement" },
-            new SelectListItem { Value = "Cash Flow Statement", Text = "Cash Flow Statement" },
-            new SelectListItem { Value = "Detailed Trial Balance", Text = "Detailed Trial Balance" },
-            new SelectListItem { Value = "Account Statement", Text = "Account Statement" },
-            new SelectListItem { Value = "Journal Listing", Text = "Journal Listing" },
-            new SelectListItem { Value = "Chart of Accounts", Text = "Chart of Accounts" },
-            new SelectListItem { Value = "Subsidiary Ledger", Text = "Subsidiary Ledger" },
-            new SelectListItem { Value = "Consolidated Trial Balance", Text = "Consolidated Trial Balance" },
-            new SelectListItem { Value = "Branch Trial Balance", Text = "Branch Trial Balance" },
-            new SelectListItem { Value = "Transaction Listing", Text = "Transaction Listing" },
-            };
-
+            var branches = await _branchServices.GetBranches();
+             ViewBag.Branches = branches;
+            //ViewBag.Branches = branches.Select(b => new SelectListItem
+            //{
+            //    Value = b.Id.ToString(),
+            //    Text = $"{b.Name} ({b.BranchCode})"
+            //}).ToList();
         }
 
+        private async Task LoadAccountsAsync()
+        {
+            var branchAccounts = await _branchAccountService.GetAsync();
 
+            ViewBag.AccountNumbers = branchAccounts.Select(a => new SelectListItem
+            {
+                Value = a.Id.ToString(),
+                Text = $"{a.Code} - {a.NameEn}"
+            }).ToList();
+        }
 
-
+        private void ReportTypes()
+        {
+            ViewBag.ReportTypes = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Trial Balance 6 Columns", Text = "Trial Balance 6 Columns" },
+                new SelectListItem { Value = "Trial Balance 4 Columns", Text = "Trial Balance 4 Columns" },
+                new SelectListItem { Value = "General Ledger", Text = "General Ledger" },
+                new SelectListItem { Value = "Balance Sheet", Text = "Balance Sheet" },
+                new SelectListItem { Value = "Account Statement", Text = "Account Statement" },
+                new SelectListItem { Value = "Income Statement", Text = "Income Statement" },
+            };
+        }
     }
 }

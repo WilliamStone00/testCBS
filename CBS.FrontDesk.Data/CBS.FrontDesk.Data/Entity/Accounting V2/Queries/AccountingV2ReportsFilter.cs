@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 {
 
-    public class TrialBalanceFilterQuery
+    public class AccountingV2ReportsFilter
     {
         [JsonProperty("from")]
         public DateTime From { get; set; } = DateTime.Parse("2025-09-01");
