@@ -1703,7 +1703,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
-         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+        
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 

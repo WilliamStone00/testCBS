@@ -1,58 +1,130 @@
-﻿
-
+﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
 @{
-    ViewBag.Title = "Report Generator";
+    ViewBag.Title = "Accounting Reports";
 }
 
 
 <div class="row">
     <div class="col-12">
-        <div class="card bg-light mb-2">
+        <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-chart-outline me-2"></i> Report Generator
-                </h1>
-                <p style="color: black" class=" text-black ">
-                    The accounting reports in the system are
-                    generated within the period of 1 year from 1st of January to 31st december of the past.
+                <h2 class="text-primary mb-2">
+                    <i class="mdi mdi-finance me-2"></i> Accounting Reports
+                </h2>
+                <p class="text-muted mb-2">
+                    View, filter, and export your accounting reports with precision and flexibility.
                 </p>
-                <p style="color: chocolate" class=" alert"> In case you wish to have data above the period of year please kindly contact system administrator.</p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                <p class="fw-semibold text-warning">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Use filters below to refine report results.
+                </p>
+                <hr class="border border-secondary opacity-50" />
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tips Card -->
-<div class="card p-4 mb-3">
-
-    <label for="BranchId" class="form-label fw-bold">Branch</label>
-    <!-- Difference GL -->
-    @Html.Label("ReconciliationType", "", new { @class = "form-label fw-semibold", @for = "ReconciliationType" })
-    @Html.DropDownList(
-        "ReconciliationType",
-        (IEnumerable<SelectListItem>)ViewBag.reportTypes,
-        "--- Select Account Type ---",
-         new
-         {
-             @class = "form-control select2 mb-4",
-             id = "ReconciliationType",
-             required = "required",
-             style = "height: 50px;"  // 👈 set height in pixels
-         }
-    )
-</div>
-
-<!-- Filter Form -->
-
-
-<!-- Report Result -->
-<div class="row">
-    <div class="col-12">
-        <div id="reportResult" class="card shadow-sm p-2 mt-2">
-            <!-- AJAX-loaded report results will appear here -->
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Better Reporting</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseTips"
+                aria-expanded="false" aria-controls="collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </div>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Filter by Branch:</strong> Focus reports on specific branches.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i><strong>Date Range:</strong> Select a start and end date to narrow results.</li>
+                <li><i class="mdi mdi-file-export-outline text-info me-2"></i><strong>Export:</strong> Download reports in Excel or PDF format.</li>
+            </ul>
         </div>
     </div>
 </div>
 
+<!-- Filters -->
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3">
+        <i class="mdi mdi-filter-outline me-1"></i> Filter Options
+    </h5>
 
+    <div class="card p-3 bg-light">
+        <form id="reportFilterForm">
+            <div class="row g-3">
+
+                <!-- Report Type -->
+                <div class="col-md-4">
+                    @Html.Label("Report Type", new { @class = "form-label fw-semibold" })
+                    @Html.DropDownList(
+                        "ReportType",
+                        (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
+                        "--- Select Report Type ---",
+                        new { @class = "form-select" }
+                    )
+                </div>
+
+                <!-- Branch -->
+                <div class="col-md-4">
+                    @Html.Label("Branch", new { @class = "form-label fw-semibold" })
+                    @Html.DropDownList(
+                        "BranchId",
+                        (IEnumerable<SelectListItem>)ViewBag.Branches,
+                        "--- Select Branch ---",
+                        new { @class = "form-select" }
+                    )
+                </div>
+
+                <!-- Date From -->
+                <div class="col-md-4">
+                    @Html.Label("Date From", new { @class = "form-label fw-semibold" })
+                    @Html.TextBox("DateFrom", null, new { @class = "form-control", type = "date" })
+                </div>
+
+                <!-- Date To -->
+                <div class="col-md-4">
+                    @Html.Label("Date To", new { @class = "form-label fw-semibold" })
+                    @Html.TextBox("DateTo", null, new { @class = "form-control", type = "date" })
+                </div>
+
+                <!-- Source Mode -->
+                <div class="col-md-4">
+                    @Html.Label("Source Mode", new { @class = "form-label fw-semibold" })
+                    @Html.DropDownList(
+                        "SourceMode",
+                        new List<SelectListItem> {
+                            new SelectListItem { Text = "Temporary", Value = "Temp" },
+                            new SelectListItem { Text = "Reconciled ", Value = "Reconciled" },
+                            new SelectListItem { Text = "Auto", Value = "Auto" },
+                            new SelectListItem { Text = "RealTime", Value = "RealTime" }
+                        },
+                        "--- Select Source Mode ---",
+                        new { @class = "form-select" }
+                    )
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-12 text-end mt-3">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="mdi mdi-magnify me-1"></i> Search
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary px-4">
+                        <i class="mdi mdi-refresh me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Report Data -->
+<div id="reportResults">
+    @Html.Partial("_ReportResultsPartial")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/Js/main.js/AccountingReports.js"></script>
+}

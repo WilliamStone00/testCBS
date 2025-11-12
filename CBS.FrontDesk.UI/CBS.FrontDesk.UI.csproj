@@ -450,27 +450,47 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.cs">
+      <DependentUpon>AccStatement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\JournalEntries.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>JournalEntries.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
+    <Compile Include="AppFiles\JournalEntries1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
       <AutoGen>True</AutoGen>
@@ -8721,7 +8741,15 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccStatement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalEntries1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
     </EmbeddedResource>
@@ -10984,6 +11012,7 @@
     <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
     <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
     <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
+    <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

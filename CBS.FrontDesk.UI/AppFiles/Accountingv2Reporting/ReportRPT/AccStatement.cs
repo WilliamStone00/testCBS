@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles {
+namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class JournalEntries : ReportClass {
+    public class AccStatement : ReportClass {
         
-        public JournalEntries() {
+        public AccStatement() {
         }
         
         public override string ResourceName {
             get {
-                return "JournalEntries.rpt";
+                return "AccStatement.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.JournalEntries.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.AccStatement.rpt";
             }
             set {
                 // Do nothing
@@ -98,9 +98,9 @@ namespace CBS.FrontDesk.UI.AppFiles {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedJournalEntries : Component, ICachedReport {
+    public class CachedAccStatement : Component, ICachedReport {
         
-        public CachedJournalEntries() {
+        public CachedAccStatement() {
         }
         
         [Browsable(false)]
@@ -137,7 +137,7 @@ namespace CBS.FrontDesk.UI.AppFiles {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            JournalEntries rpt = new JournalEntries();
+            AccStatement rpt = new AccStatement();
             rpt.Site = this.Site;
             return rpt;
         }

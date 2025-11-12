@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles {
+namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.JournalEntries.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.JournalEntries.rpt";
             }
             set {
                 // Do nothing
