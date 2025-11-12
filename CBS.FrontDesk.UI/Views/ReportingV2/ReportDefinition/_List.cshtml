@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Definitions</h5>
-    <a href="#" class="btn btn-sm btn-primary" onclick="loadPartialView('@Url.Action("Initilization","ReportDefinition")', '#definitionContainer', { path: 'new' })">
+    <a href="#" class="btn btn-sm btn-primary" @*onclick="loadPartialView('@Url.Action("Initilization","ReportDefinition")', '#definitionContainer', { path: 'new' })*@">
         <i class="mdi mdi-plus"></i> New
     </a>
 </div>
@@ -28,7 +28,7 @@
                 <td>@item.Currency</td>
                 <td>@(item.IsActive ? "Yes" : "No")</td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-info" onclick="loadPartialView('@Url.Action("Initilization","ReportDefinition")', '#definitionContainer', { path: 'edit', KEY: '@item.Id' })">
+                    <a href="#" class="btn btn-sm btn-info" @*onclick="loadPartialView('@Url.Action("Initilization","ReportDefinition")', '#definitionContainer', { path: 'edit', KEY: '@item.Id' })"*@>
                         <i class="mdi mdi-pencil"></i> Edit
                     </a>
                 </td>
