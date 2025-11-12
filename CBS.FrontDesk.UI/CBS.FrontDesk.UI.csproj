@@ -2186,6 +2186,7 @@
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
     <Compile Include="Controllers\ReportingV2\ReportDefinitionController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportingV2Controller.cs" />
     <Compile Include="Controllers\ReportingV2\ReportLineController.cs" />
     <Compile Include="Controllers\ReportingV2\ReportLineMappingController.cs" />
     <Compile Include="Controllers\ReportingV2\ReportSectionController.cs" />
@@ -10978,6 +10979,11 @@
     <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
     <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\_Create.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

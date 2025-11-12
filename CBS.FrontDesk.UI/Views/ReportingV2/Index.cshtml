@@ -1,104 +1,139 @@
-﻿@{
-    ViewBag.Title = "Report Configuration Management";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<div class="card mt-3 shadow-sm border-0">
-    <div class="card-body">
-        <!-- Header -->
-        <div class="text-center mb-3">
-            <h3 class="text-success fw-bold">
-                <i class="mdi mdi-file-chart-outline me-2"></i> REPORT CONFIGURATION MANAGEMENT
-            </h3>
-            <p class="text-muted small mb-0">
-                Manage your report hierarchy: Definition → Section → Line → Mapping.
-            </p>
-            <p class="text-danger fw-bold mt-1">
-                ⚠ Ensure levels are created in order: Definition → Section → Line → Mapping.
-            </p>
-        </div>
-
-        <!-- Tips -->
-        <div class="alert alert-success py-2">
-            <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-            <strong>Tip:</strong> Use clear codes and consistent sort orders for accurate financial reporting.
-        </div>
-
-        <!-- Tabs -->
-        <ul class="nav nav-tabs mb-3" id="reportTabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#definitionTab">
-                    <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#sectionTab">
-                    <i class="mdi mdi-view-list-outline me-1"></i> Section
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#lineTab">
-                    <i class="mdi mdi-format-line-weight me-1"></i> Line
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#mappingTab">
-                    <i class="mdi mdi-link-variant me-1"></i> Mapping
-                </a>
-            </li>
-        </ul>
-
-        <!-- Tab Contents -->
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="definitionTab">
-                <div id="definitionContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="sectionTab">
-                <div id="sectionContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="lineTab">
-                <div id="lineContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="mappingTab">
-                <div id="mappingContainer" class="mt-3"></div>
+﻿
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> REPORT CONFIGURATION
+                </h1>
+                <p class="card-text text-muted">
+                    Manage report configurations efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
 
+<!-- Tips Card -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLiaisonTips" aria-expanded="false" aria-controls="collapseLiaisonTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLiaisonTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure branch and account details are correct before saving.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Prevent duplicate mappings between the same branches.</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Only authorized staff can modify mappings.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the status checkbox to enable or disable a mapping.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="alert alert-success py-2">
+    <i class="mdi mdi-lightbulb-on-outline me-1"></i>
+    <strong>Tip:</strong> Use clear codes and consistent sort orders for accurate financial reporting.
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-3" id="reportTabs">
+    <li class="nav-item">
+        <a class="nav-link active"
+           data-bs-toggle="tab"
+           href="#definitionTab"
+           data-url="/ReportDefinition/Initilization"
+           data-target="#definitionContainer"
+           data-params='{"path":"list"}'>
+            <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#sectionTab"
+           data-url="/ReportSection/Initilization"
+           data-target="#sectionContainer"
+           data-params='{"path":"list"}'>
+            <i class="mdi mdi-view-list-outline me-1"></i> Section
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#lineTab"
+           data-url="/ReportLine/Initilization"
+           data-target="#lineContainer"
+           data-params='{"path":"list"}'>
+            <i class="mdi mdi-format-line-weight me-1"></i> Line
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#mappingTab"
+           data-url="/ReportLineMapping/Initilization"
+           data-target="#mappingContainer"
+           data-params='{"path":"list"}'>
+            <i class="mdi mdi-link-variant me-1"></i> Mapping
+        </a>
+    </li>
+</ul>
+
+
+<!-- Tab Contents -->
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="definitionContainer"></div>
+    <div class="tab-pane fade" id="sectionContainer"></div>
+    <div class="tab-pane fade" id="lineContainer"></div>
+    <div class="tab-pane fade" id="mappingContainer"></div>
+</div>
+
+
+
 @section Scripts {
-    <script>
-    $(document).ready(function () {
-        // Load Definition tab on startup
-        loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
+<script>
+$(document).ready(function () {
 
-        // Tab click events
-        $("#reportTabs a").on("click", function (e) {
-            e.preventDefault();
-            var target = $(this).attr("href");
+    // Fonction générique pour charger une partial view
+    function loadPartialView(url, target, data = {}) {
+        $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
 
-            switch (target) {
-                case "#definitionTab":
-                    loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
-                    break;
-                case "#sectionTab":
-                    loadTabContent("/ReportSection/Initilization", "#sectionContainer");
-                    break;
-                case "#lineTab":
-                    loadTabContent("/ReportLine/Initilization", "#lineContainer");
-                    break;
-                case "#mappingTab":
-                    loadTabContent("/ReportLineMapping/Initilization", "#mappingContainer");
-                    break;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: data,
+            success: function (html) {
+                $(target).html(html);
+            },
+            error: function (xhr) {
+                $(target).html('<div class="alert alert-danger">Erreur: ' + xhr.status + '</div>');
             }
         });
+    }
 
-        function loadTabContent(url, target) {
-            $(target).html('<div class="text-center py-4"><div class="spinner-border text-success" role="status"></div></div>');
-            $.get(url, function (data) {
-                $(target).html(data);
-            });
+    // Charger le premier onglet au démarrage
+    var firstTab = $('#reportTabs a.active');
+    loadPartialView(firstTab.data('url'), firstTab.data('target'), JSON.parse(firstTab.attr('data-params')));
+
+    // Événement click sur tous les onglets
+    $('#reportTabs a').on('shown.bs.tab', function(e) {
+        var target = $(this).data('target');
+        var url = $(this).data('url');
+        var params = JSON.parse($(this).attr('data-params'));
+
+        // Ne recharge que si le container est vide
+        if ($(target).is(':empty')) {
+            loadPartialView(url, target, params);
         }
     });
-    </script>
+
+});
+</script>
 }

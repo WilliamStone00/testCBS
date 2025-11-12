@@ -9,7 +9,6 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 {
 	public class ReportDefinitionController : BaseController
 	{
-		// GET: ReportDefinition
 		private readonly ReportDefinitionService _services;
 
 		public ReportDefinitionController(ReportDefinitionService services)
@@ -17,37 +16,63 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 			_services = services;
 		}
 
-		public ActionResult Index()
+		// ✅ Action principale utilisée en AJAX
+		public async Task<ActionResult> Initilization(string path = "list", string partialView = null, string KEY = null)
 		{
-			return View(new ReportDefinition());
+			// par défaut, s'il n'y a pas de vue partielle fournie, on charge _List
+			partialView = partialView ?? (path == "list" ? "_List" : "_Create");
+
+			switch (path)
+			{
+				case "list":
+					var list = await _services.GetAll();
+					return PartialView(partialView, list);
+
+				case "new":
+					return PartialView(partialView, new ReportDefinition());
+
+				case "edit":
+					if (string.IsNullOrEmpty(KEY))
+						return new HttpStatusCodeResult(400, "Invalid report key");
+
+					var report = await _services.GetById(KEY);
+					if (report == null)
+						return HttpNotFound("Report not found");
+
+					return PartialView(partialView, report);
+
+				default:
+					var all = await _services.GetAll();
+					return PartialView("_List", all);
+			}
 		}
 
-		public ActionResult Initilization()
-		{
-			return View(new ReportDefinition());
-		}
-
+		// ✅ Create / Update
 		[HttpPost]
 		public async Task<ActionResult> Create(ReportDefinition model)
 		{
-
-			// Validate the model state
 			if (!ModelState.IsValid)
 			{
-				// If model validation fails, return validation errors as JSON response
-				return Json(new { success = false, message = "Validation failed", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
+				var errors = ModelState.Values
+					.SelectMany(v => v.Errors)
+					.Select(e => e.ErrorMessage)
+					.ToList();
+
+				return Json(new { success = false, message = "Validation failed", errors });
 			}
 
-			// If the Id is null, it's a new holiday entry, so call the Create service
-			if (model.Id == null)
+			if (string.IsNullOrEmpty(model.Id))
 			{
-				// Adding Created Date
 				var data = await _services.Create(model);
-				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+				return Json(new
+				{
+					success = data.Result,
+					status = data.MessageStatus,
+					message = Messaging.MessageResult(data)
+				});
 			}
 			else
 			{
-				// If the Id is not null, it's an update, so call the Update method
 				return await Update(model);
 			}
 		}
@@ -56,49 +81,48 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 		public async Task<ActionResult> Update(ReportDefinition model)
 		{
 			var data = await _services.Update(model);
-			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+			return Json(new
+			{
+				success = data.Result,
+				status = data.MessageStatus,
+				message = Messaging.MessageResult(data)
+			});
 		}
 
-		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-		{
-			if (path == "list")
-			{
-				var data = await _services.GetAll();
-				return PartialView(partialView, data);
-			}
-
-			else if (path == "new")
-			{
-				return PartialView(partialView, new ReportDefinition());
-			}
-			else
-			{
-				ViewBag.Key = KEY;
-				var ReportDefinition = await _services.GetById(KEY);
-				return PartialView(partialView, ReportDefinition);
-
-			}
-		}
-
+		// ✅ Delete
 		public async Task<ActionResult> Delete(string KEY)
 		{
+			if (string.IsNullOrEmpty(KEY))
+				return Json(new { success = false, message = "Invalid key" }, JsonRequestBehavior.AllowGet);
+
 			var data = await _services.Delete(KEY);
-			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
+			return Json(new
+			{
+				success = data.Result,
+				status = data.MessageStatus,
+				message = Messaging.MessageResult(data)
+			}, JsonRequestBehavior.AllowGet);
 		}
 
+		// ✅ Get report by ID (JSON)
 		public async Task<ActionResult> GetReportDefinition(string Key)
 		{
+			if (string.IsNullOrEmpty(Key))
+				return Json(null, JsonRequestBehavior.AllowGet);
+
 			var data = await _services.GetById(Key);
 			return Json(data, JsonRequestBehavior.AllowGet);
 		}
 
+		// ✅ Get partial detail
 		public async Task<ActionResult> GetReportDefinitionPartialView(string Key)
 		{
+			if (string.IsNullOrEmpty(Key))
+				return HttpNotFound("Key is missing");
+
 			var data = await _services.GetById(Key);
 			if (data == null)
-			{
-				return HttpNotFound();
-			}
+				return HttpNotFound("Report not found");
 
 			return PartialView("_ReportDefinitionDetailsPartial", data);
 		}
