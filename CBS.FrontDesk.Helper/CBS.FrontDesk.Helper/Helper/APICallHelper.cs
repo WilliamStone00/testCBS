@@ -1678,8 +1678,36 @@ namespace CBS.FrontDesk.Helper
         //------------------------cash Reconciliation ------------------------------------------------
         public const string GetCashReconciliationAccounts = "/api/v1/CashAndVaultInit/accountsAndBalances/{0}";
 
+
+
+        // -----------------------------------------------------------------------------
+        //                          Accounting V2 Reports
+        // -----------------------------------------------------------------------------
+
+        // ================ trial balance reports    =======================//
+        public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
+
+
+        // ================ Journals   =======================//
+        public static string JournalEntries = "/api/v1/Reports/Journal";
+
+
+        // ================ Accnts  Statements   =======================//
+        public static string AccntsStatements = "/api/v1/Reports/account-statement";
+
+
+
+
+
+
+
+
+
+
+
+        public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
-         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
+        
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 

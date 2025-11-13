@@ -152,6 +152,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
       <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
       <Name>CBS.API.Helper</Name>
@@ -160,10 +164,6 @@
       <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
       <Name>CBS.FrontDesk.Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
