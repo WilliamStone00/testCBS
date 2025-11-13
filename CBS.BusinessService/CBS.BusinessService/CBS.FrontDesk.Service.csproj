@@ -258,6 +258,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting V2\AccntStatements\AccntStatementService.cs" />
     <Compile Include="Accounting V2\AccountBlacklisting\AccountBlacklistService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountMockService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
@@ -269,11 +270,13 @@
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
+    <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\FileListingService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliationService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
+    <Compile Include="Accounting V2\TrialBalance\TrialBalancesService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="AccountingV2\AccountingYear\AccountingYearService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
@@ -521,7 +524,7 @@
       <Name>CBS.API.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0D7085DF-13B8-4FCE-9E8F-F0FA88FCE730}</Project>
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
       <Name>CBS.FrontDesk.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
@@ -555,6 +558,7 @@
     <Folder Include="bin\Debug\zh\" />
     <Folder Include="bin\Release\" />
     <Folder Include="BlacklistAccount\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

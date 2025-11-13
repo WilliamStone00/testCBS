@@ -93,6 +93,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             try
             {
 
+
+                if (!_branchAccountService.IsHeadOffice())
+                {
+                    query.BranchId = _branchAccountService.GetBranchID();
+                }
                 var data = await _branchAccountService.GetDataTableAsync(query);
               
                 var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
