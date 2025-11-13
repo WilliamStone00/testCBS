@@ -1,9 +1,12 @@
 ﻿using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +31,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
         public async Task<ActionResult> Index()
         {
             await loader();
-            return View(); *//**//*
+            return View(); //**//*
         }
 
 
@@ -44,6 +47,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
     new SelectListItem { Value = "Close", Text = "CLOSE" },
     new SelectListItem { Value = "Lock", Text = "LOCK" }
 };
+
 
             // Reconciliation Status (WorkTicket) dropdown
             ViewBag.Year = Enumerable.Range(2025, 10)
@@ -63,8 +67,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
         [HttpGet]
         public async Task<ActionResult> New()
         {
-
-
             await loader();
             return PartialView("_Update", new accountingyear());
         }
@@ -78,7 +80,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                 //var entries = await _accountingYearService.GetAllAsync();
                 var entries = await _accountingYearService.GetAllAsyncs();
                 if (entries == null || !entries.Any())
-                    return HttpNotFound("No configuration entries found");
+                    return HttpNotFound("Not found");
 
                 // Return a view or partial view depending on your page setup
                 return PartialView("_Datatable", entries);
@@ -96,11 +98,20 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(400, "ID is required");
 
-            var entry = await _accountingYearService.GetData(id);
-            if (entry == null || string.IsNullOrEmpty(entry.Id))
-                return HttpNotFound("Accounting year not found");
+            try
+            {
+                var entry = await _accountingYearService.GetDatas(id);
+                if (entry == null)
+                    return HttpNotFound("accounting year not found");
 
-            return PartialView("_Details", entry);
+                await loader();
+                // Return the partial view that will be injected into the modal
+                return PartialView("_Update", entry);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
 
@@ -137,6 +148,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             {
                 return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
             }
+
+
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Update(accountingyear model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed." });
+
+            var result = await _accountingYearService.UpdateAccoutingYearAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
     }

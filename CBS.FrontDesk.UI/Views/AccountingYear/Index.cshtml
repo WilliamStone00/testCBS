@@ -43,8 +43,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-<script>
+    <script>
 $(document).ready(function () {
 
     // Load accounting years listing
@@ -54,6 +53,7 @@ $(document).ready(function () {
         success: function (partialViewResult) {
             $("#datalistingview").html(partialViewResult);
 
+            // ✅ Add New Year
             $("#btnAddYear").on("click", function () {
                 $.ajax({
                     url: '@Url.Action("New", "AccountingYear")',
@@ -78,6 +78,36 @@ $(document).ready(function () {
                     }
                 });
             });
+
+            // ✅ Update Year
+            $(".btn-update-year").on("click", function () {
+                const id = $(this).data("id");
+                if (!id) {
+                    appalert("Invalid ID for update.", 3, 1);
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetDetails", "AccountingYear")',
+                    type: 'GET',
+                    data: { id: id },
+                    beforeSend: function () {
+                        $("#accountingYearModalContent").html(`
+                           
+                        `);
+                        const modalEl = document.getElementById('accountingYearModal');
+                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                        bsModal.show();
+                    },
+                    success: function (html) {
+                        $("#accountingYearModalContent").html(html);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("❌ Error loading update form:", error);
+                        appalert("Failed to load update view: " + error, 1, 4);
+                    }
+                });
+            });
         },
         error: function (xhr, status, error) {
             appalert("Failed to load accounting years: " + error, 1, 4);
@@ -85,7 +115,7 @@ $(document).ready(function () {
         }
     });
 
-    // Save Accounting Year via Ajax with Alertify confirmation
+    // ✅ Save Accounting Year via Ajax (your existing logic)
     window.CreatAccountingYearSaveAjax = function (form) {
         if (!$(form).valid()) return false;
 
@@ -173,4 +203,5 @@ $(document).ready(function () {
     };
 
 });
-</script>}
+    </script>
+}
