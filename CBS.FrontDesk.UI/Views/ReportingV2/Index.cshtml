@@ -18,6 +18,26 @@
     </div>
 </div>
 
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <!-- Tabs -->
 <ul class="nav nav-tabs mb-3" id="reportTabs">
     <li class="nav-item">
@@ -67,6 +87,7 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
 
@@ -119,5 +140,24 @@
             });
 
         });
+
+ function openReportDefinitionCreateModal() {
+    // Load the partial view before opening the modal
+    $("#reportModalBody").load('@Url.Action("Initilization", "ReportDefinition")',
+        { path: "new", partialView: "_Create" },
+        function (response, status, xhr) {
+            if (status === "success") {
+                // If the content loaded successfully, show the modal
+                var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                modal.show();
+            } else {
+                // If an error occurred, log and alert the user
+                console.error("Error loading content:", xhr.status, xhr.statusText);
+                alert("Failed to load the form. Please try again.");
+            }
+        }
+    );
+}
+
     </script>
 }

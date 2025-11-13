@@ -1,19 +1,22 @@
-﻿using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
-using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition;
+﻿using CBS.BusinessService.AccountingV2.ReportingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine;
 using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping;
 using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 {
     public class ReportingV2Controller : Controller
     {
         // GET: ReportingV2
-        public ActionResult Index()
+        private readonly ReportDefinitionService _reportDefinitionService;
+		public ReportingV2Controller(ReportDefinitionService reportDefinitionService)
+		{
+			_reportDefinitionService = reportDefinitionService;
+		}
+		public ActionResult Index()
         {
             return View();
         }
@@ -26,7 +29,8 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
             switch (path)
             {
                 case "definition":
-                    var result= PartialView($"~/Views/{partialView}.cshtml", new List<ReportDefinition>());
+                    var definitions =await _reportDefinitionService.GetAll();
+					var result= PartialView($"~/Views/{partialView}.cshtml", definitions);
                     return result;
 
                 case "section":
