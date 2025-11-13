@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
@@ -51,6 +52,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             //await loader();
             try
             {
+
+                if (!_fileListingService.IsHeadOffice())
+                {
+                    query.BranchId = _fileListingService.GetBranchID();
+                }
 
                 var data = await _fileListingService.DataTableAsync(query);
 

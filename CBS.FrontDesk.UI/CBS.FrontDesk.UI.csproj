@@ -450,10 +450,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.cs">
+      <DependentUpon>AccStatement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
@@ -2040,11 +2052,14 @@
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\AccountingYear\AccountingYearController.cs" />
@@ -3367,6 +3382,8 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Accounting_V2\axios.js" />
+    <Content Include="Scripts\Js\Accounting_V2\customeReports.js" />
     <Content Include="Scripts\Js\Crud\AccountingV2\Accountingv2chart.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
@@ -8697,9 +8714,17 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccStatement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries.cs</LastGenOutput>
+      <LastGenOutput>JournalEntries1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance6Columns1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -10928,6 +10953,7 @@
     <Content Include="Views\TransactionManagement\_Withdrawal.cshtml" />
     <Content Include="Views\TransactionConfiguration\AccountMappingvII.cshtml" />
     <Content Include="Views\TransactionConfiguration\_AccountMappingVII.cshtml" />
+    <Content Include="Views\CustomeReports\Index.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\List.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDataTable.cshtml" />
     <Content Include="Views\CollectorCommission\Index.cshtml" />
@@ -10955,6 +10981,7 @@
     <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
     <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
     <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
+    <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

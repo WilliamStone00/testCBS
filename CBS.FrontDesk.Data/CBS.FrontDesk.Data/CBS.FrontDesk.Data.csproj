@@ -117,12 +117,17 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
+    <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
+    <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
+    <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilter.cs" />
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\clientComissions.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\Reconciliation.cs" />
+    <Compile Include="Entity\Accounting V2\TrialBalance\GenericReportResponseV2Dto.cs" />
     <Compile Include="Entity\AccountingTypes.cs" />
+    <Compile Include="Entity\AccountingV2\AccountingYear\accountingyear.cs" />
     <Compile Include="Entity\AccountingV2\BranchAccountV2\BranchAccount.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
@@ -428,6 +433,8 @@
     <Compile Include="ImageProperties\ImagesProperties.cs" />
     <Compile Include="LocalContext\MongoDbContext.cs" />
     <Compile Include="Message\Messaging.cs" />
+    <Compile Include="MockData\DTos\GenericTransferDto.cs" />
+    <Compile Include="MockData\TrialBalance6ColumnsMock.cs" />
     <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportDataSetDto\LoanPortfolioAnalysis.cs" />
@@ -457,6 +464,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entity\Accounting V2\AccountingStatements\" />
     <Folder Include="Entity\Accounting V2\Reporting\Configurations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

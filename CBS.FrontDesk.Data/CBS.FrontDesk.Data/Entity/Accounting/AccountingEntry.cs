@@ -398,6 +398,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting
         public AccountingEntryDto AccountingEntry { get; set; }
         public List<AccountingEntryDto> AccountingEntryDtos { get; set; }
         public List<Branch> Branchs { get; set; }
+        public string BranchId { get; set; }
         public SystemQuery SystemQuery { get; set; } = new SystemQuery();
  
         public List<ReportInfo> ReportDownloadInfo { get; set; } = new List<ReportInfo>();
