@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.BusinessService.CustomerManagement;
@@ -33,16 +34,16 @@ namespace CBS.BusinessService.BulkOperations
         private readonly BranchServices _branchServices;
         private readonly SavingProductServices _savingProductServices;
         private readonly IndividualProfileServices _individualProfileServices;
-        private readonly AccountingServices _accountingServices;
+        private readonly BranchAccountService _branchAccountService;
         private string operationType;
 
-        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, SavingProductServices savingProductServices = null, AccountingServices accountingServices = null)
+        public BulkOperationService(BranchServices branchServices = null, IndividualProfileServices individualProfileServices = null, SavingProductServices savingProductServices = null, BranchAccountService branchAccountService=null)
         {
             _transactionConfigApiHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
             _branchServices = branchServices;
             _individualProfileServices = individualProfileServices;
             _savingProductServices = savingProductServices;
-            _accountingServices = accountingServices;
+            _branchAccountService = branchAccountService;
             operationType = "INCOME";
         }
 
@@ -96,15 +97,15 @@ namespace CBS.BusinessService.BulkOperations
                 .ToList();
         }
 
-        public async Task<CustomDataTable<List<BulkOperationData>>> GetBulkOperationDataTableAsync(GetBulkOperationDataTableQuery loansDataTableQuery, string searchCriterial)
+        public async Task<CustomDataTable<List<BulkOperationData>>> GetBulkOperationDataTableAsync(GetBulkOperationDataTableQuery loansDataTableQuery)
         {
-            loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
+         /*   loansDataTableQuery.DataTableOptions.searchValue = searchCriterial;
             loansDataTableQuery.DataTableOptions.search = searchCriterial;
             loansDataTableQuery.DataTableOptions.sortColumnName = "LoanDate";
             if (!IsHeadOffice())
             {
                 loansDataTableQuery.BranchId = GetBranchID();
-            }
+            }*/
             // Make API call to fetch the DataTable result
             var couApiResponse = await _transactionConfigApiHelper.PostAsync<ResponseObject<CustomDataTable<List<BulkOperationData>>>>(
                 APICallHelper.BulkOperationDataTablePaggination,
@@ -203,11 +204,11 @@ namespace CBS.BusinessService.BulkOperations
 
                 if (model.ContributionAmount>0)
                 {
-                    var eventName = await _accountingServices.GetEventNames(operationType);
+                    var eventName = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(model.BranchId);
 
-                    var selectedEvent = eventName.Where(x => x.Value == model.DestinationAccountId).FirstOrDefault();
+                    var selectedEvent = eventName.Where(x => x.Id == model.DestinationAccountId).FirstOrDefault();
 
-                    BulkOperationContributionSimulationCommand simulateModel= new BulkOperationContributionSimulationCommand(model, selectedEvent.Text, branch);
+                    BulkOperationContributionSimulationCommand simulateModel= new BulkOperationContributionSimulationCommand(model, selectedEvent.Name, branch);
                     // Make an API call to create an individual profile
                     var response = await _transactionConfigApiHelper.PostAsync<ServiceResponse<CreateBulkOperationSimulation>>(APICallHelper.SimulateBulkAccountContribution, simulateModel);
                     if (response.IsSuccess)

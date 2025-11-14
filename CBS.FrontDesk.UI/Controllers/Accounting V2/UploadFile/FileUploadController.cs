@@ -197,6 +197,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             try
             {
 
+                if (!_fileUploadService.IsHeadOffice())
+                {
+                    query.BranchId = _fileUploadService.GetBranchID();
+                }
+
                 var data = await _fileUploadService.AccountwaitingDataTableAsync(query);
                 //var data = await _fileUploadService.AccountwaitingMockDataTableAsync(query);
 
@@ -239,7 +244,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             //await loader();
             try
             {
-
+              
                 var data = await _fileUploadService.CorrespondanceDataTableAsync(query);
 
                 var response = JsonConvert.DeserializeObject<List<CorrespondenceRequestDto>>(JsonConvert.SerializeObject(data.data));

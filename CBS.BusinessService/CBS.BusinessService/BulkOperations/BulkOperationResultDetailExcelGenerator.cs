@@ -83,7 +83,7 @@ namespace CBS.BusinessService.BulkOperations
                             worksheet.Cell(row, 2).Value = $"{bulkOperationData.BankName} ({bulkOperationData.BankCode})";
                             break;
                         case 3:
-                            worksheet.Cell(row, 2).Value = $"{bulkOperationData.BranchName} ({bulkOperationData.BranchCode})";
+                            worksheet.Cell(row, 2).Value = $"{bulkOperationData.InitiatorBranchName} ({bulkOperationData.InitiatorBranchName})";
                             break;
                         case 4:
                             worksheet.Cell(row, 2).Value = bulkOperationData.CreatedBy;
@@ -144,7 +144,7 @@ namespace CBS.BusinessService.BulkOperations
                     worksheet.Cell(currentRow, 9).Value = detail.AmountToDebit;
                     worksheet.Cell(currentRow, 10).Value = detail.NetBalance;
                     worksheet.Cell(currentRow, 11).Value = detail.TransferStatus;
-                    worksheet.Cell(currentRow, 12).Value = detail.TransferErrorMessage;
+                    worksheet.Cell(currentRow, 12).Value = detail.TransferMessage;
                     worksheet.Cell(currentRow, 13).Value = detail.TransferDate.ToString("yyyy-MM-dd HH:mm");
                     worksheet.Cell(currentRow, 14).Value = detail.ApprovalStatus;
                     worksheet.Cell(currentRow, 15).Value = detail.ApprovalDate.ToString("yyyy-MM-dd HH:mm");

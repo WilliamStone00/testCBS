@@ -25,155 +25,155 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
 
-            public BranchAccountService()
+        public BranchAccountService()
+        {
+            //change the base url to the actual base url
+            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+            if (string.IsNullOrEmpty(baseUrl))
             {
-                //change the base url to the actual base url
-                string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
-                if (string.IsNullOrEmpty(baseUrl))
-                {
-                    throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
-                }
-                _apiCallerHelper = new ApiCallerHelper(baseUrl);
+                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
             }
+            _apiCallerHelper = new ApiCallerHelper(baseUrl);
+        }
 
-            public async Task<IEnumerable<BranchAccountResponse>> GetAsync()
+        public async Task<IEnumerable<BranchAccountResponse>> GetAsync()
+        {
+            try
             {
-                try
+                // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<BranchAccountResponse>>>(APICallHelper.GetAllBranchAccount);
+
+                // CORRECTED: Access the final payload via .ApiResponseData.Data
+                if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
-                    // CORRECTED: The helper returns an ApiResponse which contains the ServiceResponse
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<BranchAccountResponse>>>(APICallHelper.GetAllBranchAccount);
-
-                    // CORRECTED: Access the final payload via .ApiResponseData.Data
-                    if (response.IsSuccess && response.ApiResponseData?.Data != null)
-                    {
-                        return response.ApiResponseData.Data;
-                    }
-                    return new List<BranchAccountResponse>();
-                }
-                catch (Exception ex)
-                {
-                    // In a real scenario, log 'ex'
-                    throw;
-                }
-            }
-
-            public async Task<CustomDataTable> GetDataTableAsync(BranchAccountQuery query)
-            {
-                try
-                {
-                    var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                        APICallHelper.BranchAccountdatatable, query);
-
-                    // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
-                    if (!response.IsSuccess)
-                    {
-                        throw new Exception($"API call failed: {response.Message}");
-                    }
-
-                    if (response.ApiResponseData == null)
-                    {
-                        throw new Exception("API returned null data");
-                    }
-
                     return response.ApiResponseData.Data;
                 }
-                catch (Exception ex)
-                {
-                    // Log the original exception
-                    System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
-
-                    // Re-throw to trigger fallback
-                    throw new Exception($"service unavailable: {ex.Message}", ex);
-                }
+                return new List<BranchAccountResponse>();
             }
-
-            //tree structure 
-            public async Task<BranchAccountResponse> GetByIdAsync(string id)
+            catch (Exception ex)
             {
-                try
-                {
-                    if (string.IsNullOrWhiteSpace(id))
-                        throw new ArgumentException("id is required", nameof(id));
-
-                     var lan = GetUserLanguage();
-
-                    var encodedId = Uri.EscapeDataString(id);
-                    string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId,lan);
-                    // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
-
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchAccountResponse>>(formattedUrl);
-
-                    //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
-                    //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
-
-                    // CORRECTED: Access the final payload via .ApiResponseData.Data
-                    if (response.IsSuccess)
-                    {
-                        return response.ApiResponseData?.Data;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    // In a real scenario, log 'ex'
-                    throw;
-                }
+                // In a real scenario, log 'ex'
+                throw;
             }
-            public async Task<BRANCHTreeDto> GetByIdfordetailsAsync(string id)
+        }
+
+        public async Task<CustomDataTable> GetDataTableAsync(BranchAccountQuery query)
+        {
+            try
             {
-                try
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
+                    APICallHelper.BranchAccountdatatable, query);
+
+                // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
+                if (!response.IsSuccess)
                 {
-                    if (string.IsNullOrWhiteSpace(id))
-                        throw new ArgumentException("id is required", nameof(id));
+                    throw new Exception($"API call failed: {response.Message}");
+                }
+
+                if (response.ApiResponseData == null)
+                {
+                    throw new Exception("API returned null data");
+                }
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                // Log the original exception
+                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+
+                // Re-throw to trigger fallback
+                throw new Exception($"service unavailable: {ex.Message}", ex);
+            }
+        }
+
+        //tree structure 
+        public async Task<BranchAccountResponse> GetByIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
+
+                var lan = GetUserLanguage();
+
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId, lan);
+                // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
+
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BranchAccountResponse>>(formattedUrl);
+
+                //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
+                //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
+
+                // CORRECTED: Access the final payload via .ApiResponseData.Data
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // In a real scenario, log 'ex'
+                throw;
+            }
+        }
+        public async Task<BRANCHTreeDto> GetByIdfordetailsAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
 
                 var lan = GetLanguage();
 
-                    var encodedId = Uri.EscapeDataString(id);
-                    string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId,lan);
-                    // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.GetBranchAccountById, encodedId, lan);
+                // formattedUrl => "/api/v1/get-checkbook-category/123" (no colon)
 
-                    var response = await _apiCallerHelper.GetAsync<ServiceResponse<BRANCHTreeDto>>(formattedUrl);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<BRANCHTreeDto>>(formattedUrl);
 
-                    //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
-                    //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
+                //string formattedUrl = string.Format(APICallHelper.GetChequeBookCategoryById, id);
+                //var response = await _apiCallerHelper.GetAsync<ServiceResponse<CategoryConfig>>(formattedUrl);
 
-                    // CORRECTED: Access the final payload via .ApiResponseData.Data
-                    if (response.IsSuccess)
-                    {
-                        return response.ApiResponseData?.Data;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
+                // CORRECTED: Access the final payload via .ApiResponseData.Data
+                if (response.IsSuccess)
                 {
-                    // In a real scenario, log 'ex'
-                    throw;
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // In a real scenario, log 'ex'
+                throw;
             }
         }
 
 
-public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccounts)
-    {
-        if (branchAccounts is null) return new List<SelectListItem>();
+        public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccounts)
+        {
+            if (branchAccounts is null) return new List<SelectListItem>();
 
-        // Sort & distinct (optional: by Id)
-        var items = branchAccounts
-            .Where(a => a != null && !string.IsNullOrWhiteSpace(a.Id))
-            .GroupBy(a => a.Id)
-            .Select(g => g.First())
-            .OrderBy(a => a.Name ?? string.Empty)
-            .Select(a => new SelectListItem
-            {
-                // Show number if you have it; remove if not applicable
-                Text = string.IsNullOrWhiteSpace(a.Code) ? $"{a.Name}" : $"{a.Name}",
-                Value = a.Id
-            })
-            .ToList();
+            // Sort & distinct (optional: by Id)
+            var items = branchAccounts
+                .Where(a => a != null && !string.IsNullOrWhiteSpace(a.Id))
+                .GroupBy(a => a.Id)
+                .Select(g => g.First())
+                .OrderBy(a => a.Name ?? string.Empty)
+                .Select(a => new SelectListItem
+                {
+                    // Show number if you have it; remove if not applicable
+                    Text = string.IsNullOrWhiteSpace(a.Code) ? $"{a.Name}" : $"{a.Name}",
+                    Value = a.Id
+                })
+                .ToList();
 
-        return items;
-    }
+            return items;
+        }
 
-    public List<AccountDto> DroupDownGenAccounts(List<BranchAccountResponse> branchAccounts)
+        public List<AccountDto> DroupDownGenAccounts(List<BranchAccountResponse> branchAccounts)
         {
             try
             {
@@ -205,7 +205,7 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
                 {
                     if (string.IsNullOrWhiteSpace(branchId))
                         branchId = null; // ensure API understands this convention
-                                          // Head Office may keep a specific branchId if passed
+                                         // Head Office may keep a specific branchId if passed
                 }
                 else
                 {
@@ -248,7 +248,7 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -321,49 +321,49 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
 
         // real endpoint version
         public async Task<IEnumerable<BranchAccountResponse>> GetBranchAccountsByBranchIdAsync(string branchId)
+        {
+            try
+            {
+
+                if (IsHeadOffice())
+                {
+                    if (branchId == "")
                     {
-                        try
-                        {
-              
-                        if (IsHeadOffice())
-                        {
-                            if (branchId=="")
-                            {
-                                branchId = "all";
+                        branchId = "all";
 
-                            }
-                        }
-                        else
-                        {
-                            branchId = GetBranchID();
-                        }
-                            string lang = GetUserLanguage();
-                            // Call API
-                            var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId,lang));
-
-                        if (!response.IsSuccess || response==null || response.ApiResponseData == null)
-                        {
-                            return new List<BranchAccountResponse>();
-                        }
-
-                        var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
-
-                            // Format name for display and order by Code
-                            return branchAcounts
-                                .Select(a =>
-                                {
-                                    a.Name = $"[{a.Code}] - {a.Name}".Trim();
-                                    return a;
-                                })
-                                .OrderBy(a => a.Id)
-                                .ToList();
-                        }
-                        catch (Exception)
-                        {
-                            // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
-                            throw;
-                        }
                     }
+                }
+                else
+                {
+                    branchId = GetBranchID();
+                }
+                string lang = GetUserLanguage();
+                // Call API
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<BranchAccountResponse>>>(string.Format(APICallHelper.GetAllBranchAccountsOfABranch, branchId, lang));
+
+                if (!response.IsSuccess || response == null || response.ApiResponseData == null)
+                {
+                    return new List<BranchAccountResponse>();
+                }
+
+                var branchAcounts = response?.ApiResponseData?.Data ?? new List<BranchAccountResponse>();
+
+                // Format name for display and order by Code
+                return branchAcounts
+                    .Select(a =>
+                    {
+                        a.Name = $"[{a.Code}] - {a.Name}".Trim();
+                        return a;
+                    })
+                    .OrderBy(a => a.Id)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                // Consider logging: _logger.LogError(ex, "GetAffiliatesFromEndpointAsync failed");
+                throw;
+            }
+        }
 
         //***************************************** MOCK *********************************************
         public async Task<CustomDataTable> GetcategoryDataTableAsync2(BranchAccountQuery query)
@@ -491,10 +491,10 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
                     if (!string.IsNullOrWhiteSpace(query.BranchId))
                         items = items.Where(x => string.Equals(x.BranchId ?? string.Empty, query.BranchId, StringComparison.OrdinalIgnoreCase));
 
-                    if (!string.IsNullOrWhiteSpace(query.Code))                      
+                    if (!string.IsNullOrWhiteSpace(query.Code))
 
-                    if (!string.IsNullOrWhiteSpace(query.Name))
-                        items = items.Where(x => ((x.Name ?? x.NameEn ?? x.AffiliateAccountName) ?? string.Empty).IndexOf(query.Name, StringComparison.OrdinalIgnoreCase) >= 0);
+                        if (!string.IsNullOrWhiteSpace(query.Name))
+                            items = items.Where(x => ((x.Name ?? x.NameEn ?? x.AffiliateAccountName) ?? string.Empty).IndexOf(query.Name, StringComparison.OrdinalIgnoreCase) >= 0);
 
                     if (!string.IsNullOrWhiteSpace(query.Class))
                         items = items.Where(x => (x.Class ?? string.Empty).IndexOf(query.Class, StringComparison.OrdinalIgnoreCase) >= 0);
@@ -517,7 +517,7 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
                     if (query.PostingAllowed.HasValue)
                         items = items.Where(x => x.PostingAllowed == query.PostingAllowed.Value);
 
-                    
+
                 }
                 else
                 {
@@ -576,86 +576,86 @@ public List<SelectListItem> DropDownGen(List<BranchAccountResponse> branchAccoun
 
 
         public async Task<ExecutionMessages> CreateAsync(BranchAccountCommand model)
+        {
+            try
             {
-                try
-                {
-                    var response = await _apiCallerHelper.PostAsync<ServiceResponse<BranchAccountCommand>>(APICallHelper.CreateBranchAccount, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<BranchAccountCommand>>(APICallHelper.CreateBranchAccount, model);
 
-                    // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
-                    if (response.IsSuccess)
-                    {
-                        GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
-                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
-                    }
-                    else
-                    {
-                        GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
-                            ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-                    }
-                }
-                catch (Exception ex)
+                // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
+                if (response.IsSuccess)
                 {
-                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
-                        ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
-                return ExecutionMessage;
+                else
+                {
+                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> UpdateAsync(BranchAccountCommand model)
+        {
+            try
+            {
+                var catid = model.Id;
+                string formattedUrl = string.Format(APICallHelper.UpdateBranchAccount, catid);
+                var response = await _apiCallerHelper.PutAsync<ServiceResponse<BranchAccountCommand>>(formattedUrl, model);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
+                    ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
+                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+            }
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> DeleteAsync(string categoryId)
+        {
+            try
+            {
+                string formattedUrl = string.Format(APICallHelper.DeactivatBranchAccount, categoryId);
+                var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
+                        response.ApiResponseData?.Message ?? "Category deactivated successfully.");
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
+                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
+                        response.ApiResponseData?.Message ?? response.Message ?? "Failed to deactivate category.");
+                }
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
 
-            public async Task<ExecutionMessages> UpdateAsync(BranchAccountCommand model)
-            {
-                try
-                {
-                    var catid = model.Id;
-                    string formattedUrl = string.Format(APICallHelper.UpdateBranchAccount, catid);
-                    var response = await _apiCallerHelper.PutAsync<ServiceResponse<BranchAccountCommand>>(formattedUrl, model);
-
-                    if (response.IsSuccess)
-                    {
-                        GetExecutionMessages(response.ApiResponseData.Data, true, model.NameEn, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
-                    }
-                    else
-                    {
-                        GetExecutionMessages(model, false, model.NameEn, MessagesResults.Failed,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    GetExecutionMessages(model, false, model.NameEn, MessagesResults.Error,
-                        ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-                }
-                return ExecutionMessage;
-            }
-
-            public async Task<ExecutionMessages> DeleteAsync(string categoryId)
-            {
-                try
-                {
-                    string formattedUrl = string.Format(APICallHelper.DeactivatBranchAccount, categoryId);
-                    var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
-
-                    if (response.IsSuccess)
-                    {
-                        GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
-                            ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
-                            response.ApiResponseData?.Message ?? "Category deactivated successfully.");
-                    }
-                    else
-                    {
-                        GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
-                            ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
-                            response.ApiResponseData?.Message ?? response.Message ?? "Failed to deactivate category.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Error,
-                        ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
-                }
-
-                return ExecutionMessage;
-            }
+            return ExecutionMessage;
+        }
 
     }
 }

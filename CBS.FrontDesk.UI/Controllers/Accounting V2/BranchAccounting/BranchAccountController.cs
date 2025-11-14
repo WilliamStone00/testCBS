@@ -93,6 +93,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
             try
             {
 
+
+                if (!_branchAccountService.IsHeadOffice())
+                {
+                    query.BranchId = _branchAccountService.GetBranchID();
+                }
                 var data = await _branchAccountService.GetDataTableAsync(query);
               
                 var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
@@ -118,7 +123,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                 });
             }
         }
-       
+
+        /// <summary>AJAX: Return branch accounts for a given branch.</summary>
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                var resultList = branchAccounts.Select(a => new
+                {
+                    Id = a.Id,
+                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
+                });
+
+                return Json(resultList, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+                return Json(new { success = false, message = "Failed to load branch accounts" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await loader();

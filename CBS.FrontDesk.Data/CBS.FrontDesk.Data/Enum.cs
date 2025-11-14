@@ -6,6 +6,20 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data
 {
+
+    public enum BulkOperationStatus
+    {
+        Pending,
+        Accepted,
+        Rejected,
+        NoValidAccounts,
+        BulkProcessInitiated,
+        Executed,
+        Failed,
+        ProcessingApproval,
+        Approved
+    }
+
     public enum RemittanceTypes
     {
         WesternUnion,
