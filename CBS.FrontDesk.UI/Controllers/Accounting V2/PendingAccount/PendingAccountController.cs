@@ -83,6 +83,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
             //await loader();
             try
             {
+                if (!_pendingAccount.IsHeadOffice())
+                {
+                    query.BranchId= _pendingAccount.GetBranchID();
+                }
 
                 var data = await _pendingAccount.DataTableAsync(query);
 

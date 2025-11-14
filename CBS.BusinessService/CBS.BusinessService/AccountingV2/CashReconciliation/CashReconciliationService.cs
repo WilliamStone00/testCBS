@@ -69,22 +69,6 @@ namespace CBS.BusinessService.AccountingV2.CashReconciliation
 
 
 
-        //public decimal GetAccountBalance(string accountId)
-        //{
-        //    var balances = new Dictionary<string, decimal>
-        //{
-        //    { "293595619306904", 120000.50m },
-        //    { "378663546416125", 54000.75m },
-        //    { "781320160686593", 7800.00m },
-        //    { "571000907171642", 45000.25m },
-        //    { "949938076276909", 100000.00m },
-
-        //    { "971854780649377", 2500.10m }
-        //};
-
-        //    return balances.ContainsKey(accountId) ? balances[accountId] : 0m;
-        //}
-
         public async Task<ExecutionMessages> Create(CashAndVaultInit model)
         {
             try

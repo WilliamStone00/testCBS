@@ -450,10 +450,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.cs">
+      <DependentUpon>AccStatement.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
@@ -2040,13 +2052,17 @@
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\AccountingYear\AccountingYearController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
@@ -2165,10 +2181,11 @@
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportDefinitionController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportLineController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportLineMappingController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportSectionController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportDefinition\ReportDefinitionController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportingV2Controller.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportLine\ReportLineController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportLineMapping\ReportLineMappingController.cs" />
+    <Compile Include="Controllers\ReportingV2\ReportSection\ReportSectionController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuTranslationController.cs" />
@@ -3365,6 +3382,8 @@
     <Content Include="AppFiles\Images\UpdatedLogo\WaterMark.png" />
     <Content Include="AppFiles\Images\UpdatedLogo\Logo.png" />
     <Content Include="Scripts\Js\AccountingReconciliation\AccountReconciliation.js" />
+    <Content Include="Scripts\Js\Accounting_V2\axios.js" />
+    <Content Include="Scripts\Js\Accounting_V2\customeReports.js" />
     <Content Include="Scripts\Js\Crud\AccountingV2\Accountingv2chart.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\Category.js" />
     <Content Include="Scripts\Js\Crud\ChequeManagement\CategoryConfig\FeeConfig.js" />
@@ -8695,9 +8714,17 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLoanTerm.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AccStatement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JournalEntries.cs</LastGenOutput>
+      <LastGenOutput>JournalEntries1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance6Columns1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -9806,14 +9833,9 @@
     <Content Include="Views\BulkOperation\Details.cshtml" />
     <Content Include="Views\BulkOperation\Index.cshtml" />
     <Content Include="Views\BulkOperation\Listing.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulateAccountContribution.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulateToAccountTopUp.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationDataTable.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationDetails.cshtml" />
     <Content Include="Views\BulkOperation\_SimulationDetailsDataTable.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulationOptions.cshtml" />
-    <Content Include="Views\BulkOperation\_SimulationTitleInfos.cshtml" />
-    <Content Include="Views\BulkOperation\_SourceAccountConfiguration.cshtml" />
     <Content Include="Views\BulkOperation\_TransferDetails.cshtml" />
     <Content Include="Views\CashCeilingRequest\CashToVault.cshtml" />
     <Content Include="Views\CashCeilingRequest\Index.cshtml" />
@@ -10703,15 +10725,6 @@
     <Content Include="Views\DailyAgentManagement\ListOfUploadedFiles.cshtml" />
     <Content Include="Views\DailyAgentManagement\GetFileUploadApproval.cshtml" />
     <Content Include="Views\BulkOperation\BulkCashOperation.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileContentPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileUploadPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileUploadTips.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationManualAccountEntryTips.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationParameters.cshtml" />
-    <Content Include="Views\BulkOperation\_FileBulkOperationConfigurationPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_ManualBulkOperationConfigurationPartial.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationFileUploadParameters.cshtml" />
-    <Content Include="Views\BulkOperation\_BulkOperationParameters2.cshtml" />
     <Content Include="Views\Categoryconfic\Index.cshtml" />
     <Content Include="Views\Categoryconfic\_Categories.cshtml" />
     <Content Include="Views\Categoryconfic\_CategoryDataTable.cshtml" />
@@ -10926,11 +10939,15 @@
     <Content Include="Views\TransactionManagement\_Withdrawal.cshtml" />
     <Content Include="Views\TransactionConfiguration\AccountMappingvII.cshtml" />
     <Content Include="Views\TransactionConfiguration\_AccountMappingVII.cshtml" />
+    <Content Include="Views\CustomeReports\Index.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\List.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDataTable.cshtml" />
     <Content Include="Views\CollectorCommission\Index.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionTreatment.cshtml" />
     <Content Include="Views\CollectorCommission\_ExportCommission.cshtml" />
+    <Content Include="Views\AccountingYear\_Datatable.cshtml" />
+    <Content Include="Views\AccountingYear\Index.cshtml" />
+    <Content Include="Views\AccountingYear\_Update.cshtml" />
     <Content Include="Views\APIKey\Index.cshtml" />
     <Content Include="Views\APIKey\_ActionDropdown.cshtml" />
     <Content Include="Views\APIKey\List.cshtml" />
@@ -10940,11 +10957,17 @@
     <Content Include="Views\APIKey\_ChangeStatus.cshtml" />
     <Content Include="Views\APIKey\_Details.cshtml" />
     <Content Include="Views\ReportingV2\Index.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\Initilization.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\_Edit.cshtml" />
     <Content Include="Views\ReportingV2\ReportSection\Initilization.cshtml" />
     <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
     <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportDefinition\_Create.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
+    <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
+    <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
     <Content Include="Views\CollectorCommission\List.cshtml" />
     <Content Include="Views\CollectorCommission\_Data.cshtml" />
     <Content Include="Views\CollectorCommission\_Details.cshtml" />

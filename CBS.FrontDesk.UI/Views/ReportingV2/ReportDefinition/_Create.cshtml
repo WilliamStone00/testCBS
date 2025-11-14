@@ -1,0 +1,85 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition
+
+<!-- Header Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-file-chart me-2"></i> Report Definition Management
+                </h1>
+                <p class="card-text text-muted mb-1">
+                    Create and manage report definitions for financial statement generation.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensure consistency across report configurations to maintain data integrity.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Form Section -->
+
+@using (Html.BeginForm("Create", "ReportDefinition", FormMethod.Post, new { id = "createReportForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Code, "Report Code", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Code, new { @class = "form-control", placeholder = "Enter report code (e.g., BAL001)" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Name, "Report Name", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter full report name" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
+                @Html.DropDownListFor(model => model.ReportType, 
+                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "CashFlow", "TrialBalance" }), 
+                    "Select report type", 
+                    new { @class = "form-select" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Currency, "Currency", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Currency, new { @class = "form-control", placeholder = "e.g., USD, EUR, XAF" })
+            </div>
+
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input" })
+                @Html.LabelFor(model => model.IsActive, "Active", new { @class = "form-check-label fw-semibold" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="mdi mdi-content-save-outline me-1" ></i> Save Report
+                </button>
+            </div>
+        </div>
+    </div>
+}

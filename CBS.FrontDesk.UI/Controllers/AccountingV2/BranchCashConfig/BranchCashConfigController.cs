@@ -4,7 +4,7 @@ using CBS.BusinessService.AccountingV2.BranchCashConfigV;
 using CBS.BusinessService.CheckManagementSystem.BranchConfiguration;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.VaultManagement;
 using CBS.FrontDesk.Data.Message;

@@ -1,104 +1,163 @@
 ﻿@{
-    ViewBag.Title = "Report Configuration Management";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Report Configuration";
 }
 
-<div class="card mt-3 shadow-sm border-0">
-    <div class="card-body">
-        <!-- Header -->
-        <div class="text-center mb-3">
-            <h3 class="text-success fw-bold">
-                <i class="mdi mdi-file-chart-outline me-2"></i> REPORT CONFIGURATION MANAGEMENT
-            </h3>
-            <p class="text-muted small mb-0">
-                Manage your report hierarchy: Definition → Section → Line → Mapping.
-            </p>
-            <p class="text-danger fw-bold mt-1">
-                ⚠ Ensure levels are created in order: Definition → Section → Line → Mapping.
-            </p>
-        </div>
-
-        <!-- Tips -->
-        <div class="alert alert-success py-2">
-            <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-            <strong>Tip:</strong> Use clear codes and consistent sort orders for accurate financial reporting.
-        </div>
-
-        <!-- Tabs -->
-        <ul class="nav nav-tabs mb-3" id="reportTabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#definitionTab">
-                    <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#sectionTab">
-                    <i class="mdi mdi-view-list-outline me-1"></i> Section
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#lineTab">
-                    <i class="mdi mdi-format-line-weight me-1"></i> Line
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#mappingTab">
-                    <i class="mdi mdi-link-variant me-1"></i> Mapping
-                </a>
-            </li>
-        </ul>
-
-        <!-- Tab Contents -->
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="definitionTab">
-                <div id="definitionContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="sectionTab">
-                <div id="sectionContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="lineTab">
-                <div id="lineContainer" class="mt-3"></div>
-            </div>
-            <div class="tab-pane fade" id="mappingTab">
-                <div id="mappingContainer" class="mt-3"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> REPORT CONFIGURATION
+                </h1>
+                <p class="card-text text-muted">
+                    Manage report configurations efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
 
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-3" id="reportTabs">
+    <li class="nav-item">
+        <a class="nav-link active"
+           data-bs-toggle="tab"
+           href="#definitionContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"definition","partialView":"ReportingV2/ReportDefinition/_List"}'>
+            <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#sectionContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"section","partialView":"ReportingV2/ReportSection/_List"}'>
+            <i class="mdi mdi-view-list-outline me-1"></i> Section
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#lineContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"line","partialView":"ReportingV2/ReportLine/_List"}'>
+            <i class="mdi mdi-format-line-weight me-1"></i> Line
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="tab"
+           href="#mappingContainer"
+           data-url="@Url.Action("InitializeData", "ReportingV2")"
+           data-params='{"path":"line_mapping","partialView":"ReportingV2/ReportLineMapping/_List"}'>
+            <i class="mdi mdi-link-variant me-1"></i> Mapping
+        </a>
+    </li>
+</ul>
+
+<!-- Tab Contents -->
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="definitionContainer"></div>
+    <div class="tab-pane fade" id="sectionContainer"></div>
+    <div class="tab-pane fade" id="lineContainer"></div>
+    <div class="tab-pane fade" id="mappingContainer"></div>
+</div>
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
-    $(document).ready(function () {
-        // Load Definition tab on startup
-        loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
+        $(document).ready(function () {
 
-        // Tab click events
-        $("#reportTabs a").on("click", function (e) {
-            e.preventDefault();
-            var target = $(this).attr("href");
+            function loadPartialView(url, target, data = {}) {
+                console.log("%c[AJAX LOAD]", "color: #28a745; font-weight: bold;", {
+                    url: url,
+                    target: target,
+                    data: data
+                });
 
-            switch (target) {
-                case "#definitionTab":
-                    loadTabContent("/ReportDefinition/Initilization", "#definitionContainer");
-                    break;
-                case "#sectionTab":
-                    loadTabContent("/ReportSection/Initilization", "#sectionContainer");
-                    break;
-                case "#lineTab":
-                    loadTabContent("/ReportLine/Initilization", "#lineContainer");
-                    break;
-                case "#mappingTab":
-                    loadTabContent("/ReportLineMapping/Initilization", "#mappingContainer");
-                    break;
+               // $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: data,
+                    success: function (html) {
+                        console.log("%c[LOAD SUCCESS]", "color: #007bff; font-weight: bold;", { target: target });
+                        $(target).html(html);
+                    },
+                    error: function (xhr) {
+                        console.error("[LOAD ERROR]", xhr);
+                        $(target).html('<div class="alert alert-danger">Error loading partial: ' + xhr.status + '</div>');
+                    }
+                });
             }
+
+            // Load the first tab when page loads
+            const firstTab = $('#reportTabs a.active');
+            const firstParams = JSON.parse(firstTab.attr('data-params'));
+            loadPartialView(firstTab.data('url'), firstTab.attr('href'), firstParams);
+
+            // When switching tabs
+            $('#reportTabs a').on('shown.bs.tab', function (e) {
+                const tab = $(this);
+                const target = tab.attr('href');
+                const url = tab.data('url');
+                const params = JSON.parse(tab.attr('data-params'));
+
+                console.log("%c[TAB CLICKED]", "color: #ffc107; font-weight: bold;", {
+                    tab: tab.text().trim(),
+                    target: target,
+                    params: params
+                });
+
+                // Load only if empty
+                if ($(target).is(':empty')) {
+                    loadPartialView(url, target, params);
+                }
+            });
+
         });
 
-        function loadTabContent(url, target) {
-            $(target).html('<div class="text-center py-4"><div class="spinner-border text-success" role="status"></div></div>');
-            $.get(url, function (data) {
-                $(target).html(data);
-            });
+ function openReportDefinitionCreateModal() {
+    // Load the partial view before opening the modal
+    $("#reportModalBody").load('@Url.Action("Initilization", "ReportDefinition")',
+        { path: "new", partialView: "_Create" },
+        function (response, status, xhr) {
+            if (status === "success") {
+                // If the content loaded successfully, show the modal
+                var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                modal.show();
+            } else {
+                // If an error occurred, log and alert the user
+                console.error("Error loading content:", xhr.status, xhr.statusText);
+                alert("Failed to load the form. Please try again.");
+            }
         }
-    });
+    );
+}
+
     </script>
 }
