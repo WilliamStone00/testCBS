@@ -1,6 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;

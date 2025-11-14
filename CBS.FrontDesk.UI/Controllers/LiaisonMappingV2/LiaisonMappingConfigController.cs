@@ -1,9 +1,7 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.AccountingV2.LiaisonMappingV2;
-using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
-using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;

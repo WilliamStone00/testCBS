@@ -29,11 +29,12 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 					return PartialView(partialView, list);
 
 				case "new":
-					return PartialView(partialView, new ReportDefinition());
+					return PartialView($"~/Views/ReportingV2/ReportDefinition/{partialView}.cshtml", new ReportDefinition());
 
 				case "edit":
 					if (string.IsNullOrEmpty(KEY))
-						return new HttpStatusCodeResult(400, "Invalid report key");
+						//return new HttpStatusCodeResult(400, "Invalid report key");
+					PartialView($"~/Views/ReportingV2/ReportDefinition/{partialView}.cshtml", new ReportDefinition());
 
 					var report = await _services.GetById(KEY);
 					if (report == null)

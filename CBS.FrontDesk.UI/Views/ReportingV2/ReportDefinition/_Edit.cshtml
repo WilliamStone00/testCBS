@@ -1,0 +1,48 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition
+
+<!-- Edit Report Definition Form -->
+@using (Html.BeginForm("Update", "ReportDefinition", FormMethod.Post, new { id = "editReportForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    @Html.HiddenFor(m => m.Id) <!-- Important : permet de savoir que c'est un update -->
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Code, "Report Code", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Enter report code (e.g., BAL001)" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Name, "Report Name", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter full report name" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
+                @Html.DropDownListFor(
+                    m => m.ReportType,
+                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "CashFlow", "TrialBalance" }, Model.ReportType),
+                    "Select report type",
+                    new { @class = "form-select" }
+                )
+            </div>
+
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Currency, "Currency", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Currency, new { @class = "form-control", placeholder = "e.g., USD, EUR, XAF" })
+            </div>
+
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IsActive, "Active", new { @class = "form-check-label fw-semibold" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="mdi mdi-content-save-outline me-1"></i> Update Report
+                </button>
+            </div>
+        </div>
+    </div>
+}

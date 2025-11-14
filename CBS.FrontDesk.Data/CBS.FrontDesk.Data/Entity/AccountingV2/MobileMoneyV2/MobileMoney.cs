@@ -1,5 +1,4 @@
-﻿using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
-using System;
+﻿using System;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2
 {
