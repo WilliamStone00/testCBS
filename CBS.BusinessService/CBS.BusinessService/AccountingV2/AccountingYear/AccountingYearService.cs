@@ -33,10 +33,7 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
         {
             try
             {
-                var apiResponse = await _accountingYearapiCallerHelper
-                    .GetAsync<ResponseObject<List<accountingyear>>>(
-                        APICallHelper.GetAllAccoutingYear
-                    );
+                var apiResponse = await _accountingYearapiCallerHelper.GetAsync<ResponseObject<List<accountingyear>>>(APICallHelper.GetAllAccoutingYear);
 
                 if (apiResponse == null || apiResponse.ApiResponseData == null)
                     return new List<accountingyear>();
@@ -52,47 +49,7 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
 
 
 
-        public async Task<List<accountingyear>> GetAllAsyncs()
-        {
-            try
-            {
-                // Simulate async call delay (optional)
-                await Task.Delay(200);
-
-                // Return mock data
-                var mockData = new List<accountingyear>
-            {
-                new accountingyear { Id = "AY-2023", BranchId = "1", Year = 2025, Status = "CLOSE" },
-                new accountingyear { Id = "AY-2024", BranchId = "969035906797905", Year = 2025, Status = "OPEN" },
-                new accountingyear { Id = "AY-2025", BranchId = "BR002", Year = 2025, Status = "LOCK" }
-            };
-
-                return mockData;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[GetAllAsync Mock] Error: {ex.Message}");
-                return new List<accountingyear>();
-            }
-        }
-
-        public async Task<accountingyear> GetDatas(string id)
-        {
-            try
-            {
-                await Task.Delay(100);
-
-                // Reuse mock list and return one record
-                var all = await GetAllAsyncs();
-                return all.FirstOrDefault(x => x.Id == id) ?? new accountingyear();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[GetData Mock] Error: {ex.Message}");
-                return new accountingyear();
-            }
-        }
-
+      
         public async Task<accountingyear> GetData(string id)
         {
             try
@@ -100,10 +57,7 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
                 if (string.IsNullOrWhiteSpace(id))
                     return new accountingyear();
 
-                var apiResponse = await _accountingYearapiCallerHelper
-                    .GetAsync<ResponseObject<accountingyear>>(
-                        string.Format(APICallHelper.GetConfigurationManualEntryById, id)
-                    );
+                var apiResponse = await _accountingYearapiCallerHelper.GetAsync<ResponseObject<accountingyear>>(string.Format(APICallHelper.GetAccountyearById,id));
 
                 if (apiResponse == null || apiResponse.ApiResponseData == null)
                     return new accountingyear();
@@ -153,36 +107,43 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
         {
             try
             {
+               
 
-                // Send model to API via POST (or PUT if your API expects PUT)
-                var response = await _accountingYearapiCallerHelper.PostAsync<ServiceResponse<accountingyear>>(APICallHelper.UpdateConfigurationManualEntry, model);
+                
+                var url = string.Format( APICallHelper.UpdateAccountingYear, model.Id);
+
+                // Send model to API via PUT
+                var response = await _accountingYearapiCallerHelper.PutAsync<ServiceResponse<accountingyear>>(url, model);
 
                 if (response.IsSuccess)
                 {
                     // Success execution message
-                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),
-                        null, response.ApiResponseData?.Message
+                    GetExecutionMessages(
+                        response?.ApiResponseData?.Data, true,null,
+                        MessagesResults.Success, ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(),null,
+                        response.ApiResponseData?.Message
                     );
                 }
                 else
                 {
                     // Failure execution message
-                    GetExecutionMessages(model, false, null, MessagesResults.Failed, ExecutionProcessOption.UpdateUpject,
-                        SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message
+                    GetExecutionMessages(model, false, null,
+                        MessagesResults.Failed,ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null,
+                        response.ApiResponseData?.Message ?? response.Message
                     );
                 }
             }
             catch (Exception ex)
             {
                 // Exception execution message
-                GetExecutionMessages(model, false, null, MessagesResults.Error,
+                GetExecutionMessages( model, false, null, MessagesResults.Error, 
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message
                 );
             }
 
             return ExecutionMessage; // Return accumulated execution result
         }
+
 
 
 

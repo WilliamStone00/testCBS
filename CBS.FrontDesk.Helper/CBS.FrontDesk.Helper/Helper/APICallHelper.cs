@@ -1697,14 +1697,6 @@ namespace CBS.FrontDesk.Helper
 
 
 
-
-
-
-
-
-
-
-
         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
         
@@ -1712,8 +1704,9 @@ namespace CBS.FrontDesk.Helper
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
         //------------------------- Accounting Year --------------------
-        public static string SaveAccountingYear = "/api/v1/Accountingyear";
-        public static string GetAllAccoutingYear = "/api/v1/Accountingyears";
-
+        public static string SaveAccountingYear = "/api/v1/AccountingYear";
+        public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
+        public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
+        public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
     }
 }
