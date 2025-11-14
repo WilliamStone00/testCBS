@@ -7,22 +7,32 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
     public class BulkOperationData
     {
         public string Id { get; set; }
-        public string BranchId { get; set; }
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
+        public string InitiatorBranchId { get; set; }
+        public string InitiatorBranchName { get; set; }
+        public string InitiatorBranchCode { get; set; }
+        public string TransactionReference { get; set; }
         public string SimulationType { get; set; }
+        public string Description { get; set; }
         public decimal TotalVolume { get; set; }
         public int TotalMembers { get; set; }
         public string ApprovalStatus { get; set; }
         public string ApprovalStatusBadge { get; set; }
+        public string FailedDescription { get; set; }
         public string ApprovalValidationDescription { get; set; }
-        public string ApprovalBy { get; set; }
-        public string CreatedBy { get; set; }
         public DateTime ApprovalValidationDate { get; set; }
+        public DateTime? AccountingDate { get; set; }
         public string BankCode { get; set; }
         public string BankId { get; set; }
+        public string DestinationAccountId { get; set; }
+        // public string EventCode { get; set; }
         public string BankName { get; set; }
-        public string EventCode { get; set; }
+        public string ApprovalBy { get; set; }
+        public string BulkType { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        public bool IsDeleted { get; set; }
         public List<BulkOperationDataDetails> BulkOperationSimulationDetails { get; set; }
 
     }
@@ -30,7 +40,7 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
     public class GetAllSimulationDetailBySimulationIdRequestQuery
     {
         public DataTableOptions Options { get; set; }
-        public string simulationId { get; set; }
+        public string SimulationId { get; set; }
     }
 
     /// <summary>
@@ -54,6 +64,8 @@ namespace CBS.FrontDesk.Data.Entity.BulkOperation
         /// Use "all" to include all statuses.
         /// </summary>
         public string Status { get; set; }
+
+        public string SearchCriteria { get; set; }
 
         /// <summary>
         /// Optional start date to filter bulk operations based on the bulk operation creation date.
