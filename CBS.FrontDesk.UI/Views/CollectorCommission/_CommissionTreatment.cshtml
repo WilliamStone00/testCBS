@@ -14,7 +14,7 @@
                         <i class="mdi mdi-account-cash me-2"></i>Commission Treatment
                     </h1>
                     <p class="card-text">
-                        @* CollectorCommissionText *@
+                        Process collector commission payments
                     </p>
 
                     <div class="alert alert-info mt-3 py-2">
@@ -50,33 +50,35 @@
                 </div>
             </div>
 
-            <!-- Daily Collector Account (appears after successful customer search) -->
-            <div id="accountSelection" class="mt-3 d-none">
+            <!-- Customer Info Display -->
+            <div id="customerInfo" class="mt-3 p-3 border rounded d-none">
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="form-label">Daily Collector Account</label>
-                        <select id="DailyCollectorAccount" name="DailyCollectorAccount" class="form-select select2">
-                            <option value="">Select Account</option>
-                            @* Accounts will be populated via AJAX *@
-                        </select>
+                    <div class="col-12">
+                        <strong>Member Name:</strong> <span id="customerName"></span>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12 col-md-6 d-flex align-items-center mb-1 mb-md-0">
+                        <strong class="me-2">Phone:</strong>
+                        <span id="customerPhone"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <strong class="me-2">Email:</strong>
+                        <span id="customerEmail"></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Customer Info Display -->
-            <div id="customerInfo" class="mt-3 p-3 border rounded d-none">
+            <!-- Daily Collector Account (appears after successful customer search) -->
+            <div id="accountSelection" class="mt-3 d-none">
                 <div class="row">
                     <div class="col-md-12">
-                        <strong>Member Name:</strong> <span id="customerName"></span>
-                    </div>
-
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-6">
-                        <strong>Phone:</strong> <span id="customerPhone"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <strong>Email:</strong> <span id="customerEmail"></span>
+                        <label class="form-label">Daily Collector Commission Account</label>
+                        @Html.DropDownList("DailyCollectorAccount",
+                          new List<SelectListItem> { new SelectListItem { Text = "--- Select Account ---", Value = "" } },
+                          new { @class = "form-control select2", id = "DailyCollectorAccount" })
                     </div>
                 </div>
             </div>
@@ -96,21 +98,31 @@
             {
                 @Html.AntiForgeryToken()
 
-                <!-- Hidden fields to store data from main form -->
-                @Html.HiddenFor(m => m.CollectorId, new { id = "CollectorId" })
-                @Html.HiddenFor(m => m.BranchId, new { id = "BranchId" })
-                @Html.HiddenFor(m => m.Month, new { id = "Month" })
-                @Html.HiddenFor(m => m.Year, new { id = "Year" })
+                <!-- Hidden fields for ALL required data -->
+                @Html.HiddenFor(m => m.CollectorId, new { id = "CollectorIdHidden" })
+                @Html.HiddenFor(m => m.BranchId, new { id = "BranchIdHidden" })
+                @Html.HiddenFor(m => m.Month, new { id = "MonthHidden" })
+                @Html.HiddenFor(m => m.Year, new { id = "YearHidden" })
+                @Html.HiddenFor(m => m.CustomerId, new { id = "CustomerIdHidden" })
+                @Html.HiddenFor(m => m.AccountNumber, new { id = "AccountNumberHidden" })
+                @Html.HiddenFor(m => m.BranchCommisionGLId, new { id = "BranchCommisionGLIdHidden" })
 
-                <div class="row mb-2">
+                <!-- Add hidden fields for the missing properties -->
+                @Html.HiddenFor(m => m.Total, new { id = "TotalHidden" })
+                @Html.HiddenFor(m => m.BranchShare, new { id = "BranchShareHidden" })
+                @Html.HiddenFor(m => m.CollectorName, new { id = "CollectorNameHidden" })
+                @Html.HiddenFor(m => m.DailyCollectorShare, new { id = "DailyCollectorShareHidden" })
+                @Html.HiddenFor(m => m.DailyCollectorAccount, new { id = "DailyCollectorAccountHidden" })
+                @Html.HiddenFor(m => m.Incentives, new { id = "IncentivesHidden" })
+
+                <div class="row mb-1">
                     <div class="col-12 pe-0">
-                       <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-end">
                             <div class="input-group" style="width:260px; max-width:100%;">
                                 <span class="input-group-text">📅 Accounting Date</span>
-                                @Html.TextBoxFor(
-                                    m => m.AccountingDate,
+                                @Html.TextBoxFor(m => m.AccountingDate,
                                     new
-                                         {
+                                    {
                                         @class = "form-control accounting-date",
                                         type = "date",
                                         id = "AccountingDay",
@@ -123,25 +135,48 @@
                                         style = "min-width:0;"
                                     }
                                 )
-                            </div>                       </div> 
+                            </div>
+                        </div>
                         @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger d-block mt-1", id = "AccountingDateValidationMessage" })
                     </div>
-                </div> 
+                </div>
+
                 <!-- Incentives, Daily Collector Share, Total - side by side -->
                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="form-label">Incentives</label>
-                        @Html.TextBoxFor(m => m.Incentives, new { @class = "form-control incentives-input", type = "text", placeholder = "Enter incentives", id = "Incentives" })
+                        @Html.TextBoxFor(m => m.Incentives, new
+                        {
+                            @class = "form-control incentives-input",
+                            type = "text",
+                            placeholder = "Enter incentives",
+                            id = "Incentives",
+                            name = "Incentives" // Ensure name attribute is set
+                        })
                         @Html.ValidationMessageFor(m => m.Incentives)
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Daily Collector Share</label>
-                        @Html.TextBoxFor(m => m.DaillyCollectorShare, new { @class = "form-control", @readonly = "readonly", placeholder = "Auto-filled", id = "DaillyCollectorShare" })
-                        @Html.ValidationMessageFor(m => m.DaillyCollectorShare)
+                        @Html.TextBoxFor(m => m.DailyCollectorShare, new
+                        {
+                            @class = "form-control",
+                            @readonly = "readonly",
+                            placeholder = "Auto-filled",
+                            id = "DaillyCollectorShare",
+                            name = "DailyCollectorShare" // Ensure name matches model property
+                        })
+                        @Html.ValidationMessageFor(m => m.DailyCollectorShare)
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Total</label>
-                        @Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = "readonly", placeholder = "Calculated total", id = "Total" })
+                        @Html.TextBoxFor(m => m.Total, new
+                        {
+                            @class = "form-control",
+                            @readonly = "readonly",
+                            placeholder = "Calculated total",
+                            id = "Total",
+                            name = "Total" // Ensure name attribute is set
+                        })
                     </div>
                 </div>
 
@@ -149,15 +184,22 @@
                 <div class="row mb-2">
                     <div class="col-md-3">
                         <label class="form-label">Branch Share</label>
-                        @Html.TextBoxFor(m => m.BranchShare, new { @class = "form-control", @readonly = "readonly", placeholder = "Auto-filled", id = "BranchShare" })
+                        @Html.TextBoxFor(m => m.BranchShare, new
+                        {
+                            @class = "form-control",
+                            @readonly = "readonly",
+                            placeholder = "Auto-filled",
+                            id = "BranchShare",
+                            name = "BranchShare" // Ensure name attribute is set
+                        })
                         @Html.ValidationMessageFor(m => m.BranchShare)
                     </div>
                     <div class="col-md-9">
-                        @Html.LabelFor(m => m.PaymentGl, "Payment Account", new { @class = "form-label" })
+                        @Html.LabelFor(m => m.PaymentGl, "Branch Commission Account", new { @class = "form-label" })
                         @Html.DropDownListFor(
                             m => m.PaymentGl,
                             new SelectList(ViewBag.HoPcmfAccounts ?? new List<SelectListItem>(), "Value", "Text"),
-                            "--- Select Account ---",
+                            "--- Branch Commission Account ---",
                             new { @class = "form-select select2", id = "PaymentGl" })
                         @Html.ValidationMessageFor(m => m.PaymentGl, "", new { @class = "text-danger" })
                     </div>
