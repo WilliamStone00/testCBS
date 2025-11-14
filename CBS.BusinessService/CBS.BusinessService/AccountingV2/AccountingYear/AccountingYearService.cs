@@ -42,7 +42,7 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching all ConfigurationManualEntries: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching all Accounting Year: {ex.Message}");
                 return new List<accountingyear>();
             }
         }
@@ -67,7 +67,7 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
             catch (Exception ex)
             {
                 // Optional: log error for diagnostics
-                System.Diagnostics.Debug.WriteLine($"[GetData] Error fetching ConfigurationManualEntries: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GetData] Error fetching Accounting Year: {ex.Message}");
                 return new accountingyear();
             }
         }

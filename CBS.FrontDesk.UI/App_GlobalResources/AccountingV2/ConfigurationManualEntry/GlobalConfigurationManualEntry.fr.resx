@@ -117,109 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account" xml:space="preserve">
-    <value>Compte</value>
+  <data name="Active" xml:space="preserve">
+    <value>Actif</value>
   </data>
-  <data name="AccountingDate" xml:space="preserve">
-    <value>Date comptable</value>
+  <data name="Alwaysvalidateentriesbeforesavingorupdatingtoensureintegrityacrossbranches" xml:space="preserve">
+    <value>Toujours valider les entrées avant de les enregistrer ou de les mettre à jour afin de garantir l'intégrité entre les branches.</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
+  <data name="ChoosewhethertheconfigurationappliestoLocalorInterbranchoperations" xml:space="preserve">
+    <value> Choisissez si la configuration s'applique aux opérations locales ou inter-succursales</value>
   </data>
-  <data name="addbutton" xml:space="preserve">
-    <value>ajouter le bouton</value>
+  <data name="Command" xml:space="preserve">
+    <value>Commande</value>
   </data>
-  <data name="AddRow" xml:space="preserve">
-    <value>Ajouter une ligne</value>
-  </data>
-  <data name="ApprovalVerification" xml:space="preserve">
-    <value>Certaines écritures comptables peuvent nécessiter l'approbation d'un superviseur avant la validation finale.</value>
-  </data>
-  <data name="ApprovalWorkflow" xml:space="preserve">
-    <value>Flux de travail d'approbation</value>
-  </data>
-  <data name="Areyousureyouwanttoposttheaboveentries" xml:space="preserve">
-    <value>Êtes-vous sûr de vouloir publier les entrées ci-dessus ?</value>
-  </data>
-  <data name="Attachments" xml:space="preserve">
-    <value>Pièces jointes</value>
-  </data>
-  <data name="chartofaccounts" xml:space="preserve">
-    <value>Assurez-vous que chaque compte sélectionné est valide et actif dans le plan comptable.</value>
-  </data>
-  <data name="ClearAllRows" xml:space="preserve">
-    <value>Effacer toutes les lignes</value>
-  </data>
-  <data name="ConfirmationofDate" xml:space="preserve">
-    <value>Confirmez que la date de saisie se situe dans une période comptable ouverte.</value>
-  </data>
-  <data name="ConfirmJournalPosting" xml:space="preserve">
-    <value> Confirmer l'écriture comptable</value>
-  </data>
-  <data name="CounterpartyBranch" xml:space="preserve">
-    <value>Succursale de la contrepartie</value>
-  </data>
-  <data name="Credit" xml:space="preserve">
-    <value>Crédit</value>
-  </data>
-  <data name="Debit" xml:space="preserve">
-    <value>Débit</value>
-  </data>
-  <data name="DebitandCreditBalance" xml:space="preserve">
-    <value>Solde Débit et Crédit</value>
-  </data>
-  <data name="DebitEqualCredit" xml:space="preserve">
-    <value>Le montant total des débits doit toujours être égal au montant total des crédits avant d'enregistrer.</value>
+  <data name="DefinehowtheprocessrunsoptionsincludeAutoAutoApprovalandotherautomationmodes" xml:space="preserve">
+    <value>Définissez le déroulement du processus — les options disponibles sont Auto, Approbation automatique et d'autres modes d'automatisation</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Incluez toujours une narration claire décrivant l'objectif de l'entrée du journal.</value>
+    <value>Description</value>
   </data>
-  <data name="Diff" xml:space="preserve">
-    <value>Diff</value>
+  <data name="EditConfiguration" xml:space="preserve">
+    <value>Modifier la configuration</value>
   </data>
-  <data name="EnableInterbranchTransaction" xml:space="preserve">
-    <value>Activer les transactions inter-succursales</value>
+  <data name="Enablethisiftheinitiatingusermustalsoapprovethetransaction" xml:space="preserve">
+    <value>Activez cette option si l'utilisateur initiateur doit également approuver la transaction</value>
   </data>
-  <data name="Enter" xml:space="preserve">
-    <value>Entrez toute remarque ou note concernant cette écriture comptable.</value>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactif</value>
   </data>
-  <data name="HeaderNote" xml:space="preserve">
-    <value>Assurez-vous que toutes les écritures de débit et de crédit sont équilibrées avant de les enregistrer.</value>
+  <data name="InterbranchLocalConfiguration" xml:space="preserve">
+    <value>Configuration inter-branches / locale</value>
   </data>
-  <data name="ManualEntryChecks" xml:space="preserve">
-    <value>Contrôles de saisie manuelle</value>
+  <data name="Keepconfigurationdataalignedwithcurrentbranchrulesandapprovalworkflows" xml:space="preserve">
+    <value> Assurez-vous que les données de configuration sont conformes aux règles actuelles de la branche et aux workflows d'approbation</value>
   </data>
-  <data name="ManualJournalEntry" xml:space="preserve">
-    <value>Écriture manuelle de journal</value>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
   </data>
-  <data name="Narration" xml:space="preserve">
-    <value>Narration</value>
+  <data name="Noconfigurationshavebeendefinedyet" xml:space="preserve">
+    <value>Aucune configuration n'a encore été définie</value>
   </data>
-  <data name="OperationCode" xml:space="preserve">
-    <value>Code opérationnel</value>
+  <data name="Provideashortsummaryexplainingtheconfigurationpurposeorbehavior" xml:space="preserve">
+    <value>Fournissez un bref résumé expliquant l'objectif ou le comportement de la configuration</value>
   </data>
-  <data name="PostEntries" xml:space="preserve">
-    <value>enregistrer les entrées</value>
+  <data name="ReviewRegularly" xml:space="preserve">
+    <value>Réviser régulièrement</value>
   </data>
-  <data name="PostingDate" xml:space="preserve">
-    <value>Date de publication</value>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
   </data>
-  <data name="Remark" xml:space="preserve">
-    <value>Remarque</value>
+  <data name="Status" xml:space="preserve">
+    <value>Statut</value>
   </data>
-  <data name="TIPSFORMANUALJOURNALENTRY" xml:space="preserve">
-    <value>CONSEILS POUR SAISE MANUELLE DES ÉCRITURES</value>
+  <data name="TIPSFORCONFIGURATIONSETUP" xml:space="preserve">
+    <value>CONSEILS POUR LA CONFIGURATION</value>
   </data>
-  <data name="Totals" xml:space="preserve">
-    <value>Total</value>
+  <data name="TypeSelection" xml:space="preserve">
+    <value>Sélection du type</value>
   </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Téléchargez tous les documents justificatifs si nécessaire pour l'audit ou la vérification.</value>
+  <data name="UserReqiredApproval" xml:space="preserve">
+    <value>Approbation requise par l'utilisateur</value>
   </data>
-  <data name="ValidateAccounts" xml:space="preserve">
-    <value>Valider les comptes</value>
+  <data name="UserApproval" xml:space="preserve">
+    <value>Approbation de l'utilisateur</value>
   </data>
-  <data name="ViewList" xml:space="preserve">
-    <value>Voir la liste</value>
+  <data name="Usethistoggletoactivateordeactivateaconfigurationwithoutdeletingit" xml:space="preserve">
+    <value>Use this toggle to activate or deactivate a configuration without deleting it</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="CONFIGURATIONDETAILS" xml:space="preserve">
+    <value>DÉTAILS DE CONFIGURATION</value>
+  </data>
+  <data name="ConfigurationsetbyHeadOfficeRevieworupdatetheworkflowsetup" xml:space="preserve">
+    <value>Configuration définie par le siège social. Vérifiez ou mettez à jour la configuration du flux de travail</value>
+  </data>
+  <data name="Cantheinitiatorvalidateorapprove" xml:space="preserve">
+    <value>L'initiateur peut-il valider ou approuver ?</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="ConfigurationPanel" xml:space="preserve">
+    <value>Panneau de configuration</value>
+  </data>
+  <data name="Unknownconfigurationtype" xml:space="preserve">
+    <value>Type de configuration inconnu</value>
   </data>
 </root>
