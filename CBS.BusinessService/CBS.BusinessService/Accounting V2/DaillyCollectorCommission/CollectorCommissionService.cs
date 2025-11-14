@@ -5,7 +5,6 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations;
 using CBS.FrontDesk.Data.Entity.Config;

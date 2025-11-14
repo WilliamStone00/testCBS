@@ -99,7 +99,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CollectorComissionResponse model)
+        public async Task<ActionResult> Create(Payment model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
@@ -162,7 +162,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         }
 
         [HttpPost]
-        public async Task<JsonResult> ProcessPayment(CollectorComissionResponse model)
+        public async Task<JsonResult> ProcessPayment(Payment model)
         {
             try
             {
