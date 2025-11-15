@@ -719,166 +719,177 @@
         });
     }
 
-    function displayCommissionData(data) {
-        console.log('Displaying commission data:', data);
+        function displayCommissionData(data) {
+            console.log('Displaying commission data:', data);
 
-        if (!data) {
-            appalert('No commission data available', 3, 1);
-            return;
-        }
-
-        // Update basic information
-        $('#summaryCollectorName').text(data.CollectorName || 'N/A');
-        $('#summaryBranchName').text(data.BranchName || 'N/A');
-        $('#summaryPeriod').text(data.Month || 'N/A');
-        $('#status').text(data.Status || 'N/A');
-        $('#summaryPaymentStatus').text(data.PaymentStatus || 'Pending'); // Add payment status
-
-        // Update activity overview
-        $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
-        $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
-        $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
-        $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
-
-        // Update distribution table
-        var distributionTable = $('#distributionTable tbody');
-        distributionTable.empty();
-
-        if (data.SharedAmounts && data.SharedAmounts.length > 0) {
-            $.each(data.SharedAmounts, function(index, item) {
-                var row = '<tr>' +
-                    '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
-                    '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
-                    '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
-                    '</tr>';
-                distributionTable.append(row);
-            });
-        } else {
-            distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
-        }
-
-        $('#commissionSummary').removeClass('d-none');
-
-        // Update table - safely handle DataTable operations
-        try {
-            if (commissionTable && typeof commissionTable.clear === 'function') {
-                // Use DataTable API if available
-                commissionTable.clear();
-
-                if (data.MemberStats && data.MemberStats.length > 0) {
-                    var totalActivity = 0;
-                    var totalFee = 0;
-                    var hasNotDebitedMembers = false;
-                    var hasDebitedMembers = false;
-
-                    $.each(data.MemberStats, function (index, member) {
-                        var activityAmount = member.TotalActivityAmount || 0;
-                        var feeAmount = member.FeeCharged || 0;
-                        var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
-
-                        // Check payment status for button logic
-                        if (paymentStatus === 'NOT_DEBITED') {
-                            hasNotDebitedMembers = true;
-                        } else if (paymentStatus === 'DEBITED') {
-                            hasDebitedMembers = true;
-                        }
-
-                        totalActivity += activityAmount;
-                        totalFee += feeAmount;
-
-                        // Create styled status cell
-                        var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
-                        var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
-
-                        commissionTable.row.add([
-                            member.MemberId || '-',
-                            member.MemberName || '-',
-                            formatCurrency(activityAmount),
-                            formatCurrency(feeAmount),
-                            statusCell
-                        ]);
-                    });
-
-                    // Update totals in footer
-                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                    $('#totalFeeAmount').text(formatCurrency(totalFee));
-
-                    // Determine which button to show based on payment status
-                    updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
-
-                } else {
-                    // Add a "no data" row if memberStats is empty
-                    commissionTable.row.add([
-                        'No data', 'No data', 'No data', 'No data', 'No data'
-                    ]);
-                    // Hide both buttons if no data
-                    $('#btnTreatment').addClass('d-none');
-                    $('#btnRetreat').addClass('d-none');
-                }
-
-                commissionTable.draw();
-            } else {
-                // Fallback: manual table update if DataTable not available
-                console.warn('DataTable not available, using manual table update');
-                var tbody = $('#commissionTable tbody');
-                tbody.empty();
-
-                if (data.MemberStats && data.MemberStats.length > 0) {
-                    var totalActivity = 0;
-                    var totalFee = 0;
-                    var hasNotDebitedMembers = false;
-                    var hasDebitedMembers = false;
-
-                    $.each(data.MemberStats, function (index, member) {
-                        var activityAmount = member.TotalActivityAmount || 0;
-                        var feeAmount = member.FeeCharged || 0;
-                        var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
-
-                        // Check payment status for button logic
-                        if (paymentStatus === 'NOT_DEBITED') {
-                            hasNotDebitedMembers = true;
-                        } else if (paymentStatus === 'DEBITED') {
-                            hasDebitedMembers = true;
-                        }
-
-                        totalActivity += activityAmount;
-                        totalFee += feeAmount;
-
-                        // Create styled status cell
-                        var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
-                        var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
-
-                        var row = '<tr>' +
-                            '<td>' + (member.MemberId || '-') + '</td>' +
-                            '<td>' + (member.MemberName || '-') + '</td>' +
-                            '<td>' + formatCurrency(activityAmount) + '</td>' +
-                            '<td>' + formatCurrency(feeAmount) + '</td>' +
-                            '<td>' + statusCell + '</td>' +
-                            '</tr>';
-                        tbody.append(row);
-                    });
-
-                    // Update totals in footer
-                    $('#totalActivityAmount').text(formatCurrency(totalActivity));
-                    $('#totalFeeAmount').text(formatCurrency(totalFee));
-
-                    // Determine which button to show
-                    updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
-
-                } else {
-                    tbody.append('<tr><td colspan="5" class="text-center">No commission data available</td></tr>');
-                    // Hide both buttons if no data
-                    $('#btnTreatment').addClass('d-none');
-                    $('#btnRetreat').addClass('d-none');
-                }
+            if (!data) {
+                appalert('No commission data available', 3, 1);
+                return;
             }
-        } catch (error) {
-            console.error('Error updating commission table:', error);
-            appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
-        }
 
-        $('#commissionDetails').removeClass('d-none');
-    }
+            // Update basic information
+            $('#summaryCollectorName').text(data.CollectorName || 'N/A');
+            $('#summaryBranchName').text(data.BranchName || 'N/A');
+            $('#summaryPeriod').text(data.Month || 'N/A');
+            $('#status').text(data.Status || 'N/A');
+
+            // Update payment status with colored bubble
+            var paymentStatus = data.PaymentStatus || 'Pending';
+            var statusColor = '#6c757d'; // Default gray
+
+            if (paymentStatus.toLowerCase() === 'pending') statusColor = '#ffc107';
+            else if (paymentStatus.toLowerCase() === 'completed' || paymentStatus.toLowerCase() === 'success') statusColor = '#198754';
+            else if (['failed', 'error', 'danger'].includes(paymentStatus.toLowerCase())) statusColor = '#dc3545';
+
+            $('#summaryPaymentStatus').html(
+                '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50rem; font-size: 0.875rem; font-weight: 500; color: white; background-color: ' + statusColor + ';">' + paymentStatus + '</span>'
+            );
+
+            // Update activity overview
+            $('#summaryTotalMembers').text(data.TotalMembersWithActivity || 0);
+            $('#summaryTotalValue').text(formatCurrency(data.TotalValueCollected || 0));
+            $('#summaryTotalFee').text(formatCurrency(data.TotalFeeCharged || 0));
+            $('#summaryTotalToDistribute').text(formatCurrency(data.TotalAmountToDistribute || 0));
+
+            // Update distribution table
+            var distributionTable = $('#distributionTable tbody');
+            distributionTable.empty();
+
+            if (data.SharedAmounts && data.SharedAmounts.length > 0) {
+                $.each(data.SharedAmounts, function (index, item) {
+                    var row = '<tr>' +
+                        '<td>' + (item.Stakeholder || 'N/A') + '</td>' +
+                        '<td class="text-end">' + (item.Percentage ? item.Percentage.toFixed(1) + '%' : 'N/A') + '</td>' +
+                        '<td class="text-end">' + formatCurrency(item.Amount || 0) + '</td>' +
+                        '</tr>';
+                    distributionTable.append(row);
+                });
+            } else {
+                distributionTable.append('<tr><td colspan="3" class="text-center">No distribution data available</td></tr>');
+            }
+
+            $('#commissionSummary').removeClass('d-none');
+
+            // Update table - safely handle DataTable operations
+            try {
+                if (commissionTable && typeof commissionTable.clear === 'function') {
+                    // Use DataTable API if available
+                    commissionTable.clear();
+
+                    if (data.MemberStats && data.MemberStats.length > 0) {
+                        var totalActivity = 0;
+                        var totalFee = 0;
+                        var hasNotDebitedMembers = false;
+                        var hasDebitedMembers = false;
+
+                        $.each(data.MemberStats, function (index, member) {
+                            var activityAmount = member.TotalActivityAmount || 0;
+                            var feeAmount = member.FeeCharged || 0;
+                            var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
+
+                            // Check payment status for button logic
+                            if (paymentStatus === 'NOT_DEBITED') {
+                                hasNotDebitedMembers = true;
+                            } else if (paymentStatus === 'DEBITED') {
+                                hasDebitedMembers = true;
+                            }
+
+                            totalActivity += activityAmount;
+                            totalFee += feeAmount;
+
+                            // Create styled status cell
+                            var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
+                            var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
+
+                            commissionTable.row.add([
+                                member.MemberId || '-',
+                                member.MemberName || '-',
+                                formatCurrency(activityAmount),
+                                formatCurrency(feeAmount),
+                                statusCell
+                            ]);
+                        });
+
+                        // Update totals in footer
+                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                        $('#totalFeeAmount').text(formatCurrency(totalFee));
+
+                        // Determine which button to show based on payment status
+                        updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
+
+                    } else {
+                        // Add a "no data" row if memberStats is empty
+                        commissionTable.row.add([
+                            'No data', 'No data', 'No data', 'No data', 'No data'
+                        ]);
+                        // Hide both buttons if no data
+                        $('#btnTreatment').addClass('d-none');
+                        $('#btnRetreat').addClass('d-none');
+                    }
+
+                    commissionTable.draw();
+                } else {
+                    // Fallback: manual table update if DataTable not available
+                    console.warn('DataTable not available, using manual table update');
+                    var tbody = $('#commissionTable tbody');
+                    tbody.empty();
+
+                    if (data.MemberStats && data.MemberStats.length > 0) {
+                        var totalActivity = 0;
+                        var totalFee = 0;
+                        var hasNotDebitedMembers = false;
+                        var hasDebitedMembers = false;
+
+                        $.each(data.MemberStats, function (index, member) {
+                            var activityAmount = member.TotalActivityAmount || 0;
+                            var feeAmount = member.FeeCharged || 0;
+                            var paymentStatus = member.PaymentStatus || 'NOT_DEBITED';
+
+                            // Check payment status for button logic
+                            if (paymentStatus === 'NOT_DEBITED') {
+                                hasNotDebitedMembers = true;
+                            } else if (paymentStatus === 'DEBITED') {
+                                hasDebitedMembers = true;
+                            }
+
+                            totalActivity += activityAmount;
+                            totalFee += feeAmount;
+
+                            // Create styled status cell
+                            var statusClass = 'status-' + paymentStatus.toLowerCase().replace('_', '-');
+                            var statusCell = '<span class="' + statusClass + '">' + paymentStatus + '</span>';
+
+                            var row = '<tr>' +
+                                '<td>' + (member.MemberId || '-') + '</td>' +
+                                '<td>' + (member.MemberName || '-') + '</td>' +
+                                '<td>' + formatCurrency(activityAmount) + '</td>' +
+                                '<td>' + formatCurrency(feeAmount) + '</td>' +
+                                '<td>' + statusCell + '</td>' +
+                                '</tr>';
+                            tbody.append(row);
+                        });
+
+                        // Update totals in footer
+                        $('#totalActivityAmount').text(formatCurrency(totalActivity));
+                        $('#totalFeeAmount').text(formatCurrency(totalFee));
+
+                        // Determine which button to show
+                        updateTreatmentButton(data.PaymentStatus, hasNotDebitedMembers, hasDebitedMembers);
+
+                    } else {
+                        tbody.append('<tr><td colspan="5" class="text-center">No commission data available</td></tr>');
+                        // Hide both buttons if no data
+                        $('#btnTreatment').addClass('d-none');
+                        $('#btnRetreat').addClass('d-none');
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating commission table:', error);
+                appalert('Commission data loaded but could not display table. Check console for details.', 4, 1);
+            }
+
+            $('#commissionDetails').removeClass('d-none');
+        }
 
     function resetForm() {
         $('#BranchId').val('');
