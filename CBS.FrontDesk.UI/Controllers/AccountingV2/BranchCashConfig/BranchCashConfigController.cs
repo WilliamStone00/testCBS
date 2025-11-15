@@ -35,17 +35,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         private readonly BranchCashConfigService _branchCashConfigService;
         private readonly BranchServices _branchServices;
         private readonly BranchAccountService _branchAccountService;
-        private readonly GLAccountService _glAccountService;
-
         public BranchCashConfigController(
             BranchCashConfigService branchCashConfigService,
             BranchServices branchServices,
-            GLAccountService glAccountService,
             BranchAccountService branchAccountService)
         {
             _branchCashConfigService = branchCashConfigService;
             _branchServices = branchServices;
-            _glAccountService = glAccountService;
             _branchAccountService = branchAccountService;
         }
 
