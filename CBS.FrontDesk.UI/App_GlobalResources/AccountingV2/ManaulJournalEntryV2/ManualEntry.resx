@@ -138,6 +138,9 @@
   <data name="ApprovalWorkflow" xml:space="preserve">
     <value>Approval Workflow</value>
   </data>
+  <data name="Areyousureyouwanttoposttheaboveentries" xml:space="preserve">
+    <value>Are you sure you want to post the above entries?</value>
+  </data>
   <data name="Attachments" xml:space="preserve">
     <value>Attachments</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ConfirmationofDate" xml:space="preserve">
     <value>Confirm the posting date falls within an open accounting period.</value>
+  </data>
+  <data name="ConfirmJournalPosting" xml:space="preserve">
+    <value> Confirm Journal Posting</value>
   </data>
   <data name="CounterpartyBranch" xml:space="preserve">
     <value>Counterparty Branch</value>
