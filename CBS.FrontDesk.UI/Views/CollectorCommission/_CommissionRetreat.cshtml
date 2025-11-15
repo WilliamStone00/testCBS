@@ -1,0 +1,141 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.CollectorComissionResponse
+
+<div class="modal-header bg-warning">
+    <h5 class="modal-title text-white">
+        <i class="mdi mdi-cash-remove me-2"></i>Retreat Commission Payment
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <div class="alert alert-warning">
+        <i class="mdi mdi-alert-circle-outline me-2"></i>
+        <strong>Warning:</strong> This action will reverse the commission payment and cannot be undone.
+    </div>
+
+    <!-- Commission Details -->
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>Commission Details</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <strong>Collector:</strong>
+                        <span id="retreatCollectorName">@Model.CollectorName</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Branch:</strong>
+                        <span id="retreatBranchName">@Model.BranchName</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <strong>Period:</strong>
+                        <span id="retreatPeriod">@Model.Month</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Total Amount:</strong>
+                        <span id="retreatTotalAmount">@Model.Total.ToString("C")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Retreat Reason -->
+    <div class="mb-3">
+        <label for="retreatReason" class="form-label fw-semibold">
+            <i class="mdi mdi-comment-text-outline me-1"></i>Reason for Retreat
+        </label>
+        <select id="retreatReason" class="form-select">
+            <option value="">-- Select Reason --</option>
+            <option value="incorrect_calculation">Incorrect Calculation</option>
+            <option value="duplicate_payment">Duplicate Payment</option>
+            <option value="wrong_collector">Wrong Collector</option>
+            <option value="system_error">System Error</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <!-- Additional Notes -->
+    <div class="mb-3">
+        <label for="retreatNotes" class="form-label fw-semibold">
+            <i class="mdi mdi-note-text-outline me-1"></i>Additional Notes
+        </label>
+        <textarea id="retreatNotes" class="form-control" rows="3" placeholder="Enter any additional details about this retreat..."></textarea>
+    </div>
+
+    <!-- Confirmation Checkbox -->
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="confirmRetreat">
+        <label class="form-check-label text-danger fw-semibold" for="confirmRetreat">
+            I understand that this action cannot be undone and will reverse all commission payments
+        </label>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="mdi mdi-close me-1"></i>Cancel
+    </button>
+    <button type="button" id="btnConfirmRetreat" class="btn btn-danger" disabled>
+        <i class="mdi mdi-cash-remove me-1"></i>Confirm Retreat
+    </button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Enable confirm button only when checkbox is checked
+        $('#confirmRetreat').change(function () {
+            $('#btnConfirmRetreat').prop('disabled', !$(this).is(':checked'));
+        });
+
+        // Handle retreat confirmation
+        $('#btnConfirmRetreat').click(function () {
+            var reason = $('#retreatReason').val();
+            var notes = $('#retreatNotes').val();
+
+            if (!reason) {
+                appalert('Please select a reason for retreat', 3, 1);
+                return;
+            }
+
+            if (!notes.trim()) {
+                appalert('Please provide additional notes for the retreat', 3, 1);
+                return;
+            }
+
+            // Get commission data from parent window
+            var commissionData = window.parent.currentCommissionData;
+            if (!commissionData) {
+                appalert('Commission data not found', 4, 1);
+                return;
+            }
+
+            // Prepare retreat data
+            var retreatData = {
+                CollectorId: commissionData.CollectorId,
+                CollectorName: commissionData.CollectorName,
+                BranchId: commissionData.BranchId,
+                BranchName: commissionData.BranchName,
+                Year: commissionData.Year,
+                Month: commissionData.Month,
+                TotalAmount: commissionData.Total,
+                Reason: reason,
+                Notes: notes,
+                SharedAmounts: commissionData.SharedAmounts
+            };
+
+            // Call parent retreat function
+            if (window.parent.processRetreatWithData) {
+                window.parent.processRetreatWithData(retreatData);
+            } else {
+                window.parent.processRetreat(commissionData.BranchId);
+            }
+
+            $('#retreatModal').modal('hide');
+        });
+    });
+</script>

@@ -1,0 +1,936 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission.commisionQuery
+@{
+    ViewBag.Title = "Commission Overview - Filters";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-cash me-2"></i>Commission Management
+                </h4>
+                <p class="card-text small text-muted mb-0">
+                    Manage and filter commission data for collectors and members
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Collapsible Tips -->
+<div class="card mb-2">
+    <h6 class="card-header py-2 d-flex justify-content-between align-items-center text-primary">
+        <span class="small"><i class="mdi mdi-information-outline me-1"></i> Tips & Guidelines</span>
+        <button class="btn btn-light btn-sm p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommissionTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseCommissionTips" class="collapse">
+        <div class="card-body py-2">
+            <ul class="small mb-0">
+                <li><strong>Branch Selection:</strong> Start by selecting a branch to load available collectors.</li>
+                <li><strong>Collector Filter:</strong> Choose a specific collector to view individual commissions.</li>
+                <li><strong>Period Filtering:</strong> Use Year and Month for time-based filtering.</li>
+                <li><strong>Date Range:</strong> Use Start/End Date for precise period filtering.</li>
+                <li><strong>Amount Range:</strong> Filter by minimum and maximum paid amounts.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Compact Commission Filters -->
+<div class="card shadow-sm p-2 mb-2">
+    <h6 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Commission Filters</h6>
+
+    <form id="commissionFilterForm" autocomplete="off">
+        <div class="card p-2 mb-1 bg-light">
+            <!-- Basic Filters - Compact Row -->
+            <div class="row g-2 mb-2">
+                <div class="col-md-4">
+                    <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId,
+                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control form-control-sm select2", id = "BranchId" })
+                </div>
+
+                <div class="col-md-4">
+                    <label for="CollectorId" class="form-label small fw-semibold">👤 Collector</label>
+                    @Html.DropDownList("CollectorId",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
+                        new { @class = "form-control form-control-sm select2", id = "CollectorId" })
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Member Ref</label>
+                    <input type="text" id="MemberReference" name="MemberReference" class="form-control form-control-sm" placeholder="Member reference" />
+                </div>
+            </div>
+
+            <!-- Period Filters - Compact Row -->
+            <div class="row g-2 mb-2">
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Year</label>
+                    <select id="Year" name="Year" class="form-control form-control-sm">
+                        <option value="">--- Year ---</option>
+                        @for (int year = DateTime.Now.Year; year >= DateTime.Now.Year - 5; year--)
+                        {
+                            <option value="@year">@year</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Month</label>
+                    <select id="Month" name="Month" class="form-control form-control-sm">
+                        <option value="">--- Month ---</option>
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">May</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                </div>          
+
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Ref Number</label>
+                    <input type="text" id="ReferenceNumber" name="ReferenceNumber" class="form-control form-control-sm" placeholder="Reference number" />
+                </div>
+            </div>
+
+            <!-- Compact Toggles -->
+            <div class="row g-2 mb-2">
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="toggleDateRange" onclick="document.getElementById('dateRangeFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label small" for="toggleDateRange">Date Range</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="toggleAmountRange" onclick="document.getElementById('amountRangeFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label small" for="toggleAmountRange">Amount Range</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compact Date Range Filters -->
+            <div id="dateRangeFilters" class="d-none">
+                <div class="row g-2 mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Start Date</label>
+                        <input type="date" id="StartDate" name="StartDate" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">End Date</label>
+                        <input type="date" id="EndDate" name="EndDate" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compact Amount Range Filters -->
+            <div id="amountRangeFilters" class="d-none">
+                <div class="row g-2 mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Min Amount</label>
+                        <input type="number" id="MinPaidAmount" name="MinPaidAmount" class="form-control form-control-sm" placeholder="0.00" step="0.01" min="0" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Max Amount</label>
+                        <input type="number" id="MaxPaidAmount" name="MaxPaidAmount" class="form-control form-control-sm" placeholder="0.00" step="0.01" min="0" />
+                    </div>
+                </div>
+            </div>       
+        </div>
+
+        <!-- Compact Buttons -->
+           <div class="row g-2 mt-2">
+                  <div class="col-12 col-md-4">
+                    <button id="applyCommissionFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
+                      <i class="mdi mdi-magnify me-1" aria-hidden="true"></i> Apply Filters
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button id="resetCommissionFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                      <i class="mdi mdi-refresh me-1" aria-hidden="true"></i> Reset
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                      <i class="mdi mdi-export me-1" aria-hidden="true"></i> Export
+                    </button>
+                  </div>
+            </div>
+
+    </form>
+</div>
+
+<div id="datalistingview">
+    @Html.Partial("_Data")
+</div>
+
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportCommission")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var commissionTable = null;
+        var isTableInitialized = false;
+
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function collectCommissionFilters() {
+            console.log('Collecting filters...');
+            // Collect the filter values
+            const filters = {
+                BranchId: emptyToNull($('#BranchId').val()),
+                CollectorId: emptyToNull($('#CollectorId').val()),
+                MemberReference: emptyToNull($('#MemberReference').val()),
+                Year: $('#Year').val() ? parseInt($('#Year').val()) : null,
+                Month: $('#Month').val() ? parseInt($('#Month').val()) : null,
+                StartDate: emptyToNull($('#StartDate').val()),
+                EndDate: emptyToNull($('#EndDate').val()),
+                MinPaidAmount: $('#MinPaidAmount').val() ? parseFloat($('#MinPaidAmount').val()) : null,
+                MaxPaidAmount: $('#MaxPaidAmount').val() ? parseFloat($('#MaxPaidAmount').val()) : null,
+                ReferenceNumber: emptyToNull($('#ReferenceNumber').val()),
+                ProcessedByUserId: emptyToNull($('#ProcessedByUserId').val()),
+                Currency: emptyToNull($('#Currency').val())
+            };
+
+            console.log('Filters collected:', filters);
+            return filters;
+        }
+
+        function escapeHtml(str) {
+            if (!str && str !== 0) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatCurrency(amount) {
+            if (amount == null || amount === '') return '-';
+            return parseFloat(amount).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                return new Date(dateString).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return '-';
+            }
+        }
+
+        function initCommissionDataTable() {
+            console.log('=== INIT DATATABLE START ===');
+
+            // Check if DataTable library is available
+            if (typeof $.fn.DataTable === 'undefined') {
+                console.error('DataTable library not loaded!');
+                appalert('DataTable library not loaded. Please check your scripts.', 0, 1);
+                return false;
+            }
+
+            // If already initialized, destroy it first to avoid conflicts
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                console.log('DataTable already exists, destroying...');
+                if (commissionTable) {
+                    commissionTable.destroy();
+                    commissionTable = null;
+                }
+            }
+
+            // defensive: ensure element exists
+            var $table = $('#myDataTable');
+            if (!$table.length) {
+                console.error('Table element #myDataTable not found on page. Current page elements:');
+                console.log('All tables on page:', $('table').length);
+                console.log('All elements with ID myDataTable:', $('#myDataTable').length);
+                appalert('Table element not found on page. Please check the console for details.', 0, 1);
+                return false;
+            }
+
+            console.log('Table found, creating new DataTable instance...');
+
+            try {
+                commissionTable = $table.DataTable({
+                    serverSide: true,
+                    searching: false,
+                    responsive: true,
+                    deferRender: true,
+                    deferLoading: true, // Don't load automatically
+                    order: [[0, 'desc']], // default sort by CreatedDate desc
+                    ajax: {
+                        url: '/CollectorCommission/DataTable',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: function (d) {
+                            console.log('DataTable requesting data with params:', d);
+                            const filters = collectCommissionFilters();
+
+                            // Create the payload that matches your C# model
+                            const payload = {
+                                DataTableOptions: {
+                                    draw: d.draw,
+                                    start: d.start,
+                                    length: d.length,
+                                    skip: d.start,
+                                    pageSize: d.length,
+                                    searchValue: d.search?.value || '',
+                                    sortColumnName: d.columns && d.order && d.order[0] ? d.columns[d.order[0].column].data : 'CreatedDate',
+                                    sortColumnDirection: d.order && d.order[0] ? d.order[0].dir : 'desc',
+                                    recordsTotal: 0,
+                                    recordsFiltered: 0,
+                                    search: d.search?.value || '',
+                                    sortDirection: d.order && d.order[0] ? d.order[0].dir : 'desc'
+                                },
+                                // Spread the filters into the payload
+                                ...filters
+                            };
+
+                            console.log('Sending payload to server:', payload);
+                            return JSON.stringify(payload);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('AJAX error:', textStatus, errorThrown);
+                            console.error('Response text:', jqXHR.responseText);
+                            var msg = 'Failed to load commission data. Please try again.';
+                            try {
+                                msg = jqXHR.responseJSON?.message || msg;
+                            } catch (e) {
+                                console.error('Error parsing response:', e);
+                            }
+                            appalert(msg, 0, 1);
+                        }
+                    },
+                    columns: [
+                        {        data: 'CreatedDate',
+                                 render: function (data) {
+                                   return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                                 }
+                        },
+                        {
+                            data: 'BranchName',
+                            defaultContent: '-',
+                            render: function (data, type, row) {
+                                return escapeHtml(data || row.BranchName || '-');
+                            }
+                        },
+                        {
+                            data: 'CollectorName',
+                            defaultContent: '-',
+                            render: function (data, type, row) {
+                                return escapeHtml(data || row.CollectorName || '-');
+                            }
+                        },
+                        {
+                            data: 'AmountPaid',
+                            defaultContent: '-',
+                            render: function (data, type, row) {
+                                return data ? formatCurrency(data) : '-';
+                            }
+                        },
+                        {
+                            data: 'Month',
+                            defaultContent: '-',
+                            render: function (data, type, row) {
+                                return escapeHtml(data || row.Month || '-');
+                            }
+                        },
+                        {
+                            data: 'Id',
+                            orderable: false,
+                            searchable: false,
+                            render: function (data, type, row) {
+                                // compute ids safely
+                                var rawId = String(row.Id || row.id || data || '');
+                                var recordId = encodeURIComponent(rawId);
+                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                var btnId = 'actionDropdown_' + safeId;
+
+                                var collectorName = escapeHtml(row.CollectorName || 'N/A');
+                                var isDeleted = row.IsDeleted === true || row.IsDeleted === 'true' || row.IsDeleted === 1;
+
+                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${collectorName}">
+                                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                  </button>`;
+
+                                return `
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                type="button" id="${btnId}"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                            <li>${detailsBtn}</li>
+                                            ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                           </ul>
+                                    </div>
+                                `.trim();
+                            }
+                        }
+                    ],
+                    language: {
+                        emptyTable: 'No commission records found. Apply filters to load data.',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                        infoEmpty: 'Showing 0 to 0 of 0 entries',
+                        infoFiltered: '(filtered from _MAX_ total entries)',
+                        lengthMenu: 'Show _MENU_ entries',
+                        loadingRecords: 'Loading...',
+                        processing: 'Processing...',
+                        zeroRecords: 'No matching records found'
+                    },
+                    lengthMenu: [10, 25, 50, 100],
+                    pageLength: 10,
+                    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                    initComplete: function (settings, json) {
+                        console.log('=== DATATABLE INIT COMPLETE ===');
+                        console.log('DataTable settings:', settings);
+                        console.log('DataTable JSON response:', json);
+
+                        // Initialize tooltips
+                        try {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                    new bootstrap.Tooltip(el);
+                                });
+                            }
+                        } catch (e) {
+                            console.warn('Tooltip initialization failed:', e);
+                        }
+                        isTableInitialized = true;
+                    },
+                    drawCallback: function () {
+                        console.log('DataTable draw complete');
+                        // Re-initialize tooltips after each draw
+                        try {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                    new bootstrap.Tooltip(el);
+                                });
+                            }
+                        } catch (e) {
+                            console.warn('Tooltip re-initialization failed:', e);
+                        }
+                    }
+                });
+
+                console.log('DataTable created successfully');
+                return true;
+
+            } catch (error) {
+                console.error('Error creating DataTable:', error);
+                console.error('Error stack:', error.stack);
+                appalert('Error initializing table: ' + error.message, 0, 1);
+                return false;
+            }
+        }
+
+        function loadCommissionData() {
+            console.log('=== LOAD COMMISSION DATA START ===');
+
+            // Initialize table if not already done
+            if (!isTableInitialized || !commissionTable) {
+                console.log('Table not initialized, initializing now...');
+                var success = initCommissionDataTable();
+                if (!success) {
+                    console.error('Failed to initialize DataTable');
+                    $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
+                    return;
+                }
+            }
+
+            if (commissionTable) {
+                console.log('Reloading DataTable with filters...');
+                // Show loading state
+                $('#applyCommissionFilterBtn').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Loading...');
+
+                // reload with current filters - this will trigger the first AJAX call
+                commissionTable.ajax.reload(function() {
+                    console.log('DataTable reload complete');
+                    // Re-enable button after load
+                    $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
+                }, false);
+            } else {
+                console.error('commissionTable not initialized after init attempt');
+                $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
+            }
+        }
+
+        function resetCommissionFilters() {
+            console.log('Resetting filters...');
+            // reset form fields
+            var form = document.getElementById('commissionFilterForm');
+            if (form) form.reset();
+
+            // reset select2 if present
+            if ($.fn.select2) {
+                if ($('#BranchId').hasClass('select2-hidden-accessible')) {
+                    $('#BranchId').val(null).trigger('change');
+                }
+                if ($('#CollectorId').hasClass('select2-hidden-accessible')) {
+                    $('#CollectorId').val(null).trigger('change');
+                }
+                if ($('#Currency').hasClass('select2-hidden-accessible')) {
+                    $('#Currency').val(null).trigger('change');
+                }
+            }
+
+            // Set current year and month as default
+            var currentDate = new Date();
+            $('#Year').val(currentDate.getFullYear());
+            $('#Month').val(currentDate.getMonth() + 1);
+
+            // hide optional filter sections
+            $('#dateRangeFilters, #amountRangeFilters').addClass('d-none');
+            $('#toggleDateRange, #toggleAmountRange').prop('checked', false);
+
+            // Clear table data if table exists
+            if (commissionTable && isTableInitialized) {
+                commissionTable.clear().draw();
+            }
+
+            appalert('Filters reset', 3, 1);
+        }
+
+        function showCommissionDetails(id) {
+            console.log('Showing commission details for ID:', id);
+            var modalEl = document.getElementById('commissionDetailsModal');
+            if (!modalEl) {
+                // Create modal if it doesn't exist
+                modalEl = document.createElement('div');
+                modalEl.className = 'modal fade';
+                modalEl.id = 'commissionDetailsModal';
+                modalEl.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-white text-black">
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modalEl);
+            }
+
+            var bsModal = null;
+            try {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    bsModal = new bootstrap.Modal(modalEl);
+                }
+            } catch (e) {
+                console.error('Bootstrap Modal not available', e);
+            }
+
+            // Show loading state
+            $('#commissionDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+
+            if (bsModal) bsModal.show();
+
+            // Load details partial view
+            $.get('/CollectorCommission/GetbyId', { id: id })
+                .done(function (html) {
+                    $('#commissionDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                })
+                .fail(function (xhr, status, error) {
+                    console.error('Error loading commission details:', error);
+                    $('#commissionDetailsModal .modal-body').html(
+                        '<div class="alert alert-danger text-center">Error loading commission details. Please try again.</div>'
+                    );
+                    appalert('Failed to load commission details', 0, 1);
+                });
+        }
+
+        // Function to load collectors by branch
+        function loadCollectorsByBranch(branchId) {
+            console.log('Loading collectors for branch:', branchId);
+            $.ajax({
+                url: '@Url.Action("GetCollectorsByBranch", "CollectorCommission")',
+                type: 'GET',
+                data: { branchId: branchId },
+                beforeSend: function () {
+                    $('#CollectorId').prop('disabled', true);
+                    $('#CollectorId').html('<option value="">Loading collectors...</option>');
+                },
+                success: function (response) {
+                    console.log('Collectors loaded:', response);
+                    var options = '<option value="">--- Select Collector ---</option>';
+
+                    if (response && response.length > 0) {
+                        $.each(response, function (index, collector) {
+                            if (collector.Value && collector.Text) {
+                                options += '<option value="' + collector.Value + '">' + collector.Text + '</option>';
+                            }
+                        });
+                    } else {
+                        options = '<option value="">No collectors found</option>';
+                    }
+
+                    $('#CollectorId').html(options);
+
+                    if ($.fn.select2) {
+                        $('#CollectorId').select2();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading collectors:', error);
+                    $('#CollectorId').html('<option value="">Error loading collectors</option>');
+                },
+                complete: function () {
+                    $('#CollectorId').prop('disabled', false);
+                }
+            });
+        }
+
+        // EXPORT 
+        // Function to handle export when modal is shown
+function setupExportModal() {
+    // Check if there's any data in the table when modal opens
+    if (!commissionTable || commissionTable.rows().count() === 0) {
+        appalert('Please load commission data first by applying filters.', 3, 1);
+        $('#exportModal').modal('hide');
+        return;
+    }
+
+    // Get current filter values for the export
+    const currentFilters = collectCommissionFilters();
+    
+    // Pre-fill date fields with current filter values
+    if (currentFilters.StartDate) {
+        $('#startDate').val(currentFilters.StartDate);
+    }
+    if (currentFilters.EndDate) {
+        $('#endDate').val(currentFilters.EndDate);
+    }
+    
+    // Set up confirm export button
+    $('#btnConfirmExport').off('click').on('click', function() {
+        confirmExport(currentFilters);
+    });
+}
+
+// Function to handle export confirmation
+function confirmExport(currentFilters) {
+    const exportFormat = $('#exportFormat').val();
+    const reportType = $('#reportType').val();
+    const includeSummary = $('#includeSummary').is(':checked');
+    const fileName = $('#fileName').val() || 'Commission_Report';
+    const startDate = $('#startDate').val();
+    const endDate = $('#endDate').val();
+
+    // Show progress
+    $('#exportProgress').removeClass('d-none');
+    updateExportProgress(0, 'Preparing export data...');
+
+    // Get all data from the current DataTable
+    exportCurrentTableData({
+        format: exportFormat,
+        reportType: reportType,
+        includeSummary: includeSummary,
+        fileName: fileName,
+        startDate: startDate,
+        endDate: endDate,
+        filters: currentFilters
+    });
+}
+
+// Function to export current table data
+function exportCurrentTableData(exportOptions) {
+    updateExportProgress(25, 'Collecting table data...');
+
+    // Get all data from the DataTable (this will handle pagination)
+    const tableData = commissionTable.rows().data().toArray();
+    
+    if (!tableData || tableData.length === 0) {
+        appalert('No data available to export.', 3, 1);
+        $('#exportProgress').addClass('d-none');
+        return;
+    }
+
+    updateExportProgress(50, 'Formatting data for export...');
+
+    // Prepare the data for export
+    const exportData = {
+        Data: tableData,
+        TotalRecords: commissionTable.page.info().recordsTotal,
+        ExportOptions: exportOptions,
+        Filters: exportOptions.filters
+    };
+
+    console.log('Exporting data:', exportData);
+
+    // Make AJAX call to export endpoint
+    $.ajax({
+        url: '/CollectorCommission/ExportCommissionData',
+        type: 'POST',
+        data: JSON.stringify(exportData),
+        contentType: 'application/json',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        beforeSend: function () {
+            $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+        },
+        success: function (data, status, xhr) {
+            updateExportProgress(100, 'Download ready!');
+            
+            // Get filename from response headers or use default
+            var filename = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                var matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            }
+
+            // Create blob and download
+            var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            appalert('Excel file downloaded successfully!', 1, 1);
+
+            // Close modal after successful export
+            setTimeout(function () {
+                $('#exportModal').modal('hide');
+                $('#exportProgress').addClass('d-none');
+                $('.progress-bar').css('width', '0%');
+                // Reset export button
+                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            }, 1000);
+        },
+        error: function (xhr, status, error) {
+            console.error('Export error:', error);
+            console.error('Response:', xhr.responseText);
+            appalert('Error exporting data: ' + (xhr.responseJSON?.message || error), 4, 1);
+            $('#exportProgress').addClass('d-none');
+            $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+        }
+    });
+}
+
+// Function to update export progress
+function updateExportProgress(percent, message) {
+    $('#exportProgress .progress-bar').css('width', percent + '%');
+    $('#progressText').text(message);
+}
+
+        $(document).ready(function () {
+            console.log('=== DOCUMENT READY START ===');
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('DataTable available:', typeof $.fn.DataTable !== 'undefined');
+            console.log('Bootstrap available:', typeof bootstrap !== 'undefined');
+
+            // Debug: Check if table exists
+            console.log('Table element exists:', $('#myDataTable').length);
+            if ($('#myDataTable').length) {
+                console.log('Table HTML:', $('#myDataTable').prop('outerHTML'));
+            } else {
+                console.error('TABLE NOT FOUND! Looking for #myDataTable');
+                console.log('All tables on page:', $('table').length);
+                $('table').each(function(i) {
+                    console.log('Table ' + i + ' ID:', $(this).attr('id'));
+                });
+            }
+
+            // Debug: Check if buttons exist
+            console.log('Apply button exists:', $('#applyCommissionFilterBtn').length);
+            console.log('Reset button exists:', $('#resetCommissionFilterBtn').length);
+            console.log('Branch dropdown exists:', $('#BranchId').length);
+            console.log('Collector dropdown exists:', $('#CollectorId').length);
+
+            // Initialize Select2 for dropdowns
+            if ($.fn.select2) {
+                console.log('Initializing Select2...');
+                $('#BranchId').select2({
+                    width: '100%',
+                    placeholder: 'Select Branch'
+                });
+                $('#CollectorId').select2({
+                    width: '100%',
+                    placeholder: 'Select Collector'
+                });
+                $('#Currency').select2({
+                    width: '100%',
+                    placeholder: 'Select Currency'
+                });
+            }
+
+            // Set current year and month as default
+            var currentDate = new Date();
+            $('#Year').val(currentDate.getFullYear());
+            $('#Month').val(currentDate.getMonth() + 1);
+
+            // Apply filter button click - THIS IS THE MAIN ENTRY POINT
+            $('#applyCommissionFilterBtn').off('click').on('click', function (e) {
+                console.log('Apply button clicked!');
+                e.preventDefault();
+                console.log('Apply commission filter clicked');
+                loadCommissionData();
+            });
+
+            // Reset filter button click
+            $('#resetCommissionFilterBtn').off('click').on('click', function (e) {
+                console.log('Reset button clicked!');
+                e.preventDefault();
+                console.log('Reset commission filter clicked');
+                resetCommissionFilters();
+            });
+
+            // Enter key triggers apply
+            $('#commissionFilterForm input').off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    loadCommissionData();
+                }
+            });
+
+            // Load collectors when branch is selected - ADD THIS
+            $('#BranchId').change(function () {
+                console.log('Branch changed:', $(this).val());
+                var branchId = $(this).val();
+                if (branchId) {
+                    loadCollectorsByBranch(branchId);
+                } else {
+                    $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
+                    if ($.fn.select2) {
+                        $('#CollectorId').select2();
+                    }
+                }
+            });
+
+            // Delegated actions (details/edit/delete)
+            $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) {
+                    appalert('Missing id for details', 0, 1);
+                    return;
+                }
+                showCommissionDetails(id);
+            });
+
+            $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) {
+                    appalert('Missing id for edit', 0, 1);
+                    return;
+                }
+                // Implement edit functionality here
+                appalert('Edit functionality to be implemented', 3, 1);
+            });
+
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) {
+                    appalert('Missing id for delete', 0, 1);
+                    return;
+                }
+
+                // Confirm deletion
+                if (confirm('Are you sure you want to delete this commission record?')) {
+                    // Implement delete functionality here
+                    appalert('Delete functionality to be implemented', 3, 1);
+                }
+            });
+
+            // Export modal event handlers
+$('#exportModal').on('show.bs.modal', function () {
+    console.log('Export modal opening...');
+    setupExportModal();
+});
+
+$('#exportModal').on('hidden.bs.modal', function () {
+    console.log('Export modal closed');
+    // Reset progress and button states when modal closes
+    $('#exportProgress').addClass('d-none');
+    $('.progress-bar').css('width', '0%');
+    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+});
+
+            // Export button click handler
+$('#btnExport').off('click').on('click', function (e) {
+    e.preventDefault();
+    console.log('Export button clicked');
+    
+    // Check if table has data
+    if (!commissionTable || !isTableInitialized) {
+        appalert('Please load commission data first by applying filters.', 3, 1);
+        return;
+    }
+    
+    const recordCount = commissionTable.rows().count();
+    if (recordCount === 0) {
+        appalert('No data available to export. Please apply filters to load data first.', 3, 1);
+        return;
+    }
+    
+    console.log(`Exporting ${recordCount} records`);
+    
+    // Show the modal (your existing code)
+    $('#exportModal').modal('show');
+});
+
+            console.log('=== COMMISSION PAGE INITIALIZATION COMPLETE ===');
+            // NOTE: Table is NOT initialized automatically on page load
+            // It will be initialized only when user clicks "Apply Filters"
+        });
+    </script>
+}

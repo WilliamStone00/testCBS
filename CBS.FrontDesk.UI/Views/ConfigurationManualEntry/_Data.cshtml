@@ -1,14 +1,15 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.AccountingV2.ConfigurationManualEntries>
+    @using Resources
 
 <fieldset class="fieldset-custom">
     <h6 class="d-flex justify-content-between align-items-center text-primary mb-3">
-        <span><i class="mdi mdi-cog-outline me-2"></i> Interbranch / Local Configuration</span>
+        <span><i class="mdi mdi-cog-outline me-2"></i> @GlobalConfigurationManualEntry.InterbranchLocalConfiguration</span>
     </h6>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p>No configurations have been defined yet.</p>
+            <p>@GlobalConfigurationManualEntry.Noconfigurationshavebeendefinedyet.</p>
         </div>
     }
     else
@@ -19,10 +20,10 @@
                     <tr>
                         <th style="display:none;">Id</th> <!-- Hidden Id column -->
                         <th class="py-2">Type</th>
-                        <th class="py-2">Command</th>
-                        <th class="py-2">Description</th>
-                        <th class="py-2">User Required Approval</th>
-                        <th class="py-2">Status</th>
+                        <th class="py-2">@GlobalConfigurationManualEntry.Command</th>
+                        <th class="py-2">@GlobalConfigurationManualEntry.Description</th>
+                        <th class="py-2">@GlobalConfigurationManualEntry.UserReqiredApproval</th>
+                        <th class="py-2">@GlobalConfigurationManualEntry.Status</th>
                         <th class="py-2">Actions</th>
                     </tr>
                 </thead>
@@ -38,22 +39,22 @@
                             <td class="text-center">
                                 @if (d.UserRequiredApproval)
                                 {
-                                    <a href="~/Views/ConfigurationManualEntry/_Data.cshtml">~/Views/ConfigurationManualEntry/_Data.cshtml</a>
-                                    <span class="badge bg-success bg-opacity-75 px-3">Yes</span>
+                                   
+                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary bg-opacity-75 px-3">No</span>
+                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalConfigurationManualEntry.No</span>
                                 }
                             </td>
                             <td class="text-center">
                                 @if (d.Status == "Active")
                                 {
-                                    <span class="badge bg-success bg-opacity-75 px-3">Active</span>
+                                    <span class="badge bg-success bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary bg-opacity-75 px-3">Inactive</span>
+                            <span class="badge bg-secondary bg-opacity-75 px-3">@GlobalConfigurationManualEntry.Inactive</span>
                                 }
                             </td>
 
@@ -61,7 +62,7 @@
                                 <button type="button"
                                         class="btn btn-outline-primary btn-sm px-3 btn-edit-config"
                                         data-id="@d.Id">
-                                    Edit
+                                    @GlobalConfigurationManualEntry.Edit
                                 </button>
                             </td>
 

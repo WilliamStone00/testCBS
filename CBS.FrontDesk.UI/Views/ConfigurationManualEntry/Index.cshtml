@@ -8,7 +8,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> Interbranch / Local Configuration
+            <i class="mdi mdi-cog-outline me-2"></i> @GlobalConfigurationManualEntry.InterbranchLocalConfiguration
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
@@ -20,7 +20,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR CONFIGURATION SETUP</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalConfigurationManualEntry.TIPSFORCONFIGURATIONSETUP</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConfigTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -29,13 +29,13 @@
     <div id="collapseConfigTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>Type Selection:</strong> Choose whether the configuration applies to <em>Local</em> or <em>Interbranch</em> operations.</li>
-                <li><strong>Command:</strong> Define how the process runs — options include <em>Auto</em>, <em>Auto Approval</em>, and other automation modes.</li>
-                <li><strong>Description:</strong> Provide a short summary explaining the configuration purpose or behavior.</li>
-                <li><strong>User Approval:</strong> Enable this if the initiating user must also approve the transaction.</li>
-                <li><strong>Status:</strong> Use this toggle to activate or deactivate a configuration without deleting it.</li>
-                <li><strong>Review Regularly:</strong> Keep configuration data aligned with current branch rules and approval workflows.</li>
-                <li><strong>Save Changes:</strong> Always validate entries before saving or updating to ensure integrity across branches.</li>
+                <li><strong>@GlobalConfigurationManualEntry.TypeSelection:</strong>@GlobalConfigurationManualEntry.ChoosewhethertheconfigurationappliestoLocalorInterbranchoperations.</li>
+                <li><strong>@GlobalConfigurationManualEntry.Command:</strong> @GlobalConfigurationManualEntry.DefinehowtheprocessrunsoptionsincludeAutoAutoApprovalandotherautomationmodes.</li>
+                <li><strong>@GlobalConfigurationManualEntry.Description:</strong> @GlobalConfigurationManualEntry.Provideashortsummaryexplainingtheconfigurationpurposeorbehavior.</li>
+                <li><strong>@GlobalConfigurationManualEntry.UserApproval:</strong> @GlobalConfigurationManualEntry.Enablethisiftheinitiatingusermustalsoapprovethetransaction.</li>
+                <li><strong>@GlobalConfigurationManualEntry.Status:</strong> @GlobalConfigurationManualEntry.Usethistoggletoactivateordeactivateaconfigurationwithoutdeletingit.</li>
+                <li><strong>@GlobalConfigurationManualEntry.ReviewRegularly:</strong>@GlobalConfigurationManualEntry.Keepconfigurationdataalignedwithcurrentbranchrulesandapprovalworkflows.</li>
+                <li><strong>@GlobalConfigurationManualEntry.SaveChanges:</strong>@GlobalConfigurationManualEntry.Alwaysvalidateentriesbeforesavingorupdatingtoensureintegrityacrossbranches.</li>
             </ul>
         </div>
     </div>
@@ -53,7 +53,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Edit Configuration</h5>
+                <h5 class="modal-title" id="modalLabel">@GlobalConfigurationManualEntry.EditConfiguration</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="modalContent">
@@ -62,6 +62,15 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
 
 
 @section Scripts {
