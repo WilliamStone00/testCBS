@@ -1,7 +1,7 @@
-﻿@* Correspondence Filters - maps to CorespondanceQUERY *@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.CorrespondanceRequestQuery
 @using Resources
 @{
-    ViewBag.Title = "Correspondence listing";
+    ViewBag.Title = "Correspondence Request listing";
 }
 
 <div class="row">
@@ -11,13 +11,13 @@
                 <h1 class="card-title text-primary fw-bold">
                     <i class="mdi mdi-email-outline me-2"></i> Correspondence
                 </h1>
-                <p class="card-text">
-                    Filter and search correspondences.
-                </p>
+                <p class="card-text">Filter and search correspondences.</p>
+
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
                     Use the filters below to narrow down results.
                 </div>
+
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
@@ -32,13 +32,14 @@
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
+
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
                 <li><i class="mdi mdi-filter-outline text-success me-2"></i><strong>Type:</strong> Filter by correspondence type.</li>
-                <li><i class="mdi mdi-tag-multiple text-info me-2"></i><strong>Status:</strong> Use status to limit results (e.g. Open, Closed).</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i><strong>Date range:</strong> Filter by created date range.</li>
-                <li><i class="mdi mdi-eye-off text-warning me-2"></i><strong>Include Deleted:</strong> Tick to include deleted items.</li>
+                <li><i class="mdi mdi-tag-multiple text-info me-2"></i><strong>Status:</strong> Filter by status.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i><strong>Date range:</strong> Use date window.</li>
+                <li><i class="mdi mdi-eye-off text-warning me-2"></i><strong>Include Deleted:</strong> Shows deleted items.</li>
             </ul>
         </div>
     </div>
@@ -47,107 +48,136 @@
 <div class="card shadow p-3 mb-4" id="filtersSection">
     <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
 
-    <form id="correspondenceFilterForm" autocomplete="off">
-        <div class="card p-3 mb-3 bg-light">
-            <!-- toggles for optional groups -->
+
+
+    <div class="card p-3 mb-3 bg-light">
+
+        <!-- Toggle groups -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Type,"Branch", new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.BranchId,
+                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                    "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                    new { @class = "form-select select2", id = "BranchId" }
+                )
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           id="toggleDates"
+                           onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                    <label class="form-check-label fw-bold" for="toggleDates">Show date filters</label>
+                </div>
+            </div>
+
+            <div class="col-md-3 d-flex justify-content-end align-items-center">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           id="toggleAdvanced"
+                           onclick="document.getElementById('advancedFilters').classList.toggle('d-none')" />
+                    <label class="form-check-label fw-bold ms-2" for="toggleAdvanced">Show advanced filters</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic filters -->
+        <div class="row mb-3">
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Type, new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.Type,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem {Text="--- Any ---", Value="" },
+                        new SelectListItem {Text="BranchToAffiliate", Value="BranchToAffiliate" },
+                        new SelectListItem {Text="AffiliateToHo", Value="AffiliateToHo" }
+                    },
+                    new { @class = "form-control select2", id = "Type" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Status, new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(
+                    m => m.Status,
+                        new SelectList(ViewBag.Statuses ?? new List<SelectListItem>(), "Value", "Text"),
+                        "--- " + @AccountingV2.All + " ---",
+                    new { @class = "form-control select2", id = "Status" })
+            </div>
+
+            @* Removed CorrelationId as requested earlier *@
+        </div>
+
+        <!-- Date Filters -->
+        <div id="dateFilters" class="d-none">
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleDates">Show date filters</label>
-                    </div>
+                    @Html.LabelFor(m => m.CreatedFromUtc, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(
+                        m => m.CreatedFromUtc,
+                        "{0:yyyy-MM-dd}",
+                        new { @class = "form-control", type = "date", id = "CreatedFromUtc" })
                 </div>
 
-                <div class="col-md-6 d-flex justify-content-end align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleAdvanced" onclick="document.getElementById('advancedFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold ms-2" for="toggleAdvanced">Show advanced filters</label>
-                    </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.CreatedToUtc, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(
+                        m => m.CreatedToUtc,
+                        "{0:yyyy-MM-dd}",
+                        new { @class = "form-control", type = "date", id = "CreatedToUtc" })
                 </div>
             </div>
+        </div>
 
-            <!-- Basic filters -->
+        <!-- Advanced filters -->
+        <div id="advancedFilters" class="d-none">
             <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Type</label>
-                    <input type="text" id="Type" name="Type" class="form-control" placeholder="e.g. Branch, Affiliate" />
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Status</label>
-                    @* Provide ViewBag.Statuses = new SelectList(...) from controller *@
-                    @Html.DropDownList("Status", ViewBag.Statuses as SelectList ?? new SelectList(new[] { new { Value = "", Text = "--- Any ---" } }, "Value", "Text"), "--- Any ---", new { @class = "form-control", id = "Status" })
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Correlation Id</label>
-                    <input type="text" id="CorrelationId" name="CorrelationId" class="form-control" placeholder="Correlation Id" />
-                </div>
-            </div>
-
-            <!-- Date filters (toggleable) -->
-            <div id="dateFilters" class="d-none">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Created From</label>
-                        <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Created To</label>
-                        <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IncludeDeleted,
+                            new { @class = "form-check-input", id = "IncludeDeleted" })
+                        @Html.LabelFor(m => m.IncludeDeleted,
+                            new { @class = "form-check-label fw-bold ms-2" })
                     </div>
                 </div>
             </div>
-
-            <!-- Advanced filters -->
-            <div id="advancedFilters" class="d-none">
-                <div class="row mb-3">
-                    <div class="col-md-6 d-flex align-items-center">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="IncludeDeleted" name="IncludeDeleted" value="true" />
-                            <label class="form-check-label fw-bold ms-2" for="IncludeDeleted">Include Deleted</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Language</label>
-                        @* Provide ViewBag.Languages = new SelectList(...) from controller *@
-                        @Html.DropDownList("Language", ViewBag.Languages as SelectList ?? new SelectList(new[] { new { Value = "", Text = "--- Any ---" } }, "Value", "Text"), "--- Any ---", new { @class = "form-control", id = "Language" })
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
-                </button>
+    </div>
 
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
-                </button>
-            </div>
+    <!-- Buttons -->
+    <div class="row mt-2">
+        <div class="col-md-12 d-flex">
+            <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                <i class="mdi mdi-magnify"></i> Apply Filter
+            </button>
+
+            <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                <i class="mdi mdi-refresh"></i> Reset
+            </button>
         </div>
-    </form>
+    </div>
+
+
 </div>
 
-<!-- DataTable Partial (replace with your actual partial that renders the datatable) -->
+<!-- Table Block -->
 <div id="datalistingview">
-    @Html.Partial("_CorrespondanceData")
+    @Html.Partial("_CorrespondanceRequestTableData")
 </div>
 
-<!-- Details Modal -->
+<!-- Reusable Modal -->
 <div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- server-rendered details partial will be injected here -->
-            </div>
+            <div class="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -155,41 +185,38 @@
     </div>
 </div>
 
-
 @section Scripts {
-    <script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
         var correspondenceTable = null;
-            function emptyToNull(v) {
-        return (v === undefined || v === null || v === '') ? null : v;
-    }
+
+        function emptyToNull(v) {
+            if (v === undefined || v === null) return null;
+            var s = v.toString().trim();
+            return s.length === 0 ? null : s;
+        }
 
         function confirmAction(message, callback) {
-            // If you have a custom confirm-like function available, plug it here.
-            // Example: if you had appconfirm(msg, onOk, onCancel) you could use it.
-            // We'll attempt to use window.confirm as fallback.
             try {
                 if (typeof appconfirm === 'function') {
-                    // hypothetical appconfirm signature: appconfirm(message, onOk, onCancel)
-                    appconfirm(message, callback, function () { /* cancelled */ });
+                    appconfirm(message, callback, function () { });
                     return;
                 }
                 if (typeof appalert === 'function' && typeof appalert.confirm === 'function') {
-                    // optional  library that exposes appalert.confirm(msg).then(...)
                     appalert.confirm(message).then(function (ok) {
                         if (ok) callback();
-                    }).catch(function () { /* ignore */ });
+                    }).catch(function () { });
                     return;
                 }
             } catch (e) {
                 console.warn('custom confirm failed, falling back:', e);
             }
-            // fallback
             if (window.confirm(message)) callback();
         }
 
         // helper: post JSON with antiforgery header
         function postJsonWithToken(url, payload, onDone, onFail) {
-            var token = getAntiForgeryToken();
+            var token = getAntiForgeryToken && getAntiForgeryToken();
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -205,221 +232,237 @@
             });
         }
 
-    function collectCorrespondenceFilters() {
-        // build object matching CorespondanceQUERY
-        return {
-            Type: emptyToNull($('#Type').val()),
-            Status: emptyToNull($('#Status').val()),
-            CreatedFromUtc: emptyToNull($('#CreatedFromUtc').val()),
-            CreatedToUtc: emptyToNull($('#CreatedToUtc').val()),
-            CorrelationId: emptyToNull($('#CorrelationId').val()),
-            IncludeDeleted: $('#IncludeDeleted').is(':checked') ? true : null,
-            Language: emptyToNull($('#Language').val()),
-            Options: {} // will be filled by datatable draw parameters
-        };
-    }
-
-    function escapeHtml(str) {
-        if (str === undefined || str === null) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-
-    function initCorrespondenceTableIfNeeded() {
-        // create the datatable only once
-        if ($.fn.DataTable.isDataTable('#myDataTable') && correspondenceTable) {
-            return;
+        function collectCorrespondenceFilters() {
+            // build object matching CorrespondanceRequestQuery
+            return {
+                Type: emptyToNull($('#Type').val()),
+                Status: emptyToNull($('#Status').val()),
+                BranchId: emptyToNull($('#BranchId').val()),
+                CreatedFromUtc: emptyToNull($('#CreatedFromUtc').val()),
+                CreatedToUtc: emptyToNull($('#CreatedToUtc').val()),
+                CorrelationId: emptyToNull($('#CorrelationId').val()),
+                IncludeDeleted: $('#IncludeDeleted').is(':checked') ? true : false,
+                // Language removed
+                Options: {} // to be filled by datatable
+            };
         }
 
-        if (!$('#myDataTable').length) {
-            if (typeof appalert === 'function') appalert('Table element #myDataTable not found', 0, 1);
-            return;
+        function escapeHtml(str) {
+            if (str === undefined || str === null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
-        correspondenceTable = $('#myDataTable').DataTable({
-            serverSide: true,
-            searching: false,
-            responsive: true,
-            destroy: false,
-            order: [[0, 'desc']], // CreatedDate desc by default
-            // prevent initial load — deferLoading: 0 prevents the first automatic ajax call
-            deferLoading: 0,
-            ajax: {
-                url: '@Url.Action("LoadCorrespondanceDatatable", "FileUpload")', // adjust if your action name differs
-                type: 'POST',
-                contentType: 'application/json',
-                data: function (d) {
-                    var filters = collectCorrespondenceFilters();
-                    // populate Options from datatable request
-                    filters.Options = {
-                        draw: d.draw,
-                        start: d.start,
-                        length: d.length,
-                        skip: d.start,
-                        pageSize: d.length,
-                        searchValue: d.search?.value || '',
-                        // try to derive sort column & direction from d.order
-                        sortColumnName: (d.columns && d.order && d.order.length) ? (d.columns[d.order[0].column].data || '') : 'CreatedDate',
-                        sortColumnDirection: (d.order && d.order.length) ? d.order[0].dir : 'desc'
-                    };
-                    return JSON.stringify(filters);
-                },
-                error: function (jqXHR) {
-                    var msg = 'Failed to load data. Please try again.';
-                    try { msg = jqXHR.responseJSON?.message || msg; } catch (e) { }
-                    if (typeof appalert === 'function') appalert(msg, 0, 1);
-                }
-            },
-            columns: [
-                {
-                    data: 'CreatedDate' /* or createdDate */,
-                    render: function (data) {
-                        if (!data) return '-';
-                        // use moment if available for nice formatting
-                        if (window.moment) return moment(data).format('DD/MM/YYYY HH:mm:ss');
-                        return data;
-                    },
-                    name: 'CreatedDate'
-                },
-                { data: 'type', name: 'Type', render: function (d) { return escapeHtml(d || '-'); } },
-                {
-                    data: 'Class',
-                    name: 'Class',
-                    render: function (d) {
-                        return escapeHtml(d || '-');
-                    }
-                },
-                { data: 'RequestedByName', name: 'RequestedByName', render: function (d) { return escapeHtml(d || '-'); } },
-                { data: 'Rationale', name: 'Rationale', render: function (d) { return escapeHtml(d || '-'); } },
-                {
-                    data: 'Status',
-                    name: 'Status',
-                    render: function (d) {
-                        var s = (d || '').toString().toLowerCase();
-                        if (s === 'open' || s === 'pending' || s === 'review') return '<span class="badge bg-warning text-dark">' + escapeHtml(d) + '</span>';
-                        if (s === 'rejected' || s === 'closed' || s === 'declined') return '<span class="badge bg-danger">' + escapeHtml(d) + '</span>';
-                        if (s === 'approved' || s === 'completed') return '<span class="badge bg-success">' + escapeHtml(d) + '</span>';
-                        return '<span class="badge bg-secondary">' + escapeHtml(d || '-') + '</span>';
-                    }
-                },
-                {
-                    data: 'Id',
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row) {
-                        var rawId = String(row.id || data || '');
-                        var recordId = encodeURIComponent(rawId);
-                        var safeId = rawId.replace(/[^a-zA-Z0-9_\-]/g, '') || 'x';
-                        var btnId = 'actionDropdown_' + safeId;
-
-                        var status = (row.status || '').toString().trim().toLowerCase();
-
-                        var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-title="${escapeHtml(row.type)}">
-                         <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                       </button>`;
-
-                        // Buttons for review/reject (only shown for Pending)
-                        var reviewBtn = `<button type="button" class="dropdown-item btn-review" data-id="${recordId}" data-title="${escapeHtml(row.type)}">
-                        <i class="mdi mdi-clipboard-check me-1 text-success"></i> Review
-                     </button>`;
-                        var rejectBtn = `<button type="button" class="dropdown-item btn-reject text-danger" data-id="${recordId}" data-title="${escapeHtml(row.type)}">
-                        <i class="mdi mdi-close-circle-outline me-1"></i> Reject
-                     </button>`;
-
-                        // Build menu depending on status
-                        var menuItems = '';
-                        if (status === 'Pending') {
-                            // show all actions
-                            menuItems = `<li>${detailsBtn}</li>
-                     <li><hr class="dropdown-divider"></li>
-                     <li>${reviewBtn}</li>
-                     <li>${rejectBtn}</li>`;
-                        } else if (status === 'Approved' || status === 'Rejected') {
-                            // only details
-                            menuItems = `<li>${detailsBtn}</li>`;
-                        } else {
-                            // fallback: only details
-                            menuItems = `<li>${detailsBtn}</li>`;
-                        }
-
-                        return `
-                        <div class="dropdown text-center">
-                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                    type="button" id="${btnId}"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-cog-outline"></i> Actions
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                ${menuItems}
-                            </ul>
-                        </div>
-                    `.trim();
-                    }
-
-                }
-            ],
-            language: { emptyTable: 'No correspondence records found' },
-            lengthMenu: [10, 25, 50],
-            pageLength: 10,
-            initComplete: function () {
-                // tooltips or other initializations
-                try {
-                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                            new bootstrap.Tooltip(el);
-                        });
-                    }
-                } catch (e) { /* ignore */ }
+        function initCorrespondenceTableIfNeeded() {
+            if ($.fn.DataTable.isDataTable('#myDataTable') && correspondenceTable) {
+                return;
             }
-        });
-    }
 
-    function loadCorrespondenceData() {
-        // Ensure table exists
-        initCorrespondenceTableIfNeeded();
+            if (!$('#myDataTable').length) {
+                if (typeof appalert === 'function') appalert('Table element #myDataTable not found', 0, 1);
+                return;
+            }
 
-        if (correspondenceTable) {
-            // reset to first page (optionally)
-            correspondenceTable.page(0).draw(false);
-            // If you prefer to keep current page, just call ajax.reload(null,false)
-            // correspondenceTable.ajax.reload(null, false);
-        } else {
-            console.warn('correspondenceTable not initialized');
+            correspondenceTable = $('#myDataTable').DataTable({
+                serverSide: true,
+                searching: false,
+                responsive: true,
+                destroy: false,
+                order: [[0, 'desc']], // CreatedDate desc
+                deferLoading: 0,
+                ajax: {
+                    url: '@Url.Action("LoadCorrespondanceRequestDatatable", "FileUpload")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        var filters = collectCorrespondenceFilters();
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search && d.search.value ? d.search.value : '',
+                            sortColumnName: (d.columns && d.order && d.order.length)
+                                ? (d.columns[d.order[0].column].data || d.columns[d.order[0].column].name)
+                                : 'CreatedDate',
+                            sortColumnDirection: (d.order && d.order.length) ? d.order[0].dir : 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (jqXHR) {
+                        var msg = 'Failed to load data. Please try again.';
+                        try {
+                            msg = jqXHR.responseJSON?.message || msg;
+                        } catch (e) { }
+                        if (typeof appalert === 'function') appalert(msg, 0, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreatedDate',
+                        name: 'CreatedDate',
+                        render: function (data) {
+                            if (!data) return '-';
+                            if (window.moment) return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                            return escapeHtml(data);
+                        }
+                    },
+                    {
+                        data: 'Type',
+                        name: 'Type',
+                        render: function (d) {
+                            var s = (d || '').toString().toLowerCase();
+                            if (s === 'branchtoaffiliate' || s === 'branch')
+                                return '<span class="badge bg-primary text-dark">' + escapeHtml(d) + '</span>';
+                            if (s === 'affiliatetoho' || s === 'affiliate')
+                                return '<span class="badge bg-success">' + escapeHtml(d) + '</span>';
+                            return '<span class="badge bg-secondary">' + escapeHtml(d || '-') + '</span>';
+                        }
+                    },
+                    {
+                        data: 'BranchAccountCode',
+                        name: 'Branch Acc. Code',
+                        render: function (d) {
+                            return escapeHtml(d || '-');
+                        }
+                    },
+
+                    {
+                        data: 'AffiliateAccountCode',
+                        name: 'Affiliate Acc. Code',
+                        render: function (d) {
+                            return escapeHtml(d || '-');
+                        }
+                    },
+                    {
+                        data: 'HoPcmfAccountCode',
+                        name: 'HoPcmf Acc. Code',
+                        render: function (d) {
+                            return escapeHtml(d || '-');
+                        }
+                    },
+                    {
+                        data: 'RequestedByName',
+                        name: 'Requested By',
+                        render: function (d) {
+                            return escapeHtml(d || '-');
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        name: 'Status',
+                        render: function (d) {
+                            var s = (d || '').toString().toLowerCase();
+                            if (s === 'open' || s === 'pending' || s === 'review')
+                                return '<span class="badge bg-warning text-dark">' + escapeHtml(d) + '</span>';
+                            if (s === 'rejected' || s === 'closed' || s === 'declined' || s === 'cancelled')
+                                return '<span class="badge bg-danger">' + escapeHtml(d) + '</span>';
+                            if (s === 'approved' || s === 'completed')
+                                return '<span class="badge bg-success">' + escapeHtml(d) + '</span>';
+                            return '<span class="badge bg-secondary">' + escapeHtml(d || '-') + '</span>';
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            var rawId = String(row.Id || data || '');
+                            var recordId = encodeURIComponent(rawId);
+                            var safeId = rawId.replace(/[^a-zA-Z0-9_\-]/g, '') || 'x';
+                            var btnId = 'actionDropdown_' + safeId;
+
+                            var status = (row.Status || '').toString().trim().toLowerCase();
+
+                            var detailsBtn = `
+                                <button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-title="${escapeHtml(row.Type)}">
+                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                </button>`;
+
+                            var reviewBtn = `
+                                <button type="button" class="dropdown-item btn-approve" data-id="${recordId}" data-title="${escapeHtml(row.Type)}">
+                                    <i class="mdi mdi-clipboard-check me-1 text-success"></i> Approve
+                                </button>`;
+
+                            var rejectBtn = `
+                                <button type="button" class="dropdown-item btn-reject text-danger" data-id="${recordId}" data-title="${escapeHtml(row.Type)}">
+                                    <i class="mdi mdi-close-circle-outline me-1"></i> Reject
+                                </button>`;
+
+                            var menuItems = '';
+                            if (status === 'pending' || status === 'open') {
+                                menuItems = `
+                                    <li>${detailsBtn}</li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>${reviewBtn}</li>
+                                    <li>${rejectBtn}</li>`;
+                            } else {
+                                menuItems = `<li>${detailsBtn}</li>`;
+                            }
+
+                            return `
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                        ${menuItems}
+                                    </ul>
+                                </div>`;
+                        }
+                    }
+                ],
+                language: { emptyTable: 'No correspondence records found' },
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                initComplete: function () {
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { }
+                }
+            });
         }
-    }
 
-    function resetCorrespondenceFilters() {
-        var form = document.getElementById('correspondenceFilterForm');
-        if (form) form.reset();
-
-        // hide optional blocks
-        $('#dateFilters, #advancedFilters').addClass('d-none');
-
-        // reset datatable defer state by clearing table and making sure next apply triggers load
-        if (correspondenceTable && $.fn.DataTable.isDataTable('#myDataTable')) {
-            // clear current data display (client-side) and set deferred loading to 0 so it doesn't auto query
-            correspondenceTable.clear().draw();
+        function loadCorrespondenceData() {
+            initCorrespondenceTableIfNeeded();
+            if (correspondenceTable) {
+                correspondenceTable.page(0).draw(false);
+            }
         }
 
-        if ($.fn.select2) {
-            // safe reset if select2 used for Status/Language
-            try {
-                $('#Status').val(null).trigger('change');
-                $('#Language').val(null).trigger('change');
-            } catch (e) { /* ignore */ }
+        function resetCorrespondenceFilters() {
+            var form = document.getElementById('correspondenceFilterForm');
+            if (form) form.reset();
+
+            $('#dateFilters, #advancedFilters').addClass('d-none');
+
+            if (correspondenceTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+                correspondenceTable.clear().draw();
+            }
+
+            if ($.fn.select2) {
+                try {
+                    $('#Status').val(null).trigger('change');
+                } catch (e) { }
+            }
+
+            if (typeof appalert === 'function') appalert('Filters reset', 3, 1);
         }
 
-        if (typeof appalert === 'function') appalert('Filters reset', 3, 1);
-    }
-
-       // Delegated event binding for details button
+        // Details handler
         $(document).on('click', '.btn-details', function (e) {
             e.preventDefault();
-
             var raw = $(this).data('id');
             var id = raw ? decodeURIComponent(raw) : null;
             if (!id) {
@@ -427,7 +470,6 @@
                 return;
             }
 
-            // Show modal with spinner while loading
             var modalEl = document.getElementById('affiliateDetailsModal');
             if (!modalEl) {
                 if (typeof appalert === 'function') appalert('Details modal not found', 0, 1);
@@ -441,58 +483,151 @@
                 }
             } catch (e) { console.warn(e); }
 
-            $('#affiliateDetailsModal .modal-body').html(
+           /* $('#affiliateDetailsModal .modal-body').html(
                 '<div class="text-center py-4">' +
-                    '<div class="spinner-border" role="status">' +
-                        '<span class="visually-hidden">Loading...</span>' +
-                    '</div>' +
+                '<div class="spinner-border" role="status">' +
+                '<span class="visually-hidden">Loading...</span>' +
+                '</div>' +
                 '</div>'
             );
+*/
 
-            if (bsModal) bsModal.show();
 
-            // Load the _CorrespondanceDetails partial
-            $.get('@Url.Action("GetCorrespondance", "FileUpload")', {
+            $.get('@Url.Action("GetCorrespondanceRequest", "FileUpload")', {
                 KEY: id,
-                partialView: "_CorrespondanceDetails"
+                partialView: "_CorrespondanceRequestDetails"
             })
-            .done(function(html) {
+            .done(function (html) {
+                   bsModal.show();
                 $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
             })
-            .fail(function() {
+            .fail(function () {
                 $('#affiliateDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
                 if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
             });
         });
 
+        // Approve handler
+        $(document).on('click', '.btn-approve', function (e) {
+            e.preventDefault();
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) {
+                if (typeof appalert === 'function') appalert('Missing id for details', 0, 1);
+                return;
+            }
 
-      // Approve handler
-    $(document).off('click', '.btn-approve').on('click', '.btn-approve', function (e) {
-        e.preventDefault();
-        var raw = $(this).data('id');
-        var id = raw ? decodeURIComponent(raw) : null;
-        if (!id) {
-            if (typeof appalert === 'function') appalert('Missing id for approve', 0, 1);
-            return;
-        }
+            var modalEl = document.getElementById('affiliateDetailsModal');
+            if (!modalEl) {
+                if (typeof appalert === 'function') appalert('Approval modal not found', 0, 1);
+                return;
+            }
 
-        confirmAction('Are you sure you want to APPROVE this correspondence?', function () {
-            // call controller Approve action
-            postJsonWithToken('@Url.Action("Approve", "FileUpload")', { id: id }, function (res) {
-                if (res?.isSuccess) {
-                    if (typeof appalert === 'function') appalert(res.message || 'Approved', 3, 1);
-                    if (correspondenceTable) correspondenceTable.ajax.reload(null, false);
-                } else {
-                    if (typeof appalert === 'function') appalert(res?.message || 'Approve failed', 0, 1);
+            var bsModal = null;
+            try {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    bsModal = new bootstrap.Modal(modalEl);
                 }
-            }, function () {
-                if (typeof appalert === 'function') appalert('Server error while approving', 0, 1);
+            } catch (e) { console.warn(e); }
+
+           /* $('#affiliateDetailsModal .modal-body').html(
+                '<div class="text-center py-4">' +
+                '<div class="spinner-border" role="status">' +
+                '<span class="visually-hidden">Loading...</span>' +
+                '</div>' +
+                '</div>'
+            );
+*/
+
+
+            $.get('@Url.Action("GetCorrespondanceRequest", "FileUpload")', {
+                KEY: id,
+                partialView: "_CorrespondenceApprovalAndRejectionRequest",
+                path:"approve"
+            })
+            .done(function (html) {
+                   bsModal.show();
+                $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+            })
+            .fail(function () {
+                $('#affiliateDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
             });
         });
-    });
 
-    // Reject handler (replaces prior implementation)
-        $(document).off('click', '.btn-reject').on('click', '.btn-reject', function (e) {
+       @* // Approve handler
+        $(document).off('click', '.btn-approve').on('click', '.btn-approve', function (e) {
+            e.preventDefault();
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) {
+                if (typeof appalert === 'function') appalert('Missing id for approve', 0, 1);
+                return;
+            }
+
+            confirmAction('Are you sure you want to APPROVE this correspondence?', function () {
+                postJsonWithToken('@Url.Action("Approve", "FileUpload")', { id: id }, function (res) {
+                    if (res && res.isSuccess) {
+                        if (typeof appalert === 'function') appalert(res.message || 'Approved', 3, 1);
+                        if (correspondenceTable) correspondenceTable.ajax.reload(null, false);
+                    } else {
+                        if (typeof appalert === 'function') appalert((res && res.message) || 'Approve failed', 0, 1);
+                    }
+                }, function () {
+                    if (typeof appalert === 'function') appalert('Server error while approving', 0, 1);
+                });
+            });
+        });*@
+
+        // Reject handler
+        $(document).on('click', '.btn-reject', function (e) {
+            e.preventDefault();
+            var raw = $(this).data('id');
+            var id = raw ? decodeURIComponent(raw) : null;
+            if (!id) {
+                if (typeof appalert === 'function') appalert('Missing id for details', 0, 1);
+                return;
+            }
+
+            var modalEl = document.getElementById('affiliateDetailsModal');
+            if (!modalEl) {
+                if (typeof appalert === 'function') appalert('Rejection modal not found', 0, 1);
+                return;
+            }
+
+            var bsModal = null;
+            try {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    bsModal = new bootstrap.Modal(modalEl);
+                }
+            } catch (e) { console.warn(e); }
+
+           /* $('#affiliateDetailsModal .modal-body').html(
+                '<div class="text-center py-4">' +
+                '<div class="spinner-border" role="status">' +
+                '<span class="visually-hidden">Loading...</span>' +
+                '</div>' +
+                '</div>'
+            );
+           */
+
+
+            $.get('@Url.Action("GetCorrespondanceRequest", "FileUpload")', {
+                KEY: id,
+                partialView: "_CorrespondenceApprovalAndRejectionRequest",
+                path:"reject"
+            })
+            .done(function (html) {
+                   bsModal.show();
+                $('#affiliateDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+            })
+            .fail(function () {
+                $('#affiliateDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                if (typeof appalert === 'function') appalert('Failed to load details', 0, 1);
+            });
+        });
+
+       @* $(document).off('click', '.btn-reject').on('click', '.btn-reject', function (e) {
             e.preventDefault();
             var raw = $(this).data('id');
             var id = raw ? decodeURIComponent(raw) : null;
@@ -502,52 +637,42 @@
             }
 
             confirmAction('Are you sure you want to REJECT this correspondence?', function () {
-                // call controller Reject action
                 postJsonWithToken('@Url.Action("Reject", "FileUpload")', { id: id }, function (res) {
-                    if (res?.isSuccess) {
+                    if (res && res.isSuccess) {
                         if (typeof appalert === 'function') appalert(res.message || 'Rejected', 3, 1);
                         if (correspondenceTable) correspondenceTable.ajax.reload(null, false);
                     } else {
-                        if (typeof appalert === 'function') appalert(res?.message || 'Reject failed', 0, 1);
+                        if (typeof appalert === 'function') appalert((res && res.message) || 'Reject failed', 0, 1);
                     }
                 }, function () {
                     if (typeof appalert === 'function') appalert('Server error while rejecting', 0, 1);
                 });
             });
-        });
+        });*@
 
-    $(document).ready(function () {
-        // Bind apply/reset buttons
-        $('#applyFilterBtn').off('click').on('click', function (e) {
-            e.preventDefault();
-            // initialize table (if not already) and load data
-            initCorrespondenceTableIfNeeded();
-            loadCorrespondenceData();
-        });
-
-        $('#resetFilterBtn').off('click').on('click', function (e) {
-            e.preventDefault();
-            resetCorrespondenceFilters();
-        });
-
-        // Enter key inside the form triggers apply
-        $('#correspondenceFilterForm input').off('keypress').on('keypress', function (e) {
-            if (e.which === 13) {
+        $(document).ready(function () {
+            $('#applyFilterBtn').off('click').on('click', function (e) {
                 e.preventDefault();
-                $('#applyFilterBtn').click();
+                loadCorrespondenceData();
+            });
+
+            $('#resetFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                resetCorrespondenceFilters();
+            });
+
+            $('#correspondenceFilterForm input').off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $('#applyFilterBtn').click();
+                }
+            });
+
+            if ($.fn.select2) {
+                try {
+                    if ($('#Status').length) $('#Status').select2({ width: '100%', placeholder: 'Status' });
+                } catch (err) { console.warn('select2 init failed', err); }
             }
         });
-
-        // init select2 safely if you will use it for Status/Language
-        if ($.fn.select2) {
-            try {
-                if ($('#Status').length) $('#Status').select2({ width: '100%', placeholder: 'Status' });
-                if ($('#Language').length) $('#Language').select2({ width: '100%', placeholder: 'Language' });
-            } catch (err) { console.warn('select2 init failed', err); }
-        }
-
-        // Note: we DO NOT call initCorrespondenceTableIfNeeded() here to avoid loading data automatically.
-        // Data will be loaded only when user clicks Apply Filter.
-    });
     </script>
 }

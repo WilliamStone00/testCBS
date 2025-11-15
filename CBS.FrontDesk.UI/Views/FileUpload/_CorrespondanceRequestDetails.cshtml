@@ -2,20 +2,92 @@
 @using System.Globalization
 @using Resources
 
-<div class="card bg-light mb-4 shadow-sm">
-    <div class="card-body text-center">
-        <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-email-outline me-2"></i> Correspondence Details
-        </h1>
-        <p class="card-text text-muted mb-1">
-            Details for a single correspondence request.
-        </p>
+@{
+    var status = string.IsNullOrWhiteSpace(Model?.Status) ? "Pending" : Model.Status;
+}
+
+<!-- Header Section (aligned with Bulk Operation style) -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-email-outline me-2"></i> Correspondence Request Details
+                </h1>
+                <p class="card-text lead mb-1">
+                    Detailed view of a single correspondence request, including accounts, mappings, and audit trail.
+                </p>
+
+                <div class="mt-2">
+                    <span class="fw-semibold me-2">Status:</span>
+                    @{
+                        var s = status?.Trim().ToLowerInvariant();
+                        string badgeClass = "badge bg-secondary";
+                        if (s == "pending" || s == "open" || s == "review")
+                        {
+                            badgeClass = "badge bg-warning text-dark";
+                        }
+                        else if (s == "approved" || s == "completed")
+                        {
+                            badgeClass = "badge bg-success";
+                        }
+                        else if (s == "rejected" || s == "closed" || s == "declined" || s == "cancelled")
+                        {
+                            badgeClass = "badge bg-danger";
+                        }
+                    }
+                    <span class="@badgeClass">@status</span>
+                </div>
+
+                <hr class="my-3" style="border: 2px solid rgba(128, 128, 128, 0.3);" />
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Tips Section (similar pattern to Bulk Operation tips) -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> Tips about this correspondence
+        </span>
+        <button class="btn btn-light btn-sm" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseCorrespondenceTips"
+                aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseCorrespondenceTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-email-check-outline text-primary me-2"></i>
+                    <strong>Scope:</strong> This record describes a single correspondence request (Branch or Affiliate).
+                </li>
+                <li>
+                    <i class="mdi mdi-account-search-outline text-success me-2"></i>
+                    <strong>Request vs Action:</strong> Use <em>Requested By</em> and <em>Actioned By</em> to trace who initiated and who processed the request.
+                </li>
+                <li>
+                    <i class="mdi mdi-swap-horizontal text-info me-2"></i>
+                    <strong>GL Mapping:</strong> Check Branch / Affiliate / Ho PCMF mappings before approving any correspondence change in GL structure.
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-outline text-warning me-2"></i>
+                    <strong>Audit:</strong> Created / Modified / Actioned dates help you validate the timeline and detect late or suspicious changes.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
 <div class="row">
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+        <h6 class="text-primary">
+            <i class="mdi mdi-information-outline me-2"></i>Basic Information
+        </h6>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -24,41 +96,43 @@
                 </tr>
                 <tr>
                     <td class="fw-bold">Type</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model.Type) ? "-" : Html.Encode(Model.Type))</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.Type) ? "-" : Html.Encode(Model.Type))</td>
                 </tr>
-                <tr>
+               @* <tr>
                     <td class="fw-bold">Correlation Id</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model.CorrelationId) ? "-" : Html.Encode(Model.CorrelationId))</td>
-                </tr>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.CorrelationId) ? "-" : Html.Encode(Model.CorrelationId))</td>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">Status</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model.Status) ? "-" : Html.Encode(Model.Status))</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.Status) ? "-" : Html.Encode(Model.Status))</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Requested By (Name)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByName) ? "-" : Html.Encode(Model.RequestedByName))</td>
                 </tr>
-                <tr>
+              @*  <tr>
                     <td class="fw-bold">Requested By (User Id)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.RequestedByUserId) ? "-" : Html.Encode(Model.RequestedByUserId))</td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">Actioned By (Name)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.ActionedByName) ? "-" : Html.Encode(Model.ActionedByName))</td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="fw-bold">Actioned By (User Id)</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.ActionedByUserId) ? "-" : Html.Encode(Model.ActionedByUserId))</td>
-                </tr>
+                </tr>*@
             </tbody>
         </table>
     </div>
 
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i>Accounts & Mapping</h6>
+        <h6 class="text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i>Accounts & Mapping
+        </h6>
         <table class="table table-sm table-bordered">
             <tbody>
-                <tr>
+                @*<tr>
                     <td class="fw-bold">@ChequeManagements.Branch</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchId) ? "-" : Html.Encode(Model.BranchId))</td>
                 </tr>
@@ -77,7 +151,7 @@
                 <tr>
                     <td class="fw-bold">Ho PCMF Account Id</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Html.Encode(Model.HoPcmfAccountId))</td>
-                </tr>
+                </tr>*@
 
                 <tr>
                     <td class="fw-bold">Branch Account Code / Name</td>
@@ -121,7 +195,9 @@
 
 <div class="row mt-2">
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-note-text me-2"></i>Rationale / Rejection</h6>
+        <h6 class="text-primary">
+            <i class="mdi mdi-note-text me-2"></i>Rationale / Rejection
+        </h6>
         <div class="card card-body">
             @if (!string.IsNullOrWhiteSpace(Model?.Rationale))
             {
@@ -139,37 +215,39 @@
     </div>
 
     <div class="col-md-6">
-        <h6 class="text-primary"><i class="mdi mdi-calendar-range me-2"></i>Dates & Status</h6>
+        <h6 class="text-primary">
+            <i class="mdi mdi-calendar-range me-2"></i>Dates & Status
+        </h6>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="fw-bold">Actioned Date</td>
                     <td>
                         @(
-                            Model != null && Model.ActionedDate != default(DateTime)
-                            ? Model.ActionedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-                            : "-"
-                        )
+                            Model != null && Model?.ActionedDate != null 
+                                ? Model?.ActionedDate.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                                : "-"
+                         )
                     </td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Created Date</td>
                     <td>
                         @(
-                            Model != null && Model.CreatedDate != default(DateTime)
-                            ? Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-                            : "-"
-                        )
+                            Model != null && Model?.CreatedDate != null
+                                ? Model?.CreatedDate.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                                : "-"
+                         )
                     </td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Modified Date</td>
                     <td>
                         @(
-                            Model != null && Model.ModifiedDate != default(DateTime)
-                            ? Model.ModifiedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-                            : "-"
-                        )
+                            Model != null && Model?.ModifiedDate != null
+                                ? Model?.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+                                : "-"
+                         )
                     </td>
                 </tr>
                 <tr>

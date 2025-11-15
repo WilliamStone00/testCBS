@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -230,7 +231,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
 
         //***************************************** END OF Mock Data table ********************************
 
-        public async Task<CustomDataTable2> CorrespondanceDataTableAsync(CorespondanceQUERY query)
+        public async Task<CustomDataTable2> CorrespondenceRequestDataTableAsync(CorrespondanceRequestQuery query)
         {
             try
             {
@@ -398,11 +399,11 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> CreateCorrespondanceAsync(AddCORRESPONDANCE model)
+        public async Task<ExecutionMessages> CreateCorrespondanceRequestAsync(AddCORRESPONDANCE model)
         {
             try
             {
-                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(string.Format(APICallHelper.createCorrespondanceRequest,GetUserLanguage()), model);
+                var response = await _apiHelper.PostAsync<ServiceResponse<Accountwaiting>>(string.Format(APICallHelper.CreateCorrespondanceRequest,GetUserLanguage()), model);
 
                 // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                 if (response.IsSuccess)
@@ -480,19 +481,47 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> CorrespondenceValidationAsync(correspondanceR_A model)
+        public async Task<ExecutionMessages> ApproveOrRejectCorrespondenceRequest(CorrespondenceApproveAndRejection model)
+        {
+            try
+            {
+
+               if (model.Type == "Approval")
+                {
+                    return await ApproveCorresponceRequestAsync(model);
+                }
+
+                if (model.Type == "Rejection")
+                {
+                    model.RejectionReason = model.Note;
+                    return await RejectCorrespondenceRequestAsync(model);
+                }
+
+
+                GetExecutionMessages(model, false, "Correspondence Action", MessagesResults.Error,
+                    ExecutionProcessOption.UnknownError, "Error", null, "Action not found");
+
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(model, false, "Correspondence Action", MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, "Error", ex, ex.Message);
+            }
+
+            return ExecutionMessage;
+        }
+
+        public async Task<ExecutionMessages> ApproveCorresponceRequestAsync(CorrespondenceApproveAndRejection model)
         {
             try
             {
 
                 string url;
-                model.actionedByName = GetUserFullName();
-                model.actionedByUserId = GetUserID();
-                model.language = GetLanguage();
+                model.Language = GetLanguage();
 
-                url = APICallHelper.ApproveCorrespondence;
+                url = string.Format( APICallHelper.ApproveCorrespondence,model.Id, model.Language);
                 // Expect a detailed object back from the API (adjust generic type to your response DTO)
-                var response = await _apiHelper.PostAsync<ServiceResponse<CorrespondenceRequestDto>>(url, model);
+                var response = await _apiHelper.PutAsync<ServiceResponse<CorrespondenceRequestDto>>(url, model);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -503,7 +532,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                 else
                 {
                     // failure: bubble message
-                    var message = response?.ApiResponseData?.Message ?? response?.Message ?? "Action failed";
+                    var message = response?.Message ?? "Action failed";
                     GetExecutionMessages(model, false, "Correspondence Action", MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, "Failed", null, message);
                 }
@@ -517,12 +546,15 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> RejectCorrespondenceAsync(correspondanceR_A model)
+        public async Task<ExecutionMessages> RejectCorrespondenceRequestAsync(CorrespondenceApproveAndRejection model)
         {
             try
             {
-                var payload = model.Id;
-                var response = await _apiHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.RejectCorrespondence, payload);
+                //var payload = model.Id;
+                model.Language = GetLanguage();
+                var url = string.Format(APICallHelper.RejectCorrespondence, model.Id, model.Language);
+
+                var response = await _apiHelper.PutAsync<ServiceResponse<CorrespondenceRequestDto>>(url, model);
 
                 if (response != null && response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -531,7 +563,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                 }
                 else
                 {
-                    var message = response?.ApiResponseData?.Message ?? response?.Message ?? "Reject operation failed";
+                    var message = response?.Message ?? "Reject operation failed";
                     GetExecutionMessages(model, false, "Reject Correspondence", MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, "Failed", null, message);
                 }
@@ -546,7 +578,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
         }
 
         // Correspondance DETAILS 
-        public async Task<CorrespondenceRequestDto> GetCorrespondanceByIdAsync(string id)
+        public async Task<CorrespondenceRequestDto> GetCorrespondanceRequestByIdAsync(string id)
         {
             try
             {
@@ -554,7 +586,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                     throw new ArgumentException("id is required", nameof(id));
 
                 var encodedId = Uri.EscapeDataString(id);
-                string formattedUrl = string.Format(APICallHelper.GetAffiliateById, encodedId);
+                string formattedUrl = string.Format(APICallHelper.GetCorrespondanceRequest, encodedId,GetUserLanguage());
 
                 var response = await _apiHelper.GetAsync<ServiceResponse<CorrespondenceRequestDto>>(formattedUrl);
 

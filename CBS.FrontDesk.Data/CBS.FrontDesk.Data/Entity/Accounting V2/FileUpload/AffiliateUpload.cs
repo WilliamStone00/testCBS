@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -132,12 +133,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
     }
 
     
-    public class CorespondanceQUERY
+    public class CorrespondanceRequestQuery
     {
         public DataTableOptions Options { get; set; }
 
 
         public string Type { get; set; }
+        public string BranchId { get; set; }
         public string Status { get; set; }
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedToUtc { get; set; }
@@ -159,7 +161,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string RequestedByName { get; set; }
         public string ActionedByUserId { get; set; }
         public string ActionedByName { get; set; }
-        public DateTime ActionedDate { get; set; }
+        public DateTime? ActionedDate { get; set; }
         public string RejectionReason { get; set; }
 
         public string BranchId { get; set; }
@@ -177,19 +179,54 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string HoPcmfAccountCode { get; set; }
         public string HoPcmfAccountName { get; set; }
 
-        public DateTime CreatedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
     }
 
     //A = approve & R = reject
-    public class correspondanceR_A
+    public class CorrespondenceApproveAndRejection
     {
+        /// <summary>
+        /// Correspondence request identifier.
+        /// </summary>
         [Required]
         public string Id { get; set; }
-        public string actionedByUserId { get; set; }
-        public string actionedByName { get; set; } // Renamed for clarity
-        public string language { get; set; }  
+
+        /// <summary>
+        /// Optional note / comment for the approval or rejection.
+        /// (Shown in Swagger as "note")
+        /// </summary>
+        public string Note { get; set; }
+
+        /// <summary>
+        /// Preferred language code (e.g. "en", "fr").
+        /// (Shown in Swagger as "language")
+        /// </summary>
+        public string Language { get; set; }
+
+        /// <summary>
+        /// Optional RejectionReason / comment for the approval or rejection.
+        /// (Shown in Swagger as "rejectionReason")
+        /// </summary>
+        public string RejectionReason { get; set; }
+
+        public string RequestBy { get; set; }
+        public string Type { get; set; }// Approval or Rejection
+
+        /*    /// <summary>
+            /// User Id of the staff who actioned the correspondence.
+            /// Filled server-side from the auth token.
+            /// </summary>
+            [JsonIgnore]
+            public string ActionedByUserId { get; set; }
+
+            /// <summary>
+            /// Display name of the staff who actioned the correspondence.
+            /// Filled server-side from the auth token.
+            /// </summary>
+            [JsonIgnore]
+            public string ActionedByName { get; set; }*/
     }
 
 }
