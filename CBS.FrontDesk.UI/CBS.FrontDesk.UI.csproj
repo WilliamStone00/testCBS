@@ -901,16 +901,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.fr.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7750,11 +7740,6 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xss">
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Content>
-    <EmbeddedResource Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry.fr.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -9439,10 +9424,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry.Designer.cs</LastGenOutput>
-    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -10990,6 +10971,8 @@
     <Content Include="Views\CollectorCommission\List.cshtml" />
     <Content Include="Views\CollectorCommission\_Data.cshtml" />
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
+    <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
+    <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10997,7 +10980,6 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\CashReconciliation\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
     <Folder Include="bin\de\" />

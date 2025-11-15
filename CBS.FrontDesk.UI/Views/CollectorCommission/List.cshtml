@@ -70,7 +70,7 @@
 
             <!-- Period Filters - Compact Row -->
             <div class="row g-2 mb-2">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Year</label>
                     <select id="Year" name="Year" class="form-control form-control-sm">
                         <option value="">--- Year ---</option>
@@ -81,7 +81,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Month</label>
                     <select id="Month" name="Month" class="form-control form-control-sm">
                         <option value="">--- Month ---</option>
@@ -100,7 +100,7 @@
                     </select>
                 </div>          
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Ref Number</label>
                     <input type="text" id="ReferenceNumber" name="ReferenceNumber" class="form-control form-control-sm" placeholder="Reference number" />
                 </div>
@@ -150,18 +150,26 @@
         </div>
 
         <!-- Compact Buttons -->
-        <div class="row g-2 mt-2">
-            <div class="col-md-6">
-                <button id="applyCommissionFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
-                </button>
+           <div class="row g-2 mt-2">
+                  <div class="col-12 col-md-4">
+                    <button id="applyCommissionFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
+                      <i class="mdi mdi-magnify me-1" aria-hidden="true"></i> Apply Filters
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button id="resetCommissionFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                      <i class="mdi mdi-refresh me-1" aria-hidden="true"></i> Reset
+                    </button>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                      <i class="mdi mdi-export me-1" aria-hidden="true"></i> Export
+                    </button>
+                  </div>
             </div>
-            <div class="col-md-6">
-                <button id="resetCommissionFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset
-                </button>
-            </div>
-        </div>
+
     </form>
 </div>
 
@@ -169,6 +177,13 @@
     @Html.Partial("_Data")
 </div>
 
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportCommission")
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
@@ -317,11 +332,10 @@
                         }
                     },
                     columns: [
-                        {
-                            data: 'CreatedDate',
-                            render: function (data) {
-                                return data ? formatDate(data) : '-';
-                            }
+                        {        data: 'CreatedDate',
+                                 render: function (data) {
+                                   return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                                 }
                         },
                         {
                             data: 'BranchName',
@@ -369,14 +383,6 @@
                                                     <i class="mdi mdi-eye me-1 text-primary"></i> Details
                                                   </button>`;
 
-                                var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${collectorName}">
-                                                               <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                             </button>` : '';
-
-                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${collectorName}">
-                                                                 <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                                                               </button>` : '';
-
                                 return `
                                     <div class="dropdown text-center">
                                         <button class="btn btn-sm btn-info dropdown-toggle text-white"
@@ -387,9 +393,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="${btnId}">
                                             <li>${detailsBtn}</li>
                                             ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                            ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                            ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
-                                        </ul>
+                                           </ul>
                                     </div>
                                 `.trim();
                             }
@@ -624,6 +628,145 @@
             });
         }
 
+        // EXPORT 
+        // Function to handle export when modal is shown
+function setupExportModal() {
+    // Check if there's any data in the table when modal opens
+    if (!commissionTable || commissionTable.rows().count() === 0) {
+        appalert('Please load commission data first by applying filters.', 3, 1);
+        $('#exportModal').modal('hide');
+        return;
+    }
+
+    // Get current filter values for the export
+    const currentFilters = collectCommissionFilters();
+    
+    // Pre-fill date fields with current filter values
+    if (currentFilters.StartDate) {
+        $('#startDate').val(currentFilters.StartDate);
+    }
+    if (currentFilters.EndDate) {
+        $('#endDate').val(currentFilters.EndDate);
+    }
+    
+    // Set up confirm export button
+    $('#btnConfirmExport').off('click').on('click', function() {
+        confirmExport(currentFilters);
+    });
+}
+
+// Function to handle export confirmation
+function confirmExport(currentFilters) {
+    const exportFormat = $('#exportFormat').val();
+    const reportType = $('#reportType').val();
+    const includeSummary = $('#includeSummary').is(':checked');
+    const fileName = $('#fileName').val() || 'Commission_Report';
+    const startDate = $('#startDate').val();
+    const endDate = $('#endDate').val();
+
+    // Show progress
+    $('#exportProgress').removeClass('d-none');
+    updateExportProgress(0, 'Preparing export data...');
+
+    // Get all data from the current DataTable
+    exportCurrentTableData({
+        format: exportFormat,
+        reportType: reportType,
+        includeSummary: includeSummary,
+        fileName: fileName,
+        startDate: startDate,
+        endDate: endDate,
+        filters: currentFilters
+    });
+}
+
+// Function to export current table data
+function exportCurrentTableData(exportOptions) {
+    updateExportProgress(25, 'Collecting table data...');
+
+    // Get all data from the DataTable (this will handle pagination)
+    const tableData = commissionTable.rows().data().toArray();
+    
+    if (!tableData || tableData.length === 0) {
+        appalert('No data available to export.', 3, 1);
+        $('#exportProgress').addClass('d-none');
+        return;
+    }
+
+    updateExportProgress(50, 'Formatting data for export...');
+
+    // Prepare the data for export
+    const exportData = {
+        Data: tableData,
+        TotalRecords: commissionTable.page.info().recordsTotal,
+        ExportOptions: exportOptions,
+        Filters: exportOptions.filters
+    };
+
+    console.log('Exporting data:', exportData);
+
+    // Make AJAX call to export endpoint
+    $.ajax({
+        url: '/CollectorCommission/ExportCommissionData',
+        type: 'POST',
+        data: JSON.stringify(exportData),
+        contentType: 'application/json',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        beforeSend: function () {
+            $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+        },
+        success: function (data, status, xhr) {
+            updateExportProgress(100, 'Download ready!');
+            
+            // Get filename from response headers or use default
+            var filename = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                var matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            }
+
+            // Create blob and download
+            var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            appalert('Excel file downloaded successfully!', 1, 1);
+
+            // Close modal after successful export
+            setTimeout(function () {
+                $('#exportModal').modal('hide');
+                $('#exportProgress').addClass('d-none');
+                $('.progress-bar').css('width', '0%');
+                // Reset export button
+                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            }, 1000);
+        },
+        error: function (xhr, status, error) {
+            console.error('Export error:', error);
+            console.error('Response:', xhr.responseText);
+            appalert('Error exporting data: ' + (xhr.responseJSON?.message || error), 4, 1);
+            $('#exportProgress').addClass('d-none');
+            $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+        }
+    });
+}
+
+// Function to update export progress
+function updateExportProgress(percent, message) {
+    $('#exportProgress .progress-bar').css('width', percent + '%');
+    $('#progressText').text(message);
+}
+
         $(document).ready(function () {
             console.log('=== DOCUMENT READY START ===');
             console.log('jQuery version:', $.fn.jquery);
@@ -747,6 +890,43 @@
                     appalert('Delete functionality to be implemented', 3, 1);
                 }
             });
+
+            // Export modal event handlers
+$('#exportModal').on('show.bs.modal', function () {
+    console.log('Export modal opening...');
+    setupExportModal();
+});
+
+$('#exportModal').on('hidden.bs.modal', function () {
+    console.log('Export modal closed');
+    // Reset progress and button states when modal closes
+    $('#exportProgress').addClass('d-none');
+    $('.progress-bar').css('width', '0%');
+    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+});
+
+            // Export button click handler
+$('#btnExport').off('click').on('click', function (e) {
+    e.preventDefault();
+    console.log('Export button clicked');
+    
+    // Check if table has data
+    if (!commissionTable || !isTableInitialized) {
+        appalert('Please load commission data first by applying filters.', 3, 1);
+        return;
+    }
+    
+    const recordCount = commissionTable.rows().count();
+    if (recordCount === 0) {
+        appalert('No data available to export. Please apply filters to load data first.', 3, 1);
+        return;
+    }
+    
+    console.log(`Exporting ${recordCount} records`);
+    
+    // Show the modal (your existing code)
+    $('#exportModal').modal('show');
+});
 
             console.log('=== COMMISSION PAGE INITIALIZATION COMPLETE ===');
             // NOTE: Table is NOT initialized automatically on page load
