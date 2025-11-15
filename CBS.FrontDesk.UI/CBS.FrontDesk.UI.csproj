@@ -2053,7 +2053,7 @@
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
