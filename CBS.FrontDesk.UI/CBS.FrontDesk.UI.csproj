@@ -10891,8 +10891,8 @@
     <Content Include="Views\BranchAccount\_DetailsPartial.cshtml" />
     <Content Include="Views\BranchAccount\_EditPartial.cshtml" />
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestTableData.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
@@ -10973,6 +10973,7 @@
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
     <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondenceApprovalAndRejectionRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11003,6 +11004,7 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\NewFolder1\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
     <Folder Include="Views\ReportSection\" />

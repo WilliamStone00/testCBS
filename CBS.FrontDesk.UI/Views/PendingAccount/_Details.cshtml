@@ -74,11 +74,11 @@
                 <tr><td class="fw-bold">Class</td><td>@(Model?.Class ?? "-")</td></tr>
                 <tr><td class="fw-bold">Display Name</td><td>@(Model?.Name ?? "-")</td></tr>
 
-                <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>
+               @* <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>*@
                 <tr><td class="fw-bold">Parent Code</td><td>@(Model?.ParentCode ?? "-")</td></tr>
 
-                <tr><td class="fw-bold">Path Seed</td><td>@(string.IsNullOrWhiteSpace(Model?.PathSeed) ? "-" : Model.PathSeed)</td></tr>
-                <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>
+              @*  <tr><td class="fw-bold">Path Seed</td><td>@(string.IsNullOrWhiteSpace(Model?.PathSeed) ? "-" : Model.PathSeed)</td></tr>
+                <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
             </table>
         </div>
 
@@ -90,18 +90,18 @@
                     <td class="fw-bold">Affiliate</td>
                     <td>@((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")</td>
                 </tr>
-                <tr>
+              @*  <tr>
                     <td class="fw-bold">Affiliate Id</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateId) ? "-" : Model.AffiliateId)</td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">Branch</td>
                     <td>@((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")</td>
                 </tr>
-                <tr>
-                    <td class="fw-bold">Branch Id</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchId) ? "-" : Model.BranchId)</td>
-                </tr>
+                @*<tr>
+                    <td class="fw-bold">Branch Name</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Model.BranchName)</td>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">Branch Code</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchCode) ? "-" : Model.BranchCode)</td>
@@ -119,10 +119,10 @@
                         @Html.Raw(aaText + aaCode)
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td class="fw-bold">Affiliate Account Id</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Model.AffiliateAccountId)</td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">HO PCMF Account</td>
                     <td>
@@ -136,10 +136,10 @@
                         @Html.Raw(hoText + hoCode)
                     </td>
                 </tr>
-                <tr>
+               @* <tr>
                     <td class="fw-bold">HO PCMF Account Id</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Model.HoPcmfAccountId)</td>
-                </tr>
+                </tr>*@
 
                 <!-- Change type + Update reference -->
                 <tr>
@@ -222,8 +222,8 @@
             <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Audit</h6>
             <table class="table table-sm table-bordered">
                 <tr><td class="fw-bold">Created Date</td><td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
-                <tr><td class="fw-bold">Modified Date</td><td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
-                <tr><td class="fw-bold">Is Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>
+             @*   <tr><td class="fw-bold">Modified Date</td><td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">Is Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>*@
             </table>
         </div>
 
