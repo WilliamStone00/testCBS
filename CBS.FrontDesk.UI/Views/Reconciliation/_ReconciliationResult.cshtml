@@ -1,4 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.TrialBalanceReconciliationData
+ @{
+    var selectedValue = Model.IsMemberBalanceGreater ? "surplus" : "deficit";
+}
 
 <div class="modal fade" id="reconciliationResultModal" tabindex="-1" aria-hidden="true"
      data-branchid="@Model.BranchId" data-branchaccountid="@Model.BranchAccountId">
@@ -201,27 +204,42 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Adjustment Type</label>
-                                        <div class="mt-2">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="adjustmentType" id="surplus" value="surplus"
-                                                       data-val="true"
-                                                       data-val-required="Adjustment type is required"
-                                                       @(Model.IsMemberBalanceGreater ? "checked" : "")>
-                                                <label class="form-check-label text-success" for="surplus">
-                                                    <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
-                                                </label>
+                                                                           
+                                            <div class="mt-2" role="radiogroup" aria-label="Adjustment type" aria-readonly="true">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="adjustmentType"
+                                                           id="surplus"
+                                                           value="surplus"
+                                                           data-val="true"
+                                                           data-val-required="Adjustment type is required"
+                                                           checked="checked"
+                                                           disabled="disabled" />
+                                                    <label class="form-check-label text-success" for="surplus">
+                                                        <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="adjustmentType"
+                                                           id="deficit"
+                                                           value="deficit"
+                                                           data-val="true"
+                                                           data-val-required="Adjustment type is required"
+                                                           @(selectedValue == "deficit" ? "checked=\"checked\"" : "")
+                                                           disabled="disabled" />
+                                                    <label class="form-check-label text-warning" for="deficit">
+                                                        <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
+                                                    </label>
+                                                </div>
+
+                                                <!-- Hidden field so the value is submitted even though the radios are disabled -->
+                                                <input type="hidden" name="adjustmentType" value="@selectedValue" />
                                             </div>
 
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="adjustmentType" id="deficit" value="deficit"
-                                                       data-val="true"
-                                                       data-val-required="Adjustment type is required"
-                                                       @(!Model.IsMemberBalanceGreater ? "checked" : "")>
-                                                <label class="form-check-label text-warning" for="deficit">
-                                                    <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
-                                                </label>
-                                            </div>
-                                        </div>
                                         <span class="field-validation-valid text-danger" data-valmsg-for="adjustmentType" data-valmsg-replace="true"></span>
                                         <div class="form-text">
                                             @if (Model.IsMemberBalanceGreater)
