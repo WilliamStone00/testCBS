@@ -1,5 +1,9 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition
 
+@{ 
+    bool isUpdate = !string.IsNullOrEmpty(Model.Id);
+}
+
 <!-- Header Section -->
 <div class="row">
     <div class="col-12">
@@ -43,10 +47,14 @@
 
 <!-- Form Section -->
 
-@using (Html.BeginForm("Create", "ReportDefinition", FormMethod.Post, new { id = "createReportForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);"}))
+@using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportDefinition", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <div class="card shadow-sm">
         <div class="card-body">
+
+            @Html.HiddenFor(model => model.Id)
+
             <div class="mb-3">
                 @Html.LabelFor(model => model.Code, "Report Code", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Code, new { @class = "form-control", placeholder = "Enter report code (e.g., BAL001)" })
@@ -59,9 +67,9 @@
 
             <div class="mb-3">
                 @Html.LabelFor(model => model.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
-                @Html.DropDownListFor(model => model.ReportType, 
-                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "CashFlow", "TrialBalance" }), 
-                    "Select report type", 
+                @Html.DropDownListFor(model => model.ReportType,
+                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "CashFlow", "TrialBalance" }),
+                    "Select report type",
                     new { @class = "form-select" })
             </div>
 
@@ -77,7 +85,8 @@
 
             <div class="text-end">
                 <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
-                    <i class="mdi mdi-content-save-outline me-1" ></i> Save Report
+                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
+                    @(isUpdate ? "Update Report" : "Save Report")
                 </button>
             </div>
         </div>

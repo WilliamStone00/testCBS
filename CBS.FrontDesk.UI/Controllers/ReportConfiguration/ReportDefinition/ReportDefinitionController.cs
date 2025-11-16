@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.ReportingV2
+namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 {
 	public class ReportDefinitionController : BaseController
 	{
@@ -29,18 +29,18 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 					return PartialView(partialView, list);
 
 				case "new":
-					return PartialView($"~/Views/ReportingV2/ReportDefinition/{partialView}.cshtml", new ReportDefinition());
+					return PartialView($"~/Views/ReportConfiguration/ReportDefinition/{partialView}.cshtml", new ReportDefinition());
 
 				case "edit":
 					if (string.IsNullOrEmpty(KEY))
-						//return new HttpStatusCodeResult(400, "Invalid report key");
-					PartialView($"~/Views/ReportingV2/ReportDefinition/{partialView}.cshtml", new ReportDefinition());
+						return new HttpStatusCodeResult(400, "Invalid report key");
 
 					var report = await _services.GetById(KEY);
 					if (report == null)
 						return HttpNotFound("Report not found");
 
-					return PartialView(partialView, report);
+					//return PartialView(partialView, report);
+					return PartialView($"~/Views/ReportConfiguration/ReportDefinition/{partialView}.cshtml", report);
 
 				default:
 					var all = await _services.GetAll();

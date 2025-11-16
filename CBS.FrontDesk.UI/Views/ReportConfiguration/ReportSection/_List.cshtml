@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Sections</h5>
-    <a href="#" class="btn btn-sm btn-primary" onclick="loadPartialView('@Url.Action("Initilization","ReportSection")', '#sectionContainer', { path: 'new' })">
+    <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportSectionCreateModal()">
         <i class="mdi mdi-plus"></i> New
     </a>
 </div>
@@ -24,7 +24,7 @@
                 <td>@item.Name</td>
                 <td>@item.SortOrder</td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-info" onclick="loadPartialView('@Url.Action("Initilization","ReportSection")', '#sectionContainer', { path: 'edit', KEY: '@item.Id' })">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="openReportSectionEditModal('@item.Id')">
                         <i class="mdi mdi-pencil"></i> Edit
                     </a>
                 </td>
