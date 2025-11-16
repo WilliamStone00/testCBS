@@ -45,24 +45,25 @@
 
     <form id="commissionFilterForm" autocomplete="off">
         <div class="card p-2 mb-1 bg-light">
-            <!-- Basic Filters - Compact Row -->
-            <div class="row g-2 mb-2">
-                <div class="col-md-4">
-                    <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId,
-                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control form-control-sm select2", id = "BranchId" })
-                </div>
+             <div class="col-md-12">
+             <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
+             @Html.DropDownListFor(m => m.BranchId,
+                 new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                 "--- Select Branch ---",
+                 new { @class = "form-control form-control-sm select2", id = "BranchId" })
+         </div>
 
-                <div class="col-md-4">
+            <!-- Basic Filters - Compact Row -->
+            <div class="row g-2 mb-2">             
+
+                <div class="col-md-6">
                     <label for="CollectorId" class="form-label small fw-semibold">👤 Collector</label>
                     @Html.DropDownList("CollectorId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
                         new { @class = "form-control form-control-sm select2", id = "CollectorId" })
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label small fw-semibold">Member Ref</label>
                     <input type="text" id="MemberReference" name="MemberReference" class="form-control form-control-sm" placeholder="Member reference" />
                 </div>
@@ -332,10 +333,11 @@
                         }
                     },
                     columns: [
-                        {        data: 'CreatedDate',
-                                 render: function (data) {
-                                   return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
-                                 }
+                        {        
+                            data: 'CreatedDate',
+                            render: function (data) {
+                                return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                            }
                         },
                         {
                             data: 'BranchName',
@@ -393,7 +395,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="${btnId}">
                                             <li>${detailsBtn}</li>
                                             ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                           </ul>
+                                        </ul>
                                     </div>
                                 `.trim();
                             }
@@ -534,7 +536,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header bg-white text-black">
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="text-center">
@@ -628,144 +630,201 @@
             });
         }
 
-        // EXPORT 
+        // EXPORT FUNCTIONS - CORRECTED VERSION
         // Function to handle export when modal is shown
-function setupExportModal() {
-    // Check if there's any data in the table when modal opens
-    if (!commissionTable || commissionTable.rows().count() === 0) {
-        appalert('Please load commission data first by applying filters.', 3, 1);
-        $('#exportModal').modal('hide');
-        return;
-    }
-
-    // Get current filter values for the export
-    const currentFilters = collectCommissionFilters();
-    
-    // Pre-fill date fields with current filter values
-    if (currentFilters.StartDate) {
-        $('#startDate').val(currentFilters.StartDate);
-    }
-    if (currentFilters.EndDate) {
-        $('#endDate').val(currentFilters.EndDate);
-    }
-    
-    // Set up confirm export button
-    $('#btnConfirmExport').off('click').on('click', function() {
-        confirmExport(currentFilters);
-    });
-}
-
-// Function to handle export confirmation
-function confirmExport(currentFilters) {
-    const exportFormat = $('#exportFormat').val();
-    const reportType = $('#reportType').val();
-    const includeSummary = $('#includeSummary').is(':checked');
-    const fileName = $('#fileName').val() || 'Commission_Report';
-    const startDate = $('#startDate').val();
-    const endDate = $('#endDate').val();
-
-    // Show progress
-    $('#exportProgress').removeClass('d-none');
-    updateExportProgress(0, 'Preparing export data...');
-
-    // Get all data from the current DataTable
-    exportCurrentTableData({
-        format: exportFormat,
-        reportType: reportType,
-        includeSummary: includeSummary,
-        fileName: fileName,
-        startDate: startDate,
-        endDate: endDate,
-        filters: currentFilters
-    });
-}
-
-// Function to export current table data
-function exportCurrentTableData(exportOptions) {
-    updateExportProgress(25, 'Collecting table data...');
-
-    // Get all data from the DataTable (this will handle pagination)
-    const tableData = commissionTable.rows().data().toArray();
-    
-    if (!tableData || tableData.length === 0) {
-        appalert('No data available to export.', 3, 1);
-        $('#exportProgress').addClass('d-none');
-        return;
-    }
-
-    updateExportProgress(50, 'Formatting data for export...');
-
-    // Prepare the data for export
-    const exportData = {
-        Data: tableData,
-        TotalRecords: commissionTable.page.info().recordsTotal,
-        ExportOptions: exportOptions,
-        Filters: exportOptions.filters
-    };
-
-    console.log('Exporting data:', exportData);
-
-    // Make AJAX call to export endpoint
-    $.ajax({
-        url: '/CollectorCommission/ExportCommissionData',
-        type: 'POST',
-        data: JSON.stringify(exportData),
-        contentType: 'application/json',
-        xhrFields: {
-            responseType: 'blob'
-        },
-        beforeSend: function () {
-            $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
-        },
-        success: function (data, status, xhr) {
-            updateExportProgress(100, 'Download ready!');
-            
-            // Get filename from response headers or use default
-            var filename = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
-            var disposition = xhr.getResponseHeader('Content-Disposition');
-            if (disposition && disposition.indexOf('attachment') !== -1) {
-                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                var matches = filenameRegex.exec(disposition);
-                if (matches != null && matches[1]) {
-                    filename = matches[1].replace(/['"]/g, '');
-                }
+        function setupExportModal() {
+            // Check if there's any data in the table when modal opens
+            if (!commissionTable || commissionTable.rows().count() === 0) {
+                appalert('Please load commission data first by applying filters.', 3, 1);
+                $('#exportModal').modal('hide');
+                return;
             }
 
-            // Create blob and download
-            var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            appalert('Excel file downloaded successfully!', 1, 1);
-
-            // Close modal after successful export
-            setTimeout(function () {
-                $('#exportModal').modal('hide');
-                $('#exportProgress').addClass('d-none');
-                $('.progress-bar').css('width', '0%');
-                // Reset export button
-                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-            }, 1000);
-        },
-        error: function (xhr, status, error) {
-            console.error('Export error:', error);
-            console.error('Response:', xhr.responseText);
-            appalert('Error exporting data: ' + (xhr.responseJSON?.message || error), 4, 1);
-            $('#exportProgress').addClass('d-none');
-            $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            // Get current filter values for the export
+            const currentFilters = collectCommissionFilters();
+            
+            // Pre-fill date fields with current filter values
+            if (currentFilters.StartDate) {
+                $('#startDate').val(currentFilters.StartDate);
+            }
+            if (currentFilters.EndDate) {
+                $('#endDate').val(currentFilters.EndDate);
+            }
+            
+            // Set up confirm export button
+            $('#btnConfirmExport').off('click').on('click', function() {
+                confirmExport(currentFilters);
+            });
         }
-    });
-}
 
-// Function to update export progress
-function updateExportProgress(percent, message) {
-    $('#exportProgress .progress-bar').css('width', percent + '%');
-    $('#progressText').text(message);
-}
+        // Function to handle export confirmation
+        function confirmExport(currentFilters) {
+            const exportFormat = $('#exportFormat').val();
+            const reportType = $('#reportType').val();
+            const includeSummary = $('#includeSummary').is(':checked');
+            const fileName = $('#fileName').val() || 'Commission_Report';
+            const startDate = $('#startDate').val();
+            const endDate = $('#endDate').val();
+
+            // Show progress
+            $('#exportProgress').removeClass('d-none');
+            updateExportProgress(0, 'Preparing export data...');
+
+            // Get all filtered/sorted data from server
+            exportCurrentTableData({
+                format: exportFormat,
+                reportType: reportType,
+                includeSummary: includeSummary,
+                fileName: fileName,
+                startDate: startDate,
+                endDate: endDate,
+                filters: currentFilters
+            });
+        }
+
+        // Function to export current table data - CORRECTED VERSION
+        function exportCurrentTableData(exportOptions) {
+            updateExportProgress(25, 'Collecting all filtered data from server...');
+
+            // Get the current DataTable state (sorting, filtering, etc.)
+            const dtState = commissionTable.state();
+            const currentFilters = collectCommissionFilters();
+
+            // Create payload that maintains the CURRENT sorting and filtering but requests ALL records
+            const payload = {
+                DataTableOptions: {
+                    draw: 1,
+                    start: 0,
+                    length: -1, // -1 indicates ALL records (no pagination)
+                    skip: 0,
+                    pageSize: -1,
+                    searchValue: dtState.search?.search || '',
+                    sortColumnName: dtState.order && dtState.order[0] ? 
+                        dtState.columns[dtState.order[0][0]].data : 'CreatedDate',
+                    sortColumnDirection: dtState.order && dtState.order[0] ? 
+                        dtState.order[0][1] : 'desc',
+                    recordsTotal: 0,
+                    recordsFiltered: 0,
+                    search: dtState.search?.search || '',
+                    sortDirection: dtState.order && dtState.order[0] ? 
+                        dtState.order[0][1] : 'desc'
+                },
+                ...currentFilters,
+                IsExport: true // THIS IS THE KEY - tells controller this is for export
+            };
+
+            console.log('Export payload with current sorting/filtering:', payload);
+
+            // Make AJAX call to get ALL filtered/sorted data
+            $.ajax({
+                url: '/CollectorCommission/DataTable', // Same endpoint but with export parameters
+                type: 'POST',
+                data: JSON.stringify(payload),
+                contentType: 'application/json',
+                success: function (response) {
+                    updateExportProgress(50, 'Formatting data for export...');
+                    
+                    if (!response || !response.data || response.data.length === 0) {
+                        appalert('No data available to export.', 3, 1);
+                        $('#exportProgress').addClass('d-none');
+                        return;
+                    }
+
+                    console.log('Export data received:', response.data.length, 'records');
+
+                    // Prepare the data for export - send ALL the data we received
+                    const exportData = {
+                        Data: response.data, // This contains ALL filtered/sorted records
+                        TotalRecords: response.recordsTotal,
+                        ExportOptions: exportOptions,
+                        Filters: currentFilters
+                    };
+
+                    // Now call the export endpoint with ALL the filtered data
+                    performExport(exportData, exportOptions);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data for export:', error);
+                    appalert('Error fetching data for export: ' + error, 4, 1);
+                    $('#exportProgress').addClass('d-none');
+                    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                }
+            });
+        }
+
+        // Separate function to perform the actual export
+        function performExport(exportData, exportOptions) {
+            updateExportProgress(75, 'Generating Excel file...');
+
+            $.ajax({
+                url: '/CollectorCommission/ExportTableData',
+                type: 'POST',
+                data: JSON.stringify(exportData),
+                contentType: 'application/json',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                beforeSend: function () {
+                    $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+                },
+                success: function (data, status, xhr) {
+                    updateExportProgress(100, 'Download ready!');
+                    
+                    // Get filename from response headers or use default
+                    var filename = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    // Create blob and download
+                    var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    appalert('Excel file downloaded successfully! ' + exportData.Data.length + ' records exported.', 1, 1);
+
+                    // Close modal after successful export
+                    setTimeout(function () {
+                        $('#exportModal').modal('hide');
+                        $('#exportProgress').addClass('d-none');
+                        $('.progress-bar').css('width', '0%');
+                        $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                    }, 1000);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Export error:', error);
+                    console.error('Response:', xhr.responseText);
+                    
+                    // Try to parse error message
+                    let errorMessage = 'Error exporting data';
+                    try {
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        errorMessage = errorResponse.message || errorMessage;
+                    } catch (e) {
+                        errorMessage = error || errorMessage;
+                    }
+                    
+                    appalert(errorMessage, 4, 1);
+                    $('#exportProgress').addClass('d-none');
+                    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                }
+            });
+        }
+
+        // Function to update export progress
+        function updateExportProgress(percent, message) {
+            $('#exportProgress .progress-bar').css('width', percent + '%');
+            $('#progressText').text(message);
+        }
 
         $(document).ready(function () {
             console.log('=== DOCUMENT READY START ===');
@@ -837,7 +896,7 @@ function updateExportProgress(percent, message) {
                 }
             });
 
-            // Load collectors when branch is selected - ADD THIS
+            // Load collectors when branch is selected
             $('#BranchId').change(function () {
                 console.log('Branch changed:', $(this).val());
                 var branchId = $(this).val();
@@ -892,41 +951,41 @@ function updateExportProgress(percent, message) {
             });
 
             // Export modal event handlers
-$('#exportModal').on('show.bs.modal', function () {
-    console.log('Export modal opening...');
-    setupExportModal();
-});
+            $('#exportModal').on('show.bs.modal', function () {
+                console.log('Export modal opening...');
+                setupExportModal();
+            });
 
-$('#exportModal').on('hidden.bs.modal', function () {
-    console.log('Export modal closed');
-    // Reset progress and button states when modal closes
-    $('#exportProgress').addClass('d-none');
-    $('.progress-bar').css('width', '0%');
-    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-});
+            $('#exportModal').on('hidden.bs.modal', function () {
+                console.log('Export modal closed');
+                // Reset progress and button states when modal closes
+                $('#exportProgress').addClass('d-none');
+                $('.progress-bar').css('width', '0%');
+                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            });
 
             // Export button click handler
-$('#btnExport').off('click').on('click', function (e) {
-    e.preventDefault();
-    console.log('Export button clicked');
-    
-    // Check if table has data
-    if (!commissionTable || !isTableInitialized) {
-        appalert('Please load commission data first by applying filters.', 3, 1);
-        return;
-    }
-    
-    const recordCount = commissionTable.rows().count();
-    if (recordCount === 0) {
-        appalert('No data available to export. Please apply filters to load data first.', 3, 1);
-        return;
-    }
-    
-    console.log(`Exporting ${recordCount} records`);
-    
-    // Show the modal (your existing code)
-    $('#exportModal').modal('show');
-});
+            $('#btnExport').off('click').on('click', function (e) {
+                e.preventDefault();
+                console.log('Export button clicked');
+                
+                // Check if table has data
+                if (!commissionTable || !isTableInitialized) {
+                    appalert('Please load commission data first by applying filters.', 3, 1);
+                    return;
+                }
+                
+                const recordCount = commissionTable.rows().count();
+                if (recordCount === 0) {
+                    appalert('No data available to export. Please apply filters to load data first.', 3, 1);
+                    return;
+                }
+                
+                console.log(`Exporting ${recordCount} records`);
+                
+                // Show the modal
+                $('#exportModal').modal('show');
+            });
 
             console.log('=== COMMISSION PAGE INITIALIZATION COMPLETE ===');
             // NOTE: Table is NOT initialized automatically on page load

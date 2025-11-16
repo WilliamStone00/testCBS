@@ -243,11 +243,6 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.DarkGreen);
 
-            // Export info
-            //worksheet.Cells["A2"].Value = $"Exported By: {exportOptions?.FileName ?? "System"}";
-            //worksheet.Cells["A2:E2"].Merge = true;
-            //worksheet.Cells["A2"].Style.Font.Italic = true;
-
             // Headers with SN column and Transaction Date
             var headers = new[] { "SN", "Transaction Date", "Member ID", "Member Name", "Total Activity Amount", "Fee Charged" };
             int headerRow = 4;
@@ -340,6 +335,369 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        // Export Data table - IMPROVED VERSION
+        public static List<DataTableResponse> ConvertToCommissionData(List<dynamic> tableData)
+        {
+            var commissionList = new List<DataTableResponse>();
+
+            if (tableData == null || !tableData.Any())
+            {
+                Console.WriteLine("No table data provided for conversion");
+                return commissionList;
+            }
+
+            Console.WriteLine($"Converting {tableData.Count} records to CommissionData");
+
+            foreach (var item in tableData)
+            {
+                try
+                {
+                    // Handle DateTimeOffset properties properly
+                    DateTimeOffset? ParseDateTimeOffset(dynamic dateValue)
+                    {
+                        if (dateValue == null) return null;
+
+                        try
+                        {
+                            if (dateValue is DateTimeOffset dto)
+                                return dto;
+                            if (dateValue is DateTime dt)
+                                return new DateTimeOffset(dt);
+
+                            // Explicitly declare the out variable type
+                            DateTimeOffset parsedDate;
+                            if (DateTimeOffset.TryParse(dateValue.ToString(), out parsedDate))
+                                return parsedDate;
+                            return null;
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    }
+
+                    var commission = new DataTableResponse
+                    {
+                        Id = GetSafeString(item, "id", "Id"),
+                        CollectorId = GetSafeString(item, "collectorId", "CollectorId"),
+                        CollectorName = GetSafeString(item, "collectorName", "CollectorName"),
+                        CollectorPhoneNumber = GetSafeString(item, "collectorPhoneNumber", "CollectorPhoneNumber"),
+                        CollectorAccountNumber = GetSafeString(item, "collectorAccountNumber", "CollectorAccountNumber"),
+                        MemberReference = GetSafeString(item, "memberReference", "MemberReference"),
+                        BranchId = GetSafeString(item, "branchId", "BranchId"),
+                        BranchCode = GetSafeString(item, "branchCode", "BranchCode"),
+                        BranchName = GetSafeString(item, "branchName", "BranchName"),
+                        Year = GetSafeInt(item, "year", "Year") ?? DateTime.Now.Year,
+                        Month = GetSafeInt(item, "month", "Month") ?? DateTime.Now.Month,
+                        ReferenceNumber = GetSafeString(item, "referenceNumber", "ReferenceNumber"),
+                        CollectorShareAmount = GetSafeDecimal(item, "collectorShareAmount", "CollectorShareAmount") ?? 0,
+                        IncentiveAmount = GetSafeDecimal(item, "incentiveAmount", "IncentiveAmount") ?? 0,
+                        TotalPaidAmountToCollector = GetSafeDecimal(item, "totalPaidAmountToCollector", "TotalPaidAmountToCollector") ?? 0,
+                        TotalCommissionShared = GetSafeDecimal(item, "totalCommissionShared", "TotalCommissionShared") ?? 0,
+                        AmountPaid = GetSafeDecimal(item, "amountPaid", "AmountPaid") ?? 0,
+                        Currency = GetSafeString(item, "currency", "Currency") ?? "XAF",
+                        DatePaid = ParseDateTimeOffset(GetPropertyValue(item, "datePaid", "DatePaid")) ?? DateTimeOffset.Now,
+                        Description = GetSafeString(item, "description", "Description") ?? "Monthly collector commission",
+                        PaymentSource = GetSafeString(item, "paymentSource", "PaymentSource") ?? "BackOffice_Operation",
+                        ProcessedBy = GetSafeString(item, "processedBy", "ProcessedBy"),
+                        ProcessedByUserId = GetSafeString(item, "processedByUserId", "ProcessedByUserId"),
+                        CreatedDate = ParseDateTimeOffset(GetPropertyValue(item, "createdDate", "CreatedDate")) ?? DateTimeOffset.Now,
+                        CreatedBy = GetSafeString(item, "createdBy", "CreatedBy"),
+                        ModifiedDate = ParseDateTimeOffset(GetPropertyValue(item, "modifiedDate", "ModifiedDate")) ?? DateTimeOffset.MinValue,
+                        ModifiedBy = GetSafeString(item, "modifiedBy", "ModifiedBy"),
+                        DeletedDate = ParseDateTimeOffset(GetPropertyValue(item, "deletedDate", "DeletedDate")),
+                        DeletedBy = GetSafeString(item, "deletedBy", "DeletedBy"),
+                        IsDeleted = GetSafeBool(item, "isDeleted", "IsDeleted") ?? false
+                    };
+
+                    commissionList.Add(commission);
+                    Console.WriteLine($"Successfully converted record: {commission.Id} - {commission.CollectorName}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error converting commission data: {ex.Message}");
+                    Console.WriteLine($"Problematic item: {Newtonsoft.Json.JsonConvert.SerializeObject(item)}");
+                    // Continue with next item
+                }
+            }
+
+            Console.WriteLine($"Successfully converted {commissionList.Count} out of {tableData.Count} records");
+            return commissionList;
+        }
+
+        // Helper methods for safe property access
+        private static string GetSafeString(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    var value = GetPropertyValue(obj, propName);
+                    if (value != null && !string.IsNullOrEmpty(value.ToString()))
+                        return value.ToString();
+                }
+                catch
+                {
+                    // Continue to next property name
+                }
+            }
+            return null;
+        }
+
+        private static int? GetSafeInt(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    var value = GetPropertyValue(obj, propName);
+                    if (value != null)
+                    {
+                        if (int.TryParse(value.ToString(), out int result))
+                            return result;
+                    }
+                }
+                catch
+                {
+                    // Continue to next property name
+                }
+            }
+            return null;
+        }
+
+        private static decimal? GetSafeDecimal(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    var value = GetPropertyValue(obj, propName);
+                    if (value != null)
+                    {
+                        if (decimal.TryParse(value.ToString(), out decimal result))
+                            return result;
+                    }
+                }
+                catch
+                {
+                    // Continue to next property name
+                }
+            }
+            return null;
+        }
+
+        private static bool? GetSafeBool(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    var value = GetPropertyValue(obj, propName);
+                    if (value != null)
+                    {
+                        if (bool.TryParse(value.ToString(), out bool result))
+                            return result;
+                        // Handle "true"/"false" strings and 1/0 integers
+                        if (value.ToString().ToLower() == "true" || value.ToString() == "1")
+                            return true;
+                        if (value.ToString().ToLower() == "false" || value.ToString() == "0")
+                            return false;
+                    }
+                }
+                catch
+                {
+                    // Continue to next property name
+                }
+            }
+            return null;
+        }
+
+        private static dynamic GetPropertyValue(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    // Check if property exists and has value
+                    if (obj != null)
+                    {
+                        var property = obj.GetType().GetProperty(propName);
+                        if (property != null)
+                        {
+                            var value = property.GetValue(obj, null);
+                            if (value != null)
+                                return value;
+                        }
+
+                        // Try as dictionary
+                        if (obj is IDictionary<string, object> dict && dict.ContainsKey(propName))
+                            return dict[propName];
+                    }
+                }
+                catch
+                {
+                    // Continue to next property name
+                }
+            }
+            return null;
+        }
+
+        public static void GenerateCommissionExcelFromTableData(List<DataTableResponse> commissionData, string filePath, string exportedBy, ExportOptions exportOptions)
+        {
+            // Set EPPlus license context
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+            {
+                // Create main worksheet
+                var worksheet = package.Workbook.Worksheets.Add("Commission Report");
+
+                // Set font
+                var fontName = "Bahnschrift SemiCondensed";
+                worksheet.Cells.Style.Font.Name = fontName;
+
+                // Title
+                worksheet.Cells["A1"].Value = "COMMISSION REPORT";
+                worksheet.Cells["A1:U1"].Merge = true; // Increased merge range for more columns
+                worksheet.Cells["A1"].Style.Font.Bold = true;
+                worksheet.Cells["A1"].Style.Font.Size = 16;
+                worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
+                worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.DarkGreen);
+
+                // Export info
+                worksheet.Cells["A2"].Value = $"Exported By: {exportedBy}";
+                worksheet.Cells["A2:U2"].Merge = true;
+                worksheet.Cells["A2"].Style.Font.Italic = true;
+
+                worksheet.Cells["A3"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                worksheet.Cells["A3:U3"].Merge = true;
+                worksheet.Cells["A3"].Style.Font.Italic = true;
+
+                if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
+                {
+                    worksheet.Cells["A4"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
+                    worksheet.Cells["A4:U4"].Merge = true;
+                    worksheet.Cells["A4"].Style.Font.Italic = true;
+                }
+
+                // COMPREHENSIVE Headers - Include ALL fields from DataTableResponse
+                var headers = new[]
+                {
+                    "SN", "ID", "Collector ID", "Collector Name", "Collector Phone", "Collector Account",
+                    "Member Reference", "Branch ID", "Branch Code", "Branch Name", "Year", "Month",
+                    "Reference Number", "Collector Share", "Incentive Amount", "Total Paid to Collector",
+                    "Total Commission Shared", "Amount Paid", "Currency", "Date Paid", "Description",
+                    "Payment Source", "Processed By", "Processed By User ID", "Created Date", "Created By",
+                    "Modified Date", "Modified By", "Deleted Date", "Deleted By", "Is Deleted"
+                };
+
+                int headerRow = 6;
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    worksheet.Cells[headerRow, i + 1].Value = headers[i];
+                    worksheet.Cells[headerRow, i + 1].Style.Font.Bold = true;
+                    worksheet.Cells[headerRow, i + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[headerRow, i + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                    worksheet.Cells[headerRow, i + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+
+                // Data
+                int dataRow = headerRow + 1;
+                decimal totalAmountPaid = 0;
+                decimal totalIncentive = 0;
+                decimal totalPaidToCollector = 0;
+                decimal totalCommissionShared = 0;
+                decimal totalCollectorShare = 0;
+                int serialNumber = 1;
+
+                foreach (var commission in commissionData)
+                {
+                    worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN
+                    worksheet.Cells[dataRow, 2].Value = commission.Id;
+                    worksheet.Cells[dataRow, 3].Value = commission.CollectorId;
+                    worksheet.Cells[dataRow, 4].Value = commission.CollectorName;
+                    worksheet.Cells[dataRow, 5].Value = commission.CollectorPhoneNumber;
+                    worksheet.Cells[dataRow, 6].Value = commission.CollectorAccountNumber;
+                    worksheet.Cells[dataRow, 7].Value = commission.MemberReference;
+                    worksheet.Cells[dataRow, 8].Value = commission.BranchId;
+                    worksheet.Cells[dataRow, 9].Value = commission.BranchCode;
+                    worksheet.Cells[dataRow, 10].Value = commission.BranchName;
+                    worksheet.Cells[dataRow, 11].Value = commission.Year;
+                    worksheet.Cells[dataRow, 12].Value = commission.Month;
+                    worksheet.Cells[dataRow, 13].Value = commission.ReferenceNumber;
+                    worksheet.Cells[dataRow, 14].Value = commission.CollectorShareAmount;
+                    worksheet.Cells[dataRow, 15].Value = commission.IncentiveAmount;
+                    worksheet.Cells[dataRow, 16].Value = commission.TotalPaidAmountToCollector;
+                    worksheet.Cells[dataRow, 17].Value = commission.TotalCommissionShared;
+                    worksheet.Cells[dataRow, 18].Value = commission.AmountPaid;
+                    worksheet.Cells[dataRow, 19].Value = commission.Currency;
+                    worksheet.Cells[dataRow, 20].Value = commission.DatePaid.ToString("yyyy-MM-dd");
+                    worksheet.Cells[dataRow, 21].Value = commission.Description;
+                    worksheet.Cells[dataRow, 22].Value = commission.PaymentSource;
+                    worksheet.Cells[dataRow, 23].Value = commission.ProcessedBy;
+                    worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
+                    worksheet.Cells[dataRow, 25].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
+                    worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
+                    worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
+                    worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
+                    worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
+
+                    // Apply borders
+                    for (int col = 1; col <= headers.Length; col++)
+                    {
+                        worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    }
+
+                    totalAmountPaid += commission.AmountPaid;
+                    totalIncentive += commission.IncentiveAmount;
+                    totalPaidToCollector += commission.TotalPaidAmountToCollector;
+                    totalCommissionShared += commission.TotalCommissionShared;
+                    totalCollectorShare += commission.CollectorShareAmount;
+                    dataRow++;
+                }
+
+                // Totals Row
+                if (commissionData.Any())
+                {
+                    worksheet.Cells[dataRow, 1].Value = "TOTALS:";
+                    worksheet.Cells[dataRow, 1].Style.Font.Bold = true;
+                    worksheet.Cells[dataRow, 14].Value = totalCollectorShare;
+                    worksheet.Cells[dataRow, 15].Value = totalIncentive;
+                    worksheet.Cells[dataRow, 16].Value = totalPaidToCollector;
+                    worksheet.Cells[dataRow, 17].Value = totalCommissionShared;
+                    worksheet.Cells[dataRow, 18].Value = totalAmountPaid;
+
+                    // Style totals row
+                    for (int col = 1; col <= headers.Length; col++)
+                    {
+                        worksheet.Cells[dataRow, col].Style.Font.Bold = true;
+                        worksheet.Cells[dataRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[dataRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                        worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    }
+                }
+
+                // Format numbers
+                if (commissionData.Any())
+                {
+                    worksheet.Cells[$"N{headerRow + 1}:R{dataRow}"].Style.Numberformat.Format = "#,##0.00";
+                }
+
+                // Auto-fit columns
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                // Save the file
+                package.SaveAs(new FileInfo(filePath));
+
+                Console.WriteLine($"Excel file generated successfully with {commissionData.Count} records");
+                Console.WriteLine($"File saved to: {filePath}");
+            }
         }
     }
 }
