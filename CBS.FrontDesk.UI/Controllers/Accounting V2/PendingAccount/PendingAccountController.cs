@@ -124,20 +124,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.PendingAccount
             }
             else
             {
-
+                var data = await _pendingAccount.GetByIdAsync(KEY);
                 if (path == "reject" || path == "validate")
                 {
                     var model = new RequestAction
                     {
                         Id = KEY,
-                        ActionType=serviceOption
+                        Account= data.Code,
+                        ActionType =serviceOption
                         
                     };
                     return PartialView(partialView, model);
                 }
                 else
                 {
-                    var data = await _pendingAccount.GetByIdAsync(KEY);
+                   /* var data = await _pendingAccount.GetByIdAsync(KEY);*/
                     return PartialView(partialView, data);
                 }
 

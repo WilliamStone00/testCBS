@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
@@ -26,11 +27,13 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
         private readonly ApiCallerHelper _apiHelper;
         private readonly ApiCallerHelper _customerApiHelper;
         private readonly ApiCallerHelper _ExtractedDetails;
-        public FileUploadService()
+        private readonly BranchServices _branchServices;
+        public FileUploadService(BranchServices branchServices)
         {
             var baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
             var cusbaseurl = ConfigurationManager.AppSettings["CustomerBaseUrl"];
+            _branchServices = branchServices;
         }
 
         public async Task<CustomDataTable2> AccountwaitingDataTableAsync(AccountwaitingCorrespondanceQuery query)
@@ -340,14 +343,18 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
         /// <summary>
         /// Gets the full details of a single file. Used for the read-only Details page/preview.
         /// </summary>
-        public async Task<Accountwaiting> GetByIdAsync(string fileUploadId)
+        public async Task<Accountwaiting> GetByIdAsync(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(fileUploadId)) return null;
-                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(fileUploadId));
+                if (string.IsNullOrWhiteSpace(id)) return null;
+                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(id));
                 var response = await _apiHelper.GetAsync<ResponseObject<Accountwaiting>>(endpoint);
-                return response?.ApiResponseData?.Data;
+                var awt= response?.ApiResponseData?.Data;
+
+                awt.BranchName = await GetBranchNameAsync(awt?.BranchId);
+
+                return awt;
             }
             catch (Exception ex)
             {
@@ -356,13 +363,22 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             }
         }
 
-        public async Task<AddCORRESPONDANCE> GetByIdFORCorrespondanceAsync(string fileUploadId)
+        public async Task<string> GetBranchNameAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return null;
+
+            var getAllBranches= await _branchServices.GetBranches();
+
+            return (getAllBranches.Where(x => x.Id == id).FirstOrDefault())?.Name;
+        }
+
+        public async Task<Accountwaiting> GetAccountAwaitingCorrespondence(string id)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(fileUploadId)) return null;
-                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(fileUploadId));
-                var response = await _apiHelper.GetAsync<ResponseObject<AddCORRESPONDANCE>>(endpoint);
+                if (string.IsNullOrWhiteSpace(id)) return null;
+                var endpoint = string.Format(APICallHelper.GetawaitingcorrespondanceById, Uri.EscapeDataString(id));
+                var response = await _apiHelper.GetAsync<ResponseObject<Accountwaiting>>(endpoint);
                 return response?.ApiResponseData?.Data;
             }
             catch (Exception ex)
@@ -399,7 +415,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
             return ExecutionMessage;
         }
 
-        public async Task<ExecutionMessages> CreateCorrespondanceRequestAsync(AddCORRESPONDANCE model)
+        public async Task<ExecutionMessages> CreateCorrespondanceRequestAsync(AddCorrespondenceRequestModel model)
         {
             try
             {

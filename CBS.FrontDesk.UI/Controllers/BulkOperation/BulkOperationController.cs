@@ -531,6 +531,7 @@ namespace CBS.FrontDesk.UI.Controllers.BulkOperation
             {
               //  AccountChart = currentEvent?.Text,
                 AccountChartId = simulateCashOutOrCashIn.AccountCartId,
+                AccountChart = simulateCashOutOrCashIn.AccountCartId,
                 AccountingDate = accountingDate,
                 Description = simulateCashOutOrCashIn.SimulationDescription,
                 OperationType = simulateCashOutOrCashIn.TransferType,

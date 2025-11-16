@@ -57,7 +57,7 @@
                             new SelectListItem { Text = "Branch", Value = "Branch" }
                         }, "Value", "Text"),
                         null,
-                        new { @class = "form-select", id = "Scope" }
+                        new { @class = "form-select select2", id = "Scope" }
                     )
                 </div>
 
@@ -66,7 +66,7 @@
                         "Class",
                         new SelectList(ViewBag.Classes ?? new List<SelectListItem>(), "Value", "Text"),
                         "--- Select Account Class ---",
-                        new { @class = "form-select", id = "Class" }
+                        new { @class = "form-select select2", id = "Class" }
                     )
                 </div>
             </div>
@@ -165,7 +165,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
 (function ($) {
           'use strict';
 
@@ -221,18 +221,32 @@
             };
           }
 
-          function initSelect2() {
+   function initSelect2() {
             if (!$.fn.select2) return;
             try {
               $('#BranchId').select2({ width: '100%', placeholder: 'Select Branch', allowClear: true });
               $('#AffiliateId').select2({ width: '100%', placeholder: 'Select Affiliate', allowClear: true });
               $('#Scope').select2({ width: '100%', placeholder: 'Select Scope', allowClear: true });
+              $('#HoPcmfAccountId').select2({ width: '100%', placeholder: 'Select PCMf  Account', allowClear: true });
+                $('#AffiliateAccountId').select2({ width: '100%', placeholder: 'Select Affiliate', allowClear: true });
               $('#Class').select2({ width: '100%', placeholder: 'Select Account Class', allowClear: true });
             } catch (e) {
               console.warn('select2 init failed', e);
               if (typeof appalert === 'function') appalert('select2 init failed: ' + (e?.message || e), 2, 1);
             }
-          }
+    }
+
+      // ─────────────────────────────────────────────────────────────────────────────
+  // Optional Select2 on the page-level filters
+  // ─────────────────────────────────────────────────────────────────────────────
+  if ($.fn.select2) {
+    try {
+      $('#HoPcmfAccountId').select2({ width: '100%', placeholder: 'Select PCMf  Account', allowClear: true });
+   $('#AffiliateAccountId').select2({ width: '100%', placeholder: 'Select Affiliate', allowClear: true });
+    } catch (e) { console.warn('select2 init failed', e); }
+  }
+
+
 
           function ensureTableSkeleton() {
             if (!$('#myDataTable').length) {
@@ -242,6 +256,7 @@
                     <tr>
                       <th>Created</th>
                       <th>Account Code</th>
+                      <th>Branch Name</th>
                       <th>Name</th>
                       <th>Class</th>
                       <th>Posting</th>
@@ -312,6 +327,7 @@
                 },
                 // Adjust these field names to your DTO:
                 { data: 'Code', defaultContent: '-' },
+                  { data: 'BranchName', defaultContent: '-' },
                 { data: 'Name', defaultContent: '-' },
                 {
                   data: 'Class',
@@ -463,14 +479,24 @@
               $('#correspondenceModal .modal-body').html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
                 $.get('/FileUpload/GetCorrespondencePartial', {
                     recordId,
-                    name,
-                    scope,
-                    branchId,
-                    hoPcmfAccountId,
-                    affiliateAccountId,
-                    branchAccountId })
+                    scope })
                 .done(function (html) {
-                  $('#correspondenceModal .modal-body').html(html);
+                    $('#correspondenceModal .modal-body').html(html);
+                    // Initialize Select2 for any dropdowns in the modal
+                    if ($.fn.select2) {
+                        try {
+                            $('#correspondenceModal .select2').each(function () {
+                                if (!$(this).hasClass('select2-hidden-accessible')) {
+                                    $(this).select2({
+                                        dropdownParent: $('#correspondenceModal'),
+                                        width: '100%',
+                                        placeholder: $(this).data('placeholder') || 'Select an option',
+                                        allowClear: true
+                                    });
+                                }
+                            });
+                        } catch (e) { console.warn('select2 in details modal init failed', e); }
+                    }
                   new bootstrap.Modal(document.getElementById('correspondenceModal')).show();
                 })
                 .fail(function () {
@@ -480,12 +506,7 @@
             });
 
 
-              if ($.fn.select2) {
-                  try {
-                      $('#HoPcmfAccountId').select2();
-                      $('#AffiliateAccountId').select2();
-                  } catch (e) { console.warn('select2 init failed', e); }
-              }
+
 
 
             // Update
@@ -581,6 +602,6 @@
             // No auto-load; user clicks Apply
           });
 })(jQuery);
-    </script>
+</script>
 }
 

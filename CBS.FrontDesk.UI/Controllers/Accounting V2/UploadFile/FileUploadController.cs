@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -217,12 +218,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
                 var Accountwaiting = JsonConvert.DeserializeObject<List<Accountwaiting>>(JsonConvert.SerializeObject(data.data));
 
+                var tasks = Accountwaiting.Select(async x =>
+                {
+                    x.BranchName = await _fileUploadService.GetBranchNameAsync(x.BranchId);
+                    return x;
+                }).ToList();
+
+                var res = (await Task.WhenAll(tasks)).ToList();
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Accountwaiting
+                    data = res
                 });
             }
             catch (Exception ex)
@@ -264,12 +273,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
                 var response = JsonConvert.DeserializeObject<List<CorrespondenceRequestDto>>(JsonConvert.SerializeObject(data.data));
 
+                var tasks = response.Select(async x =>
+                {
+                    x.BranchName = await _fileUploadService.GetBranchNameAsync(x.BranchId);
+                    return x;
+                }).ToList();
+
+                var res = (await Task.WhenAll(tasks)).ToList();
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = response
+                    data = res
                 });
             }
             catch (Exception ex)
@@ -333,7 +350,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             //GetRolePermissions
             else if (path == "new")
             {
-                return PartialView(partialView, new AddCORRESPONDANCE());
+                return PartialView(partialView, new AddCorrespondenceRequestModel());
             }
 
             else
@@ -346,7 +363,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Addcorrespondance(AddCORRESPONDANCE model)
+        public async Task<ActionResult> Addcorrespondance(AddCorrespondenceRequestModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
@@ -566,16 +583,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name, string scope, string branchId, string hoPcmfAccountId = null, string affiliateAccountId = null, string branchAccountId = null)
+        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string scope)
         {
             // Basic normalization
             recordId = recordId?.Trim();
-            name = name?.Trim();
+
+            var awaiting =await _fileUploadService.GetAccountAwaitingCorrespondence(recordId);
+
+      
             scope = scope?.Trim();
-            branchId = branchId?.Trim();
-            hoPcmfAccountId = hoPcmfAccountId?.Trim();
-            affiliateAccountId = affiliateAccountId?.Trim();
-            branchAccountId = branchAccountId?.Trim();
 
             // Resolve type from scope
             var type = string.Equals(scope, "Branch", StringComparison.OrdinalIgnoreCase)
@@ -591,17 +607,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
             ViewBag.ChartOfAccountMFI = affiliateAccounts;
             // Build the model for the partial
-            var model = new AddCORRESPONDANCE
+            var model = new AddCorrespondenceRequestModel
             {
                 // Required flow metadata
                 Type = type,
 
                 // Context you likely want in the form (rename to your actual props)
-                Name = name,
-                BranchId = branchId,
-                HoPcmfAccountId = hoPcmfAccountId,
-                AffiliateAccountId = affiliateAccountId,
-                BranchAccountId = branchAccountId
+                Name = awaiting.Code +"-" + awaiting.Name,
+                BranchId = awaiting.BranchId,
+                HoPcmfAccountId = awaiting.HoPcmfAccountId,
+                AffiliateAccountId = awaiting.AffiliateAccountId,
+                BranchAccountId = awaiting.BranchAccountId 
             };
 
             // If your partial uses dropdowns, you can preload ViewBags here (optional)

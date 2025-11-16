@@ -98,10 +98,10 @@
                     <td class="fw-bold">Type</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Type) ? "-" : Html.Encode(Model.Type))</td>
                 </tr>
-               @* <tr>
-                    <td class="fw-bold">Correlation Id</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.CorrelationId) ? "-" : Html.Encode(Model.CorrelationId))</td>
-                </tr>*@
+                <tr>
+                    <td class="fw-bold">Branch</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Html.Encode(Model.BranchName))</td>
+                </tr>
                 <tr>
                     <td class="fw-bold">Status</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.Status) ? "-" : Html.Encode(Model.Status))</td>

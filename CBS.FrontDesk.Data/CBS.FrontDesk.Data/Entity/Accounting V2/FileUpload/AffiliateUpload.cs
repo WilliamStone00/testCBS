@@ -64,6 +64,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string Id { get; set; }
         public string Scope { get; set; }
         public string BranchId { get; set; }
+        public string BranchName { get; set; }
         public string AffiliateId { get; set; }
         public string Code { get; set; }
         public string NameEn { get; set; }
@@ -85,7 +86,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string Language { get; set; } = null;
     }
 
-    public class AddCORRESPONDANCE
+    public class AddCorrespondenceRequestModel
     {
         public string Scope { get; set; }
         public string Type { get; set; }
@@ -165,6 +166,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload
         public string RejectionReason { get; set; }
 
         public string BranchId { get; set; }
+        public string BranchName{ get; set; }
         public string BranchAccountId { get; set; }
         public string AffiliateAccountId { get; set; }
         public string SourceAffiliateAccountId { get; set; }
