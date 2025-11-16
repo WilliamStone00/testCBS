@@ -425,6 +425,17 @@
               : `<span class="badge bg-secondary">${v}</span>`;
       }
 
+      function escapeHtml(str) {
+          if (str === undefined || str === null) return '';
+          return String(str)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+      }
+
+
 
       // ----- DataTable -----
       function initDataTable() {
@@ -561,22 +572,54 @@
                           return renderStatusBadge(row.Status || row.status);
                       }
                   },
-                  { // Actions
-                      data: null, orderable: false, searchable: false, className: 'text-end',
-                      render: function (_, __, row) {
-                          const id = row.Id || row.id;
-                          const btnId = 'act_' + (id || Math.random().toString(36).slice(2));
-                          return `
-            <div class="dropdown text-end">
-              <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="mdi mdi-cog-outline"></i> Actions
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-                <li><button type="button" class="dropdown-item js-detail" data-id="${id}"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                <li><button type="button" class="dropdown-item js-validate" data-id="${id}"><i class="mdi mdi-check-circle-outline me-1 text-success"></i> Validate</button></li>
-                <li><button type="button" class="dropdown-item js-reject" data-id="${id}"><i class="mdi mdi-close-circle-outline me-1 text-warning"></i> Reject</button></li>
-              </ul>
-            </div>`;
+                  {
+                      data: 'Id',
+                      orderable: false,
+                      searchable: false,
+                      render: function (data, type, row) {
+                          var rawId = String(row.Id || row.id );
+                          var recordId = encodeURIComponent(rawId);
+                          var safeId = rawId.replace(/[^a-zA-Z0-9_\-]/g, '') || 'x';
+                          var btnId = 'actionDropdown_' + safeId;
+
+                          var status = (row.Status || '').toString().trim().toLowerCase();
+
+                          var detailsBtn = `
+                                             <button type="button" class="dropdown-item js-detail" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                             </button>`;
+
+                                                          var reviewBtn = `
+                                             <button type="button" class="dropdown-item js-validate" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-clipboard-check me-1 text-success"></i> Approve
+                                             </button>`;
+
+                                                          var rejectBtn = `
+                                             <button type="button" class="dropdown-item js-reject text-danger" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-close-circle-outline me-1"></i> Reject
+                                             </button>`;
+
+                                            var menuItems = '';
+                                            if (status === 'pending' || status === 'open') {
+                                                menuItems = `
+                                                    <li>${detailsBtn}</li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>${reviewBtn}</li>
+                                                    <li>${rejectBtn}</li>`;
+                                            }
+                                            else {
+                                                menuItems = `<li>${detailsBtn}</li>`;
+                                            }
+
+                                                          return `
+                                             <div class="dropdown text-center">
+                                                 <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}"  data-bs-toggle="dropdown" aria-expanded="false">
+                                                     <i class="mdi mdi-cog-outline"></i> Actions
+                                                 </button>
+                                                 <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                     ${menuItems}
+                                                 </ul>
+                                             </div>`;
                       }
                   }
               ],

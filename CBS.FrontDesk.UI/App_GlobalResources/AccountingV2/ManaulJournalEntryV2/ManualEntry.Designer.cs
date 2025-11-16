@@ -124,6 +124,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to post the above entries?.
+        /// </summary>
+        internal static string Areyousureyouwanttoposttheaboveentries {
+            get {
+                return ResourceManager.GetString("Areyousureyouwanttoposttheaboveentries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attachments.
         /// </summary>
         internal static string Attachments {
@@ -156,6 +165,15 @@ namespace Resources {
         internal static string ConfirmationofDate {
             get {
                 return ResourceManager.GetString("ConfirmationofDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Confirm Journal Posting.
+        /// </summary>
+        internal static string ConfirmJournalPosting {
+            get {
+                return ResourceManager.GetString("ConfirmJournalPosting", resourceCulture);
             }
         }
         

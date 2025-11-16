@@ -20,6 +20,26 @@
 </div>
 
 
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJournalTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseJournalTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><strong>Use the Add Year button:</strong> Opens a clean modal form with a loading spinner before content loads.</li>
+                <li><strong>Updating a Year:</strong> Click the update button to fetch year details via AJAX and display the form in the modal.</li>
+                <li><strong>Validations Required:</strong> Branch, Accounting Year, and Status must be selected before submitting.</li>
+                <li><strong>Confirmation Step:</strong> A confirmation popup shows selected values and requires a checkbox before saving.</li>
+                <li><strong>Form Submission:</strong> The form submits using FormData to support files and anti-forgery tokens.</li>
+               <li><strong>Auto UI Reset:</strong> After a successful save, the form resets and all Select2 dropdowns are cleared.</li>
+        </div>
+    </div>
+</div>
 
 
 
@@ -46,14 +66,14 @@
     <script>
 $(document).ready(function () {
 
-    // Load accounting years listing
+    // ✅ Load all years
     $.ajax({
         url: '@Url.Action("GetAll", "AccountingYear")',
         type: 'GET',
         success: function (partialViewResult) {
             $("#datalistingview").html(partialViewResult);
 
-            // ✅ Add New Year
+            // ✅ Add Year button
             $("#btnAddYear").on("click", function () {
                 $.ajax({
                     url: '@Url.Action("New", "AccountingYear")',
@@ -73,49 +93,45 @@ $(document).ready(function () {
                         bsModal.show();
                     },
                     error: function (xhr, status, error) {
-                        console.error("❌ Error loading form:", error);
                         appalert("Failed to load Add Accounting Year view: " + error, 1, 4);
                     }
                 });
             });
 
-            // ✅ Update Year
-            $(".btn-update-year").on("click", function () {
-                const id = $(this).data("id");
-                if (!id) {
-                    appalert("Invalid ID for update.", 3, 1);
-                    return;
-                }
+            // ✅ Update Year button
+           // ✅ Update Year button (clean version, same style as Add button)
+                $(".btn-update-year").on("click", function () {
+                    const id = $(this).data("id");
+                    if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
 
-                $.ajax({
-                    url: '@Url.Action("GetDetails", "AccountingYear")',
-                    type: 'GET',
-                    data: { id: id },
-                    beforeSend: function () {
-                        $("#accountingYearModalContent").html(`
-                           
-                        `);
-                        const modalEl = document.getElementById('accountingYearModal');
-                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                        bsModal.show();
-                    },
-                    success: function (html) {
-                        $("#accountingYearModalContent").html(html);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("❌ Error loading update form:", error);
-                        appalert("Failed to load update view: " + error, 1, 4);
-                    }
+                    $.ajax({
+                        url: '@Url.Action("GetDetails", "AccountingYear")',
+                        type: 'GET',
+                        data: { id: id },
+                        beforeSend: function () {
+                            $("#accountingYearModalContent").html(`
+                                <div class="text-center my-4">
+                                    <div class="spinner-border text-success" role="status"></div>
+                                    <p class="mt-2">Loading form...</p>
+                                </div>
+                            `);
+                        },
+                        success: function (html) {
+                            $("#accountingYearModal .modal-content").html(html);
+                            const modalEl = document.getElementById('accountingYearModal');
+                            const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                            bsModal.show();
+                        },
+                        error: function (xhr, status, error) {
+                            appalert("Failed to load update view: " + error, 1, 4);
+                        }
+                    });
                 });
-            });
-        },
-        error: function (xhr, status, error) {
-            appalert("Failed to load accounting years: " + error, 1, 4);
-            console.error(error);
+
         }
     });
 
-    // ✅ Save Accounting Year via Ajax (your existing logic)
+    // ✅ AJAX Save
     window.CreatAccountingYearSaveAjax = function (form) {
         if (!$(form).valid()) return false;
 
@@ -204,4 +220,5 @@ $(document).ready(function () {
 
 });
     </script>
+
 }

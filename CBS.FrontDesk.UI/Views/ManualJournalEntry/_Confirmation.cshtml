@@ -1,6 +1,7 @@
-﻿<div class="modal-header bg-light">
+﻿@using Resources
+<div class="modal-header bg-light">
     <h5 class="modal-title fw-bold text-primary" id="confirmModalLabel">
-        <i class="mdi mdi-book-check-outline me-2"></i> Confirm Journal Posting
+        <i class="mdi mdi-book-check-outline me-2"></i> @ManualEntry.ConfirmJournalPosting
     </h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
@@ -9,10 +10,10 @@
     <div class="border rounded p-3 mb-3 bg-light small">
         <div class="row mb-2">
             <div class="col-md-6">
-                <strong>Accounting Date:</strong> <span id="confirmAccountingDate"></span>
+                <strong>@ManualEntry.AccountingDate:</strong> <span id="confirmAccountingDate"></span>
             </div>
             <div class="col-md-6" id="confirmCounterpartyDiv" style="display:none;">
-                <strong>Counterparty Branch:</strong> <span id="confirmCounterpartyBranch"></span>
+                <strong>@ManualEntry.CounterpartyBranch:</strong> <span id="confirmCounterpartyBranch"></span>
             </div>
         </div>
     </div>
@@ -21,9 +22,9 @@
         <table class="table table-bordered align-middle text-center" id="confirmTable">
             <thead class="table-light">
                 <tr>
-                    <th>Account</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
+                    <th>@ManualEntry.Account</th>
+                    <th>@ManualEntry.Debit</th>
+                    <th>@ManualEntry.Credit</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -39,7 +40,7 @@
 
     <div class="alert alert-info mt-3 text-center mb-0">
         <i class="mdi mdi-alert-circle-outline me-1"></i>
-        Are you sure you want to post the above entries?
+        @ManualEntry.Areyousureyouwanttoposttheaboveentries
     </div>
 </div>
 

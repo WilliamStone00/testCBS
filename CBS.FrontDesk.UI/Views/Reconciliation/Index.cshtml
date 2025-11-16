@@ -336,9 +336,6 @@
 
 @section Scripts {
     <script>
-
-
-
         (function ($) {
             'use strict';
 
@@ -347,90 +344,113 @@
             let currentMode = 'member';
             let currentAccountTypeId = null;
             let currentBranchId = null;
+            let branchChangeTimeout;
 
-            // Helper: init select2 for provided selector (safe)
+            // Optimized Select2 initialization - skip for large datasets
             function ensureSelect2Init(selectorOrJq) {
                 var $el = (selectorOrJq && selectorOrJq.jquery) ? selectorOrJq : $(selectorOrJq);
                 if (!$el || $el.length === 0) return;
+                
+                // Check if Select2 is available and not already initialized
                 if ($.fn.select2 && !$el.data('select2')) {
-                    try { $el.select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+                    const optionCount = $el.find('option').length;
+                    // Skip Select2 for dropdowns with many options to improve performance
+                    if (optionCount > 50) {
+                        console.log('Skipping Select2 for large dropdown with', optionCount, 'options');
+                        return;
+                    }
+                    try { 
+                        $el.select2({ 
+                            width: '100%',
+                            minimumResultsForSearch: 10 // Only show search if enough items
+                        }); 
+                    } catch (e) { 
+                        console.warn('select2 init failed', e); 
+                    }
                 }
             }
 
             // -----------------------------
-            // Member Account Type Functions
+            // Optimized Member Account Type Functions
             // -----------------------------
 
             /**
-             * Load member account types based on branch selection
+             * Load member account types based on branch selection - Returns Promise
              */
             window.loadMemberAccountTypes = function (branchId) {
-                if (!branchId) {
-                    resetMemberAccountTypes();
-                    return;
-                }
-
-                const $dropdown = $('#AccountType');
-                const $loadingSpan = $('#accountTypeLoading');
-                const $readySpan = $('#accountTypeReady');
-                const $initialSpan = $('#accountTypeInitial');
-
-                // Show loading state
-                $loadingSpan.removeClass('d-none');
-                $readySpan.addClass('d-none');
-                $initialSpan.addClass('d-none');
-                $dropdown.prop('disabled', true).empty().append($('<option>').val('').text('Loading account types...'));
-
-                $.ajax({
-                    url: '@Url.Action("GetMemberAccountTypesByBranch", "Reconciliation")',
-                    type: 'GET',
-                    data: { branchId },
-                    success: function (response) {
-                        if (!response || !response.success) {
-                            appalert(response?.message || "Failed to load account types.", 2, 1);
-                            return;
-                        }
-
-                        let accountTypes = [];
-
-                        // Handle different response formats
-                        if (Array.isArray(response)) {
-                            accountTypes = response;
-                        } else if (response && Array.isArray(response.data)) {
-                            accountTypes = response.data;
-                        } else if (response && response.success && Array.isArray(response.data)) {
-                            accountTypes = response.data;
-                        } else {
-                            appalert("No account types found for this branch.", 2, 1);
-                        }
-
-                        console.log("Accountypes : " + accountTypes);
-                        $dropdown.empty().append($('<option>').val('').text('--- Select Member Account Type ---'));
-
-                        accountTypes.forEach(function (type) {
-                            const value = type.Value;
-                            const text = type.Text;
-                            $dropdown.append($('<option>').val(value).text(text));
-                        });
-                        $dropdown.prop('disabled', false);
-
-                        // Update UI state
-                        $loadingSpan.addClass('d-none');
-                        $readySpan.removeClass('d-none');
-
-                        appalert("Account types loaded successfully.", 1, 1);
-
-                        // Reinitialize select2
-                        ensureSelect2Init($dropdown);
-                    },
-                    error: function () {
-                        appalert("Error loading account types.", 0, 1);
-                        $dropdown.empty().append($('<option>').val('').text('Error loading account types'));
-                        $dropdown.prop('disabled', true);
-
-                        $loadingSpan.addClass('d-none');
-                        $initialSpan.removeClass('d-none');
+                return new Promise((resolve, reject) => {
+                    if (!branchId) {
+                        resetMemberAccountTypes();
+                        resolve([]);
+                        return;
                     }
+
+                    const $dropdown = $('#AccountType');
+                    const $loadingSpan = $('#accountTypeLoading');
+                    const $readySpan = $('#accountTypeReady');
+                    const $initialSpan = $('#accountTypeInitial');
+
+                    // Show loading state
+                    $loadingSpan.removeClass('d-none');
+                    $readySpan.addClass('d-none');
+                    $initialSpan.addClass('d-none');
+                    $dropdown.prop('disabled', true).empty().append($('<option>').val('').text('Loading account types...'));
+
+                    $.ajax({
+                        url: '@Url.Action("GetMemberAccountTypesByBranch", "Reconciliation")',
+                        type: 'GET',
+                        data: { branchId },
+                        success: function (response) {
+                            if (!response || !response.success) {
+                                appalert(response?.message || "Failed to load account types.", 2, 1);
+                                reject(new Error('Failed to load account types'));
+                                return;
+                            }
+
+                            let accountTypes = [];
+
+                            // Handle different response formats
+                            if (Array.isArray(response)) {
+                                accountTypes = response;
+                            } else if (response && Array.isArray(response.data)) {
+                                accountTypes = response.data;
+                            } else if (response && response.success && Array.isArray(response.data)) {
+                                accountTypes = response.data;
+                            } else {
+                                appalert("No account types found for this branch.", 2, 1);
+                                reject(new Error('No account types found'));
+                                return;
+                            }
+
+                            $dropdown.empty().append($('<option>').val('').text('--- Select Member Account Type ---'));
+
+                            accountTypes.forEach(function (type) {
+                                const value = type.Value;
+                                const text = type.Text;
+                                $dropdown.append($('<option>').val(value).text(text));
+                            });
+                            $dropdown.prop('disabled', false);
+
+                            // Update UI state
+                            $loadingSpan.addClass('d-none');
+                            $readySpan.removeClass('d-none');
+
+                            // Reinitialize select2 (optimized)
+                            ensureSelect2Init($dropdown);
+
+                            resolve(accountTypes);
+                        },
+                        error: function (xhr, status, error) {
+                            appalert("Error loading account types.", 0, 1);
+                            $dropdown.empty().append($('<option>').val('').text('Error loading account types'));
+                            $dropdown.prop('disabled', true);
+
+                            $loadingSpan.addClass('d-none');
+                            $initialSpan.removeClass('d-none');
+                            
+                            reject(error);
+                        }
+                    });
                 });
             };
 
@@ -446,55 +466,58 @@
             }
 
             // -----------------------------
-            // Progress Tracking Functions
+            // Optimized Progress Tracking Functions
             // -----------------------------
             function updateProgress() {
-                let progress = 0;
-                const steps = [];
+                // Use requestAnimationFrame for non-blocking UI updates
+                requestAnimationFrame(() => {
+                    let progress = 0;
+                    const steps = [];
 
-                // Step 1: Branch selected
-                if ($('#BranchId').val()) {
-                    progress += 20;
-                    steps.push(1);
-                }
-
-                // Step 2: Mode selected (always has default)
-                progress += 20;
-                steps.push(2);
-
-                // Step 3: Branch account selected
-                if ($('#BranchAccountId').val()) {
-                    progress += 20;
-                    steps.push(3);
-                }
-
-                // Step 4: Account type selected
-                const accountTypeSelected = (currentMode === 'member' && $('#AccountType').val()) ||
-                                          (currentMode === 'loan' && $('#LoanType').val());
-                if (accountTypeSelected) {
-                    progress += 20;
-                    steps.push(4);
-                }
-
-                // Step 5: Balance loaded
-                if (currentBalanceData) {
-                    progress += 20;
-                    steps.push(5);
-                }
-
-                // Update progress bar
-                $('#progressBar').css('width', progress + '%').attr('aria-valuenow', progress);
-
-                // Update step indicators
-                $('.step-indicator').each(function() {
-                    const step = $(this).data('step');
-                    if (steps.includes(step)) {
-                        $(this).find('i').removeClass('text-muted').addClass('text-success');
-                        $(this).find('div').removeClass('text-muted').addClass('text-success fw-semibold');
-                    } else {
-                        $(this).find('i').removeClass('text-success').addClass('text-muted');
-                        $(this).find('div').removeClass('text-success fw-semibold').addClass('text-muted');
+                    // Step 1: Branch selected
+                    if ($('#BranchId').val()) {
+                        progress += 20;
+                        steps.push(1);
                     }
+
+                    // Step 2: Mode selected (always has default)
+                    progress += 20;
+                    steps.push(2);
+
+                    // Step 3: Branch account selected
+                    if ($('#BranchAccountId').val()) {
+                        progress += 20;
+                        steps.push(3);
+                    }
+
+                    // Step 4: Account type selected
+                    const accountTypeSelected = (currentMode === 'member' && $('#AccountType').val()) ||
+                                              (currentMode === 'loan' && $('#LoanType').val());
+                    if (accountTypeSelected) {
+                        progress += 20;
+                        steps.push(4);
+                    }
+
+                    // Step 5: Balance loaded
+                    if (currentBalanceData) {
+                        progress += 20;
+                        steps.push(5);
+                    }
+
+                    // Update progress bar
+                    $('#progressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+
+                    // Update step indicators
+                    $('.step-indicator').each(function() {
+                        const step = $(this).data('step');
+                        if (steps.includes(step)) {
+                            $(this).find('i').removeClass('text-muted').addClass('text-success');
+                            $(this).find('div').removeClass('text-muted').addClass('text-success fw-semibold');
+                        } else {
+                            $(this).find('i').removeClass('text-success').addClass('text-muted');
+                            $(this).find('div').removeClass('text-success fw-semibold').addClass('text-muted');
+                        }
+                    });
                 });
             }
 
@@ -512,8 +535,8 @@
                     }
                     return false;
                 }
-                return true;            }
-
+                return true;
+            }
 
             function validateBranchAccountSelected() {
                 const branchAccountId = $('#BranchAccountId').val();
@@ -544,9 +567,7 @@
             }
 
             /**
-             * loadBranchAccounts(branchId, $targetDropdown?)
-             * - branchId: id or null
-             * - $targetDropdown: optional jQuery element (defaults to #BranchAccountId)
+             * Optimized branch accounts loading
              */
             async function loadBranchAccounts(branchId, $targetDropdown) {
                 $targetDropdown = $targetDropdown || $('#BranchAccountId');
@@ -557,7 +578,7 @@
                 const placeholderNoItems = 'No branch accounts available';
                 const placeholderError = 'Error loading branch accounts';
 
-                // set loading state
+                // Set loading state
                 $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(placeholderLoading));
 
                 if (!branchId) {
@@ -566,7 +587,6 @@
                     return;
                 }
 
-                // IMPORTANT: Use the correct controller name for Reconciliation
                 const url = '@Url.Action("GetBranchAccountsByBranch", "Reconciliation")';
                 console.log('Fetching branch accounts from:', url, 'branchId=', branchId);
 
@@ -578,7 +598,6 @@
                         headers: { 'Accept': 'application/json' }
                     });
 
-                    // If not OK, try to read response text (useful to inspect server HTML error pages)
                     if (!resp.ok) {
                         const text = await resp.text().catch(() => '');
                         console.error('Branch accounts fetch failed. status=', resp.status, resp.statusText, 'body=', text);
@@ -587,7 +606,6 @@
                         return;
                     }
 
-                    // Attempt JSON parse — support several shapes: array | { data: [...] } | { success: true, data: [...] }
                     const payload = await resp.json().catch(() => null);
                     let items = [];
 
@@ -609,7 +627,7 @@
                         $targetDropdown.append($('<option>').val('').text(placeholderNoItems));
                     }
 
-                    // update select2 if used
+                    // Update select2 if used (optimized)
                     try { if ($.fn.select2) $targetDropdown.trigger('change.select2'); } catch (e) { /* ignore */ }
 
                     // Update progress
@@ -622,7 +640,53 @@
             }
 
             // -----------------------------
-            // Updated Balance loading functionality with validation
+            // Optimized Branch Change Handler
+            // -----------------------------
+            async function handleBranchChange(branchId) {
+                currentBranchId = branchId;
+
+                // Immediate UI feedback
+                $('#BranchAccountId').empty().append(
+                    $('<option>').val('').text('--- Select Branch Account ---')
+                ).prop('disabled', true).addClass('branch-loading');
+
+                $('#reconciliationActions').addClass('d-none');
+                toggleBalanceActions(false);
+
+                if (!branchId) {
+                    resetMemberAccountTypes();
+                    return;
+                }
+
+                // Show loading states
+                if (currentMode === 'member') {
+                    $('#AccountType').prop('disabled', true).html('<option value="">Loading account types...</option>').addClass('branch-loading');
+                }
+
+                try {
+                    // Execute both requests in parallel for maximum performance
+                    const [branchAccounts] = await Promise.all([
+                        loadBranchAccounts(branchId, $('#BranchAccountId')),
+                        currentMode === 'member' ? loadMemberAccountTypes(branchId) : Promise.resolve()
+                    ]);
+                    
+                    console.log('Branch data loaded successfully');
+                } catch (error) {
+                    console.error('Error loading branch data:', error);
+                    // Show error states
+                    $('#BranchAccountId').html('<option value="">Error loading accounts</option>');
+                    if (currentMode === 'member') {
+                        $('#AccountType').html('<option value="">Error loading account types</option>');
+                    }
+                } finally {
+                    // Remove loading states
+                    $('#BranchAccountId').removeClass('branch-loading');
+                    $('#AccountType').removeClass('branch-loading');
+                }
+            }
+
+            // -----------------------------
+            // Balance loading functionality
             // -----------------------------
             async function loadBalance() {
                 // Validate branch selection
@@ -718,141 +782,125 @@
             }
 
             // -----------------------------
-            // MODIFIED: Reconciliation Functionality with PartialView support
+            // Reconciliation Functionality
             // -----------------------------
+            async function reconcileTrialBalance() {
+                const branchId = $('#BranchId').val();
+                const branchAccountId = $('#BranchAccountId').val();
 
-                async function reconcileTrialBalance() {
-                    const branchId = $('#BranchId').val();
-                    const branchAccountId = $('#BranchAccountId').val();
+                // Extract branch account name from the selected option text
+                const branchAccountName = $('#BranchAccountId option:selected').text();
+                const BRANCHName = $('#BranchId option:selected').text();
 
-                    // Extract branch account name from the selected option text
-                    const branchAccountName = $('#BranchAccountId option:selected').text();
+                // Skip if it's a placeholder/loading text
+                const branchName = (branchAccountName.includes('--- Select') ||
+                                   branchAccountName.includes('Loading') ||
+                                   branchAccountName.includes('Error')) ? '' : branchAccountName;
 
-                    const BRANCHName = $('#BranchId option:selected').text();
+                const branchName2 = (BRANCHName.includes('--- Select') ||
+                                     BRANCHName.includes('Loading') ||
+                                     BRANCHName.includes('Error')) ? '' : BRANCHName;
 
-                    // Skip if it's a placeholder/loading text
-                    const branchName = (branchAccountName.includes('--- Select') ||
-                                       branchAccountName.includes('Loading') ||
-                                       branchAccountName.includes('Error')) ? '' : branchAccountName;
-
-                    const branchName2 = (BRANCHName.includes('--- Select') ||
-                                         BRANCHName.includes('Loading') ||
-                                         BRANCHName.includes('Error')) ? '' : BRANCHName;
-
-                    if (!branchId || !branchAccountId || !currentBalanceData) {
-                        console.error('Missing required data for reconciliation');
-                        return false;
-                    }
-
-                    // Show loading state
-                    $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
-
-                    try {
-                        const formData = new FormData();
-                        formData.append('BranchId', branchId);
-                        formData.append('BRANCHName', branchName2);
-                        formData.append('BranchAccountId', branchAccountId);
-                        formData.append('BranchAccountName', branchName); // Send the branch account name
-                        formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
-                        formData.append('AccountCount', currentBalanceData.AccountCount || 0);
-                        formData.append('LoanCount', currentBalanceData.LoanCount || 0);
-                        formData.append('mode', currentMode);
-                        formData.append('accountTypeId', currentAccountTypeId);
-
-                        if (currentMode === 'member') {
-                            formData.append('AccountType', currentAccountTypeId);
-                            formData.append('member', 'true');
-                        } else if (currentMode === 'loan') {
-                            formData.append('LoanType', currentAccountTypeId);
-                            formData.append('loan', 'true');
-                        }
-
-                        const tokenInput = $('input[name="__RequestVerificationToken"]');
-                        const token = tokenInput.length ? tokenInput.val() : '';
-
-                        const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
-                        const resp = await fetch(url, {
-                            method: 'POST',
-                            credentials: 'same-origin',
-                            headers: {
-                                'Accept': 'text/html',
-                                'RequestVerificationToken': token
-                            },
-                            body: formData
-                        });
-
-                        if (!resp.ok) {
-                            const txt = await resp.text().catch(() => '');
-                            console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
-                            return false;
-                        }
-
-                        // MODIFIED: Get response as HTML text instead of JSON since controller returns PartialView
-                        const html = await resp.text();
-
-                        console.log('Reconciliation response received as HTML');
-
-                        // MODIFIED: Check if we got valid HTML content
-                        if (html && html.trim().length > 0) {
-                            // Remove existing modal if any
-                            $('#reconciliationResultModal').remove();
-
-                            // Add the new modal HTML to the body
-                            $('body').append(html);
-
-                            // MODIFIED: Use Bootstrap 5 modal API to properly show the modal
-                            const modalElement = document.getElementById('reconciliationResultModal');
-                            if (modalElement) {
-                                const modal = new bootstrap.Modal(modalElement);
-                                modal.show();
-
-                                // MODIFIED: Re-initialize any scripts inside the modal after it's appended
-                                initializeModalScripts();
-                                return true;
-                            } else {
-                                console.error('Modal element not found in HTML response');
-                                if (typeof appalert === 'function') {
-                                    appalert('Error: Could not load reconciliation results', 2, 1);
-                                }
-                                return false;
-                            }
-                        } else {
-                            console.error('Empty HTML response received');
-                            if (typeof appalert === 'function') {
-                                appalert('No reconciliation data received from server', 2, 1);
-                            } else {
-                                alert('No reconciliation data received from server');
-                            }
-                            return false;
-                        }
-
-                    } catch (err) {
-                        console.error('Error during reconciliation:', err);
-                        if (typeof appalert === 'function') {
-                            appalert('Error during reconciliation: ' + err.message, 2, 1);
-                        } else {
-                            alert('Error during reconciliation: ' + err.message);
-                        }
-                        return false;
-                    } finally {
-                        // Reset button state
-                        $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
-                    }
+                if (!branchId || !branchAccountId || !currentBalanceData) {
+                    console.error('Missing required data for reconciliation');
+                    return false;
                 }
 
-            // NEW: Function to re-initialize scripts inside the modal after it's loaded
+                // Show loading state
+                $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
+
+                try {
+                    const formData = new FormData();
+                    formData.append('BranchId', branchId);
+                    formData.append('BRANCHName', branchName2);
+                    formData.append('BranchAccountId', branchAccountId);
+                    formData.append('BranchAccountName', branchName);
+                    formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
+                    formData.append('AccountCount', currentBalanceData.AccountCount || 0);
+                    formData.append('LoanCount', currentBalanceData.LoanCount || 0);
+                    formData.append('mode', currentMode);
+                    formData.append('accountTypeId', currentAccountTypeId);
+
+                    if (currentMode === 'member') {
+                        formData.append('AccountType', currentAccountTypeId);
+                        formData.append('member', 'true');
+                    } else if (currentMode === 'loan') {
+                        formData.append('LoanType', currentAccountTypeId);
+                        formData.append('loan', 'true');
+                    }
+
+                    const tokenInput = $('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput.length ? tokenInput.val() : '';
+
+                    const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Accept': 'text/html',
+                            'RequestVerificationToken': token
+                        },
+                        body: formData
+                    });
+
+                    if (!resp.ok) {
+                        const txt = await resp.text().catch(() => '');
+                        console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
+                        return false;
+                    }
+
+                    const html = await resp.text();
+                    console.log('Reconciliation response received as HTML');
+
+                    if (html && html.trim().length > 0) {
+                        $('#reconciliationResultModal').remove();
+                        $('body').append(html);
+
+                        const modalElement = document.getElementById('reconciliationResultModal');
+                        if (modalElement) {
+                            const modal = new bootstrap.Modal(modalElement);
+                            modal.show();
+                            initializeModalScripts();
+                            return true;
+                        } else {
+                            console.error('Modal element not found in HTML response');
+                            if (typeof appalert === 'function') {
+                                appalert('Error: Could not load reconciliation results', 2, 1);
+                            }
+                            return false;
+                        }
+                    } else {
+                        console.error('Empty HTML response received');
+                        if (typeof appalert === 'function') {
+                            appalert('No reconciliation data received from server', 2, 1);
+                        } else {
+                            alert('No reconciliation data received from server');
+                        }
+                        return false;
+                    }
+
+                } catch (err) {
+                    console.error('Error during reconciliation:', err);
+                    if (typeof appalert === 'function') {
+                        appalert('Error during reconciliation: ' + err.message, 2, 1);
+                    } else {
+                        alert('Error during reconciliation: ' + err.message);
+                    }
+                    return false;
+                } finally {
+                    $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
+                }
+            }
+
             function initializeModalScripts() {
-                // Initialize Select2 if it exists in the modal
                 if ($.fn.select2) {
                     $('#adjustmentBranchAccounts').select2({ width: '100%' });
                 }
 
-                // Re-attach event listeners for buttons inside the modal
                 $('#btnFinalReconcile').off('click').on('click', function() {
                     finalizeReconciliation();
                 });
 
-                // Load branch accounts for adjustment dropdown
                 const modal = $('#reconciliationResultModal');
                 const branchId = modal.data('branchid');
                 if (branchId) {
@@ -860,7 +908,6 @@
                 }
             }
 
-            // NEW: Function to load branch accounts for the adjustment dropdown in the modal
             function loadAdjustmentBranchAccounts(branchId) {
                 if (!branchId) return;
 
@@ -881,7 +928,6 @@
                                 $dropdown.append($('<option>').val(id).text(name));
                             });
 
-                            // Re-initialize select2
                             if ($.fn.select2) {
                                 $dropdown.trigger('change.select2');
                             }
@@ -955,7 +1001,6 @@
                 try {
                     return new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                      /*  currency: 'USD'*/
                     }).format(value);
                 } catch (e) {
                     return value;
@@ -963,7 +1008,6 @@
             }
 
             function showBalance(data) {
-                // Store the current balance data
                 currentBalanceData = data;
 
                 if (!data) {
@@ -973,10 +1017,8 @@
                     return;
                 }
 
-                // Display TotalBalance for both modes
                 $('#balanceDisplay').text(data.TotalBalance.toLocaleString());
 
-                // Display different counts based on mode
                 if (currentMode === 'loan') {
                     $('#accountIdDisplay').text(data.LoanCount.toLocaleString() !== undefined ? data.LoanCount : '-');
                     $('#accountIdDisplay').closest('.row').find('.col-6:first strong').text('Loan Count:');
@@ -988,7 +1030,6 @@
                 $('#balanceInfo').removeClass('d-none');
                 $('#reconciliationActions').removeClass('d-none');
 
-                // Update progress
                 updateProgress();
             }
 
@@ -997,11 +1038,7 @@
                 $('#balanceDisplay').text('-');
                 $('#accountIdDisplay').closest('.row').find('.col-6:first strong').text('Count:');
                 $('#balanceInfo').addClass('d-none');
-
-                // Clear stored balance data
                 currentBalanceData = null;
-
-                // Update progress
                 updateProgress();
             }
 
@@ -1026,10 +1063,11 @@
             }
 
             // -----------------------------
-            // DOM Ready
+            // DOM Ready with Optimized Event Handlers
             // -----------------------------
             $(function () {
-                // Initialize select2 for all dropdowns
+                
+                // Initialize select2 for all dropdowns (optimized)
                 ensureSelect2Init('#AccountType');
                 ensureSelect2Init('#LoanType');
                 ensureSelect2Init('#BranchId');
@@ -1039,6 +1077,19 @@
                 $('#BranchId').on('change', function() {
                     currentBranchId = $(this).val();
                     updateProgress();
+                });
+
+                // Debounced Branch Change Handler - MAIN PERFORMANCE FIX
+                $('#BranchId').on('change', function() {
+                    const branchId = $(this).val();
+                    
+                    // Clear any pending timeout
+                    clearTimeout(branchChangeTimeout);
+                    
+                    // Add slight debounce to prevent rapid firing
+                    branchChangeTimeout = setTimeout(async () => {
+                        await handleBranchChange(branchId);
+                    }, 100);
                 });
 
                 // Mode switching
@@ -1126,7 +1177,7 @@
                     }
                 });
 
-                // FIXED: Single Branch Account change handler
+                // Branch Account change handler
                 $('#BranchAccountId').on('change', function() {
                     const branchAccountId = $(this).val();
 
@@ -1141,33 +1192,6 @@
                     }
 
                     updateProgress();
-                });
-
-                // FIXED: Branch change handler - properly load branch accounts
-                $('#BranchId').on('change', async function() {
-                    const branchId = $(this).val();
-                    currentBranchId = branchId;
-
-                    // Clear current selections
-                    $('#BranchAccountId').empty().append(
-                        $('<option>').val('').text('--- Select Branch Account ---')
-                    ).prop('disabled', false);
-
-                    $('#reconciliationActions').addClass('d-none');
-                    toggleBalanceActions(false);
-
-                    if (!branchId) {
-                        resetMemberAccountTypes();
-                        return;
-                    }
-
-                    // Load branch accounts
-                    await loadBranchAccounts(branchId, $('#BranchAccountId'));
-
-                    // Load member account types based on branch and mode
-                    if (currentMode === 'member') {
-                        loadMemberAccountTypes(branchId);
-                    }
                 });
 
                 // Reconciliation button click
@@ -1206,10 +1230,7 @@
                 if (preSelectedBranch) {
                     currentBranchId = preSelectedBranch;
                     setTimeout(() => {
-                        loadBranchAccounts(preSelectedBranch, $('#BranchAccountId'));
-                        if (currentMode === 'member') {
-                            loadMemberAccountTypes(preSelectedBranch);
-                        }
+                        handleBranchChange(preSelectedBranch);
                     }, 100);
                 }
 

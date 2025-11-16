@@ -7,6 +7,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
@@ -22,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using ZXing.QrCode.Internal;
 
 namespace CBS.BusinessService.Accounting_V2.Affiliate
 {
@@ -60,7 +62,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         {
             try
             {
-                
+
                 var response = await _apiCallerHelper1.PostAsync<ResponseObject<CustomDataTable2>>(
                     APICallHelper.Customerdatatable, query);
 
@@ -86,7 +88,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 throw new Exception($"service unavailable: {ex.Message}", ex);
             }
         }
-           
+
 
         public async Task<CollectorComissionResponse> GetCommissionAsync(CollectorComissionResponse model)
         {
@@ -108,6 +110,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         {
             try
             {
+
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentException("id is required", nameof(id));
 
@@ -154,33 +157,33 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 AccountSelectList = accounts
                     .Select(a => new SelectListItem
                     {
-                        Value = a.Id ?? string.Empty, // sent back to backend when selected
+                        Value = a.AccountNumber ?? string.Empty, // sent back to backend when selected
                         Text = string.IsNullOrWhiteSpace(a.AccountName)
                             ? $"{a.AccountNumber} ({a.Balance:N2})"
                             : $"{a.AccountNumber} - {a.AccountName} ({a.Balance:N2})"
                     })
-                    .OrderBy(x => x.Text)
+                    .OrderBy(x => x.Value)
                     .ToList()
             };
 
             return vm;
         }
 
-        public async Task<ExecutionMessages> CreateAsync(CollectorComissionResponse model)
+        public async Task<ExecutionMessages> CreateAsync(Payment model)
         {
             try
             {
-                var response = await _apiCallerHelper1.PostAsync<ServiceResponse<Payment>>(APICallHelper.PostPayment, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<bool>>(APICallHelper.PostPayment, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
-                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.Message);
                 }
                 else
                 {
                     GetExecutionMessages(null, false, null, MessagesResults.Failed,
-                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
@@ -188,12 +191,14 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 GetExecutionMessages(null, false, null, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
+            // Ensure ExecutionMessage has a boolean Success property set inside GetExecutionMessages
             return ExecutionMessage;
         }
 
+
         //public async Task<CollectorComissionResponse> CreateAsync(CollectorComissionResponse model)
         //{
-           
+
         //    var response = await _apiCallerHelper2.PostAsync<ServiceResponse<CollectorComissionResponse>>(APICallHelper.Reconciliation, model);
 
         //    if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
@@ -208,7 +213,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         {
             try
             {
-                var response = await _apiCallerHelper1.PostAsync<ResponseObject<CustomDataTable>>(
+                var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.DailyCollectorcommissiondata, query);
 
                 // ⚠️ CRITICAL: If API call fails or returns unsuccessful, THROW exception
@@ -231,6 +236,30 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
                 // Re-throw to trigger fallback
                 throw new Exception($"service unavailable: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<Affiliateresponse> GetByIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
+
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.DaillyCollectorGetbyId, encodedId);
+
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<Affiliateresponse>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }

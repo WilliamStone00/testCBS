@@ -183,6 +183,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
     public class RequestAction
     {
         public string Id { get; set; }
+        public string Account { get; set; }
         public string ApprovalNotes { get; set; }
         public string RejectionReason { get; set; }
         public string Language { get; set; }

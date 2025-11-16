@@ -3,6 +3,7 @@ using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
@@ -34,29 +35,42 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             return View(); //**//*
         }
 
+        private List<StringValues> getAllYearStatus()
+        {
+            return new List<StringValues>
+            {
+                new StringValues
+                {
+                    Value = "open", Text = "OPEN"
+                },
+                new StringValues
+                {
+                    Value = "close", Text = "CLOSE"
+                },
+                new StringValues
+                {
+                    Value = "lock", Text = "LOCK"
+                },
+            };
+        }
 
+        private List<StringValues> getNext5Years()
+        {
+            return Enumerable.Range(DateTime.Now.Year, 5)
+                .Select(y => new StringValues
+                {
+                    Value = y.ToString(),
+                    Text = y.ToString()
+                })
+                .ToList();
+        }
 
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-
-            ViewBag.Status = new List<SelectListItem>
-{
-    new SelectListItem { Value = "Open", Text = "OPEN" },
-    new SelectListItem { Value = "Close", Text = "CLOSE" },
-    new SelectListItem { Value = "Lock", Text = "LOCK" }
-};
-
-
-            // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.Year = Enumerable.Range(2025, 10)
-                  .Select(y => new SelectListItem
-                  {
-                      Value = y.ToString(),
-                      Text = y.ToString()
-                  })
-                  .ToList();
+            ViewBag.Status = getAllYearStatus();
+            ViewBag.Year = getNext5Years();
             return true;
 
         }
@@ -77,8 +91,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
         {
             try
             {
-                //var entries = await _accountingYearService.GetAllAsync();
-                var entries = await _accountingYearService.GetAllAsyncs();
+                var entries = await _accountingYearService.GetAllAsync();
+                //var entries = await _accountingYearService.GetAllAsyncs();
                 if (entries == null || !entries.Any())
                     return HttpNotFound("Not found");
 
@@ -98,13 +112,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(400, "ID is required");
 
+            await loader();
             try
             {
-                var entry = await _accountingYearService.GetDatas(id);
+                var entry = await _accountingYearService.GetData(id);
                 if (entry == null)
                     return HttpNotFound("accounting year not found");
 
-                await loader();
+                entry.StatusB = entry.Status.ToLower();
+
+                entry.YearB = entry.Year.ToString();
                 // Return the partial view that will be injected into the modal
                 return PartialView("_Update", entry);
             }
@@ -114,54 +131,63 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             }
         }
 
-
-
         [HttpPost]
-        public async Task<ActionResult> CreatAccountingYear(accountingyear model)
+        
+        public async Task<ActionResult> CreateOrUpdate(accountingyear model)
         {
+            model.Status = model.StatusB;
+            model.Year = int.Parse(model.YearB);
             if (model == null)
-                return Json(new { success = false, message = " Invalid or empty model." });
+                return Json(new { success = false, message = "Invalid or empty model." });
 
             try
             {
-                var execMessage = await _accountingYearService.Create(model);
+                if (string.IsNullOrWhiteSpace(model.Id))
+                {
+                    // No Id → create new record
+                    var execMessage = await _accountingYearService.Create(model);
 
-                if (execMessage == null)
-                    return Json(new { success = false, message = "No response from service." });
+                    if (execMessage == null)
+                        return Json(new { success = false, message = "No response from service." });
 
-                if (!execMessage.Result)
+                    if (!execMessage.Result)
+                        return Json(new
+                        {
+                            success = false,
+                            message = execMessage.MessageString ?? "Failed to save Accounting Year.",
+                            data = execMessage.Data
+                        });
+
                     return Json(new
                     {
-                        success = false,
-                        message = execMessage.MessageString ?? " Failed to save Accounting year.",
+                        success = true,
+                        message = execMessage.MessageString ?? "Accounting Year created successfully.",
                         data = execMessage.Data
                     });
-
-                return Json(new
+                }
+                else
                 {
-                    success = true,
-                    message = execMessage.MessageString ?? "Accounting year saved successfully.",
-                    data = execMessage.Data
-                });
+                    // Id present → update existing record
+                    var result = await _accountingYearService.UpdateAccoutingYearAsync(model);
+
+                    if (result == null)
+                        return Json(new { success = false, message = "No response from service." });
+
+                    return Json(new
+                    {
+                        success = result.Result,
+                        message = Messaging.MessageResult(result),
+                        data = result.Data
+                    });
+                }
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
             }
-
-
-
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Update(accountingyear model)
-        {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _accountingYearService.UpdateAccoutingYearAsync(model);
-            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
-        }
 
     }
 }

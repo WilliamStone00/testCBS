@@ -1615,7 +1615,8 @@ namespace CBS.FrontDesk.Helper
         public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
 
 
-        public static string createCorrespondanceRequest = "/api/v1/CorrespondenceRequest?lang={0}";
+        public static string GetCorrespondanceRequest = "/api/v1/CorrespondenceRequest/{0}?lang={1}";
+        public static string CreateCorrespondanceRequest = "/api/v1/CorrespondenceRequest?lang={0}";
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
         public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/{0}/reject?lang={1}";
         public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/{0}/approve?lang={1}";
@@ -1658,8 +1659,9 @@ namespace CBS.FrontDesk.Helper
         public static string Customerdatatable = "/api/v1/customers/datatable";
         public static string DaillyCollectorCommission = "/api/v1/DailySavingsBackOffice/CollectorCommissionSummary";
         public static string getcustomerbyid = "/api/v1/Customer/{id}";
-        public static string PostPayment = "Cant find it";
-        public static string DailyCollectorcommissiondata = "not yet Availlable";
+        public static string PostPayment = "/api/v1/DailySavingsBackOffice/PayDailyCollectorCommission";
+        public static string DailyCollectorcommissiondata = "/api/v1/DailySavingsBackOffice/Dashboard/GetDailyCollectorCommissionPaymentsDataTable";
+        public static string DaillyCollectorGetbyId = "not yet Availlable";
 
         //--------------------------- API KEY MANAGEMENT ----------------------------------------  
             public const string GetAllApiKeys = "/api/apikeys";
@@ -1697,14 +1699,6 @@ namespace CBS.FrontDesk.Helper
 
 
 
-
-
-
-
-
-
-
-
         public static string GetAllLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
         
@@ -1712,8 +1706,9 @@ namespace CBS.FrontDesk.Helper
         public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
         //------------------------- Accounting Year --------------------
-        public static string SaveAccountingYear = "/api/v1/Accountingyear";
-        public static string GetAllAccoutingYear = "/api/v1/Accountingyears";
-
+        public static string SaveAccountingYear = "/api/v1/AccountingYear";
+        public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
+        public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
+        public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
     }
 }
