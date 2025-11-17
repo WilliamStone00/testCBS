@@ -468,6 +468,11 @@
       <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
+    </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
