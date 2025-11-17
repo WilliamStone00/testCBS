@@ -2046,6 +2046,7 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
@@ -2054,10 +2055,12 @@
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
+    <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccntStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />

@@ -7,57 +7,67 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
     public class AccountingV2ReportsFilter
     {
         [JsonProperty("from")]
-        public DateTime From { get; set; } = DateTime.Parse("2025-09-01");
+        public DateTime From { get; set; }
 
         [JsonProperty("to")]
-        public DateTime To { get; set; } = DateTime.Parse("2025-11-30");
+        public DateTime To { get; set; }
+
+        [JsonProperty("dateFrom")]
+        public DateTime DateFrom { get; set; }
+
+        [JsonProperty("dateTo")]
+        public DateTime DateTo { get; set; }
 
         [JsonProperty("branchId")]
-        public string BranchId { get; set; } = "717373842079233";
+        public string BranchId { get; set; }
 
         [JsonProperty("consolidated")]
-        public bool Consolidated { get; set; } = false;
+        public bool Consolidated { get; set; }
 
         [JsonProperty("selectedBranchIds")]
-        public List<string> SelectedBranchIds { get; set; } = null;
+        public List<string> SelectedBranchIds { get; set; }
 
         [JsonProperty("excludeLiaisonInternal")]
-        public bool ExcludeLiaisonInternal { get; set; } = true;
+        public bool ExcludeLiaisonInternal { get; set; }
 
         [JsonProperty("sourceMode")]
-        public string SourceMode { get; set; } = "temp"; // ✅ lowercase to match API
+        public string SourceMode { get; set; }
 
         [JsonProperty("language")]
-        public string Language { get; set; } = "en";
+        public string Language { get; set; }
 
-        [JsonProperty("search")]
-        public string Search { get; set; } = "";
+        [JsonProperty("accountNumber")]
+        public string AccountNumber { get; set; }
+
+        [JsonProperty("accountNumbers")]
+        public List<string> AccountNumbers { get; set; }
+
+        [JsonProperty("accountingYear")]
+        public string AccountingYear { get; set; }
 
         [JsonProperty("paging")]
-        public Paging Paging { get; set; } = new Paging();
+        public Paging Paging { get; set; }
 
         [JsonProperty("sorting")]
-        public Sorting Sorting { get; set; } = new Sorting();
-
-        [JsonProperty("accounts")]
-        public List<string> Accounts { get; set; } = new List<string>();
+        public Sorting Sorting { get; set; }
     }
 
     public class Paging
     {
-        [JsonProperty("pageNumber")]
-        public int PageNumber { get; set; } = 1;
+        [JsonProperty("page")]
+        public int Page { get; set; }
 
         [JsonProperty("pageSize")]
-        public int PageSize { get; set; } = 100;
+        public int PageSize { get; set; }
     }
 
     public class Sorting
     {
-        [JsonProperty("sortColumn")]
-        public string SortColumn { get; set; } = "AccountNumber";
+        [JsonProperty("sortBy")]
+        public string SortBy { get; set; } = null;
 
-        [JsonProperty("sortDirection")]
-        public string SortDirection { get; set; } = "asc";
+        [JsonProperty("sortDir")]
+        public string SortDir { get; set; } = null;
     }
+
 }

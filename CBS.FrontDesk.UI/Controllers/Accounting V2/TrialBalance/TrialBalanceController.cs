@@ -79,7 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
                 }).ToList();
-                Session["rptSource"] = data;
+                this.HttpContext.Session["rptSource"] = data;
                 return Json(new { success = true, message = $"Report file not found." });
 
             }
@@ -94,7 +94,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         {
             
             this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = $"TrialBalance6Columns.rpt";
+            this.HttpContext.Session["ReportName"] = $"TrialBalance6Columns";
             this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt";
             this.HttpContext.Session["rpttitle"] = $"TB6";
             return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
