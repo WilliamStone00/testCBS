@@ -16,6 +16,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string CamcculAccountId { get; set; }
         public string HeadOfficeLiaisonAccountId { get; set; }
         public string FormFeeIncomeAccountId { get; set; }
+        public string LoanTransitAccountId { get; set; }
+        public string CashInCommisionAccountIDAccountId { get; set; }
+        public string CashOutCommisionAccountIDAccountId { get; set; }
+        public string TransfterCommisionAccountIDAccountId { get; set; }
+        public string VATAccountId { get; set; }
+        public string InterestGeneratedFromAccountId { get; set; }
 
     }
 
@@ -53,6 +59,21 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string FormFeeIncomeAccountNumber { get; set; }
 
         public bool RealTimeCashPosting { get; set; }
+
+        public string LoanTransitAccountName { get; set; }
+        public string LoanTransitAccountNumber { get; set; }
+        public string CashInCommisionAccountName { get; set; }
+        public string CashInCommisionAccountNumber { get; set; }
+        public string CashOutCommisionAccountName { get; set; }
+        public string CashOutCommisionAccountNumber { get; set; }
+        public string TransfterCommisionAccountName { get; set; }
+        public string TransfterCommisionAccountNumber { get; set; }
+        public string VATAccountName { get; set; }
+        public string VATAccountNumber { get; set; }
+        public string InterestGeneratedFromAccountName { get; set; }
+        public string InterestGeneratedFromAccountNumber { get; set; }
+
+
     }
 
     // DTO used only by the Details partial

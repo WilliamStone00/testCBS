@@ -6,15 +6,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.ReportingV2
+namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 {
-    public class ReportingV2Controller : Controller
+    public class ReportConfigurationController : Controller
     {
         // GET: ReportingV2
         private readonly ReportDefinitionService _reportDefinitionService;
-		public ReportingV2Controller(ReportDefinitionService reportDefinitionService)
+        private readonly ReportSectionService _reportSectionService;
+        private readonly ReportLineService _reportLineService;
+        private readonly ReportLineMappingService _reportLineMappingService;
+		public ReportConfigurationController(ReportDefinitionService reportDefinitionService, ReportSectionService reportSectionService, ReportLineService reportLineService, ReportLineMappingService reportLineMappingService)
 		{
 			_reportDefinitionService = reportDefinitionService;
+			_reportSectionService = reportSectionService;
+			_reportLineService = reportLineService;
+			_reportLineMappingService = reportLineMappingService;
 		}
 		public ActionResult Index()
         {
@@ -34,13 +40,16 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
                     return result;
 
                 case "section":
-                    return PartialView($"~/Views/{partialView}.cshtml", new List<ReportSection>());
+                    var sections = await _reportSectionService.GetAll();
+                    return PartialView($"~/Views/{partialView}.cshtml", sections);
 
                 case "line":
-                    return PartialView($"~/Views/{partialView}.cshtml", new List<ReportLine>());
+                    var lines = await _reportLineService.GetAll();
+					return PartialView($"~/Views/{partialView}.cshtml", lines);
 
                 case "line_mapping":
-                    return PartialView($"~/Views/{partialView}.cshtml", new List<ReportLineMapping>());
+                    var lineMappings = await _reportLineMappingService.GetAll();
+                    return PartialView($"~/Views/{partialView}.cshtml", lineMappings);
 
                 default:
                     return PartialView($"~/Views/{partialView}.cshtml");

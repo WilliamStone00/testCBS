@@ -1,0 +1,118 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine
+
+@{
+    bool isUpdate = !string.IsNullOrEmpty(Model.Id);
+}
+
+<!-- Header Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-format-float-left me-2"></i> Report Line Management
+                </h1>
+                <p class="card-text text-muted mb-1">Create report lines for your reports.</p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensure proper ordering and calculation behavior for report rendering.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Lines</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Ref Code:</strong> Internal reference for mapping.</li>
+                <li><strong>Caption:</strong> Label displayed in the report.</li>
+                <li><strong>Sort Order:</strong> Defines display order.</li>
+                <li><strong>Calc Mode:</strong> Determines calculation behavior.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Create Form -->
+@using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportLine", FormMethod.Post,
+new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            @Html.HiddenFor(model => model.Id)
+
+            <!-- 🔽 Report Definitions Dropdown -->
+            <div class="mb-3">
+                @Html.Label("ReportId", "Select Report Definition", new { @class = "form-label fw-semibold" })
+                <select id="ReportId" name="ReportId" class="form-control">
+                    <option value="">-- Select a report Definition --</option>
+
+                    @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>)ViewBag.ReportDefinitions)
+                    {
+                        <option value="@item.Id" @(Model.ReportId == item.Id ? "selected" : "")>
+                            @item.Name (@item.Code)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- 🔽 Report Sections Dropdown -->
+            <div class="mb-3">
+                @Html.Label("SectionId", "Select Section Definition", new { @class = "form-label fw-semibold" })
+                <select id="SectionId" name="SectionId" class="form-control">
+                    <option value="">-- Select a section --</option>
+
+                    @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection>)ViewBag.ReportSections)
+                    {
+                        <option value="@item.Id" @(Model.SectionId == item.Id ? "selected" : "")>
+                            @item.Name (@item.Code)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.RefCode, "Reference Code", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.RefCode, new { @class = "form-control", placeholder = "e.g., ASSET001" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Caption, "Caption", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Caption, new { @class = "form-control", placeholder = "Text to display" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.SortOrder, "Sort Order", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control", type = "number" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.CalcMode, "Calculation Mode", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.CalcMode, new { @class = "form-control", placeholder = "SUM, SUBTOTAL, DIRECT" })
+            </div>
+
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(m => m.ShowInOutput, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.ShowInOutput, "Show in Output", new { @class = "form-check-label fw-semibold" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
+                    @(isUpdate ? "Update Line" : "Save Line")
+                </button>
+            </div>
+        </div>
+    </div>
+}

@@ -176,10 +176,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string ReferenceNumber { get; set; }
         public string ProcessedByUserId { get; set; }
         public string Currency { get; set; }
+        public bool IsExport { get; set; }
 
     }
 
-   
+
     public class ExportCommissionRequest
     {
         public CollectorComissionResponse CommissionData { get; set; }
@@ -198,7 +199,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
 
     public class ExportTableRequest
     {
-        public List<dynamic> Data { get; set; }
+        public List<DataTableResponse> Data { get; set; }
         public int TotalRecords { get; set; }
         public ExportOptions ExportOptions { get; set; }
         public dynamic Filters { get; set; }
