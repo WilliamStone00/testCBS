@@ -190,6 +190,7 @@
     <script>
         var commissionTable = null;
         var isTableInitialized = false;
+        var currentTableData = []; // Store current table data for export
 
         function emptyToNull(v) {
             return (v === undefined || v === null || v === '') ? null : v;
@@ -197,7 +198,6 @@
 
         function collectCommissionFilters() {
             console.log('Collecting filters...');
-            // Collect the filter values
             const filters = {
                 BranchId: emptyToNull($('#BranchId').val()),
                 CollectorId: emptyToNull($('#CollectorId').val()),
@@ -250,17 +250,116 @@
             }
         }
 
+        // Function to manually build export data in exact format
+        function buildExportData(records) {
+            console.log('=== BUILDING EXPORT DATA - IMPROVED ===');
+            console.log('Raw records received:', records);
+            
+            const exportData = records.map((record, index) => {
+                console.log(`Processing record ${index + 1}:`, record);
+                
+                // Extract data using multiple possible property names
+                const getValue = (propNames, defaultValue = '') => {
+                    for (const prop of propNames) {
+                        if (record[prop] !== undefined && record[prop] !== null && record[prop] !== '') {
+                            return record[prop];
+                        }
+                    }
+                    return defaultValue;
+                };
+
+                // Handle date values properly
+                const parseDate = (dateValue) => {
+                    if (!dateValue) return new Date().toISOString();
+                    try {
+                        if (dateValue instanceof Date) return dateValue.toISOString();
+                        if (typeof dateValue === 'string') {
+                            // Handle various date formats
+                            const date = new Date(dateValue);
+                            return isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+                        }
+                        return new Date().toISOString();
+                    } catch {
+                        return new Date().toISOString();
+                    }
+                };
+
+                // Handle numeric values
+                const parseNumber = (numValue, defaultValue = 0) => {
+                    if (numValue === undefined || numValue === null || numValue === '') return defaultValue;
+                    const num = parseFloat(numValue);
+                    return isNaN(num) ? defaultValue : num;
+                };
+
+                // Handle boolean values
+                const parseBoolean = (boolValue) => {
+                    if (boolValue === undefined || boolValue === null) return false;
+                    if (typeof boolValue === 'boolean') return boolValue;
+                    if (typeof boolValue === 'string') {
+                        return boolValue.toLowerCase() === 'true' || boolValue === '1';
+                    }
+                    if (typeof boolValue === 'number') return boolValue === 1;
+                    return false;
+                };
+
+                // Build the record with explicit property mapping
+                const builtRecord = {
+                    // Try multiple possible property names for each field
+                    "id": getValue(['Id', 'id'], ''),
+                    "collectorId": getValue(['CollectorId', 'collectorId'], ''),
+                    "collectorName": getValue(['CollectorName', 'collectorName', 'CollectorName'], ''),
+                    "collectorPhoneNumber": getValue(['CollectorPhoneNumber', 'collectorPhoneNumber'], ''),
+                    "collectorAccountNumber": getValue(['CollectorAccountNumber', 'collectorAccountNumber'], ''),
+                    "memberReference": getValue(['MemberReference', 'memberReference'], ''),
+                    "branchId": getValue(['BranchId', 'branchId'], ''),
+                    "branchCode": getValue(['BranchCode', 'branchCode'], ''),
+                    "branchName": getValue(['BranchName', 'branchName'], ''),
+                    "year": parseNumber(getValue(['Year', 'year']), new Date().getFullYear()),
+                    "month": parseNumber(getValue(['Month', 'month']), new Date().getMonth() + 1),
+                    "referenceNumber": getValue(['ReferenceNumber', 'referenceNumber'], ''),
+                    "collectorShareAmount": parseNumber(getValue(['CollectorShareAmount', 'collectorShareAmount'])),
+                    "incentiveAmount": parseNumber(getValue(['IncentiveAmount', 'incentiveAmount'])),
+                    "totalPaidAmountToCollector": parseNumber(getValue(['TotalPaidAmountToCollector', 'totalPaidAmountToCollector'])),
+                    "totalCommissionShared": parseNumber(getValue(['TotalCommissionShared', 'totalCommissionShared'])),
+                    "amountPaid": parseNumber(getValue(['AmountPaid', 'amountPaid'])),
+                    "currency": getValue(['Currency', 'currency'], 'XAF'),
+                    "datePaid": parseDate(getValue(['DatePaid', 'datePaid'])),
+                    "description": getValue(['Description', 'description'], 'Monthly collector commission'),
+                    "paymentSource": getValue(['PaymentSource', 'paymentSource'], 'BackOffice_Operation'),
+                    "processedBy": getValue(['ProcessedBy', 'processedBy'], ''),
+                    "processedByUserId": getValue(['ProcessedByUserId', 'processedByUserId'], ''),
+                    "createdDate": parseDate(getValue(['CreatedDate', 'createdDate'])),
+                    "createdBy": getValue(['CreatedBy', 'createdBy'], ''),
+                    "modifiedDate": parseDate(getValue(['ModifiedDate', 'modifiedDate'])),
+                    "modifiedBy": getValue(['ModifiedBy', 'modifiedBy'], ''),
+                    "deletedDate": getValue(['DeletedDate', 'deletedDate']) ? parseDate(getValue(['DeletedDate', 'deletedDate'])) : "0001-01-01T02:00:00+01:00",
+                    "deletedBy": getValue(['DeletedBy', 'deletedBy'], null),
+                    "objectState": parseNumber(getValue(['ObjectState', 'objectState'])),
+                    "isDeleted": parseBoolean(getValue(['IsDeleted', 'isDeleted']))
+                };
+
+                console.log(`Built record ${index + 1}:`, builtRecord);
+                return builtRecord;
+            });
+
+            console.log('=== FINAL EXPORT DATA BUILT ===');
+            console.log('Total records built:', exportData.length);
+            if (exportData.length > 0) {
+                console.log('Sample of first record:', exportData[0]);
+            }
+            
+            return exportData;
+        }
+
         function initCommissionDataTable() {
             console.log('=== INIT DATATABLE START ===');
 
-            // Check if DataTable library is available
             if (typeof $.fn.DataTable === 'undefined') {
                 console.error('DataTable library not loaded!');
                 appalert('DataTable library not loaded. Please check your scripts.', 0, 1);
                 return false;
             }
 
-            // If already initialized, destroy it first to avoid conflicts
             if ($.fn.DataTable.isDataTable('#myDataTable')) {
                 console.log('DataTable already exists, destroying...');
                 if (commissionTable) {
@@ -269,12 +368,9 @@
                 }
             }
 
-            // defensive: ensure element exists
             var $table = $('#myDataTable');
             if (!$table.length) {
-                console.error('Table element #myDataTable not found on page. Current page elements:');
-                console.log('All tables on page:', $('table').length);
-                console.log('All elements with ID myDataTable:', $('#myDataTable').length);
+                console.error('Table element #myDataTable not found on page.');
                 appalert('Table element not found on page. Please check the console for details.', 0, 1);
                 return false;
             }
@@ -287,8 +383,8 @@
                     searching: false,
                     responsive: true,
                     deferRender: true,
-                    deferLoading: true, // Don't load automatically
-                    order: [[0, 'desc']], // default sort by CreatedDate desc
+                    deferLoading: true,
+                    order: [[0, 'desc']],
                     ajax: {
                         url: '/CollectorCommission/DataTable',
                         type: 'POST',
@@ -297,7 +393,6 @@
                             console.log('DataTable requesting data with params:', d);
                             const filters = collectCommissionFilters();
 
-                            // Create the payload that matches your C# model
                             const payload = {
                                 DataTableOptions: {
                                     draw: d.draw,
@@ -313,12 +408,30 @@
                                     search: d.search?.value || '',
                                     sortDirection: d.order && d.order[0] ? d.order[0].dir : 'desc'
                                 },
-                                // Spread the filters into the payload
                                 ...filters
                             };
 
                             console.log('Sending payload to server:', payload);
                             return JSON.stringify(payload);
+                        },
+                        dataSrc: function (response) {
+                            console.log('=== DATA RECEIVED FROM BACKEND ===');
+                            console.log('Raw response received:', response);
+                            
+                            if (response && response.data) {
+                                console.log('Data received from backend:', response.data);
+                                console.log('Number of records received:', response.data.length);
+                                console.log('Sample record:', response.data[0]);
+                                
+                                // Store the current data for export
+                                currentTableData = response.data;
+                                console.log('Current table data stored for export:', currentTableData.length, 'records');
+                            } else {
+                                console.warn('No data received from backend');
+                                currentTableData = [];
+                            }
+                            
+                            return response.data;
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             console.error('AJAX error:', textStatus, errorThrown);
@@ -372,7 +485,6 @@
                             orderable: false,
                             searchable: false,
                             render: function (data, type, row) {
-                                // compute ids safely
                                 var rawId = String(row.Id || row.id || data || '');
                                 var recordId = encodeURIComponent(rawId);
                                 var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
@@ -419,7 +531,6 @@
                         console.log('DataTable settings:', settings);
                         console.log('DataTable JSON response:', json);
 
-                        // Initialize tooltips
                         try {
                             if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
                                 document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
@@ -433,7 +544,8 @@
                     },
                     drawCallback: function () {
                         console.log('DataTable draw complete');
-                        // Re-initialize tooltips after each draw
+                        console.log('Current table data available for export:', currentTableData.length, 'records');
+                        
                         try {
                             if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
                                 document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
@@ -460,7 +572,6 @@
         function loadCommissionData() {
             console.log('=== LOAD COMMISSION DATA START ===');
 
-            // Initialize table if not already done
             if (!isTableInitialized || !commissionTable) {
                 console.log('Table not initialized, initializing now...');
                 var success = initCommissionDataTable();
@@ -473,13 +584,11 @@
 
             if (commissionTable) {
                 console.log('Reloading DataTable with filters...');
-                // Show loading state
                 $('#applyCommissionFilterBtn').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Loading...');
 
-                // reload with current filters - this will trigger the first AJAX call
                 commissionTable.ajax.reload(function() {
                     console.log('DataTable reload complete');
-                    // Re-enable button after load
+                    console.log('Current data stored for export:', currentTableData.length, 'records');
                     $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
                 }, false);
             } else {
@@ -490,11 +599,9 @@
 
         function resetCommissionFilters() {
             console.log('Resetting filters...');
-            // reset form fields
             var form = document.getElementById('commissionFilterForm');
             if (form) form.reset();
 
-            // reset select2 if present
             if ($.fn.select2) {
                 if ($('#BranchId').hasClass('select2-hidden-accessible')) {
                     $('#BranchId').val(null).trigger('change');
@@ -507,19 +614,19 @@
                 }
             }
 
-            // Set current year and month as default
             var currentDate = new Date();
             $('#Year').val(currentDate.getFullYear());
             $('#Month').val(currentDate.getMonth() + 1);
 
-            // hide optional filter sections
             $('#dateRangeFilters, #amountRangeFilters').addClass('d-none');
             $('#toggleDateRange, #toggleAmountRange').prop('checked', false);
 
-            // Clear table data if table exists
             if (commissionTable && isTableInitialized) {
                 commissionTable.clear().draw();
             }
+
+            currentTableData = []; // Clear stored data
+            console.log('Stored data cleared for export');
 
             appalert('Filters reset', 3, 1);
         }
@@ -528,7 +635,6 @@
             console.log('Showing commission details for ID:', id);
             var modalEl = document.getElementById('commissionDetailsModal');
             if (!modalEl) {
-                // Create modal if it doesn't exist
                 modalEl = document.createElement('div');
                 modalEl.className = 'modal fade';
                 modalEl.id = 'commissionDetailsModal';
@@ -563,12 +669,10 @@
                 console.error('Bootstrap Modal not available', e);
             }
 
-            // Show loading state
             $('#commissionDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 
             if (bsModal) bsModal.show();
 
-            // Load details partial view
             $.get('/CollectorCommission/GetbyId', { id: id })
                 .done(function (html) {
                     $('#commissionDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
@@ -578,7 +682,7 @@
                                 new bootstrap.Tooltip(el);
                             });
                         }
-                    } catch (e) { /* ignore */ }
+                    } catch (e) { }
                 })
                 .fail(function (xhr, status, error) {
                     console.error('Error loading commission details:', error);
@@ -589,7 +693,6 @@
                 });
         }
 
-        // Function to load collectors by branch
         function loadCollectorsByBranch(branchId) {
             console.log('Loading collectors for branch:', branchId);
             $.ajax({
@@ -630,20 +733,19 @@
             });
         }
 
-        // EXPORT FUNCTIONS - CORRECTED VERSION
-        // Function to handle export when modal is shown
+        // EXPORT FUNCTIONS - WITH MANUALLY BUILT DATA
         function setupExportModal() {
-            // Check if there's any data in the table when modal opens
-            if (!commissionTable || commissionTable.rows().count() === 0) {
+            if (!commissionTable || currentTableData.length === 0) {
                 appalert('Please load commission data first by applying filters.', 3, 1);
                 $('#exportModal').modal('hide');
                 return;
             }
 
-            // Get current filter values for the export
+            console.log('=== SETTING UP EXPORT MODAL ===');
+            console.log('Current data available for export:', currentTableData.length, 'records');
+
             const currentFilters = collectCommissionFilters();
             
-            // Pre-fill date fields with current filter values
             if (currentFilters.StartDate) {
                 $('#startDate').val(currentFilters.StartDate);
             }
@@ -651,13 +753,11 @@
                 $('#endDate').val(currentFilters.EndDate);
             }
             
-            // Set up confirm export button
             $('#btnConfirmExport').off('click').on('click', function() {
                 confirmExport(currentFilters);
             });
         }
 
-        // Function to handle export confirmation
         function confirmExport(currentFilters) {
             const exportFormat = $('#exportFormat').val();
             const reportType = $('#reportType').val();
@@ -666,11 +766,9 @@
             const startDate = $('#startDate').val();
             const endDate = $('#endDate').val();
 
-            // Show progress
             $('#exportProgress').removeClass('d-none');
             updateExportProgress(0, 'Preparing export data...');
 
-            // Get all filtered/sorted data from server
             exportCurrentTableData({
                 format: exportFormat,
                 reportType: reportType,
@@ -682,84 +780,62 @@
             });
         }
 
-        // Function to export current table data - CORRECTED VERSION
         function exportCurrentTableData(exportOptions) {
-            updateExportProgress(25, 'Collecting all filtered data from server...');
+            console.log('=== EXPORTING CURRENT TABLE DATA ===');
+            console.log('Raw data to be exported:', currentTableData);
+            console.log('Number of records to export:', currentTableData.length);
+            console.log('Export options:', exportOptions);
 
-            // Get the current DataTable state (sorting, filtering, etc.)
-            const dtState = commissionTable.state();
-            const currentFilters = collectCommissionFilters();
+            updateExportProgress(25, 'Building export data structure...');
 
-            // Create payload that maintains the CURRENT sorting and filtering but requests ALL records
-            const payload = {
-                DataTableOptions: {
-                    draw: 1,
-                    start: 0,
-                    length: -1, // -1 indicates ALL records (no pagination)
-                    skip: 0,
-                    pageSize: -1,
-                    searchValue: dtState.search?.search || '',
-                    sortColumnName: dtState.order && dtState.order[0] ? 
-                        dtState.columns[dtState.order[0][0]].data : 'CreatedDate',
-                    sortColumnDirection: dtState.order && dtState.order[0] ? 
-                        dtState.order[0][1] : 'desc',
-                    recordsTotal: 0,
-                    recordsFiltered: 0,
-                    search: dtState.search?.search || '',
-                    sortDirection: dtState.order && dtState.order[0] ? 
-                        dtState.order[0][1] : 'desc'
+            // MANUALLY BUILD THE DATA IN EXACT FORMAT
+            const manuallyBuiltData = buildExportData(currentTableData);
+
+            // BUILD PAYLOAD THAT MATCHES BACKEND EXPECTATIONS
+            const exportPayload = {
+                // Backend expects 'Data' property with the commission records
+                Data: manuallyBuiltData, // Use the manually built data
+                
+                // Backend expects 'TotalRecords' property
+                TotalRecords: manuallyBuiltData.length,
+                
+                // Backend expects 'ExportOptions' property
+                ExportOptions: {
+                    Format: exportOptions.format || 'excel',
+                    ReportType: exportOptions.reportType || 'detailed',
+                    IncludeSummary: exportOptions.includeSummary !== false,
+                    FileName: exportOptions.fileName || 'Commission_Report',
+                    StartDate: exportOptions.startDate,
+                    EndDate: exportOptions.endDate
                 },
-                ...currentFilters,
-                IsExport: true // THIS IS THE KEY - tells controller this is for export
+                
+                // Include filters for reference (optional)
+                Filters: exportOptions.filters
             };
 
-            console.log('Export payload with current sorting/filtering:', payload);
+            console.log('=== FINAL EXPORT PAYLOAD READY ===');
+            console.log('Complete export payload:', exportPayload);
+            console.log('Data records count:', exportPayload.Data.length);
+            console.log('Export options:', exportPayload.ExportOptions);
+            console.log('Sample of data being sent:', exportPayload.Data[0]);
 
-            // Make AJAX call to get ALL filtered/sorted data
-            $.ajax({
-                url: '/CollectorCommission/DataTable', // Same endpoint but with export parameters
-                type: 'POST',
-                data: JSON.stringify(payload),
-                contentType: 'application/json',
-                success: function (response) {
-                    updateExportProgress(50, 'Formatting data for export...');
-                    
-                    if (!response || !response.data || response.data.length === 0) {
-                        appalert('No data available to export.', 3, 1);
-                        $('#exportProgress').addClass('d-none');
-                        return;
-                    }
+            updateExportProgress(50, 'Sending data to server...');
 
-                    console.log('Export data received:', response.data.length, 'records');
-
-                    // Prepare the data for export - send ALL the data we received
-                    const exportData = {
-                        Data: response.data, // This contains ALL filtered/sorted records
-                        TotalRecords: response.recordsTotal,
-                        ExportOptions: exportOptions,
-                        Filters: currentFilters
-                    };
-
-                    // Now call the export endpoint with ALL the filtered data
-                    performExport(exportData, exportOptions);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error fetching data for export:', error);
-                    appalert('Error fetching data for export: ' + error, 4, 1);
-                    $('#exportProgress').addClass('d-none');
-                    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-                }
-            });
+            // Send the backend-compatible payload
+            performExport(exportPayload, exportOptions);
         }
 
-        // Separate function to perform the actual export
-        function performExport(exportData, exportOptions) {
+        function performExport(exportPayload, exportOptions) {
+            console.log('=== SENDING DATA TO BACKEND ===');
+            console.log('Final export payload being sent:', exportPayload);
+            console.log('Commission records being sent:', exportPayload.Data.length);
+
             updateExportProgress(75, 'Generating Excel file...');
 
             $.ajax({
                 url: '/CollectorCommission/ExportTableData',
                 type: 'POST',
-                data: JSON.stringify(exportData),
+                data: JSON.stringify(exportPayload),
                 contentType: 'application/json',
                 xhrFields: {
                     responseType: 'blob'
@@ -768,10 +844,15 @@
                     $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
                 },
                 success: function (data, status, xhr) {
+                    console.log('=== EXPORT SUCCESSFUL ===');
+                    console.log('Export completed successfully');
+                    
                     updateExportProgress(100, 'Download ready!');
                     
-                    // Get filename from response headers or use default
-                    var filename = exportOptions.fileName + '_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+                    // Get filename from export options or headers
+                    var filename = exportPayload.ExportOptions.FileName + '_' + 
+                                  new Date().toISOString().slice(0, 10) + '.xlsx';
+                    
                     var disposition = xhr.getResponseHeader('Content-Disposition');
                     if (disposition && disposition.indexOf('attachment') !== -1) {
                         var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
@@ -790,9 +871,10 @@
                     link.click();
                     document.body.removeChild(link);
 
-                    appalert('Excel file downloaded successfully! ' + exportData.Data.length + ' records exported.', 1, 1);
+                    appalert('Excel file downloaded successfully! ' + 
+                            exportPayload.Data.length + 
+                            ' records exported.', 1, 1);
 
-                    // Close modal after successful export
                     setTimeout(function () {
                         $('#exportModal').modal('hide');
                         $('#exportProgress').addClass('d-none');
@@ -804,7 +886,6 @@
                     console.error('Export error:', error);
                     console.error('Response:', xhr.responseText);
                     
-                    // Try to parse error message
                     let errorMessage = 'Error exporting data';
                     try {
                         const errorResponse = JSON.parse(xhr.responseText);
@@ -820,7 +901,6 @@
             });
         }
 
-        // Function to update export progress
         function updateExportProgress(percent, message) {
             $('#exportProgress .progress-bar').css('width', percent + '%');
             $('#progressText').text(message);
@@ -832,25 +912,12 @@
             console.log('DataTable available:', typeof $.fn.DataTable !== 'undefined');
             console.log('Bootstrap available:', typeof bootstrap !== 'undefined');
 
-            // Debug: Check if table exists
             console.log('Table element exists:', $('#myDataTable').length);
-            if ($('#myDataTable').length) {
-                console.log('Table HTML:', $('#myDataTable').prop('outerHTML'));
-            } else {
-                console.error('TABLE NOT FOUND! Looking for #myDataTable');
-                console.log('All tables on page:', $('table').length);
-                $('table').each(function(i) {
-                    console.log('Table ' + i + ' ID:', $(this).attr('id'));
-                });
-            }
-
-            // Debug: Check if buttons exist
             console.log('Apply button exists:', $('#applyCommissionFilterBtn').length);
             console.log('Reset button exists:', $('#resetCommissionFilterBtn').length);
             console.log('Branch dropdown exists:', $('#BranchId').length);
             console.log('Collector dropdown exists:', $('#CollectorId').length);
 
-            // Initialize Select2 for dropdowns
             if ($.fn.select2) {
                 console.log('Initializing Select2...');
                 $('#BranchId').select2({
@@ -867,28 +934,22 @@
                 });
             }
 
-            // Set current year and month as default
             var currentDate = new Date();
             $('#Year').val(currentDate.getFullYear());
             $('#Month').val(currentDate.getMonth() + 1);
 
-            // Apply filter button click - THIS IS THE MAIN ENTRY POINT
             $('#applyCommissionFilterBtn').off('click').on('click', function (e) {
                 console.log('Apply button clicked!');
                 e.preventDefault();
-                console.log('Apply commission filter clicked');
                 loadCommissionData();
             });
 
-            // Reset filter button click
             $('#resetCommissionFilterBtn').off('click').on('click', function (e) {
                 console.log('Reset button clicked!');
                 e.preventDefault();
-                console.log('Reset commission filter clicked');
                 resetCommissionFilters();
             });
 
-            // Enter key triggers apply
             $('#commissionFilterForm input').off('keypress').on('keypress', function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
@@ -896,7 +957,6 @@
                 }
             });
 
-            // Load collectors when branch is selected
             $('#BranchId').change(function () {
                 console.log('Branch changed:', $(this).val());
                 var branchId = $(this).val();
@@ -910,7 +970,6 @@
                 }
             });
 
-            // Delegated actions (details/edit/delete)
             $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
                 e.preventDefault();
                 var raw = $(this).data('id');
@@ -930,7 +989,6 @@
                     appalert('Missing id for edit', 0, 1);
                     return;
                 }
-                // Implement edit functionality here
                 appalert('Edit functionality to be implemented', 3, 1);
             });
 
@@ -943,14 +1001,11 @@
                     return;
                 }
 
-                // Confirm deletion
                 if (confirm('Are you sure you want to delete this commission record?')) {
-                    // Implement delete functionality here
                     appalert('Delete functionality to be implemented', 3, 1);
                 }
             });
 
-            // Export modal event handlers
             $('#exportModal').on('show.bs.modal', function () {
                 console.log('Export modal opening...');
                 setupExportModal();
@@ -958,24 +1013,21 @@
 
             $('#exportModal').on('hidden.bs.modal', function () {
                 console.log('Export modal closed');
-                // Reset progress and button states when modal closes
                 $('#exportProgress').addClass('d-none');
                 $('.progress-bar').css('width', '0%');
                 $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
             });
 
-            // Export button click handler
             $('#btnExport').off('click').on('click', function (e) {
                 e.preventDefault();
                 console.log('Export button clicked');
                 
-                // Check if table has data
                 if (!commissionTable || !isTableInitialized) {
                     appalert('Please load commission data first by applying filters.', 3, 1);
                     return;
                 }
                 
-                const recordCount = commissionTable.rows().count();
+                const recordCount = currentTableData.length;
                 if (recordCount === 0) {
                     appalert('No data available to export. Please apply filters to load data first.', 3, 1);
                     return;
@@ -983,13 +1035,10 @@
                 
                 console.log(`Exporting ${recordCount} records`);
                 
-                // Show the modal
                 $('#exportModal').modal('show');
             });
 
             console.log('=== COMMISSION PAGE INITIALIZATION COMPLETE ===');
-            // NOTE: Table is NOT initialized automatically on page load
-            // It will be initialized only when user clicks "Apply Filters"
         });
     </script>
 }
