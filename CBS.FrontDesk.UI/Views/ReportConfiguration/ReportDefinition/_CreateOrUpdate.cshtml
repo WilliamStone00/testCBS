@@ -68,7 +68,7 @@
             <div class="mb-3">
                 @Html.LabelFor(model => model.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
                 @Html.DropDownListFor(model => model.ReportType,
-                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "CashFlow", "TrialBalance" }),
+                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "ExpenditureStatement", "Custom" }),
                     "Select report type",
                     new { @class = "form-select" })
             </div>
@@ -84,7 +84,7 @@
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                <button type="submit" class="btn btn-success">
                     <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
                     @(isUpdate ? "Update Report" : "Save Report")
                 </button>
