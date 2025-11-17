@@ -37,13 +37,13 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                     var commission = new DataTableResponse
                     {
                         // Use TryGetProperty helper for safe property access
-                        Id = TryGetProperty(item, "id", "Id")?.ToString() ?? "",
+                       // Id = TryGetProperty(item, "id", "Id")?.ToString() ?? "",
                         CollectorId = TryGetProperty(item, "collectorId", "CollectorId")?.ToString() ?? "",
                         CollectorName = TryGetProperty(item, "collectorName", "CollectorName")?.ToString() ?? "",
                         CollectorPhoneNumber = TryGetProperty(item, "collectorPhoneNumber", "CollectorPhoneNumber")?.ToString() ?? "",
                         CollectorAccountNumber = TryGetProperty(item, "collectorAccountNumber", "CollectorAccountNumber")?.ToString() ?? "",
                         MemberReference = TryGetProperty(item, "memberReference", "MemberReference")?.ToString() ?? "",
-                        BranchId = TryGetProperty(item, "branchId", "BranchId")?.ToString() ?? "",
+                       // BranchId = TryGetProperty(item, "branchId", "BranchId")?.ToString() ?? "",
                         BranchCode = TryGetProperty(item, "branchCode", "BranchCode")?.ToString() ?? "",
                         BranchName = TryGetProperty(item, "branchName", "BranchName")?.ToString() ?? "",
                         Year = Convert.ToInt32(TryGetProperty(item, "year", "Year") ?? DateTime.Now.Year),
@@ -59,14 +59,14 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                         Description = TryGetProperty(item, "description", "Description")?.ToString() ?? "Monthly collector commission",
                         PaymentSource = TryGetProperty(item, "paymentSource", "PaymentSource")?.ToString() ?? "BackOffice_Operation",
                         ProcessedBy = TryGetProperty(item, "processedBy", "ProcessedBy")?.ToString() ?? "",
-                        ProcessedByUserId = TryGetProperty(item, "processedByUserId", "ProcessedByUserId")?.ToString() ?? "",
+                       // ProcessedByUserId = TryGetProperty(item, "processedByUserId", "ProcessedByUserId")?.ToString() ?? "",
                         CreatedDate = ParseDateTimeOffset(TryGetProperty(item, "createdDate", "CreatedDate")) ?? DateTimeOffset.Now,
-                        CreatedBy = TryGetProperty(item, "createdBy", "CreatedBy")?.ToString() ?? "",
-                        ModifiedDate = ParseDateTimeOffset(TryGetProperty(item, "modifiedDate", "ModifiedDate")) ?? DateTimeOffset.MinValue,
-                        ModifiedBy = TryGetProperty(item, "modifiedBy", "ModifiedBy")?.ToString() ?? "",
-                        DeletedDate = ParseDateTimeOffset(TryGetProperty(item, "deletedDate", "DeletedDate")),
-                        DeletedBy = TryGetProperty(item, "deletedBy", "DeletedBy")?.ToString(),
-                        IsDeleted = Convert.ToBoolean(TryGetProperty(item, "isDeleted", "IsDeleted") ?? false)
+                        //CreatedBy = TryGetProperty(item, "createdBy", "CreatedBy")?.ToString() ?? "",
+                        //ModifiedDate = ParseDateTimeOffset(TryGetProperty(item, "modifiedDate", "ModifiedDate")) ?? DateTimeOffset.MinValue,
+                        //ModifiedBy = TryGetProperty(item, "modifiedBy", "ModifiedBy")?.ToString() ?? "",
+                        //DeletedDate = ParseDateTimeOffset(TryGetProperty(item, "deletedDate", "DeletedDate")),
+                        //DeletedBy = TryGetProperty(item, "deletedBy", "DeletedBy")?.ToString(),
+                        //IsDeleted = Convert.ToBoolean(TryGetProperty(item, "isDeleted", "IsDeleted") ?? false)
                     };
 
                     commissionList.Add(commission);
@@ -214,36 +214,36 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 foreach (var commission in commissionData)
                 {
                     worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN
-                    worksheet.Cells[dataRow, 2].Value = commission.Id;
-                    worksheet.Cells[dataRow, 3].Value = commission.CollectorId;
-                    worksheet.Cells[dataRow, 4].Value = commission.CollectorName;
-                    worksheet.Cells[dataRow, 5].Value = commission.CollectorPhoneNumber;
-                    worksheet.Cells[dataRow, 6].Value = commission.CollectorAccountNumber;
-                    worksheet.Cells[dataRow, 7].Value = commission.MemberReference;
-                    worksheet.Cells[dataRow, 8].Value = commission.BranchId;
-                    worksheet.Cells[dataRow, 9].Value = commission.BranchCode;
-                    worksheet.Cells[dataRow, 10].Value = commission.BranchName;
-                    worksheet.Cells[dataRow, 11].Value = commission.Year;
-                    worksheet.Cells[dataRow, 12].Value = commission.Month;
-                    worksheet.Cells[dataRow, 13].Value = commission.ReferenceNumber;
-                    worksheet.Cells[dataRow, 14].Value = commission.CollectorShareAmount;
-                    worksheet.Cells[dataRow, 15].Value = commission.IncentiveAmount;
-                    worksheet.Cells[dataRow, 16].Value = commission.TotalPaidAmountToCollector;
-                    worksheet.Cells[dataRow, 17].Value = commission.TotalCommissionShared;
-                    worksheet.Cells[dataRow, 18].Value = commission.AmountPaid;
-                    worksheet.Cells[dataRow, 19].Value = commission.Currency;
-                    worksheet.Cells[dataRow, 20].Value = commission.DatePaid.ToString("yyyy-MM-dd");
-                    worksheet.Cells[dataRow, 21].Value = commission.Description;
-                    worksheet.Cells[dataRow, 22].Value = commission.PaymentSource;
-                    worksheet.Cells[dataRow, 23].Value = commission.ProcessedBy;
-                    worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
-                    worksheet.Cells[dataRow, 25].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
-                    worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
-                    worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
-                    worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
-                    worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
+                    //worksheet.Cells[dataRow, 2].Value = commission.Id;
+                    worksheet.Cells[dataRow, 2].Value = commission.CollectorId;
+                    worksheet.Cells[dataRow, 3].Value = commission.CollectorName;
+                    worksheet.Cells[dataRow, 4].Value = commission.CollectorPhoneNumber;
+                    worksheet.Cells[dataRow, 5].Value = commission.CollectorAccountNumber;
+                    worksheet.Cells[dataRow, 6].Value = commission.MemberReference;
+                    //worksheet.Cells[dataRow, 8].Value = commission.BranchId;
+                    worksheet.Cells[dataRow, 7].Value = commission.BranchCode;
+                    worksheet.Cells[dataRow, 8].Value = commission.BranchName;
+                    worksheet.Cells[dataRow, 9].Value = commission.Year;
+                    worksheet.Cells[dataRow, 10].Value = commission.Month;
+                    worksheet.Cells[dataRow, 11].Value = commission.ReferenceNumber;
+                    worksheet.Cells[dataRow, 12].Value = commission.CollectorShareAmount;
+                    worksheet.Cells[dataRow, 13].Value = commission.IncentiveAmount;
+                    worksheet.Cells[dataRow, 14].Value = commission.TotalPaidAmountToCollector;
+                    worksheet.Cells[dataRow, 15].Value = commission.TotalCommissionShared;
+                    worksheet.Cells[dataRow, 16].Value = commission.AmountPaid;
+                    worksheet.Cells[dataRow, 17].Value = commission.Currency;
+                    worksheet.Cells[dataRow, 18].Value = commission.DatePaid.ToString("yyyy-MM-dd");
+                    worksheet.Cells[dataRow, 19].Value = commission.Description;
+                    worksheet.Cells[dataRow, 20].Value = commission.PaymentSource;
+                    worksheet.Cells[dataRow, 21].Value = commission.ProcessedBy;
+                    //worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
+                    worksheet.Cells[dataRow, 22].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    //worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
+                    //worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    //worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
+                    //worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
+                    //worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
+                    //worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
 
                     // Apply borders for the row
                     for (int col = 1; col <= headers.Length; col++)
