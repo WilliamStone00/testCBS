@@ -74,9 +74,9 @@
                                     </div>
                                 </div>
 
-                                <!-- SECTION 2: Transits -->
+                                <!-- SECTION 2: Transits & Commissions -->
                                 <div class="row mt-2 gy-4">
-                                    <div class="col-md-12"><h6 class="text-primary mb-2">Transits</h6></div>
+                                    <div class="col-md-12"><h6 class="text-primary mb-2">Transits & Commissions</h6></div>
 
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
@@ -89,7 +89,91 @@
                                             <small class="form-text text-muted">Temporary holding account for in-process movements within the same branch (e.g., teller handover).</small>
                                         </div>
                                     </div>
+
+                                    <!-- NEW: Cash-in commission account (replaces old generic commission) -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2CashInCommissionChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Cash-in commission account</label>
+                                            <small class="form-text text-muted">
+                                                Branch commission GL used when charging commission on cash deposits for this product.
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- NEW: Cash-out commission account -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2CashOutCommissionChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Cash-out commission account</label>
+                                            <small class="form-text text-muted">
+                                                Branch commission GL used when charging commission on cash withdrawals for this product.
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- NEW: Transfer commission account -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                              m => m.SavingProduct.AccountingV2TransferCommissionChartOfAccountId,
+                                              new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                              "Select an account",
+                                              new { @class = "form-control select2", @search = "true" })
+                                            <label>Transfer commission account</label>
+                                            <small class="form-text text-muted">
+                                                Branch commission GL used when charging commission on account-to-account transfers for this product.
+                                            </small>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                @* DAILY COLLECTIONS *@
+                                if (Model.SavingProduct.AccountType.Contains("Daily"))
+                                {
+                                    <!-- SECTION 3: Daily Collections -->
+                                    <div class="row mt-2 gy-4">
+                                        <div class="col-md-12"><h6 class="text-primary mb-2">Daily Collections</h6></div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2SuplusChartOfAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Surplus account for Daily Savings</label>
+                                                <small class="form-text text-muted">
+                                                    Holds surplus balances collected by daily collectors.
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating form-floating-outline">
+                                                @Html.DropDownListFor(
+                                                  m => m.SavingProduct.AccountingV2ShortageChartOfAccountId,
+                                                  new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                                  "Select an account",
+                                                  new { @class = "form-control select2", @search = "true" })
+                                                <label>Shortage account for Daily Savings</label>
+                                                <small class="form-text text-muted">
+                                                    Holds shortage balances realized from daily collections after reconciliation.
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
                                 if (Model.SavingProduct.AccountType.Contains("Salary"))
                                 {
                                     <!-- SECTION 3: Civil servants -->
@@ -197,6 +281,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- SECTION 5: Suspense -->
                                     <div class="row mt-2 gy-4">
                                         <div class="col-md-12"><h6 class="text-primary mb-2">Suspense account</h6></div>
@@ -215,8 +300,6 @@
                                     </div>
 
                                 }
-
-
 
                                 <div class="mt-2">
                                     @if (Model.SavingProduct?.Id == null)
@@ -242,4 +325,3 @@
         </div>
     </div>
 </div>
-
