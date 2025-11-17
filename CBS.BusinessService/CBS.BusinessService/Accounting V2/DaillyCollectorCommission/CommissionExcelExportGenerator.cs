@@ -37,13 +37,13 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                     var commission = new DataTableResponse
                     {
                         // Use TryGetProperty helper for safe property access
-                        Id = TryGetProperty(item, "id", "Id")?.ToString() ?? "",
-                        CollectorId = TryGetProperty(item, "collectorId", "CollectorId")?.ToString() ?? "",
+                       // Id = TryGetProperty(item, "id", "Id")?.ToString() ?? "",
+                        //CollectorId = TryGetProperty(item, "collectorId", "CollectorId")?.ToString() ?? "",
                         CollectorName = TryGetProperty(item, "collectorName", "CollectorName")?.ToString() ?? "",
                         CollectorPhoneNumber = TryGetProperty(item, "collectorPhoneNumber", "CollectorPhoneNumber")?.ToString() ?? "",
                         CollectorAccountNumber = TryGetProperty(item, "collectorAccountNumber", "CollectorAccountNumber")?.ToString() ?? "",
                         MemberReference = TryGetProperty(item, "memberReference", "MemberReference")?.ToString() ?? "",
-                        BranchId = TryGetProperty(item, "branchId", "BranchId")?.ToString() ?? "",
+                       // BranchId = TryGetProperty(item, "branchId", "BranchId")?.ToString() ?? "",
                         BranchCode = TryGetProperty(item, "branchCode", "BranchCode")?.ToString() ?? "",
                         BranchName = TryGetProperty(item, "branchName", "BranchName")?.ToString() ?? "",
                         Year = Convert.ToInt32(TryGetProperty(item, "year", "Year") ?? DateTime.Now.Year),
@@ -59,14 +59,14 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                         Description = TryGetProperty(item, "description", "Description")?.ToString() ?? "Monthly collector commission",
                         PaymentSource = TryGetProperty(item, "paymentSource", "PaymentSource")?.ToString() ?? "BackOffice_Operation",
                         ProcessedBy = TryGetProperty(item, "processedBy", "ProcessedBy")?.ToString() ?? "",
-                        ProcessedByUserId = TryGetProperty(item, "processedByUserId", "ProcessedByUserId")?.ToString() ?? "",
+                       // ProcessedByUserId = TryGetProperty(item, "processedByUserId", "ProcessedByUserId")?.ToString() ?? "",
                         CreatedDate = ParseDateTimeOffset(TryGetProperty(item, "createdDate", "CreatedDate")) ?? DateTimeOffset.Now,
-                        CreatedBy = TryGetProperty(item, "createdBy", "CreatedBy")?.ToString() ?? "",
-                        ModifiedDate = ParseDateTimeOffset(TryGetProperty(item, "modifiedDate", "ModifiedDate")) ?? DateTimeOffset.MinValue,
-                        ModifiedBy = TryGetProperty(item, "modifiedBy", "ModifiedBy")?.ToString() ?? "",
-                        DeletedDate = ParseDateTimeOffset(TryGetProperty(item, "deletedDate", "DeletedDate")),
-                        DeletedBy = TryGetProperty(item, "deletedBy", "DeletedBy")?.ToString(),
-                        IsDeleted = Convert.ToBoolean(TryGetProperty(item, "isDeleted", "IsDeleted") ?? false)
+                        //CreatedBy = TryGetProperty(item, "createdBy", "CreatedBy")?.ToString() ?? "",
+                        //ModifiedDate = ParseDateTimeOffset(TryGetProperty(item, "modifiedDate", "ModifiedDate")) ?? DateTimeOffset.MinValue,
+                        //ModifiedBy = TryGetProperty(item, "modifiedBy", "ModifiedBy")?.ToString() ?? "",
+                        //DeletedDate = ParseDateTimeOffset(TryGetProperty(item, "deletedDate", "DeletedDate")),
+                        //DeletedBy = TryGetProperty(item, "deletedBy", "DeletedBy")?.ToString(),
+                        //IsDeleted = Convert.ToBoolean(TryGetProperty(item, "isDeleted", "IsDeleted") ?? false)
                     };
 
                     commissionList.Add(commission);
@@ -114,77 +114,91 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 // We'll be using 31 columns (A..AE)
                 const string lastColumnLetter = "AE";
 
-                // ===== Title =====
+                // ===== Bank Information at the TOP =====
                 worksheet.Cells[$"A1:{lastColumnLetter}1"].Merge = true;
-                worksheet.Cells["A1"].Value = "DAILLY COLLECTOR COMMISSION REPORT";
+                worksheet.Cells["A1"].Value = bank; // Bank name as main header
                 worksheet.Cells["A1"].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Style.Font.Size = 16;
-                worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["A1"].Style.Font.Size = 18;
+                worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 worksheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(1).Height = 28;
+                worksheet.Row(1).Height = 30;
                 worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
                 worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0)); // dark green
 
-                // ===== Export meta =====
+                // ===== Bank Code and Branch Information =====
                 worksheet.Cells[$"A2:{lastColumnLetter}2"].Merge = true;
-                worksheet.Cells["A2"].Value = $"Exported By: {exportedBy}";
-                worksheet.Cells["A2"].Style.Font.Italic = true;
+                worksheet.Cells["A2"].Value = $"Bank Code: {bankcode} | Branch: {branchname} | Branch ID: {Branchid}";
+                worksheet.Cells["A2"].Style.Font.Bold = true;
+                worksheet.Cells["A2"].Style.Font.Size = 12;
                 worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Row(2).Height = 18;
+                worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(2).Height = 22;
+                worksheet.Cells["A2"].Style.Font.Color.SetColor(Color.White);
+                worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180)); // steel blue
 
+                // ===== Export meta =====
                 worksheet.Cells[$"A3:{lastColumnLetter}3"].Merge = true;
-                worksheet.Cells["A3"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-                worksheet.Cells["A3"].Style.Font.Italic = true;
+                worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
+                worksheet.Cells["A3"].Style.Font.Bold = true;
                 worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Row(3).Height = 18;
+
+                worksheet.Cells[$"A4:{lastColumnLetter}4"].Merge = true;
+                worksheet.Cells["A4"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                worksheet.Cells["A4"].Style.Font.Bold = true;
+                worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(4).Height = 18;
+
+                // ===== Report Title =====
+                worksheet.Cells[$"A5:{lastColumnLetter}5"].Merge = true;
+                worksheet.Cells["A5"].Value = "DAILY COLLECTOR COMMISSION REPORT";
+                worksheet.Cells["A5"].Style.Font.Bold = true;
+                worksheet.Cells["A5"].Style.Font.Size = 14;
+                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(5).Height = 25;
+                worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
+                worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // gold
 
                 // Optional date range row
                 if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
                 {
-                    worksheet.Cells[$"A4:{lastColumnLetter}4"].Merge = true;
-                    worksheet.Cells["A4"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
-                    worksheet.Cells["A4"].Style.Font.Italic = true;
-                    worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    worksheet.Row(4).Height = 18;
+                    worksheet.Cells[$"A6:{lastColumnLetter}6"].Merge = true;
+                    worksheet.Cells["A6"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
+                    worksheet.Cells["A6"].Style.Font.Bold = true;
+                    worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Row(6).Height = 18;
                 }
 
-                // ===== Bank / Branch information =====
-                worksheet.Cells[$"A5:{lastColumnLetter}5"].Merge = true;
-                worksheet.Cells["A5"].Value = bank;
-                worksheet.Cells["A5"].Style.Font.Bold = true;
-                worksheet.Cells["A5"].Style.Font.Size = 12;
-                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(5).Height = 20;
-                worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(224, 235, 255)); // subtle light blue
+                // Small spacer row
+                int dataStartRow = (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate)) ? 8 : 7;
+                worksheet.Row(dataStartRow - 1).Height = 8;
 
-                worksheet.Cells[$"A6:{lastColumnLetter}6"].Merge = true;
-                worksheet.Cells["A6"].Value = $"Bank Code: {bankcode}    |    Branch: {branchname}    (ID: {Branchid})";
-                worksheet.Cells["A6"].Style.Font.Italic = true;
-                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Row(6).Height = 18;
-
-                // Small spacer row (optional)
-                worksheet.Row(7).Height = 8;
-
-                // Add a thin border around the top header block (A1:AE6)
-                var headerBlock = worksheet.Cells[$"A1:{lastColumnLetter}6"];
+                // Add a thin border around the top header block
+                var headerBlockEndRow = (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate)) ? 6 : 5;
+                var headerBlock = worksheet.Cells[$"A1:{lastColumnLetter}{headerBlockEndRow}"];
                 headerBlock.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                 headerBlock.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                 headerBlock.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                 headerBlock.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                headerBlock.Style.Border.BorderAround(ExcelBorderStyle.Medium);
+
 
                 // ===== COMPREHENSIVE Headers - Include ALL fields from DataTableResponse =====
                 var headers = new[]
                 {
-            "SN", "ID", "Collector ID", "Collector Name", "Collector Phone", "Collector Account",
-            "Member Reference", "Branch ID", "Branch Code", "Branch Name", "Year", "Month",
+            "SN", "Collector Name", "Collector Phone", "Collector Account",
+            "Member Reference","Branch Code", "Branch Name", "Year", "Month",
             "Reference Number", "Collector Share", "Incentive Amount", "Total Paid to Collector",
             "Total Commission Shared", "Amount Paid", "Currency", "Date Paid", "Description",
-            "Payment Source", "Processed By", "Processed By User ID", "Created Date", "Created By",
-            "Modified Date", "Modified By", "Deleted Date", "Deleted By", "Is Deleted"
+            "Payment Source", "Processed By", "Created Date"
+            
         };
 
                 // We'll use row 8 for the column headers so header area occupies rows 1..7
@@ -214,36 +228,36 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 foreach (var commission in commissionData)
                 {
                     worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN
-                    worksheet.Cells[dataRow, 2].Value = commission.Id;
-                    worksheet.Cells[dataRow, 3].Value = commission.CollectorId;
-                    worksheet.Cells[dataRow, 4].Value = commission.CollectorName;
-                    worksheet.Cells[dataRow, 5].Value = commission.CollectorPhoneNumber;
-                    worksheet.Cells[dataRow, 6].Value = commission.CollectorAccountNumber;
-                    worksheet.Cells[dataRow, 7].Value = commission.MemberReference;
-                    worksheet.Cells[dataRow, 8].Value = commission.BranchId;
-                    worksheet.Cells[dataRow, 9].Value = commission.BranchCode;
-                    worksheet.Cells[dataRow, 10].Value = commission.BranchName;
-                    worksheet.Cells[dataRow, 11].Value = commission.Year;
-                    worksheet.Cells[dataRow, 12].Value = commission.Month;
-                    worksheet.Cells[dataRow, 13].Value = commission.ReferenceNumber;
-                    worksheet.Cells[dataRow, 14].Value = commission.CollectorShareAmount;
-                    worksheet.Cells[dataRow, 15].Value = commission.IncentiveAmount;
-                    worksheet.Cells[dataRow, 16].Value = commission.TotalPaidAmountToCollector;
-                    worksheet.Cells[dataRow, 17].Value = commission.TotalCommissionShared;
-                    worksheet.Cells[dataRow, 18].Value = commission.AmountPaid;
-                    worksheet.Cells[dataRow, 19].Value = commission.Currency;
-                    worksheet.Cells[dataRow, 20].Value = commission.DatePaid.ToString("yyyy-MM-dd");
-                    worksheet.Cells[dataRow, 21].Value = commission.Description;
-                    worksheet.Cells[dataRow, 22].Value = commission.PaymentSource;
-                    worksheet.Cells[dataRow, 23].Value = commission.ProcessedBy;
-                    worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
-                    worksheet.Cells[dataRow, 25].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
-                    worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
-                    worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
-                    worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
-                    worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
+                    //worksheet.Cells[dataRow, 2].Value = commission.Id;
+                   // worksheet.Cells[dataRow, 2].Value = commission.CollectorId;
+                    worksheet.Cells[dataRow, 2].Value = commission.CollectorName;
+                    worksheet.Cells[dataRow, 3].Value = commission.CollectorPhoneNumber;
+                    worksheet.Cells[dataRow, 4].Value = commission.CollectorAccountNumber;
+                    worksheet.Cells[dataRow, 5].Value = commission.MemberReference;
+                    //worksheet.Cells[dataRow, 8].Value = commission.BranchId;
+                    worksheet.Cells[dataRow, 6].Value = commission.BranchCode;
+                    worksheet.Cells[dataRow, 7].Value = commission.BranchName;
+                    worksheet.Cells[dataRow, 8].Value = commission.Year;
+                    worksheet.Cells[dataRow, 9].Value = commission.Month;
+                    worksheet.Cells[dataRow, 10].Value = commission.ReferenceNumber;
+                    worksheet.Cells[dataRow, 11].Value = commission.CollectorShareAmount;
+                    worksheet.Cells[dataRow, 12].Value = commission.IncentiveAmount;
+                    worksheet.Cells[dataRow, 13].Value = commission.TotalPaidAmountToCollector;
+                    worksheet.Cells[dataRow, 14].Value = commission.TotalCommissionShared;
+                    worksheet.Cells[dataRow, 15].Value = commission.AmountPaid;
+                    worksheet.Cells[dataRow, 16].Value = commission.Currency;
+                    worksheet.Cells[dataRow, 17].Value = commission.DatePaid.ToString("yyyy-MM-dd");
+                    worksheet.Cells[dataRow, 18].Value = commission.Description;
+                    worksheet.Cells[dataRow, 19].Value = commission.PaymentSource;
+                    worksheet.Cells[dataRow, 20].Value = commission.ProcessedBy;
+                    //worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
+                    worksheet.Cells[dataRow, 21].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    //worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
+                    //worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    //worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
+                    //worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
+                    //worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
+                    //worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
 
                     // Apply borders for the row
                     for (int col = 1; col <= headers.Length; col++)
