@@ -10,10 +10,23 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         // List of trial balance lines
         public List<TrialBalanceV2Dto> Lines { get; set; } = new List<TrialBalanceV2Dto>();
         public List<JournalDtoEntriesV2Dto> JournalEntries { get; set; } = new List<JournalDtoEntriesV2Dto>();
+        public List<AccountStatementResponse> AccntStatements { get; set; } = new List<AccountStatementResponse>();
+
+
         // Response metadata
     }
 
-   
+
+
+    public class AccountStatementResponse
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public List<JournalDtoEntriesV2Dto> Movements { get; set; }
+        public decimal ClosingBalance { get; set; }
+    }
+
 
 
 
@@ -64,4 +77,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public decimal PeriodBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
         public decimal ClosingBalance => (ClosingDR ?? 0) - (ClosingCR ?? 0);
     }
+
+
+    public class CustomeResportItemS {
+
+        public string BranchId { get; set; }
+    }
+
 }
