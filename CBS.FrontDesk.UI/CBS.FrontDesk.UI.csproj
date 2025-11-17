@@ -10895,8 +10895,6 @@
     <Content Include="Views\BranchAccount\_DetailsPartial.cshtml" />
     <Content Include="Views\BranchAccount\_EditPartial.cshtml" />
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
@@ -10960,23 +10958,25 @@
     <Content Include="Views\APIKey\_Revoke.cshtml" />
     <Content Include="Views\APIKey\_ChangeStatus.cshtml" />
     <Content Include="Views\APIKey\_Details.cshtml" />
-    <Content Include="Views\ReportingV2\Index.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_Edit.cshtml" />
-    <Content Include="Views\ReportingV2\ReportSection\Initilization.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_Create.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
     <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
     <Content Include="Views\CollectorCommission\List.cshtml" />
     <Content Include="Views\CollectorCommission\_Data.cshtml" />
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
     <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestTableData.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondenceApprovalAndRejectionRequest.cshtml" />
+    <Content Include="Views\ReportConfiguration\Index.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLineMapping\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLineMapping\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
