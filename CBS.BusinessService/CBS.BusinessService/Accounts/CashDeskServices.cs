@@ -1006,11 +1006,10 @@ namespace CBS.BusinessService.Accounts
                     {
                         Amount = a.Amount,
                         CurrencyNotesRequest = a.currencyNotes,
-                        MemberReference = a.CustomerId,
                         CustomerName = a.MemberName,
+                        MobileMoneyGLId = a.GlId,
                         CNI = a.CNI,
                         IsCashOperation = true,
-                        TellerCode = a.TellerCode != null ? a.TellerCode : "N/A",
                         SourceType = a.SourceType,
                         BookingDirection = a.BookingDirection,
                         OperationType = a.BookingDirection,

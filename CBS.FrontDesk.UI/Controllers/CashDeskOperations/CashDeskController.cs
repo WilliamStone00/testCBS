@@ -168,6 +168,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
         public async Task<ActionResult> OtherCashMobileMoney()
         {
+            var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
+            ViewBag.AccountIds = result;
             var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
             return View(cashDesk);
         }

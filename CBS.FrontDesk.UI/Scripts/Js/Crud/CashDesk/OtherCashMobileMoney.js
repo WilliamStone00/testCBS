@@ -133,6 +133,7 @@ function collectDeposits() {
             deposit.MemberName = $('#MemberName').val();
             deposit.CNI = $('#CNI').val();
             deposit.TelephoneNumber = $('#TelephoneNumber').val();
+            deposit.GlId = $('#MobileMoneyGLId').val();
             deposit.SourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
             deposit.BookingDirection = $("input[name='AddOtherTransactionMobileMoneyCommand.BookingDirection']:checked").val();
             deposits.push(deposit);

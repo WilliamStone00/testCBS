@@ -27,18 +27,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         private readonly BranchServices _branchServices;
         private readonly ChartOfAccountsV2Service _chartOfAccountsV;
         private readonly BranchAccountService _branchAccountService;
+        private readonly CommissionExcelExportGenerator _commissionExcelExportGenerator;
 
         /// <summary>
         /// Injects the required CollectorCommissionController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
+        public CollectorCommissionController(CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _collectorCommissionService = collectorCommissionService;
             _chartOfAccountsV = chartOfAccountsV2Service;
             _branchServices = branchServices;
             _manualService = manualDailyCollectionService;
             _branchAccountService = branchAccountService;
+            _commissionExcelExportGenerator = commissionExcelExportGenerator;
         }
 
         public async Task<ActionResult> Index()
@@ -469,45 +471,166 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         {
             try
             {
+                Console.WriteLine($"=== EXPORT DEBUG START ===");
+                Console.WriteLine($"Request received: {request != null}");
+                Console.WriteLine($"Data count: {request?.Data?.Count ?? 0}");
+                Console.WriteLine($"Total Records: {request?.TotalRecords ?? 0}");
+                Console.WriteLine($"Export Options: {request?.ExportOptions?.FileName ?? "N/A"}");
+
                 if (request?.Data == null || !request.Data.Any())
                 {
+                    Console.WriteLine("No data to export");
                     return Json(new { success = false, message = "No commission data available for export." });
                 }
 
-                Console.WriteLine($"=== EXPORT DEBUG ===");
-                Console.WriteLine($"Exporting {request.Data.Count} records");
-                Console.WriteLine($"Total Records: {request.TotalRecords}");
+                // Debug: Log first few items structure
+                Console.WriteLine($"=== DATA STRUCTURE ANALYSIS ===");
+                for (int i = 0; i < Math.Min(request.Data.Count, 3); i++)
+                {
+                    var item = request.Data[i];
+                    Console.WriteLine($"Item {i + 1} type: {item?.GetType()?.Name ?? "NULL"}");
+
+                    try
+                    {
+                        if (item is IDictionary<string, object> dict)
+                        {
+                            Console.WriteLine($"  Properties ({dict.Count}):");
+                            foreach (var kvp in dict.Take(10)) // Show first 10 properties
+                            {
+                                Console.WriteLine($"    {kvp.Key}: {kvp.Value} (Type: {kvp.Value?.GetType()?.Name ?? "NULL"})");
+                            }
+                            if (dict.Count > 10)
+                            {
+                                Console.WriteLine($"    ... and {dict.Count - 10} more properties");
+                            }
+                        }
+                        else if (item != null)
+                        {
+                            var properties = item.GetType().GetProperties();
+                            Console.WriteLine($"  Properties ({properties.Length}):");
+                            foreach (var prop in properties.Take(10)) // Show first 10 properties
+                            {
+                                try
+                                {
+                                    var value = prop.GetValue(item);
+                                    Console.WriteLine($"    {prop.Name}: {value} (Type: {value?.GetType()?.Name ?? "NULL"})");
+                                }
+                                catch (Exception propEx)
+                                {
+                                    Console.WriteLine($"    {prop.Name}: ERROR - {propEx.Message}");
+                                }
+                            }
+                            if (properties.Length > 10)
+                            {
+                                Console.WriteLine($"    ... and {properties.Length - 10} more properties");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("  Item is null");
+                        }
+                    }
+                    catch (Exception itemEx)
+                    {
+                        Console.WriteLine($"  Error analyzing item: {itemEx.Message}");
+                    }
+                    Console.WriteLine("  ---");
+                }
 
                 // Convert dynamic data to strongly typed list
+                Console.WriteLine($"=== CONVERTING DATA ===");
                 var commissionData = CommissionExcelExportGenerator.ConvertToCommissionData(request.Data);
+                Console.WriteLine($"Successfully converted {commissionData.Count} records");
+
+                if (!commissionData.Any())
+                {
+                    Console.WriteLine("No data converted successfully");
+                    return Json(new { success = false, message = "No valid commission data could be processed for export." });
+                }
+
+                // Debug converted data
+                Console.WriteLine($"=== CONVERTED DATA SAMPLE ===");
+                if (commissionData.Any())
+                {
+                    var sample = commissionData.First();
+                    Console.WriteLine($"Sample converted record:");
+                    Console.WriteLine($"  ID: {sample.Id}");
+                    Console.WriteLine($"  Collector: {sample.CollectorName}");
+                    Console.WriteLine($"  Branch: {sample.BranchName}");
+                    Console.WriteLine($"  Amount: {sample.AmountPaid}");
+                    Console.WriteLine($"  Year/Month: {sample.Year}/{sample.Month}");
+                    Console.WriteLine($"  Currency: {sample.Currency}");
+                }
 
                 // Prepare file name and paths
                 string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string fileName = $"{request.ExportOptions?.FileName ?? "Commission_Report"}_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 
+                Console.WriteLine($"=== FILE PREPARATION ===");
+                Console.WriteLine($"Directory: {directoryPath}");
+                Console.WriteLine($"File Name: {fileName}");
+
                 if (!Directory.Exists(directoryPath))
+                {
+                    Console.WriteLine("Creating temp directory");
                     Directory.CreateDirectory(directoryPath);
+                }
 
                 string filePath = Path.Combine(directoryPath, fileName);
                 string exportedBy = Session["FullName"]?.ToString() ?? "System";
 
+                Console.WriteLine($"Full Path: {filePath}");
+                Console.WriteLine($"Exported By: {exportedBy}");
+
                 // Generate Excel file
-                CommissionExcelExportGenerator.GenerateCommissionExcelFromTableData(commissionData, filePath, exportedBy, request.ExportOptions);
+                Console.WriteLine($"=== GENERATING EXCEL ===");
+                _commissionExcelExportGenerator.GenerateCommissionExcelFromTableData(commissionData, filePath, exportedBy, request.ExportOptions);
+
+                // Verify file was created
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Console.WriteLine("ERROR: Excel file was not created");
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+                }
+
+                Console.WriteLine($"Excel file generated successfully: {filePath}");
+                Console.WriteLine($"File size: {new FileInfo(filePath).Length} bytes");
 
                 // Read and send file to browser
+                Console.WriteLine($"=== READING FILE ===");
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                Console.WriteLine($"File bytes read: {fileBytes.Length} bytes");
 
                 // Delete temp file after sending
+                Console.WriteLine($"=== CLEANUP ===");
                 System.IO.File.Delete(filePath);
+                Console.WriteLine("Temp file deleted");
+
+                Console.WriteLine($"=== EXPORT COMPLETE ===");
+                Console.WriteLine($"Returning file: {fileName} ({fileBytes.Length} bytes)");
 
                 return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Excel Export Error: {ex.Message}");
+                Console.WriteLine($"=== EXPORT ERROR ===");
+                Console.WriteLine($"Error Type: {ex.GetType().Name}");
+                Console.WriteLine($"Error Message: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                return Json(new { success = false, message = "An error occurred while exporting to Excel: " + ex.Message });
+
+                // Inner exception details
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting to Excel: {ex.Message}"
+                });
             }
         }
     }

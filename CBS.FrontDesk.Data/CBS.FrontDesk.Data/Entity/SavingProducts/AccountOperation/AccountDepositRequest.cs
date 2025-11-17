@@ -203,6 +203,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string BookingDirection { get; set; }
         public string CheckName { get; set; }
         public string MemberName { get; set; }
+        public string GlId { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
         public bool IsChargesInclussive { get; set; } = false;
         public string PaymentMethod { get; set; }
