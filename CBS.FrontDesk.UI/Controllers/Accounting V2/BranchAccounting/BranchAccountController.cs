@@ -7,6 +7,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -100,14 +101,22 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                 }
                 var data = await _branchAccountService.GetDataTableAsync(query);
               
-                var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
+                var branchAccounts = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.BranchAccount.BranchAccountResponse>>(JsonConvert.SerializeObject(data.data));
+
+                var tasks = branchAccounts.Select(async x =>
+                {
+                    x.BranchName = await GetBranchNameAsync(x.BranchId);
+                    return x;
+                }).ToList();
+
+                var res = (await Task.WhenAll(tasks)).ToList();
 
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Affiliate
+                    data = res
                 });
             }
             catch (Exception ex)
@@ -122,6 +131,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BranchAccounting
                     error = ex.Message
                 });
             }
+        }
+
+        public async Task<string> GetBranchNameAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return null;
+
+            var getAllBranches = await _branchServices.GetBranches();
+
+            return (getAllBranches.Where(x => x.Id == id).FirstOrDefault())?.Name;
         }
 
         /// <summary>AJAX: Return branch accounts for a given branch.</summary>

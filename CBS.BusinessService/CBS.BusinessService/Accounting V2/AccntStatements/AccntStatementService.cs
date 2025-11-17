@@ -1,11 +1,11 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;  // ✔ Correct namespace for AccountStatementResponse
 using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,56 +21,41 @@ namespace CBS.BusinessService.Accounting_V2.AccntStatements
 
         public AccntStatementService()
         {
-            // Hardcoded base URL (intentionally allowed)
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
             _trialBalance6ColumnsMock = new TrialBalance6ColumnsMock();
         }
 
         /// <summary>
-        /// Fetch trial balances using provided filter (6-column format).
+        /// Fetch account statement (list of ledger movements).
         /// </summary>
-        public async Task<GenericReportResponseV2Dto> GetTrialBalancesAsync6columns(AccountingV2ReportsFilter filter)
+        public async Task<List<AccountStatementResponse>> GetAccntStatement(AccountingV2ReportsFilter filter)
         {
-            try
+            if (filter.AccountNumbers.Count()==1)
             {
-               
-                // POST request to the API
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<JournalDtoEntriesV2Dto>>>(
-                    APICallHelper.AccntsStatements,
-                    filter
-                );
-
-                var result = new GenericReportResponseV2Dto();
-
-                if (response?.IsSuccess == true)
-                {
-                    result.JournalEntries = response.ApiResponseData?.Data ?? new List<JournalDtoEntriesV2Dto>();
-                }
-                else
-                {
-                    result.JournalEntries = new List<JournalDtoEntriesV2Dto>();
-                    System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns: API returned failure ({response?.Message})");
-                }
-
-                return result;
+                filter.AccountNumbers = new List<string>();
             }
-            catch (Exception ex)
+
+            string jsonFilter = JsonConvert.SerializeObject(filter, Formatting.Indented);
+            var response = await _apiCallerHelper.PostAsync<
+                ServiceResponse<List<AccountStatementResponse>>
+            >(APICallHelper.AccntsStatements, filter);
+
+            if (response?.IsSuccess == true)
             {
-                System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns Error: {ex}");
-                // optional: throw new Exception("Failed to fetch trial balances", ex);
-                return new GenericReportResponseV2Dto
-                {
-                    Lines = new List<TrialBalanceV2Dto>()
-                };
+                return response.ApiResponseData?.Data ?? new List<AccountStatementResponse>();
             }
+
+            return new List<AccountStatementResponse>();
         }
 
+
+        /// <summary>
+        /// Returns mock trial balance information (6-column format).
+        /// </summary>
         public async Task<GenericReportResponseV2Dto> GetTrialMockInformation()
         {
-            
-            var results  =    TrialBalance6ColumnsMock.GetMockData();
-            return results;
+            return TrialBalance6ColumnsMock.GetMockData();
         }
     }
 }
