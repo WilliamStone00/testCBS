@@ -95,8 +95,8 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         public void GenerateCommissionExcelFromTableData(List<DataTableResponse> commissionData, string filePath, string exportedBy, ExportOptions exportOptions)
         {
             string bank = GetBankName();
-            string bankcode = GetBankCode();
-            string Branchid = GetBankID();
+            string branchcode = GetBranchCode();
+            string Branchid = GetBranchID();
             string branchname = GetBranchName();
 
             // Set EPPlus license context
@@ -104,233 +104,418 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             using (var package = new ExcelPackage())
             {
-                // Create main worksheet
-                var worksheet = package.Workbook.Worksheets.Add("Commission Report");
+                // ===== SHEET 1: SUMMARY & OVERVIEW =====
+                CreateSummarySheet(package, commissionData, bank, branchcode, Branchid, branchname, exportedBy, exportOptions);
 
-                // Set font
-                var fontName = "Bahnschrift SemiCondensed";
-                worksheet.Cells.Style.Font.Name = fontName;
+                // ===== SHEETS FOR EACH BRACH: Create individual sheets for each branch =====
+                var branches = commissionData.GroupBy(x => new { x.BranchCode, x.BranchName })
+                                           .Select(g => new { BranchCode = g.Key.BranchCode, BranchName = g.Key.BranchName })
+                                           .ToList();
 
-                // We'll be using 31 columns (A..AE)
-                const string lastColumnLetter = "AE";
-
-                // ===== Bank Information at the TOP =====
-                worksheet.Cells[$"A1:{lastColumnLetter}1"].Merge = true;
-                worksheet.Cells["A1"].Value = bank; // Bank name as main header
-                worksheet.Cells["A1"].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Style.Font.Size = 18;
-                worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(1).Height = 30;
-                worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
-                worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0)); // dark green
-
-                // ===== Bank Code and Branch Information =====
-                worksheet.Cells[$"A2:{lastColumnLetter}2"].Merge = true;
-                worksheet.Cells["A2"].Value = $"Bank Code: {bankcode} | Branch: {branchname} | Branch ID: {Branchid}";
-                worksheet.Cells["A2"].Style.Font.Bold = true;
-                worksheet.Cells["A2"].Style.Font.Size = 12;
-                worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(2).Height = 22;
-                worksheet.Cells["A2"].Style.Font.Color.SetColor(Color.White);
-                worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180)); // steel blue
-
-                // ===== Export meta =====
-                worksheet.Cells[$"A3:{lastColumnLetter}3"].Merge = true;
-                worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
-                worksheet.Cells["A3"].Style.Font.Bold = true;
-                worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(3).Height = 18;
-
-                worksheet.Cells[$"A4:{lastColumnLetter}4"].Merge = true;
-                worksheet.Cells["A4"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-                worksheet.Cells["A4"].Style.Font.Bold = true;
-                worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(4).Height = 18;
-
-                // ===== Report Title =====
-                worksheet.Cells[$"A5:{lastColumnLetter}5"].Merge = true;
-                worksheet.Cells["A5"].Value = "DAILY COLLECTOR COMMISSION REPORT";
-                worksheet.Cells["A5"].Style.Font.Bold = true;
-                worksheet.Cells["A5"].Style.Font.Size = 14;
-                worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Row(5).Height = 25;
-                worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
-                worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // gold
-
-                // Optional date range row
-                if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
+                foreach (var branch in branches)
                 {
-                    worksheet.Cells[$"A6:{lastColumnLetter}6"].Merge = true;
-                    worksheet.Cells["A6"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
-                    worksheet.Cells["A6"].Style.Font.Bold = true;
-                    worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    worksheet.Row(6).Height = 18;
-                }
-
-                // Small spacer row
-                int dataStartRow = (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate)) ? 8 : 7;
-                worksheet.Row(dataStartRow - 1).Height = 8;
-
-                // Add a thin border around the top header block
-                var headerBlockEndRow = (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate)) ? 6 : 5;
-                var headerBlock = worksheet.Cells[$"A1:{lastColumnLetter}{headerBlockEndRow}"];
-                headerBlock.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                headerBlock.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                headerBlock.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                headerBlock.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                headerBlock.Style.Border.BorderAround(ExcelBorderStyle.Medium);
-
-
-                // ===== COMPREHENSIVE Headers - Include ALL fields from DataTableResponse =====
-                var headers = new[]
-                {
-            "SN", "Collector Name", "Collector Phone", "Collector Account",
-            "Member Reference","Branch Code", "Branch Name", "Year", "Month",
-            "Reference Number", "Collector Share", "Incentive Amount", "Total Paid to Collector",
-            "Total Commission Shared", "Amount Paid", "Currency", "Date Paid", "Description",
-            "Payment Source", "Processed By", "Created Date"
-            
-        };
-
-                // We'll use row 8 for the column headers so header area occupies rows 1..7
-                int headerRow = 8;
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    var cell = worksheet.Cells[headerRow, i + 1];
-                    cell.Value = headers[i];
-                    cell.Style.Font.Bold = true;
-                    cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    cell.Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
-                    cell.Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                }
-                worksheet.Row(headerRow).Height = 20;
-
-                // ===== Data rows =====
-                int dataRow = headerRow + 1;
-                decimal totalAmountPaid = 0;
-                decimal totalIncentive = 0;
-                decimal totalPaidToCollector = 0;
-                decimal totalCommissionShared = 0;
-                decimal totalCollectorShare = 0;
-                int serialNumber = 1;
-
-                foreach (var commission in commissionData)
-                {
-                    worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN
-                    //worksheet.Cells[dataRow, 2].Value = commission.Id;
-                   // worksheet.Cells[dataRow, 2].Value = commission.CollectorId;
-                    worksheet.Cells[dataRow, 2].Value = commission.CollectorName;
-                    worksheet.Cells[dataRow, 3].Value = commission.CollectorPhoneNumber;
-                    worksheet.Cells[dataRow, 4].Value = commission.CollectorAccountNumber;
-                    worksheet.Cells[dataRow, 5].Value = commission.MemberReference;
-                    //worksheet.Cells[dataRow, 8].Value = commission.BranchId;
-                    worksheet.Cells[dataRow, 6].Value = commission.BranchCode;
-                    worksheet.Cells[dataRow, 7].Value = commission.BranchName;
-                    worksheet.Cells[dataRow, 8].Value = commission.Year;
-                    worksheet.Cells[dataRow, 9].Value = commission.Month;
-                    worksheet.Cells[dataRow, 10].Value = commission.ReferenceNumber;
-                    worksheet.Cells[dataRow, 11].Value = commission.CollectorShareAmount;
-                    worksheet.Cells[dataRow, 12].Value = commission.IncentiveAmount;
-                    worksheet.Cells[dataRow, 13].Value = commission.TotalPaidAmountToCollector;
-                    worksheet.Cells[dataRow, 14].Value = commission.TotalCommissionShared;
-                    worksheet.Cells[dataRow, 15].Value = commission.AmountPaid;
-                    worksheet.Cells[dataRow, 16].Value = commission.Currency;
-                    worksheet.Cells[dataRow, 17].Value = commission.DatePaid.ToString("yyyy-MM-dd");
-                    worksheet.Cells[dataRow, 18].Value = commission.Description;
-                    worksheet.Cells[dataRow, 19].Value = commission.PaymentSource;
-                    worksheet.Cells[dataRow, 20].Value = commission.ProcessedBy;
-                    //worksheet.Cells[dataRow, 24].Value = commission.ProcessedByUserId;
-                    worksheet.Cells[dataRow, 21].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    //worksheet.Cells[dataRow, 26].Value = commission.CreatedBy;
-                    //worksheet.Cells[dataRow, 27].Value = commission.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss");
-                    //worksheet.Cells[dataRow, 28].Value = commission.ModifiedBy;
-                    //worksheet.Cells[dataRow, 29].Value = commission.DeletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
-                    //worksheet.Cells[dataRow, 30].Value = commission.DeletedBy;
-                    //worksheet.Cells[dataRow, 31].Value = commission.IsDeleted ? "Yes" : "No";
-
-                    // Apply borders for the row
-                    for (int col = 1; col <= headers.Length; col++)
-                    {
-                        worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        // Left align text columns for readability (but keep numeric alignment for known numeric cols)
-                        if (col == 14 || col == 15 || col == 16 || col == 17 || col == 18)
-                            worksheet.Cells[dataRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        else
-                            worksheet.Cells[dataRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                    }
-
-                    totalAmountPaid += commission.AmountPaid;
-                    totalIncentive += commission.IncentiveAmount;
-                    totalPaidToCollector += commission.TotalPaidAmountToCollector;
-                    totalCommissionShared += commission.TotalCommissionShared;
-                    totalCollectorShare += commission.CollectorShareAmount;
-                    dataRow++;
-                }
-
-                // Totals Row
-                if (commissionData.Any())
-                {
-                    worksheet.Cells[dataRow, 1].Value = "TOTALS:";
-                    worksheet.Cells[dataRow, 1].Style.Font.Bold = true;
-                    worksheet.Cells[dataRow, 14].Value = totalCollectorShare;
-                    worksheet.Cells[dataRow, 15].Value = totalIncentive;
-                    worksheet.Cells[dataRow, 16].Value = totalPaidToCollector;
-                    worksheet.Cells[dataRow, 17].Value = totalCommissionShared;
-                    worksheet.Cells[dataRow, 18].Value = totalAmountPaid;
-
-                    // Style totals row
-                    for (int col = 1; col <= headers.Length; col++)
-                    {
-                        worksheet.Cells[dataRow, col].Style.Font.Bold = true;
-                        worksheet.Cells[dataRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[dataRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
-                        worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    }
-                }
-
-                // Format numeric columns (Collector Share, Incentive, Total Paid to Collector, Total Commission Shared, Amount Paid)
-                if (commissionData.Any())
-                {
-                    // Columns 14 (N) through 18 (R)
-                    string startCol = "N";
-                    string endCol = "R";
-                    int startRow = headerRow + 1;
-                    int endRow = (commissionData.Any() ? dataRow : headerRow + 1);
-                    worksheet.Cells[$"{startCol}{startRow}:{endCol}{endRow}"].Style.Numberformat.Format = "#,##0.00";
-                }
-
-                // Set comfortable default column widths for columns A..AE (1..31)
-                for (int col = 1; col <= 31; col++)
-                {
-                    worksheet.Column(col).Width = 16;
-                }
-
-                // Freeze top rows so header remains visible while scrolling (freeze before data start)
-                worksheet.View.FreezePanes(headerRow + 1, 1);
-
-                // Auto-fit columns safely (only if there is a used range)
-                if (worksheet.Dimension != null)
-                {
-                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                    var branchData = commissionData.Where(x => x.BranchCode == branch.BranchCode && x.BranchName == branch.BranchName).ToList();
+                    CreateBranchSheet(package, branchData, branch.BranchCode, branch.BranchName, exportedBy, exportOptions);
                 }
 
                 // Save the file
                 package.SaveAs(new FileInfo(filePath));
 
-                Console.WriteLine($"Excel file generated successfully with {commissionData.Count} records");
+                Console.WriteLine($"Excel file generated successfully with {commissionData.Count} records across {branches.Count} branches");
                 Console.WriteLine($"File saved to: {filePath}");
             }
+        }
+
+        private void CreateSummarySheet(ExcelPackage package, List<DataTableResponse> commissionData, string bank, string branchcode, string Branchid, string branchname, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            CreateHeaderSection(worksheet, bank, branchcode, Branchid, branchname, exportedBy, exportOptions);
+
+            int currentRow = 8; // Start after header
+
+            // ===== GENERAL SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "GENERAL SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Calculate summary statistics
+            var totalCollectors = commissionData.Select(x => x.CollectorName).Distinct().Count();
+            var totalBranches = commissionData.Select(x => new { x.BranchCode, x.BranchName }).Distinct().Count();
+            var totalMonths = commissionData.Select(x => x.Month).Distinct().Count();
+            var totalYears = commissionData.Select(x => x.Year).Distinct().Count();
+            var totalAmountPaid = commissionData.Sum(x => x.AmountPaid);
+            var totalCollectorShare = commissionData.Sum(x => x.CollectorShareAmount);
+            var totalIncentive = commissionData.Sum(x => x.IncentiveAmount);
+            var totalPaidToCollector = commissionData.Sum(x => x.TotalPaidAmountToCollector);
+            var totalCommissionShared = commissionData.Sum(x => x.TotalCommissionShared);
+            var totalRecords = commissionData.Count;
+
+            // Summary table headers
+            var summaryHeaders = new[] { "Metric", "Value", "Description" };
+            for (int i = 0; i < summaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = summaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Summary data
+            var summaryData = new[]
+            {
+        new { Metric = "Total Records", Value = totalRecords.ToString("N0"), Description = "Number of commission records" },
+        new { Metric = "Total Collectors", Value = totalCollectors.ToString("N0"), Description = "Unique collectors involved" },
+        new { Metric = "Total Branches", Value = totalBranches.ToString("N0"), Description = "Branches with commission data" },
+        new { Metric = "Total Months", Value = totalMonths.ToString("N0"), Description = "Months covered in data" },
+        new { Metric = "Total Years", Value = totalYears.ToString("N0"), Description = "Years covered in data" },
+        new { Metric = "Total Amount Paid", Value = totalAmountPaid.ToString("N2"), Description = "Sum of all amounts paid" },
+        new { Metric = "Total Collector Share", Value = totalCollectorShare.ToString("N2"), Description = "Sum of collector shares" },
+        new { Metric = "Total Incentive Amount", Value = totalIncentive.ToString("N2"), Description = "Sum of incentive amounts" },
+        new { Metric = "Total Paid to Collectors", Value = totalPaidToCollector.ToString("N2"), Description = "Sum paid to all collectors" },
+        new { Metric = "Total Commission Shared", Value = totalCommissionShared.ToString("N2"), Description = "Sum of all commissions shared" }
+    };
+
+            foreach (var item in summaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+                worksheet.Cells[currentRow, 3].Value = item.Description;
+
+                for (int col = 1; col <= 3; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== BRANCH SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            // Branch summary headers
+            var branchHeaders = new[] { "Branch Code", "Branch Name", "Records", "Collectors", "Total Amount", "Avg per Collector" };
+            for (int i = 0; i < branchHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = branchHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Branch summary data
+            var branchSummary = commissionData.GroupBy(x => new { x.BranchCode, x.BranchName })
+                                            .Select(g => new
+                                            {
+                                                BranchCode = g.Key.BranchCode,
+                                                BranchName = g.Key.BranchName,
+                                                Records = g.Count(),
+                                                Collectors = g.Select(x => x.CollectorName).Distinct().Count(),
+                                                TotalAmount = g.Sum(x => x.AmountPaid),
+                                                AvgPerCollector = g.Sum(x => x.AmountPaid) / g.Select(x => x.CollectorName).Distinct().Count()
+                                            })
+                                            .OrderByDescending(x => x.TotalAmount)
+                                            .ToList();
+
+            foreach (var branch in branchSummary)
+            {
+                worksheet.Cells[currentRow, 1].Value = branch.BranchCode;
+                worksheet.Cells[currentRow, 2].Value = branch.BranchName;
+                worksheet.Cells[currentRow, 3].Value = branch.Records;
+                worksheet.Cells[currentRow, 4].Value = branch.Collectors;
+                worksheet.Cells[currentRow, 5].Value = branch.TotalAmount;
+                worksheet.Cells[currentRow, 6].Value = branch.AvgPerCollector;
+
+                for (int col = 1; col <= 6; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format numbers
+            worksheet.Cells[$"E{currentRow - branchSummary.Count}:F{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateBranchSheet(ExcelPackage package, List<DataTableResponse> branchData, string branchCode, string branchName, string exportedBy, ExportOptions exportOptions)
+        {
+            // Clean sheet name (Excel has restrictions on sheet names)
+            var cleanSheetName = CleanSheetName($"{branchCode} - {branchName}");
+            if (cleanSheetName.Length > 31) cleanSheetName = cleanSheetName.Substring(0, 31);
+
+            var worksheet = package.Workbook.Worksheets.Add(cleanSheetName);
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            CreateHeaderSection(worksheet, GetBankName(), branchCode, GetBranchID(), branchName, exportedBy, exportOptions);
+
+            int currentRow = 8; // Start after header
+
+            // ===== BRANCH SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH SUMMARY - {branchName} ({branchCode})";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Calculate branch statistics
+            var totalCollectors = branchData.Select(x => x.CollectorName).Distinct().Count();
+            var totalMonths = branchData.Select(x => x.Month).Distinct().Count();
+            var totalAmountPaid = branchData.Sum(x => x.AmountPaid);
+            var totalCollectorShare = branchData.Sum(x => x.CollectorShareAmount);
+            var totalIncentive = branchData.Sum(x => x.IncentiveAmount);
+            var totalPaidToCollector = branchData.Sum(x => x.TotalPaidAmountToCollector);
+            var totalCommissionShared = branchData.Sum(x => x.TotalCommissionShared);
+
+            // Branch summary table
+            var branchSummaryHeaders = new[] { "Metric", "Value" };
+            for (int i = 0; i < branchSummaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = branchSummaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            var branchSummaryData = new[]
+            {
+        new { Metric = "Total Records", Value = branchData.Count.ToString("N0") },
+        new { Metric = "Total Collectors", Value = totalCollectors.ToString("N0") },
+        new { Metric = "Total Months", Value = totalMonths.ToString("N0") },
+        new { Metric = "Total Amount Paid", Value = totalAmountPaid.ToString("N2") },
+        new { Metric = "Total Collector Share", Value = totalCollectorShare.ToString("N2") },
+        new { Metric = "Total Incentive Amount", Value = totalIncentive.ToString("N2") },
+        new { Metric = "Total Paid to Collectors", Value = totalPaidToCollector.ToString("N2") },
+        new { Metric = "Total Commission Shared", Value = totalCommissionShared.ToString("N2") }
+    };
+
+            foreach (var item in branchSummaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+
+                for (int col = 1; col <= 2; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== DETAILED DATA TABLE =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "DETAILED COMMISSION DATA";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            // Detailed data headers
+            var headers = new[]
+            {
+        "SN", "Collector Name", "Collector Phone", "Collector Account", "Member Reference",
+        "Year", "Month", "Reference Number", "Collector Share", "Incentive Amount",
+        "Total Paid to Collector", "Total Commission Shared", "Amount Paid", "Currency",
+        "Date Paid", "Description", "Payment Source", "Processed By", "Created Date"
+    };
+
+            int headerRow = currentRow;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cells[headerRow, i + 1].Value = headers[i];
+                worksheet.Cells[headerRow, i + 1].Style.Font.Bold = true;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[headerRow, i + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+
+            // Data rows
+            int dataRow = headerRow + 1;
+            int serialNumber = 1;
+            decimal totalAmount = 0;
+
+            foreach (var commission in branchData.OrderBy(x => x.CollectorName).ThenBy(x => x.Year).ThenBy(x => x.Month))
+            {
+                worksheet.Cells[dataRow, 1].Value = serialNumber++;
+                worksheet.Cells[dataRow, 2].Value = commission.CollectorName;
+                worksheet.Cells[dataRow, 3].Value = commission.CollectorPhoneNumber;
+                worksheet.Cells[dataRow, 4].Value = commission.CollectorAccountNumber;
+                worksheet.Cells[dataRow, 5].Value = commission.MemberReference;
+                worksheet.Cells[dataRow, 6].Value = commission.Year;
+                worksheet.Cells[dataRow, 7].Value = commission.Month;
+                worksheet.Cells[dataRow, 8].Value = commission.ReferenceNumber;
+                worksheet.Cells[dataRow, 9].Value = commission.CollectorShareAmount;
+                worksheet.Cells[dataRow, 10].Value = commission.IncentiveAmount;
+                worksheet.Cells[dataRow, 11].Value = commission.TotalPaidAmountToCollector;
+                worksheet.Cells[dataRow, 12].Value = commission.TotalCommissionShared;
+                worksheet.Cells[dataRow, 13].Value = commission.AmountPaid;
+                worksheet.Cells[dataRow, 14].Value = commission.Currency;
+                worksheet.Cells[dataRow, 15].Value = commission.DatePaid.ToString("yyyy-MM-dd");
+                worksheet.Cells[dataRow, 16].Value = commission.Description;
+                worksheet.Cells[dataRow, 17].Value = commission.PaymentSource;
+                worksheet.Cells[dataRow, 18].Value = commission.ProcessedBy;
+                worksheet.Cells[dataRow, 19].Value = commission.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Apply borders
+                for (int col = 1; col <= headers.Length; col++)
+                {
+                    worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+
+                totalAmount += commission.AmountPaid;
+                dataRow++;
+            }
+
+            // Totals row
+            if (branchData.Any())
+            {
+                worksheet.Cells[dataRow, 1].Value = "TOTALS:";
+                worksheet.Cells[dataRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[dataRow, 9].Value = branchData.Sum(x => x.CollectorShareAmount);
+                worksheet.Cells[dataRow, 10].Value = branchData.Sum(x => x.IncentiveAmount);
+                worksheet.Cells[dataRow, 11].Value = branchData.Sum(x => x.TotalPaidAmountToCollector);
+                worksheet.Cells[dataRow, 12].Value = branchData.Sum(x => x.TotalCommissionShared);
+                worksheet.Cells[dataRow, 13].Value = totalAmount;
+
+                for (int col = 1; col <= headers.Length; col++)
+                {
+                    worksheet.Cells[dataRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[dataRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+            }
+
+            // Format numbers
+            if (branchData.Any())
+            {
+                worksheet.Cells[$"I{headerRow + 1}:M{dataRow}"].Style.Numberformat.Format = "#,##0.00";
+            }
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+            // Freeze panes for easy scrolling
+            worksheet.View.FreezePanes(headerRow + 1, 1);
+        }
+
+        private void CreateHeaderSection(ExcelWorksheet worksheet, string bank, string branchcode, string Branchid, string branchname, string exportedBy, ExportOptions exportOptions)
+        {
+            const string lastColumnLetter = "AE";
+
+            // ===== Bank Information at the TOP =====
+            worksheet.Cells[$"A1:{lastColumnLetter}1"].Merge = true;
+            worksheet.Cells["A1"].Value = bank;
+            worksheet.Cells["A1"].Style.Font.Bold = true;
+            worksheet.Cells["A1"].Style.Font.Size = 18;
+            worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(1).Height = 30;
+            worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0));
+
+            // ===== Bank Code and Branch Information =====
+            worksheet.Cells[$"A2:{lastColumnLetter}2"].Merge = true;
+            worksheet.Cells["A2"].Value = $"Branch Code: {branchcode} | Branch: {branchname} | Branch ID: {Branchid}";
+            worksheet.Cells["A2"].Style.Font.Bold = true;
+            worksheet.Cells["A2"].Style.Font.Size = 12;
+            worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(2).Height = 22;
+            worksheet.Cells["A2"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180));
+
+            // ===== Export meta =====
+            worksheet.Cells[$"A3:{lastColumnLetter}3"].Merge = true;
+            worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
+            worksheet.Cells["A3"].Style.Font.Bold = true;
+            worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(3).Height = 18;
+
+            worksheet.Cells[$"A4:{lastColumnLetter}4"].Merge = true;
+            worksheet.Cells["A4"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+            worksheet.Cells["A4"].Style.Font.Bold = true;
+            worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(4).Height = 18;
+
+            // ===== Report Title =====
+            worksheet.Cells[$"A5:{lastColumnLetter}5"].Merge = true;
+            worksheet.Cells["A5"].Value = "DAILY COLLECTOR COMMISSION REPORT";
+            worksheet.Cells["A5"].Style.Font.Bold = true;
+            worksheet.Cells["A5"].Style.Font.Size = 14;
+            worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(5).Height = 25;
+            worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0));
+
+            // Optional date range row
+            if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
+            {
+                worksheet.Cells[$"A6:{lastColumnLetter}6"].Merge = true;
+                worksheet.Cells["A6"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
+                worksheet.Cells["A6"].Style.Font.Bold = true;
+                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(6).Height = 18;
+            }
+        }
+
+        private string CleanSheetName(string name)
+        {
+            // Excel sheet name restrictions
+            var invalidChars = new char[] { '\\', '/', '*', '?', ':', '[', ']' };
+            foreach (var invalidChar in invalidChars)
+            {
+                name = name.Replace(invalidChar, ' ');
+            }
+
+            // Remove extra spaces and trim
+            name = string.Join(" ", name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+
+            return name.Trim();
         }
 
 
