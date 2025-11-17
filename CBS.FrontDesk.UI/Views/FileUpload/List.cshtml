@@ -294,9 +294,9 @@
                 contentType: 'application/json',
                 data: function (d) {
                   const filters = collectAffiliateFilters();
-                  const orderIdx = (d.order && d.order[0] && d.order[0].column) ?? 0;
-                  const sortCol = (d.columns && d.columns[orderIdx] && d.columns[orderIdx].data) || 'CreatedDate';
-                  const sortDir = (d.order && d.order[0] && d.order[0].dir) || 'desc';
+                  const orderIdx = (d.order && d.order[1] && d.order[1].column) ?? 1;
+                  const sortCol = (d.columns && d.columns[orderIdx] && d.columns[orderIdx].data) || '';
+                  const sortDir = (d.order && d.order[1] && d.order[1].dir) || '';
 
                   return JSON.stringify({
                     ...filters,
