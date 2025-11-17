@@ -129,11 +129,12 @@
     <Compile Include="Entity\Accounting V2\TrialBalance\GenericReportResponseV2Dto.cs" />
     <Compile Include="Entity\AccountingTypes.cs" />
     <Compile Include="Entity\AccountingV2\AccountingYear\accountingyear.cs" />
+    <Compile Include="Entity\AccountingV2\BranchAccountV2\BranchAccount.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfig.cs" />
     <Compile Include="Entity\AccountingV2\BranchCashConfigV\BranchCashConfigManagement.cs" />
     <Compile Include="Entity\Accounting V2\PendingAccount\PendingAccounts.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
-    <Compile Include="Entity\AccountingV2\LiaisonMapping\LiaisonMapping.cs" />
+    <Compile Include="Entity\AccountingV2\LiaisonMappingV2\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
     <Compile Include="Entity\AccountingV2\ReportingV2\ReportDefinition\ReportDefinition.cs" />
     <Compile Include="Entity\AccountingV2\ReportingV2\ReportLineMapping\ReportLineMapping.cs" />

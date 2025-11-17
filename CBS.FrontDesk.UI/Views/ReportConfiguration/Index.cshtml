@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "Report Configuration";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-bank me-2"></i> REPORT CONFIGURATION
+                </h1>
+                <p class="card-text text-muted">
+                    Manage report configurations efficiently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="card shadow-sm border-0">
+
+    <!-- Card Body -->
+    <div class="card-body">
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3" id="reportTabs">
+            <li class="nav-item">
+                <a class="nav-link active"
+                   data-bs-toggle="tab"
+                   href="#definitionContainer"
+                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"definition","partialView":"ReportConfiguration/ReportDefinition/_List"}'>
+                    <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tab"
+                   href="#sectionContainer"
+                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'>
+                    <i class="mdi mdi-view-list-outline me-1"></i> Section
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tab"
+                   href="#lineContainer"
+                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>
+                    <i class="mdi mdi-format-line-weight me-1"></i> Line
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   data-bs-toggle="tab"
+                   href="#mappingContainer"
+                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'>
+                    <i class="mdi mdi-link-variant me-1"></i> Mapping
+                </a>
+            </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="definitionContainer"></div>
+            <div class="tab-pane fade" id="sectionContainer"></div>
+            <div class="tab-pane fade" id="lineContainer"></div>
+            <div class="tab-pane fade" id="mappingContainer"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Tab Contents -->
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="definitionContainer"></div>
+    <div class="tab-pane fade" id="sectionContainer"></div>
+    <div class="tab-pane fade" id="lineContainer"></div>
+    <div class="tab-pane fade" id="mappingContainer"></div>
+</div>
+
+<!-- MODAL POUR CRÉER/ÉDITER UN REPORT -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="reportModalBody">
+                <div class="text-center p-3">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">Loading...</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+        $(document).ready(function () {
+
+            function loadPartialView(url, target, data = {}) {
+                console.log("%c[AJAX LOAD]", "color: #28a745; font-weight: bold;", {
+                    url: url,
+                    target: target,
+                    data: data
+                });
+
+               // $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: data,
+                    success: function (html) {
+                        console.log("%c[LOAD SUCCESS]", "color: #007bff; font-weight: bold;", { target: target });
+                        $(target).html(html);
+                    },
+                    error: function (xhr) {
+                        console.error("[LOAD ERROR]", xhr);
+                        $(target).html('<div class="alert alert-danger">Error loading partial: ' + xhr.status + '</div>');
+                    }
+                });
+            }
+
+            // Load the first tab when page loads
+            const firstTab = $('#reportTabs a.active');
+            const firstParams = JSON.parse(firstTab.attr('data-params'));
+            loadPartialView(firstTab.data('url'), firstTab.attr('href'), firstParams);
+
+            // When switching tabs
+            $('#reportTabs a').on('shown.bs.tab', function (e) {
+                const tab = $(this);
+                const target = tab.attr('href');
+                const url = tab.data('url');
+                const params = JSON.parse(tab.attr('data-params'));
+
+                console.log("%c[TAB CLICKED]", "color: #ffc107; font-weight: bold;", {
+                    tab: tab.text().trim(),
+                    target: target,
+                    params: params
+                });
+
+                // Load only if empty
+                if ($(target).is(':empty')) {
+                    loadPartialView(url, target, params);
+                }
+            });
+
+        });
+
+         function openReportDefinitionCreateModal() {
+            // Load the partial view before opening the modal
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportDefinition")',
+                { path: "new", partialView: "_CreateOrUpdate" },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        // If the content loaded successfully, show the modal
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        // If an error occurred, log and alert the user
+                        console.error("Error loading content:", xhr.status, xhr.statusText);
+                        alert("Failed to load the form. Please try again.");
+                    }
+                }
+            );
+        }
+
+         // ✅ Fonction pour ouvrir la modal d’édition
+        function openReportDefinitionEditModal(reportId) {
+            if (!reportId) {
+                alert("Invalid report ID");
+                return;
+            }
+
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportDefinition")',
+                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        console.error("Error loading edit form:", xhr.status, xhr.statusText);
+                        alert("Failed to load the edit form. Please try again.");
+                    }
+                }
+            );
+        }
+
+
+        // ****************** REPPORT SECTION *********************
+        function openReportSectionCreateModal() {
+            // Load the partial view before opening the modal
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportSection")',
+                { path: "new", partialView: "_CreateOrUpdate" },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        // If the content loaded successfully, show the modal
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        // If an error occurred, log and alert the user
+                        console.error("Error loading content:", xhr.status, xhr.statusText);
+                        alert("Failed to load the form. Please try again.");
+                    }
+                }
+            );
+        }
+
+         // ✅ Fonction pour ouvrir la modal d’édition
+        function openReportSectionEditModal(reportId) {
+            if (!reportId) {
+                alert("Invalid report ID");
+                return;
+            }
+
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportSection")',
+                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        console.error("Error loading edit form:", xhr.status, xhr.statusText);
+                        alert("Failed to load the edit form. Please try again.");
+                    }
+                }
+            );
+        }
+
+
+        // ****************** REPPORT LINE ******************
+        function openReportLineCreateModal() {
+            // Load the partial view before opening the modal
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportLine")',
+                { path: "new", partialView: "_CreateOrUpdate" },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        // If the content loaded successfully, show the modal
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        // If an error occurred, log and alert the user
+                        console.error("Error loading content:", xhr.status, xhr.statusText);
+                        alert("Failed to load the form. Please try again.");
+                    }
+                }
+            );
+        }
+
+         // ✅ Fonction pour ouvrir la modal d’édition
+        function openReportLineEditModal(reportId) {
+            if (!reportId) {
+                alert("Invalid report ID");
+                return;
+            }
+
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportLine")',
+                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        console.error("Error loading edit form:", xhr.status, xhr.statusText);
+                        alert("Failed to load the edit form. Please try again.");
+                    }
+                }
+            );
+        }
+
+
+
+        // ****************** REPPORT LINE MAPPING ******************
+        function openReportLineMappingCreateModal() {
+            // Load the partial view before opening the modal
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportLineMapping")',
+                { path: "new", partialView: "_CreateOrUpdate" },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        // If the content loaded successfully, show the modal
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        // If an error occurred, log and alert the user
+                        console.error("Error loading content:", xhr.status, xhr.statusText);
+                        alert("Failed to load the form. Please try again.");
+                    }
+                }
+            );
+        }
+
+         // ✅ Fonction pour ouvrir la modal d’édition
+        function openReportLineMappingEditModal(reportId) {
+            if (!reportId) {
+                alert("Invalid report ID");
+                return;
+            }
+
+            $("#reportModalBody").load('@Url.Action("Initilization", "ReportLineMapping")',
+                { path: "edit", partialView: "_CreateOrUpdate", KEY: reportId },
+                function (response, status, xhr) {
+                    if (status === "success") {
+                        var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        modal.show();
+                    } else {
+                        console.error("Error loading edit form:", xhr.status, xhr.statusText);
+                        alert("Failed to load the edit form. Please try again.");
+                    }
+                }
+            );
+        }
+
+</script>
+}

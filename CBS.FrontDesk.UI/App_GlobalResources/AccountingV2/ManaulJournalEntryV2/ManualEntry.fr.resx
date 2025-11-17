@@ -138,6 +138,9 @@
   <data name="ApprovalWorkflow" xml:space="preserve">
     <value>Flux de travail d'approbation</value>
   </data>
+  <data name="Areyousureyouwanttoposttheaboveentries" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir publier les entrées ci-dessus ?</value>
+  </data>
   <data name="Attachments" xml:space="preserve">
     <value>Pièces jointes</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ConfirmationofDate" xml:space="preserve">
     <value>Confirmez que la date de saisie se situe dans une période comptable ouverte.</value>
+  </data>
+  <data name="ConfirmJournalPosting" xml:space="preserve">
+    <value> Confirmer l'écriture comptable</value>
   </data>
   <data name="CounterpartyBranch" xml:space="preserve">
     <value>Succursale de la contrepartie</value>

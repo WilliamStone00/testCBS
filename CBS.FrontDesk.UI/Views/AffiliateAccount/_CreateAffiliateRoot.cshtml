@@ -114,18 +114,18 @@
                     @Html.TextBoxFor(
                         m => m.Code,
                         new
-                             {
+                        {
                             @class = "form-control form-control-sm",
-                            placeholder = "e.g., 100000000000",
-                            maxlength = "50",
+                            placeholder = "e.g., 100000",
+                            maxlength = "6",
                             autocomplete = "off",
                             inputmode = "numeric",
-                            pattern = "\\d{12,}",
+                            pattern = "\\d{1,6}",
                             @data_val = "true",
-                            @data_val_regex = "Account Number must be numeric with at least 12 digits.",
-                            @data_val_regex_pattern = "^\\d{12,}$"
+                            @data_val_regex = "Account Number must be numeric with 1 to 6 digits.",
+                            @data_val_regex_pattern = "^\\d{1,6}$"
                         })
-                    <div class="form-text small">Numeric only, at least 12 digits. Unique per Affiliate.</div>
+                    <div class="form-text small">Numeric only, at most 6 digits. Unique per Affiliate.</div>
                     @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger small" })
                 </div>
 

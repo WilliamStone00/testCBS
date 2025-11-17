@@ -12,7 +12,8 @@
                     <i class="mdi mdi-cash-multiple me-2"></i> Branch Cash Configuration
                 </h1>
                 <p class="card-text text-muted">
-                    Manage teller/vault GLs, liaison and revenue accounts, and real-time cash posting for this branch.
+                    Configure the mandatory cash-control GLs (till, vault, surplus/shortage) and
+                    the fallback revenue/fee/liaison accounts used when specific mappings are not provided.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -31,13 +32,64 @@
     <div id="collapseCashCfgTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the correct <b>Branch</b> is selected before creating or updating the configuration.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>CashInHandAccount</b> is the teller till GL used for cash movements.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>VaultAccount</b> represents the branch vault GL for vault–till transfers.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use <b>SurplusIncome</b> and <b>ShortageExpense</b> to capture overage/shortage differences.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Optional: <b>RevenueAccount</b>, <b>PartnerAccount</b>, <b>CamCCULAccount</b>, <b>HeadOfficeLiaison</b>, <b>FormFeeIncome</b>.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Enabling <b>Real-time Cash Posting</b> immediately impacts GL upon cash operations.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Only authorized users should modify branch cash configuration.</li>
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    Always select the correct <b>Branch</b> before creating or updating the configuration.
+                    The mapped GLs are branch-specific.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    The core cash GLs
+                    (<b>CashInHandAccount</b>, <b>VaultAccount</b>, <b>SurplusIncomeAccount</b> and
+                    <b>ShortageExpenseAccount</b>)
+                    are <b>mandatory</b>. Teller and vault operations will fail if these are not configured.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>CashInHandAccount</b> (till GL) is debited when cash is received and credited when cash is paid out at the counter.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>VaultAccount</b> represents the branch vault GL and is used for vault stock and till–vault transfers.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>SurplusIncomeAccount</b> and <b>ShortageExpenseAccount</b> are used to record cashier/vault
+                    <b>overages</b> (physical cash &gt; books) and <b>shortages</b> (physical cash &lt; books) and are
+                    also <b>mandatory</b> for proper cash reconciliation.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>HeadOfficeLiaisonAccount</b> and <b>LoanTransitAccount</b> are strongly recommended:
+                    they control inter-branch/HO movements and loan disbursement in transit.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-information-outline text-primary me-2"></i>
+                    All other GLs configured here
+                    (<b>RevenueAccount</b>, <b>PartnerAccount</b>, <b>CamCCULAccount</b>,
+                    <b>FormFeeIncomeAccount</b>, commission accounts, <b>VATAccount</b>, and
+                    <b>InterestGeneratedFromAccount</b>)
+                    act mainly as <b>fallback / backup accounts</b>. When no specific GL is defined on the product,
+                    fee or operation mapping, the system will use these backup accounts.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                    Enabling <b>Real-time Cash Posting</b> means that every cash operation will immediately impact
+                    the mapped GLs. If disabled, postings may be queued or deferred by the accounting engine.
+                </li>
+
+                <li>
+                    <i class="mdi mdi-lock-outline text-danger me-2"></i>
+                    Only authorized users should modify the Branch Cash Configuration, as it directly affects
+                    teller balancing, vault control and automatic posting routing.
+                </li>
             </ul>
         </div>
     </div>
@@ -96,7 +148,10 @@
                     <h4 class="text-primary fw-bold mb-1">
                         <i class="mdi mdi-cash me-2"></i> Cash Config Details
                     </h4>
-                    <p class="text-muted mb-0">View and manage branch cash configuration details.</p>
+                    <p class="text-muted mb-0">
+                        Review the branch’s mandatory cash GLs and the fallback revenue/fee accounts used
+                        by the posting engine.
+                    </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
                 </header>
             </div>
@@ -109,6 +164,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -160,15 +216,24 @@
 
         const accounts = res.accounts || [];
 
-        fillSelect($('#CashInHandAccountId'),        accounts, '-- Select Cash in Hand Account (Till) --',        res.data?.cashInHandAccountId);
-        fillSelect($('#VaultAccountId'),             accounts, '-- Select Vault Account --',                       res.data?.vaultAccountId);
-        fillSelect($('#SurplusIncomeAccountId'),     accounts, '-- Select Surplus Income Account --',              res.data?.surplusIncomeAccountId);
-        fillSelect($('#ShortageExpenseAccountId'),   accounts, '-- Select Shortage Expense Account --',            res.data?.shortageExpenseAccountId);
-        fillSelect($('#RevenueAccountId'),           accounts, '-- Select Revenue Account (Optional) --',          res.data?.revenueAccountId);
-        fillSelect($('#PartnerAccountId'),           accounts, '-- Select Partner Account (Optional) --',          res.data?.partnerAccountId);
-        fillSelect($('#CamcculAccountId'),           accounts, '-- Select CamCCUL Account (Optional) --',          res.data?.camcculAccountId);
-        fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --',         res.data?.headOfficeLiaisonAccountId);
-        fillSelect($('#FormFeeIncomeAccountId'),     accounts, '-- Select Form Fee Income Account (Optional) --',  res.data?.formFeeIncomeAccountId);
+          fillSelect($('#CashInHandAccountId'), accounts, '-- Select Cash in Hand Account (Till) --', res.data?.cashInHandAccountId);
+          fillSelect($('#VaultAccountId'), accounts, '-- Select Vault Account --', res.data?.vaultAccountId);
+          fillSelect($('#SurplusIncomeAccountId'), accounts, '-- Select Surplus Income Account --', res.data?.surplusIncomeAccountId);
+          fillSelect($('#ShortageExpenseAccountId'), accounts, '-- Select Shortage Expense Account --', res.data?.shortageExpenseAccountId);
+
+          fillSelect($('#RevenueAccountId'), accounts, '-- Select Revenue Account (Optional) --', res.data?.revenueAccountId);
+          fillSelect($('#PartnerAccountId'), accounts, '-- Select Partner Account (Optional) --', res.data?.partnerAccountId);
+          fillSelect($('#CamcculAccountId'), accounts, '-- Select CamCCUL Account (Optional) --', res.data?.camcculAccountId);
+          fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --', res.data?.headOfficeLiaisonAccountId);
+          fillSelect($('#FormFeeIncomeAccountId'), accounts, '-- Select Form Fee Income Account (Optional) --', res.data?.formFeeIncomeAccountId);
+          fillSelect($('#LoanTransitAccountId'), accounts, '-- Select Loan Transit Account --', res.data?.loanTransitAccountId);
+
+          // 🔽 New fallback / backup accounts
+          fillSelect($('#CashInCommisionAccountIDAccountId'), accounts, '-- Select Cash-In Commission Backup Account --', res.data?.cashInCommisionAccountIDAccountId);
+          fillSelect($('#CashOutCommisionAccountIDAccountId'), accounts, '-- Select Cash-Out Commission Backup Account --', res.data?.cashOutCommisionAccountIDAccountId);
+          fillSelect($('#TransfterCommisionAccountIDAccountId'), accounts, '-- Select Transfer Commission Backup Account --', res.data?.transfterCommisionAccountIDAccountId);
+          fillSelect($('#VATAccountId'), accounts, '-- Select VAT Backup Account --', res.data?.vatAccountId);
+          fillSelect($('#InterestGeneratedFromAccountId'), accounts, '-- Select Interest Income Backup Account --', res.data?.interestGeneratedFromAccountId);
 
         $('#RealTimeCashPosting').prop('checked',
           typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true

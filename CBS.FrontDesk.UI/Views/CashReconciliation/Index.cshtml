@@ -126,7 +126,7 @@
                     } else if (diff < 0) {
                         $indicator.text("✖").addClass("text-danger");   // red X
                     } else {
-                        $indicator.text("");  
+                        $indicator.text("");
                     }
                 }
 
@@ -142,45 +142,51 @@
 
                     setDisabled("#SourceGlId, #DestinationGlId", true);
 
-                    $.ajax({
-                        url: '@Url.Action("GetCashReconciliationAccounts", "CashReconciliation")',
-                        type: 'GET',
-                        data: { branchId },
-                        success: function (response) {
-                            if (!response || !response.success) {
-                                appalert(response?.message || "Failed to load accounts.", 2, 1);
-                                return;
-                            }
-
-                            const data = response.data || {};
-                            const treasury = camelOrPascal(data, 'treasuryAccounts') || [];
-                            const deficit = camelOrPascal(data, 'deficitAccounts') || [];
-
-                            let src = '<option value="">--- Select Cash GL ---</option>';
-                            treasury.forEach(function (acc) {
-                                const id = acc.accountId || acc.AccountId;
-                                const name = acc.accountName || acc.AccountName;
-                                src += `<option value="${id}">${name}</option>`;
-                            });
-                            $("#SourceGlId").html(src).trigger('change');
-
-                            let dst = '<option value="">--- Select cash diff GL ---</option>';
-                            deficit.forEach(function (acc) {
-                                const id = acc.accountId || acc.AccountId;
-                                const name = acc.accountName || acc.AccountName;
-                                dst += `<option value="${id}">${name}</option>`;
-                            });
-                            $("#DestinationGlId").html(dst).trigger('change');
-
-                            appalert("Accounts loaded successfully.", 1, 1);
-                        },
-                        error: function () {
-                            appalert("Error loading accounts.", 0, 1);
-                        },
-                        complete: function () {
-                            setDisabled("#SourceGlId, #DestinationGlId", false);
+                $.ajax({
+                    url: '@Url.Action("GetCashReconciliationAccounts", "CashReconciliation")',
+                    type: 'GET',
+                    data: { branchId },
+                    success: function (response) {
+                        if (!response || !response.success) {
+                            appalert(response?.message || "Failed to load accounts.", 2, 1);
+                            return;
                         }
-                    });
+
+                        const data = response.data || {};
+                        const treasury = camelOrPascal(data, 'treasuryAccounts') || [];
+                        const deficit = camelOrPascal(data, 'deficitAccounts') || [];
+
+                        // ✅ Treasury (Source GL)
+                        let src = '<option value="">--- Select Cash GL ---</option>';
+                        treasury.forEach(function (acc) {
+                            const id = acc.accountId || acc.AccountId;
+                            const name = acc.accountName || acc.AccountName;
+                            const number = acc.accountNumber || acc.AccountNumber; // ✅ include account number
+                            const displayText = `[${number}] ${name}`;
+                            src += `<option value="${id}">${displayText}</option>`;
+                        });
+                        $("#SourceGlId").html(src).trigger('change');
+
+                        // ✅ Deficit (Destination GL)
+                        let dst = '<option value="">--- Select cash diff GL ---</option>';
+                        deficit.forEach(function (acc) {
+                            const id = acc.accountId || acc.AccountId;
+                            const name = acc.accountName || acc.AccountName;
+                            const number = acc.accountNumber || acc.AccountNumber; // ✅ include account number
+                            const displayText = `[${number}] ${name}`;
+                            dst += `<option value="${id}">${displayText}</option>`;
+                        });
+                        $("#DestinationGlId").html(dst).trigger('change');
+
+                        appalert("Accounts loaded successfully.", 1, 1);
+                    },
+                    error: function () {
+                        appalert("Error loading accounts.", 0, 1);
+                    },
+                    complete: function () {
+                        setDisabled("#SourceGlId, #DestinationGlId", false);
+                    }
+                });
                 };
 
                 // expose submit handler

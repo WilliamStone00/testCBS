@@ -279,7 +279,7 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.PrivateInstitutionSalarySourceChartofAccountId = model.PrivateInstitutionSalarySourceChartofAccountId;
                     SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId = model.PrivateInstitutionSalarySourceSalaryChartofAccountId;
                     SavingProduct.UpdateOption = "n/a";
-                    SavingProduct.SuspenseChartOfAccountId=model.SuspenseChartOfAccountId;
+                    SavingProduct.SuspenseChartOfAccountId = model.SuspenseChartOfAccountId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {
@@ -337,11 +337,11 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission = model.ChartOfAccountIdCamCCULShareCMoneyTransferCommission;
                     SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission = model.ChartOfAccountIdSourceCMoneyTransferCommission;
                     SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission = model.ChartOfAccountIdDestinationCMoneyTransferCommission;
-                    SavingProduct.TransitChartofAccountId  = model.TransitChartofAccountId;
-                    SavingProduct.SuspenseChartOfAccountId  = model.SuspenseChartOfAccountId;
-                    SavingProduct.MemberDeficitChartofAccountId  = model.MemberDeficitChartofAccountId;
+                    SavingProduct.TransitChartofAccountId = model.TransitChartofAccountId;
+                    SavingProduct.SuspenseChartOfAccountId = model.SuspenseChartOfAccountId;
+                    SavingProduct.MemberDeficitChartofAccountId = model.MemberDeficitChartofAccountId;
 
-                    
+
 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
@@ -372,7 +372,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                
+
                 // Build the Accounting V2 command from the current model
                 var command = BuildAccountingV2Cmd(model);
 
@@ -430,6 +430,12 @@ namespace CBS.BusinessService.Accounts
                 AccountingV2PayOutCashTillChartofAccountId = m.AccountingV2PayOutCashTillChartofAccountId,
                 AccountingV2SuspenseChartOfAccountId = m.AccountingV2SuspenseChartOfAccountId,
 
+                AccountingV2CashInCommissionChartOfAccountId = m.AccountingV2CashInCommissionChartOfAccountId,
+                AccountingV2CashOutCommissionChartOfAccountId = m.AccountingV2CashOutCommissionChartOfAccountId,
+                AccountingV2TransferCommissionChartOfAccountId = m.AccountingV2TransferCommissionChartOfAccountId,
+                AccountingV2SuplusChartOfAccountId = m.AccountingV2SuplusChartOfAccountId,
+                AccountingV2ShortageChartOfAccountId = m.AccountingV2ShortageChartOfAccountId
+
             };
         }
 
@@ -440,7 +446,7 @@ namespace CBS.BusinessService.Accounts
                 var SavingProduct = await GetSavingProduct(model.Id);
                 if (SavingProduct != null)
                 {
-                   
+
                     SavingProduct.UpdateOption = "N/A";
                     SavingProduct.EventCodeAdvanceOfSalaryFormFee = model.EventCodeAdvanceOfSalaryFormFee;
                     SavingProduct.EventCodeMoralPersonWithdrawalFormFee = model.EventCodeMoralPersonWithdrawalFormFee;

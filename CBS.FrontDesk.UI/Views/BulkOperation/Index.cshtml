@@ -101,7 +101,7 @@
                 <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
                     <!-- Bulk Operation Simulation Form -->
                     <div class="accordion-item active">
-                        <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconBulk">
+                        <div class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconBulk">
                             <button type="button"
                                     class="accordion-button"
                                     data-bs-toggle="collapse"
@@ -119,7 +119,7 @@
                                     <i class="mdi mdi-view-list me-1"></i> @GlobalBulkOperation.ViewBulkOperations
                                 </a>
                             </div>
-                        </h2>
+                        </div>
                         <div id="accordionPopoutIcon-bulk"
                              class="accordion-collapse collapse show"
                              data-bs-parent="#accordionPopoutIcon">
@@ -137,7 +137,34 @@
                                             </h2>
                                             <div id="collapseSimulationType" class="accordion-collapse collapse show" aria-labelledby="headingSimulationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SimulationTitleInfos", @Model)
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.SimulationType, @GlobalBulkOperation.SimulationType, new { @class = "form-label" })
+                                                                    @Html.TextBoxFor(m => m.SimulationType, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.Description, @GlobalBulkOperation.Description, new { @class = "form-label" })
+                                                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", placeholder = @GlobalBulkOperation.EnterADescriptionForThisBulkOperation })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+
+                                                                @Html.LabelFor(m => m.BranchId, @GlobalBulkOperation.SelectBranch, new { @class = "form-label" })
+                                                                @Html.DropDownListFor(m => m.BranchId,  // Bind to Branch.Id
+                                                                    new SelectList(Model.Branches, "Id", "Name"),
+                                                                    "---" + @GlobalBulkOperation.SelectBranch + "---",
+                                                                    new { @class = "form-select select2", id = "branchDropdown", @onchange = "loadBranchAccounts(this.value,1)" })
+                                                                @Html.HiddenFor(m => m.Branches, new { id = "branchObject" })
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -153,7 +180,23 @@
                                             </h2>
                                             <div id="collapseOperationType" class="accordion-collapse collapse show" aria-labelledby="headingOperationType">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SimulationOptions", @Model.BulkOperationSelectionModel)
+                                                    <div class="card-body">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="operationType" id="specificAccountType"
+                                                                   value="specific" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "specific")">
+                                                            <label class="form-check-label" for="specificAccountType">
+                                                                @GlobalBulkOperation.SimulateShareTopUp
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="operationType" id="uniqueAccount"
+                                                                   value="unique" checked="@(Model.BulkOperationSelectionModel.SelectedOperationType == "unique")">
+                                                            <label class="form-check-label" for="uniqueAccount">
+                                                                @GlobalBulkOperation.SimulateContribution
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +212,50 @@
                                             </h2>
                                             <div id="collapseSourceAccounts" class="accordion-collapse collapse show" aria-labelledby="headingSourceAccounts">
                                                 <div class="accordion-body">
-                                                    @Html.Partial("_SourceAccountConfiguration", @Model)
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.SourceAccountType, @GlobalBulkOperation.SimulationTopupSourceAccountType, new { @class = "form-label" })
+                                                                    @Html.DropDownListFor(m => m.SourceAccountType,
+                                                                        new SelectList(Model.SavingProducts, "Name", "Name"),
+                                                                        "Select Value",
+                                                                        new { @class = "form-select select2" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.StartAccount, @GlobalBulkOperation.SimulationTopupStartMemberAccount, new { @class = "form-label" })
+                                                                    @Html.TextBoxFor(m => m.StartAccount, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.EndAccount, @GlobalBulkOperation.SimulationTopupEndMemberAccount, new { @class = "form-label" })
+                                                                    @Html.TextBoxFor(m => m.EndAccount, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.SourceAccountMinAmount, @GlobalBulkOperation.SimulationTopupMinimumAccountBalance, new { @class = "form-label" })
+                                                                    @Html.TextBoxFor(m => m.SourceAccountMinAmount, new { @class = "form-control", type = "number", step = "0.01" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    @Html.LabelFor(m => m.SourceAccountMaxAmount, @GlobalBulkOperation.SimulationTopupMaximumAccountBalance, new { @class = "form-label" })
+                                                                    @Html.TextBoxFor(m => m.SourceAccountMaxAmount, new { @class = "form-control", type = "number", step = "0.01" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,10 +274,50 @@
                                                     <div id="mainviewChange">
                                                         <div class="change-group">
                                                             <div id="mainview1">
-                                                                @Html.Partial("_SimulateToAccountTopUp", @Model)
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="mb-3">
+                                                                                @Html.LabelFor(m => m.DestinationAccountType, @GlobalBulkOperation.SimulationTopupDestinationAccountType, new { @class = "form-label" })
+                                                                                @Html.DropDownListFor(m => m.DestinationAccountType,
+                                                                                    new SelectList(Model.SavingProducts, "Name", "Name"),
+                                                                                    @GlobalBulkOperation.SimulationTopupDestinationAccountType,
+                                                                                    new { @class = "form-select select2" })
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <div class="mb-3">
+                                                                                    @Html.LabelFor(m => m.TargetAmount, @GlobalBulkOperation.SimulationTopupAmount, new { @class = "form-label" })
+                                                                                    @Html.TextBoxFor(m => m.TargetAmount, new { @class = "form-control", type = "number", step = "0.01" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
                                                             </div>
                                                             <div id="mainview2">
-                                                                @Html.Partial("_SimulateAccountContribution", @Model)
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="mb-3">
+                                                                                @Html.LabelFor(m => m.DestinationAccountId, @GlobalBulkOperation.SimulationContributionDestinationAccountType, new { @class = "form-label" })
+                                                                                @Html.DropDownListFor(m => m.DestinationAccountId,
+                                                                                    new List<SelectListItem> { new SelectListItem { Text = "--- Select Chart Of Account ---", Value = "" } },
+                                                                                    //@GlobalBulkOperation.SelectAccount,
+                                                                                    new { @class = "form-select select2" })
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <div class="mb-3">
+                                                                                    @Html.LabelFor(m => m.ContributionAmount, @GlobalBulkOperation.SimulationContributionAmount, new { @class = "form-label" })
+                                                                                    @Html.TextBoxFor(m => m.ContributionAmount, new { @class = "form-control", type = "number", step = "0.01" })
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,6 +344,75 @@
 
 @section Scripts {
     @*@Scripts.Render("~/bundles/jqueryval")*@
+
+
+<script>
+         async function loadBranchAccounts(branchId, $targetDropdown) {
+             $targetDropdown = $targetDropdown == 2 ? $('#DestinationAccountId') : $('#DestinationAccountId');
+
+
+              if (!$targetDropdown || !$targetDropdown.length) return;
+
+              const textLoading = 'Loading Chart Of Accounts...';
+              const textEmpty = '--- Select Branch Account reference ---';
+              const textNone = 'No branch accounts available';
+              const textError = 'Error loading branch accounts';
+
+              $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
+
+              if (!branchId) {
+                  $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
+                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                  return;
+              }
+
+              const url = '@Url.Action("GetBranchAccountsByBranch", "BranchAccount")';
+
+              try {
+                  const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
+                      method: 'GET',
+                      credentials: 'same-origin',
+                      cache: 'no-cache',
+                      headers: { 'Accept': 'application/json' }
+                  });
+
+                  if (!resp.ok) {
+                      const body = await resp.text().catch(() => '');
+                      console.error('Fetch failed', resp.status, resp.statusText, body);
+                      $targetDropdown.empty().prop('disabled', false)
+                          .append($('<option>').val('').text(textError));
+                      if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                      return;
+                  }
+
+                  const payload = await resp.json().catch(() => null);
+                  let items = [];
+                  if (Array.isArray(payload)) items = payload;
+                  else if (payload && Array.isArray(payload.items)) items = payload.items;
+                  else if (payload && Array.isArray(payload.data)) items = payload.data;
+
+                  $targetDropdown.empty().prop('disabled', false);
+
+                  if (items && items.length) {
+                      $targetDropdown.append($('<option>').val('').text(textEmpty));
+                      items.forEach(acc => {
+                          const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
+                          const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
+                          $targetDropdown.append($('<option>').val(id).text(name));
+                      });
+                  } else {
+                      $targetDropdown.append($('<option>').val('').text(textNone));
+                  }
+
+                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
+              } catch (e) {
+                  console.error('Error loading branch accounts:', e);
+                  $targetDropdown.empty().prop('disabled', false)
+                      .append($('<option>').val('').text(textError));
+                  if ($.fn.select2) $targetDropdown.trigger('change.select2');
+              }
+          }
+</script>
 <script>
        $(document).ready(function () {
            // Initialize tooltips

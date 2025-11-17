@@ -1,9 +1,9 @@
 ﻿@model  CBS.FrontDesk.Data.Entity.BulkOperation.BulkOperationData
 @using Resources
 @{ 
-    var firstMember = Model.BulkOperationSimulationDetails.FirstOrDefault();
-    var sourceAccountype = firstMember != null ? firstMember.SourceAccountType : "N/A";
-    var destinationAccountype = firstMember != null ? firstMember.DestinationAccountNumber : "N/A";
+    var firstMember = Model?.BulkOperationSimulationDetails?.FirstOrDefault();
+    var sourceAccountype = string.IsNullOrWhiteSpace(firstMember?.SourceAccountType) ? "N/A" : firstMember.SourceAccountType  ;
+    var destinationAccountype = string.IsNullOrWhiteSpace(firstMember?.DestinationAccountNumber) ? "N/A" : firstMember.DestinationAccountNumber;
 }
 
 <style>
@@ -31,15 +31,15 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Branch</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(Model.BranchName?.ToUpper()) (@Model.BranchCode)</div>
+                            <div class="form-control">@(Model.InitiatorBranchName?.ToUpper()) (@Model.InitiatorBranchCode)</div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                   @* <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Bank</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(Model.BankName?.ToUpper()) (@Model.BankCode)</div>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">@GlobalBulkOperation.TotalVolume</label>
                         <div class="col-sm-8">
@@ -53,17 +53,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Source Account Type</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(sourceAccountype?.ToUpper())</div>
+                            <div class="form-control">@(Model?.Description)</div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                @*    <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">Destination Account Type</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(destinationAccountype?.ToUpper())</div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -159,9 +159,9 @@
                         <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
                             <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
                         </button>
-                        <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                      @*  <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
                             <i class="fas fa-trash me-1"></i> Delete Simulation 
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -192,7 +192,7 @@
                                 <i class="mdi mdi-bank-transfer me-2"></i>@GlobalBulkOperation.TransferDetails
                             </h1>
                             <p class="card-text lead">
-                               @(Model.SimulationType?.ToUpper())
+                               @(string.IsNullOrWhiteSpace(Model.SimulationType)? "N/A" : Model.SimulationType?.ToUpper())
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>

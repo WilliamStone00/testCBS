@@ -25,6 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
 
         public async Task<ActionResult> Index()
         {
+
             return View(new CreateApiKeyRequest());
         }
 

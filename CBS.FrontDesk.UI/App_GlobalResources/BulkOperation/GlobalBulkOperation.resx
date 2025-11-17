@@ -391,7 +391,7 @@
     <value>Simulation details</value>
   </data>
   <data name="SimulationType" xml:space="preserve">
-    <value>Simulation Name</value>
+    <value>Simulation Title</value>
   </data>
   <data name="SourceAccount" xml:space="preserve">
     <value>Source account</value>
@@ -563,5 +563,41 @@
   </data>
   <data name="ProcessingApprovalFilter" xml:space="preserve">
     <value>Processing Approval</value>
+  </data>
+  <data name="TransactionReference" xml:space="preserve">
+    <value>Transaction Reference</value>
+  </data>
+  <data name="BulkType" xml:space="preserve">
+    <value>Bulk Type</value>
+  </data>
+  <data name="AcceptedFilter" xml:space="preserve">
+    <value>Accepted</value>
+  </data>
+  <data name="NoValidAccountsFilter" xml:space="preserve">
+    <value>No Valid Accounts</value>
+  </data>
+  <data name="BulkProcessInitiatedFilter" xml:space="preserve">
+    <value>Bulk Process Initiated</value>
+  </data>
+  <data name="ExecutedFilter" xml:space="preserve">
+    <value>Executed</value>
+  </data>
+  <data name="FilteredResults" xml:space="preserve">
+    <value>Bulk Operation Filtered</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>View Bulk Operation Details</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ActualBalance" xml:space="preserve">
+    <value>Actual Balance</value>
+  </data>
+  <data name="TransferStatus" xml:space="preserve">
+    <value>Transfer Status</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
   </data>
 </root>

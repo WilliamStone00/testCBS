@@ -4,7 +4,7 @@ using CBS.BusinessService.AccountingV2.BranchCashConfigV;
 using CBS.BusinessService.CheckManagementSystem.BranchConfiguration;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Entity.VaultManagement;
 using CBS.FrontDesk.Data.Message;
@@ -35,17 +35,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
         private readonly BranchCashConfigService _branchCashConfigService;
         private readonly BranchServices _branchServices;
         private readonly BranchAccountService _branchAccountService;
-        private readonly GLAccountService _glAccountService;
-
         public BranchCashConfigController(
             BranchCashConfigService branchCashConfigService,
             BranchServices branchServices,
-            GLAccountService glAccountService,
             BranchAccountService branchAccountService)
         {
             _branchCashConfigService = branchCashConfigService;
             _branchServices = branchServices;
-            _glAccountService = glAccountService;
             _branchAccountService = branchAccountService;
         }
 
@@ -244,20 +240,37 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                         {
                             id = config.Id,
                             branchId = config.BranchId,
+
+                            // Core cash-control (mandatory)
                             cashInHandAccountId = config.CashInHandAccountId,
                             vaultAccountId = config.VaultAccountId,
                             surplusIncomeAccountId = config.SurplusIncomeAccountId,
-                            revenueAccountId = config.RevenueAccountId,
                             shortageExpenseAccountId = config.ShortageExpenseAccountId,
+
+                            // Generic / fallback revenue & partners
+                            revenueAccountId = config.RevenueAccountId,
                             partnerAccountId = config.PartnerAccountId,
                             camcculAccountId = config.CamcculAccountId,
                             headOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
                             formFeeIncomeAccountId = config.FormFeeIncomeAccountId,
+
+                            // Loan transit
+                            loanTransitAccountId = config.LoanTransitAccountId,
+
+                            // 🔹 New fallback / backup accounts
+                            cashInCommisionAccountIDAccountId = config.CashInCommisionAccountIDAccountId,
+                            cashOutCommisionAccountIDAccountId = config.CashOutCommisionAccountIDAccountId,
+                            transfterCommisionAccountIDAccountId = config.TransfterCommisionAccountIDAccountId,
+                            vatAccountId = config.VATAccountId,
+                            interestGeneratedFromAccountId = config.InterestGeneratedFromAccountId,
+
+                            // Other flags
                             realTimeCashPosting = config.RealTimeCashPosting
                         },
                         // send as simple array of {text, value} for the client
                         accounts = accounts
                     });
+
                 }
 
                 // New config for this branch
@@ -332,8 +345,28 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                     FormFeeIncomeAccountName = NameNo(c.FormFeeIncomeAccountId).name,
                     FormFeeIncomeAccountNumber = NameNo(c.FormFeeIncomeAccountId).number,
 
+                    LoanTransitAccountName = NameNo(c.LoanTransitAccountId).name,
+                    LoanTransitAccountNumber = NameNo(c.LoanTransitAccountId).number,
+
+                    // 🔹 New fallback / backup accounts
+                    CashInCommisionAccountName = NameNo(c.CashInCommisionAccountIDAccountId).name,
+                    CashInCommisionAccountNumber = NameNo(c.CashInCommisionAccountIDAccountId).number,
+
+                    CashOutCommisionAccountName = NameNo(c.CashOutCommisionAccountIDAccountId).name,
+                    CashOutCommisionAccountNumber = NameNo(c.CashOutCommisionAccountIDAccountId).number,
+
+                    TransfterCommisionAccountName = NameNo(c.TransfterCommisionAccountIDAccountId).name,
+                    TransfterCommisionAccountNumber = NameNo(c.TransfterCommisionAccountIDAccountId).number,
+
+                    VATAccountName = NameNo(c.VATAccountId).name,
+                    VATAccountNumber = NameNo(c.VATAccountId).number,
+
+                    InterestGeneratedFromAccountName = NameNo(c.InterestGeneratedFromAccountId).name,
+                    InterestGeneratedFromAccountNumber = NameNo(c.InterestGeneratedFromAccountId).number,
+
                     RealTimeCashPosting = c.RealTimeCashPosting
                 };
+
             }).ToList();
 
             return Json(new { data = rows });

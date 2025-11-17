@@ -5,14 +5,17 @@ using CBS.BusinessService.Config;
 using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 {
@@ -24,18 +27,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         private readonly BranchServices _branchServices;
         private readonly ChartOfAccountsV2Service _chartOfAccountsV;
         private readonly BranchAccountService _branchAccountService;
+        private readonly CommissionExcelExportGenerator _commissionExcelExportGenerator;
 
         /// <summary>
         /// Injects the required CollectorCommissionController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
+        public CollectorCommissionController(CommissionExcelExportGenerator commissionExcelExportGenerator, ChartOfAccountsV2Service chartOfAccountsV2Service1, ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _collectorCommissionService = collectorCommissionService;
             _chartOfAccountsV = chartOfAccountsV2Service;
             _branchServices = branchServices;
             _manualService = manualDailyCollectionService;
             _branchAccountService = branchAccountService;
+            _commissionExcelExportGenerator = commissionExcelExportGenerator;
         }
 
         public async Task<ActionResult> Index()
@@ -65,17 +70,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         public async Task<JsonResult> DataTable(commisionQuery query)
         {
             try
-            {
+            {               
                 var data = await _collectorCommissionService.CommisionDataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
+                var Response = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Affiliate
+                    data = Response
                 });
             }
             catch (Exception ex)
@@ -93,16 +98,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CollectorComissionResponse model)
-        {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed." });
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create(CollectorComissionResponse model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _collectorCommissionService.CreateAsync(model);
-            return Json(new { success = false, message = "No data returned from service." });
-        }
+        //    var result = await _collectorCommissionService.CreateAsync(model);
+        //    return Json(new { success = false, message = "No data returned from service." });
+        //}
 
 
 
@@ -147,29 +152,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 
         [HttpGet]
         public ActionResult ExportCommission()
-        { 
+        {
             return PartialView("_ExportCommission");
         }
 
         [HttpGet]
         public async Task<ActionResult> CommissionTreatment(string BranchId)
-        {           
+        {
             return PartialView("_CommissionTreatment", new CollectorComissionResponse());
         }
 
-        [HttpPost]
-        public async Task<JsonResult> ProcessPayment(CollectorComissionResponse model)
+        [HttpGet]
+        public ActionResult GetbyId(string id)
         {
-            try
+            // Get the commission record by id
+            var commission = _collectorCommissionService.GetByIdAsync(id);
+            if (commission == null)
             {
-                var result = await _collectorCommissionService.CreateAsync(model);
-                return Json(new { success = false, message = "No data returned from service." });
+                return Content("<div class='alert alert-danger'>Commission record not found.</div>");
+            }
 
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
+            return PartialView("_Details", commission);
         }
 
         [HttpGet]
@@ -178,6 +181,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             try
             {
                 var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
+
                 return Json(new
                 {
                     success = true,
@@ -216,7 +220,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 }
 
                 // Prepare file name and paths
-                string fileName = $"Commission_Report_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = $"Commission_Report_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 
                 if (!Directory.Exists(directoryPath))
@@ -225,9 +230,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 string filePath = Path.Combine(directoryPath, fileName);
                 string exportedBy = Session["FullName"]?.ToString() ?? "System";
 
-                // Generate Excel file using service - FIXED NAMESPACE
+                // Generate Excel file using service - pass export options
                 CBS.BusinessService.Accounting_V2.Affiliate.CommissionExcelExportGenerator.GenerateCommissionExcel(
-                    request.CommissionData, filePath, exportedBy);
+                    request.CommissionData, filePath, exportedBy, request.ExportOptions);
 
                 // Read and send file to browser
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -245,7 +250,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 return Json(new { success = false, message = "An error occurred while exporting to Excel: " + ex.Message });
             }
         }
-
         //[HttpGet]
         //public async Task<JsonResult> GetPcmfAccountsByBranch(string branchId)
         //{
@@ -256,7 +260,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         //            return Json(new { success = false, message = "Branch ID is required" }, JsonRequestBehavior.AllowGet);
         //        }
         //         var pcmfAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
-                
+
         //        return Json(new { success = true, accounts = pcmfAccounts }, JsonRequestBehavior.AllowGet);
         //    }
         //    catch (Exception ex)
@@ -339,7 +343,296 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                            JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ProcessPayment(CollectorComissionResponse model)
+        {
+            try
+            {
+                if (model == null)
+                    return Json(new { success = false, message = "Invalid request." }, JsonRequestBehavior.AllowGet);
+
+                // Server-side validation
+                if (string.IsNullOrWhiteSpace(model.BranchId))
+                    ModelState.AddModelError(nameof(model.BranchId), "Branch is required.");
+
+                if (string.IsNullOrWhiteSpace(model.AccountNumber))
+                    ModelState.AddModelError(nameof(model.AccountNumber), "Account number is required.");
+
+                if (string.IsNullOrWhiteSpace(model.BranchCommisionGLId))
+                    ModelState.AddModelError(nameof(model.BranchCommisionGLId), "Branch commission GL is required.");
+
+                // Validate Month and Year
+                if (string.IsNullOrWhiteSpace(model.Month))
+                    ModelState.AddModelError(nameof(model.Month), "Month is required.");
+
+                if (model.Year == 0)
+                    ModelState.AddModelError(nameof(model.Year), "Year is required.");
+
+                // Handle date parsing for both "MM/dd/yyyy hh:mm:ss AM" and "yyyy-MM-dd" formats
+                DateTime accountingDate;
+                bool dateParsed = false;
+
+                // Try parsing as "MM/dd/yyyy hh:mm:ss AM" format first (from frontend)
+                if (DateTime.TryParseExact(model.AccountingDate, "MM/dd/yyyy hh:mm:ss tt",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out accountingDate))
+                {
+                    dateParsed = true;
+                }
+                // Try parsing as "yyyy-MM-dd" format (fallback)
+                else if (DateTime.TryParseExact(model.AccountingDate, "yyyy-MM-dd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out accountingDate))
+                {
+                    dateParsed = true;
+                }
+                // Try generic parsing
+                else if (DateTime.TryParse(model.AccountingDate, out accountingDate))
+                {
+                    dateParsed = true;
+                }
+
+                if (!dateParsed)
+                {
+                    ModelState.AddModelError(nameof(model.AccountingDate),
+                        "Accounting date is required and must be valid. Expected format: MM/dd/yyyy hh:mm:ss AM");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                    return Json(new { success = false, errors = errors }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (model.SharedAmounts != null)
+                {
+                    foreach (var share in model.SharedAmounts)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Share: {share.Stakeholder} - {share.Percentage}% - {share.Amount}");
+                    }
+                }
+
+                // ======= Map model to Payment =======
+                var payment = new Payment
+                {
+                    DailyCollectorId = model.CollectorId,
+                    BranchId = model.BranchId,
+                    AccountNumber = model.DailyCollectorAccount, // Use AccountNumber from payload
+                    BranchCommisionGLId = model.BranchCommisionGLId,
+                    IncentiveAmount = model.Incentives,
+                    CollectorTotalCommision = model.Total, // Use from payload instead of calculating
+                    AccountingDate = accountingDate,
+                    TotalAmountToShare = model.CollectorTotalCommision,
+                    Month = int.Parse(model.Month), // Month is now properly extracted as string "11"
+                    Year = model.Year,
+                    SharedAmounts = (model.SharedAmounts ?? new List<StakeholderShare>())
+                        .Select(s => new SharedAmount
+                        {
+                            StakeHolderId = model.CollectorId,
+                            Stakeholder = s.Stakeholder,
+                            Percentage = s.Percentage,
+                            Amount = s.Amount
+                        }).ToList()
+                };
+
+                // ======= Persist via service/repository =======
+                var result = await _collectorCommissionService.CreateAsync(payment);
+
+                if (result != null && (result.Result))
+                {
+                    return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var message = Messaging.MessageResult(result) ?? "Failed to create payment.";
+                    return Json(new { success = false, message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                System.Diagnostics.Debug.WriteLine($"Error in ProcessPayment: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+
+                // Log inner exception if exists
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+
+                return Json(new { success = false, message = "An error occurred while saving payment.", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ExportTableData(ExportTableRequest request)
+        {
+            try
+            {
+                Console.WriteLine($"=== EXPORT DEBUG START ===");
+                Console.WriteLine($"Request received: {request != null}");
+                Console.WriteLine($"Data count: {request?.Data?.Count ?? 0}");
+                Console.WriteLine($"Total Records: {request?.TotalRecords ?? 0}");
+                Console.WriteLine($"Export Options: {request?.ExportOptions?.FileName ?? "N/A"}");
+
+                if (request?.Data == null || !request.Data.Any())
+                {
+                    Console.WriteLine("No data to export");
+                    return Json(new { success = false, message = "No commission data available for export." });
+                }
+
+                // Debug: Log first few items structure
+                Console.WriteLine($"=== DATA STRUCTURE ANALYSIS ===");
+                for (int i = 0; i < Math.Min(request.Data.Count, 3); i++)
+                {
+                    var item = request.Data[i];
+                    Console.WriteLine($"Item {i + 1} type: {item?.GetType()?.Name ?? "NULL"}");
+
+                    try
+                    {
+                        if (item is IDictionary<string, object> dict)
+                        {
+                            Console.WriteLine($"  Properties ({dict.Count}):");
+                            foreach (var kvp in dict.Take(10)) // Show first 10 properties
+                            {
+                                Console.WriteLine($"    {kvp.Key}: {kvp.Value} (Type: {kvp.Value?.GetType()?.Name ?? "NULL"})");
+                            }
+                            if (dict.Count > 10)
+                            {
+                                Console.WriteLine($"    ... and {dict.Count - 10} more properties");
+                            }
+                        }
+                        else if (item != null)
+                        {
+                            var properties = item.GetType().GetProperties();
+                            Console.WriteLine($"  Properties ({properties.Length}):");
+                            foreach (var prop in properties.Take(10)) // Show first 10 properties
+                            {
+                                try
+                                {
+                                    var value = prop.GetValue(item);
+                                    Console.WriteLine($"    {prop.Name}: {value} (Type: {value?.GetType()?.Name ?? "NULL"})");
+                                }
+                                catch (Exception propEx)
+                                {
+                                    Console.WriteLine($"    {prop.Name}: ERROR - {propEx.Message}");
+                                }
+                            }
+                            if (properties.Length > 10)
+                            {
+                                Console.WriteLine($"    ... and {properties.Length - 10} more properties");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("  Item is null");
+                        }
+                    }
+                    catch (Exception itemEx)
+                    {
+                        Console.WriteLine($"  Error analyzing item: {itemEx.Message}");
+                    }
+                    Console.WriteLine("  ---");
+                }
+
+                // Convert dynamic data to strongly typed list
+                Console.WriteLine($"=== CONVERTING DATA ===");
+                var commissionData = CommissionExcelExportGenerator.ConvertToCommissionData(request.Data);
+                Console.WriteLine($"Successfully converted {commissionData.Count} records");
+
+                if (!commissionData.Any())
+                {
+                    Console.WriteLine("No data converted successfully");
+                    return Json(new { success = false, message = "No valid commission data could be processed for export." });
+                }
+
+                // Debug converted data
+                Console.WriteLine($"=== CONVERTED DATA SAMPLE ===");
+                if (commissionData.Any())
+                {
+                    var sample = commissionData.First();
+                    Console.WriteLine($"Sample converted record:");
+                    Console.WriteLine($"  ID: {sample.Id}");
+                    Console.WriteLine($"  Collector: {sample.CollectorName}");
+                    Console.WriteLine($"  Branch: {sample.BranchName}");
+                    Console.WriteLine($"  Amount: {sample.AmountPaid}");
+                    Console.WriteLine($"  Year/Month: {sample.Year}/{sample.Month}");
+                    Console.WriteLine($"  Currency: {sample.Currency}");
+                }
+
+                // Prepare file name and paths
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = $"{request.ExportOptions?.FileName ?? "Commission_Report"}_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                Console.WriteLine($"=== FILE PREPARATION ===");
+                Console.WriteLine($"Directory: {directoryPath}");
+                Console.WriteLine($"File Name: {fileName}");
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Console.WriteLine("Creating temp directory");
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                Console.WriteLine($"Full Path: {filePath}");
+                Console.WriteLine($"Exported By: {exportedBy}");
+
+                // Generate Excel file
+                Console.WriteLine($"=== GENERATING EXCEL ===");
+                _commissionExcelExportGenerator.GenerateCommissionExcelFromTableData(commissionData, filePath, exportedBy, request.ExportOptions);
+
+                // Verify file was created
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Console.WriteLine("ERROR: Excel file was not created");
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+                }
+
+                Console.WriteLine($"Excel file generated successfully: {filePath}");
+                Console.WriteLine($"File size: {new FileInfo(filePath).Length} bytes");
+
+                // Read and send file to browser
+                Console.WriteLine($"=== READING FILE ===");
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                Console.WriteLine($"File bytes read: {fileBytes.Length} bytes");
+
+                // Delete temp file after sending
+                Console.WriteLine($"=== CLEANUP ===");
+                System.IO.File.Delete(filePath);
+                Console.WriteLine("Temp file deleted");
+
+                Console.WriteLine($"=== EXPORT COMPLETE ===");
+                Console.WriteLine($"Returning file: {fileName} ({fileBytes.Length} bytes)");
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"=== EXPORT ERROR ===");
+                Console.WriteLine($"Error Type: {ex.GetType().Name}");
+                Console.WriteLine($"Error Message: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                // Inner exception details
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting to Excel: {ex.Message}"
+                });
+            }
+        }
     }
+
 }
-
-

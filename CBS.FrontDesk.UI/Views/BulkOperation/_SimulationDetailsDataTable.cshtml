@@ -4,15 +4,17 @@
     <table class="table table-hover table-bordered align-middle" data-simulation-id="@Model.Id" id="myDataTable">
         <thead>
             <tr>
-                <th style="width : 19%"> @GlobalBulkOperation.MemberName</th>
-                <th style="width : 13%"> @GlobalBulkOperation.SourceAccount</th>
-                <th style="width : 15%"> @GlobalBulkOperation.DestinationAccount</th>
-                <th style="width : 10%"> @GlobalBulkOperation.SourceBalance</th>
-                <th style="width : 10%"> @GlobalBulkOperation.AmountToDebit</th>
-                <th style="width : 10%"> Actual Balance</th>
-                <th style="width : 8%"> @GlobalBulkOperation.Status</th>
-                <th style="width : 10%">Transfer Status</th>
-                <th style="width : 5%"> @GlobalBulkOperation.Action</th>
+                <th style="width : 12%"> @GlobalBulkOperation.Date</th>
+                <th style="width : 18%"> @GlobalBulkOperation.MemberName</th>
+                <th style="width : 12%"> @GlobalBulkOperation.BranchName</th>
+                <th style="width : 14%"> @GlobalBulkOperation.SourceAccount</th>
+                <th style="width : 14%"> @GlobalBulkOperation.DestinationAccount</th>
+                <th style="width : 8%"> @GlobalBulkOperation.SourceBalance</th>
+                <th style="width : 8%"> @GlobalBulkOperation.AmountToDebit</th>
+                <th style="width : 8%"> @GlobalBulkOperation.ActualBalance</th>
+                <th style="width : 8%"> @GlobalBulkOperation.ApprovalStatus</th>
+                <th style="width : 10%">@GlobalBulkOperation.TransferStatus</th>
+                <th style="width : 6%"> @GlobalBulkOperation.Action</th>
             </tr>
         </thead>
     </table>

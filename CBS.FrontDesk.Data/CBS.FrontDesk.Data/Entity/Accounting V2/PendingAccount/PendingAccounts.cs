@@ -1,6 +1,6 @@
 ﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
-using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping;
+using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
@@ -183,6 +183,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount
     public class RequestAction
     {
         public string Id { get; set; }
+        public string Account { get; set; }
         public string ApprovalNotes { get; set; }
         public string RejectionReason { get; set; }
         public string Language { get; set; }
