@@ -5,16 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.ReportingV2
+namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 {
     public class ReportLineController : BaseController
 	{
 		// GET: ReportLine
 		private readonly ReportLineService _services;
+		private readonly ReportDefinitionService _definitionService;
+		private readonly ReportSectionService _sectionService;
 
-		public ReportLineController(ReportLineService services)
+		public ReportLineController(
+			ReportLineService services, 
+			ReportDefinitionService definitionService, 
+			ReportSectionService sectionService)
 		{
 			_services = services;
+			_definitionService = definitionService;
+			_sectionService = sectionService;
 		}
 
 		// GET: ReportLinet
@@ -23,9 +30,38 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
             return View(new ReportLine());
         }
 
-		public ActionResult Initilization()
+		public async Task<ActionResult> Initilization(string path = "list", string partialView = null, string KEY = null)
 		{
-			return PartialView("_List", new ReportLine());
+			// par défaut, s'il n'y a pas de vue partielle fournie, on charge _List
+			partialView = partialView ?? (path == "list" ? "_List" : "_Create");
+
+			switch (path)
+			{
+				case "list":
+					var list = await _services.GetAll();
+					return PartialView(partialView, list);
+
+				case "new":
+					ViewBag.ReportDefinitions = await _definitionService.GetAll();
+					ViewBag.ReportSections = await _sectionService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportLine/{partialView}.cshtml", new ReportLine());
+
+				case "edit":
+					if (string.IsNullOrEmpty(KEY))
+						return new HttpStatusCodeResult(400, "Invalid report key");
+
+					var report = await _services.GetById(KEY);
+					if (report == null)
+						return HttpNotFound("Report not found");
+
+					ViewBag.ReportDefinitions = await _definitionService.GetAll();
+					ViewBag.ReportSections = await _sectionService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportLine/{partialView}.cshtml", report);
+
+				default:
+					var all = await _services.GetAll();
+					return PartialView("_List", all);
+			}
 		}
 
 		[HttpPost]

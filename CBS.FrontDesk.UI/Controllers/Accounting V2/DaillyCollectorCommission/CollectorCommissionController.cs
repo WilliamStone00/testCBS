@@ -68,17 +68,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         public async Task<JsonResult> DataTable(commisionQuery query)
         {
             try
-            {
+            {               
                 var data = await _collectorCommissionService.CommisionDataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
+                var Response = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Affiliate
+                    data = Response
                 });
             }
             catch (Exception ex)
@@ -179,7 +179,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             try
             {
                 var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
-          
+
                 return Json(new
                 {
                     success = true,
@@ -402,7 +402,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                         kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
                     );
                     return Json(new { success = false, errors = errors }, JsonRequestBehavior.AllowGet);
-                }              
+                }
 
                 if (model.SharedAmounts != null)
                 {
@@ -464,9 +464,52 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> ExportTableData(ExportTableRequest request)
+        {
+            try
+            {
+                if (request?.Data == null || !request.Data.Any())
+                {
+                    return Json(new { success = false, message = "No commission data available for export." });
+                }
 
+                Console.WriteLine($"=== EXPORT DEBUG ===");
+                Console.WriteLine($"Exporting {request.Data.Count} records");
+                Console.WriteLine($"Total Records: {request.TotalRecords}");
+
+                // Convert dynamic data to strongly typed list
+                var commissionData = CommissionExcelExportGenerator.ConvertToCommissionData(request.Data);
+
+                // Prepare file name and paths
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = $"{request.ExportOptions?.FileName ?? "Commission_Report"}_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // Generate Excel file
+                CommissionExcelExportGenerator.GenerateCommissionExcelFromTableData(commissionData, filePath, exportedBy, request.ExportOptions);
+
+                // Read and send file to browser
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+                // Delete temp file after sending
+                System.IO.File.Delete(filePath);
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excel Export Error: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return Json(new { success = false, message = "An error occurred while exporting to Excel: " + ex.Message });
+            }
+        }
     }
+
 }
-
-
-

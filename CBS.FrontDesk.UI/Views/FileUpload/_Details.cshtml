@@ -9,7 +9,7 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Affiliate Details
+            <i class="mdi mdi-book-open-page-variant-outline me-2"></i>Awaiting Correspondence Details
         </h1>
         <p class="card-text text-muted mb-1">
             here we have the details of an account awaiting correspondance
@@ -22,27 +22,27 @@
         <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
         <table class="table table-sm table-bordered">
             <tbody>
-                <tr>
+            @*    <tr>
                     <td class="fw-bold">Id</td>
                     <td>@Html.DisplayFor(m => m.Id)</td>
-                </tr>
+                </tr>*@
                 <tr>
                     <td class="fw-bold">Scope</td>
                     <td>@Html.DisplayFor(m => m.Scope)</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">@ChequeManagements.Branch</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchId) ? "-" : Html.Encode(Model.BranchId))</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Html.Encode(Model.BranchName))</td>
                 </tr>
 
                 @* Only show Affiliate Id row when scope = AFFILIATE *@
-                @if (isAffiliate)
+               @* @if (isAffiliate)
                 {
                     <tr>
                         <td class="fw-bold">Affiliate Id</td>
                         <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateId) ? "-" : Html.Encode(Model.AffiliateId))</td>
                     </tr>
-                }
+                }*@
 
                 <tr>
                     <td class="fw-bold">@AccountingV2.Code</td>
@@ -74,17 +74,17 @@
                 </tr>
 
                 @* These two rows are visible only for AFFILIATE scope *@
-                @if (isAffiliate)
-                {
-                    <tr>
-                        <td class="fw-bold">Ho PCMF Account Id</td>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Html.Encode(Model.HoPcmfAccountId))</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">Affiliate → HO Correspondence Id</td>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateToHoCorrespondenceId) ? "-" : Html.Encode(Model.AffiliateToHoCorrespondenceId))</td>
-                    </tr>
-                }
+                @*   @if (isAffiliate)
+        {
+            <tr>
+                <td class="fw-bold">Ho PCMF Account Id</td>
+                <td>@(string.IsNullOrWhiteSpace(Model?.HoPcmfAccountId) ? "-" : Html.Encode(Model.HoPcmfAccountId))</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">Affiliate → HO Correspondence Id</td>
+                <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateToHoCorrespondenceId) ? "-" : Html.Encode(Model.AffiliateToHoCorrespondenceId))</td>
+            </tr>
+        }*@
 
                 <tr>
                     <td class="fw-bold">Requires Mapping</td>
@@ -92,22 +92,22 @@
                 </tr>
 
                 @* Only show Affiliate Account Id when scope = AFFILIATE *@
-                @if (isAffiliate)
-                {
-                    <tr>
-                        <td class="fw-bold">Affiliate Account Id</td>
-                        <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Html.Encode(Model.AffiliateAccountId))</td>
-                    </tr>
-                }
+                @* @if (isAffiliate)
+                    {
+                        <tr>
+                            <td class="fw-bold">Affiliate Account Id</td>
+                            <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Html.Encode(Model.AffiliateAccountId))</td>
+                        </tr>
+                    }
 
-                <tr>
-                    <td class="fw-bold">Branch Account Id</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.BranchAccountId) ? "-" : Html.Encode(Model.BranchAccountId))</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Path</td>
-                    <td>@(string.IsNullOrWhiteSpace(Model?.Path) ? "-" : Html.Encode(Model.Path))</td>
-                </tr>
+                    <tr>
+                        <td class="fw-bold">Branch Account Id</td>
+                        <td>@(string.IsNullOrWhiteSpace(Model?.BranchAccountId) ? "-" : Html.Encode(Model.BranchAccountId))</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Path</td>
+                        <td>@(string.IsNullOrWhiteSpace(Model?.Path) ? "-" : Html.Encode(Model.Path))</td>
+                    </tr>*@
                 <tr>
                     <td class="fw-bold">Depth</td>
                     <td>@(Model != null ? Model.Depth.ToString(CultureInfo.InvariantCulture) : "-")</td>
@@ -143,7 +143,7 @@
                         )
                     </td>
                 </tr>
-                <tr>
+              @*  <tr>
                     <td class="fw-bold">Modified Date</td>
                     <td>
                         @(
@@ -152,7 +152,7 @@
                             : "-"
                         )
                     </td>
-                </tr>
+                </tr>*@
                 @*<tr>
                         <td class="fw-bold">Is Deleted</td>
                         <td>@(Model?.IsDeleted == true ? "Yes" : "No")</td>

@@ -1,0 +1,94 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection
+
+@{
+    bool isUpdate = !string.IsNullOrEmpty(Model.Id);
+}
+
+<!-- Header Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-view-list-outline me-2"></i> Report Section Management
+                </h1>
+                <p class="card-text text-muted mb-1">
+                    Create and manage report sections linked to specific report definitions.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Ensure that section codes and names remain unique within each report.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Creating Report Sections</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><i class="mdi mdi-identifier text-primary me-2"></i> <strong>Code:</strong> Assign a short unique code (e.g., ASSETS, EXPENSES).</li>
+                <li><i class="mdi mdi-format-title text-success me-2"></i> <strong>Name:</strong> Provide a clear section name (e.g., Total Assets).</li>
+                <li><i class="mdi mdi-sort-numeric text-warning me-2"></i> <strong>Sort Order:</strong> Determines the display order of sections within the report.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Form Section -->
+@using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportSection", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- 🔽 Report Definitions Dropdown -->
+            <div class="mb-3">
+                @Html.Label("ReportId", "Select Report Definition", new { @class = "form-label fw-semibold" })
+                <select id="ReportId" name="ReportId" class="form-control">
+                    <option value="">-- Select a report --</option>
+
+                    @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>)ViewBag.ReportDefinitions)
+                    {
+                        <option value="@item.Id" @(Model.ReportId == item.Id ? "selected" : "")>
+                            @item.Name (@item.Code)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Code, "Section Code", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Code, new { @class = "form-control", placeholder = "Enter section code (e.g., ASSETS)" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Name, "Section Name", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter section name" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.SortOrder, "Sort Order", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(model => model.SortOrder, new { @class = "form-control", type = "number", placeholder = "e.g., 1, 2, 3" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
+                    @(isUpdate ? "Update Section" : "Save Section")
+                </button>
+            </div>
+        </div>
+    </div>
+}
