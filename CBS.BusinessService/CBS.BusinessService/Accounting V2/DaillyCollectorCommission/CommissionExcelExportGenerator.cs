@@ -179,12 +179,12 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 // ===== COMPREHENSIVE Headers - Include ALL fields from DataTableResponse =====
                 var headers = new[]
                 {
-            "SN", "ID", "Collector ID", "Collector Name", "Collector Phone", "Collector Account",
-            "Member Reference", "Branch ID", "Branch Code", "Branch Name", "Year", "Month",
+            "SN", "Collector ID", "Collector Name", "Collector Phone", "Collector Account",
+            "Member Reference","Branch Code", "Branch Name", "Year", "Month",
             "Reference Number", "Collector Share", "Incentive Amount", "Total Paid to Collector",
             "Total Commission Shared", "Amount Paid", "Currency", "Date Paid", "Description",
-            "Payment Source", "Processed By", "Processed By User ID", "Created Date", "Created By",
-            "Modified Date", "Modified By", "Deleted Date", "Deleted By", "Is Deleted"
+            "Payment Source", "Processed By", "Created Date"
+            
         };
 
                 // We'll use row 8 for the column headers so header area occupies rows 1..7
