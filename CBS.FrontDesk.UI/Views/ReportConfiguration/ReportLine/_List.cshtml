@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Lines</h5>
-    <a href="#" class="btn btn-sm btn-primary" onclick="loadPartialView('@Url.Action("Initilization","ReportLine")', '#lineContainer', { path: 'new' })">
+    <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportLineCreateModal()">
         <i class="mdi mdi-plus"></i> New
     </a>
 </div>
@@ -12,9 +12,9 @@
         <tr>
             <th>Ref Code</th>
             <th>Caption</th>
-            <th>Sort Order</th>
+            <th>Sort</th>
             <th>Calc Mode</th>
-            <th>Show In Output</th>
+            <th>Show</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -28,7 +28,8 @@
                 <td>@item.CalcMode</td>
                 <td>@(item.ShowInOutput ? "Yes" : "No")</td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-info" onclick="loadPartialView('@Url.Action("Initilization","ReportLine")', '#lineContainer', { path: 'edit', KEY: '@item.Id' })">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-info"
+                       onclick="openReportLineEditModal('@item.Id')">
                         <i class="mdi mdi-pencil"></i> Edit
                     </a>
                 </td>

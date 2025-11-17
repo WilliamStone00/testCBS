@@ -6,16 +6,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.ReportingV2
+namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 {
 	public class ReportLineMappingController : BaseController
 	{
 		// GET: ReportLineMapping
 		private readonly ReportLineMappingService _services;
-
-		public ReportLineMappingController(ReportLineMappingService services)
+		private readonly ReportLineService _lineService;
+		public ReportLineMappingController(ReportLineMappingService services, ReportLineService lineService)
 		{
 			_services = services;
+			_lineService = lineService;
 		}
 
 		// GET: ReportLineMappingt
@@ -24,9 +25,36 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 			return View(new ReportLineMapping());
 		}
 
-		public ActionResult Initilization()
+		public async Task<ActionResult> Initilization(string path = "list", string partialView = null, string KEY = null)
 		{
-			return PartialView("Initilization", new ReportLineMapping());
+			// par défaut, s'il n'y a pas de vue partielle fournie, on charge _List
+			partialView = partialView ?? (path == "list" ? "_List" : "_Create");
+
+			switch (path)
+			{
+				case "list":
+					var list = await _services.GetAll();
+					return PartialView(partialView, list);
+
+				case "new":
+					ViewBag.ReportLines = await _lineService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportLineMapping/{partialView}.cshtml", new ReportLineMapping());
+
+				case "edit":
+					if (string.IsNullOrEmpty(KEY))
+						return new HttpStatusCodeResult(400, "Invalid report key");
+
+					var report = await _services.GetById(KEY);
+					if (report == null)
+						return HttpNotFound("Report not found");
+
+					ViewBag.ReportLines = await _lineService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportLineMapping/{partialView}.cshtml", report);
+
+				default:
+					var all = await _services.GetAll();
+					return PartialView("_List", all);
+			}
 		}
 
 		[HttpPost]

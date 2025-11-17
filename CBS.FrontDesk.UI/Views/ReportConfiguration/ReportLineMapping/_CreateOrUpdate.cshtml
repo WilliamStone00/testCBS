@@ -1,0 +1,87 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping
+
+@{
+    bool isUpdate = !string.IsNullOrEmpty(Model.Id);
+}
+
+<!-- HEADER -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold mb-2">
+                    <i class="mdi mdi-shape-square-plus me-2"></i> Create Mapping
+                </h1>
+                <p class="text-muted mb-1">Define a new mapping rule for a report line.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FORM -->
+@using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportLineMapping", FormMethod.Post,
+new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            @Html.HiddenFor(model => model.Id)
+
+            <!-- 🔽 Report Lines Dropdown -->
+            <div class="mb-3">
+                @Html.Label("LineId", "Select Report Line RefCode", new { @class = "form-label fw-semibold" })
+                <select id="LineId" name="LineId" class="form-control">
+                    <option value="">-- Select a report Line --</option>
+
+                    @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine>)ViewBag.ReportLines)
+                    {
+                        <option value="@item.Id" @(Model.LineId == item.Id ? "selected" : "")>
+                            @item.RefCode
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.MatchType, "Match Type", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.MatchType, new { @class = "form-control", placeholder = "e.g., AccountRange" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.FromValue, "From Value", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.FromValue, new { @class = "form-control", placeholder = "Start value" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.ToValue, "To Value", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.ToValue, new { @class = "form-control", placeholder = "End value" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Side, "Side", new { @class = "form-label fw-semibold" })
+                @Html.DropDownListFor(m => m.Side,
+                    new SelectList(new List<string> { "DEBIT", "CREDIT", "BOTH" }),
+                    "Select side",
+                    new { @class = "form-select" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Sign, "Sign", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Sign, new { @class = "form-control", type = "number" })
+            </div>
+
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(m => m.IncludeLiaison, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IncludeLiaison, "Include Liaison", new { @class = "form-check-label fw-semibold" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
+                    @(isUpdate ? "Update Mapping" : "Save Mapping")
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
