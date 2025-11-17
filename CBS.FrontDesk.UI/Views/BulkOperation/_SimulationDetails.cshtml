@@ -53,17 +53,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.SourceAccountType</label>
+                        <label class="col-sm-4 col-form-label">@GlobalBulkOperation.Description</label>
                         <div class="col-sm-8">
-                            <div class="form-control">@(sourceAccountype?.ToUpper())</div>
+                            <div class="form-control">@(Model?.Description)</div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                @*    <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">Destination Account Type</label>
                         <div class="col-sm-8">
                             <div class="form-control">@(destinationAccountype?.ToUpper())</div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -159,9 +159,9 @@
                         <button type="button" class="btn btn-info" data-bs-toggle="tooltip" title="Export bulk operation Analysis to Excel" onclick="exportBulkOperation('@Model.Id')">
                             <i class="fas fa-download me-1"></i> Export Bulk Operation to Excel
                         </button>
-                        <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
+                      @*  <button type="button" class="btn btn-danger"  data-bs-toggle="tooltip" title="Delete bulk operation Analysis to Excel" onclick="deleteBulkOperation('@Model.Id','@Model.SimulationType')">
                             <i class="fas fa-trash me-1"></i> Delete Simulation 
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>

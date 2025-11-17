@@ -435,6 +435,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountingV2PayOutNoneMemberSalaryChartofAccountId { get; set; }
         public string AccountingV2PayOutCashTillChartofAccountId { get; set; }
         public string AccountingV2SuspenseChartOfAccountId { get; set; }
+        public string AccountingV2CashInCommissionChartOfAccountId { get; set; }
+        public string AccountingV2CashOutCommissionChartOfAccountId { get; set; }
+        public string AccountingV2TransferCommissionChartOfAccountId { get; set; }
+        public string AccountingV2SuplusChartOfAccountId { get; set; }
+        public string AccountingV2ShortageChartOfAccountId { get; set; }
     }
     public class SavingProduct
     {
@@ -561,6 +566,15 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
         public string AccountingV2InterestAmountChartOfAccountId { get; set; }
         public string AccountingV2TransitChartOfAccountId { get; set; }
+
+        public string AccountingV2CashInCommissionChartOfAccountId { get; set; }
+        public string AccountingV2CashOutCommissionChartOfAccountId { get; set; }
+        public string AccountingV2TransferCommissionChartOfAccountId { get; set; }
+        public string AccountingV2SuplusChartOfAccountId { get; set; }
+        public string AccountingV2ShortageChartOfAccountId { get; set; }
+
+
+
 
         public string AccountingV2CivilServantsSalarySourceChartofAccountId { get; set; }
         public string AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
