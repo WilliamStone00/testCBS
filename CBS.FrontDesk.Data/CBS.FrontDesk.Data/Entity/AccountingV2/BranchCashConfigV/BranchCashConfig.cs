@@ -22,6 +22,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string TransfterCommisionAccountIDAccountId { get; set; }
         public string VATAccountId { get; set; }
         public string InterestGeneratedFromAccountId { get; set; }
+        public string MomocashAccountId { get; set; }
+        public string MomocashCommissionGlId { get; set; }
+
 
     }
 
@@ -72,8 +75,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string VATAccountNumber { get; set; }
         public string InterestGeneratedFromAccountName { get; set; }
         public string InterestGeneratedFromAccountNumber { get; set; }
-
-
+        public string MomocashCommissionGlName { get; set; }
+        public string MomocashCommissionGlNumber { get; set; }
+        public string MomocashAccountNumber { get; set; }
+        public string MomocashAccountName { get; set; }
     }
 
     // DTO used only by the Details partial
@@ -81,18 +86,41 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
     {
         public string Id { get; set; }
         public string Branch { get; set; }
+
         public bool RealTimeCashPosting { get; set; }
 
+        // Core Mandatory Cash-Control Accounts
         public AccountPair CashInHand { get; set; }
         public AccountPair Vault { get; set; }
         public AccountPair SurplusIncome { get; set; }
         public AccountPair ShortageExpense { get; set; }
+
+        // Revenue & Partner Settlement
         public AccountPair Revenue { get; set; }
         public AccountPair Partner { get; set; }
         public AccountPair Camccul { get; set; }
-        public AccountPair HeadOfficeLiaison { get; set; }
         public AccountPair FormFeeIncome { get; set; }
+
+        // Inter-branch & Liaison
+        public AccountPair HeadOfficeLiaison { get; set; }
+
+        // Loan & Interest Fallback
+        public AccountPair LoanTransit { get; set; }
+        public AccountPair InterestGeneratedFrom { get; set; }
+
+        // Commission Fallback Accounts
+        public AccountPair CashInCommission { get; set; }
+        public AccountPair CashOutCommission { get; set; }
+        public AccountPair TransferCommission { get; set; }
+
+        // VAT Backup Account
+        public AccountPair VAT { get; set; }
+
+        // Mobile Money (MoMoCash)
+        public AccountPair Momocash { get; set; }
+        public AccountPair MomocashCommission { get; set; }
     }
+
 
     public sealed class AccountPair
     {
