@@ -6,16 +6,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.ReportingV2
+namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 {
 	public class ReportSectionController : BaseController
 	{
 		// GET: ReportSection
 		private readonly ReportSectionService _services;
+		private readonly ReportDefinitionService _definitionService;
 
-		public ReportSectionController(ReportSectionService services)
+		public ReportSectionController(ReportSectionService services, ReportDefinitionService definitionService)
 		{
 			_services = services;
+			_definitionService = definitionService;
 		}
 
 		// GET: ReportSectiont
@@ -24,9 +26,37 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 			return View(new ReportSection());
 		}
 
-		public ActionResult Initilization()
+		public async Task<ActionResult> Initilization(string path = "list", string partialView = null, string KEY = null)
 		{
-			return PartialView("Initilization", new ReportLineMapping());
+			// par défaut, s'il n'y a pas de vue partielle fournie, on charge _List
+			partialView = partialView ?? (path == "list" ? "_List" : "_Create");
+
+			switch (path)
+			{
+				case "list":
+					var list = await _services.GetAll();
+					return PartialView(partialView, list);
+
+				case "new":
+					var model = new ReportSection();
+					ViewBag.ReportDefinitions = await _definitionService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportSection/{partialView}.cshtml", model);
+
+				case "edit":
+					if (string.IsNullOrEmpty(KEY))
+						return new HttpStatusCodeResult(400, "Invalid report key");
+
+					var report = await _services.GetById(KEY);
+					if (report == null)
+						return HttpNotFound("Report not found");
+
+					ViewBag.ReportDefinitions = await _definitionService.GetAll();
+					return PartialView($"~/Views/ReportConfiguration/ReportSection/{partialView}.cshtml", report);
+
+				default:
+					var all = await _services.GetAll();
+					return PartialView("_List", all);
+			}
 		}
 
 		[HttpPost]
@@ -59,27 +89,6 @@ namespace CBS.FrontDesk.UI.Controllers.ReportingV2
 		{
 			var data = await _services.Update(model);
 			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-		}
-
-		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-		{
-			if (path == "list")
-			{
-				var data = await _services.GetAll();
-				return PartialView(partialView, data);
-			}
-
-			else if (path == "new")
-			{
-				return PartialView(partialView, new ReportSection());
-			}
-			else
-			{
-				ViewBag.Key = KEY;
-				var ReportSection = await _services.GetById(KEY);
-				return PartialView(partialView, ReportSection);
-
-			}
 		}
 
 		public async Task<ActionResult> Delete(string KEY)

@@ -597,4 +597,7 @@
   <data name="TransferStatus" xml:space="preserve">
     <value>Statut de Transfere</value>
   </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succes</value>
+  </data>
 </root>

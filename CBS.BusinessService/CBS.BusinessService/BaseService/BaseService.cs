@@ -150,6 +150,11 @@ namespace BusinessServices
         public string[] ServicesNames { get; set; }
 
 
+        public static string ConvertSecondsToTime(long seconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+            return time.ToString(@"hh\:mm\:ss");
+        }
 
         public BaseService()
         {
@@ -289,6 +294,8 @@ namespace BusinessServices
                 "Cash difference acknowledged. Your confirmation has been recorded. This action may be subject to post-verification.");
         }
 
+
+
         public static DataTable ConvertToDataTable<T>(T obj, string tableName)
         {
             var table = new DataTable(tableName);
@@ -323,6 +330,8 @@ namespace BusinessServices
 
             return table;
         }
+
+
 
         public Guid ConvertStringToGuid(string input)
         {
@@ -373,6 +382,12 @@ namespace BusinessServices
                 }
             }
         }
+
+        public string FormatDate(DateTime date)
+        {
+            return date.ToString("dd-MM-yyyy");
+        }
+
         public static string FormatCurrency(decimal amount, string currencySymbol = "XAF", int decimalPlaces = 2)
         {
             return string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}{1:N" + decimalPlaces + "}", currencySymbol, amount);

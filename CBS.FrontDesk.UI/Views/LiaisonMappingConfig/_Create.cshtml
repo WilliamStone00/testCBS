@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMapping.LiaisonMapping
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping
 <!-- Header -->
 <div class="row mb-2">
     <div class="col-12">
@@ -128,7 +128,7 @@
                 success: function (data) {
                     ResetAccountDropdowns();
 
-                    if (data && data.length > 0) {
+                    if (data && data.length > 0) { 
                         $.each(data, function (i, item) {
                             $('#DueFromAssetAccountId').append($('<option>', { value: item.Value, text: item.Text }));
                             $('#DueToLiabilityAccountId').append($('<option>', { value: item.Value, text: item.Text }));

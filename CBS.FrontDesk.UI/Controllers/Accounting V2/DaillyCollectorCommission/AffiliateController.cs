@@ -1,12 +1,9 @@
-using CBS.BusinessService.Accounting_V2;
 using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
-using CBS.BusinessService.DailyCollectionServices.ManualDailyCollection_Service;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AffiliateAccount;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
@@ -19,60 +16,43 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
 {
-    //[CheckSessionTimeOut]
-    public class CollectorCommissionController : Controller
+    [CheckSessionTimeOut]
+    public class AffiliateController : Controller
     {
-        private readonly ManualDailyCollectionService _manualService;
-        private readonly CollectorCommissionService _collectorCommissionService;
+        private readonly AffiliateService _AffiliateController;
         private readonly BranchServices _branchServices;
-        private readonly ChartOfAccountsV2Service _chartOfAccountsV;
 
         /// <summary>
-        /// Injects the required CollectorCommissionController via dependency injection.
+        /// Injects the required AffiliateController via dependency injection.
         /// </summary>
         /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
-        public CollectorCommissionController(ManualDailyCollectionService manualDailyCollectionService, ChartOfAccountsV2Service chartOfAccountsV2Service, CollectorCommissionService collectorCommissionService, BranchServices branchServices)
+        public AffiliateController(AffiliateService affiliateService, BranchServices branchServices)
         {
-            _collectorCommissionService = collectorCommissionService;
-            _chartOfAccountsV = chartOfAccountsV2Service;
+            _AffiliateController = affiliateService;
             _branchServices = branchServices;
-            _manualService = manualDailyCollectionService;
         }
 
         public async Task<ActionResult> Index()
         {
-            await loader();
-            return View(new CollectorComissionResponse());
+            return View();
         }
 
 
         [HttpGet]
         public async Task<ActionResult> List()
         {
-            await loader();
             return View();
-        }
-
-        public async Task<bool> loader()
-        {
-            var branches = await _branchServices.GetBranches();
-            ViewBag.Branches = branches;
-
-            var pcmfs = await _chartOfAccountsV.GetAllPCMFAccounts();
-            ViewBag.HoPcmfAccounts = pcmfs;
-            return true;
-
         }
 
         // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
-        public async Task<JsonResult> DataTable(commisionQuery query)
+        public async Task<JsonResult> LoadAffiliateData(AffiliateQuery query)
         {
             try
             {
-                var data = await _collectorCommissionService.CommisionDataTableAsync(query);
+                var data = await _AffiliateController.GetcategoryDataTableAsync(query);
 
-                var Affiliate = JsonConvert.DeserializeObject<List<DataTableResponse>>(JsonConvert.SerializeObject(data.data));
+                var Affiliate = JsonConvert.DeserializeObject<List<Data.Entity.Accounting_V2.Affiliate.Affiliateresponse>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
                 {
@@ -87,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 // return a DataTables-compatible empty result on error
                 return Json(new
                 {
-                    draw = query?.DataTableOptions?.draw ?? "1",
+                    draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
@@ -97,104 +77,77 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
         }
 
 
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        {
+            //await loader();
+            if (path == "list")
+            {
+                var data = await _AffiliateController.GetAsync();
+                return PartialView(partialView, data);
+
+            }
+            //GetRolePermissions
+            else if (path == "new")
+            {
+                return PartialView(partialView, new AffiliateCommand());
+            }
+
+            else
+            {
+                var data = await _AffiliateController.GetByIdAsync(KEY);
+                return PartialView(partialView, data);
+
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateOrUpdate(AffiliateCommand model)
+        {
+            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
+            if (string.IsNullOrWhiteSpace(model.Id))
+            {
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, message = "Validation failed." });
+
+                var result = await _AffiliateController.CreateAsync(model);
+                return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+            }
+            else
+            {
+                // IMPORTANT: return the ActionResult from Update
+                return await Update(model);
+            }
+
+            // unreachable now but keep for safety (or remove)
+            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Payment model)
+        public async Task<ActionResult> Update(AffiliateCommand model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _collectorCommissionService.CreateAsync(model);
-            return Json(new { success = false, message = "No data returned from service." });
-        }
-
-
-
-        [HttpGet]
-        public async Task<JsonResult> GetCollectorsByBranch(string branchId)
-        {
-            try
-            {
-                int order = 2;
-                // This would call your service to get collectors by branch
-                var collectors = await _manualService.GetCollectorsAsSelectListAsync(branchId, order);
-
-                return Json(collectors, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> GetCommissionData(CollectorComissionResponse model)
-        {
-            try
-            {
-                var commissionData = await _collectorCommissionService.GetCommissionAsync(model);
-
-                if (commissionData != null)
-                {
-                    return Json(new { success = true, data = commissionData });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "No commission data found for the selected criteria." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
+            var result = await _AffiliateController.UpdateAsync(model);
+            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
         [HttpGet]
-        public ActionResult ExportCommission()
+        // [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(string KEY)
         {
-            return PartialView("_ExportCommission");
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
+            var result = await _AffiliateController.DeleteAsync(KEY);
+
+            // Map to simple JSON shape the client expects. Adjust if result has different property names.
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
-
-        [HttpGet]
-        public ActionResult CommissionTreatment()
-        {
-            return PartialView("_CommissionTreatment", new CollectorComissionResponse());
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> ProcessPayment(Payment model)
-        {
-            try
-            {
-                var result = await _collectorCommissionService.CreateAsync(model);
-                return Json(new { success = false, message = "No data returned from service." });
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> GetCustomerAccounts(string customerId)
-        {
-            try
-            {
-                var customerData = await _collectorCommissionService.GetCustomerAccountDropdownAsync(customerId);
-                return Json(new
-                {
-                    success = true,
-                    customer = customerData.CustomerDto,
-                    accounts = customerData.AccountSelectList
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
 
     }
 }

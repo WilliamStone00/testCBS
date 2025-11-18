@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.AddCORRESPONDANCE
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FileUpload.AddCorrespondenceRequestModel
 @using Resources
 
 <div class="card bg-light mb-4 shadow-sm">
@@ -16,101 +16,101 @@
     @using (Html.BeginForm("Addcorrespondance", "FileUpload", FormMethod.Post,
         new { id = "correspondenceForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    @* Preserve operation type *@
-    @Html.HiddenFor(m => m.Type)
-    @Html.HiddenFor(m => m.BranchId)
+        @* Preserve operation type *@
+        @Html.HiddenFor(m => m.Type)
+        @Html.HiddenFor(m => m.BranchId)
 
 
-    <div class="mt-2">
-        <h4 class="mb-3 text-primary">
-            <i class="mdi mdi-email-outline me-2"></i> Map
-        </h4>
+        <div class="mt-2">
+            <h4 class="mb-3 text-primary">
+                <i class="mdi mdi-email-outline me-2"></i> Map
+            </h4>
 
-        @* ===== COMMON: Mapping Name (read-only) ===== *@
-        <div class="row g-2">
-            <div class="col-md-12">
-                <div class="form-floating">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = "readonly", id = "MappingName" })
-                    <label for="MappingName">
-                        @(Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true
+            @* ===== COMMON: Mapping Name (read-only) ===== *@
+            <div class="row g-2">
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = "readonly", id = "MappingName" })
+                        <label for="MappingName">
+                            @(Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true
                                 ? "Affiliate Account Mapping Name"
                                 : "Branch → Affiliate Account Mapping Name")
-                    </label>
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr />
+            <hr />
 
-        @* ===== CONDITIONAL FIELDS ===== *@
-        @if (Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true)
+            @* ===== CONDITIONAL FIELDS ===== *@
+            @if (Model?.Type?.Equals("AffiliateToHo", StringComparison.OrdinalIgnoreCase) == true)
             {
 
-        @Html.HiddenFor(m => m.AffiliateAccountId)
-        @* Affiliate → HO: choose a PCMF account to map to *@
-        <div class="row g-2 mt-1">
-            <div class="col-md-12">
-                <label class="form-label fw-bold" for="HoPcmfAccountId">HO PCMF Account</label>
-                @Html.DropDownListFor(
-                    m => m.HoPcmfAccountId,
-                    new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountPcmf ?? Enumerable.Empty<object>()), "Value", "Text"),
-                    "--- Select HO PCMF Account ---",
-                    new { @class = "form-select select2", id = "HoPcmfAccountId" }
-                )
-                @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
-                <div class="form-text">
-                    Select the Head Office PCMF account to map the affiliate account to.
+                @Html.HiddenFor(m => m.AffiliateAccountId)
+                @* Affiliate → HO: choose a PCMF account to map to *@
+                <div class="row g-2 mt-1">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold" for="HoPcmfAccountId">HO PCMF Account</label>
+                        @Html.DropDownListFor(
+                            m => m.HoPcmfAccountId,
+                            new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountPcmf ?? Enumerable.Empty<object>()), "Value", "Text"),
+                            "--- Select HO PCMF Account ---",
+                            new { @class = "form-select select2", id = "HoPcmfAccountId" }
+                        )
+                        @*@Html.ValidationMessageFor(m => m.HoPcmfAccountId, "", new { @class = "text-danger" })*@
+                        <div class="form-text">
+                            Select the Head Office PCMF account to map the affiliate account to.
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
             }
             else
             {
 
-        @Html.HiddenFor(m => m.BranchAccountId)
-        @* Branch → Affiliate: choose an Affiliate account to map to *@
-        <div class="row g-2 mt-1">
-            <div class="col-md-12">
-                <label class="form-label fw-bold" for="AffiliateAccountId">Affiliate Account</label>
-                @Html.DropDownListFor(
-                    m => m.AffiliateAccountId,
-                    new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountMFI ?? Enumerable.Empty<object>()), "Id", "Name"),
-                    "--- Select Affiliate Account ---",
-                    new { @class = "form-select select2", id = "AffiliateAccountId"}
-                )
-                @*@Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })*@
-                <div class="form-text">
-                    Select the Affiliate account to map the branch account to.
+                @Html.HiddenFor(m => m.BranchAccountId)
+                @* Branch → Affiliate: choose an Affiliate account to map to *@
+                <div class="row g-2 mt-1">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold" for="AffiliateAccountId">Affiliate Account</label>
+                        @Html.DropDownListFor(
+                            m => m.AffiliateAccountId,
+                            new SelectList((IEnumerable<dynamic>)(ViewBag.ChartOfAccountMFI ?? Enumerable.Empty<object>()), "Id", "Name"),
+                            "--- Select Affiliate Account ---",
+                            new { @class = "form-select select2", id = "AffiliateAccountId" }
+                        )
+                        @*@Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })*@
+                        <div class="form-text">
+                            Select the Affiliate account to map the branch account to.
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
             }
 
-        @* ===== DO NOT DISPLAY BRANCH FIELDS PER REQUIREMENT =====
-        (BranchId, BranchAccountId intentionally omitted) *@
+            @* ===== DO NOT DISPLAY BRANCH FIELDS PER REQUIREMENT =====
+                (BranchId, BranchAccountId intentionally omitted) *@
 
-        <hr />
+            <hr />
 
-        <div class="text-end">
-            @*                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
-            {*@
-            <button type="submit" class="btn btn-primary me-2">
-                <i class="fas fa-save me-1"></i> @GlobalShared.Save
-            </button>
-            <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
-            @* }
-            else
-            {
-                <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-refresh"></i> @GlobalBank.Update
+            <div class="text-end">
+                @*                @if (string.IsNullOrWhiteSpace(Model?.CorrelationId))
+                    {*@
+                <button type="submit" class="btn btn-primary me-2" data-bs-dismiss="modal">
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Save
                 </button>
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-            }*@
+                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                @* }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="mdi mdi-refresh"></i> @GlobalBank.Update
+                        </button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    }*@
+            </div>
         </div>
-    </div>
     }
 </div>
 

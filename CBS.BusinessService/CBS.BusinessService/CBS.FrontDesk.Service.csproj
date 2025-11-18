@@ -520,20 +520,6 @@
     <Compile Include="UserManagement\UserPermissionServices.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
-      <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
-      <Name>CBS.API.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
-      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
-      <Name>CBS.FrontDesk.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
-      <Project>{192960F3-C2BA-4286-A4E6-F0B94DA85450}</Project>
-      <Name>CBS.FrontDesk.Helper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="CheckManagementSystem\.vs\CheckManagementSystem\FileContentIndex\f3ed9bb7-081f-4b03-9074-fbb2960cb341.vsidx" />
     <None Include="CheckManagementSystem\.vs\CheckManagementSystem\v17\DocumentLayout.json" />
@@ -563,6 +549,20 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CBS.API.Helper\CBS.API.Helper\CBS.API.Helper.csproj">
+      <Project>{7789de1e-5232-46a6-9a96-1dd39e708eeb}</Project>
+      <Name>CBS.API.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Data\CBS.FrontDesk.Data\CBS.FrontDesk.Data.csproj">
+      <Project>{0d7085df-13b8-4fce-9e8f-f0fa88fce730}</Project>
+      <Name>CBS.FrontDesk.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper\CBS.FrontDesk.Helper.csproj">
+      <Project>{192960f3-c2ba-4286-a4e6-f0b94da85450}</Project>
+      <Name>CBS.FrontDesk.Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

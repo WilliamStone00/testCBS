@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
@@ -23,26 +24,27 @@ using ZXing.Common;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
-    [CheckSessionTimeOutAttribute]
+   [CheckSessionTimeOutAttribute]
 
     public class CashDeskController : BaseController
     {
         private readonly CashDeskServices _cashDeskService;
         private readonly AccountingServices _accountingServices;
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        //private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
         private readonly BranchServices _branchServices;
         private readonly SalaryProcessedServices _salaryProcessedServices;
         private readonly LoanServices _loanServices;
+        private readonly BranchAccountService _branchAccountService;
 
 
-        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, BranchServices branchServices = null, SalaryProcessedServices salaryProcessedServices = null, LoanServices loanServices = null)
+        public CashDeskController(CashDeskServices cashDeskService = null, AccountingServices accountingServices = null, BranchServices branchServices = null, SalaryProcessedServices salaryProcessedServices = null, LoanServices loanServices = null, BranchAccountService branchAccountService = null)
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
-            this.chartOfAccountServices = chartOfAccountServices;
             _branchServices = branchServices;
             _salaryProcessedServices = salaryProcessedServices;
             _loanServices = loanServices;
+            _branchAccountService = branchAccountService;
         }
         // GET: CashDesk
         //public ActionResult Index()
@@ -82,7 +84,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             mode = (mode ?? "cashin").Trim().ToLowerInvariant();
             bool isCashIn = mode == "cashin";
             ViewBag.Branches = await _branchServices.GetLiaison();
-            ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch();
+       //     ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch();
+
+            var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
+            ViewBag.AccountIds = result;
+
             ViewBag.Operation = "income_expense";
             ViewBag.OperationType = isCashIn ? "cashin" : "cashout";
             ViewBag.FormContext = isCashIn ? "OtherCashIn" : "OtherCashOut";
@@ -96,7 +103,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         public async Task<ActionResult> NonMemberSalaryPayout()
         {
             ViewBag.FormContext = "SalaryCashOut";
-            ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch(); // source GLs (cash boxes etc.)
+            var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
+            ViewBag.AccountIds = result;
             return View(); // Razor view below
         }
 
@@ -159,6 +168,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
         public async Task<ActionResult> OtherCashMobileMoney()
         {
+            var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
+            ViewBag.AccountIds = result;
             var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
             return View(cashDesk);
         }

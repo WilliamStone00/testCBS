@@ -152,6 +152,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string ProductId { get; set; }
         public string AccountType { get; set; }
     }
+    public class AccountToBeCredited
+    {
+        public string Naration { get; set; }
+        public decimal Amount { get; set; } = 0;
+        public string ChartOfAccountId { get; set; }
+    }
     public class LoanToBeRefunded
     {
         public string LoanId { get; set; }
@@ -169,6 +175,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public List<AccountToBeDebited> AccountToBeDebiteds { get; set; } = new List<AccountToBeDebited>();
         public List<LoanToBeRefunded> LoanToBeRefundeds { get; set; } = new List<LoanToBeRefunded>();
         public List<LoanRepaymentOperationDto> BulkOperationsForLoanRepayments { get; set; } = new List<LoanRepaymentOperationDto>();
+        public List<AccountToBeCredited> AccountToBeCrediteds { get; set; } = new List<AccountToBeCredited>();
 
         public bool IncludeLoanRepayment { get; set; }
         public DateTime? AccountingDate { get; set; }
@@ -203,6 +210,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
         public string BookingDirection { get; set; }
         public string CheckName { get; set; }
         public string MemberName { get; set; }
+        public string GlId { get; set; }
         public bool isDepositDoneByAccountOwner { get; set; }
         public bool IsChargesInclussive { get; set; } = false;
         public string PaymentMethod { get; set; }

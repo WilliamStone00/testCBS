@@ -82,6 +82,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string BranchId { get; set; } = string.Empty;
         public string BranchName { get; set; } = string.Empty;
         public string BranchCode { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = string.Empty;
         public string Month { get; set; } = string.Empty;
         public string OperationType { get; set; } = string.Empty;
         public List<MemberStat> MemberStats { get; set; } = new List<MemberStat>();
@@ -100,6 +101,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
     {
         public string MemberId { get; set; } = string.Empty;
         public string AccountId { get; set; }
+        public string PaymentStatus { get; set; } = string.Empty;
         public string AccountNumber { get; set; }
         public string MemberName { get; set; } = string.Empty;
         public decimal TotalActivityAmount { get; set; }
@@ -174,10 +176,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string ReferenceNumber { get; set; }
         public string ProcessedByUserId { get; set; }
         public string Currency { get; set; }
+        public bool IsExport { get; set; }
 
     }
 
-   
+
     public class ExportCommissionRequest
     {
         public CollectorComissionResponse CommissionData { get; set; }
@@ -192,6 +195,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string ReportType { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+    }
+
+    public class ExportTableRequest
+    {
+        public List<DataTableResponse> Data { get; set; }
+        public int TotalRecords { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public dynamic Filters { get; set; }
     }
 
     public class DataTableResponse

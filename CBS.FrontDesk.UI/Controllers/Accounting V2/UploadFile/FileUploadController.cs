@@ -19,9 +19,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ZXing;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 {
@@ -53,7 +55,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             // AppDomain.CurrentDomain.BaseDirectory is the application's root folder
             _appFilesRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? string.Empty, "AppFiles");
         }
-       
+
 
         public async Task<ActionResult> Index()
         {
@@ -63,7 +65,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
         private async Task loader()
         {
-            ViewBag.Statuses = new SelectList(new[] { "Pending", "Approved", "Extracted", "Rejected", "Treated", "Completed" });
+            ViewBag.Statuses = new List<StringValues>
+            {
+                new StringValues{Text="Pending",Value="Pending"},
+                new StringValues{Text="Approved",Value="Approved"},
+                new StringValues{Text="Extracted",Value="Extracted"},
+                new StringValues{Text="Rejected",Value="Rejected"},
+                new StringValues{Text="Treated",Value="Treated"},
+                new StringValues{Text="Completed",Value="Completed"},
+
+            };
             ViewBag.Branches = await _branchServices.GetBranches();
             var affiliate = await _affiliateService.GetAffiliatesAsync();
             ViewBag.Affiliates = affiliate;
@@ -158,7 +169,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             }
         }
         #endregion
-    
+
 
         ///// <summary>
         ///// ACTION 4: Handles the "Download Template" button click.
@@ -207,12 +218,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
                 var Accountwaiting = JsonConvert.DeserializeObject<List<Accountwaiting>>(JsonConvert.SerializeObject(data.data));
 
+                var tasks = Accountwaiting.Select(async x =>
+                {
+                    x.BranchName = await _fileUploadService.GetBranchNameAsync(x.BranchId);
+                    return x;
+                }).ToList();
+
+                var res = (await Task.WhenAll(tasks)).ToList();
+
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = Accountwaiting
+                    data = res
                 });
             }
             catch (Exception ex)
@@ -239,22 +258,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
 
         [HttpPost]
-        public async Task<JsonResult> LoadCorrespondanceDatatable(CorespondanceQUERY query)
+        public async Task<JsonResult> LoadCorrespondanceRequestDatatable(CorrespondanceRequestQuery query)
         {
             //await loader();
             try
             {
-              
-                var data = await _fileUploadService.CorrespondanceDataTableAsync(query);
+
+                if (!_fileUploadService.IsHeadOffice())
+                {
+                    query.BranchId = _fileUploadService.GetBranchID();
+                }
+
+                var data = await _fileUploadService.CorrespondenceRequestDataTableAsync(query);
 
                 var response = JsonConvert.DeserializeObject<List<CorrespondenceRequestDto>>(JsonConvert.SerializeObject(data.data));
+
+                var tasks = response.Select(async x =>
+                {
+                    x.BranchName = await _fileUploadService.GetBranchNameAsync(x.BranchId);
+                    return x;
+                }).ToList();
+
+                var res = (await Task.WhenAll(tasks)).ToList();
 
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = response
+                    data = res
                 });
             }
             catch (Exception ex)
@@ -271,6 +303,41 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             }
         }
 
+        /*  [HttpPost]
+          public async Task<JsonResult> LoadCorrespondanceRequestDatatable(CorrespondanceRequestQuery query)
+          {
+              try
+              {
+                  var data = await _fileUploadService.CorrespondenceRequestDataTableAsync(query);
+
+                  // data.data should be an IEnumerable<CorrespondenceRequestDto> (or similar)
+                  // Project to a light anonymous object to reduce payload
+
+                 // var data = JsonConvert.DeserializeObject<List<CorrespondenceRequestDto>>(JsonConvert.SerializeObject(data.data));
+
+
+                  return Json(new
+                  {
+                      draw = data.draw,
+                      recordsTotal = data.recordsTotal,
+                      recordsFiltered = data.recordsFiltered,
+                      data = data.data
+                  }, JsonRequestBehavior.AllowGet);
+              }
+              catch (Exception ex)
+              {
+                  return Json(new
+                  {
+                      draw = query?.Options?.draw ?? "1",
+                      recordsTotal = 0,
+                      recordsFiltered = 0,
+                      data = new List<object>(),
+                      error = ex.Message
+                  }, JsonRequestBehavior.AllowGet);
+              }
+          }*/
+
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
             await loader();
@@ -283,7 +350,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             //GetRolePermissions
             else if (path == "new")
             {
-                return PartialView(partialView, new AddCORRESPONDANCE());
+                return PartialView(partialView, new AddCorrespondenceRequestModel());
             }
 
             else
@@ -296,12 +363,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Addcorrespondance(AddCORRESPONDANCE model)
+        public async Task<ActionResult> Addcorrespondance(AddCorrespondenceRequestModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
 
-            var result = await _fileUploadService.CreateCorrespondanceAsync(model);
+            var result = await _fileUploadService.CreateCorrespondanceRequestAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
@@ -364,7 +431,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
         {
             try
             {
-                if(model.affiliateId == null)
+                if (model.affiliateId == null)
                 {
                     model.affiliateId = "1";
                 }
@@ -448,17 +515,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             }
         }
 
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Approve(correspondanceR_A request)
+        public async Task<ActionResult> ApproveOrRejectCorrespondenceRequest(CorrespondenceApproveAndRejection request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Id))
                 return Json(new { isSuccess = false, message = "Invalid request" });
 
             try
             {
-                var response = await _fileUploadService.CorrespondenceValidationAsync(request);
-                return Json(new { isSuccess = false, message = "Failed to approve correspondence" });
+                var response = await _fileUploadService.ApproveOrRejectCorrespondenceRequest(request);
+                return Json(new { success = response.Result, message = Messaging.MessageResult(response) });
             }
             catch (Exception ex)
             {
@@ -466,68 +536,88 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.UploadFile
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Reject(correspondanceR_A request)
+        /*  [HttpPost]
+          [ValidateAntiForgeryToken]
+          public async Task<ActionResult> RequestCorrespondenceRequest(CorrespondenceApproveAndRejection request)
+          {
+              if (request == null || string.IsNullOrWhiteSpace(request.Id))
+                  return Json(new { isSuccess = false, message = "Invalid request" });
+
+              try
+              {
+                  var ok = await _fileUploadService.RejectCorrespondenceRequestAsync(request);
+                  return Json(new { isSuccess = false, message = "Failed to reject correspondence" });
+              }
+              catch (Exception ex)
+              {
+                  return Json(new { isSuccess = false, message = "Server error while rejecting" });
+              }
+          }*/
+
+
+        public async Task<ActionResult> GetCorrespondanceRequest(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.Id))
-                return Json(new { isSuccess = false, message = "Invalid request" });
 
-            try
+            var data = await _fileUploadService.GetCorrespondanceRequestByIdAsync(KEY);
+            if (path == "approve")
             {
-                var ok = await _fileUploadService.RejectCorrespondenceAsync(request);
-                return Json(new { isSuccess = false, message = "Failed to reject correspondence" });
+                var model = new CorrespondenceApproveAndRejection();
+                model.Id = KEY;
+                model.RequestBy = data.RequestedByName;
+                model.Type = "Approval";
+                return PartialView(partialView, model);
             }
-            catch (Exception ex)
+            else if (path == "reject")
             {
-                return Json(new { isSuccess = false, message = "Server error while rejecting" });
+                var model = new CorrespondenceApproveAndRejection();
+                model.Id = KEY;
+                model.RequestBy = data.RequestedByName;
+                model.Type = "Rejection";
+                return PartialView(partialView, model);
             }
-        }
+            else
+            {
+                return PartialView(partialView, data);
+            }
 
-
-        public async Task<ActionResult> GetCorrespondance(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
-        {
-            var data = await _fileUploadService.GetCorrespondanceByIdAsync(KEY);
-            return PartialView(partialView, data);
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string name, string scope, string branchId,string hoPcmfAccountId = null,string affiliateAccountId = null,string branchAccountId = null)
+        public async Task<ActionResult> GetCorrespondencePartial(string recordId, string scope)
         {
             // Basic normalization
             recordId = recordId?.Trim();
-            name = name?.Trim();
+
+            var awaiting =await _fileUploadService.GetAccountAwaitingCorrespondence(recordId);
+
+      
             scope = scope?.Trim();
-            branchId = branchId?.Trim();
-            hoPcmfAccountId = hoPcmfAccountId?.Trim();
-            affiliateAccountId = affiliateAccountId?.Trim();
-            branchAccountId = branchAccountId?.Trim();
 
             // Resolve type from scope
             var type = string.Equals(scope, "Branch", StringComparison.OrdinalIgnoreCase)
                 ? "BranchToAffiliate"
                 : "AffiliateToHo";
 
-            var accountPcmf =await _chartOfAccountsV.GetAllPCMFAccounts();
+            var accountPcmf = await _chartOfAccountsV.GetAllPCMFAccounts();
 
             ViewBag.ChartOfAccountPcmf = accountPcmf;
 
             // get full flat list (service can supply)
             var affiliateAccounts = await _affiliateAccountService.GetAllAffiliateAccounts1();
 
-            ViewBag.ChartOfAccountMFI= affiliateAccounts;
+            ViewBag.ChartOfAccountMFI = affiliateAccounts;
             // Build the model for the partial
-            var model = new AddCORRESPONDANCE
+            var model = new AddCorrespondenceRequestModel
             {
                 // Required flow metadata
                 Type = type,
 
                 // Context you likely want in the form (rename to your actual props)
-                Name = name,
-                BranchId = branchId,
-                HoPcmfAccountId = hoPcmfAccountId,
-                AffiliateAccountId = affiliateAccountId,
-                BranchAccountId = branchAccountId
+                Name = awaiting.Code +"-" + awaiting.Name,
+                BranchId = awaiting.BranchId,
+                HoPcmfAccountId = awaiting.HoPcmfAccountId,
+                AffiliateAccountId = awaiting.AffiliateAccountId,
+                BranchAccountId = awaiting.BranchAccountId 
             };
 
             // If your partial uses dropdowns, you can preload ViewBags here (optional)

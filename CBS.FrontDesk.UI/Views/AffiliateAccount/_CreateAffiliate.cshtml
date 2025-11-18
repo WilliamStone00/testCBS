@@ -253,7 +253,7 @@
                     @if (string.IsNullOrWhiteSpace(Model?.UpdateReference))
                     {
                        
-                        <button type="submit" class="btn btn-primary btn-sm">
+                        <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">
                             <i class="mdi mdi-content-save me-1"></i> Save
                         </button>
                         <button type="reset" class="btn btn-outline-secondary btn-sm">
@@ -262,7 +262,7 @@
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary btn-sm">
+                        <button type="submit" class="btn btn-primary btn-sm"  data-bs-dismiss="modal">
                             <i class="mdi mdi-refresh me-1"></i> Update
                         </button>
                         <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>

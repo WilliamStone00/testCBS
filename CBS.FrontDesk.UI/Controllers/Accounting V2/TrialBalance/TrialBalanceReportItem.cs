@@ -11,10 +11,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         public decimal MovementDebit { get; set; }
         public decimal MovementCredit { get; set; }
         public decimal ClosingDebit { get; set; }
-        public string Phone { get; set; }
+        
         public decimal ClosingCredit { get; set; }
         public string Logo { get; set; } = string.Empty;
-       public string BranchCode { get; set; }
+       
+       public DateTime DayTime { get; set; }
 
         public string Address { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
@@ -33,7 +34,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
         public string BranchName { get; set; }
+        public string BranchCode { get; set; }
         public string Username { get; set; }
+        public string Phone { get; set; }
         public string Year { get; set; } = DateTime.Now.Year.ToString();
 
         
