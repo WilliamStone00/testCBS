@@ -13,6 +13,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
         public DateTime To { get; set; }
 
         [JsonProperty("dateFrom")]
+
+        
+
         public DateTime DateFrom { get; set; }
 
         [JsonProperty("dateTo")]
@@ -50,6 +53,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 
         [JsonProperty("sorting")]
         public Sorting Sorting { get; set; }
+
+        [JsonProperty("zeroInclusive")]
+        public string ZeroInclusive { get; set; }
     }
 
     public class Paging

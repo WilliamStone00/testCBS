@@ -43,8 +43,9 @@
               <xs:element name="To" msprop:Generator_ColumnPropNameInTable="ToColumn" msprop:Generator_ColumnPropNameInRow="To" msprop:Generator_UserColumnName="To" msprop:Generator_ColumnVarNameInTable="columnTo" type="xs:dateTime" minOccurs="0" />
               <xs:element name="AccountingDate" msprop:Generator_ColumnPropNameInTable="AccountingDateColumn" msprop:Generator_ColumnPropNameInRow="AccountingDate" msprop:Generator_UserColumnName="AccountingDate" msprop:Generator_ColumnVarNameInTable="columnAccountingDate" type="xs:string" minOccurs="0" />
               <xs:element name="InitByName" msprop:Generator_ColumnPropNameInTable="InitByNameColumn" msprop:Generator_ColumnPropNameInRow="InitByName" msprop:Generator_UserColumnName="InitByName" msprop:Generator_ColumnVarNameInTable="columnInitByName" type="xs:string" minOccurs="0" />
-              <xs:element name="Time" msprop:Generator_UserColumnName="Time" msprop:Generator_ColumnPropNameInTable="TimeColumn" msprop:Generator_ColumnPropNameInRow="Time" msprop:Generator_ColumnVarNameInTable="columnTime" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="DayTime" msprop:Generator_ColumnPropNameInRow="DayTime" msprop:Generator_ColumnPropNameInTable="DayTimeColumn" msprop:Generator_ColumnVarNameInTable="columnDayTime" msprop:Generator_UserColumnName="DayTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Time" msprop:Generator_ColumnPropNameInTable="TimeColumn" msprop:Generator_ColumnPropNameInRow="Time" msprop:Generator_UserColumnName="Time" msprop:Generator_ColumnVarNameInTable="columnTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DayTime" msprop:Generator_UserColumnName="DayTime" msprop:Generator_ColumnPropNameInTable="DayTimeColumn" msprop:Generator_ColumnPropNameInRow="DayTime" msprop:Generator_ColumnVarNameInTable="columnDayTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ClosingBalance" msprop:Generator_ColumnPropNameInRow="ClosingBalance" msprop:Generator_ColumnPropNameInTable="ClosingBalanceColumn" msprop:Generator_ColumnVarNameInTable="columnClosingBalance" msprop:Generator_UserColumnName="ClosingBalance" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
