@@ -125,7 +125,6 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 Console.WriteLine($"File saved to: {filePath}");
             }
         }
-
         private void CreateSummarySheet(ExcelPackage package, List<DataTableResponse> commissionData, string bank, string branchcode, string Branchid, string branchname, string exportedBy, ExportOptions exportOptions)
         {
             var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
@@ -203,6 +202,113 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             currentRow += 2;
 
+            // ===== DISTRIBUTION BREAKDOWN SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "DISTRIBUTION BREAKDOWN";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            // Explanation text for distribution breakdown
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "Commission Distribution Explanation:";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Total Commission Shared is distributed 60% to Daily Collectors and 40% to Branches";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Daily Collectors receive their share PLUS any incentive amounts";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Branches receive only their 40% share (no incentives)";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Total Amount Paid = Incentive Amount + Daily Collector Share for collectors, and Branch Share for branches";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            // Distribution breakdown headers
+            var distributionHeaders = new[] { "Stakeholder", "Percentage", "Incentive Amount", "Daily Collector Share", "Total Amount Paid" };
+            for (int i = 0; i < distributionHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = distributionHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[currentRow, 1 + i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+            currentRow++;
+
+            // Calculate distribution breakdown
+            var totalCommission = totalCommissionShared;
+            var dailyCollectorPercentage = 0.60m; // 60%
+            var branchPercentage = 0.40m; // 40%
+
+            var dailyCollectorShare = totalCommission * dailyCollectorPercentage;
+            var branchShare = totalCommission * branchPercentage;
+
+            // Daily Collector row
+            worksheet.Cells[currentRow, 1].Value = "Daily Collector";
+            worksheet.Cells[currentRow, 2].Value = dailyCollectorPercentage;
+            worksheet.Cells[currentRow, 3].Value = totalIncentive;
+            worksheet.Cells[currentRow, 4].Value = dailyCollectorShare;
+            worksheet.Cells[currentRow, 5].Value = totalIncentive + dailyCollectorShare;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Branch row
+            worksheet.Cells[currentRow, 1].Value = "Branch";
+            worksheet.Cells[currentRow, 2].Value = branchPercentage;
+            worksheet.Cells[currentRow, 3].Value = 0; // null/incentive amount for branch
+            worksheet.Cells[currentRow, 4].Value = branchShare;
+            worksheet.Cells[currentRow, 5].Value = branchShare;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // TOTAL DISTRIBUTION row
+            worksheet.Cells[currentRow, 1].Value = "TOTAL DISTRIBUTION:";
+            worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+            worksheet.Cells[currentRow, 2].Value = 1.00m; // 100%
+            worksheet.Cells[currentRow, 3].Value = totalIncentive;
+            worksheet.Cells[currentRow, 4].Value = totalCommission; // Total commission shared
+            worksheet.Cells[currentRow, 5].Value = totalIncentive + totalCommission;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+
+            // Format numbers and percentages
+            int distributionStartRow = currentRow - 2;
+            worksheet.Cells[$"B{distributionStartRow}:B{currentRow}"].Style.Numberformat.Format = "0.0%";
+            worksheet.Cells[$"C{distributionStartRow}:E{currentRow}"].Style.Numberformat.Format = "#,##0.00";
+
+            currentRow += 2;
+
             // ===== BRANCH SUMMARY SECTION =====
             worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "BRANCH SUMMARY";
@@ -210,7 +316,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
             currentRow += 2;
 
             // Branch summary headers
@@ -336,6 +442,108 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             currentRow += 2;
 
+            // ===== BRANCH DISTRIBUTION BREAKDOWN SECTION =====
+            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH DISTRIBUTION BREAKDOWN - {branchName}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            // Explanation text for branch distribution breakdown
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"Distribution for {branchName} ({branchCode}):";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• This branch receives 40% of the Total Commission Shared generated by its collectors";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Daily Collectors in this branch receive 60% of commission + any incentives";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:E{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "• Branch share is calculated as 40% of Total Commission Shared from this branch's activities";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Italic = true;
+            currentRow++;
+
+            // Branch distribution breakdown headers
+            var distributionHeaders = new[] { "Stakeholder", "Percentage", "Incentive Amount", "Daily Collector Share", "Total Amount Paid" };
+            for (int i = 0; i < distributionHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = distributionHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[currentRow, 1 + i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+            currentRow++;
+
+            // Calculate branch-specific distribution breakdown
+            var branchCommission = totalCommissionShared;
+            var dailyCollectorPercentage = 0.60m; // 60%
+            var branchPercentage = 0.40m; // 40%
+
+            var branchDailyCollectorShare = branchCommission * dailyCollectorPercentage;
+            var branchBranchShare = branchCommission * branchPercentage;
+
+            // Daily Collector row for this branch
+            worksheet.Cells[currentRow, 1].Value = "Daily Collector";
+            worksheet.Cells[currentRow, 2].Value = dailyCollectorPercentage;
+            worksheet.Cells[currentRow, 3].Value = totalIncentive;
+            worksheet.Cells[currentRow, 4].Value = branchDailyCollectorShare;
+            worksheet.Cells[currentRow, 5].Value = totalIncentive + branchDailyCollectorShare;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Branch row for this branch
+            worksheet.Cells[currentRow, 1].Value = "Branch";
+            worksheet.Cells[currentRow, 2].Value = branchPercentage;
+            worksheet.Cells[currentRow, 3].Value = 0; // null/incentive amount for branch
+            worksheet.Cells[currentRow, 4].Value = branchBranchShare;
+            worksheet.Cells[currentRow, 5].Value = branchBranchShare;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // TOTAL DISTRIBUTION row for this branch
+            worksheet.Cells[currentRow, 1].Value = "TOTAL DISTRIBUTION:";
+            worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+            worksheet.Cells[currentRow, 2].Value = 1.00m; // 100%
+            worksheet.Cells[currentRow, 3].Value = totalIncentive;
+            worksheet.Cells[currentRow, 4].Value = branchCommission; // Total commission shared for this branch
+            worksheet.Cells[currentRow, 5].Value = totalIncentive + branchCommission;
+
+            for (int col = 1; col <= 5; col++)
+            {
+                worksheet.Cells[currentRow, col].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+
+            // Format numbers and percentages for branch distribution
+            int branchDistributionStartRow = currentRow - 2;
+            worksheet.Cells[$"B{branchDistributionStartRow}:B{currentRow}"].Style.Numberformat.Format = "0.0%";
+            worksheet.Cells[$"C{branchDistributionStartRow}:E{currentRow}"].Style.Numberformat.Format = "#,##0.00";
+
+            currentRow += 2;
+
             // ===== DETAILED DATA TABLE =====
             worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "DETAILED COMMISSION DATA";
@@ -343,7 +551,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
             currentRow += 2;
 
             // Detailed data headers
@@ -909,7 +1117,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         }
 
         private static void CreateDetailsWorksheet(ExcelPackage package, CollectorComissionResponse data,
-            ExportOptions exportOptions, string fontName)
+      ExportOptions exportOptions, string fontName)
         {
             var worksheet = package.Workbook.Worksheets.Add("Savers Details");
 
@@ -955,10 +1163,10 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
             {
                 var startDate = DateTime.Parse(exportOptions.StartDate);
-                var endDate = DateTime.Parse(exportOptions.EndDate).AddDays(1).AddSeconds(-1); // Include entire end date
+                var endDate = DateTime.Parse(exportOptions.EndDate).AddDays(1).AddSeconds(-1);
 
                 filteredMemberStats = data?.MemberStats?
-                    .Where(m => m.LastTransactionDate >= startDate && m.LastTransactionDate <= endDate)
+                    .Where(m => GetMemberTransactionDate(m) >= startDate && GetMemberTransactionDate(m) <= endDate)
                     .ToList();
             }
 
@@ -967,7 +1175,11 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 foreach (var member in filteredMemberStats)
                 {
                     worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN column
-                    worksheet.Cells[dataRow, 2].Value = member.LastTransactionDate.ToString();
+
+                    // FIX: Use helper method to safely get and format the date
+                    var transactionDate = GetMemberTransactionDate(member);
+                    worksheet.Cells[dataRow, 2].Value = FormatTransactionDateForExcel(transactionDate);
+
                     worksheet.Cells[dataRow, 3].Value = member.MemberId ?? "-";
                     worksheet.Cells[dataRow, 4].Value = member.MemberName ?? "-";
                     worksheet.Cells[dataRow, 5].Value = member.TotalActivityAmount;
@@ -1024,6 +1236,32 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        // Helper method to safely get transaction date from member
+        private static DateTime GetMemberTransactionDate(MemberStat member)
+        {
+            try
+            {
+                // First try the DateTime property
+                if (member.LastTransactionDate.HasValue && member.LastTransactionDate.Value != DateTime.MinValue)
+                {
+                    return member.LastTransactionDate.Value;
+                }
+
+                // If no date found, use current date as fallback
+                return DateTime.Now;
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
+        }
+
+        // Helper method to format date for Excel display
+        private static string FormatTransactionDateForExcel(DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
         }
     }
 

@@ -244,6 +244,7 @@
                     </h6>
                     <div class="row gy-3">
                         <!-- Partner Account (optional) -->
+                        <!-- Partner Account (optional) -->
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
@@ -277,6 +278,40 @@
                             </div>
                         </div>
 
+                        <!-- NEW: MoMoCash Settlement Account -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.MomocashAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select MoMoCash Settlement Account --",
+                                    new { @class = "form-select select2", id = "MomocashAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.MomocashAccountId, "", new { @class = "text-danger" })
+                                <label>MoMoCash Settlement Account</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Settlement GL for Mobile Money (MoMoCash) principal amounts (cash-in / cash-out) when no more specific mapping is provided.
+                            </div>
+                        </div>
+
+                        <!-- NEW: MoMoCash Commission Account -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.MomocashCommissionGlId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select MoMoCash Commission Account --",
+                                    new { @class = "form-select select2", id = "MomocashCommissionGlId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.MomocashCommissionGlId, "", new { @class = "text-danger" })
+                                <label>MoMoCash Commission Account</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Commission income GL for Mobile Money operations; used when operation or product configuration does not define a more specific commission GL.
+                            </div>
+                        </div>
+
                         <!-- Head Office Liaison Account -->
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
@@ -293,6 +328,7 @@
                                 Inter-branch / HO bridge GL for daily liaison and settlement between the branch and head office.
                             </div>
                         </div>
+
                     </div>
 
                     <hr class="my-4" />

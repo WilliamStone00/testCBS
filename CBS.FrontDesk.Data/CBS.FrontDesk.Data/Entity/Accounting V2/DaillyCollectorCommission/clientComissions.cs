@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +109,21 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public decimal FeeCharged { get; set; }
         public decimal ActualBalance { get; set; }
         public DateTime? LastTransactionDate { get; set; }
+
+        // Add a string property to handle the date string from JSON
+        [JsonIgnore]
+        public string LastTransactionDateString
+        {
+            get => LastTransactionDate?.ToString("yyyy-MM-ddTHH:mm:sszzz");
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, out DateTime date))
+                {
+                    LastTransactionDate = date;
+                }
+            }
+        }
+
     }
 
     public class Payment

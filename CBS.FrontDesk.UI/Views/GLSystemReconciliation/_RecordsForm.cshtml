@@ -1,0 +1,217 @@
+﻿
+
+<style>
+    .section-header {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #444;
+        text-align: left;
+        text-transform: uppercase;
+        padding-left: 1rem;
+    }
+
+    .dashboard-card-icon {
+        background: #eaeaea;
+        padding: 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dashboard-value {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dashboard-sub {
+        margin: 0;
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    .card-border-shadow-primary {
+        border-left: 4px solid #6a5acd;
+        box-shadow: rgba(0,0,0,0.1) 0 2px 4px;
+    }
+</style>
+
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationData
+
+
+
+<div class="card shadow-sm mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>RECONCILIATION SUMMARY</span>
+    </h6>
+
+    <div class="card-body">
+
+        <div class="row mb-2">
+
+            <!-- TOTAL OPERATIONS -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Total Operations</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.TotalOperations.Count.ToString("N0")</h3>
+                        <p class="text-muted mb-0">
+                            @Model.Statistics.TotalOperations.Currency
+                            @Model.Statistics.TotalOperations.Volume.ToString("N2")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOCAL OPERATIONS -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Local Operations</h6>
+                        <h3 class="dashboard-value">
+                            @(
+                                Model.Statistics.LocalCashInOperations.Count +
+                                Model.Statistics.LocalCashOutOperations.Count +
+                                Model.Statistics.LocalLoanApprovalOperations.Count +
+                                Model.Statistics.LocalLoanDisbursementOperations.Count +
+                                Model.Statistics.LocalManualentries.Count
+                            )
+                        </h3>
+                        <p class="text-muted mb-0">
+                            @(
+                                Model.Statistics.LocalCashInOperations.Currency + " " +
+                                (Model.Statistics.LocalCashInOperations.Volume +
+                                 Model.Statistics.LocalCashOutOperations.Volume +
+                                 Model.Statistics.LocalLoanApprovalOperations.Volume +
+                                 Model.Statistics.LocalLoanDisbursementOperations.Volume +
+                                 Model.Statistics.LocalManualentries.Volume).ToString("N2")
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTER-BRANCH OPERATIONS -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Inter-Branch Operations</h6>
+                        <h3 class="dashboard-value">
+                            @(
+                                Model.Statistics.InterBranchCashInOperations.Count +
+                                Model.Statistics.InterBranchCashOutOperations.Count +
+                                Model.Statistics.InterBranchLoanApprovalOperations.Count +
+                                Model.Statistics.InterBranchLoanDisbursementOperations.Count +
+                                Model.Statistics.InterBranchManualentries.Count
+                            )
+                        </h3>
+                        <p class="text-muted mb-0">
+                            @(
+                                Model.Statistics.InterBranchCashInOperations.Currency + " " +
+                                (Model.Statistics.InterBranchCashInOperations.Volume +
+                                 Model.Statistics.InterBranchCashOutOperations.Volume +
+                                 Model.Statistics.InterBranchLoanApprovalOperations.Volume +
+                                 Model.Statistics.InterBranchLoanDisbursementOperations.Volume +
+                                 Model.Statistics.InterBranchManualentries.Volume).ToString("N2")
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOCAL LOAN OPERATIONS -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Local Loan Operations</h6>
+                        <h3 class="dashboard-value">
+                            @(
+                                Model.Statistics.LocalLoanApprovalOperations.Count +
+                                Model.Statistics.LocalLoanDisbursementOperations.Count
+                            )
+                        </h3>
+                        <p class="text-muted mb-0">
+                            @(
+                                Model.Statistics.LocalLoanApprovalOperations.Currency + " " +
+                                (Model.Statistics.LocalLoanApprovalOperations.Volume +
+                                 Model.Statistics.LocalLoanDisbursementOperations.Volume).ToString("N2")
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mb-2">
+
+            <!-- MAX CASH IN -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Cash In</h6>
+                        <h3 class="dashboard-value">
+                            @Model.Statistics.CashOperations.MaxCashIn.Currency
+                            @Model.Statistics.CashOperations.MaxCashIn.Amount.ToString("N0")
+                        </h3>
+                        <p class="text-primary mb-0">
+                            <i class="mdi mdi-account"></i>
+                            @Model.Statistics.CashOperations.MaxCashIn.PerformedBy.Name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAX CASH OUT -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Cash Out</h6>
+                        <h3 class="dashboard-value">
+                            @Model.Statistics.CashOperations.MaxCashOut.Currency
+                            @Model.Statistics.CashOperations.MaxCashOut.Amount.ToString("N0")
+                        </h3>
+                        <p class="text-primary mb-0">
+                            <i class="mdi mdi-account"></i>
+                            @Model.Statistics.CashOperations.MaxCashOut.PerformedBy.Name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MANUAL ENTRIES -->
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Manual Entries</h6>
+                        <h3 class="dashboard-value">
+                            @(
+                                Model.Statistics.LocalManualentries.Count + Model.Statistics.InterBranchManualentries.Count
+                            )
+                        </h3>
+                        <p class="text-muted mb-0">
+                            @(
+                                Model.Statistics.LocalManualentries.Currency + " " +
+                                (Model.Statistics.LocalManualentries.Volume + Model.Statistics.InterBranchManualentries.Volume).ToString("N2")
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+
+
