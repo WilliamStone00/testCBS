@@ -46,11 +46,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
 
                 if (entries == null || !entries.Any())
                 {
+
+                    this.HttpContext.Session["rptSource"] = null;
+                    this.HttpContext.Session["BranchInfo"] = null;
                     return Json(new
                     {
                         success = false,
                         message = "No data found for the selected filters."
                     }, JsonRequestBehavior.AllowGet);
+
                 }
 
                 var data = entries

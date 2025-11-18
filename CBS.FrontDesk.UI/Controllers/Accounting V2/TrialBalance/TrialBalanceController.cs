@@ -57,7 +57,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
                 if (response == null || response.Lines == null || !response.Lines.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
+                }
+                    
 
                 var data = response.Lines.Select(x => new TrialBalanceReportItem
                 {

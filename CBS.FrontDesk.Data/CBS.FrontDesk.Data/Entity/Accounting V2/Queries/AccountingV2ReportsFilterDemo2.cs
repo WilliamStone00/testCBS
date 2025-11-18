@@ -23,7 +23,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
         [JsonProperty("accountNumber")]
         public string AccountNumber { get; set; } = null;
         [JsonProperty("zeroInclusive")]
-        public string ZeroInclusive { get; set; }
+        public bool ZeroInclusive { get; set; }
 
         [JsonProperty("accountNumbers")]
         public List<string> AccountNumbers { get; set; } = new List<string>();

@@ -55,7 +55,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
         public Sorting Sorting { get; set; }
 
         [JsonProperty("zeroInclusive")]
-        public string ZeroInclusive { get; set; }
+        public bool ZeroInclusive { get; set; }
     }
 
     public class Paging
