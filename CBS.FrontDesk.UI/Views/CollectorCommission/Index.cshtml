@@ -1690,7 +1690,8 @@
                         MemberName: member.MemberName,
                         TotalActivityAmount: member.TotalActivityAmount,
                         FeeCharged: member.FeeCharged,
-                        PaymentStatus: member.PaymentStatus
+                        PaymentStatus: member.PaymentStatus,
+                        lastTransactionDate: member.lastTransactionDate // ✅ camelCase
                     })) : []
             },
             ExportOptions: {

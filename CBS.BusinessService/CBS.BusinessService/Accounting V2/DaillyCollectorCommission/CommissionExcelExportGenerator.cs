@@ -1117,7 +1117,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
         }
 
         private static void CreateDetailsWorksheet(ExcelPackage package, CollectorComissionResponse data,
-            ExportOptions exportOptions, string fontName)
+      ExportOptions exportOptions, string fontName)
         {
             var worksheet = package.Workbook.Worksheets.Add("Savers Details");
 
@@ -1163,10 +1163,10 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
             {
                 var startDate = DateTime.Parse(exportOptions.StartDate);
-                var endDate = DateTime.Parse(exportOptions.EndDate).AddDays(1).AddSeconds(-1); // Include entire end date
+                var endDate = DateTime.Parse(exportOptions.EndDate).AddDays(1).AddSeconds(-1);
 
                 filteredMemberStats = data?.MemberStats?
-                    .Where(m => m.LastTransactionDate >= startDate && m.LastTransactionDate <= endDate)
+                    .Where(m => GetMemberTransactionDate(m) >= startDate && GetMemberTransactionDate(m) <= endDate)
                     .ToList();
             }
 
@@ -1175,7 +1175,11 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 foreach (var member in filteredMemberStats)
                 {
                     worksheet.Cells[dataRow, 1].Value = serialNumber++; // SN column
-                    worksheet.Cells[dataRow, 2].Value = member.LastTransactionDate.ToString();
+
+                    // FIX: Use helper method to safely get and format the date
+                    var transactionDate = GetMemberTransactionDate(member);
+                    worksheet.Cells[dataRow, 2].Value = FormatTransactionDateForExcel(transactionDate);
+
                     worksheet.Cells[dataRow, 3].Value = member.MemberId ?? "-";
                     worksheet.Cells[dataRow, 4].Value = member.MemberName ?? "-";
                     worksheet.Cells[dataRow, 5].Value = member.TotalActivityAmount;
@@ -1232,6 +1236,32 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        // Helper method to safely get transaction date from member
+        private static DateTime GetMemberTransactionDate(MemberStat member)
+        {
+            try
+            {
+                // First try the DateTime property
+                if (member.LastTransactionDate.HasValue && member.LastTransactionDate.Value != DateTime.MinValue)
+                {
+                    return member.LastTransactionDate.Value;
+                }
+
+                // If no date found, use current date as fallback
+                return DateTime.Now;
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
+        }
+
+        // Helper method to format date for Excel display
+        private static string FormatTransactionDateForExcel(DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
         }
     }
 
