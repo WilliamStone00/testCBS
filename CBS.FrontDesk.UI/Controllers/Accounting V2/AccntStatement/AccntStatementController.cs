@@ -82,7 +82,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                     {
                         // Main account fields
                         AccountNumber = acc.AccountNumber,
-                        AccountName = m.AccountName,
+                        AccountName = m.AccountName.ToLower(),
                         OpeningBalance = acc.OpeningBalance,
                         ClosingBalance = acc.ClosingBalance,
 
@@ -97,16 +97,16 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                         DayTime = GetDayTime(m.EntryDate, m.TimeOfOperation),
 
                         // Movement info
-                        ReferenceNumber = m.Reference,
+                        ReferenceNumber = m.Reference.ToLower(),
                         BranchId = m.BranchId,
                         CreditAmount = m.Cr,
                         DebitAmount = m.Dr,
-                        Description = m.Narration,
+                        Description = m.Narration.ToLower(),
                         DrCr = m.DrCr,
                         Amount = m.Amount,
                         Balance = m.Balance,
                         Seq = m.Seq,
-                        InitByName = m.UserName,
+                        InitByName = m.UserName.ToLower(),
                         AuxiliaryRef = m.AuxiliaryRef,
                         EntryDate = m.EntryDate,
                         UserName = m.UserName,
