@@ -335,7 +335,7 @@
                 let reportTypeVal = ($reportType.val() || "").trim().toLowerCase();
 
                 const hasBranch = branches && branches.length > 0;
-                const loadsAccounts = reportTypeVal === "account statement";
+                const loadsAccounts = reportTypeVal === "account statement" || reportTypeVal === "general ledger" ;
 
                 if (!(hasBranch && loadsAccounts)) {
                     $account_group.addClass('d-none');
@@ -424,6 +424,15 @@
                     case "trial balance 6 columns":
                         $.post({
                             url: '/TrialBalance/GenerateTrialBalance/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('TrialBalance')
+                        });
+                        break;
+
+                    case "trial balance 4 columns":
+                        $.post({
+                            url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
                             success: () => Reprint('TrialBalance')

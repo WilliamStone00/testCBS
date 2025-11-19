@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.TrialBalance
 {
-    public class TrialBalancesService : BaseService
+    public class TrialBalances6ColumnService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
         private readonly TrialBalance6ColumnsMock _trialBalance6ColumnsMock;
 
-        public TrialBalancesService()
+        public TrialBalances6ColumnService()
         {
             // Hardcoded base URL (intentionally allowed)
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];

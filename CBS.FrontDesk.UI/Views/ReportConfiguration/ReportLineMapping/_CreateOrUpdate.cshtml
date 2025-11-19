@@ -4,19 +4,68 @@
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
 }
 
-<!-- HEADER -->
+<!-- Header Section -->
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-shape-square-plus me-2"></i> Create Mapping
+                    <i class="mdi mdi-link-variant me-2"></i> Report Line Mapping Management
                 </h1>
-                <p class="text-muted mb-1">Define a new mapping rule for a report line.</p>
+                <p class="card-text text-muted mb-1">
+                    Configure mapping rules used to associate GL accounts or ranges with specific report lines.
+                </p>
+                <p class="card-text text-warning fw-semibold">
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>
+                    Accurate mappings ensure correct account grouping and reliable financial reporting.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
+
+<!-- Tips Section -->
+<div class="card mb-3 shadow-sm">
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Line Mappings</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMappingTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseMappingTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+
+                <li><i class="mdi mdi-format-list-numbered text-primary me-2"></i>
+                    <strong>Report Line:</strong> Select the corresponding line to which the mapping applies (via RefCode).
+                </li>
+
+                <li><i class="mdi mdi-vector-line text-success me-2"></i>
+                    <strong>Match Type:</strong> Defines how accounts are matched (AccountRange, Prefix, Exact, ProductCode, etc.).
+                </li>
+
+                <li><i class="mdi mdi-arrow-collapse-vertical text-warning me-2"></i>
+                    <strong>From / To Value:</strong> Used for ranges (e.g., 100000–199999). Leave <em>ToValue</em> empty for exact matches.
+                </li>
+
+                <li><i class="mdi mdi-swap-horizontal-bold text-info me-2"></i>
+                    <strong>Side:</strong> Specify whether the rule applies to DEBIT, CREDIT, or BOTH sides.
+                </li>
+
+                <li><i class="mdi mdi-math-log text-secondary me-2"></i>
+                    <strong>Sign:</strong> Controls how the amount impacts the report (1 = positive, -1 = subtract).
+                </li>
+
+                <li><i class="mdi mdi-link-outline text-danger me-2"></i>
+                    <strong>Include Liaison:</strong> Enable this if the mapping should also consider liaison accounts.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 
 <!-- FORM -->
 @using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportLineMapping", FormMethod.Post,

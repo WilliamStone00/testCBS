@@ -11,6 +11,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         public decimal MovementDebit { get; set; }
         public decimal MovementCredit { get; set; }
         public decimal ClosingDebit { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+
+
         
         public decimal ClosingCredit { get; set; }
         public string Logo { get; set; } = string.Empty;

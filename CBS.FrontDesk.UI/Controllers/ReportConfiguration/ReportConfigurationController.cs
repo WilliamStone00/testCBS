@@ -28,11 +28,11 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
         }
 
 
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null,string serviceOption=null, string path = null)
         {
             ViewBag.Key = KEY;
 
-            switch (path)
+            switch (serviceOption)
             {
                 case "definition":
                     var definitions =await _reportDefinitionService.GetAll();

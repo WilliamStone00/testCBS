@@ -73,9 +73,19 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 			// If the Id is null, it's a new holiday entry, so call the Create service
 			if (model.Id == null)
 			{
-				// Adding Created Date
 				var data = await _services.Create(model);
-				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+
+				return Json(new
+				{
+					success = data.Result,
+					status = data.MessageStatus,
+					message = Messaging.MessageResult(data),
+					controllerName = "ReportConfiguration",
+					reloadDataView = "Yes",
+					divLoaderList = "datalistingview",
+					tableName = "myDataTable"
+
+				});
 			}
 			else
 			{

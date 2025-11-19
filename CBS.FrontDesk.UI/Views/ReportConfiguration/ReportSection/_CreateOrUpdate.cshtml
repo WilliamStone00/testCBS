@@ -13,11 +13,11 @@
                     <i class="mdi mdi-view-list-outline me-2"></i> Report Section Management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Create and manage report sections linked to specific report definitions.
+                    Create and organize sections used to structure financial reports into logical categories.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure that section codes and names remain unique within each report.
+                    Well-defined sections ensure clear grouping and consistent report hierarchy.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,17 +28,36 @@
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Creating Report Sections</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Sections</span>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSectionTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseTips" class="collapse">
+
+    <div id="collapseSectionTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-identifier text-primary me-2"></i> <strong>Code:</strong> Assign a short unique code (e.g., ASSETS, EXPENSES).</li>
-                <li><i class="mdi mdi-format-title text-success me-2"></i> <strong>Name:</strong> Provide a clear section name (e.g., Total Assets).</li>
-                <li><i class="mdi mdi-sort-numeric text-warning me-2"></i> <strong>Sort Order:</strong> Determines the display order of sections within the report.</li>
+
+                <li><i class="mdi mdi-code-tags text-primary me-2"></i>
+                    <strong>Section Code:</strong> Use short descriptive identifiers (e.g., ASSETS, LIABILITIES, INCOME).
+                </li>
+
+                <li><i class="mdi mdi-format-title text-success me-2"></i>
+                    <strong>Section Name:</strong> The label that will appear in the financial reports.
+                </li>
+
+                <li><i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i>
+                    <strong>Sort Order:</strong> Controls the position of the section within the report.
+                </li>
+
+                <li><i class="mdi mdi-file-document-outline text-info me-2"></i>
+                    <strong>Report Definition:</strong> Every section must belong to a parent report (Balance Sheet, Income Statement…).
+                </li>
+
+                <li><i class="mdi mdi-view-sequential-outline text-secondary me-2"></i>
+                    <strong>Structure:</strong> Sections define the hierarchy that report lines will follow.
+                </li>
+
             </ul>
         </div>
     </div>
