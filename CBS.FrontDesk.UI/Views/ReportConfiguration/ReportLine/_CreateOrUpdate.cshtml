@@ -10,12 +10,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-format-float-left me-2"></i> Report Line Management
+                    <i class="mdi mdi-format-list-numbered me-2"></i> Report Line Management
                 </h1>
-                <p class="card-text text-muted mb-1">Create report lines for your reports.</p>
+                <p class="card-text text-muted mb-1">
+                    Configure and manage individual report lines used to structure financial statements.
+                </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure proper ordering and calculation behavior for report rendering.
+                    Ensure each line is linked to the correct section to maintain reporting accuracy.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -27,21 +29,32 @@
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
         <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Lines</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLineTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div id="collapseTips" class="collapse">
+
+    <div id="collapseLineTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><strong>Ref Code:</strong> Internal reference for mapping.</li>
-                <li><strong>Caption:</strong> Label displayed in the report.</li>
-                <li><strong>Sort Order:</strong> Defines display order.</li>
-                <li><strong>Calc Mode:</strong> Determines calculation behavior.</li>
+                <li><i class="mdi mdi-link-variant text-primary me-2"></i> <strong>Report & Section:</strong> Always select the correct report and section before creating a line.</li>
+
+                <li><i class="mdi mdi-pound text-success me-2"></i> <strong>Reference Code:</strong> Keep codes short and meaningful (e.g., ASSET01, REV02).</li>
+
+                <li><i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i> <strong>Sort Order:</strong> Controls the display order of lines within a section.</li>
+
+                <li><i class="mdi mdi-calculator-variant-outline text-info me-2"></i> 
+                    <strong>Calculation Mode:</strong> Defines how the line value is computed (SUM, DIRECT, SUBTOTAL, etc.).
+                </li>
+
+                <li><i class="mdi mdi-eye-outline text-secondary me-2"></i> 
+                    <strong>Show in Output:</strong> Enable this option only for lines that should appear in the generated report.
+                </li>
             </ul>
         </div>
     </div>
 </div>
+
 
 <!-- Create Form -->
 @using (Html.BeginForm(isUpdate ? "Update" : "Create", "ReportLine", FormMethod.Post,

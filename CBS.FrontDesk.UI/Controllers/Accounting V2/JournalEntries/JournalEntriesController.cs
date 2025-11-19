@@ -46,11 +46,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
 
                 if (entries == null || !entries.Any())
                 {
+
+                    this.HttpContext.Session["rptSource"] = null;
+                    this.HttpContext.Session["BranchInfo"] = null;
                     return Json(new
                     {
                         success = false,
                         message = "No data found for the selected filters."
                     }, JsonRequestBehavior.AllowGet);
+
                 }
 
                 var data = entries
@@ -65,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
     {
         // -------- Parent Fields --------
         AccountNumber = x.AccountNumber,
-        AccountName = x.AccountName,
+        AccountName = x.AccountName.ToLower(),
         // -------- Custom Date Fields --------
         AccountingDate = x.AccountingDate.ToString("dd-MM-yyyy"),
         Year = DateTime.Now.Year.ToString(),
@@ -80,11 +84,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                     : TimeSpan.Zero,
 
         // -------- Movement Fields --------
-        ReferenceNumber = x.Reference,
+        ReferenceNumber = x.Reference.ToLower(),
         BranchId = x.BranchId,
         CreditAmount = x.Cr,
         DebitAmount = x.Dr,
-        Description = x.Narration,
+        Description = x.Narration.ToLower(),
         DrCr = x.DrCr,
         Amount = x.Amount,
         Balance = x.Balance,
@@ -92,13 +96,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
         
         AuxiliaryRef = x.AuxiliaryRef,   // ✅ FIXED (was UserName)
         EntryDate = x.EntryDate,
-        UserName = x.UserName,
+        UserName = x.UserName.ToLower(),
         InterbranchStatus = x.InterbranchStatus,
         CounterpartyBranchId = x.CounterpartyBranchId,
         TimeOfOperation = x.TimeOfOperation,
         BranchCode = BranchInformation.BranchCode,
         Phone = BranchInformation.Telephone,
-        Address = BranchInformation.Address,
+        Address = BranchInformation.Address.ToUpper(),
         BranchName = BranchInformation.Name,
         // Static fields
         Currency = "XAF FRANCE CFA",
