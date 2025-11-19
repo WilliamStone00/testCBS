@@ -71,6 +71,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public decimal? PeriodCR { get; set; }
         public decimal? ClosingDR { get; set; }
         public decimal? ClosingCR { get; set; }
+        public decimal? Debit { get; set; }
+        public decimal? Credit { get; set; }
+        public decimal? OpeningBalanceFour { get; set; }
+        public decimal? ClosingBalanceFour { get; set; }
+
 
         // Optional computed helpers
         public decimal OpeningBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);

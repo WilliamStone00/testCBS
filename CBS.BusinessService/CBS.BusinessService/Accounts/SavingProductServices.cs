@@ -404,6 +404,42 @@ namespace CBS.BusinessService.Accounts
 
             return ExecutionMessage;
         }
+        public async Task<ExecutionMessages> UpdateProductAccountMappingV2_Narrations(SavingProduct model)
+        {
+            try
+            {
+
+                // Build the Accounting V2 command from the current model
+                var command = BuildAccountingV2Cmd_narration(model);
+
+                // Prepare endpoint
+                var url = string.Format(APICallHelper.Update_SavingProduct_AccountingV2Mapping, model.Id);
+
+                // Call API
+                var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<bool>>(url, command);
+
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, model.Name, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+
+                // Failure
+                var errMsg = response?.Message ?? "Failed to update Accounting V2 narrations.";
+                GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(), null, errMsg);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex);
+            }
+
+            return ExecutionMessage;
+        }
 
         private static UpdateSavingProductAccountingV2MappingCommand BuildAccountingV2Cmd(SavingProduct m)
         {
@@ -436,6 +472,22 @@ namespace CBS.BusinessService.Accounts
                 AccountingV2SuplusChartOfAccountId = m.AccountingV2SuplusChartOfAccountId,
                 AccountingV2ShortageChartOfAccountId = m.AccountingV2ShortageChartOfAccountId
 
+            };
+        }
+
+        private static AddOrUpdateSavingProductNarrationsCommand BuildAccountingV2Cmd_narration(SavingProduct m)
+        {
+            return new AddOrUpdateSavingProductNarrationsCommand
+            {
+                Id = m.Id,
+                CashInNarration = m.CashInNarration,
+
+                CashOutNarration = m.CashOutNarration,
+                CashinNarrationForCommision = m.CashinNarrationForCommision,
+                CashOutNarrationForCommision = m.CashOutNarrationForCommision,
+                TransfterNarration = m.TransfterNarration,
+                TransfterNarrationForCommision = m.TransfterNarrationForCommision,
+                
             };
         }
 
