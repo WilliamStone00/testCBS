@@ -11,34 +11,140 @@
                 <h1 class="card-title text-primary">
                     <i class="mdi mdi-cash-multiple me-2"></i> Branch Cash Configuration
                 </h1>
+
                 <p class="card-text text-muted">
-                    Manage teller/vault GLs, liaison and revenue accounts, and real-time cash posting for this branch.
+                    Configure all branch-level cash-control and financial-routing GL accounts.
+                    <strong>
+                        Every GL configured here directly determines how teller, vault,
+                        loan, transfer, Mobile Money and fee posting workflows behave.
+                    </strong>
                 </p>
+
+                <p class="card-text text-muted">
+                    <strong>All Cash-Control, Commission, VAT, MoMoCash and Fee GLs are compulsory.</strong>
+                    Missing mappings will cause posting failures or incorrect accounting routing.
+                </p>
+
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
 
+
+<!-- Tips -->
 <!-- Tips -->
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCashCfgTips" aria-expanded="false" aria-controls="collapseCashCfgTips">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Important Notes</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseCashCfgTips" aria-expanded="false"
+                aria-controls="collapseCashCfgTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
+
     <div id="collapseCashCfgTips" class="collapse">
         <div class="card-body">
+
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure the correct <b>Branch</b> is selected before creating or updating the configuration.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>CashInHandAccount</b> is the teller till GL used for cash movements.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <b>VaultAccount</b> represents the branch vault GL for vault–till transfers.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use <b>SurplusIncome</b> and <b>ShortageExpense</b> to capture overage/shortage differences.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Optional: <b>RevenueAccount</b>, <b>PartnerAccount</b>, <b>CamCCULAccount</b>, <b>HeadOfficeLiaison</b>, <b>FormFeeIncome</b>.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Enabling <b>Real-time Cash Posting</b> immediately impacts GL upon cash operations.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Only authorized users should modify branch cash configuration.</li>
+
+                <!-- Branch Selection -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    Always select the correct <b>Branch</b> before configuring.
+                    Each branch has its own GL structure and balances.
+                </li>
+
+                <!-- Core Mandatory GLs -->
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
+                    <b>All core cash-control GLs are mandatory:</b><br />
+                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense.
+                    Operations such as Cash-In, Cash-Out, Teller Closure, and Vault Transfers
+                    will <b>fail immediately</b> if these are missing.
+                </li>
+
+                <!-- MoMoCash + Commissions Mandatory -->
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
+                    <b>
+                        All Commission, VAT, MoMoCash, Loan Transit and Interest GLs
+                        are mandatory.
+                    </b><br />
+                    This includes:
+                    Cash-In Commission, Cash-Out Commission, Transfer Commission,
+                    VAT, Form Fee, Loan Transit, Interest Income Backup,
+                    MoMoCash Settlement & MoMoCash Commission.
+                    <br />
+                    If any is missing, related operations cannot post.
+                </li>
+
+                <!-- Behaviour -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>Till (Cash In Hand)</b> is debited when receiving cash
+                    and credited when paying out.
+                    Incorrect configuration leads to teller-day mismatches.
+                </li>
+
+                <!-- Vault -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>Vault Account</b> represents the branch vault stock.
+                    All teller–vault transfers depend on this mapping.
+                </li>
+
+                <!-- Surplus/Shortage -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>SurplusIncomeAccount</b> and <b>ShortageExpenseAccount</b>
+                    are used during balancing (teller, vault, EOD).
+                    They must be correctly set for accurate cash reconciliation.
+                </li>
+
+                <!-- Liaison -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>HeadOfficeLiaisonAccount</b> is essential for inter-branch posting.
+                    If missing, all inter-branch operations will fail.
+                </li>
+
+                <!-- Loan Transit -->
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>LoanTransitAccount</b> stores pending loan disbursements.
+                    Without this mapping, all loan disbursement postings will fail.
+                </li>
+
+                <!-- Revenue / Fallback -->
+                <li>
+                    <i class="mdi mdi-information-outline text-primary me-2"></i>
+                    Most other GLs (Revenue, Partner, CamCCUL, Fees, VAT, Commissions)
+                    act as <b>fallback accounts</b> when product-specific mappings are not given.
+                    This ensures the accounting engine always finds a routing path.
+                </li>
+
+                <!-- Real-time posting -->
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                    When <b>Real-time Cash Posting</b> is enabled, every teller,
+                    vault, loan, MoMo or fee operation posts immediately.
+                    Disable only if your institution uses deferred posting.
+                </li>
+
+                <!-- Security -->
+                <li>
+                    <i class="mdi mdi-lock-outline text-danger me-2"></i>
+                    Only authorized officers should modify this configuration.
+                    Wrong mapping may cause <b>
+                        incorrect GL balances, unreconciled vault positions,
+                        interbranch imbalances, or misposted commissions.
+                    </b>
+                </li>
+
             </ul>
+
         </div>
     </div>
 </div>
@@ -96,7 +202,10 @@
                     <h4 class="text-primary fw-bold mb-1">
                         <i class="mdi mdi-cash me-2"></i> Cash Config Details
                     </h4>
-                    <p class="text-muted mb-0">View and manage branch cash configuration details.</p>
+                    <p class="text-muted mb-0">
+                        Review the branch’s mandatory cash GLs and the fallback revenue/fee accounts used
+                        by the posting engine.
+                    </p>
                     <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
                 </header>
             </div>
@@ -109,6 +218,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -158,21 +268,41 @@
           return;
         }
 
-        const accounts = res.accounts || [];
+          const accounts = res.accounts || [];
 
-        fillSelect($('#CashInHandAccountId'),        accounts, '-- Select Cash in Hand Account (Till) --',        res.data?.cashInHandAccountId);
-        fillSelect($('#VaultAccountId'),             accounts, '-- Select Vault Account --',                       res.data?.vaultAccountId);
-        fillSelect($('#SurplusIncomeAccountId'),     accounts, '-- Select Surplus Income Account --',              res.data?.surplusIncomeAccountId);
-        fillSelect($('#ShortageExpenseAccountId'),   accounts, '-- Select Shortage Expense Account --',            res.data?.shortageExpenseAccountId);
-        fillSelect($('#RevenueAccountId'),           accounts, '-- Select Revenue Account (Optional) --',          res.data?.revenueAccountId);
-        fillSelect($('#PartnerAccountId'),           accounts, '-- Select Partner Account (Optional) --',          res.data?.partnerAccountId);
-        fillSelect($('#CamcculAccountId'),           accounts, '-- Select CamCCUL Account (Optional) --',          res.data?.camcculAccountId);
-        fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --',         res.data?.headOfficeLiaisonAccountId);
-        fillSelect($('#FormFeeIncomeAccountId'),     accounts, '-- Select Form Fee Income Account (Optional) --',  res.data?.formFeeIncomeAccountId);
+          // Core mandatory cash accounts
+          fillSelect($('#CashInHandAccountId'), accounts, '-- Select Cash in Hand Account (Till) --', res.data?.cashInHandAccountId);
+          fillSelect($('#VaultAccountId'), accounts, '-- Select Vault Account --', res.data?.vaultAccountId);
+          fillSelect($('#SurplusIncomeAccountId'), accounts, '-- Select Surplus Income Account --', res.data?.surplusIncomeAccountId);
+          fillSelect($('#ShortageExpenseAccountId'), accounts, '-- Select Shortage Expense Account --', res.data?.shortageExpenseAccountId);
 
-        $('#RealTimeCashPosting').prop('checked',
-          typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true
-        );
+          // Revenue & partner mappings
+          fillSelect($('#RevenueAccountId'), accounts, '-- Select Revenue Account (Optional) --', res.data?.revenueAccountId);
+          fillSelect($('#PartnerAccountId'), accounts, '-- Select Partner Account (Optional) --', res.data?.partnerAccountId);
+          fillSelect($('#CamcculAccountId'), accounts, '-- Select CamCCUL Account (Optional) --', res.data?.camcculAccountId);
+          fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --', res.data?.headOfficeLiaisonAccountId);
+          fillSelect($('#FormFeeIncomeAccountId'), accounts, '-- Select Form Fee Income Account (Optional) --', res.data?.formFeeIncomeAccountId);
+
+          // Loan & interest mappings
+          fillSelect($('#LoanTransitAccountId'), accounts, '-- Select Loan Transit Account --', res.data?.loanTransitAccountId);
+          fillSelect($('#InterestGeneratedFromAccountId'), accounts, '-- Select Interest Income Backup Account --', res.data?.interestGeneratedFromAccountId);
+
+          // Commission / VAT mappings
+          fillSelect($('#CashInCommisionAccountIDAccountId'), accounts, '-- Select Cash-In Commission Backup Account --', res.data?.cashInCommisionAccountIDAccountId);
+          fillSelect($('#CashOutCommisionAccountIDAccountId'), accounts, '-- Select Cash-Out Commission Backup Account --', res.data?.cashOutCommisionAccountIDAccountId);
+          fillSelect($('#TransfterCommisionAccountIDAccountId'), accounts, '-- Select Transfer Commission Backup Account --', res.data?.transfterCommisionAccountIDAccountId);
+          fillSelect($('#VATAccountId'), accounts, '-- Select VAT Backup Account --', res.data?.vatAccountId);
+
+          // 🔥 NEW → MoMoCash mappings
+          fillSelect($('#MomocashAccountId'), accounts, '-- Select MoMoCash Settlement Account --', res.data?.momocashAccountId);
+          fillSelect($('#MomocashCommissionGlId'), accounts, '-- Select MoMoCash Commission Account --', res.data?.momocashCommissionGlId);
+
+          // Real-time posting
+          $('#RealTimeCashPosting').prop(
+              'checked',
+              typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true
+          );
+
 
         //$('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
 

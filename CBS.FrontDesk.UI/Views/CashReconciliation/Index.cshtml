@@ -133,7 +133,7 @@
                 // expose globally for onchange on Branch
                 window.loadReconciliationAccounts = function (branchId) {
                     if (!branchId) {
-                        $("#SourceGlId").html('<option value="">--- Select Cash GL ---</option>').trigger('change');
+                        $("#SourceGlId").html('<option value="">--- Select  GL ---</option>').trigger('change');
                         $("#DestinationGlId").html('<option value="">--- Select cash diff GL ---</option>').trigger('change');
                         $("#Balance, #CashDiff").val("");
                         appalert("Please select a valid branch.", 3, 1);
@@ -157,7 +157,7 @@
                         const deficit = camelOrPascal(data, 'deficitAccounts') || [];
 
                         // ✅ Treasury (Source GL)
-                        let src = '<option value="">--- Select Cash GL ---</option>';
+                        let src = '<option value="">--- Select GL ---</option>';
                         treasury.forEach(function (acc) {
                             const id = acc.accountId || acc.AccountId;
                             const name = acc.accountName || acc.AccountName;

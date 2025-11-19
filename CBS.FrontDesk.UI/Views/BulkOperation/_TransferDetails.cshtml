@@ -167,11 +167,18 @@
                 </div>
 
             </div>
-            @if (!string.IsNullOrEmpty(Model.TransferMessage))
+            @if (string.IsNullOrWhiteSpace(Model.TransferMessage) || !Model.TransferMessage.ToLower().Contains("success"))
             {
                 <div class="alert alert-danger mt-3">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
                     <strong>@GlobalBulkOperation.Error:</strong> @Model.TransferMessage
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-primary mt-3">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    <strong>@GlobalBulkOperation.Success:</strong> @Model.TransferMessage
                 </div>
             }
         </div>

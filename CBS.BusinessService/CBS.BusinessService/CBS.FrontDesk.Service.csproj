@@ -276,12 +276,14 @@
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliationService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
-    <Compile Include="Accounting V2\TrialBalance\TrialBalancesService.cs" />
+    <Compile Include="Accounting V2\TrialBalance\TrialBalances4ColumsService.cs" />
+    <Compile Include="Accounting V2\TrialBalance\TrialBalances6ColumnService.cs" />
     <Compile Include="AccountingDayObject\AccountingDayServices.cs" />
     <Compile Include="AccountingV2\AccountingYear\AccountingYearService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\MockBranchCashConfigService.cs" />
+    <Compile Include="AccountingV2\GLSystemReconciliation\GLSystemReconciliationService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
     <Compile Include="AccountingV2\MobileMoneyV2\MobileMoneyService.cs" />

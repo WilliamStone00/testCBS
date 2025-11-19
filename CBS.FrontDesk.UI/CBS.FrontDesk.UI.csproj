@@ -456,8 +456,20 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
       <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.cs">
+      <DependentUpon>TrialBalance4Columns.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -2046,6 +2058,7 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
@@ -2053,17 +2066,22 @@
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccntStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance4ColmunsController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\AccountingYear\AccountingYearController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
+    <Compile Include="Controllers\AccountingV2\GLSystemReconciliation\GLSystemReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
@@ -2181,10 +2199,10 @@
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
-    <Compile Include="Controllers\ReportConfiguration\ReportDefinition\ReportDefinitionController.cs" />
     <Compile Include="Controllers\ReportConfiguration\ReportConfigurationController.cs" />
-    <Compile Include="Controllers\ReportConfiguration\ReportLine\ReportLineController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportDefinition\ReportDefinitionController.cs" />
     <Compile Include="Controllers\ReportConfiguration\ReportLineMapping\ReportLineMappingController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportLine\ReportLineController.cs" />
     <Compile Include="Controllers\ReportConfiguration\ReportSection\ReportSectionController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
@@ -8718,9 +8736,17 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>AccStatement.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance4Columns.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -10891,8 +10917,6 @@
     <Content Include="Views\BranchAccount\_DetailsPartial.cshtml" />
     <Content Include="Views\BranchAccount\_EditPartial.cshtml" />
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceRequestTableData.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
@@ -10955,23 +10979,28 @@
     <Content Include="Views\APIKey\_Revoke.cshtml" />
     <Content Include="Views\APIKey\_ChangeStatus.cshtml" />
     <Content Include="Views\APIKey\_Details.cshtml" />
-    <Content Include="Views\ReportConfiguration\Index.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportDefinition\_List.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportDefinition\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportLine\_List.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportLineMapping\_List.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
     <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
     <Content Include="Views\CollectorCommission\List.cshtml" />
     <Content Include="Views\CollectorCommission\_Data.cshtml" />
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\Index.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_DataTable.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_RecordsForm.cshtml" />
     <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
     <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestTableData.cshtml" />
     <Content Include="Views\FileUpload\_CorrespondenceApprovalAndRejectionRequest.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\ReportConfiguration\ReportLine\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\Index.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_List.cshtml" />
     <Content Include="Views\ReportConfiguration\ReportLineMapping\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLineMapping\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11002,7 +11031,9 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\Language\" />
+    <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
+    <Folder Include="Views\ReportSection\" />
     <Folder Include="Views\TestDataTable\" />
   </ItemGroup>
   <ItemGroup>

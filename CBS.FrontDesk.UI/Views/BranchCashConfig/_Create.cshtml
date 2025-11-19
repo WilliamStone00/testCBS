@@ -27,7 +27,9 @@
             <!-- ===== Section 1: Branch ===== -->
             <div class="card mb-3 border-0 shadow-sm">
                 <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="mdi mdi-office-building me-2"></i>Branch</h6>
+                    <h6 class="mb-0">
+                        <i class="mdi mdi-office-building me-2"></i>Branch
+                    </h6>
                 </div>
 
                 <div class="card-body">
@@ -43,7 +45,7 @@
                                         new SelectList(ViewBag.Branches, "Id", "Name"),
                                         "-- Select Branch --",
                                         new
-                                             {
+                                        {
                                             @class = "form-select select2",
                                             id = "BranchId",
                                             @search = "true",
@@ -86,7 +88,9 @@
             <!-- ===== Section 2: Mapping ===== -->
             <div class="card mb-3 border-0 shadow-sm">
                 <div class="card-header bg-light d-flex align-items-center justify-content-between">
-                    <h6 class="mb-0"><i class="mdi mdi-link-variant me-2"></i>Mapping</h6>
+                    <h6 class="mb-0">
+                        <i class="mdi mdi-link-variant me-2"></i>Mapping (Fallback / Backup Accounts)
+                    </h6>
                     <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#mappingTips" aria-expanded="false" aria-controls="mappingTips">
                         <i class="mdi mdi-information-outline me-1"></i> Tips
                     </button>
@@ -95,21 +99,31 @@
                 <!-- Mapping Tips -->
                 <div id="mappingTips" class="collapse">
                     <div class="card-body pt-2">
+                        <p class="small text-muted mb-2">
+                            <strong>Important:</strong> Most of the GLs configured here act as
+                            <strong>default / backup accounts</strong>. When a product, operation type
+                            or fee configuration does not provide a more specific GL, the system
+                            will fall back to the corresponding mapping below.
+                        </p>
                         <ul class="mb-0 small text-muted">
-                            <li><strong>Cash in Hand (Till):</strong> Teller till GL. Debited when cash is received, credited when cash is paid.</li>
+                            <li><strong>Cash in Hand (Till):</strong> Teller till GL. Debited when cash is received, credited when cash is paid at the counter.</li>
                             <li><strong>Vault:</strong> Branch vault GL used for vault stock and vault↔till transfers.</li>
-                            <li><strong>Cash Surplus (Overage):</strong> Used for holding Cash Surplus in the System <em>overage</em> (physical cash &gt; book balance).</li>
-                            <li><strong>Cash Deficit (Shortage):</strong>Used for holding Cash Deficit <em>shortage</em> (physical cash &lt; book balance).</li>
-                            <li><strong>Revenue (Optional):</strong> Default income GL for fees/commissions when a specific revenue GL isn’t provided by the product/transaction.</li>
-                            <li><strong>Partner (Optional):</strong> Clearing/settlement GL for external partners (agents, wallets, payment processors).</li>
-                            <li><strong>CamCCUL (Optional):</strong> Settlement GL for the CamCCUL network/interop posts (if applicable).</li>
+                            <li><strong>Cash Surplus (Overage):</strong> Used when physical cash &gt; book balance after teller/vault reconciliation.</li>
+                            <li><strong>Cash Deficit (Shortage):</strong> Used when physical cash &lt; book balance after reconciliation.</li>
+                            <li><strong>Revenue / Partner / CamCCUL:</strong> Generic backup income/settlement GLs when the transaction or product does not provide a more specific GL.</li>
                             <li><strong>Head Office Liaison:</strong> Inter-branch bridge GL to HO; used for daily liaison/clearing between branch and HO.</li>
-                            <li><strong>Form Fee Income (Optional):</strong> Income GL to capture application/form charges.</li>
+                            <li><strong>Loan Transit:</strong> Temporary holding GL for loans in transit between approval and final disbursement / posting.</li>
+                            <li><strong>Commission, VAT & Interest Backup:</strong> Default GLs to capture fees, commissions, VAT and interest when the operation mapping does not specify them explicitly.</li>
+                            <li><strong>Form Fee Income:</strong> Backup GL to capture application / form charges when not defined by the product.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="card-body">
+                    <!-- Group 1: Core Cash Control -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-cash me-1"></i>Core Cash Control (Till &amp; Vault)
+                    </h6>
                     <div class="row gy-3">
                         <!-- Cash In Hand (Till) -->
                         <div class="col-md-6">
@@ -123,7 +137,9 @@
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.CashInHandAccountId, "", new { @class = "text-danger" })
                                 <label>Cash In Hand (Till)</label>
                             </div>
-                            <div class="form-text text-muted">Teller cash holding GL for counter operations and end-of-day teller balancing.</div>
+                            <div class="form-text text-muted">
+                                Teller cash holding GL for counter operations and end-of-day teller balancing.
+                            </div>
                         </div>
 
                         <!-- Vault Account -->
@@ -138,7 +154,9 @@
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.VaultAccountId, "", new { @class = "text-danger" })
                                 <label>Vault Account</label>
                             </div>
-                            <div class="form-text text-muted">Main branch cash stock GL. Used for vault receipts, issues, and till↔vault transfers.</div>
+                            <div class="form-text text-muted">
+                                Main branch cash stock GL. Used for vault receipts, issues, and till↔vault transfers.
+                            </div>
                         </div>
 
                         <!-- Surplus Income (Overage) -->
@@ -153,7 +171,9 @@
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.SurplusIncomeAccountId, "", new { @class = "text-danger" })
                                 <label>Cash Surplus (Overage)</label>
                             </div>
-                            <div class="form-text text-muted">Use when actual cash exceeds books after reconciliation (overage).</div>
+                            <div class="form-text text-muted">
+                                Used when actual cash exceeds book balance after teller/vault reconciliation (overage).
+                            </div>
                         </div>
 
                         <!-- Shortage Expense -->
@@ -168,9 +188,19 @@
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.ShortageExpenseAccountId, "", new { @class = "text-danger" })
                                 <label>Cash Deficit (Shortage)</label>
                             </div>
-                            <div class="form-text text-muted">Use when actual cash is below books after reconciliation (shortage).</div>
+                            <div class="form-text text-muted">
+                                Used when actual cash is below book balance after reconciliation (shortage).
+                            </div>
                         </div>
+                    </div>
 
+                    <hr class="my-4" />
+
+                    <!-- Group 2: Income & Generic Backup Revenue -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-cash-multiple me-1"></i>Income &amp; Generic Backup Revenue
+                    </h6>
+                    <div class="row gy-3">
                         <!-- Revenue Account (optional) -->
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
@@ -181,11 +211,39 @@
                                     new { @class = "form-select select2", id = "RevenueAccountId" }
                                 )
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.RevenueAccountId, "", new { @class = "text-danger" })
-                                <label>Revenue Account (Optional)</label>
+                                <label>Revenue Account (Backup)</label>
                             </div>
-                            <div class="form-text text-muted">Default income GL for fees/charges when a product-specific revenue GL is not supplied.</div>
+                            <div class="form-text text-muted">
+                                Default income GL for fees/charges when a product-specific revenue GL is not supplied.
+                            </div>
                         </div>
 
+                        <!-- Form Fee Income (optional) -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.FormFeeIncomeAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Form Fee Income Account (Optional) --",
+                                    new { @class = "form-select select2", id = "FormFeeIncomeAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.FormFeeIncomeAccountId, "", new { @class = "text-danger" })
+                                <label>Form Fee Income (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Income GL to record application / form charges when not mapped at product/operation level.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Group 3: Inter-branch, Network & Partners -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-city-variant-outline me-1"></i>Inter-branch, Network &amp; Partner Settlement
+                    </h6>
+                    <div class="row gy-3">
+                        <!-- Partner Account (optional) -->
                         <!-- Partner Account (optional) -->
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
@@ -196,9 +254,11 @@
                                     new { @class = "form-select select2", id = "PartnerAccountId" }
                                 )
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.PartnerAccountId, "", new { @class = "text-danger" })
-                                <label>Partner Account (Optional)</label>
+                                <label>Partner Account (Backup)</label>
                             </div>
-                            <div class="form-text text-muted">Clearing/settlement GL for partner transactions (agents, wallets, third-party processors).</div>
+                            <div class="form-text text-muted">
+                                Clearing / settlement GL for partner transactions (agents, wallets, third-party processors) when a specific GL is not defined.
+                            </div>
                         </div>
 
                         <!-- CamCCUL Account (optional) -->
@@ -211,13 +271,49 @@
                                     new { @class = "form-select select2", id = "CamcculAccountId" }
                                 )
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.CamcculAccountId, "", new { @class = "text-danger" })
-                                <label>CamCCUL Account (Optional)</label>
+                                <label>CamCCUL Account (Backup)</label>
                             </div>
-                            <div class="form-text text-muted">Settlement GL for CamCCUL network postings (use only if your branch operates on CamCCUL).</div>
+                            <div class="form-text text-muted">
+                                Settlement GL for CamCCUL network postings when a more specific mapping is not provided.
+                            </div>
+                        </div>
+
+                        <!-- NEW: MoMoCash Settlement Account -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.MomocashAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select MoMoCash Settlement Account --",
+                                    new { @class = "form-select select2", id = "MomocashAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.MomocashAccountId, "", new { @class = "text-danger" })
+                                <label>MoMoCash Settlement Account</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Settlement GL for Mobile Money (MoMoCash) principal amounts (cash-in / cash-out) when no more specific mapping is provided.
+                            </div>
+                        </div>
+
+                        <!-- NEW: MoMoCash Commission Account -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.MomocashCommissionGlId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select MoMoCash Commission Account --",
+                                    new { @class = "form-select select2", id = "MomocashCommissionGlId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.MomocashCommissionGlId, "", new { @class = "text-danger" })
+                                <label>MoMoCash Commission Account</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Commission income GL for Mobile Money operations; used when operation or product configuration does not define a more specific commission GL.
+                            </div>
                         </div>
 
                         <!-- Head Office Liaison Account -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.HeadOfficeLiaisonAccountId,
@@ -228,22 +324,128 @@
                                 @Html.ValidationMessageFor(m => m.BranchCashConfig.HeadOfficeLiaisonAccountId, "", new { @class = "text-danger" })
                                 <label>Head Office Liaison Account</label>
                             </div>
-                            <div class="form-text text-muted">Inter-branch/HO bridge GL for daily liaison and settlement between the branch and head office.</div>
+                            <div class="form-text text-muted">
+                                Inter-branch / HO bridge GL for daily liaison and settlement between the branch and head office.
+                            </div>
                         </div>
 
-                        <!-- Form Fee Income (optional) -->
-                        <div class="col-md-12">
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Group 4: Loan & Transit -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-bank-transfer-out me-1"></i>Loan Transit &amp; Interest
+                    </h6>
+                    <div class="row gy-3">
+                        <!-- Loan Transit Account -->
+                        <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
-                                    m => m.BranchCashConfig.FormFeeIncomeAccountId,
+                                    m => m.BranchCashConfig.LoanTransitAccountId,
                                     new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
-                                    "-- Select Form Fee Income Account (Optional) --",
-                                    new { @class = "form-select select2", id = "FormFeeIncomeAccountId" }
+                                    "-- Select Loan Transit Account --",
+                                    new { @class = "form-select select2", id = "LoanTransitAccountId" }
                                 )
-                                @Html.ValidationMessageFor(m => m.BranchCashConfig.FormFeeIncomeAccountId, "", new { @class = "text-danger" })
-                                <label>Form Fee Income (Optional)</label>
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.LoanTransitAccountId, "", new { @class = "text-danger" })
+                                <label>Loan Transit Account</label>
                             </div>
-                            <div class="form-text text-muted">Income GL to record application/form charges collected at the branch.</div>
+                            <div class="form-text text-muted">
+                                Temporary GL to hold loan amounts in transit during approval / disbursement workflows when no more specific transit GL exists.
+                            </div>
+                        </div>
+
+                        <!-- Interest Generated From Account (backup) -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.InterestGeneratedFromAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Interest Income Backup Account --",
+                                    new { @class = "form-select select2", id = "InterestGeneratedFromAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.InterestGeneratedFromAccountId, "", new { @class = "text-danger" })
+                                <label>Interest Income (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Default interest income GL when a product/loan mapping does not provide a specific interest GL.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Group 5: Commission, VAT & Fee Backup -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-percent-outline me-1"></i>Commission, VAT &amp; Fee Backup Accounts
+                    </h6>
+                    <div class="row gy-3">
+                        <!-- Cash-In Commission Backup -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.CashInCommisionAccountIDAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Cash-In Commission Backup Account --",
+                                    new { @class = "form-select select2", id = "CashInCommisionAccountIDAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.CashInCommisionAccountIDAccountId, "", new { @class = "text-danger" })
+                                <label>Cash-In Commission (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Commission income GL used when cash-in operations do not provide a specific commission GL.
+                            </div>
+                        </div>
+
+                        <!-- Cash-Out Commission Backup -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.CashOutCommisionAccountIDAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Cash-Out Commission Backup Account --",
+                                    new { @class = "form-select select2", id = "CashOutCommisionAccountIDAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.CashOutCommisionAccountIDAccountId, "", new { @class = "text-danger" })
+                                <label>Cash-Out Commission (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Commission income GL used when cash-out operations do not provide a specific commission GL.
+                            </div>
+                        </div>
+
+                        <!-- Transfer Commission Backup -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.TransfterCommisionAccountIDAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Transfer Commission Backup Account --",
+                                    new { @class = "form-select select2", id = "TransfterCommisionAccountIDAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.TransfterCommisionAccountIDAccountId, "", new { @class = "text-danger" })
+                                <label>Transfer Commission (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Commission income GL used when account-to-account / external transfers do not provide a dedicated commission GL.
+                            </div>
+                        </div>
+
+                        <!-- VAT Backup -->
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.VATAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select VAT Backup Account --",
+                                    new { @class = "form-select select2", id = "VATAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.VATAccountId, "", new { @class = "text-danger" })
+                                <label>VAT Account (Backup)</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Default VAT liability GL when a fee/commission operation does not specify a VAT GL explicitly.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,7 +454,9 @@
             <!-- ===== Section 3: Operation Status ===== -->
             <div class="card mb-3 border-0 shadow-sm">
                 <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="mdi mdi-cog-outline me-2"></i>Operation Status</h6>
+                    <h6 class="mb-0">
+                        <i class="mdi mdi-cog-outline me-2"></i>Operation Status
+                    </h6>
                 </div>
                 <div class="card-body">
                     <div class="row gy-3">
@@ -260,7 +464,9 @@
                         <div class="col-md-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.BranchCashConfig.RealTimeCashPosting, new { @class = "form-check-input", id = "RealTimeCashPosting" })
-                                <label class="form-check-label" for="RealTimeCashPosting">Enable Real-time Cash Posting</label>
+                                <label class="form-check-label" for="RealTimeCashPosting">
+                                    Enable Real-time Cash Posting
+                                </label>
                             </div>
                             <div class="form-text text-muted">
                                 When enabled, cash operations hit the mapped GLs immediately; otherwise, postings can be deferred/queued.
@@ -272,7 +478,9 @@
 
             <!-- Actions -->
             <div class="mt-3 d-flex gap-2">
-                <button type="submit" id="saveOrUpdateBtn" class="btn btn-primary">@((isEdit) ? "Update" : "Save")</button>
+                <button type="submit" id="saveOrUpdateBtn" class="btn btn-primary">
+                    @((isEdit) ? "Update" : "Save")
+                </button>
                 <button type="reset" class="btn btn-outline-secondary">Reset</button>
             </div>
         }

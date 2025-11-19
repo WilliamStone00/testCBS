@@ -106,18 +106,69 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                     BranchId = c.BranchId,
                     BranchName = BranchNameOf(c.BranchId),
 
+                    // --- Core Cash-Control ---
                     CashInHandAccountName = tillName,
                     CashInHandAccountNumber = tillNo,
 
                     VaultAccountName = vaultName,
                     VaultAccountNumber = vaultNo,
 
+                    SurplusIncomeAccountName = NameNo(c.SurplusIncomeAccountId).name,
+                    SurplusIncomeAccountNumber = NameNo(c.SurplusIncomeAccountId).number,
+
+                    ShortageExpenseAccountName = NameNo(c.ShortageExpenseAccountId).name,
+                    ShortageExpenseAccountNumber = NameNo(c.ShortageExpenseAccountId).number,
+
+                    // --- Inter-branch / HO ---
                     HeadOfficeLiaisonAccountName = lioName,
                     HeadOfficeLiaisonAccountNumber = lioNo,
 
-                    // Optional fields already supported by your DTO; leave empty if you don't need them here
+                    // --- Revenue, Partner, CamCCUL ---
+                    RevenueAccountName = NameNo(c.RevenueAccountId).name,
+                    RevenueAccountNumber = NameNo(c.RevenueAccountId).number,
+
+                    PartnerAccountName = NameNo(c.PartnerAccountId).name,
+                    PartnerAccountNumber = NameNo(c.PartnerAccountId).number,
+
+                    CamcculAccountName = NameNo(c.CamcculAccountId).name,
+                    CamcculAccountNumber = NameNo(c.CamcculAccountId).number,
+
+                    // --- Form Fee Income ---
+                    FormFeeIncomeAccountName = NameNo(c.FormFeeIncomeAccountId).name,
+                    FormFeeIncomeAccountNumber = NameNo(c.FormFeeIncomeAccountId).number,
+
+                    // --- Loan Transit / Interest ---
+                    LoanTransitAccountName = NameNo(c.LoanTransitAccountId).name,
+                    LoanTransitAccountNumber = NameNo(c.LoanTransitAccountId).number,
+
+                    InterestGeneratedFromAccountName = NameNo(c.InterestGeneratedFromAccountId).name,
+                    InterestGeneratedFromAccountNumber = NameNo(c.InterestGeneratedFromAccountId).number,
+
+                    // --- Commissions ---
+                    CashInCommisionAccountName = NameNo(c.CashInCommisionAccountIDAccountId).name,
+                    CashInCommisionAccountNumber = NameNo(c.CashInCommisionAccountIDAccountId).number,
+
+                    CashOutCommisionAccountName = NameNo(c.CashOutCommisionAccountIDAccountId).name,
+                    CashOutCommisionAccountNumber = NameNo(c.CashOutCommisionAccountIDAccountId).number,
+
+                    TransfterCommisionAccountName = NameNo(c.TransfterCommisionAccountIDAccountId).name,
+                    TransfterCommisionAccountNumber = NameNo(c.TransfterCommisionAccountIDAccountId).number,
+
+                    // --- VAT ---
+                    VATAccountName = NameNo(c.VATAccountId).name,
+                    VATAccountNumber = NameNo(c.VATAccountId).number,
+
+                    // --- Mobile Money (MoMoCash) ---
+                    MomocashAccountName = NameNo(c.MomocashAccountId).name,
+                    MomocashAccountNumber = NameNo(c.MomocashAccountId).number,
+
+                    MomocashCommissionGlName = NameNo(c.MomocashCommissionGlId).name,
+                    MomocashCommissionGlNumber = NameNo(c.MomocashCommissionGlId).number,
+
+                    // --- Status ---
                     RealTimeCashPosting = c.RealTimeCashPosting
                 };
+
             }).ToList();
 
             var vm = new CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV.BranchCashConfigManagement
@@ -240,20 +291,42 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                         {
                             id = config.Id,
                             branchId = config.BranchId,
+
+                            // Core cash-control (mandatory)
                             cashInHandAccountId = config.CashInHandAccountId,
                             vaultAccountId = config.VaultAccountId,
                             surplusIncomeAccountId = config.SurplusIncomeAccountId,
-                            revenueAccountId = config.RevenueAccountId,
                             shortageExpenseAccountId = config.ShortageExpenseAccountId,
+
+                            // Generic / fallback revenue & partners
+                            revenueAccountId = config.RevenueAccountId,
                             partnerAccountId = config.PartnerAccountId,
                             camcculAccountId = config.CamcculAccountId,
                             headOfficeLiaisonAccountId = config.HeadOfficeLiaisonAccountId,
                             formFeeIncomeAccountId = config.FormFeeIncomeAccountId,
+
+                            // Loan transit
+                            loanTransitAccountId = config.LoanTransitAccountId,
+
+                            // 🔹 Fallback / backup accounts
+                            cashInCommisionAccountIDAccountId = config.CashInCommisionAccountIDAccountId,
+                            cashOutCommisionAccountIDAccountId = config.CashOutCommisionAccountIDAccountId,
+                            transfterCommisionAccountIDAccountId = config.TransfterCommisionAccountIDAccountId,
+                            vatAccountId = config.VATAccountId,
+                            interestGeneratedFromAccountId = config.InterestGeneratedFromAccountId,
+
+                            // 🔥 Mobile Money (MoMoCash)
+                            momocashAccountId = config.MomocashAccountId,
+                            momocashCommissionGlId = config.MomocashCommissionGlId,
+
+                            // Other flags
                             realTimeCashPosting = config.RealTimeCashPosting
                         },
                         // send as simple array of {text, value} for the client
                         accounts = accounts
                     });
+
+
                 }
 
                 // New config for this branch
@@ -328,8 +401,36 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                     FormFeeIncomeAccountName = NameNo(c.FormFeeIncomeAccountId).name,
                     FormFeeIncomeAccountNumber = NameNo(c.FormFeeIncomeAccountId).number,
 
+                    LoanTransitAccountName = NameNo(c.LoanTransitAccountId).name,
+                    LoanTransitAccountNumber = NameNo(c.LoanTransitAccountId).number,
+
+                    // 🔹 Commission fallback accounts
+                    CashInCommisionAccountName = NameNo(c.CashInCommisionAccountIDAccountId).name,
+                    CashInCommisionAccountNumber = NameNo(c.CashInCommisionAccountIDAccountId).number,
+
+                    CashOutCommisionAccountName = NameNo(c.CashOutCommisionAccountIDAccountId).name,
+                    CashOutCommisionAccountNumber = NameNo(c.CashOutCommisionAccountIDAccountId).number,
+
+                    TransfterCommisionAccountName = NameNo(c.TransfterCommisionAccountIDAccountId).name,
+                    TransfterCommisionAccountNumber = NameNo(c.TransfterCommisionAccountIDAccountId).number,
+
+                    VATAccountName = NameNo(c.VATAccountId).name,
+                    VATAccountNumber = NameNo(c.VATAccountId).number,
+
+                    InterestGeneratedFromAccountName = NameNo(c.InterestGeneratedFromAccountId).name,
+                    InterestGeneratedFromAccountNumber = NameNo(c.InterestGeneratedFromAccountId).number,
+
+                    // 🔥 Newly added Mobile Money accounts
+                    MomocashAccountName = NameNo(c.MomocashAccountId).name,
+                    MomocashAccountNumber = NameNo(c.MomocashAccountId).number,
+
+                    MomocashCommissionGlName = NameNo(c.MomocashCommissionGlId).name,
+                    MomocashCommissionGlNumber = NameNo(c.MomocashCommissionGlId).number,
+
                     RealTimeCashPosting = c.RealTimeCashPosting
                 };
+
+
             }).ToList();
 
             return Json(new { data = rows });
@@ -371,16 +472,39 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 Id = c.Id,
                 Branch = BranchNameOf(c.BranchId),
                 RealTimeCashPosting = c.RealTimeCashPosting,
+
+                // Core cash-control accounts
                 CashInHand = PairOf(c.CashInHandAccountId),
                 Vault = PairOf(c.VaultAccountId),
                 SurplusIncome = PairOf(c.SurplusIncomeAccountId),
                 ShortageExpense = PairOf(c.ShortageExpenseAccountId),
+
+                // Revenue & partner accounts
                 Revenue = PairOf(c.RevenueAccountId),
                 Partner = PairOf(c.PartnerAccountId),
                 Camccul = PairOf(c.CamcculAccountId),
+                FormFeeIncome = PairOf(c.FormFeeIncomeAccountId),
+
+                // Head Office Liaison
                 HeadOfficeLiaison = PairOf(c.HeadOfficeLiaisonAccountId),
-                FormFeeIncome = PairOf(c.FormFeeIncomeAccountId)
+
+                // Loan & interest accounts
+                LoanTransit = PairOf(c.LoanTransitAccountId),
+                InterestGeneratedFrom = PairOf(c.InterestGeneratedFromAccountId),
+
+                // Commission fallback accounts
+                CashInCommission = PairOf(c.CashInCommisionAccountIDAccountId),
+                CashOutCommission = PairOf(c.CashOutCommisionAccountIDAccountId),
+                TransferCommission = PairOf(c.TransfterCommisionAccountIDAccountId),
+
+                // VAT backup account
+                VAT = PairOf(c.VATAccountId),
+
+                // MoMoCash accounts
+                Momocash = PairOf(c.MomocashAccountId),
+                MomocashCommission = PairOf(c.MomocashCommissionGlId)
             };
+
 
             var vm = new BranchCashConfigManagement { BranchCashConfigDetailsVm = details };
             return PartialView("_Details", vm);

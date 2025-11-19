@@ -483,58 +483,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                     return Json(new { success = false, message = "No commission data available for export." });
                 }
 
-                // Debug: Log first few items structure
+                // Debug: Log data structure
                 Console.WriteLine($"=== DATA STRUCTURE ANALYSIS ===");
-                for (int i = 0; i < Math.Min(request.Data.Count, 3); i++)
+                if (request.Data.Any())
                 {
-                    var item = request.Data[i];
-                    Console.WriteLine($"Item {i + 1} type: {item?.GetType()?.Name ?? "NULL"}");
+                    var firstItem = request.Data.First();
+                    Console.WriteLine($"First item type: {firstItem?.GetType()?.Name ?? "NULL"}");
 
-                    try
+                    if (firstItem is IDictionary<string, object> dict)
                     {
-                        if (item is IDictionary<string, object> dict)
+                        Console.WriteLine($"Properties ({dict.Count}):");
+                        foreach (var kvp in dict.Take(5))
                         {
-                            Console.WriteLine($"  Properties ({dict.Count}):");
-                            foreach (var kvp in dict.Take(10)) // Show first 10 properties
-                            {
-                                Console.WriteLine($"    {kvp.Key}: {kvp.Value} (Type: {kvp.Value?.GetType()?.Name ?? "NULL"})");
-                            }
-                            if (dict.Count > 10)
-                            {
-                                Console.WriteLine($"    ... and {dict.Count - 10} more properties");
-                            }
-                        }
-                        else if (item != null)
-                        {
-                            var properties = item.GetType().GetProperties();
-                            Console.WriteLine($"  Properties ({properties.Length}):");
-                            foreach (var prop in properties.Take(10)) // Show first 10 properties
-                            {
-                                try
-                                {
-                                    var value = prop.GetValue(item);
-                                    Console.WriteLine($"    {prop.Name}: {value} (Type: {value?.GetType()?.Name ?? "NULL"})");
-                                }
-                                catch (Exception propEx)
-                                {
-                                    Console.WriteLine($"    {prop.Name}: ERROR - {propEx.Message}");
-                                }
-                            }
-                            if (properties.Length > 10)
-                            {
-                                Console.WriteLine($"    ... and {properties.Length - 10} more properties");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("  Item is null");
+                            Console.WriteLine($"  {kvp.Key}: {kvp.Value} (Type: {kvp.Value?.GetType()?.Name ?? "NULL"})");
                         }
                     }
-                    catch (Exception itemEx)
-                    {
-                        Console.WriteLine($"  Error analyzing item: {itemEx.Message}");
-                    }
-                    Console.WriteLine("  ---");
                 }
 
                 // Convert dynamic data to strongly typed list
@@ -548,19 +511,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                     return Json(new { success = false, message = "No valid commission data could be processed for export." });
                 }
 
-                // Debug converted data
-                Console.WriteLine($"=== CONVERTED DATA SAMPLE ===");
-                if (commissionData.Any())
-                {
-                    var sample = commissionData.First();
-                    Console.WriteLine($"Sample converted record:");
-                    Console.WriteLine($"  ID: {sample.Id}");
-                    Console.WriteLine($"  Collector: {sample.CollectorName}");
-                    Console.WriteLine($"  Branch: {sample.BranchName}");
-                    Console.WriteLine($"  Amount: {sample.AmountPaid}");
-                    Console.WriteLine($"  Year/Month: {sample.Year}/{sample.Month}");
-                    Console.WriteLine($"  Currency: {sample.Currency}");
-                }
+                // Analyze data for logging
+                var branches = commissionData.Select(x => new { x.BranchCode, x.BranchName }).Distinct().ToList();
+                var collectors = commissionData.Select(x => x.CollectorName).Distinct().ToList();
+                Console.WriteLine($"Data analysis: {branches.Count} branches, {collectors.Count} collectors");
 
                 // Prepare file name and paths
                 string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -583,8 +537,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorCommission
                 Console.WriteLine($"Full Path: {filePath}");
                 Console.WriteLine($"Exported By: {exportedBy}");
 
-                // Generate Excel file
-                Console.WriteLine($"=== GENERATING EXCEL ===");
+                // Generate Excel file with multiple sheets
+                Console.WriteLine($"=== GENERATING EXCEL WITH MULTIPLE SHEETS ===");
                 _commissionExcelExportGenerator.GenerateCommissionExcelFromTableData(commissionData, filePath, exportedBy, request.ExportOptions);
 
                 // Verify file was created
