@@ -714,6 +714,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _savingProductServices.UpdateProductAccountMappingV2(model.SavingProduct);
             }
+            else if (serviceOption == "productnarrations")
+            {
+                return () => _savingProductServices.UpdateProductAccountMappingV2(model.SavingProduct);
+            }
             else if (serviceOption == "mapformeventcharges")
             {
                 return () => _savingProductServices.UpdateProductEventMapping(model.SavingProduct);
