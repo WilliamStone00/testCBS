@@ -1688,6 +1688,7 @@ namespace CBS.FrontDesk.Helper
 
         // ================ trial balance reports    =======================//
         public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
+        public static string TrialBalance4 = "/api/v1/Reports/trial-balance4";
 
 
         // ================ Journals   =======================//

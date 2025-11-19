@@ -21,15 +21,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 {
 
     //[CheckSessionTimeOut]
-    public class TrialBalanceController : BaseController
+    public class TrialBalance4ColmunsController : BaseController
     {
-        private readonly TrialBalances6ColumnService _trialBalanceService;
+        private readonly TrialBalances4ColumnService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public TrialBalanceController(TrialBalances6ColumnService trialBalanceService,
+        public TrialBalance4ColmunsController(TrialBalances4ColumnService trialBalanceService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
@@ -49,7 +49,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
             try
             {
                 
-                var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
+                var response = await _trialBalanceService.GetTrialBalancesAsync4columns(model);
                 var response2 = await _trialBalanceService.GetTrialMockInformation();
                 
                 var BranchInformation = await _branchServices.GetBranch(model.BranchId);
@@ -67,12 +67,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 {
                     AccountNumber = x.AccountNumber,
                     AccountName = x.AccountName,
-                    OpeningDebit = x.OpeningDR ?? 0,
-                    OpeningCredit = x.OpeningCR ?? 0,
-                    MovementDebit = x.PeriodDR ?? 0,
-                    MovementCredit = x.PeriodCR ?? 0,
-                    ClosingDebit = x.ClosingDR ?? 0,
-                    ClosingCredit = x.ClosingCR ?? 0,
+                    Credit = x.OpeningCR ?? 0,
+                    Debit = x.Debit ?? 0,
+                    ClosingBalance = x.ClosingBalanceFour ?? 0,
+                    OpeningBalance = x.OpeningBalanceFour ?? 0,
                     BranchCode = BranchInformation.BranchCode,
                     Phone = BranchInformation.Telephone,
                     Address = BranchInformation.Address,
@@ -98,9 +96,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         {
             
             this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = $"TrialBalance6Columns";
-            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt";
-            this.HttpContext.Session["rpttitle"] = $"TB6";
+            this.HttpContext.Session["ReportName"] = $"TrialBalance4Columns.rpt";
+            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance4Columns.rpt";
+            this.HttpContext.Session["rpttitle"] = $"TB4";
             return Json(new { success = true, status = false, message = "Parameters OK." }, JsonRequestBehavior.AllowGet);
 
 

@@ -1155,6 +1155,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnYear;
             
+            private global::System.Data.DataColumn columnBeginingBalance;
+            
+            private global::System.Data.DataColumn columnEndingBalance;
+            
+            private global::System.Data.DataColumn columnDebit;
+            
+            private global::System.Data.DataColumn columnCredit;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TrialBalance6ColumnDataTable() {
@@ -1342,6 +1350,38 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BeginingBalanceColumn {
+                get {
+                    return this.columnBeginingBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EndingBalanceColumn {
+                get {
+                    return this.columnEndingBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DebitColumn {
+                get {
+                    return this.columnDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CreditColumn {
+                get {
+                    return this.columnCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1396,7 +1436,11 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         System.DateTime From, 
                         System.DateTime To, 
                         string Username, 
-                        string Year) {
+                        string Year, 
+                        decimal BeginingBalance, 
+                        decimal EndingBalance, 
+                        decimal Debit, 
+                        decimal Credit) {
                 TrialBalance6ColumnRow rowTrialBalance6ColumnRow = ((TrialBalance6ColumnRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BranchName,
@@ -1417,7 +1461,11 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         From,
                         To,
                         Username,
-                        Year};
+                        Year,
+                        BeginingBalance,
+                        EndingBalance,
+                        Debit,
+                        Credit};
                 rowTrialBalance6ColumnRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTrialBalance6ColumnRow);
                 return rowTrialBalance6ColumnRow;
@@ -1459,6 +1507,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnTo = base.Columns["To"];
                 this.columnUsername = base.Columns["Username"];
                 this.columnYear = base.Columns["Year"];
+                this.columnBeginingBalance = base.Columns["BeginingBalance"];
+                this.columnEndingBalance = base.Columns["EndingBalance"];
+                this.columnDebit = base.Columns["Debit"];
+                this.columnCredit = base.Columns["Credit"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1502,6 +1554,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnUsername);
                 this.columnYear = new global::System.Data.DataColumn("Year", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnYear);
+                this.columnBeginingBalance = new global::System.Data.DataColumn("BeginingBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBeginingBalance);
+                this.columnEndingBalance = new global::System.Data.DataColumn("EndingBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndingBalance);
+                this.columnDebit = new global::System.Data.DataColumn("Debit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDebit);
+                this.columnCredit = new global::System.Data.DataColumn("Credit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCredit);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4012,6 +4072,70 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal BeginingBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.BeginingBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BeginingBalance\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.BeginingBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal EndingBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.EndingBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndingBalance\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.EndingBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Debit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.DebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Debit\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.DebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Credit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.CreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Credit\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.CreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBranchNameNull() {
                 return this.IsNull(this.tableTrialBalance6Column.BranchNameColumn);
             }
@@ -4236,6 +4360,54 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetYearNull() {
                 this[this.tableTrialBalance6Column.YearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBeginingBalanceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.BeginingBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBeginingBalanceNull() {
+                this[this.tableTrialBalance6Column.BeginingBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEndingBalanceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.EndingBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEndingBalanceNull() {
+                this[this.tableTrialBalance6Column.EndingBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDebitNull() {
+                return this.IsNull(this.tableTrialBalance6Column.DebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDebitNull() {
+                this[this.tableTrialBalance6Column.DebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCreditNull() {
+                return this.IsNull(this.tableTrialBalance6Column.CreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCreditNull() {
+                this[this.tableTrialBalance6Column.CreditColumn] = global::System.Convert.DBNull;
             }
         }
         

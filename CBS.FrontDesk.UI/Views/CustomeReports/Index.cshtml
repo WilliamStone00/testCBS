@@ -430,6 +430,15 @@
                         });
                         break;
 
+                    case "trial balance 4 columns":
+                        $.post({
+                            url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('TrialBalance')
+                        });
+                        break;
+
                     case "je":
                         $.post({
                             url: '/JournalEntries/GenerateJournalEntries/',
