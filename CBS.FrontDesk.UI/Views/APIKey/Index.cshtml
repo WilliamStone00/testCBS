@@ -113,6 +113,7 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         // handleFormSubmit: posts the form and uses appalert(...) for user messages.
         // Usage: <form onsubmit="return handleFormSubmit(this, 'Created successfully')">
@@ -130,34 +131,31 @@
                     try { submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'; } catch (e) { }
                 }
 
+                // Convert FormData to object for jQuery
                 const formData = new FormData(form);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
 
-                const res = await fetch(form.action, {
-                    method: form.method || 'POST',
-                    body: formData,
-                    credentials: 'same-origin',
+                // Use jQuery AJAX instead of fetch
+                const response = await $.ajax({
+                    url: form.action,
+                    type: form.method || 'POST',
+                    data: data,
+                    dataType: 'json',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 });
 
-                // try parse JSON
-                let data;
-                try {
-                    data = await res.json();
-                } catch (err) {
-                    // If response is not JSON, show error
-                    appalert('Server returned an unexpected response.', 0, 1);
-                    return false;
-                }
-
-                if (data && data.success) {
+                if (response && response.success) {
                     // success: use appalert -> state 1, alertType 1 (normal UI)
-                    appalert(successMessage || data.message || 'Operation successful', 1, 1);
+                    appalert(successMessage || response.message || 'Operation successful', 1, 1);
 
                     // If rawKey exists, ask user to copy it.
-                    if (data.data && data.data.rawKey) {
-                        const rawKey = data.data.rawKey;
+                    if (response.data && response.data.rawKey) {
+                        const rawKey = response.data.rawKey;
                         const confirmMsg = 'API Key created successfully!\n\nRaw key: ' + rawKey + '\n\nClick OK to copy to clipboard, or Cancel to continue.';
 
                         // Prefer alertify confirm if available (appalert uses alertify for alertType 2),
@@ -194,14 +192,24 @@
                     try { form.reset(); } catch (e) { /* ignore */ }
                 } else {
                     // server-side validation / error - show error via appalert state "danger" (use 0 or other)
-                    const msg = (data && data.message) ? data.message : 'Unknown error';
+                    const msg = (response && response.message) ? response.message : 'Unknown error';
                     // use state 0 -> falls into "else" branch => danger
                     appalert('Error: ' + msg, 0, 1);
                 }
             } catch (error) {
                 console.error('handleFormSubmit error', error);
-                const errMsg = (error && error.message) ? error.message : String(error);
-                appalert('An error occurred: ' + errMsg, 0, 1);
+                let errMsg = 'An error occurred';
+
+                // Handle jQuery AJAX error format
+                if (error.responseJSON && error.responseJSON.message) {
+                    errMsg = error.responseJSON.message;
+                } else if (error.statusText) {
+                    errMsg = error.statusText;
+                } else if (error.message) {
+                    errMsg = error.message;
+                }
+
+                appalert('Error: ' + errMsg, 0, 1);
             } finally {
                 // restore submit button
                 if (submitBtn) {
@@ -222,7 +230,7 @@
                 });
             } catch (err) {
                 // if tooltip init fails, notify via appalert as example
-                appalert('select2 init failed: ' + (err && err.message ? err.message : err), 2, 1);
+                appalert('Tooltip init failed: ' + (err && err.message ? err.message : err), 2, 1);
                 console.warn('Tooltip init failed', err);
             }
         });

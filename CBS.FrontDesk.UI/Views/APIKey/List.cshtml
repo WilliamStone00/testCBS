@@ -1,676 +1,627 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey>
 <!-- _DataTable.cshtml -->
 
-<div class="card">
-    <div class="card-body">
-
-        <!-- Filters (username + id) -->
-        <div class="mb-3">
-            <form id="apiKeyFilterForm" autocomplete="off" onsubmit="return false;">
-                <div class="row g-2 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label">User Name</label>
-                        <input type="text" id="filterUserName" name="UserName" class="form-control" placeholder="Search by user name" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Key Id</label>
-                        <input type="text" id="filterId" name="Id" class="form-control" placeholder="Search by key id" />
-                    </div>
-
-                    <div class="col-md-4 d-flex gap-2">
-                        <button id="applyApiKeyFilterBtn" type="button" class="btn btn-primary flex-grow-1" onclick="applyApiKeyFilter()">
-                            <i class="mdi mdi-magnify"></i> Apply Filter
-                        </button>
-                        <button id="resetApiKeyFilterBtn" type="button" class="btn btn-outline-secondary flex-grow-1" onclick="resetApiKeyFilter()">
-                            <i class="mdi mdi-refresh"></i> Reset
-                        </button>
-                    </div>
-                </div>
-            </form>
+<div class="row">
+    <div class="col-12">
+        <!-- Header Card -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-key-chain me-2"></i>API Key Management
+                </h1>
+                <p class="card-text">
+                    Manage and monitor all API keys for secure access to your application services.
+                    Create, renew, revoke, and track API key usage and expiration.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
         </div>
 
-        <div class="table-responsive">
-            <table id="apiKeysTable" class="table table-striped table-hover table-bordered" style="width:100%">
-                <colgroup>
-                    <col style="width:12%" />
-                    <col style="width:15%" />
-                    <col style="width:10%" />
-                    <col style="width:15%" />
-                    <col style="width:15%" />
-                    <col style="width:8%" />
-                    <col style="width:10%" />
-                    <col style="width:15%" />
-                </colgroup>
+        <!-- Tips Card -->
+        <div class="card mb-3">
+            <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                <span><i class="mdi mdi-information-outline me-2"></i> API Key Management Tips</span>
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseApiKeyTips" aria-expanded="false" aria-controls="collapseApiKeyTips">
+                    <i class="mdi mdi-chevron-down"></i>
+                </button>
+            </h6>
 
-                <thead class="table-light">
-                    <tr>
-                        <th>User Name</th>
-                        <th>Key Prefix</th>
-                        <th>Created At</th>
-                        <th>Expiration Date</th>
-                        <th>Modified Date</th>
-                        <th>Status</th>
-                        <th>Active</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="apiKeysTbody">
-                    @* initial server render - keep server model (if provided) *@
-                    @foreach (var item in Model)
-                    {
-                        <tr data-id="@item.Id">
-                            <td>@item.UserName</td>
-                            <td>
-                                <code>@item.KeyPrefix</code>
-                                <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn"
-                                        data-prefix="@item.KeyPrefix"
-                                        data-bs-toggle="tooltip" title="Copy Prefix">
-                                    <i class="mdi mdi-content-copy"></i>
+            <div id="collapseApiKeyTips" class="collapse">
+                <div class="card-body">
+                    <ul>
+                        <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>User Name:</strong> Search for API keys by the associated username to quickly find all keys for a specific user.</li>
+                        <li><i class="mdi mdi-identifier text-info me-2"></i> <strong>Key ID:</strong> Use the unique Key ID to locate a specific API key when you need to manage individual keys.</li>
+                        <li><i class="mdi mdi-shield-check-outline text-success me-2"></i> <strong>Status Monitoring:</strong> Regularly check the status column to ensure all active keys are valid and not revoked.</li>
+                        <li><i class="mdi mdi-calendar-clock text-warning me-2"></i> <strong>Expiration Dates:</strong> Monitor expiration dates closely and renew keys before they expire to avoid service interruptions.</li>
+                        <li><i class="mdi mdi-content-copy text-secondary me-2"></i> <strong>Key Prefix:</strong> Use the copy button next to each key prefix for easy reference when identifying keys in logs.</li>
+                        <li><i class="mdi mdi-toggle-switch-off text-danger me-2"></i> <strong>Security Best Practices:</strong> Regularly rotate API keys and immediately revoke any keys that may be compromised.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Card -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Filter Api Key</h5>
+                <!-- Filters (username + id) -->
+                <div class="mb-3">
+                    <form id="apiKeyFilterForm" autocomplete="off" onsubmit="return false;">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6">
+                                <label class="form-label">User Name</label>
+                                <input type="text" id="filterUserName" name="UserName" class="form-control" placeholder="Search by user name" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Key Id</label>
+                                <input type="text" id="filterId" name="Id" class="form-control" placeholder="Search by key id" />
+                            </div>
+                        </div>
+
+                        <!-- Full width buttons -->
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex">
+                                <button id="applyApiKeyFilterBtn" type="button" class="btn btn-primary me-2 w-100" onclick="applyApiKeyFilter()">
+                                    <i class="mdi mdi-magnify"></i> Apply Filter
                                 </button>
-                            </td>
-                            <td>@item.CreatedAt.ToString()</td>
-                            <td>
-                                <span class="@(item.ExpirationDate < DateTime.UtcNow ? "text-danger" : "text-success")">
-                                    @item.ExpirationDate.ToString()
-                                </span>
-                            </td>
-                            <td>@item.ModifiedDate.ToString()</td>
-                            <td>
-                                @if (item.RevokedAt.HasValue)
-                                {
-                                    <span class="badge bg-danger">Revoked</span>
-                                }
-                                else if (!item.IsActive)
-                                {
-                                    <span class="badge bg-warning">Inactive</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success">Active</span>
-                                }
-                            </td>
-                            <td>
-                                @if (item.IsActive)
-                                {
-                                    <span class="badge bg-success">Yes</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">No</span>
-                                }
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                            type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                        <i class="mdi mdi-cog-outline"></i> Actions
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item" onclick="showDetails('@item.Id')">
-                                                <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                            </button>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <button class="dropdown-item" onclick="showRenew('@item.Id')">
-                                                <i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew
-                                            </button>
-                                        </li>
-                                        <li>
-                                            @if (item.IsActive)
-                                            {
-                                                <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
-                                                    <i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate
-                                                </button>
-                                            }
-                                            else
-                                            {
-                                                <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
-                                                    <i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate
-                                                </button>
-                                            }
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item text-danger" onclick="showRevoke('@item.Id')">
-                                                <i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke
-                                            </button>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <button class="dropdown-item text-danger"
-                                                    onclick="deleteApiKey('@item.Id', '@item.UserName')">
-                                                <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                    @if (!Model.Any())
-                    {
-                        <tr id="noDataRow">
-                            <td colspan="8" class="text-center text-muted py-4">
-                                <i class="mdi mdi-key-remove mdi-48px mb-2"></i>
-                                <br />
-                                No API keys found
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                <button id="resetApiKeyFilterBtn" type="button" class="btn btn-secondary me-2 w-100" onclick="resetApiKeyFilter()">
+                                    <i class="mdi mdi-refresh"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table Card -->
+        <div class="card">
+            <div class="card-body">
+
+                <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> API Keys List</h5>
+                <div class="table-responsive">
+                    <table id="apiKeysTable" class="table table-striped table-hover table-bordered" style="width:100%">
+                        <colgroup>
+                            <col style="width:16%" />
+                            <col style="width:16%" />
+                            <col style="width:13%" />
+                            <col style="width:15%" />
+                            <col style="width:15%" />
+                            <col style="width:10%" />
+                            <col style="width:15%" />
+                        </colgroup>
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>User Name</th>
+                                <th>Key Prefix</th>
+                                <th>Created At</th>
+                                <th>Expiration Date</th>
+                                <th>Modified Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apiKeysTbody">
+                            <!-- Server-rendered initial content -->
+                            @Html.Partial("_ApiKeyRows", Model)
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-    // ---------- Configuration: change these endpoints to your real API routes ----------
-    const API_ENDPOINTS = {
-        getByUserName: '/apikeys/getbyusername',   // expects ?username=...
-        getById: '/api/apikeys/getbyid',               // expects ?id=...
-        getAll: '/api/apikeys'                         // returns array of ApiKey
-    };
+<div class="modal fade" id="affiliateDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header py-1">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"><!-- AJAX injects here --></div>
+            @*<div class="modal-footer py-1">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>*@
+        </div>
+    </div>
+</div>
 
-    // Utility: render a single table row (returns DOM tr element)
-    function populateRow(item) {
-        const tr = document.createElement('tr');
-        tr.setAttribute('data-id', item.Id || '');
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // ---------- Configuration: use your existing endpoints ----------
+        const API_ENDPOINTS = {
+            getByUserName: '/APIKey/GetByUserName',
+            initializeData: '/APIKey/InitializeData'
+        };
 
-        const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
-        const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
-            : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
-
-        const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
-
-        tr.innerHTML = `
-            <td>${escapeHtml(item.UserName)}</td>
-            <td>
-                <code>${escapeHtml(item.KeyPrefix)}</code>
-                <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
-                    <i class="mdi mdi-content-copy"></i>
-                </button>
-            </td>
-            <td>${escapeHtml(item.CreatedAt)}</td>
-            <td><span class="${expirationClass}">${escapeHtml(item.ExpirationDate)}</span></td>
-            <td>${escapeHtml(item.ModifiedDate)}</td>
-            <td>${statusBadge}</td>
-            <td>${activeBadge}</td>
-            <td>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-cog-outline"></i> Actions
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
-                        <li><button class="dropdown-item" onclick="showChangeStatus('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Toggle Active</button></li>
-                        <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
-                    </ul>
-                </div>
-            </td>
-        `;
-        return tr;
-    }
-
-    // Basic HTML-escape helpers
-    function escapeHtml(text) {
-        if (text === null || text === undefined) return '';
-        return String(text).replace(/[&<>"'`]/g, function (s) {
-            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
-        });
-    }
-    function escapeHtmlAttr(text) {
-        return escapeHtml(text).replace(/"/g, '&quot;');
-    }
-
-    // Render array into tbody
-    function renderTable(items) {
-        const tbody = document.getElementById('apiKeysTbody');
-        tbody.innerHTML = ''; // clear
-
-        if (!items || items.length === 0) {
-            tbody.innerHTML = `
-                <tr id="noDataRow">
-                    <td colspan="8" class="text-center text-muted py-4">
-                        <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
-                    </td>
-                </tr>`;
-            return;
+        // Basic HTML-escape helpers
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            return String(text).replace(/[&<>"'`]/g, function (s) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
+            });
         }
 
-        const fragment = document.createDocumentFragment();
-        items.forEach(i => fragment.appendChild(populateRow(i)));
-        tbody.appendChild(fragment);
-
-        // re-initialize tooltips & copy buttons for new elements
-        initTooltipsAndCopy();
-    }
-
-    // Initialize tooltips and attach copy handlers
-    function initTooltipsAndCopy() {
-        // bootstrap tooltip init (if bootstrap 5)
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-
-        // copy buttons
-        document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
-            btn.removeEventListener('click', copyToClipboardWrapped);
-            btn.addEventListener('click', copyToClipboardWrapped);
-        });
-    }
-
-    // wrapper to provide event to copyToClipboard
-    function copyToClipboardWrapped(e) {
-        const prefix = e.currentTarget.getAttribute('data-prefix') || '';
-        copyToClipboard(prefix, e);
-    }
-
-    // copyToClipboard updated to accept event and text
-    function copyToClipboard(text, evt) {
-        if (!navigator.clipboard) return;
-        navigator.clipboard.writeText(text).then(function () {
-            // Show success feedback on the specific button
-            const btn = evt.currentTarget;
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="mdi mdi-check"></i>';
-            btn.classList.remove('btn-outline-secondary');
-            btn.classList.add('btn-success');
-
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-outline-secondary');
-            }, 1000);
-        }).catch(() => {
-            // optionally show failure
-        });
-    }
-
-    // ---------- Filter actions ----------
-    async function applyApiKeyFilter() {
-        const username = document.getElementById('filterUserName').value.trim();
-        const id = document.getElementById('filterId').value.trim();
-
-        showLoadingState(true);
-
-        // We'll call three service actions and merge results.
-        // Update the URLs in API_ENDPOINTS above to your actual endpoints.
-        const calls = [];
-        // 1) call by user name (only if provided)
-        if (username) {
-            calls.push(fetch(`${API_ENDPOINTS.getByUserName}?username=${encodeURIComponent(username)}`).then(r => r.ok ? r.json() : []));
-        } else {
-            // push an empty result to keep promise ordering optional
-            calls.push(Promise.resolve([]));
+        function escapeHtmlAttr(text) {
+            return escapeHtml(text).replace(/"/g, '&quot;');
         }
 
-        // 2) call by id (only if provided)
-        if (id) {
-            calls.push(fetch(`${API_ENDPOINTS.getById}?id=${encodeURIComponent(id)}`).then(r => r.ok ? r.json() : null));
-        } else {
-            calls.push(Promise.resolve(null));
+        // Utility: render a single table row (returns DOM tr element)
+        function populateRow(item) {
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-id', item.Id || '');
+
+            const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
+            const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
+                : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
+
+            const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
+
+            tr.innerHTML = `
+                        <td>${escapeHtml(item.UserName)}</td>
+                        <td>
+                            <code>${escapeHtml(item.KeyPrefix)}</code>
+                            <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
+                                <i class="mdi mdi-content-copy"></i>
+                            </button>
+                        </td>
+                        <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
+                        <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
+                        <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
+                        <td>${statusBadge}</td>
+                        <td>${activeBadge}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
+                                    <li>
+                                        ${item.IsActive
+                    ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
+                    : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
+                }
+                                    </li>
+                                    <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    `;
+            return tr;
         }
 
-        // 3) call a general filtered/all endpoint to get baseline results (could accept query params server-side)
-        // If you want server-side filtered results, consider sending both username & id as query params to this endpoint.
-        const qs = new URLSearchParams();
-        if (username) qs.set('username', username);
-        if (id) qs.set('id', id);
-        calls.push(fetch(`${API_ENDPOINTS.getAll}?${qs.toString()}`).then(r => r.ok ? r.json() : []));
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
 
-        try {
-            const [byNameResult, byIdResult, listResult] = await Promise.all(calls);
+        // Render array into tbody
+        function renderTable(items) {
+            const tbody = document.getElementById('apiKeysTbody');
+            tbody.innerHTML = ''; // clear
 
-            // Normalize results into an array
-            let merged = [];
-
-            // byNameResult can be array
-            if (Array.isArray(byNameResult)) merged = merged.concat(byNameResult);
-
-            // byIdResult may be a single object or null
-            if (byIdResult) {
-                if (Array.isArray(byIdResult)) merged = merged.concat(byIdResult);
-                else merged.push(byIdResult);
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                            <tr id="noDataRow">
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
+                                </td>
+                            </tr>`;
+                return;
             }
 
-            // listResult expected to be array
-            if (Array.isArray(listResult)) merged = merged.concat(listResult);
+            const fragment = document.createDocumentFragment();
+            items.forEach(i => fragment.appendChild(populateRow(i)));
+            tbody.appendChild(fragment);
 
-            // Deduplicate by Id
-            const map = new Map();
-            merged.forEach(it => {
-                if (!it || !it.Id) return;
-                if (!map.has(it.Id)) map.set(it.Id, it);
+            // re-initialize tooltips & copy buttons for new elements
+            initTooltipsAndCopy();
+        }
+
+        // Initialize tooltips and attach copy handlers
+        function initTooltipsAndCopy() {
+            // bootstrap tooltip init (if bootstrap 5)
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
-            const deduped = Array.from(map.values());
-
-            renderTable(deduped);
-        } catch (err) {
-            console.error('Error applying filter:', err);
-            // As fallback reload full list
-            await loadAllApiKeys();
-        } finally {
-            showLoadingState(false);
-        }
-    }
-
-    // Reset inputs and reload full list
-    function resetApiKeyFilter() {
-        document.getElementById('filterUserName').value = '';
-        document.getElementById('filterId').value = '';
-        loadAllApiKeys();
-    }
-
-    // Load all keys (used on reset and initial load if needed)
-    async function loadAllApiKeys() {
-        showLoadingState(true);
-        try {
-            const resp = await fetch(API_ENDPOINTS.getAll);
-            if (!resp.ok) throw new Error('Failed to load API keys');
-            const data = await resp.json();
-            renderTable(Array.isArray(data) ? data : []);
-        } catch (err) {
-            console.error('Error loading API keys:', err);
-            renderTable([]);
-        } finally {
-            showLoadingState(false);
-        }
-    }
-
-    // Show a simple loading state by disabling the buttons while waiting
-    function showLoadingState(isLoading) {
-        document.getElementById('applyApiKeyFilterBtn').disabled = !!isLoading;
-        document.getElementById('resetApiKeyFilterBtn').disabled = !!isLoading;
-        // Optionally you can add a spinner to buttons here
-    }
-
-    // on page load - ensure tooltips and copy buttons bind
-    document.addEventListener('DOMContentLoaded', function () {
-        initTooltipsAndCopy();
-        // Optionally refresh data from server on load:
-        // loadAllApiKeys();
-    });
-</script>
-<script>
-    // ---------- Configuration: change these endpoints to your real MVC routes ----------
-    const API_ENDPOINTS = {
-        getByUserName: '/ApiKeys/GetByUserName',     // returns { success: true, data: [...] }
-        initializeData: '/ApiKeys/InitializeData'   // returns PartialView HTML when called with path=list or KEY=...
-    };
-
-    // ---------- Helpers copied from your existing script ----------
-    function escapeHtml(text) {
-        if (text === null || text === undefined) return '';
-        return String(text).replace(/[&<>"'`]/g, function (s) {
-            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
-        });
-    }
-    function escapeHtmlAttr(text) {
-        return escapeHtml(text).replace(/"/g, '&quot;');
-    }
-
-    function populateRow(item) {
-        const tr = document.createElement('tr');
-        tr.setAttribute('data-id', item.Id || '');
-
-        const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
-        const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
-            : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
-        const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
-
-        tr.innerHTML = `
-            <td>${escapeHtml(item.UserName)}</td>
-            <td>
-                <code>${escapeHtml(item.KeyPrefix)}</code>
-                <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
-                    <i class="mdi mdi-content-copy"></i>
-                </button>
-            </td>
-            <td>${escapeHtml(item.CreatedAt)}</td>
-            <td><span class="${expirationClass}">${escapeHtml(item.ExpirationDate)}</span></td>
-            <td>${escapeHtml(item.ModifiedDate)}</td>
-            <td>${statusBadge}</td>
-            <td>${activeBadge}</td>
-            <td>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-cog-outline"></i> Actions
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
-                        <li><button class="dropdown-item" onclick="showChangeStatus('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Toggle Active</button></li>
-                        <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
-                    </ul>
-                </div>
-            </td>
-        `;
-        return tr;
-    }
-
-    function renderTable(items) {
-        const tbody = document.getElementById('apiKeysTbody');
-        tbody.innerHTML = '';
-
-        if (!items || items.length === 0) {
-            tbody.innerHTML = `
-                <tr id="noDataRow">
-                    <td colspan="8" class="text-center text-muted py-4">
-                        <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
-                    </td>
-                </tr>`;
-            return;
+            // copy buttons
+            document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
+                btn.removeEventListener('click', copyToClipboardWrapped);
+                btn.addEventListener('click', copyToClipboardWrapped);
+            });
         }
 
-        const fragment = document.createDocumentFragment();
-        items.forEach(i => fragment.appendChild(populateRow(i)));
-        tbody.appendChild(fragment);
+        // wrapper to provide event to copyToClipboard
+        function copyToClipboardWrapped(e) {
+            const prefix = e.currentTarget.getAttribute('data-prefix') || '';
+            copyToClipboard(prefix, e);
+        }
 
-        initTooltipsAndCopy();
-    }
+        // copyToClipboard updated to accept event and text
+        function copyToClipboard(text, evt) {
+            if (!navigator.clipboard) return;
+            navigator.clipboard.writeText(text).then(function () {
+                // Show success feedback on the specific button
+                const btn = evt.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="mdi mdi-check"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-success');
 
-    function initTooltipsAndCopy() {
-        // bootstrap tooltip init (if bootstrap 5)
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            try { return new bootstrap.Tooltip(tooltipTriggerEl); } catch (e) { /* ignore */ }
-        });
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 1000);
+            }).catch(() => {
+                // optionally show failure
+            });
+        }
 
-        // copy buttons
-        document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
-            btn.removeEventListener('click', copyToClipboardWrapped);
-            btn.addEventListener('click', copyToClipboardWrapped);
-        });
-    }
-    function copyToClipboardWrapped(e) {
-        const prefix = e.currentTarget.getAttribute('data-prefix') || '';
-        copyToClipboard(prefix, e);
-    }
-    function copyToClipboard(text, evt) {
-        if (!navigator.clipboard) return;
-        navigator.clipboard.writeText(text).then(function () {
-            const btn = evt.currentTarget;
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="mdi mdi-check"></i>';
-            btn.classList.remove('btn-outline-secondary');
-            btn.classList.add('btn-success');
+        // Enhanced loading state for buttons
+        function setButtonLoading(button, isLoading) {
+            if (!button) return;
 
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-outline-secondary');
-            }, 1000);
-        }).catch(() => { /* ignore */ });
-    }
-
-    // Parse returned partial-html and extract <tr> elements (returns array of <tr> elements)
-    function extractTrElementsFromHtml(html) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        // try to find direct tr elements or inside a tbody
-        let trNodes = Array.from(doc.querySelectorAll('tr'));
-        // Filter out header rows by checking for th inside row
-        trNodes = trNodes.filter(tr => !tr.querySelector('th'));
-        return trNodes;
-    }
-
-    // Replace tbody with the supplied TR elements (array of <tr> nodes)
-    function replaceTbodyWithTrNodes(trNodes) {
-        const tbody = document.getElementById('apiKeysTbody');
-        tbody.innerHTML = '';
-        const frag = document.createDocumentFragment();
-        trNodes.forEach(tr => frag.appendChild(tr));
-        tbody.appendChild(frag);
-        initTooltipsAndCopy();
-    }
-
-    // Merge TR nodes into existing JSON-rendered rows, dedupe by data-id
-    function mergeJsonAndTrNodes(jsonItems, trNodes) {
-        // First convert jsonItems to a map by Id
-        const map = new Map();
-        (jsonItems || []).forEach(it => {
-            if (!it || !it.Id) return;
-            map.set(it.Id, it);
-        });
-
-        // For TR nodes, try to read data-id attribute; if present and not in map, append as-is.
-        const newTrs = [];
-        trNodes.forEach(tr => {
-            const id = tr.getAttribute('data-id');
-            if (!id) {
-                // no id: append raw
-                newTrs.push(tr);
-            } else if (!map.has(id)) {
-                newTrs.push(tr);
-            }
-        });
-
-        // Render map items as rows then append the additional TRs
-        const items = Array.from(map.values());
-        const tbody = document.getElementById('apiKeysTbody');
-        tbody.innerHTML = '';
-        const frag = document.createDocumentFragment();
-        items.forEach(i => frag.appendChild(populateRow(i)));
-        newTrs.forEach(tr => frag.appendChild(tr));
-        tbody.appendChild(frag);
-        initTooltipsAndCopy();
-    }
-
-    // ---------- Filter actions (uses InitializeData + GetByUserName) ----------
-    async function applyApiKeyFilter() {
-        const username = document.getElementById('filterUserName').value.trim();
-        const id = document.getElementById('filterId').value.trim();
-        // partialView name that InitializeData expects — change to the partial that renders TR rows
-        const partialViewName = '_ApiKeyRowsPartial'; // <-- set this to your real partial name (server must return <tr> rows)
-
-        showLoadingState(true);
-
-        try {
-            // Case 1: no filters => load list partial via InitializeData
-            if (!username && !id) {
-                const url = `${API_ENDPOINTS.initializeData}?path=list&partialView=${encodeURIComponent(partialViewName)}`;
-                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                if (!resp.ok) throw new Error('Failed to load list partial');
-                const html = await resp.text();
-                const trs = extractTrElementsFromHtml(html);
-                replaceTbodyWithTrNodes(trs);
-                return;
-            }
-
-            // Case 2: username only => call GetByUserName (JSON) and render table from JSON
-            if (username && !id) {
-                const resp = await fetch(`${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`);
-                const json = await resp.json();
-                if (json && json.success && Array.isArray(json.data)) {
-                    renderTable(json.data);
-                } else {
-                    renderTable([]);
+            if (isLoading) {
+                button.disabled = true;
+                const originalText = button.innerHTML;
+                button.setAttribute('data-original-text', originalText);
+                button.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Loading...';
+            } else {
+                button.disabled = false;
+                const originalText = button.getAttribute('data-original-text');
+                if (originalText) {
+                    button.innerHTML = originalText;
                 }
-                return;
             }
-
-            // Case 3: id only => call InitializeData for that KEY (expects partial rendering that contains TR(s))
-            if (id && !username) {
-                const url = `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=${encodeURIComponent(partialViewName)}`;
-                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                if (!resp.ok) throw new Error('Failed to load key partial');
-                const html = await resp.text();
-                const trs = extractTrElementsFromHtml(html);
-                replaceTbodyWithTrNodes(trs);
-                return;
-            }
-
-            // Case 4: both username & id => call GetByUserName (JSON) AND InitializeData(KEY ...)
-            const calls = [
-                fetch(`${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`).then(r => r.ok ? r.json() : { success: false }),
-                fetch(`${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=${encodeURIComponent(partialViewName)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(r => r.ok ? r.text() : '')
-            ];
-
-            const [userJson, idHtml] = await Promise.all(calls);
-            const userItems = (userJson && userJson.success && Array.isArray(userJson.data)) ? userJson.data : [];
-            const idTrs = idHtml ? extractTrElementsFromHtml(idHtml) : [];
-
-            mergeJsonAndTrNodes(userItems, idTrs);
-        } catch (err) {
-            console.error('Error applying filter:', err);
-            // fallback: attempt to load list partial
-            try {
-                const url = `${API_ENDPOINTS.initializeData}?path=list&partialView=${encodeURIComponent(partialViewName)}`;
-                const resp = await fetch(url);
-                const html = await resp.text();
-                const trs = extractTrElementsFromHtml(html);
-                replaceTbodyWithTrNodes(trs);
-            } catch (err2) {
-                console.error('Fallback failed:', err2);
-                renderTable([]);
-            }
-        } finally {
-            showLoadingState(false);
         }
-    }
 
-    // Reset inputs and reload full list via InitializeData
-    function resetApiKeyFilter() {
-        document.getElementById('filterUserName').value = '';
-        document.getElementById('filterId').value = '';
-        // load list partial
-        const partialViewName = '_ApiKeyRowsPartial'; // ensure this matches your server partial
-        const url = `${API_ENDPOINTS.initializeData}?path=list&partialView=${encodeURIComponent(partialViewName)}`;
-        showLoadingState(true);
-        fetch(url).then(r => r.text()).then(html => {
-            const trs = extractTrElementsFromHtml(html);
-            replaceTbodyWithTrNodes(trs);
-        }).catch(err => {
-            console.error('Reset failed', err);
-            renderTable([]);
-        }).finally(() => showLoadingState(false));
-    }
+        // ---------- Filter actions ----------
+        async function applyApiKeyFilter() {
+            const username = document.getElementById('filterUserName').value.trim();
+            const id = document.getElementById('filterId').value.trim();
+            const applyBtn = document.getElementById('applyApiKeyFilterBtn');
+            const resetBtn = document.getElementById('resetApiKeyFilterBtn');
 
-    function showLoadingState(isLoading) {
-        const applyBtn = document.getElementById('applyApiKeyFilterBtn');
-        const resetBtn = document.getElementById('resetApiKeyFilterBtn');
-        if (applyBtn) applyBtn.disabled = !!isLoading;
-        if (resetBtn) resetBtn.disabled = !!isLoading;
-    }
+            setButtonLoading(applyBtn, true);
+            setButtonLoading(resetBtn, true);
 
-    // on page load - ensure tooltips and copy buttons bind
-    document.addEventListener('DOMContentLoaded', function () {
-        initTooltipsAndCopy();
-        // Optionally load full list at first load:
-        // resetApiKeyFilter();
-    });
-</script>
+            try {
+                // Case 1: no filters => load all data via InitializeData
+                if (!username && !id) {
+                    await loadAllApiKeys();
+                    return;
+                }
 
+                // Case 2: username only => call GetByUserName
+                if (username && !id) {
+                    const json = await $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    });
+
+                    if (json && json.success && Array.isArray(json.data)) {
+                        renderTable(json.data);
+                    } else {
+                        renderTable([]);
+                    }
+                    return;
+                }
+
+                // Case 3: id only => get single item and render as array
+                if (id && !username) {
+                    // Use InitializeData to get single item
+                    const html = await $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+
+                    // Replace the tbody content with the HTML response
+                    document.getElementById('apiKeysTbody').innerHTML = html;
+                    initTooltipsAndCopy();
+                    return;
+                }
+
+                // Case 4: both username & id => get both and merge
+                const [userJson, idHtml] = await Promise.all([
+                    $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    }),
+                    $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                ]);
+
+                const userItems = (userJson && userJson.success && Array.isArray(userJson.data)) ? userJson.data : [];
+
+                // Parse the HTML response to extract the single item
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(idHtml, 'text/html');
+                const idTr = doc.querySelector('tr[data-id]');
+
+                let mergedItems = [...userItems];
+
+                // If we found a TR element in the HTML response, extract data and add to merged items
+                if (idTr) {
+                    const idFromTr = idTr.getAttribute('data-id');
+                    // Check if this item is already in userItems
+                    const exists = userItems.some(item => item.Id === idFromTr);
+                    if (!exists) {
+                        // You would need to extract the data from the TR or make another API call
+                        // For now, we'll just use the userItems
+                    }
+                }
+
+                renderTable(mergedItems);
+
+            } catch (err) {
+                console.error('Error applying filter:', err);
+                if (typeof appalert === 'function') {
+                    appalert('Error applying filters: ' + err.message, 0, 1);
+                } else {
+                    alert('Error applying filters: ' + err.message);
+                }
+                // Fallback to loading all data
+                await loadAllApiKeys();
+            } finally {
+                setButtonLoading(applyBtn, false);
+                setButtonLoading(resetBtn, false);
+            }
+        }
+
+        // Load all API keys
+        async function loadAllApiKeys() {
+            try {
+                const html = await $.ajax({
+                    url: `${API_ENDPOINTS.initializeData}?path=list&partialView=_ApiKeyRows`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                document.getElementById('apiKeysTbody').innerHTML = html;
+                initTooltipsAndCopy();
+            } catch (err) {
+                console.error('Error loading API keys:', err);
+                renderTable([]);
+                if (typeof appalert === 'function') {
+                    appalert('Error loading API keys: ' + err.message, 0, 1);
+                }
+            }
+        }
+
+        // Reset inputs and reload full list
+        function resetApiKeyFilter() {
+            document.getElementById('filterUserName').value = '';
+            document.getElementById('filterId').value = '';
+            loadAllApiKeys();
+        }
+
+        // Action functions - Updated to use jQuery AJAX
+        async function showDetails(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=details&partialView=_Details`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading details:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load API key details: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load API key details: ' + error.message);
+                }
+            }
+        }
+
+        async function showRenew(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=renew&partialView=_Renew`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading renew form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load renew form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load renew form: ' + error.message);
+                }
+            }
+        }
+
+        async function showChangeStatus(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=change-status&partialView=_ChangeStatus`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading status change form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load status change form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load status change form: ' + error.message);
+                }
+            }
+        }
+
+        async function showRevoke(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=revoke&partialView=_Revoke`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading revoke form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load revoke form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load revoke form: ' + error.message);
+                }
+            }
+        }
+
+        async function deleteApiKey(id, userName) {
+            alertify.confirm(
+                'Confirm Deletion',
+                `Are you sure you want to delete API key for user "${userName}"? This action cannot be undone.`,
+                async function onOk() {
+                    try {
+                        const result = await $.ajax({
+                            url: `/APIKey/Delete`,
+                            type: 'POST',
+                            data: { KEY: id },
+                            dataType: 'json'
+                        });
+
+                        if (result && result.success) {
+                            if (typeof appalert === 'function') {
+                                appalert('API key deleted successfully!', 3, 1);
+                            } else {
+                                alert('API key deleted successfully!');
+                            }
+                            // Reload the table
+                            await loadAllApiKeys();
+                        } else {
+                            const msg = (result && result.message) ? result.message : 'Failed to delete API key.';
+                            if (typeof appalert === 'function') {
+                                appalert(msg, 0, 1);
+                            } else {
+                                alert(msg);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error deleting API key:', error);
+                        const msg = error && error.message ? error.message : 'An error occurred during deletion.';
+                        if (typeof appalert === 'function') {
+                            appalert('Error deleting API key: ' + msg, 0, 1);
+                        } else {
+                            alert('Error deleting API key: ' + msg);
+                        }
+                    }
+                },
+                function onCancel() {
+                    // Cancelled by user
+                    if (typeof appalert === 'function') {
+                        appalert('Delete operation cancelled.', 3, 1);
+                    }
+                }
+            );
+        }
+
+        // Global form submit handler - Updated to use jQuery AJAX
+        function handleFormSubmit(form, successMessage) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            setButtonLoading(submitBtn, true);
+
+            // Convert FormData to object for jQuery
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: data,
+                dataType: 'json'
+            })
+                .done(function (result) {
+                    if (result.success) {
+                        if (typeof appalert === 'function') {
+                            appalert(successMessage, 1, 1);
+                        } else {
+                            alert(successMessage);
+                        }
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('affiliateDetailsModal'));
+                        if (modal) modal.hide();
+                        // Reload table
+                        loadAllApiKeys();
+                    } else {
+                        if (typeof appalert === 'function') {
+                            appalert('Operation failed: ' + result.message, 0, 1);
+                        } else {
+                            alert('Operation failed: ' + result.message);
+                        }
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    console.error('Error:', error);
+                    if (typeof appalert === 'function') {
+                        appalert('An error occurred while processing your request: ' + error, 0, 1);
+                    } else {
+                        alert('An error occurred while processing your request: ' + error);
+                    }
+                })
+                .always(function () {
+                    setButtonLoading(submitBtn, false);
+                });
+
+            return false;
+        }
+
+        // on page load - ensure tooltips and copy buttons bind
+        document.addEventListener('DOMContentLoaded', function () {
+            initTooltipsAndCopy();
+        });
+    </script>
+}

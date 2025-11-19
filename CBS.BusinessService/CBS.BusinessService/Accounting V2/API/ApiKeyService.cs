@@ -1,13 +1,19 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.API
@@ -15,8 +21,9 @@ namespace CBS.BusinessService.Accounting_V2.API
     public class ApiKeyService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
+        private readonly UserManagementServices _user;
 
-        public ApiKeyService()
+        public ApiKeyService(UserManagementServices userManagementServices)
         {
             string baseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
@@ -24,6 +31,7 @@ namespace CBS.BusinessService.Accounting_V2.API
                 throw new ConfigurationErrorsException("The 'IdentityServerBaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
+            _user = userManagementServices;
         }
 
         public async Task<IEnumerable<ApiKey>> GetAsync()
@@ -44,7 +52,7 @@ namespace CBS.BusinessService.Accounting_V2.API
             }
         }
 
-          public async Task<IEnumerable<ApiKey>> GetByUserNameAsync(string userName)
+        public async Task<IEnumerable<ApiKey>> GetByUserNameAsync(string userName)
         {
             try
             {
@@ -118,7 +126,7 @@ namespace CBS.BusinessService.Accounting_V2.API
             }
         }
 
-      
+
 
         public async Task<ExecutionMessages> CreateAsync(CreateApiKeyRequest model)
         {
@@ -149,7 +157,7 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.RenewApiKey, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.RenewApiKey, model);
 
                 if (response.IsSuccess)
                 {
@@ -178,7 +186,7 @@ namespace CBS.BusinessService.Accounting_V2.API
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
@@ -199,16 +207,16 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.ChangeApiKeyStatus, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.ChangeApiKeyStatus, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, model.Id, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Id, MessagesResults.Failed,
+                    GetExecutionMessages(null, false, model.Id, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -247,6 +255,65 @@ namespace CBS.BusinessService.Accounting_V2.API
             }
 
             return ExecutionMessage;
+        }
+
+        //Get Third Party user
+        public async Task<IEnumerable<ThirdPartyUser>> GetAllBranchAccountsFromDataTableAsync( CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                string branchId = GetBranchID();
+                string Role = "ThirdPartyProviders";
+                // Decide branchId first so the query sent to server is correct.
+                if (IsHeadOffice())
+                {
+                    if (string.IsNullOrWhiteSpace(branchId))
+                        branchId = null; // ensure API understands this convention
+                                         // Head Office may keep a specific branchId if passed
+                }
+                else
+                {
+                    branchId = GetBranchID() ?? throw new InvalidOperationException("Current user's branch ID is not available.");
+                }
+
+                var querry = new GetAllUsersDataTableQuery
+                {
+                    Role = Role
+                };
+
+                // Reuse existing method which calls the API datatable endpoint
+                var dataTable = await _user.GetDataTableAsync(querry);
+
+                // Convert datatable.data to strongly-typed list safely
+                List<ThirdPartyUser> branchList = new List<ThirdPartyUser>();
+
+                if (dataTable?.data is JToken token)
+                {
+                    branchList = token.ToObject<List<ThirdPartyUser>>() ?? new List<ThirdPartyUser>();
+                }
+                else if (dataTable?.data != null)
+                {
+                    // Fallback if data is plain object
+                    branchList = JsonConvert.DeserializeObject<List<ThirdPartyUser>>(JsonConvert.SerializeObject(dataTable.data))
+                                 ?? new List<ThirdPartyUser>();
+                }
+
+                var formatted = branchList
+                    .Select(a => new ThirdPartyUser
+                    {
+                        Id = a.UserName,                     
+                        Name = $"[{a.Id}] - {a.UserName}".Trim()
+                    })
+                    .OrderBy(a => a.Name) // nicer UX for dropdown; change if you prefer Id
+                    .ToList();
+
+                return formatted;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
