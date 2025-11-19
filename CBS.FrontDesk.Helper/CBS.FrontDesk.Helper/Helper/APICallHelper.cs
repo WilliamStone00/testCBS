@@ -1437,7 +1437,7 @@ namespace CBS.FrontDesk.Helper
         //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
+        public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
@@ -1445,9 +1445,11 @@ namespace CBS.FrontDesk.Helper
         public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
         public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
 
-        //************************************Role Gl Resolution Endpoints  ********************************************////
+		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
-        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+		//************************************Role Gl Resolution Endpoints  ********************************************////
+
+		public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
         public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
@@ -1703,7 +1705,8 @@ namespace CBS.FrontDesk.Helper
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
         
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
-        public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
+        
+
 
         //------------------------- Accounting Year --------------------
         public static string SaveAccountingYear = "/api/v1/AccountingYear";

@@ -145,6 +145,33 @@
     </div>
 </div>
 
+@section Styles {
+    <style>
+        /* DataTable fixed layout */
+        #myDataTable {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+            #myDataTable td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        /* Si tu veux wrap du texte, décommenter */
+        /* #myDataTable td { white-space: normal; } */
+
+        /* Center text inside Status icon block */
+        .status-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: bold;
+        }
+    </style>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -183,8 +210,11 @@
                         const filters = collectLiaisonFilters();
                         filters.options = {
                             draw: d.draw,
-                            start: d.start,
-                            length: d.length,
+                            //start: d.start,
+                            //length: d.length,
+                            pageSize: d.length,
+                            skip: d.start,
+
                             searchValue: d.search?.value || '',
                             sortColumnName: 'CreatedDate',
                             sortColumnDirection: 'desc'
@@ -198,22 +228,82 @@
                 columns: [
                     {
                         data: 'CreatedDate',
+                        width: '15%',
                         render: d => d ? moment(d).format('MM/DD/YYYY HH:mm:ss') : '-'
                     },
-                    { data: 'BranchName' },
-                    { data: 'CounterpartyBranchName' },
+
+                    // 🔥 BranchName + DueFrom info
+                    {
+                        data: null,
+                        width: '35%',
+                        render: function (row) {
+                            const branch = row.BranchName || '-';
+                            const accName = row.DueFromAssetAccountName || 'N/A';
+                            const accNumber = row.DueFromAssetAccountNumber || 'N/A';
+
+                            return `
+                    <div>
+                        <strong>${branch}</strong><br/>
+                        <small class="text-muted">
+                            ${accName} (${accNumber})
+                        </small>
+                    </div>`;
+                        }
+                    },
+
+                    // 🔥 CounterpartyBranchName + DueTo info
+                    {
+                        data: null,
+                        width: '30%',
+                        render: function (row) {
+                            const counter = row.CounterpartyBranchName || '-';
+                            const accName = row.DueToLiabilityAccountName || 'N/A';
+                            const accNumber = row.DueToLiabilityAccountNumber || 'N/A';
+
+                            return `
+                    <div>
+                        <strong>${counter}</strong><br/>
+                        <small class="text-muted">
+                            ${accName} (${accNumber})
+                        </small>
+                    </div>`;
+                        }
+                    },
+                    // 🔥 Status avec icônes
+                    {
+                        data: null,
+                        width: '5%',
+                        render: function (row) {
+                            const status = row.Status || 'NO';
+                            //const displayText = status === 'YES' ? 'Map<Ok>' : 'Map<Error>';
+                            const displayText = status === 'YES' ? 'Map&lt;Ok&gt;' : 'Map&lt;Error&gt;';
+                            const iconHtml = status === 'YES'
+                                ? '<i class="mdi mdi-check-circle" style="color: green; font-size: 16px;"></i>'
+                                : '<i class="mdi mdi-close-circle" style="color: red; font-size: 16px;"></i>';
+
+                            return `
+                                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        ${iconHtml}
+                                        <span style="font-weight: bold;">${displayText}</span>
+                                    </div>
+                                `;
+                        },
+                        className: 'text-center'
+                    },
                     {
                         data: 'Id',
+                        width: '20%',
                         orderable: false,
                         render: function (data) {
                             const recordId = encodeURIComponent(data);
                             return `
-                                                    <button class="btn btn-sm btn-outline-primary"
-                                                        onclick="openLiaisonModal('${recordId}')">
-                                                        <i class='fas fa-edit me-1'></i> Edit
-                                                    </button>`;
+                    <button class="btn btn-sm btn-outline-primary"
+                        onclick="openLiaisonModal('${recordId}')">
+                        <i class='fas fa-edit me-1'></i> Edit
+                    </button>`;
                         }
                     }
+
                 ],
                 lengthMenu: [10, 25, 50],
                 pageLength: 10,
@@ -248,11 +338,11 @@
         // Open modal and load _Create partial
         function openLiaisonModal(recordId) {
             const modalSelector = '#liaisonModal';
-                         /*       $('#liaisonModalBody').html(`
-                                    <div class="text-center p-3">
-                                        <div class="spinner-border text-primary" role="status"></div>
-                                        <p class="mt-2 text-muted">Loading form...</p>
-                                    </div>`)*/;
+                             /*       $('#liaisonModalBody').html(`
+                                        <div class="text-center p-3">
+                                            <div class="spinner-border text-primary" role="status"></div>
+                                            <p class="mt-2 text-muted">Loading form...</p>
+                                        </div>`)*/;
 
 
 

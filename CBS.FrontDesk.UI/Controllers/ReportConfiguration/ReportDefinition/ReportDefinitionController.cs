@@ -39,7 +39,6 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 					if (report == null)
 						return HttpNotFound("Report not found");
 
-					//return PartialView(partialView, report);
 					return PartialView($"~/Views/ReportConfiguration/ReportDefinition/{partialView}.cshtml", report);
 
 				default:
@@ -47,6 +46,13 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 					return PartialView("_List", all);
 			}
 		}
+
+		public async Task<ActionResult> ReloadList()
+		{
+			var list = await _services.GetAll();
+			return PartialView("~/Views/ReportConfiguration/ReportDefinition/_List.cshtml", list);
+		}
+
 
 		// ✅ Create / Update
 		[HttpPost]
@@ -69,8 +75,15 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 				{
 					success = data.Result,
 					status = data.MessageStatus,
-					message = Messaging.MessageResult(data)
+					message = Messaging.MessageResult(data),
+					reloadDataView = "Yes",
+					controllerName = "ReportDefinition",
+					option = "List",
+					divLoaderList = "definitionContainer",
+					tableName = "myDataTable",
+					dataLoaderActionName = "ReloadList"
 				});
+
 			}
 			else
 			{
@@ -86,9 +99,17 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 			{
 				success = data.Result,
 				status = data.MessageStatus,
-				message = Messaging.MessageResult(data)
+				message = Messaging.MessageResult(data),
+				reloadDataView = "Yes",
+				controllerName = "ReportDefinition",
+				option = "List", 
+				divLoaderList = "definitionContainer",
+				tableName = "myDataTable",
+				dataLoaderActionName = "ReloadList"
 			});
 		}
+
+
 
 		// ✅ Delete
 		public async Task<ActionResult> Delete(string KEY)
