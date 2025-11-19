@@ -149,7 +149,7 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.RenewApiKey, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.RenewApiKey, model);
 
                 if (response.IsSuccess)
                 {
@@ -178,7 +178,7 @@ namespace CBS.BusinessService.Accounting_V2.API
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
@@ -199,16 +199,16 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.ChangeApiKeyStatus, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.ChangeApiKeyStatus, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, model.Id, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Id, MessagesResults.Failed,
+                    GetExecutionMessages(null, false, model.Id, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
 {
-    // Entities/ApiKey.cs
+ 
     public class ApiKey
     {
         public string Id { get; set; } = string.Empty;
@@ -35,8 +35,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
     public class RenewApiKeyRequest
     {
         public string Id { get; set; } = string.Empty;
-        public TimeSpan newValidityPeriod { get; set; }
+        public string newValidityPeriod { get; set; }
         public string Reason { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 
     // Entities/RevokeApiKeyRequest.cs
@@ -44,6 +45,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
     {
         public string Id { get; set; } = string.Empty;
         public string Reason { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 
     // Entities/ChangeStatusRequest.cs
@@ -52,6 +54,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
         public string Id { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public string Reason { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 
     public class ApiKeyQuery

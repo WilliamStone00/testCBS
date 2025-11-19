@@ -1,8 +1,6 @@
 ﻿using CBS.BusinessService.Accounting_V2.API;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
 using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -14,21 +12,18 @@ using System.Web.Mvc;
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
 {
     public class APIKeyController : Controller
-    {     
-     
-            private readonly ApiKeyService _apiKeyService;
+    {
+        private readonly ApiKeyService _apiKeyService;
 
-            public APIKeyController(ApiKeyService apiKeyService)
-            {
-                _apiKeyService = apiKeyService;
-            }
+        public APIKeyController(ApiKeyService apiKeyService)
+        {
+            _apiKeyService = apiKeyService;
+        }
 
         public async Task<ActionResult> Index()
         {
-
             return View(new CreateApiKeyRequest());
         }
-
 
         [HttpGet]
         public async Task<ActionResult> List()
@@ -36,14 +31,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             return View(new List<ApiKey>());
         }
 
-        // Note: use [FromBody] so model binder reads the JSON DataTables sends.
         [HttpPost]
         public async Task<JsonResult> LoadData(ApiKeyQuery query)
         {
             try
             {
                 var data = await _apiKeyService.GetDataTableAsync(query);
-
                 var Affiliate = JsonConvert.DeserializeObject<List<ApiKey>>(JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -56,7 +49,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             }
             catch (Exception ex)
             {
-                // return a DataTables-compatible empty result on error
                 return Json(new
                 {
                     draw = query?.Options?.draw ?? "1",
@@ -68,33 +60,55 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             }
         }
 
-
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            //await loader();
             if (path == "list")
             {
                 var data = await _apiKeyService.GetAsync();
                 return PartialView(partialView, data);
-
             }
-            //GetRolePermissions
             else if (path == "new")
             {
                 return PartialView(partialView, new CreateApiKeyRequest());
             }
-
+            else if (path == "details")
+            {
+                var data = await _apiKeyService.GetByIdAsync(KEY);
+                return PartialView(partialView, data);
+            }
+            else if (path == "renew")
+            {
+                var data = await _apiKeyService.GetByIdAsync(KEY);
+                var renewModel = new RenewApiKeyRequest { Id = data?.Id ?? KEY, UserName = data.UserName };
+                return PartialView(partialView, renewModel);
+            }
+            else if (path == "revoke")
+            {
+                var data = await _apiKeyService.GetByIdAsync(KEY);
+                var revokeModel = new RevokeApiKeyRequest { Id = data?.Id ?? KEY, UserName = data.UserName };
+                return PartialView(partialView, revokeModel);
+            }
+            else if (path == "change-status")
+            {
+                var data = await _apiKeyService.GetByIdAsync(KEY);
+                var statusModel = new ChangeStatusRequest
+                {
+                    Id = data?.Id ?? KEY,
+                    IsActive = !(data?.IsActive ?? false),// Toggle current status
+                    UserName = data.UserName
+                };
+                return PartialView(partialView, statusModel);
+            }
             else
             {
                 var data = await _apiKeyService.GetByIdAsync(KEY);
                 return PartialView(partialView, data);
-
             }
         }
 
         [HttpPost]
-
-        public async Task<ActionResult>Create(CreateApiKeyRequest model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(CreateApiKeyRequest model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "Validation failed." });
@@ -103,9 +117,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-
         [HttpPost]
-       
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Renew(RenewApiKeyRequest model)
         {
             if (!ModelState.IsValid)
@@ -116,7 +129,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
         }
 
         [HttpPost]
-     
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeStatus(ChangeStatusRequest model)
         {
             if (!ModelState.IsValid)
@@ -127,7 +140,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
         }
 
         [HttpPost]
-      
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Revoke(RevokeApiKeyRequest model)
         {
             if (!ModelState.IsValid)
@@ -136,30 +149,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             var result = await _apiKeyService.RevokeAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
-      
+
         [HttpGet]
         public async Task<JsonResult> GetByUserName(string userName)
-        {            
-                if (string.IsNullOrWhiteSpace(userName))
-                {
-                   return Json(new { success = false, message = "Validation failed, Enter rewuired field" }, JsonRequestBehavior.AllowGet);
-                }
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return Json(new { success = false, message = "Validation failed, Enter required field" }, JsonRequestBehavior.AllowGet);
+            }
 
-                var data = await _apiKeyService.GetByUserNameAsync(userName);
-                return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);          
-           
+            var data = await _apiKeyService.GetByUserNameAsync(userName);
+            return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
                 return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
 
             var result = await _apiKeyService.DeleteAsync(KEY);
-
-            // Map to simple JSON shape the client expects. Adjust if result has different property names.
             bool success = result?.Result ?? false;
             string message = Messaging.MessageResult(result) ?? "Operation completed.";
 
