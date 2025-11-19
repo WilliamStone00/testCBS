@@ -171,197 +171,252 @@
 </div>
 
 
+
+<div class="modal fade" id="ReconciliationDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="journalDetailsModalContent" class="p-3">
+                @* Content will be loaded here *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        // ==============================
-        // Collect Summary Filters (API expected)
-        // ==============================
-        function getSummaryFilters() {
-            return {
-                branchId: $('#branchId').val(),
-                StartDate: $('#startDate').val(),
-                EndDate: $('#endDate').val()
-            };
-        }
+    // ==============================
+    // Collect Summary Filters (API expected)
+    // ==============================
+    function getSummaryFilters() {
+        return {
+            branchId: $('#branchId').val(),
+            StartDate: $('#startDate').val(),
+            EndDate: $('#endDate').val()
+        };
+    }
 
-        // ==============================
-        // Collect DataTable Filters
-        // ==============================
-        function getDataTableFilters() {
-            return {
-                BranchId: $('#branchId').val(),
-                OperationCode: $('#OperationCode').val(),
-                Reference: $('#reference').val(),
-                Status: $('#Status').val(),
-                StartDate: $('#startDate').val(),
-                EndDate: $('#endDate').val(),
-                Options: {}
-            };
-        }
+    // ==============================
+    // Collect DataTable Filters
+    // ==============================
+    function getDataTableFilters() {
+        return {
+            BranchId: $('#branchId').val(),
+            OperationCode: $('#OperationCode').val(),
+            Reference: $('#reference').val(),
+            Status: $('#Status').val(),
+            StartDate: $('#startDate').val(),
+            EndDate: $('#endDate').val(),
+            Options: {}
+        };
+    }
 
-        // ==============================
-        // Load Summary (Returns JSON → Insert into DIV)
-        // ==============================
-        function loadSummary() {
-            const query = getSummaryFilters();
+    // ==============================
+    // Load Summary (Returns JSON → Insert into DIV)
+    // ==============================
+    function loadSummary() {
+        const query = getSummaryFilters();
 
-            $.ajax({
-                url: '/GLSystemReconciliation/GetReconciliationSummary',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(query),
-                success: function (res) {
-                    if (!res.success) {
-                        $("#datalistingview").html(`<div class="alert alert-warning">${res.message}</div>`);
-                        return;
-                    }
-
-                    const summary = res.data;
-
-                    // Load partial view with summary
-                    $.ajax({
-                        url: '/GLSystemReconciliation/LoadRecordsForm',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(summary),
-                        success: function (html) {
-                            $("#datalistingview").html(html);
-                            loadReconciliationData(); // initialize table
-                        }
-                    });
-                },
-                error: function (xhr, status, err) {
-                    console.error('❌ Load summary failed:', status, err);
-                    appalert('❌ Failed to load summary. Status: ' + xhr.status, 4, 1);
+        $.ajax({
+            url: '/GLSystemReconciliation/GetReconciliationSummary',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(query),
+            success: function (res) {
+                if (!res.success) {
+                    $("#datalistingview").html(`<div class="alert alert-warning">${res.message}</div>`);
+                    return;
                 }
-            });
-        }
 
-        // ==============================
-        // Load Reconciliation Data (DataTable)
-        // ==============================
-        function loadReconciliationData() {
-            $('#myDataTable').DataTable({
-                serverSide: true,
-                destroy: true,
-                responsive: true,
-                searching: false,
-                order: [[1, 'desc']],
-                ajax: {
-                    url: '/GLSystemReconciliation/LoadReconciliationData',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: function (d) {
-                        const filters = getDataTableFilters();
-                        filters.Options = {
-                            draw: d.draw,
-                            start: d.start,
-                            length: d.length,
-                            skip: d.start,
-                            pageSize: d.length,
-                            searchValue: d.search?.value || '',
-                            sortColumnName: d.columns[d.order[0].column].data,
-                            sortColumnDirection: d.order[0].dir
-                        };
-                        return JSON.stringify(filters);
-                    },
-                    error: function (xhr, status, err) {
-                        console.error('❌ Load reconciliation failed:', status, err);
-                        appalert('❌ Failed to load reconciliation data. Status: ' + xhr.status, 4, 1);
-                    }
-                },
-                columns: [
-                    { data: 'Reference', name: 'Reference' },
-                    {
-                        data: 'AccountingDate',
-                        name: 'AccountingDate',
-                        render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
-                        }
-                    },
-                    { data: 'OperationCode', name: 'OperationCode' },
-                    { data: 'OperationBy', name: 'OperationBy' },
-                    { data: 'Status', name: 'Status' },
-                    {
-                        data: null,
-                        orderable: false,
-                        render: function (_, __, row) {
-                            return `
-                                <div class="text-center">
-                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                        <i class="mdi mdi-eye-outline me-1"></i> Details
-                                    </button>
-                                </div>`;
-                        }
-                    }
-                ],
-                initComplete: function () {
-                    appalert('✅ Table loaded successfully!', 1, 1);
-                },
-                drawCallback: function () {
-                    const api = this.api();
-                    if (api.rows({ page: 'current' }).data().length === 0) {
-                        appalert('⚠️ No reconciliation data found.', 2, 1);
-                    }
-                }
-            });
-        }
+                const summary = res.data;
 
-        // ==============================
-        // Reset Filters
-        // ==============================
-        function resetReconciliationFilters() {
-            $('#systemReconciliationFilterForm').trigger('reset');
-            $('.select2').val('').trigger('change');
-
-            loadSummary();
-            loadReconciliationData();
-
-            appalert('🧹 Filters reset.', 1, 1);
-        }
-
-        // ==============================
-        // Init Events
-        // ==============================
-        $(document).ready(function () {
-            // Apply Filters
-            $('#applyFilterBtn').on('click', function (e) {
-                e.preventDefault();
-                loadSummary();
-                loadReconciliationData();
-            });
-
-            // Reset Filters
-            $('#resetFilterBtn').on('click', function (e) {
-                e.preventDefault();
-                resetReconciliationFilters();
-            });
-
-            // View Details Modal
-            $(document).on("click", ".view-details", function () {
-                const id = $(this).data("id");
-                if (!id) return;
-
+                // Load partial view with summary
                 $.ajax({
-                    url: `/GLSystemReconciliation/GetDetails?id=${encodeURIComponent(id)}`,
-                    type: "GET",
-                    dataType: "html",
+                    url: '/GLSystemReconciliation/LoadRecordsForm',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(summary),
                     success: function (html) {
-                        $("#journalDetailsModal .modal-content").html(html);
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('journalDetailsModal')).show();
-                    },
-                    error: function (xhr) {
-                        $("#journalDetailsModal .modal-content").html(`
-                            <div class="modal-body">
-                                <div class="alert alert-danger">
-                                    Failed to load reconciliation details. Status: ${xhr.status}
-                                </div>
-                            </div>`);
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('journalDetailsModal')).show();
+                        $("#datalistingview").html(html);
+                        loadReconciliationData(); // initialize table
                     }
                 });
+            },
+            error: function (xhr, status, err) {
+                console.error('❌ Load summary failed:', status, err);
+                appalert('❌ Failed to load summary. Status: ' + xhr.status, 4, 1);
+            }
+        });
+    }
+
+    // ==============================
+    // Load Reconciliation Data (DataTable)
+    // ==============================
+    function loadReconciliationData() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[1, 'desc']],
+            ajax: {
+                url: '/GLSystemReconciliation/LoadReconciliationData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = getDataTableFilters();
+                    filters.Options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr, status, err) {
+                    console.error('❌ Load reconciliation failed:', status, err);
+                    appalert('❌ Failed to load reconciliation data. Status: ' + xhr.status, 4, 1);
+                }
+            },
+            columns: [
+                { data: 'Reference', name: 'Reference' },
+                {
+                    data: 'AccountingDate',
+                    name: 'AccountingDate',
+                    render: function (data) {
+                        return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
+                    }
+                },
+                { data: 'OperationCode', name: 'OperationCode' },
+                { data: 'OperationBy', name: 'OperationBy' },
+                { data: 'Status', name: 'Status' },
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (_, __, row) {
+                        return `
+                            <div class="text-center d-flex justify-content-between">
+                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                    <i class="mdi mdi-eye-outline me-1"></i> View
+                                </button>
+
+                                <button class="btn btn-sm btn-success push-details"
+                                        data-id="${row.Id}"
+                                        data-branchid="${row.BranchId}"
+                                        data-branchname="${row.BranchName}"
+                                        data-branchcode="${row.BranchCode}">
+                                    <i class="mdi mdi-check-outline me-1"></i> Push
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+            initComplete: function () {
+                appalert('✅ Table loaded successfully!', 1, 1);
+            },
+            drawCallback: function () {
+                const api = this.api();
+                if (api.rows({ page: 'current' }).data().length === 0) {
+                    appalert('⚠️ No reconciliation data found.', 2, 1);
+                }
+            }
+        });
+    }
+
+    // ==============================
+    // Reset Filters
+    // ==============================
+    function resetReconciliationFilters() {
+        $('#systemReconciliationFilterForm').trigger('reset');
+        $('.select2').val('').trigger('change');
+
+        loadSummary();
+        loadReconciliationData();
+
+        appalert('🧹 Filters reset.', 1, 1);
+    }
+
+    // ==============================
+    // Init Events
+    // ==============================
+    $(document).ready(function () {
+
+        // Apply Filters
+        $('#applyFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            loadSummary();
+            loadReconciliationData();
+        });
+
+        // Reset Filters
+        $('#resetFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            resetReconciliationFilters();
+        });
+
+        // ==============================
+        // View Details Modal
+        // ==============================
+        $(document).on("click", ".view-details", function () {
+            const id = $(this).data("id");
+            if (!id) return;
+
+            $.ajax({
+                url: `/GLSystemReconciliation/GetDetails?id=${encodeURIComponent(id)}`,
+                type: "GET",
+                dataType: "html",
+                success: function (html) {
+                    $("#ReconciliationDetailsModal .modal-content").html(html);
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('ReconciliationDetailsModal')).show();
+                },
+                error: function (xhr) {
+                    $("#ReconciliationDetailsModal .modal-content").html(`
+                        <div class="modal-body">
+                            <div class="alert alert-danger">
+                                Failed to load reconciliation details. Status: ${xhr.status}
+                            </div>
+                        </div>`);
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('ReconciliationDetailsModal')).show();
+                }
             });
         });
+
+        // ==============================
+        // PUSH RECORD ACTION
+        // ==============================
+        $(document).on("click", ".push-details", function () {
+
+            let payload = {
+                trackerId: $(this).data("id"),
+                pusherName: "@User.Identity.Name",
+                branchId: $(this).data("branchid"),
+                branchName: $(this).data("branchname"),
+                branchCode: $(this).data("branchcode")
+            };
+
+            console.log("Send payload:", payload);
+
+            $.ajax({
+                url: '/GLSystemReconciliation/PushRecord',
+                type: 'POST',
+                data: JSON.stringify(payload),
+                contentType: "application/json",
+                success: function (res) {
+                    toastr.success("Record pushed successfully!");
+                },
+                error: function (err) {
+                    toastr.error("Push failed.");
+                }
+            });
+        });
+
+    });
     </script>
 }

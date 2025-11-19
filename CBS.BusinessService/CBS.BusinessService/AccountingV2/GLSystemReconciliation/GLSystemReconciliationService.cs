@@ -1,6 +1,7 @@
 ﻿using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
@@ -18,12 +19,14 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
     public class GLSystemReconciliationService
     {
         private readonly ApiCallerHelper _systemReconciliationapiCallerHelper;
+        private readonly ApiCallerHelper _ReconciliationapiCallerHelper;
 
 
         public GLSystemReconciliationService()
         {
 
             _systemReconciliationapiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
+            _ReconciliationapiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["TransactionBaseUrl"].ToString());
 
         }
 
@@ -136,6 +139,58 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
         }
 
 
+        public async Task<ReconciliationDetails> GetReconciliationByIdAsync(string id)
+        {
+            try
+            {
+                
+                var response = await _ReconciliationapiCallerHelper.GetAsync<
+                    ResponseObject<ReconciliationDetails>>(string.Format(APICallHelper.GetReconciliationById, id));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return null;
+
+
+                
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+        }
+
+        public async Task<PushRequest> PushRecordAsync(PushRequest model)
+        {
+            try
+            {
+
+
+
+                // Call API and get raw JSON
+                var jsonResponse = await _systemReconciliationapiCallerHelper
+                    .PostAsync<ServiceResponse<PushRequest>>(APICallHelper.PushRecordReconciliation, model);
+
+                // Deserialize the wrapper
+                ///*  var apiResponse = JsonConvert.DeserializeObject<Api*/Response<ReconciliationData>>(jsonResponse);
+
+                // check response for success / nulls
+                if (jsonResponse == null || jsonResponse.ApiResponseData == null || jsonResponse.ApiResponseData.Data == null)
+                {
+                    // optionally throw or return null and let caller handle
+                    return null;
+                }
+
+                return jsonResponse.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Summary Error: {ex.Message}");
+                throw;
+            }
+        }
 
     }
 }
