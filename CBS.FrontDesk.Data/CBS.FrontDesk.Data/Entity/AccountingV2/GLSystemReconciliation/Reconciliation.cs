@@ -66,6 +66,35 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
     }
 
+    //************************************ Get Detail ********************************************//
+    public class ReconciliationDetails
+    {
+        public string Id { get; set; }
+        public string Reference { get; set; }
+        public string OperationCode { get; set; }
+        public string BranchId { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public string PostMode { get; set; }
+        public string CorrelationId { get; set; }
+        public string MemberReference { get; set; }
+        public string AuxillaryReference { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
+        public string OperationBy { get; set; }
+        public string Status { get; set; }
+        public int Attempts { get; set; }
+        public string LastError { get; set; }
+        public DateTime? NextRetryAtUtc { get; set; }
+        public string DestinationUrl { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string ReceiptId { get; set; }
+        public string TempJournalId { get; set; }
+        public string ReconciledJournalId { get; set; }
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public DateTime CreatedAtUtc { get; set; }
+        public DateTime UpdatedAtUtc { get; set; }
+    }
 
 
 
@@ -73,6 +102,17 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
 
 
+    //************************************ push reconciliation ********************************************//
+
+
+    public class PushRequest
+    {
+        public string TrackerId { get; set; }
+        public string PusherName { get; set; }
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+    }
 
 
 
@@ -80,7 +120,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
 
 
-    //************************************ RESPONSE  ********************************************//
+    //************************************ RESPONSE summary ********************************************//
 
     public class ReconciliationData
     {
