@@ -96,6 +96,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
+
+
         public async Task<CustomDataTable2> GetJournalSourceDataTableAsync(JournalEntryQuery journalEntry)
         {
             try

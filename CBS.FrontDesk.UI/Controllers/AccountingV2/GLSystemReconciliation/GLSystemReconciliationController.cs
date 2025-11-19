@@ -124,54 +124,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
-        //[HttpPost]
-        //public async Task<JsonResult> GetReconciliationSummary(ReconciliationQuery model)
-        //{
-        //    try
-        //    {
-        //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
-
-        //        if (summary == null)
-        //        {
-        //            return Json(new
-        //            {
-        //                draw = model?.Options?.draw ?? "1",
-        //                recordsTotal = 0,
-        //                recordsFiltered = 0,
-        //                data = new List<object>(),
-        //                success = false,
-        //                message = "Empty summary response."
-        //            }, JsonRequestBehavior.AllowGet);
-        //        }
-
-        //        // Wrap single summary object into a list
-        //        var summaryList = new List<object> { summary };
-
-        //        return Json(new
-        //        {
-        //            draw = model?.Options?.draw ?? "1",
-        //            recordsTotal = 1,
-        //            recordsFiltered = 1,
-        //            data = summaryList,
-        //            success = true,
-        //            message = "Reconciliation summary loaded successfully."
-        //        }, JsonRequestBehavior.AllowGet);
-
-                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            draw = model?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<object>(),
-        //            success = false,
-        //            error = ex.Message
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        
 
         
         [HttpPost]
@@ -184,27 +137,50 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> GetReconciliationSummarys(ReconciliationQuery model)
-        //{
-        //    if (model == null)
-        //        return Json(new { success = false, message = "Invalid or empty model." });
 
-        //    try
-        //    {
-        //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
+        [HttpGet]
+        public async Task<ActionResult> GetDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "System Reconciliation ID is required");
 
-        //        if (summary == null || summary.Data == null)
-        //            return Json(new { success = false, message = "Empty summary response." });
+            Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationDetails entry = null;
 
-        //        // Return PARTIAL VIEW with the data
-        //        return PartialView("_RecordsForm", summary.Data);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
-        //    }
-        //}
+            try
+            {
+                entry = await _glSystemReconciliationService.GetReconciliationByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // You can log the exception here
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_ReconciliationDetails", entry);
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> PushRecord(PushRequest model)
+        {
+
+           
+            try
+            {
+                var summary = await _glSystemReconciliationService.PushRecordAsync(model);
+
+                if (summary == null)
+                    return Json(new { success = false, message = "Empty summary response." });
+
+                // Return summary as JSON
+                return Json(new { success = true, data = summary });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
     }
 }
