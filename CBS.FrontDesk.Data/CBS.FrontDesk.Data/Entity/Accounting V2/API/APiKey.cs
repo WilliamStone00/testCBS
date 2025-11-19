@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
 {
- 
+
     public class ApiKey
     {
         public string Id { get; set; } = string.Empty;
@@ -69,5 +69,24 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
         public int PageSize { get; set; } = 10;
         public string SortBy { get; set; }
         public bool SortDesc { get; set; }
+    }
+
+    //public class GetAllUsersDataTableQuery
+    //{
+    //    public DataTableOptions DataTableOptions { get; set; }
+
+    //    public string Role { get; set; }
+        
+    //    public GetAllUsersDataTableQuery()
+    //    {
+    //        DataTableOptions = new DataTableOptions();
+    //    }
+    //}
+
+    public class ThirdPartyUser
+    {
+        public string Id { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }

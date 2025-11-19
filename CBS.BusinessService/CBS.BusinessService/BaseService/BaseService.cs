@@ -1902,6 +1902,11 @@ namespace BusinessServices
             var data = HttpContext.Current?.Session?["RoleId"]?.ToString();
             return string.IsNullOrWhiteSpace(data) ? "NoRoleId" : data;
         }
+        public string GetRoleName()
+        {
+            var data = HttpContext.Current?.Session?["RoleName"]?.ToString();
+            return string.IsNullOrWhiteSpace(data) ? "NoRoleName" : data;
+        }
 
         public string GetBranchCode()
         {

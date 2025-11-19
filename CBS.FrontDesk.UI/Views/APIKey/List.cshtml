@@ -78,7 +78,7 @@
         <!-- Data Table Card -->
         <div class="card">
             <div class="card-body">
-               
+
                 <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> API Keys List</h5>
                 <div class="table-responsive">
                     <table id="apiKeysTable" class="table table-striped table-hover table-bordered" style="width:100%">
@@ -88,7 +88,7 @@
                             <col style="width:13%" />
                             <col style="width:15%" />
                             <col style="width:15%" />
-                               <col style="width:10%" />
+                            <col style="width:10%" />
                             <col style="width:15%" />
                         </colgroup>
 
@@ -100,7 +100,7 @@
                                 <th>Expiration Date</th>
                                 <th>Modified Date</th>
                                 <th>Status</th>
-                               <th>Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="apiKeysTbody">
@@ -122,536 +122,506 @@
             </div>
             <div class="modal-body"><!-- AJAX injects here --></div>
             @*<div class="modal-footer py-1">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-            </div>*@
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>*@
         </div>
     </div>
 </div>
 
-<script>
-    // ---------- Configuration: use your existing endpoints ----------
-    const API_ENDPOINTS = {
-        getByUserName: '/APIKey/GetByUserName',     
-        initializeData: '/APIKey/InitializeData'  
-    };
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // ---------- Configuration: use your existing endpoints ----------
+        const API_ENDPOINTS = {
+            getByUserName: '/APIKey/GetByUserName',
+            initializeData: '/APIKey/InitializeData'
+        };
 
-    // Basic HTML-escape helpers
-    function escapeHtml(text) {
-        if (text === null || text === undefined) return '';
-        return String(text).replace(/[&<>"'`]/g, function (s) {
-            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
-        });
-    }
-
-    function escapeHtmlAttr(text) {
-        return escapeHtml(text).replace(/"/g, '&quot;');
-    }
-
-    // Utility: render a single table row (returns DOM tr element)
-    function populateRow(item) {
-        const tr = document.createElement('tr');
-        tr.setAttribute('data-id', item.Id || '');
-
-        const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
-        const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
-            : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
-
-        const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
-
-        tr.innerHTML = `
-        <td>${escapeHtml(item.UserName)}</td>
-        <td>
-            <code>${escapeHtml(item.KeyPrefix)}</code>
-            <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
-                <i class="mdi mdi-content-copy"></i>
-            </button>
-        </td>
-        <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
-        <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
-        <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
-        <td>${statusBadge}</td>
-        <td>${activeBadge}</td>
-        <td>
-            <div class="dropdown">
-                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-cog-outline"></i> Actions
-                </button>
-                <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
-                    <li>
-                        ${item.IsActive
-                ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
-                : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
-            }
-                    </li>
-                    <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
-                </ul>
-            </div>
-        </td>
-    `;
-        return tr;
-    }
-
-    // Format date for display
-    function formatDate(dateString) {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        return date.toLocaleString();
-    }
-
-    // Render array into tbody
-    function renderTable(items) {
-        const tbody = document.getElementById('apiKeysTbody');
-        tbody.innerHTML = ''; // clear
-
-        if (!items || items.length === 0) {
-            tbody.innerHTML = `
-            <tr id="noDataRow">
-                <td colspan="8" class="text-center text-muted py-4">
-                    <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
-                </td>
-            </tr>`;
-            return;
+        // Basic HTML-escape helpers
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            return String(text).replace(/[&<>"'`]/g, function (s) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
+            });
         }
 
-        const fragment = document.createDocumentFragment();
-        items.forEach(i => fragment.appendChild(populateRow(i)));
-        tbody.appendChild(fragment);
-
-        // re-initialize tooltips & copy buttons for new elements
-        initTooltipsAndCopy();
-    }
-
-    // Initialize tooltips and attach copy handlers
-    function initTooltipsAndCopy() {
-        // bootstrap tooltip init (if bootstrap 5)
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-
-        // copy buttons
-        document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
-            btn.removeEventListener('click', copyToClipboardWrapped);
-            btn.addEventListener('click', copyToClipboardWrapped);
-        });
-    }
-
-    // wrapper to provide event to copyToClipboard
-    function copyToClipboardWrapped(e) {
-        const prefix = e.currentTarget.getAttribute('data-prefix') || '';
-        copyToClipboard(prefix, e);
-    }
-
-    // copyToClipboard updated to accept event and text
-    function copyToClipboard(text, evt) {
-        if (!navigator.clipboard) return;
-        navigator.clipboard.writeText(text).then(function () {
-            // Show success feedback on the specific button
-            const btn = evt.currentTarget;
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="mdi mdi-check"></i>';
-            btn.classList.remove('btn-outline-secondary');
-            btn.classList.add('btn-success');
-
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-outline-secondary');
-            }, 1000);
-        }).catch(() => {
-            // optionally show failure
-        });
-    }
-
-    // ---------- Generic Loader Integration ----------
-    // Based on your existing system, these functions should work with your generic loader
-
-    function showLoader(message = 'Loading...') {
-        // Use your existing loader system
-        if (typeof showLoading === 'function') {
-            showLoading(message);
-        } else if (typeof appalert === 'function') {
-            // Show a loading alert or use your system's loader
-            console.log('Loading: ' + message);
-        } else {
-            // Fallback - show browser native loading
-            console.log('Loading: ' + message);
+        function escapeHtmlAttr(text) {
+            return escapeHtml(text).replace(/"/g, '&quot;');
         }
-    }
 
-    function hideLoader() {
-        // Use your existing loader system
-        if (typeof hideLoading === 'function') {
-            hideLoading();
-        } else if (typeof appalert === 'function') {
-            // Hide loading if your system supports it
-        } else {
-            // Fallback
-            console.log('Loading complete');
-        }
-    }
+        // Utility: render a single table row (returns DOM tr element)
+        function populateRow(item) {
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-id', item.Id || '');
 
-    // Enhanced loading state for buttons
-    function setButtonLoading(button, isLoading) {
-        if (!button) return;
+            const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
+            const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
+                : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
 
-        if (isLoading) {
-            button.disabled = true;
-            const originalText = button.innerHTML;
-            button.setAttribute('data-original-text', originalText);
-            button.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Loading...';
-        } else {
-            button.disabled = false;
-            const originalText = button.getAttribute('data-original-text');
-            if (originalText) {
-                button.innerHTML = originalText;
-            }
-        }
-    }
+            const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
 
-    // ---------- Filter actions ----------
-    async function applyApiKeyFilter() {
-        const username = document.getElementById('filterUserName').value.trim();
-        const id = document.getElementById('filterId').value.trim();
-        const applyBtn = document.getElementById('applyApiKeyFilterBtn');
-        const resetBtn = document.getElementById('resetApiKeyFilterBtn');
-
-        setButtonLoading(applyBtn, true);
-        setButtonLoading(resetBtn, true);
-        showLoader('Applying filters...');
-
-        try {
-            // Case 1: no filters => load all data via InitializeData
-            if (!username && !id) {
-                await loadAllApiKeys();
-                return;
-            }
-
-            // Case 2: username only => call GetByUserName
-            if (username && !id) {
-                const resp = await fetch(`${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`);
-                const json = await resp.json();
-                if (json && json.success && Array.isArray(json.data)) {
-                    renderTable(json.data);
-                } else {
-                    renderTable([]);
+            tr.innerHTML = `
+                        <td>${escapeHtml(item.UserName)}</td>
+                        <td>
+                            <code>${escapeHtml(item.KeyPrefix)}</code>
+                            <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
+                                <i class="mdi mdi-content-copy"></i>
+                            </button>
+                        </td>
+                        <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
+                        <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
+                        <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
+                        <td>${statusBadge}</td>
+                        <td>${activeBadge}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-cog-outline"></i> Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
+                                    <li>
+                                        ${item.IsActive
+                    ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
+                    : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
                 }
-                return;
-            }
-
-            // Case 3: id only => get single item and render as array
-            if (id && !username) {
-                // Use InitializeData to get single item
-                const url = `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`;
-                const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                if (!resp.ok) throw new Error('Failed to load key data');
-                const html = await resp.text();
-
-                // Replace the tbody content with the HTML response
-                document.getElementById('apiKeysTbody').innerHTML = html;
-                initTooltipsAndCopy();
-                return;
-            }
-
-            // Case 4: both username & id => get both and merge
-            const [userResp, idResp] = await Promise.all([
-                fetch(`${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`),
-                fetch(`${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-            ]);
-
-            const userJson = await userResp.json();
-            const idHtml = await idResp.text();
-
-            const userItems = (userJson && userJson.success && Array.isArray(userJson.data)) ? userJson.data : [];
-
-            // Parse the HTML response to extract the single item
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(idHtml, 'text/html');
-            const idTr = doc.querySelector('tr[data-id]');
-
-            let mergedItems = [...userItems];
-
-            // If we found a TR element in the HTML response, extract data and add to merged items
-            if (idTr) {
-                const idFromTr = idTr.getAttribute('data-id');
-                // Check if this item is already in userItems
-                const exists = userItems.some(item => item.Id === idFromTr);
-                if (!exists) {
-                    // You would need to extract the data from the TR or make another API call
-                    // For now, we'll just use the userItems
-                }
-            }
-
-            renderTable(mergedItems);
-
-        } catch (err) {
-            console.error('Error applying filter:', err);
-            if (typeof appalert === 'function') {
-                appalert('Error applying filters: ' + err.message, 0, 1);
-            } else {
-                alert('Error applying filters: ' + err.message);
-            }
-            // Fallback to loading all data
-            await loadAllApiKeys();
-        } finally {
-            setButtonLoading(applyBtn, false);
-            setButtonLoading(resetBtn, false);
-            hideLoader();
+                                    </li>
+                                    <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    `;
+            return tr;
         }
-    }
 
-    // Load all API keys
-    async function loadAllApiKeys() {
-        showLoader('Loading API keys...');
-        try {
-            const url = `${API_ENDPOINTS.initializeData}?path=list&partialView=_ApiKeyRows`;
-            const resp = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-            if (!resp.ok) throw new Error('Failed to load API keys');
-            const html = await resp.text();
-            document.getElementById('apiKeysTbody').innerHTML = html;
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+
+        // Render array into tbody
+        function renderTable(items) {
+            const tbody = document.getElementById('apiKeysTbody');
+            tbody.innerHTML = ''; // clear
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                            <tr id="noDataRow">
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
+                                </td>
+                            </tr>`;
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            items.forEach(i => fragment.appendChild(populateRow(i)));
+            tbody.appendChild(fragment);
+
+            // re-initialize tooltips & copy buttons for new elements
             initTooltipsAndCopy();
-        } catch (err) {
-            console.error('Error loading API keys:', err);
-            renderTable([]);
-            if (typeof appalert === 'function') {
-                appalert('Error loading API keys: ' + err.message, 0, 1);
-            }
-        } finally {
-            hideLoader();
         }
-    }
 
-    // Reset inputs and reload full list
-    function resetApiKeyFilter() {
-        document.getElementById('filterUserName').value = '';
-        document.getElementById('filterId').value = '';
-        loadAllApiKeys();
-    }
-
-    // Action functions - Updated to load partial views with loader
-    async function showDetails(id) {
-        showLoader('Loading details...');
-        try {
-            const url = `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=details&partialView=_Details`;
-            const response = await fetch(url, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        // Initialize tooltips and attach copy handlers
+        function initTooltipsAndCopy() {
+            // bootstrap tooltip init (if bootstrap 5)
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
-            if (!response.ok) throw new Error('Failed to load details');
-            const html = await response.text();
-
-            // Inject into modal and show
-            const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
-            modalBody.innerHTML = html;
-
-            const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-            modal.show();
-
-        } catch (error) {
-            console.error('Error loading details:', error);
-            if (typeof appalert === 'function') {
-                appalert('Failed to load API key details: ' + error.message, 0, 1);
-            } else {
-                alert('Failed to load API key details: ' + error.message);
-            }
-        } finally {
-            hideLoader();
-        }
-    }
-
-    async function showRenew(id) {
-        showLoader('Loading renew form...');
-        try {
-            const url = `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=renew&partialView=_Renew`;
-            const response = await fetch(url, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            // copy buttons
+            document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
+                btn.removeEventListener('click', copyToClipboardWrapped);
+                btn.addEventListener('click', copyToClipboardWrapped);
             });
-
-            if (!response.ok) throw new Error('Failed to load renew form');
-            const html = await response.text();
-
-            // Inject into modal and show
-            const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
-            modalBody.innerHTML = html;
-
-            const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-            modal.show();
-
-        } catch (error) {
-            console.error('Error loading renew form:', error);
-            if (typeof appalert === 'function') {
-                appalert('Failed to load renew form: ' + error.message, 0, 1);
-            } else {
-                alert('Failed to load renew form: ' + error.message);
-            }
-        } finally {
-            hideLoader();
         }
-    }
 
-    async function showChangeStatus(id) {
-        showLoader('Loading status form...');
-        try {
-            const url = `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=change-status&partialView=_ChangeStatus`;
-            const response = await fetch(url, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        // wrapper to provide event to copyToClipboard
+        function copyToClipboardWrapped(e) {
+            const prefix = e.currentTarget.getAttribute('data-prefix') || '';
+            copyToClipboard(prefix, e);
+        }
+
+        // copyToClipboard updated to accept event and text
+        function copyToClipboard(text, evt) {
+            if (!navigator.clipboard) return;
+            navigator.clipboard.writeText(text).then(function () {
+                // Show success feedback on the specific button
+                const btn = evt.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="mdi mdi-check"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-success');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 1000);
+            }).catch(() => {
+                // optionally show failure
             });
-
-            if (!response.ok) throw new Error('Failed to load status change form');
-            const html = await response.text();
-
-            // Inject into modal and show
-            const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
-            modalBody.innerHTML = html;
-
-            const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-            modal.show();
-
-        } catch (error) {
-            console.error('Error loading status change form:', error);
-            if (typeof appalert === 'function') {
-                appalert('Failed to load status change form: ' + error.message, 0, 1);
-            } else {
-                alert('Failed to load status change form: ' + error.message);
-            }
-        } finally {
-            hideLoader();
         }
-    }
 
-    async function showRevoke(id) {
-        showLoader('Loading revoke form...');
-        try {
-            const url = `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=revoke&partialView=_Revoke`;
-            const response = await fetch(url, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            });
+        // Enhanced loading state for buttons
+        function setButtonLoading(button, isLoading) {
+            if (!button) return;
 
-            if (!response.ok) throw new Error('Failed to load revoke form');
-            const html = await response.text();
-
-            // Inject into modal and show
-            const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
-            modalBody.innerHTML = html;
-
-            const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
-            modal.show();
-
-        } catch (error) {
-            console.error('Error loading revoke form:', error);
-            if (typeof appalert === 'function') {
-                appalert('Failed to load revoke form: ' + error.message, 0, 1);
+            if (isLoading) {
+                button.disabled = true;
+                const originalText = button.innerHTML;
+                button.setAttribute('data-original-text', originalText);
+                button.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Loading...';
             } else {
-                alert('Failed to load revoke form: ' + error.message);
+                button.disabled = false;
+                const originalText = button.getAttribute('data-original-text');
+                if (originalText) {
+                    button.innerHTML = originalText;
+                }
             }
-        } finally {
-            hideLoader();
         }
-    }
 
-    async function deleteApiKey(id, userName) {
-        if (confirm(`Are you sure you want to delete API key for user "${userName}"? This action cannot be undone.`)) {
-            showLoader('Deleting API key...');
+        // ---------- Filter actions ----------
+        async function applyApiKeyFilter() {
+            const username = document.getElementById('filterUserName').value.trim();
+            const id = document.getElementById('filterId').value.trim();
+            const applyBtn = document.getElementById('applyApiKeyFilterBtn');
+            const resetBtn = document.getElementById('resetApiKeyFilterBtn');
+
+            setButtonLoading(applyBtn, true);
+            setButtonLoading(resetBtn, true);
+
             try {
-                const response = await fetch(`/APIKey/Delete?KEY=${encodeURIComponent(id)}`, {
+                // Case 1: no filters => load all data via InitializeData
+                if (!username && !id) {
+                    await loadAllApiKeys();
+                    return;
+                }
+
+                // Case 2: username only => call GetByUserName
+                if (username && !id) {
+                    const json = await $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    });
+
+                    if (json && json.success && Array.isArray(json.data)) {
+                        renderTable(json.data);
+                    } else {
+                        renderTable([]);
+                    }
+                    return;
+                }
+
+                // Case 3: id only => get single item and render as array
+                if (id && !username) {
+                    // Use InitializeData to get single item
+                    const html = await $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+
+                    // Replace the tbody content with the HTML response
+                    document.getElementById('apiKeysTbody').innerHTML = html;
+                    initTooltipsAndCopy();
+                    return;
+                }
+
+                // Case 4: both username & id => get both and merge
+                const [userJson, idHtml] = await Promise.all([
+                    $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    }),
+                    $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                ]);
+
+                const userItems = (userJson && userJson.success && Array.isArray(userJson.data)) ? userJson.data : [];
+
+                // Parse the HTML response to extract the single item
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(idHtml, 'text/html');
+                const idTr = doc.querySelector('tr[data-id]');
+
+                let mergedItems = [...userItems];
+
+                // If we found a TR element in the HTML response, extract data and add to merged items
+                if (idTr) {
+                    const idFromTr = idTr.getAttribute('data-id');
+                    // Check if this item is already in userItems
+                    const exists = userItems.some(item => item.Id === idFromTr);
+                    if (!exists) {
+                        // You would need to extract the data from the TR or make another API call
+                        // For now, we'll just use the userItems
+                    }
+                }
+
+                renderTable(mergedItems);
+
+            } catch (err) {
+                console.error('Error applying filter:', err);
+                if (typeof appalert === 'function') {
+                    appalert('Error applying filters: ' + err.message, 0, 1);
+                } else {
+                    alert('Error applying filters: ' + err.message);
+                }
+                // Fallback to loading all data
+                await loadAllApiKeys();
+            } finally {
+                setButtonLoading(applyBtn, false);
+                setButtonLoading(resetBtn, false);
+            }
+        }
+
+        // Load all API keys
+        async function loadAllApiKeys() {
+            try {
+                const html = await $.ajax({
+                    url: `${API_ENDPOINTS.initializeData}?path=list&partialView=_ApiKeyRows`,
+                    type: 'GET',
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
 
-                const result = await response.json();
-
-                if (result.success) {
-                    if (typeof appalert === 'function') {
-                        appalert('API key deleted successfully!', 3, 1);
-                    } else {
-                        alert('API key deleted successfully!');
-                    }
-                    // Reload the table
-                    await loadAllApiKeys();
-                } else {
-                    if (typeof appalert === 'function') {
-                        appalert('Failed to delete API key: ' + result.message, 0, 1);
-                    } else {
-                        alert('Failed to delete API key: ' + result.message);
-                    }
-                }
-            } catch (error) {
-                console.error('Error deleting API key:', error);
+                document.getElementById('apiKeysTbody').innerHTML = html;
+                initTooltipsAndCopy();
+            } catch (err) {
+                console.error('Error loading API keys:', err);
+                renderTable([]);
                 if (typeof appalert === 'function') {
-                    appalert('Error deleting API key: ' + error.message, 0, 1);
-                } else {
-                    alert('Error deleting API key: ' + error.message);
+                    appalert('Error loading API keys: ' + err.message, 0, 1);
                 }
-            } finally {
-                hideLoader();
             }
         }
-    }
 
-    // Global form submit handler
-    function handleFormSubmit(form, successMessage) {
-        event.preventDefault();
+        // Reset inputs and reload full list
+        function resetApiKeyFilter() {
+            document.getElementById('filterUserName').value = '';
+            document.getElementById('filterId').value = '';
+            loadAllApiKeys();
+        }
 
-        const formData = new FormData(form);
-        const submitBtn = form.querySelector('button[type="submit"]');
+        // Action functions - Updated to use jQuery AJAX
+        async function showDetails(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=details&partialView=_Details`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
 
-        // Show loader for form submission
-        showLoader('Processing request...');
-        setButtonLoading(submitBtn, true);
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
 
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    if (typeof appalert === 'function') {
-                        appalert(successMessage, 1, 1);
-                    } else {
-                        alert(successMessage);
-                    }
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('affiliateDetailsModal'));
-                    if (modal) modal.hide();
-                    // Reload table
-                    loadAllApiKeys();
-                } else {
-                    if (typeof appalert === 'function') {
-                        appalert('Operation failed: ' + result.message, 0, 1);
-                    } else {
-                        alert('Operation failed: ' + result.message);
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading details:', error);
                 if (typeof appalert === 'function') {
-                    appalert('An error occurred while processing your request: ' + error.message, 0, 1);
+                    appalert('Failed to load API key details: ' + error.message, 0, 1);
                 } else {
-                    alert('An error occurred while processing your request: ' + error.message);
+                    alert('Failed to load API key details: ' + error.message);
                 }
+            }
+        }
+
+        async function showRenew(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=renew&partialView=_Renew`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading renew form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load renew form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load renew form: ' + error.message);
+                }
+            }
+        }
+
+        async function showChangeStatus(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=change-status&partialView=_ChangeStatus`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading status change form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load status change form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load status change form: ' + error.message);
+                }
+            }
+        }
+
+        async function showRevoke(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=revoke&partialView=_Revoke`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading revoke form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load revoke form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load revoke form: ' + error.message);
+                }
+            }
+        }
+
+        async function deleteApiKey(id, userName) {
+            alertify.confirm(
+                'Confirm Deletion',
+                `Are you sure you want to delete API key for user "${userName}"? This action cannot be undone.`,
+                async function onOk() {
+                    try {
+                        const result = await $.ajax({
+                            url: `/APIKey/Delete`,
+                            type: 'POST',
+                            data: { KEY: id },
+                            dataType: 'json'
+                        });
+
+                        if (result && result.success) {
+                            if (typeof appalert === 'function') {
+                                appalert('API key deleted successfully!', 3, 1);
+                            } else {
+                                alert('API key deleted successfully!');
+                            }
+                            // Reload the table
+                            await loadAllApiKeys();
+                        } else {
+                            const msg = (result && result.message) ? result.message : 'Failed to delete API key.';
+                            if (typeof appalert === 'function') {
+                                appalert(msg, 0, 1);
+                            } else {
+                                alert(msg);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error deleting API key:', error);
+                        const msg = error && error.message ? error.message : 'An error occurred during deletion.';
+                        if (typeof appalert === 'function') {
+                            appalert('Error deleting API key: ' + msg, 0, 1);
+                        } else {
+                            alert('Error deleting API key: ' + msg);
+                        }
+                    }
+                },
+                function onCancel() {
+                    // Cancelled by user
+                    if (typeof appalert === 'function') {
+                        appalert('Delete operation cancelled.', 3, 1);
+                    }
+                }
+            );
+        }
+
+        // Global form submit handler - Updated to use jQuery AJAX
+        function handleFormSubmit(form, successMessage) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            setButtonLoading(submitBtn, true);
+
+            // Convert FormData to object for jQuery
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: data,
+                dataType: 'json'
             })
-            .finally(() => {
-                // Restore button state and hide loader
-                setButtonLoading(submitBtn, false);
-                hideLoader();
-            });
+                .done(function (result) {
+                    if (result.success) {
+                        if (typeof appalert === 'function') {
+                            appalert(successMessage, 1, 1);
+                        } else {
+                            alert(successMessage);
+                        }
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('affiliateDetailsModal'));
+                        if (modal) modal.hide();
+                        // Reload table
+                        loadAllApiKeys();
+                    } else {
+                        if (typeof appalert === 'function') {
+                            appalert('Operation failed: ' + result.message, 0, 1);
+                        } else {
+                            alert('Operation failed: ' + result.message);
+                        }
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    console.error('Error:', error);
+                    if (typeof appalert === 'function') {
+                        appalert('An error occurred while processing your request: ' + error, 0, 1);
+                    } else {
+                        alert('An error occurred while processing your request: ' + error);
+                    }
+                })
+                .always(function () {
+                    setButtonLoading(submitBtn, false);
+                });
 
-        return false;
-    }
+            return false;
+        }
 
-    // on page load - ensure tooltips and copy buttons bind
-    document.addEventListener('DOMContentLoaded', function () {
-        initTooltipsAndCopy();
-    });
-</script>
+        // on page load - ensure tooltips and copy buttons bind
+        document.addEventListener('DOMContentLoaded', function () {
+            initTooltipsAndCopy();
+        });
+    </script>
+}

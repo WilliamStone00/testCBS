@@ -1,4 +1,6 @@
-﻿using CBS.BusinessService.Accounting_V2.API;
+﻿using BusinessServices;
+using CBS.BusinessService.Accounting_V2.API;
+using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
 using CBS.FrontDesk.Data.Message;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +16,20 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
     public class APIKeyController : Controller
     {
         private readonly ApiKeyService _apiKeyService;
+        private readonly UserManagementServices _userManagementServices;
+        private readonly BaseService _BaseService;
 
-        public APIKeyController(ApiKeyService apiKeyService)
+        public APIKeyController(ApiKeyService apiKeyService, UserManagementServices userManagementServices, BaseService baseService)
         {
             _apiKeyService = apiKeyService;
+            _userManagementServices = userManagementServices;
+            _BaseService  = baseService;
         }
 
         public async Task<ActionResult> Index()
         {
+            var branches =  _BaseService.GetRoleName();
+            ViewBag.Branches = branches;
             return View(new CreateApiKeyRequest());
         }
 
@@ -162,7 +170,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        [HttpPost]
+  
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
