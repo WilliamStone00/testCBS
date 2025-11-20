@@ -16,9 +16,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice
         public string DeviceSerialNumber { get; set; }
         public int Status { get; set; }
         public string AssignedCollectorUserId { get; set; }
-        public DateTime AssignedOn { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? AssignedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
    
 }
