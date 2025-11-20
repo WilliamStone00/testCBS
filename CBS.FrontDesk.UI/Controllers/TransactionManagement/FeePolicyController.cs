@@ -1,6 +1,7 @@
 ﻿
 using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
@@ -24,9 +25,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly OperationFeeServices _feeServices;
         private readonly BankServices _bankServices;
         private readonly BranchServices _branchServices;
-        private readonly ChartOfAccountServicesAnnex _accountingServices;
+        private readonly AffiliateAccountService _accountingServices;
 
-        public FeePolicyController(FeePolicyServices services, OperationFeeServices feeServices = null, BankServices bankServices = null, BranchServices branchServices = null, ChartOfAccountServicesAnnex accountingServices = null)
+        public FeePolicyController(FeePolicyServices services, OperationFeeServices feeServices = null, BankServices bankServices = null, BranchServices branchServices = null, AffiliateAccountService accountingServices = null)
         {
             _services = services;
             _feeServices = feeServices;
@@ -70,7 +71,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.Fees = fees;
             ViewBag.Banks = Banks;
 
-            ViewBag.EventCodes = await _accountingServices.GetEventNames(operationType);
+            ViewBag.EventCodes = await _accountingServices.GetAllAffiliateAccounts();
 
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)

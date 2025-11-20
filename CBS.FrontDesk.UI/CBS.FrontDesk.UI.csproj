@@ -638,6 +638,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Accounting V2\AccountingV2.fr1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountingV2.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -9449,6 +9454,10 @@
     <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>AccountingV2.fr1.designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
