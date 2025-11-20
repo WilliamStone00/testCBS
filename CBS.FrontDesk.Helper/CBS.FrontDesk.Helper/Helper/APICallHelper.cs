@@ -1731,6 +1731,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string SubmitCloseOfDay = "/api/v1/AccountingOperationTrack/PushJournalExecution";
 
 
 

@@ -2,6 +2,7 @@
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using DocumentFormat.OpenXml.EMMA;
@@ -19,7 +20,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
     public class GLSystemReconciliationController : Controller
     {
 
-
+        private static readonly Random _random = new Random();
 
         private readonly BranchServices _branchServices;
         private readonly GLSystemReconciliationService _glSystemReconciliationService;
@@ -122,11 +123,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
+        public string GenerateReference()
+        {
+            // Use _random instance to prevent duplicate numbers
+            return $"REF-{DateTime.Now:yyyyMMddHHmmss}-{_random.Next(100, 999)}";
+        }
 
 
-        
 
-        
+
         [HttpPost]
         public ActionResult LoadRecordsForm(ReconciliationData summary)
         {
@@ -134,7 +139,49 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             
             return PartialView("_RecordsForm", summary);
         }
+        [HttpGet]
+        public async Task<ActionResult> LoadCloseOfDayForm()
+        {
+            await loader();
 
+
+            var model = new CloseOfDayModel
+            {
+                Reference = GenerateReference()
+            };
+
+
+            return PartialView("_CloseOfDayForm", model);
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> SubmitCloseOfDay(CloseOfDayModel model)
+        {
+
+            try
+            {
+                var result = await _glSystemReconciliationService.SaveCloseOfDay(model);
+
+                if (result == null)
+                    return Json(new { success = false, message = "No response from Close Of Day service." });
+
+                
+
+                // Return summary as JSON
+                return Json(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $" Close of Day failed: {ex.Message}"
+                });
+            }
+        }
 
 
 
@@ -161,26 +208,75 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
+        //[HttpPost]
+        //public async Task<ActionResult> PushRecord(PushRequest model)
+        //{
+
+           
+        //    try
+        //    {
+        //        var summary = await _glSystemReconciliationService.PushRecordAsync(model);
+
+        //        if (summary == null)
+        //            return Json(new { success = false, message = "Empty summary response." });
+
+        //        // Return summary as JSON
+        //        return Json(new { success = true, data = summary });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
         public async Task<ActionResult> PushRecord(PushRequest model)
         {
-
-           
             try
             {
+                // 1️⃣ Get all branches
+                var branches = await _branchServices.GetBranches();
+
+                // 2️⃣ Find the branch matching the incoming BranchId
+                var selectedBranch = branches
+                    .FirstOrDefault(b => b.Id == model.BranchId);
+                model.BranchName = selectedBranch.Name;
+                model.BranchCode = selectedBranch.BranchCode;
+
+                if (selectedBranch == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid BranchId. Branch not found."
+                    });
+                }
+
+                // 3️⃣ Process push request
                 var summary = await _glSystemReconciliationService.PushRecordAsync(model);
 
                 if (summary == null)
                     return Json(new { success = false, message = "Empty summary response." });
 
-                // Return summary as JSON
-                return Json(new { success = true, data = summary });
+                // 4️⃣ Attach branch info to the response
+                return Json(new
+                {
+                    success = true,
+                    data = summary,
+                    branch = new
+                    {
+                        BranchId = selectedBranch.Id,
+                        BranchName = selectedBranch.Name,
+                        BranchCode = selectedBranch.BranchCode
+                    }
+                });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
     }
 }

@@ -10,7 +10,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear
     {
         public string Id { get; set; }
         public string BranchId { get; set; }
-        
+        public string BranchName { get; set; }
+
         public int Year { get; set; }
         public string YearB { get; set; }
         public string Status { get; set; }
