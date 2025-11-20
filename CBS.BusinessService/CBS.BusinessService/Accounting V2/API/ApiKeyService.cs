@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -36,10 +37,17 @@ namespace CBS.BusinessService.Accounting_V2.API
 
         public async Task<IEnumerable<ApiKey>> GetAsync()
         {
+            string roleName = GetRoleName();
             try
             {
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<ApiKey>>>(APICallHelper.GetAllApiKeys);
+                if (roleName == "ThirdPartyProviders")
+                {
+                    string Username = GetUserName();
+                    await GetByUserNameAsync(Username);
+                }
 
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<ApiKey>>>(APICallHelper.GetAllApiKeys);
+           
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     return response.ApiResponseData.Data;

@@ -12,6 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.API
     {
         public string Id { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
+        public string UserRole { get; set; } = string.Empty;
         public string KeyPrefix { get; set; } = string.Empty;
         public string KeyHash { get; set; } = string.Empty;
         public string RawKey { get; set; } = string.Empty;

@@ -82,7 +82,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
         {
             if (path == "list")
             {
+                var role =  _BaseService.GetRoleName();
                 var data = await _apiKeyService.GetAsync();
+                foreach (var item in data)
+                {
+                    item.UserRole = "ThirdPartyProviders";
+                }
+
                 return PartialView(partialView, data);
             }
             else if (path == "new")
