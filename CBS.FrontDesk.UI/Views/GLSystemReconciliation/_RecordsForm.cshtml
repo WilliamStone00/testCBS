@@ -366,6 +366,26 @@
 
 
 
-<div id="datalistingview">
-    @Html.Partial("_DataTable")
-</div>
+    <div id="datalistingview">
+
+
+        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
+            <i class="mdi mdi-lock"></i> Close of Day
+        </button>
+
+
+
+        @Html.Partial("_DataTable")
+
+
+        @*<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
+            <i class="fa fa-lock"></i> Close of Day
+        </button>
+
+        <button class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
+            <i class="mdi mdi-lock"></i> Close of Day
+        </button>*@
+
+
+
+    </div>

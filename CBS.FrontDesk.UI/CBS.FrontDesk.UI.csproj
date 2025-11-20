@@ -11002,6 +11002,7 @@
     <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
     <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_ReconciliationDetails.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_CloseOfDayForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
