@@ -81,23 +81,50 @@
         <h5 class="text-primary mb-3"><i class="mdi mdi-key-plus me-2"></i>Create New API Key</h5>
 
         <form id="createApiKeyForm" method="post" action="@Url.Action("Create", "ApiKey")"
-              onsubmit="return handleFormSubmit(this, 'API Key created successfully! Make sure to copy and store the raw key securely.')">
+              onsubmit="return handleFormSubmit(this, 'API Key created successfully!')">
             @Html.AntiForgeryToken()
 
             <div class="row g-3">
                 <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
-                        <label for="UserName">User Name *</label>
-                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger small" })
+                    <div class="mb-3">
+                        <label for="UserName" class="form-label fw-semibold">Select User</label>
+                        @Html.DropDownListFor(m => m.UserName,
+                            new SelectList(ViewBag.thirdparty ?? new List<SelectListItem>(), "Id", "Name"),
+                            "--- Select User ---",
+                            new { @class = "form-select select2", id = "UserName" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Length, new { @class = "form-control", type = "number", min = "32", max = "256", value = "64", placeholder = "Key Length" })
-                        <label for="Length">Key Length (32-256)</label>
+                    <div class="mb-3">
+                        <label for="Length" class="form-label fw-semibold">Key Length (32-256)</label>
+                        @Html.TextBoxFor(m => m.Length, new { @class = "form-control", type = "number", min = "32", max = "256", value = "64", placeholder = "Key Length", id = "Length" })
                         @Html.ValidationMessageFor(m => m.Length, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generated Key Display Area (Initially Hidden) - Placed below the input fields -->
+            <div id="generatedKeySection" class="alert alert-success d-none mb-4 mt-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-2">
+                            <i class="mdi mdi-key-success me-1"></i>API Key Generated Successfully!
+                        </h6>
+                        <p class="mb-2 text-muted small">Copy this key now - it won't be shown again:</p>
+                        <div class="input-group">
+                            <input type="text" id="generatedApiKey" class="form-control font-monospace" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="copyApiKeyBtn" data-bs-toggle="tooltip" title="Copy to clipboard">
+                                <i class="mdi mdi-content-copy"></i>
+                            </button>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="mdi mdi-alert-circle-outline me-1"></i>
+                                Store this key securely. You won't be able to retrieve it again.
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,7 +133,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="mdi mdi-key-plus me-1"></i> Create API Key
                 </button>
-                <button type="reset" class="btn btn-light">Reset</button>
+                <button type="reset" class="btn btn-light" onclick="resetForm()">Reset</button>
             </div>
         </form>
     </div>
@@ -150,50 +177,22 @@
                 });
 
                 if (response && response.success) {
-                    // success: use appalert -> state 1, alertType 1 (normal UI)
-                    appalert(successMessage || response.message || 'Operation successful', 1, 1);
-
-                    // If rawKey exists, ask user to copy it.
+                    // If rawKey exists, display it in the key section
                     if (response.data && response.data.rawKey) {
                         const rawKey = response.data.rawKey;
-                        const confirmMsg = 'API Key created successfully!\n\nRaw key: ' + rawKey + '\n\nClick OK to copy to clipboard, or Cancel to continue.';
 
-                        // Prefer alertify confirm if available (appalert uses alertify for alertType 2),
-                        // otherwise fallback to native confirm.
-                        if (window.alertify && typeof alertify.confirm === 'function') {
-                            alertify.confirm("API Key", confirmMsg,
-                                async function () {
-                                    try {
-                                        await navigator.clipboard.writeText(rawKey);
-                                        appalert('Raw key copied to clipboard!', 1, 1);
-                                    } catch (e) {
-                                        appalert('Failed to copy to clipboard — copy manually: ' + rawKey, 0, 1);
-                                    }
-                                },
-                                function () {
-                                    // cancelled — nothing to do
-                                }
-                            );
-                        } else {
-                            // fallback native confirm
-                            const wantCopy = window.confirm(confirmMsg);
-                            if (wantCopy) {
-                                try {
-                                    await navigator.clipboard.writeText(rawKey);
-                                    appalert('Raw key copied to clipboard!', 1, 1);
-                                } catch (e) {
-                                    appalert('Failed to copy to clipboard — copy manually: ' + rawKey, 0, 1);
-                                }
-                            }
-                        }
+                        // Display the generated key section
+                        displayGeneratedKey(rawKey, response.message || successMessage);
+
+                        // Don't reset the form - keep the user and length values visible
+                        // The form stays as-is so user can create another key if needed
+                    } else {
+                        // Fallback if no raw key
+                        appalert(successMessage || response.message || 'Operation successful', 1, 1);
                     }
-
-                    // reset form on success
-                    try { form.reset(); } catch (e) { /* ignore */ }
                 } else {
                     // server-side validation / error - show error via appalert state "danger" (use 0 or other)
                     const msg = (response && response.message) ? response.message : 'Unknown error';
-                    // use state 0 -> falls into "else" branch => danger
                     appalert('Error: ' + msg, 0, 1);
                 }
             } catch (error) {
@@ -221,6 +220,74 @@
             return false;
         }
 
+        // Function to display the generated key
+        function displayGeneratedKey(rawKey, message) {
+            const keySection = document.getElementById('generatedKeySection');
+            const keyInput = document.getElementById('generatedApiKey');
+            const copyBtn = document.getElementById('copyApiKeyBtn');
+
+            // Update the key value
+            keyInput.value = rawKey;
+
+            // Show the section
+            keySection.classList.remove('d-none');
+            keySection.classList.add('d-block');
+
+            // Update the message in the alert header
+            const alertHeading = keySection.querySelector('.alert-heading');
+            if (alertHeading && message) {
+                alertHeading.innerHTML = `<i class="mdi mdi-key-success me-1"></i>${message}`;
+            }
+
+            // Scroll to the key section
+            keySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Auto-select the key text for easy copying
+            keyInput.select();
+
+            // Show success message
+            appalert('API Key created successfully! Copy and store the key securely.', 1, 1);
+        }
+
+        // Copy key functionality
+        document.getElementById('copyApiKeyBtn').addEventListener('click', function () {
+            const keyInput = document.getElementById('generatedApiKey');
+            keyInput.select();
+
+            try {
+                navigator.clipboard.writeText(keyInput.value).then(function () {
+                    // Show success feedback
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="mdi mdi-check"></i>';
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-success');
+
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-secondary');
+                    }, 2000);
+
+                    appalert('API key copied to clipboard!', 1, 1);
+                }.bind(this));
+            } catch (err) {
+                appalert('Failed to copy to clipboard. Please copy manually.', 0, 1);
+            }
+        });
+
+        // Reset form function
+        function resetForm() {
+            const form = document.getElementById('createApiKeyForm');
+            const keySection = document.getElementById('generatedKeySection');
+
+            // Hide the key section but keep the form visible
+            keySection.classList.add('d-none');
+            keySection.classList.remove('d-block');
+
+            // Reset the form values
+            form.reset();
+        }
+
         // Tooltip initialization (Bootstrap)
         document.addEventListener('DOMContentLoaded', function () {
             try {
@@ -228,9 +295,33 @@
                 tooltipTriggerList.map(function (tooltipTriggerEl) {
                     return new bootstrap.Tooltip(tooltipTriggerEl);
                 });
+
+                // Initialize copy button event listener
+                document.getElementById('copyApiKeyBtn').addEventListener('click', function () {
+                    const keyInput = document.getElementById('generatedApiKey');
+                    keyInput.select();
+
+                    try {
+                        navigator.clipboard.writeText(keyInput.value).then(function () {
+                            // Show success feedback
+                            const originalHtml = this.innerHTML;
+                            this.innerHTML = '<i class="mdi mdi-check"></i>';
+                            this.classList.remove('btn-outline-secondary');
+                            this.classList.add('btn-success');
+
+                            setTimeout(() => {
+                                this.innerHTML = originalHtml;
+                                this.classList.remove('btn-success');
+                                this.classList.add('btn-outline-secondary');
+                            }, 2000);
+
+                            appalert('API key copied to clipboard!', 1, 1);
+                        }.bind(this));
+                    } catch (err) {
+                        appalert('Failed to copy to clipboard. Please copy manually.', 0, 1);
+                    }
+                });
             } catch (err) {
-                // if tooltip init fails, notify via appalert as example
-                appalert('Tooltip init failed: ' + (err && err.message ? err.message : err), 2, 1);
                 console.warn('Tooltip init failed', err);
             }
         });

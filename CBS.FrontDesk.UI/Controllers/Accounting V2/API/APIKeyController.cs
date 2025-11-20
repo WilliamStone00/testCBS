@@ -1,4 +1,6 @@
 ﻿using BusinessServices;
+using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounting_V2.API;
 using CBS.BusinessService.UserManagement;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
@@ -28,9 +30,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
 
         public async Task<ActionResult> Index()
         {
-            var branches =  _BaseService.GetRoleName();
-            ViewBag.Branches = branches;
+            await loader();
             return View(new CreateApiKeyRequest());
+        }
+
+        public async Task<bool> loader()
+        {
+         
+            var thirdparty = await _userManagementServices.GetUserbyrole();
+            ViewBag.thirdparty = thirdparty;
+            return true;
+
         }
 
         [HttpGet]
@@ -72,7 +82,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
         {
             if (path == "list")
             {
+                var role =  _BaseService.GetRoleName();
                 var data = await _apiKeyService.GetAsync();
+                foreach (var item in data)
+                {
+                    item.UserRole = "ThirdPartyProviders";
+                }
+
                 return PartialView(partialView, data);
             }
             else if (path == "new")
@@ -122,7 +138,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
                 return Json(new { success = false, message = "Validation failed." });
 
             var result = await _apiKeyService.CreateAsync(model);
-            return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
+
+            // Return the raw key in the response
+            return Json(new
+            {
+                success = result.Result,
+                message = Messaging.MessageResult(result),
+                data = new { rawKey = result.Data?.ToString() } // Assuming the raw key is in result.Data
+            });
         }
 
         [HttpPost]
