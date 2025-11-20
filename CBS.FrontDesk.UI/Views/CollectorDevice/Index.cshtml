@@ -1,0 +1,70 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice.CollectorDeviceresponse
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0 text-primary">
+                <i class="mdi mdi-devices me-2"></i>Collector Device Management
+            </h5>
+            <div>
+                <button type="button"
+                        onclick="LoadPartialView('datalistingview', '_CollectorDeviceTable', 'CollectorDevice', 'list')"
+                        class="btn btn-label-primary btn-sm me-2"
+                        data-bs-toggle="tooltip"
+                        title="View All Devices">
+                    <i class="mdi mdi-view-list mdi-18px"></i> View List
+                </button>
+                <button type="button"
+                        onclick="LoadPartialView('datalistingview', '_CollectorDeviceForm', 'CollectorDevice', 'new')"
+                        class="btn btn-label-secondary btn-sm"
+                        data-bs-toggle="tooltip"
+                        title="Add New Device">
+                    <i class="mdi mdi-plus mdi-18px"></i> Add New Device
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="datalistingview">
+    <!-- Create form will be loaded here by default -->
+    @Html.Partial("_CollectorDeviceForm", Model)
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+    function LoadPartialView(containerId, partialView, controller, path, key = null) {
+        $.ajax({
+            url: `/${controller}/InitializeData`,
+            type: 'GET',
+            data: {
+                KEY: key,
+                partialView: partialView,
+                path: path
+            },
+            success: function (data) {
+                $('#' + containerId).html(data);
+                // Re-initialize tooltips after content load
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading partial view:', error);
+                appalert('Error loading content', 0, 1);
+            }
+        });
+    }
+
+    function AddORUpdateGen(key, containerId, partialView, path, controller) {
+        LoadPartialView(containerId, partialView, controller, path, key);
+    }
+</script>
