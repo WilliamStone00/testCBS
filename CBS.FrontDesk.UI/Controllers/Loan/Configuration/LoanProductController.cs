@@ -1,5 +1,10 @@
-﻿using CBS.BusinessService.Config.Localization;
+﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.Config.Localization;
 using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.LoanConf;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using System;
 using System.Collections.Generic;
@@ -7,11 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using CBS.FrontDesk.Data.Entity.LoanConf;
-using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
@@ -23,8 +23,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         private readonly LoanProductCategoryServices _loanProductCategoryServices;
         private readonly LoanTermServices _loanTermServices;
         private readonly PenaltyServices _PenaltyServices;
-        private readonly ChartOfAccountServicesAnnex _accountingServices;
-        public LoanProductController(LoanProductServices LoanProductServices, ChartOfAccountServicesAnnex accountingServices, PenaltyServices penaltyServices, LoanProductCategoryServices loanProductCategoryServices, LoanTermServices loanTermServices)
+        private readonly AffiliateAccountService _accountingServices;
+        public LoanProductController(LoanProductServices LoanProductServices, AffiliateAccountService accountingServices, PenaltyServices penaltyServices, LoanProductCategoryServices loanProductCategoryServices, LoanTermServices loanTermServices)
         {
             _LoanProductServices = LoanProductServices;
             _accountingServices = accountingServices;
@@ -176,8 +176,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         public async Task<ActionResult> GetLoanProductAccountMapping()
         {
 
-            List<ProductAccountingChart> AccountProductItems = await _accountingServices.GetProductAccountingBookByproducttype("Loan_Product");
-            return View(new LoanProductObject { ProductAccountingCharts = AccountProductItems });
+            //List<ProductAccountingChart> AccountProductItems = await _accountingServices.GetProductAccountingBookByproducttype("Loan_Product");
+            return View(/*new LoanProductObject { ProductAccountingCharts = AccountProductItems }*/);
 
 
         }
@@ -220,7 +220,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
                 }
                 else if (path == "account_mapping")
                 {
-                    var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+                    var chartOfAccounts = await _accountingServices.GetAllAffiliateAccounts();
                     ViewBag.ChartOfAccounts = chartOfAccounts;
                     var LoanProduct = await _LoanProductServices.GetLoanProduct(KEY);
                     var loanProductObject = new LoanProductObject();
