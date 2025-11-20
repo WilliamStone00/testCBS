@@ -132,11 +132,14 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.CreateApiKey, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.CreateApiKey, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.UserName, MessagesResults.Success,
+                    // Store the raw key in the execution message data
+                    var rawKey = response.ApiResponseData?.Data?.ToString(); // Adjust based on your API response structure
+
+                    GetExecutionMessages(rawKey, true, model.UserName, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
@@ -257,63 +260,6 @@ namespace CBS.BusinessService.Accounting_V2.API
             return ExecutionMessage;
         }
 
-        //Get Third Party user
-        public async Task<IEnumerable<ThirdPartyUser>> GetAllBranchAccountsFromDataTableAsync( CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                string branchId = GetBranchID();
-                string Role = "ThirdPartyProviders";
-                // Decide branchId first so the query sent to server is correct.
-                if (IsHeadOffice())
-                {
-                    if (string.IsNullOrWhiteSpace(branchId))
-                        branchId = null; // ensure API understands this convention
-                                         // Head Office may keep a specific branchId if passed
-                }
-                else
-                {
-                    branchId = GetBranchID() ?? throw new InvalidOperationException("Current user's branch ID is not available.");
-                }
-
-                var querry = new GetAllUsersDataTableQuery
-                {
-                    Role = Role
-                };
-
-                // Reuse existing method which calls the API datatable endpoint
-                var dataTable = await _user.GetDataTableAsync(querry);
-
-                // Convert datatable.data to strongly-typed list safely
-                List<ThirdPartyUser> branchList = new List<ThirdPartyUser>();
-
-                if (dataTable?.data is JToken token)
-                {
-                    branchList = token.ToObject<List<ThirdPartyUser>>() ?? new List<ThirdPartyUser>();
-                }
-                else if (dataTable?.data != null)
-                {
-                    // Fallback if data is plain object
-                    branchList = JsonConvert.DeserializeObject<List<ThirdPartyUser>>(JsonConvert.SerializeObject(dataTable.data))
-                                 ?? new List<ThirdPartyUser>();
-                }
-
-                var formatted = branchList
-                    .Select(a => new ThirdPartyUser
-                    {
-                        Id = a.UserName,                     
-                        Name = $"[{a.Id}] - {a.UserName}".Trim()
-                    })
-                    .OrderBy(a => a.Name) // nicer UX for dropdown; change if you prefer Id
-                    .ToList();
-
-                return formatted;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+        
     }
 }
