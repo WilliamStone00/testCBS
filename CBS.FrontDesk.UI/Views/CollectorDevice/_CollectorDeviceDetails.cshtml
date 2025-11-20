@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <td class="fw-bold">Assigned On:</td>
-                    <td>@Model.AssignedOn.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@Model.AssignedOn.ToString()</td>
                 </tr>
             </table>
         </div>
@@ -73,8 +73,8 @@
         <div class="col-12">
             <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Created On:</td><td>@Model.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
-                <tr><td class="fw-bold">Last Modified:</td><td>@Model.ModifiedOn.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                <tr><td class="fw-bold">Created On:</td><td>@Model.CreatedOn.ToString()</td></tr>
+                <tr><td class="fw-bold">Last Modified:</td><td>@Model.ModifiedOn.ToString()</td></tr>
             </table>
         </div>
     </div>
