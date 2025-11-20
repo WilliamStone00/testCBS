@@ -638,11 +638,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Accounting V2\AccountingV2.fr1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountingV2.fr.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\AccountingChart\GlobalAccountingChart.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -9455,10 +9450,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Accounting V2\AccountingV2.fr.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AccountingV2.fr1.designer.cs</LastGenOutput>
-    </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GlobalLogin.fr.Designer.cs</LastGenOutput>
@@ -11012,6 +11003,7 @@
     <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_ReconciliationDetails.cshtml" />
     <Content Include="Views\APIKey\_ApiKeyRows.cshtml" />
+    <Content Include="Views\APIKey\_ApiIntegrationGuide.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
