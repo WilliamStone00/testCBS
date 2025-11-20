@@ -1,4 +1,7 @@
 ﻿
+using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Message;
 using System;
@@ -7,8 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Config;
 
 namespace CBS.FrontDesk.UI.Controllers.Configuration
 {
@@ -17,8 +18,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
     {
         // GET: Fee
         private readonly FeeServices _FeeServices;
-        private readonly AccountingServices _accountingServices;
-        public FeeController(FeeServices FeeServices, AccountingServices accountingServices)
+        private readonly AffiliateAccountService _accountingServices;
+        public FeeController(FeeServices FeeServices, AffiliateAccountService accountingServices)
         {
             _FeeServices = FeeServices;
             _accountingServices = accountingServices;
@@ -29,7 +30,8 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             try
             {
                 ViewBag.Key = null;
-                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
+                var chartOfAccounts = await _accountingServices.GetAllAffiliateAccounts();
+                ViewBag.EventCodes = chartOfAccounts.ToList();
                 return View();
             }
             catch (Exception ex)
@@ -72,14 +74,14 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
             else if (path == "new")
             {
-                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
+                ViewBag.EventCodes = await _accountingServices.GetAllAffiliateAccounts();
                 ViewBag.Key = null;
                 return PartialView(partialView, new Fee());
             }
             else
             {
                 ViewBag.Key = KEY;
-                ViewBag.EventCodes = await _accountingServices.GetEventNamesOtherCashIn("FEE");
+                ViewBag.EventCodes = await _accountingServices.GetAllAffiliateAccounts();
                 var Fee = await _FeeServices.GetFee(KEY);
                 return PartialView(partialView, Fee);
 

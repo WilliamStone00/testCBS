@@ -1,0 +1,97 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey>
+
+@foreach (var item in Model)
+{
+    <tr data-id="@item.Id">
+        <td>@item.UserName</td>
+        <td>
+            <code>@item.KeyPrefix</code>
+            <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn"
+                    data-prefix="@item.RawKey"
+                    data-bs-toggle="tooltip" title="Copy Prefix">
+                <i class="mdi mdi-content-copy"></i>
+            </button>
+        </td>
+        <td>@item.CreatedAt.ToString()</td>
+        <td>
+            <span class="@(item.ExpirationDate < DateTime.UtcNow ? "text-danger" : "text-success")">
+                @item.ExpirationDate.ToString()
+            </span>
+        </td>
+        <td>@item.ModifiedDate.ToString()</td>
+        <td>
+            @if (item.RevokedAt.HasValue)
+            {
+                <span class="badge bg-danger">Revoked</span>
+            }
+            else if (!item.IsActive)
+            {
+                <span class="badge bg-warning">Inactive</span>
+            }
+            else
+            {
+                <span class="badge bg-success">Active</span>
+            }
+        </td>
+       
+        <td>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                        type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="mdi mdi-cog-outline"></i> Actions
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button class="dropdown-item" onclick="showDetails('@item.Id')">
+                            <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                        </button>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <button class="dropdown-item" onclick="showRenew('@item.Id')">
+                            <i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew
+                        </button>
+                    </li>
+                    <li>
+                        @if (item.IsActive)
+                        {
+                            <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
+                                <i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="dropdown-item" onclick="showChangeStatus('@item.Id')">
+                                <i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate
+                            </button>
+                        }
+                    </li>
+                    <li>
+                        <button class="dropdown-item text-danger" onclick="showRevoke('@item.Id')">
+                            <i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke
+                        </button>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <button class="dropdown-item text-danger"
+                                onclick="deleteApiKey('@item.Id', '@item.UserName')">
+                            <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+}
+
+@if (!Model.Any())
+{
+    <tr id="noDataRow">
+        <td colspan="8" class="text-center text-muted py-4">
+            <i class="mdi mdi-key-remove mdi-48px mb-2"></i>
+            <br />
+            No API keys found
+        </td>
+    </tr>
+}

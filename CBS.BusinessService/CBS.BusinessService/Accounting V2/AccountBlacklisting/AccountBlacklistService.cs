@@ -103,6 +103,30 @@ namespace CBS.BusinessService.Accounting_V2.AccountBlacklisting
             }
         }
 
+        public async Task<AccountBlacklist> Edit(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("id is required", nameof(id));
+
+                var encodedId = Uri.EscapeDataString(id);
+                string formattedUrl = string.Format(APICallHelper.GetAccountBlacklistById, encodedId);
+
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<AccountBlacklist>>(formattedUrl);
+
+                if (response.IsSuccess)
+                {
+                    return response.ApiResponseData?.Data;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<ExecutionMessages> CreateAsync(AccountBlacklist model)
         {
             try
@@ -133,6 +157,7 @@ namespace CBS.BusinessService.Accounting_V2.AccountBlacklisting
             try
             {
                 var catid = model.Id;
+                if(model.IsCentralized = true) { model.AffiliateId = "1"; }
                 string formattedUrl = string.Format(APICallHelper.UpdateAccountBlacklist, catid);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<AccountBlacklist>>(formattedUrl, model);
 

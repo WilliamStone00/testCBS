@@ -118,6 +118,7 @@
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
     <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
+    <Compile Include="Entity\Accounting V2\CollectorDevice\CollectorDevice.cs" />
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
     <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilter.cs" />
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />

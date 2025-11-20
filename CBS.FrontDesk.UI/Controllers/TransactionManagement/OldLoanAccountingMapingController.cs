@@ -1,12 +1,13 @@
-﻿using CBS.FrontDesk.Data.Message;
+﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounts;
+using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.SavingProducts;
+using CBS.FrontDesk.Data.Message;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using CBS.BusinessService.Accounting;
-using CBS.BusinessService.Accounts;
-using CBS.FrontDesk.Data.Entity.SavingProducts;
-using CBS.BusinessService.Config;
-using System.Linq;
 
 namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 {
@@ -15,11 +16,11 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
     {
         // GET: OldLoanAccountingMaping
         private readonly OldLoanAccountingMapingServices _FeeServices;
-        private readonly ChartOfAccountServicesAnnex _accountingServices;
+        private readonly BranchAccountService _accountingServices;
         private readonly LoanProductServices _loanProductServices;
         private readonly BranchServices _branchServices;
 
-        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, ChartOfAccountServicesAnnex accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null)
+        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, BranchAccountService accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null)
         {
             _FeeServices = FeeServices;
             _accountingServices = accountingServices;
@@ -100,12 +101,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            var chartOfAccounts = await _accountingServices.GetAllBranchAccountsFromDataTableAsync(null);
             var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
             ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
-            ViewBag.AccountLedgers = chartOfAccounts;
+            ViewBag.AccountLedgers = _accountingServices.DropDownGen(chartOfAccounts.ToList()); ;
             return true;
         }
     }

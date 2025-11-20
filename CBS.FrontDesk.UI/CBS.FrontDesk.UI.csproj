@@ -2065,6 +2065,7 @@
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
@@ -11003,6 +11004,13 @@
     <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_ReconciliationDetails.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_CloseOfDayForm.cshtml" />
+    <Content Include="Views\APIKey\_ApiKeyRows.cshtml" />
+    <Content Include="Views\APIKey\_ApiIntegrationGuide.cshtml" />
+    <Content Include="Views\CollectorDevice\Index.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceForm.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceTable.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceDetails.cshtml" />
+    <Content Include="Views\CollectorDevice\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
