@@ -122,7 +122,7 @@
             </div>
             <div class="modal-body"><!-- AJAX injects here --></div>
             @*<div class="modal-footer py-1">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                 </div>*@
         </div>
     </div>
@@ -160,41 +160,63 @@
 
             const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
 
-            tr.innerHTML = `
-                        <td>${escapeHtml(item.UserName)}</td>
-                        <td>
-                            <code>${escapeHtml(item.KeyPrefix)}</code>
-                            <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
-                                <i class="mdi mdi-content-copy"></i>
+            // Check if user role is ThirdPartyProviders
+            const isThirdPartyProvider = item.UserRole === 'ThirdPartyProviders';
+
+            // Generate actions based on role
+            let actionsHtml = '';
+            if (isThirdPartyProvider) {
+                // ThirdPartyProviders only see Details button
+                actionsHtml = `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-cog-outline"></i> Actions
                             </button>
-                        </td>
-                        <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
-                        <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
-                        <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
-                        <td>${statusBadge}</td>
-                        <td>${activeBadge}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="mdi mdi-cog-outline"></i> Actions
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
-                                    <li>
-                                        ${item.IsActive
-                    ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
-                    : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
-                }
-                                    </li>
-                                    <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
-                                </ul>
-                            </div>
-                        </td>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                            </ul>
+                        </div>
                     `;
+            } else {
+                // Other roles see all actions
+                actionsHtml = `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-cog-outline"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
+                                <li>
+                                    ${item.IsActive
+                        ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
+                        : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
+                    }
+                                </li>
+                                <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
+                            </ul>
+                        </div>
+                    `;
+            }
+
+            tr.innerHTML = `
+                            <td>${escapeHtml(item.UserName)}</td>
+                            <td>
+                                <code>${escapeHtml(item.KeyPrefix)}</code>
+                                <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
+                                    <i class="mdi mdi-content-copy"></i>
+                                </button>
+                            </td>
+                            <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
+                            <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
+                            <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
+                            <td>${statusBadge}</td>
+                            <td>${activeBadge}</td>
+                            <td>${actionsHtml}</td>
+                        `;
             return tr;
         }
 
@@ -212,11 +234,11 @@
 
             if (!items || items.length === 0) {
                 tbody.innerHTML = `
-                            <tr id="noDataRow">
-                                <td colspan="8" class="text-center text-muted py-4">
-                                    <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
-                                </td>
-                            </tr>`;
+                                <tr id="noDataRow">
+                                    <td colspan="8" class="text-center text-muted py-4">
+                                        <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
+                                    </td>
+                                </tr>`;
                 return;
             }
 
