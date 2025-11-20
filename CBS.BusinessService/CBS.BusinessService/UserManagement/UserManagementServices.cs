@@ -1,24 +1,29 @@
-﻿using CBS.API.Helper;
+﻿using BusinessServices;
+using CBS.API.Helper;
+using CBS.BusinessService.Config;
+using CBS.BusinessService.Session;
+using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
+using CBS.FrontDesk.Data.Entity.CMoney;
+using CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Owin.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessServices;
-using CBS.FrontDesk.Data.Entity.DataTable;
-using System.Web;
-using CBS.FrontDesk.Data.Entity.Config;
-using CBS.FrontDesk.Data.Entity;
-using CBS.FrontDesk.Data.Entity.Accounting;
-using CBS.FrontDesk.Data.Entity.CMoney;
-using CBS.BusinessService.Config;
-using CBS.BusinessService.Session;
-using DocumentFormat.OpenXml.EMMA;
-using Microsoft.Owin.Logging;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace CBS.BusinessService.UserManagement
 {
@@ -30,8 +35,8 @@ namespace CBS.BusinessService.UserManagement
         public UserManagementServices()
         {
             _identityServerBaseUrl = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
-            _branchServices=new BranchServices();
-            _roleServices=new RoleServices();
+            _branchServices = new BranchServices();
+            _roleServices = new RoleServices();
         }
         public async Task<ExecutionMessages> CreateUser(User user)
         {
@@ -87,7 +92,7 @@ namespace CBS.BusinessService.UserManagement
                 var roles = await _roleServices.GetRoles();
 
 
-          
+
 
                 return roles;
             }
@@ -130,7 +135,7 @@ namespace CBS.BusinessService.UserManagement
                 if (IsHeadOffice())
                 {
                     return roles.ApiResponseData.Data.Where(x => x.RoleName.Equals("Daily_Collector_Agent"));
-          
+
                 }
                 else
                 {
@@ -342,7 +347,7 @@ namespace CBS.BusinessService.UserManagement
                         newList.Add(user);
 
                     }
-                
+
                     stringValues = (from a in newList
                                     select new StringValues
                                     {
@@ -613,7 +618,7 @@ namespace CBS.BusinessService.UserManagement
                 throw ex;
             }
         }
-        
+
         public async Task<ExecutionMessages> DeleteUser(Guid userid)
         {
             try
@@ -674,7 +679,7 @@ namespace CBS.BusinessService.UserManagement
         {
             if (!IsHeadOffice())
             {
-                getAllUsersDataTableQuery.BranchId=GetBranchID();
+                getAllUsersDataTableQuery.BranchId = GetBranchID();
             }
             // Make API call to fetch the DataTable result
             var couApiResponse = await _identityServerBaseUrl.PostAsync<ResponseObject<CustomDataTable>>(
@@ -725,7 +730,7 @@ namespace CBS.BusinessService.UserManagement
         public async Task<CustomDataTable> GetDataTableAsync(GetAllUserSessionsDataTableQuery getAllUsersDataTableQuery)
         {
             getAllUsersDataTableQuery.DataTableOptions.sortColumnName = "CreatedDate";
-          
+
             // Make API call to fetch the DataTable result
             var couApiResponse = await _identityServerBaseUrl.PostAsync<ResponseObject<CustomDataTable>>(
                 APICallHelper.LoadDataTablePagginationForUserSessions,
@@ -756,40 +761,40 @@ namespace CBS.BusinessService.UserManagement
 
                 if (model.Option == "Profile")
                 {
-                    userModel.firstName=model.firstName;
-                    userModel.lastName=model.lastName;
-                    userModel.phoneNumber=model.phoneNumber;
-                    userModel.email=model.email;
-                    userModel.address=model.address;
-                    userModel.NationalIdentityCardNumber=model.NationalIdentityCardNumber;
-                    userModel.IssueDate=model.IssueDate;
-                    userModel.ExpiryDate=model.ExpiryDate;
-                    userModel.AccountExpiryDate=model.AccountExpiryDate;
-                    userModel.PlaceOfIssue=model.PlaceOfIssue;
-                    userModel.AccountTypePolicyProfile=model.AccountTypePolicyProfile;
-                    userModel.BankID=GetBankID();
+                    userModel.firstName = model.firstName;
+                    userModel.lastName = model.lastName;
+                    userModel.phoneNumber = model.phoneNumber;
+                    userModel.email = model.email;
+                    userModel.address = model.address;
+                    userModel.NationalIdentityCardNumber = model.NationalIdentityCardNumber;
+                    userModel.IssueDate = model.IssueDate;
+                    userModel.ExpiryDate = model.ExpiryDate;
+                    userModel.AccountExpiryDate = model.AccountExpiryDate;
+                    userModel.PlaceOfIssue = model.PlaceOfIssue;
+                    userModel.AccountTypePolicyProfile = model.AccountTypePolicyProfile;
+                    userModel.BankID = GetBankID();
 
                 }//OverridePolicy
                 else if (model.Option == "OverridePolicy")
                 {
-                    userModel.PolicyOverride=model.PolicyOverride;
+                    userModel.PolicyOverride = model.PolicyOverride;
                 }
                 else if (model.Option == "SetLanguage")
                 {
-                    userModel.UserPreferedLanguage=userModel.UserPreferedLanguage;
+                    userModel.UserPreferedLanguage = userModel.UserPreferedLanguage;
                 }
                 else if (model.Option == "ActivateDeactivateAccount")
                 {
-                    userModel.isActive=userModel.isActive ? false : true;
-                    userModel.ReasonForBlockingAccount=model.ReasonForBlockingAccount;
+                    userModel.isActive = userModel.isActive ? false : true;
+                    userModel.ReasonForBlockingAccount = model.ReasonForBlockingAccount;
                 }
                 else if (model.Option == "ChangeBranch")
-                {   
-                    userModel.BranchID=model.BranchID;
+                {
+                    userModel.BranchID = model.BranchID;
                 }
                 else if (model.Option == "ChangeRole")
                 {
-                    userModel.userRoles=new List<UserRole>();
+                    userModel.userRoles = new List<UserRole>();
                     userModel.userRoles.Add(new UserRole { roleId = model.roleID, userId = model.id });
                 }
                 else if (model.Option == "BlackList")
@@ -798,7 +803,7 @@ namespace CBS.BusinessService.UserManagement
                 }
                 else
                 {
-                    userModel.UserPreferedLanguage=model.UserPreferedLanguage;
+                    userModel.UserPreferedLanguage = model.UserPreferedLanguage;
                 }
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PutAsync<ResponseObject<User>>(string.Format(APICallHelper.UpdateUser, userModel.id), userModel);
@@ -877,7 +882,7 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                
+
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<User>>(APICallHelper.ResetPassword, user.ResetPassword);
                 if (reUser.IsSuccess)
@@ -904,13 +909,13 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                if (mFAActivation.Code!=null)
+                if (mFAActivation.Code != null)
                 {
                     mFAActivation.Status = true;
                 }
-                mFAActivation.MfaTypeUsed="TOTP";
-                mFAActivation.Email=GetUserName();
-                mFAActivation.Id=ConvertStringToGuid(GetUserID());
+                mFAActivation.MfaTypeUsed = "TOTP";
+                mFAActivation.Email = GetUserName();
+                mFAActivation.Id = ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAActivation, mFAActivation);
                 if (reUser.IsSuccess)
@@ -936,7 +941,7 @@ namespace CBS.BusinessService.UserManagement
         {
             try
             {
-                mFAActivation.Id=ConvertStringToGuid(GetUserID());
+                mFAActivation.Id = ConvertStringToGuid(GetUserID());
                 var ApiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["IdentityServerBaseUrl"].ToString());
                 var reUser = await ApiCallerHelper.PostAsync<ResponseObject<bool>>(APICallHelper.MFAVerification, mFAActivation);
                 if (reUser.IsSuccess)
@@ -997,6 +1002,100 @@ namespace CBS.BusinessService.UserManagement
             return ExecutionMessage;
         }
 
+        //Get Third Party user
+        public async Task<IEnumerable<ThirdPartyUser>> GetUserbyrole(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                string roleName = GetRoleName();
+                List<ThirdPartyUser> branchList = new List<ThirdPartyUser>();
+
+                if (roleName == "Administrator")
+                {
+                    // Administrator: get all users with role "ThirdPartyProviders"
+                    var query = new GetAllUsersDataTableQuery
+                    {
+                        Role = "ThirdPartyProviders",
+                        IsActive = true,
+                        DataTableOptions = new DataTableOptions
+                        {
+                            draw = "2",
+                            length = 10,
+                            sortColumnName = "LastLoginDate",     
+                            sortColumnDirection = "asc",
+                             pageSize = 3000,
+                            skip = 0,
+                            recordsTotal = 0,
+                            recordsFiltered = 0,                                                                                 
+                        }
+                    };
+
+                    var dataTable = await GetDataTableAsync(query);
+
+                    // Convert datatable.data to strongly-typed list safely
+                    if (dataTable?.data is JToken token)
+                    {
+                        branchList = token.ToObject<List<ThirdPartyUser>>() ?? new List<ThirdPartyUser>();
+                    }
+                    else if (dataTable?.data != null)
+                    {
+                        // Fallback if data is plain object
+                        branchList = JsonConvert.DeserializeObject<List<ThirdPartyUser>>(JsonConvert.SerializeObject(dataTable.data))
+                                    ?? new List<ThirdPartyUser>();
+                    }
+                }
+                else if (roleName == "ThirdPartyProviders")
+                {
+                    // ThirdPartyProviders: get only the current user
+                    string username = GetUserName();
+
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        var query = new GetAllUsersDataTableQuery
+                        {
+                            UserName = username,
+                            Role = "ThirdPartyProviders"
+                        };
+
+                        var dataTable = await GetDataTableAsync(query);
+
+                        // Convert datatable.data to strongly-typed list safely
+                        if (dataTable?.data is JToken token)
+                        {
+                            branchList = token.ToObject<List<ThirdPartyUser>>() ?? new List<ThirdPartyUser>();
+                        }
+                        else if (dataTable?.data != null)
+                        {
+                            // Fallback if data is plain object
+                            branchList = JsonConvert.DeserializeObject<List<ThirdPartyUser>>(JsonConvert.SerializeObject(dataTable.data))
+                                        ?? new List<ThirdPartyUser>();
+                        }
+                    }
+                }
+                else
+                {
+                    // Other roles - return empty list or handle as needed
+                    return new List<ThirdPartyUser>();
+                }
+
+                var formatted = branchList
+                    .Select(a => new ThirdPartyUser
+                    {
+                        Id = a.UserName,  // Username as ID to be sent when option is chosen
+                        Name = $"[{a.UserName}] - {a.UserName}".Trim() // Format: [username] - username
+                    })
+                    .OrderBy(a => a.Name)
+                    .ToList();
+
+                return formatted;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here if you have logging
+                // _logger.LogError(ex, "Error getting branch accounts from data table");
+                throw;
+            }
+        }
     }
 
 

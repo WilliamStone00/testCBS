@@ -1,6 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.AndriodApp;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
@@ -90,6 +91,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw;
             }
         }
+
+
 
 
 
@@ -244,6 +247,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw ex;
             }
         }
+
 
 
 
