@@ -1,4 +1,10 @@
-﻿namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 {
     public class CloseOfDayModel
     {
