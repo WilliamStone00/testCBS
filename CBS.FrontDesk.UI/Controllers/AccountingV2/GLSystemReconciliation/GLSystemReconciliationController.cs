@@ -2,6 +2,7 @@
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using DocumentFormat.OpenXml.EMMA;
@@ -19,7 +20,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
     public class GLSystemReconciliationController : Controller
     {
 
-
+        private static readonly Random _random = new Random();
 
         private readonly BranchServices _branchServices;
         private readonly GLSystemReconciliationService _glSystemReconciliationService;
@@ -102,7 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
         [HttpPost]
         public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
-        {
+         {
 
             model.StartUtc = model.StartDate;
             model.EndUtc = model.EndDate;
@@ -122,58 +123,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
+        public string GenerateReference()
+        {
+            // Use _random instance to prevent duplicate numbers
+            return $"REF-{DateTime.Now:yyyyMMddHHmmss}-{_random.Next(100, 999)}";
+        }
 
 
-        //[HttpPost]
-        //public async Task<JsonResult> GetReconciliationSummary(ReconciliationQuery model)
-        //{
-        //    try
-        //    {
-        //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
 
-        //        if (summary == null)
-        //        {
-        //            return Json(new
-        //            {
-        //                draw = model?.Options?.draw ?? "1",
-        //                recordsTotal = 0,
-        //                recordsFiltered = 0,
-        //                data = new List<object>(),
-        //                success = false,
-        //                message = "Empty summary response."
-        //            }, JsonRequestBehavior.AllowGet);
-        //        }
 
-        //        // Wrap single summary object into a list
-        //        var summaryList = new List<object> { summary };
-
-        //        return Json(new
-        //        {
-        //            draw = model?.Options?.draw ?? "1",
-        //            recordsTotal = 1,
-        //            recordsFiltered = 1,
-        //            data = summaryList,
-        //            success = true,
-        //            message = "Reconciliation summary loaded successfully."
-        //        }, JsonRequestBehavior.AllowGet);
-
-                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            draw = model?.Options?.draw ?? "1",
-        //            recordsTotal = 0,
-        //            recordsFiltered = 0,
-        //            data = new List<object>(),
-        //            success = false,
-        //            error = ex.Message
-        //        }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
-        
         [HttpPost]
         public ActionResult LoadRecordsForm(ReconciliationData summary)
         {
@@ -181,30 +139,125 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             
             return PartialView("_RecordsForm", summary);
         }
+        [HttpGet]
+        public async Task<ActionResult> LoadCloseOfDayForm()
+        {
+            await loader();
+
+
+            var model = new CloseOfDayModel
+            {
+                Reference = GenerateReference()
+            };
+
+
+            return PartialView("_CloseOfDayForm", model);
+        }
 
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> GetReconciliationSummarys(ReconciliationQuery model)
-        //{
-        //    if (model == null)
-        //        return Json(new { success = false, message = "Invalid or empty model." });
+        [HttpPost]
+        public async Task<ActionResult> SubmitCloseOfDay(CloseOfDayModel model)
+        {
 
-        //    try
-        //    {
-        //        var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
+            try
+            {
+                var result = await _glSystemReconciliationService.SaveCloseOfDay(model);
 
-        //        if (summary == null || summary.Data == null)
-        //            return Json(new { success = false, message = "Empty summary response." });
+                if (result == null)
+                    return Json(new { success = false, message = "No response from Close Of Day service." });
 
-        //        // Return PARTIAL VIEW with the data
-        //        return PartialView("_RecordsForm", summary.Data);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
-        //    }
-        //}
+                
+
+                // Return summary as JSON
+                return Json(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $" Close of Day failed: {ex.Message}"
+                });
+            }
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "System Reconciliation ID is required");
+
+            Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationDetails entry = null;
+
+            try
+            {
+                entry = await _glSystemReconciliationService.GetReconciliationByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // You can log the exception here
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_ReconciliationDetails", entry);
+        }
+
+
+
+        
+
+        [HttpPost]
+        public async Task<ActionResult> PushRecord(PushRequest model)
+        {
+            try
+            {
+                // 1️⃣ Get all branches
+                var branches = await _branchServices.GetBranches();
+
+                // 2️⃣ Find the branch matching the incoming BranchId
+                var selectedBranch = branches
+                    .FirstOrDefault(b => b.Id == model.BranchId);
+                model.BranchName = selectedBranch.Name;
+                model.BranchCode = selectedBranch.BranchCode;
+
+                if (selectedBranch == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid BranchId. Branch not found."
+                    });
+                }
+
+                // 3️⃣ Process push request
+                var summary = await _glSystemReconciliationService.PushRecordAsync(model);
+
+                if (summary == null)
+                    return Json(new { success = false, message = "Empty summary response." });
+
+                // 4️⃣ Attach branch info to the response
+                return Json(new
+                {
+                    success = true,
+                    data = summary,
+                    branch = new
+                    {
+                        BranchId = selectedBranch.Id,
+                        BranchName = selectedBranch.Name,
+                        BranchCode = selectedBranch.BranchCode
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
 
     }
 }

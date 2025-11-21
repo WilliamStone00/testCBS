@@ -1,89 +1,117 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.ApiKey
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <label class="form-label fw-bold">ID</label>
-        <div class="form-control bg-light">@Model.Id</div>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label fw-bold">User Name</label>
-        <div class="form-control bg-light">@Model.UserName</div>
-    </div>
+<div class="card bg-light mb-2">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-key-chain me-2"></i>API Key Details
+        </h1>
 
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Key Prefix</label>
-        <div class="input-group">
-            <div class="form-control bg-light font-monospace">@Model.KeyPrefix</div>
-            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.KeyPrefix')">
-                <i class="mdi mdi-content-copy"></i>
-            </button>
-        </div>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
+</div>
 
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Created At</label>
-        <div class="form-control bg-light">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</div>
-    </div>
+<div class="card">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">User Name</label>
+                <div class="form-control bg-light">@Model.UserName</div>
+            </div>
 
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Expiration Date</label>
-        <div class="form-control bg-light @(Model.ExpirationDate < DateTime.UtcNow ? "text-danger" : "text-success")">
-            @Model.ExpirationDate.ToString("yyyy-MM-dd HH:mm:ss")
-        </div>
-    </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">ID</label>
+                <div class="input-group">
+                    <div class="form-control bg-light">@Model.Id</div>
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.Id')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
 
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Modified Date</label>
-        <div class="form-control bg-light">@Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")</div>
-    </div>
+            <div class="col-md-12">
+                <label class="form-label fw-bold">RawKey</label>
+                <div class="input-group">
+                    <div class="form-control bg-light font-monospace">@Model.RawKey</div>
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.RawKey')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
 
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Status</label>
-        <div class="form-control bg-light">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Key Prefix</label>
+                <div class="input-group">
+                    <div class="form-control bg-light font-monospace">@Model.KeyPrefix</div>
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('@Model.KeyPrefix')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Created At</label>
+                <div class="form-control bg-light">@Model.CreatedAt.ToString()</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Expiration Date</label>
+                <div class="form-control bg-light @(Model.ExpirationDate < DateTime.UtcNow ? "text-danger" : "text-success")">
+                    @Model.ExpirationDate.ToString()
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Modified Date</label>
+                <div class="form-control bg-light">@Model.ModifiedDate.ToString()</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Status</label>
+                <div class="form-control bg-light">
+                    @if (Model.RevokedAt.HasValue)
+                    {
+                        <span class="badge bg-danger">Revoked</span>
+                        <small class="text-muted ms-2">on @Model.RevokedAt.Value.ToString()</small>
+                    }
+                    else if (!Model.IsActive)
+                    {
+                        <span class="badge bg-warning">Inactive</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Is Active</label>
+                <div class="form-control bg-light">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </div>
+            </div>
+
             @if (Model.RevokedAt.HasValue)
             {
-                <span class="badge bg-danger">Revoked</span>
-                <small class="text-muted ms-2">on @Model.RevokedAt.Value.ToString("yyyy-MM-dd HH:mm")</small>
-            }
-            else if (!Model.IsActive)
-            {
-                <span class="badge bg-warning">Inactive</span>
-            }
-            else
-            {
-                <span class="badge bg-success">Active</span>
+                <div class="col-12">
+                    <label class="form-label fw-bold">Revocation Reason</label>
+                    <div class="form-control bg-light">@Model.RevocationReason</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Revoked By</label>
+                    <div class="form-control bg-light">@Model.RevokedBy</div>
+                </div>
             }
         </div>
-    </div>
-
-    <div class="col-md-6">
-        <label class="form-label fw-bold">Is Active</label>
-        <div class="form-control bg-light">
-            @if (Model.IsActive)
-            {
-                <span class="badge bg-success">Yes</span>
-            }
-            else
-            {
-                <span class="badge bg-secondary">No</span>
-            }
+        <div class="modal-footer mt-3">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
         </div>
-    </div>
-
-    @if (Model.RevokedAt.HasValue)
-    {
-        <div class="col-12">
-            <label class="form-label fw-bold">Revocation Reason</label>
-            <div class="form-control bg-light">@Model.RevocationReason</div>
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label fw-bold">Revoked By</label>
-            <div class="form-control bg-light">@Model.RevokedBy</div>
-        </div>
-    }
-</div>
-
-<div class="modal-footer mt-3">
-    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-</div>
+ </div>    </div>

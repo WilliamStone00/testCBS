@@ -86,7 +86,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation
         public string LoanType { get; set; }
         public int LoanCount { get; set; }
         public string StatusFilter { get; set; }
-        //public string loanType { get; set; }
+        public bool IsTaxable { get; set; }
 
 
         //---------- others ---------------

@@ -106,6 +106,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
 
         }
 
+
+
+
         [HttpGet]
         public async Task<ActionResult> GetDetails(string id)
         {

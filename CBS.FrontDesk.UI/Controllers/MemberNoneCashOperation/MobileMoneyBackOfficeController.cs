@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
@@ -8,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Helper;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
@@ -27,9 +29,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly CashDeskServices _cashDeskService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
         
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly BranchAccountService chartOfAccountServices;
 
-        public MobileMoneyBackOfficeController(CashDeskServices cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
+        public MobileMoneyBackOfficeController(CashDeskServices cashDeskService = null, BranchAccountService chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
         {
             _cashDeskService = cashDeskService;
             this.chartOfAccountServices=chartOfAccountServices;
@@ -46,8 +48,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(true);
-            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(null);
+            ViewBag.chartOfAccounts = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
+
             return true;
         }
         public async Task<ActionResult> Ajaxloader(string Key,string path)

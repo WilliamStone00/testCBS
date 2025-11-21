@@ -322,6 +322,183 @@
                 </div>
 
             </div>
+
+            <!-- =============================================== -->
+            <!-- PRODUCT NARRATIONS (Cash-in / Cash-out / Transfer) -->
+            <!-- =============================================== -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingNarrations">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseNarrations"
+                            aria-expanded="false"
+                            aria-controls="collapseNarrations">
+                        Product narrations for cash-in, cash-out and transfers
+                    </button>
+                </h2>
+
+                <div id="collapseNarrations"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        <div class="row g-4">
+
+                            @using (Html.BeginForm(
+                                "AddOrUpdateSavingProductNarrations",         // 🔁 MVC action name
+                                "TransactionConfiguration",                   // 🔁 MVC controller name
+                                FormMethod.Post,
+                                new { onsubmit = "return AjaxPostAndUpdate(this);" }))
+                            {
+                                @Html.HiddenFor(m => m.SavingProduct.Id)
+                                <input type="hidden" name="ServiceOption" value="productnarrations" />
+
+                                <!-- Header / tips -->
+                                <div class="col-12">
+                                    <p class="text-muted mb-2">
+                                        Use this section to define default narrations that will appear on
+                                        journal lines and receipts for this product.
+                                        If left blank, the system will fall back to generic descriptions.
+                                    </p>
+                                </div>
+
+                                <!-- ROW 1: Cash-in -->
+                                <div class="col-12">
+                                    <h6 class="text-primary mb-2">Cash-in (Deposits)</h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.CashInNarration,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height: 110px;"
+                                            })
+                                        <label>Cash-in narration (principal)</label>
+                                        <small class="form-text text-muted">
+                                            Default description for standard cash deposits on this product
+                                            (e.g. “Cash deposit to savings account”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.CashinNarrationForCommision,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height: 110px;"
+                                            })
+                                        <label>Cash-in narration for commission</label>
+                                        <small class="form-text text-muted">
+                                            Narration used when posting commission on cash deposits
+                                            (e.g. “Cash-in commission on deposit”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- ROW 2: Cash-out -->
+                                <div class="col-12 mt-2">
+                                    <h6 class="text-primary mb-2">Cash-out (Withdrawals)</h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.CashOutNarration,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height: 110px;"
+                                            })
+                                        <label>Cash-out narration (principal)</label>
+                                        <small class="form-text text-muted">
+                                            Default description for cash withdrawals from this product
+                                            (e.g. “Cash withdrawal from savings account”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.CashOutNarrationForCommision,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height = 110px;"
+                                            })
+                                        <label>Cash-out narration for commission</label>
+                                        <small class="form-text text-muted">
+                                            Narration used when posting commission on cash withdrawals
+                                            (e.g. “Cash-out commission on withdrawal”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- ROW 3: Transfers -->
+                                <div class="col-12 mt-2">
+                                    <h6 class="text-primary mb-2">Account-to-account transfers</h6>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.TransfterNarration,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height: 110px;"
+                                            })
+                                        <label>Transfer narration (principal movement)</label>
+                                        <small class="form-text text-muted">
+                                            Default description for principal movements between accounts
+                                            (e.g. “Transfer between member accounts”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.TextAreaFor(
+                                            m => m.SavingProduct.TransfterNarrationForCommision,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                rows = "3",
+                                                style = "height: 110px;"
+                                            })
+                                        <label>Transfer narration for commission</label>
+                                        <small class="form-text text-muted">
+                                            Narration used when posting commission on account-to-account transfers
+                                            (e.g. “Transfer commission between member accounts”).
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        Save narrations
+                                    </button>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

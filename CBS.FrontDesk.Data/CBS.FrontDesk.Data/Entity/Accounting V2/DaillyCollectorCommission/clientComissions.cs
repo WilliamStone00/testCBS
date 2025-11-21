@@ -123,7 +123,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
                 }
             }
         }
-
     }
 
     public class Payment
@@ -140,7 +139,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public List<SharedAmount> SharedAmounts { get; set; } = new List<SharedAmount>();
         public int Month { get; set; }
         public int Year { get; set; }
-
     }
 
     public class SharedAmount

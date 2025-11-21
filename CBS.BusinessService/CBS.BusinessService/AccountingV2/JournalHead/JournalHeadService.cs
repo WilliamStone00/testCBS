@@ -1,6 +1,8 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.AndriodApp;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
@@ -20,6 +22,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
     {
 
         private readonly ApiCallerHelper _JournalheadapiCallerHelper;
+        private readonly BranchServices _branchServices;
 
 
         public JournalHeadService()
@@ -77,6 +80,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 // ✅ Validate response
                 if (!response.IsSuccess)
                     throw new Exception($"API call failed: {response.Message}");
+               
 
                 var entry = response.ApiResponseData?.Data;
                 if (entry == null)
@@ -90,6 +94,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw;
             }
         }
+
+
 
 
 
@@ -244,6 +250,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw ex;
             }
         }
+
 
 
 

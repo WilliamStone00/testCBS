@@ -13,11 +13,11 @@
                     <i class="mdi mdi-file-chart me-2"></i> Report Definition Management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Create and manage report definitions for financial statement generation.
+                    Configure and organize report definitions used for generating financial statements.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure consistency across report configurations to maintain data integrity.
+                    Maintain consistency across definitions to ensure accurate and reliable reporting.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -36,14 +36,15 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
-                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
-                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
-                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Assign a short, unique identifier for easy reference.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Select the appropriate category (Balance Sheet, Income Statement, etc.).</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Set the reporting currency to ensure precise calculations.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Status:</strong> Activate or deactivate the definition depending on business requirements.</li>
             </ul>
         </div>
     </div>
 </div>
+
 
 <!-- Form Section -->
 
@@ -68,7 +69,7 @@
             <div class="mb-3">
                 @Html.LabelFor(model => model.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
                 @Html.DropDownListFor(model => model.ReportType,
-                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "ExpenditureStatement", "Custom" }),
+                    new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "ExpenditureStatement" }),
                     "Select report type",
                     new { @class = "form-select" })
             </div>
@@ -84,7 +85,7 @@
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-success">
+                <button type="submit"  class="btn btn-success">
                     <i class="mdi @(isUpdate ? "mdi-pencil" : "mdi-content-save-outline") me-1"></i>
                     @(isUpdate ? "Update Report" : "Save Report")
                 </button>

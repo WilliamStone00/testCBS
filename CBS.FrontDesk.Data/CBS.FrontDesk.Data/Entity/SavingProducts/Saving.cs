@@ -412,12 +412,26 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MemberAccountActivations = new List<MemberAccountActivation>();
         }
     }
+    public class AddOrUpdateSavingProductNarrationsCommand
+    {
+        /// <summary>
+        /// Id of the SavingProduct whose narrations should be updated.
+        /// </summary>
+        public string Id { get; set; }
+
+        public string CashInNarration { get; set; }
+        public string CashOutNarration { get; set; }
+        public string CashinNarrationForCommision { get; set; }
+        public string CashOutNarrationForCommision { get; set; }
+        public string TransfterNarration { get; set; }
+        public string TransfterNarrationForCommision { get; set; }
+    }
     public sealed class UpdateSavingProductAccountingV2MappingCommand
     {
         public string Id { get; set; }
 
         // Toggle – if provided: when true we expect at least the principal account id
-        public bool? IsAccountingV2Mapping { get; set; }
+        public bool IsAccountingV2Mapping { get; set; }
 
         public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
         public string AccountingV2InterestAmountChartOfAccountId { get; set; }
@@ -561,7 +575,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MinDailySaverSharesOpeningBalanceMoral { get; set; }
 
         // Toggle – if provided: when true we expect at least the principal account id
-        public bool? IsAccountingV2Mapping { get; set; }
+        public bool IsAccountingV2Mapping { get; set; }
 
         public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
         public string AccountingV2InterestAmountChartOfAccountId { get; set; }
@@ -574,7 +588,12 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountingV2ShortageChartOfAccountId { get; set; }
 
 
-
+        public string CashInNarration { get; set; }
+        public string CashOutNarration { get; set; }
+        public string CashinNarrationForCommision { get; set; }
+        public string CashOutNarrationForCommision { get; set; }
+        public string TransfterNarration { get; set; }
+        public string TransfterNarrationForCommision { get; set; }
 
         public string AccountingV2CivilServantsSalarySourceChartofAccountId { get; set; }
         public string AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
