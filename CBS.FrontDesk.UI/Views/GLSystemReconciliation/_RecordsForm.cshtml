@@ -1,181 +1,173 @@
 ﻿<style>
+    /* Dashboard Title */
     .section-title {
-        margin: 1.5rem 0 0.5rem 0;
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #444;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2a5298; /* Deep Blue */
+        margin: 1rem 0 0.8rem 0;
         text-transform: uppercase;
-        border-left: 4px solid #6a5acd;
-        padding-left: .75rem;
+        letter-spacing: 0.6px;
     }
 
-    .dashboard-value {
-        font-size: 1.4rem;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .dashboard-sub {
-        font-size: 0.85rem;
-        color: #666;
-        margin: 0;
-    }
-
+    /* Card Borders */
     .card-border-shadow-primary {
-        border-left: 4px solid #6a5acd;
-        box-shadow: rgba(0,0,0,0.1) 0 2px 4px;
+        border-left: 4px solid #5b4b8a; /* Indigo */
+        box-shadow: 0 2px 8px rgba(42, 82, 152, 0.15);
+    }
+
+    /* Dashboard Values */
+    .dashboard-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c7873; /* Teal Green */
+    }
+
+    /* Sub text */
+    .dashboard-sub {
+        font-size: 0.9rem;
+        color: #5b4b8a; /* Indigo */
+    }
+
+    /* Soft warning instead of red */
+    .text-warning-soft {
+        color: #d49a00 !important; /* Gold / Soft Orange */
     }
 </style>
 
 @model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationData
 
 <div class="card shadow-sm mb-3">
-
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>RECONCILIATION SUMMARY</span>
     </h6>
-
     <div class="card-body">
 
-        <!-- ========================= TOTAL OPERATIONS ========================= -->
+        <!-- TOTAL OPERATIONS -->
         <div class="section-title">Total Operations</div>
         <div class="row mb-3">
-           <div class="row mb-2">
 
-                    <!-- Total Operations -->
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card card-border-shadow-primary h-100">
-                            <div class="card-body">
-                                <h6 class="text-uppercase text-muted mb-2">Total Operations</h6>
-                                <h3 class="dashboard-value">@Model.Statistics.TotalOperations.Count.ToString("N0")</h3>
-                                <p class="dashboard-sub">@Model.Statistics.TotalOperations.Currency @Model.Statistics.TotalOperations.Volume.ToString("N2")</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Local Operations -->
-                    <div class="col-sm-6 col-md-3">
-                        @{
-                            var localTotalCount =
-                                Model.Statistics.LocalCashInOperations.Count +
-                                Model.Statistics.LocalCashOutOperations.Count +
-                                Model.Statistics.LocalLoanApprovalOperations.Count +
-                                Model.Statistics.LocalLoanDisbursementOperations.Count +
-                                Model.Statistics.LocalManualentries.Count;
-
-                            var localTotalVolume =
-                                Model.Statistics.LocalCashInOperations.Volume +
-                                Model.Statistics.LocalCashOutOperations.Volume +
-                                Model.Statistics.LocalLoanApprovalOperations.Volume +
-                                Model.Statistics.LocalLoanDisbursementOperations.Volume +
-                                Model.Statistics.LocalManualentries.Volume;
-
-                            var localCurrency = Model.Statistics.LocalCashInOperations.Currency;
-
-                            // If local is 0, take total - interbranch
-                            if (localTotalCount == 0)
-                            {
-                                localTotalCount = Model.Statistics.TotalOperations.Count -
-                                                  (
-                                                      Model.Statistics.InterBranchCashInOperations.Count +
-                                                      Model.Statistics.InterBranchCashOutOperations.Count +
-                                                      Model.Statistics.InterBranchLoanApprovalOperations.Count +
-                                                      Model.Statistics.InterBranchLoanDisbursementOperations.Count +
-                                                      Model.Statistics.InterBranchManualentries.Count
-                                                  );
-                                localTotalVolume = Model.Statistics.TotalOperations.Volume -
-                                                   (
-                                                       Model.Statistics.InterBranchCashInOperations.Volume +
-                                                       Model.Statistics.InterBranchCashOutOperations.Volume +
-                                                       Model.Statistics.InterBranchLoanApprovalOperations.Volume +
-                                                       Model.Statistics.InterBranchLoanDisbursementOperations.Volume +
-                                                       Model.Statistics.InterBranchManualentries.Volume
-                                                   );
-                            }
-
-                            var localTextClass = localTotalCount == 0 ? "text-danger" : "text-muted";
-                        }
-                        <div class="card card-border-shadow-primary h-100">
-                            <div class="card-body">
-                                <h6 class="text-uppercase @localTextClass mb-2">Local Operations</h6>
-                                <h3 class="dashboard-value @localTextClass">@localTotalCount.ToString("N0")</h3>
-                                <p class="dashboard-sub @localTextClass">@localCurrency @localTotalVolume.ToString("N2")</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Interbranch Operations -->
-                    <div class="col-sm-6 col-md-3">
-                        @{
-                            var interTotalCount =
-                                Model.Statistics.InterBranchCashInOperations.Count +
-                                Model.Statistics.InterBranchCashOutOperations.Count +
-                                Model.Statistics.InterBranchLoanApprovalOperations.Count +
-                                Model.Statistics.InterBranchLoanDisbursementOperations.Count +
-                                Model.Statistics.InterBranchManualentries.Count;
-
-                            var interTotalVolume =
-                                Model.Statistics.InterBranchCashInOperations.Volume +
-                                Model.Statistics.InterBranchCashOutOperations.Volume +
-                                Model.Statistics.InterBranchLoanApprovalOperations.Volume +
-                                Model.Statistics.InterBranchLoanDisbursementOperations.Volume +
-                                Model.Statistics.InterBranchManualentries.Volume;
-
-                            var interCurrency = Model.Statistics.InterBranchCashInOperations.Currency;
-
-                            // If interbranch is 0, take total - local
-                            if (interTotalCount == 0)
-                            {
-                                interTotalCount = Model.Statistics.TotalOperations.Count - localTotalCount;
-                                interTotalVolume = Model.Statistics.TotalOperations.Volume - localTotalVolume;
-                            }
-
-                            var interTextClass = interTotalCount == 0 ? "text-danger" : "text-muted";
-                        }
-                        <div class="card card-border-shadow-primary h-100">
-                            <div class="card-body">
-                                <h6 class="text-uppercase @interTextClass mb-2">Interbranch Operations</h6>
-                                <h3 class="dashboard-value @interTextClass">@interTotalCount.ToString("N0")</h3>
-                                <p class="dashboard-sub @interTextClass">@interCurrency @interTotalVolume.ToString("N2")</p>
-                            </div>
-                        </div>
-                    </div>
-
-           </div>
-
-        <!-- ========================= CASH OPERATIONS ========================= -->
-        <div class="section-title">Cash Operations – Cash In</div>
-        <div class="row mb-3">
-
-            <!-- Max Cash In -->
-            <div class="col-sm-6 col-md-3">
+            <!-- Total Operations -->
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-2">Max Cash In</h6>
-                        <h3 class="dashboard-value">@Model.Statistics.CashOperations.MaxCashIn.Currency @Model.Statistics.CashOperations.MaxCashIn.Amount.ToString("N0")</h3>
-                        <p class="dashboard-sub">@Model.Statistics.CashOperations.MaxCashIn.PerformedBy.Name</p>
+                        <h6 class="text-uppercase text-muted mb-2">Total Operations</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.TotalOperations.Count.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.TotalOperations.Currency @Model.Statistics.TotalOperations.Volume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Total Cash In -->
-            <div class="col-sm-6 col-md-3">
+            <!-- Local Operations -->
+            <div class="col-sm-6 col-md-4">
                 @{
-                    var totalCashInCount = Model.Statistics.LocalCashInOperations.Count + Model.Statistics.InterBranchCashInOperations.Count;
-                    var totalCashInVolume = Model.Statistics.LocalCashInOperations.Volume + Model.Statistics.InterBranchCashInOperations.Volume;
-                    var totalCashInCurrency = Model.Statistics.LocalCashInOperations.Currency;
+                    var localCount =
+                        Model.Statistics.LocalCashInOperations.Count +
+                        Model.Statistics.LocalCashOutOperations.Count +
+                        Model.Statistics.LocalLoanApprovalOperations.Count +
+                        Model.Statistics.LocalLoanDisbursementOperations.Count +
+                        Model.Statistics.LocalManualentries.Count;
+
+                    var localVolume =
+                        Model.Statistics.LocalCashInOperations.Volume +
+                        Model.Statistics.LocalCashOutOperations.Volume +
+                        Model.Statistics.LocalLoanApprovalOperations.Volume +
+                        Model.Statistics.LocalLoanDisbursementOperations.Volume +
+                        Model.Statistics.LocalManualentries.Volume;
+
+                    var localCurrency = Model.Statistics.LocalCashInOperations.Currency;
+
+                    if (localCount == 0)
+                    {
+                        localCount = Model.Statistics.TotalOperations.Count -
+                                     (
+                                         Model.Statistics.InterBranchCashInOperations.Count +
+                                         Model.Statistics.InterBranchCashOutOperations.Count +
+                                         Model.Statistics.InterBranchLoanApprovalOperations.Count +
+                                         Model.Statistics.InterBranchLoanDisbursementOperations.Count +
+                                         Model.Statistics.InterBranchManualentries.Count
+                                     );
+
+                        localVolume = Model.Statistics.TotalOperations.Volume -
+                                      (
+                                          Model.Statistics.InterBranchCashInOperations.Volume +
+                                          Model.Statistics.InterBranchCashOutOperations.Volume +
+                                          Model.Statistics.InterBranchLoanApprovalOperations.Volume +
+                                          Model.Statistics.InterBranchLoanDisbursementOperations.Volume +
+                                          Model.Statistics.InterBranchManualentries.Volume
+                                      );
+                    }
+
+                    var localClass = localCount == 0 ? "text-warning-soft" : "text-muted";
+                }
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase @localClass mb-2">Local Operations</h6>
+                        <h3 class="dashboard-value @localClass">@localCount.ToString("N0")</h3>
+                        <p class="dashboard-sub @localClass">@localCurrency @localVolume.ToString("N2")</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interbranch Operations -->
+            <div class="col-sm-6 col-md-4">
+                @{
+                    var interCount =
+                        Model.Statistics.InterBranchCashInOperations.Count +
+                        Model.Statistics.InterBranchCashOutOperations.Count +
+                        Model.Statistics.InterBranchLoanApprovalOperations.Count +
+                        Model.Statistics.InterBranchLoanDisbursementOperations.Count +
+                        Model.Statistics.InterBranchManualentries.Count;
+
+                    var interVolume =
+                        Model.Statistics.InterBranchCashInOperations.Volume +
+                        Model.Statistics.InterBranchCashOutOperations.Volume +
+                        Model.Statistics.InterBranchLoanApprovalOperations.Volume +
+                        Model.Statistics.InterBranchLoanDisbursementOperations.Volume +
+                        Model.Statistics.InterBranchManualentries.Volume;
+
+                    var interCurrency = Model.Statistics.InterBranchCashInOperations.Currency;
+
+                    if (interCount == 0)
+                    {
+                        interCount = Model.Statistics.TotalOperations.Count - localCount;
+                        interVolume = Model.Statistics.TotalOperations.Volume - localVolume;
+                    }
+
+                    var interClass = interCount == 0 ? "text-warning-soft" : "text-muted";
+                }
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase @interClass mb-2">Interbranch Operations</h6>
+                        <h3 class="dashboard-value @interClass">@interCount.ToString("N0")</h3>
+                        <p class="dashboard-sub @interClass">@interCurrency @interVolume.ToString("N2")</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CASH OPERATIONS – CASH IN -->
+        <div class="section-title">Cash Operations – Cash In</div>
+        <div class="row mb-3">
+
+            <!-- Total Cash In -->
+            <div class="col-sm-6 col-md-4">
+                @{
+                    var tciCount = Model.Statistics.LocalCashInOperations.Count + Model.Statistics.InterBranchCashInOperations.Count;
+                    var tciVolume = Model.Statistics.LocalCashInOperations.Volume + Model.Statistics.InterBranchCashInOperations.Volume;
+                    var tciCurrency = Model.Statistics.LocalCashInOperations.Currency;
                 }
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Total Cash In</h6>
-                        <h3 class="dashboard-value">@totalCashInCount.ToString("N0")</h3>
-                        <p class="dashboard-sub">@totalCashInCurrency @totalCashInVolume.ToString("N2")</p>
+                        <h3 class="dashboard-value">@tciCount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@tciCurrency @tciVolume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
             <!-- Local Cash In -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Local Cash In</h6>
@@ -185,40 +177,41 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="section-title">Cash Operations – Cash Out</div>
-        <div class="row mb-3">
-
-            <!-- Max Cash Out -->
-            <div class="col-sm-6 col-md-3">
+            <!-- Interbranch Cash In -->
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-2">Max Cash Out</h6>
-                        <h3 class="dashboard-value">@Model.Statistics.CashOperations.MaxCashOut.Currency @Model.Statistics.CashOperations.MaxCashOut.Amount.ToString("N0")</h3>
-                        <p class="dashboard-sub">@Model.Statistics.CashOperations.MaxCashOut.PerformedBy.Name</p>
+                        <h6 class="text-uppercase text-muted mb-2">Interbranch Cash In</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.InterBranchCashInOperations.Count.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.InterBranchCashInOperations.Currency @Model.Statistics.InterBranchCashInOperations.Volume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
+        </div>
+
+        <!-- CASH OPERATIONS – CASH OUT -->
+        <div class="section-title">Cash Operations – Cash Out</div>
+        <div class="row mb-3">
+
             <!-- Total Cash Out -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 @{
-                    var totalCashOutCount = Model.Statistics.LocalCashOutOperations.Count + Model.Statistics.InterBranchCashOutOperations.Count;
-                    var totalCashOutVolume = Model.Statistics.LocalCashOutOperations.Volume + Model.Statistics.InterBranchCashOutOperations.Volume;
-                    var totalCashOutCurrency = Model.Statistics.LocalCashOutOperations.Currency;
+                    var tcoCount = Model.Statistics.LocalCashOutOperations.Count + Model.Statistics.InterBranchCashOutOperations.Count;
+                    var tcoVolume = Model.Statistics.LocalCashOutOperations.Volume + Model.Statistics.InterBranchCashOutOperations.Volume;
+                    var tcoCurrency = Model.Statistics.LocalCashOutOperations.Currency;
                 }
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Total Cash Out</h6>
-                        <h3 class="dashboard-value">@totalCashOutCount.ToString("N0")</h3>
-                        <p class="dashboard-sub">@totalCashOutCurrency @totalCashOutVolume.ToString("N2")</p>
+                        <h3 class="dashboard-value">@tcoCount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@tcoCurrency @tcoVolume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
             <!-- Local Cash Out -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Local Cash Out</h6>
@@ -229,7 +222,7 @@
             </div>
 
             <!-- Interbranch Cash Out -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Interbranch Cash Out</h6>
@@ -241,30 +234,30 @@
 
         </div>
 
-        <!-- ========================= LOAN OPERATIONS ========================= -->
+        <!-- LOAN OPERATIONS -->
         <div class="section-title">Loan Operations</div>
         <div class="row mb-3">
 
             <!-- Total Loan Operations -->
-            @{
-                var totalLoanCount =
-                    Model.Statistics.LocalLoanApprovalOperations.Count +
-                    Model.Statistics.InterBranchLoanApprovalOperations.Count +
-                    Model.Statistics.LocalLoanDisbursementOperations.Count +
-                    Model.Statistics.InterBranchLoanDisbursementOperations.Count;
-
-                var totalLoanVolume =
-                    Model.Statistics.LocalLoanApprovalOperations.Volume +
-                    Model.Statistics.InterBranchLoanApprovalOperations.Volume +
-                    Model.Statistics.LocalLoanDisbursementOperations.Volume +
-                    Model.Statistics.InterBranchLoanDisbursementOperations.Volume;
-
-                var totalLoanCurrency = Model.Statistics.LocalLoanApprovalOperations.Currency;
-            }
             <div class="col-sm-6 col-md-3">
+                @{
+                    var totalLoanCount =
+                        Model.Statistics.LocalLoanApprovalOperations.Count +
+                        Model.Statistics.InterBranchLoanApprovalOperations.Count +
+                        Model.Statistics.LocalLoanDisbursementOperations.Count +
+                        Model.Statistics.InterBranchLoanDisbursementOperations.Count;
+
+                    var totalLoanVolume =
+                        Model.Statistics.LocalLoanApprovalOperations.Volume +
+                        Model.Statistics.InterBranchLoanApprovalOperations.Volume +
+                        Model.Statistics.LocalLoanDisbursementOperations.Volume +
+                        Model.Statistics.InterBranchLoanDisbursementOperations.Volume;
+
+                    var totalLoanCurrency = Model.Statistics.LocalLoanApprovalOperations.Currency;
+                }
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-2">Total Loan Ops</h6>
+                        <h6 class="text-uppercase text-muted mb-2">Total Loan Operations</h6>
                         <h3 class="dashboard-value">@totalLoanCount.ToString("N0")</h3>
                         <p class="dashboard-sub">@totalLoanCurrency @totalLoanVolume.ToString("N2")</p>
                     </div>
@@ -275,27 +268,16 @@
             <div class="col-sm-6 col-md-3">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-2">Local Loan Approval</h6>
+                        <h6 class="text-uppercase text-muted mb-2">Loan Approval</h6>
                         <h3 class="dashboard-value">@Model.Statistics.LocalLoanApprovalOperations.Count.ToString("N0")</h3>
                         <p class="dashboard-sub">@Model.Statistics.LocalLoanApprovalOperations.Currency @Model.Statistics.LocalLoanApprovalOperations.Volume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Interbranch Loan Approval -->
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-border-shadow-primary h-100">
-                    <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-2">Interbranch Loan Approval</h6>
-                        <h3 class="dashboard-value">@Model.Statistics.InterBranchLoanApprovalOperations.Count.ToString("N0")</h3>
-                        <p class="dashboard-sub">@Model.Statistics.InterBranchLoanApprovalOperations.Currency @Model.Statistics.InterBranchLoanApprovalOperations.Volume.ToString("N2")</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Local Loan Disbursement -->
             <div class="col-sm-6 col-md-3">
-                <div class="card card-border-shadow-primary h-100 mt-3 mt-md-0">
+                <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Local Loan Disbursement</h6>
                         <h3 class="dashboard-value">@Model.Statistics.LocalLoanDisbursementOperations.Count.ToString("N0")</h3>
@@ -306,7 +288,7 @@
 
             <!-- Interbranch Loan Disbursement -->
             <div class="col-sm-6 col-md-3">
-                <div class="card card-border-shadow-primary h-100 mt-3 mt-md-0">
+                <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Interbranch Loan Disbursement</h6>
                         <h3 class="dashboard-value">@Model.Statistics.InterBranchLoanDisbursementOperations.Count.ToString("N0")</h3>
@@ -317,28 +299,28 @@
 
         </div>
 
-        <!-- ========================= MANUAL ENTRIES ========================= -->
+        <!-- MANUAL ENTRIES -->
         <div class="section-title">Manual Entries</div>
         <div class="row mb-3">
 
             <!-- Total Manual Entries -->
-            @{
-                var totalManualCount = Model.Statistics.LocalManualentries.Count + Model.Statistics.InterBranchManualentries.Count;
-                var totalManualVolume = Model.Statistics.LocalManualentries.Volume + Model.Statistics.InterBranchManualentries.Volume;
-                var totalManualCurrency = Model.Statistics.LocalManualentries.Currency;
-            }
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
+                @{
+                    var tmeCount = Model.Statistics.LocalManualentries.Count + Model.Statistics.InterBranchManualentries.Count;
+                    var tmeVolume = Model.Statistics.LocalManualentries.Volume + Model.Statistics.InterBranchManualentries.Volume;
+                    var tmeCurrency = Model.Statistics.LocalManualentries.Currency;
+                }
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Total Manual Entries</h6>
-                        <h3 class="dashboard-value">@totalManualCount.ToString("N0")</h3>
-                        <p class="dashboard-sub">@totalManualCurrency @totalManualVolume.ToString("N2")</p>
+                        <h3 class="dashboard-value">@tmeCount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@tmeCurrency @tmeVolume.ToString("N2")</p>
                     </div>
                 </div>
             </div>
 
             <!-- Local Manual Entries -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Local Manual Entries</h6>
@@ -349,7 +331,7 @@
             </div>
 
             <!-- Interbranch Manual Entries -->
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 <div class="card card-border-shadow-primary h-100">
                     <div class="card-body">
                         <h6 class="text-uppercase text-muted mb-2">Interbranch Manual Entries</h6>
@@ -361,31 +343,127 @@
 
         </div>
 
+        <!-- PERFORMANCE -->
+        <div class="section-title">Performance</div>
+        <div class="row mb-3">
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Cash Out</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.CashOperations.MaxCashOut.Currency @Model.Statistics.CashOperations.MaxCashOut.Amount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.CashOperations.MaxCashOut.PerformedBy.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Cash In</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.CashOperations.MaxCashIn.Currency @Model.Statistics.CashOperations.MaxCashIn.Amount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.CashOperations.MaxCashIn.PerformedBy.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Loan Approval</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanApproval.Amount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanApproval.PerformedBy.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Max Loan Disbursement</h6>
+                        <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanDisbursement.Amount.ToString("N0")</h3>
+                        <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanDisbursement.PerformedBy.Name</p>
+                    </div>
+                </div>
+            </div>*@
+
+        </div>
+
+
+        <!-- ========================= RECONCILIATION STATUS ========================= -->
+        <div class="section-title">Reconciliation Status</div>
+        <div class="row mb-3">
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Total Transactions</h6>
+                        <h3 class="dashboard-value">@Model.ReconciliationStatus.TotalTransactions.ToString("N0")</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Reconciled Transactions</h6>
+                        <h3 class="dashboard-value text-success">@Model.ReconciliationStatus.ReconciledTransactions.ToString("N0")</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Unreconciled Transactions</h6>
+                        <h3 class="dashboard-value text-warning-soft">@Model.ReconciliationStatus.UnreconciledTransactions.ToString("N0")</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-border-shadow-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-2">Reconciliation Rate</h6>
+                        <h3 class="dashboard-value">@Model.ReconciliationStatus.ReconciliationRate.ToString("N2") %</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
     </div>
+</div>
+
+@*<div id="datalistingview">
+    <button class="btn btn-outline-primary" onclick="location.href='/GLSystemReconciliation/Details/@Model.ReconciliationId'">
+        Show full details
+    </button>
+</div>*@
+
+
+<div id="datalistingview">
+    <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
+        <i class="mdi mdi-lock"></i> Close of Day
+    </button>
+
+    @Html.Partial("_DataTable")
 </div>
 
 
 
-    <div id="datalistingview">
-
-
-        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
-            <i class="mdi mdi-lock"></i> Close of Day
-        </button>
 
 
 
-        @Html.Partial("_DataTable")
-
-
-        @*<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
-            <i class="fa fa-lock"></i> Close of Day
-        </button>
-
-        <button class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#closeOfDayModal">
-            <i class="mdi mdi-lock"></i> Close of Day
-        </button>*@
 
 
 
-    </div>
+
+
+
+
+
+
+
+

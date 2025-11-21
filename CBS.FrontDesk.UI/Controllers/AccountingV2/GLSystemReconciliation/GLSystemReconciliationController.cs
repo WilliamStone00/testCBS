@@ -103,7 +103,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
         [HttpPost]
         public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
-        {
+         {
 
             model.StartUtc = model.StartDate;
             model.EndUtc = model.EndDate;
@@ -208,26 +208,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> PushRecord(PushRequest model)
-        //{
-
-           
-        //    try
-        //    {
-        //        var summary = await _glSystemReconciliationService.PushRecordAsync(model);
-
-        //        if (summary == null)
-        //            return Json(new { success = false, message = "Empty summary response." });
-
-        //        // Return summary as JSON
-        //        return Json(new { success = true, data = summary });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
+        
 
         [HttpPost]
         public async Task<ActionResult> PushRecord(PushRequest model)

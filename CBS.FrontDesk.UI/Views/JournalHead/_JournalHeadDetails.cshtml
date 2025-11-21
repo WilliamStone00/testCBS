@@ -112,18 +112,18 @@
                 {
                     <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
                 }
-                @if (!string.IsNullOrWhiteSpace(Model.BranchId))
+                @*@if (!string.IsNullOrWhiteSpace(Model.BranchId))
                 {
                     <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
-                }
+                }*@
                 @if (!string.IsNullOrWhiteSpace(Model.BranchName))
                 {
                     <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
                 }
-                @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
+                @*@if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
                 {
                     <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
-                }
+                }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchName))
                 {
                     <tr><th class="bg-label">Counterparty Branch Name</th><td>@Model.CounterpartyBranchName</td></tr>
@@ -660,7 +660,7 @@
                         Reference: '@Model.Reference',
                         BranchId: '@Model.BranchId',
                         Approver: '@User.Identity.Name',
-                        TicketType: 'SOURCE'
+                        TicketType: '@Model.TicketType'
                     };
 
                     $.ajax({
