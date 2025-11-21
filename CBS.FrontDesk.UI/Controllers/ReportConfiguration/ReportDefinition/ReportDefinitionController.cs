@@ -80,7 +80,7 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 					controllerName = "ReportDefinition",
 					option = "List",
 					divLoaderList = "definitionContainer",
-					tableName = "myDataTable",
+					tableName = "myDataTable_definition",
 					dataLoaderActionName = "ReloadList"
 				});
 
@@ -104,7 +104,7 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 				controllerName = "ReportDefinition",
 				option = "List", 
 				divLoaderList = "definitionContainer",
-				tableName = "myDataTable",
+				tableName = "myDataTable_definition",
 				dataLoaderActionName = "ReloadList"
 			});
 		}
