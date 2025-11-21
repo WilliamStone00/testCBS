@@ -468,6 +468,18 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalReceipts.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TB4.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TB4.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.cs">
       <DependentUpon>TrialBalance4Columns.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2072,10 +2084,12 @@
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
+    <Compile Include="Controllers\Accounting V2\Receipts\JournalReceiptsController.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\AccntStatement\AccntStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance4ColmunsController.cs" />
-    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance6ColumnsController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceFourColumnsFlatItens.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
@@ -8743,6 +8757,14 @@
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalReceipts1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TB4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TB4.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
