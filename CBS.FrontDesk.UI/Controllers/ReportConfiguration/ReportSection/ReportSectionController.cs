@@ -59,6 +59,12 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 			}
 		}
 
+		public async Task<ActionResult> ReloadList()
+		{
+			var list = await _services.GetAll();
+			return PartialView("~/Views/ReportConfiguration/ReportSection/_List.cshtml", list);
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> Create(ReportSection model)
 		{
@@ -80,12 +86,14 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 					success = data.Result,
 					status = data.MessageStatus,
 					message = Messaging.MessageResult(data),
-					controllerName = "ReportConfiguration",
 					reloadDataView = "Yes",
-					divLoaderList = "datalistingview",
-					tableName = "myDataTable"
-
+					controllerName = "ReportSection",
+					option = "List",
+					divLoaderList = "sectionContainer",
+					tableName = "myDataTable_section",
+					dataLoaderActionName = "ReloadList"
 				});
+
 			}
 			else
 			{
@@ -98,7 +106,19 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 		public async Task<ActionResult> Update(ReportSection model)
 		{
 			var data = await _services.Update(model);
-			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+			return Json(new
+			{
+				success = data.Result,
+				status = data.MessageStatus,
+				message = Messaging.MessageResult(data),
+				reloadDataView = "Yes",
+				controllerName = "ReportSection",
+				option = "List",
+				divLoaderList = "sectionContainer",
+				tableName = "myDataTable_section",
+				dataLoaderActionName = "ReloadList"
+			});
+
 		}
 
 		public async Task<ActionResult> Delete(string KEY)

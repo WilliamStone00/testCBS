@@ -49,7 +49,7 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
             }
         }
 
-       public async Task<CollectorDeviceresponse> GetByIdAsync(string id)
+        public async Task<CollectorDeviceresponse> GetByIdAsync(string id)
         {
             try
             {
@@ -77,17 +77,18 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
         {
             try
             {
+                // Change from ServiceResponse<string> to ServiceResponse<CollectorDeviceresponse>
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<CollectorDeviceresponse>>(APICallHelper.CreateCollectorDevice, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.DeviceName, MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(response.ApiResponseData?.Data, true, model.DeviceName, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message ?? "Device created successfully");
                 }
                 else
                 {
                     GetExecutionMessages(model, false, model.DeviceName, MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
