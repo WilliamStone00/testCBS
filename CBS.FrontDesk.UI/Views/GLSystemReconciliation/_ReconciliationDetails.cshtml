@@ -186,5 +186,27 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="modal-footer">
+
+            <!-- PUSH BUTTON (wired to your script) -->
+            <button class="btn btn-success btn-sm push-details"
+                    data-id="@Model.Id"
+                    data-branchid="@Model.BranchId"
+                    data-branchname="@Model.BranchName"
+                    data-branchcode="@Model.BranchCode">
+                <i class="mdi mdi-check-outline me-1"></i> Push
+            </button>
+
+            <!-- CLOSE BUTTON -->
+            <button type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+                <i class="mdi mdi-close-circle-outline me-1"></i> Close
+            </button>
+
+        </div>
+
     </div>
 }
+

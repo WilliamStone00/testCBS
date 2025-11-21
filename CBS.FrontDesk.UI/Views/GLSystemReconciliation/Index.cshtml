@@ -455,8 +455,82 @@
         });
 
 
+    window.closeOfDaySubmitAjax = function (form) {
+        event.preventDefault();
 
-       
+        // Parse and validate form
+        $.validator.unobtrusive.parse(form);
+        if (!$(form).valid()) {
+            appalert("Please fill all required fields.", 2, 1);
+            return false;
+        }
+
+        // Validate branch
+        const branchId = $("#branchId").val();
+        if (!branchId || branchId === "--- Select Branch ---") {
+            appalert("Please select a branch.", 2, 1);
+            return false;
+        }
+
+        // Validate checkboxes
+        const allChecked = ["#AllTransactionsReconciled", "#CashVaultVerified",
+            "#InterBranchConfirmed", "#AnyIssueToBeRaised"]
+            .every(id => $(id).is(":checked"));
+
+        if (!allChecked) {
+            appalert("All confirmation checkboxes must be checked.", 2, 1);
+            return false;
+        }
+
+        // Build payload
+        const payload = {
+            BranchId: branchId,
+            Reference: $("#Reference").val(),
+            AllTransactionsReconciled: $("#AllTransactionsReconciled").is(":checked"),
+            CashVaultVerified: $("#CashVaultVerified").is(":checked"),
+            InterBranchConfirmed: $("#InterBranchConfirmed").is(":checked"),
+            AnyIssueToBeRaised: $("#AnyIssueToBeRaised").is(":checked"),
+            Comment: $("#Comment").val(),
+            ClosedBy : '@User.Identity.Name'
+        };
+
+        // Confirmation popup
+        alertify.confirm(
+            "Confirm Close of Day",
+            "Are you sure you want to Close the Day?",
+            function () {
+
+                $.ajax({
+                    url: form.action,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(payload),
+                    success: function (res) {
+                        if (res.success) {
+                            appalert(res.message || "Close of Day completed.", 1, 1);
+                            $("#closeOfDayModal").modal("hide");
+                        } else {
+                            appalert(res.message || "Close of Day failed.", 2, 1);
+                        }
+                    },
+                    error: function (err) {
+                        appalert(err.statusText, 0, 1);
+                    }
+                });
+
+            },
+            function () {
+                appalert("Close of Day cancelled.", 3, 1);
+            }
+        );
+
+        return false;
+    };
+
+
+
+
+
 
 </script>
 }

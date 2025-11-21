@@ -148,6 +148,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public OperationSummary LocalManualentries { get; set; }
         public OperationSummary InterBranchManualentries { get; set; }
         public CashOperations CashOperations { get; set; }
+        public LoanOperations LoanOperations { get; set; }
     }
 
     public class OperationSummary
@@ -161,6 +162,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
     {
         public CashOperationDetail MaxCashIn { get; set; }
         public CashOperationDetail MaxCashOut { get; set; }
+    }
+    public class LoanOperations
+    {
+        public CashOperationDetail MaxLoanApproval { get; set; }
+        public CashOperationDetail MaxLoanDisbursement { get; set; }
     }
 
     public class CashOperationDetail
