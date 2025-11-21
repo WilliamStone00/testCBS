@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -77,6 +78,7 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
         {
             try
             {
+              
                 // Change from ServiceResponse<string> to ServiceResponse<CollectorDeviceresponse>
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<CollectorDeviceresponse>>(APICallHelper.CreateCollectorDevice, model);
 
