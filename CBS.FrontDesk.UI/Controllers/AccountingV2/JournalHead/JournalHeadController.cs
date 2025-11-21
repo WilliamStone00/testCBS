@@ -108,26 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult> GetDetailss(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return new HttpStatusCodeResult(400, "Journal Entry ID is required");
-
-            Data.Entity.AccountingV2.JournalHead entry = null;
-            try
-            {
-                entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
-            }
-            catch (Exception ex)
-            {
-                // log as needed
-                return new HttpStatusCodeResult(404, ex.Message);
-            }
-
-            // return HTML fragment (partial) — this will be injected into main modal body
-            return PartialView("_JournalHeadDetails", entry);
-        }
+        
 
 
 
@@ -144,45 +125,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             {
                 // 1️⃣ Get Journal Entry
                 entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
-
-                // 2️⃣ Get all branches (has Id + Name)
-                //var branches = await _branchServices.GetBranches();
-
-                //// 3️⃣ Attach BranchName to each line
-                //if (entry?.Lines != null)
-                //{
-                //    foreach (var line in entry.Lines)
-                //    {
-                //        var b = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-
-                //        // override line BranchId with entry BranchId
-                //        line.BranchId = entry.BranchId;
-
-                //        line.BranchName = entry.BranchName;
-
-
-                //        var counterpartyBranch = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-                //        line.CounterpartyBranchId = entry.CounterpartyBranchId;
-                //        line.CounterpartyBranchName = counterpartyBranch?.Name ?? "Unknown Branch";
-                //    }
-                //}
-
-                //if (entry?.ReconciledLedgerLines != null)
-                //{
-                //    foreach (var line in entry.ReconciledLedgerLines)
-                //    {
-                //        var b = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-
-                //        // override line BranchId with entry BranchId
-                //        line.BranchId = entry.BranchId;
-
-                //        line.BranchName = entry.BranchName;
-
-                //        var counterpartyBranch = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-                //        line.CounterpartyBranchId = entry.CounterpartyBranchId;
-                //        line.CounterpartyBranchName = counterpartyBranch?.Name ?? "Unknown Branch";
-                //    }
-                //}
+                
+                var counterpartyBranch = await _branchServices.GetBranch(entry.CounterpartyBranchId);
+                entry.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
 
             }
             catch (Exception ex)
@@ -400,41 +345,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             {
                 // ✅ Fetch the journal entry by ID instead of by reference
                 var model = await _journalHeadService.GetJournalEntryByIdAsync(id);
-                //var branches = await _branchServices.GetBranches();
-                //if (model?.Lines != null)
-                //{
-                //    foreach (var line in model.Lines)
-                //    {
-                //        var b = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
+                var counterpartyBranch = await _branchServices.GetBranch(model.CounterpartyBranchId);
+                model.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
 
-                //        // override line BranchId with entry BranchId
-                //        line.BranchId = model.BranchId;
-
-                //        line.BranchName = model.BranchName;
-
-
-                //        var counterpartyBranch = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-                //        line.CounterpartyBranchId = model.CounterpartyBranchId;
-                //        line.CounterpartyBranchName = counterpartyBranch?.Name ?? "Unknown Branch";
-                //    }
-                //}
-
-                //if (model?.ReconciledLedgerLines != null)
-                //{
-                //    foreach (var line in model.ReconciledLedgerLines)
-                //    {
-                //        var b = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-
-                //        // override line BranchId with entry BranchId
-                //        line.BranchId = model.BranchId;
-
-                //        line.BranchName = model.BranchName;
-
-                //        var counterpartyBranch = branches.FirstOrDefault(x => x.Id == line.CounterpartyBranchId);
-                //        line.CounterpartyBranchId = model.CounterpartyBranchId;
-                //        line.CounterpartyBranchName = counterpartyBranch?.Name ?? "Unknown Branch";
-                //    }
-                //}
 
                 if (model == null)
                     return HttpNotFound();
