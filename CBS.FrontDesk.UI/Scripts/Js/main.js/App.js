@@ -241,6 +241,7 @@ function ShowImagePreview(imageUploader, previewImage) {
 
     if (imageUploader.files && imageUploader.files[0]) {
 
+
         var reader = new FileReader();
         reader.onload = function (e) {
 
@@ -2591,4 +2592,3 @@ function AjaxPostAndUpdateChangePassword(form) {
 //    // 🚀 Start logic
 //    fetchIdleTimeout();
 //})();
-

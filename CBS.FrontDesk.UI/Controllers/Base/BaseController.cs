@@ -889,6 +889,7 @@ namespace CBS.FrontDesk.UI.Controllers
         public void BuildLocalSession(UserDto userSession)
         {
             var roles = userSession.Roles.Select(role => role.RoleName).ToArray();
+            var rolename = userSession.Roles.Select(role => role.RoleName)?.FirstOrDefault();
             var roleid = userSession.Roles.Select(role => role.RoleId)?.FirstOrDefault();
 
             string fullName = userSession.firstName + " " + userSession.lastName;
@@ -900,6 +901,7 @@ namespace CBS.FrontDesk.UI.Controllers
             Session["UserID"] = userSession.id;
             Session["Roles"] = roles;
             Session["RoleId"] = roleid;
+            Session["RoleName"] = rolename;
             Session["RefesherToken"] = userSession.refreshToken;
             Session["Token"] = userSession.bearerToken;
             Session["UserName"] = userSession.userName;

@@ -1,11 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklistresponse
 
+@using Resources
+
 <div class="modal fade" id="blacklistDetailsModal" tabindex="-1" aria-labelledby="blacklistDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="blacklistDetailsModalLabel"><i class="mdi mdi-eye me-2"></i> Blacklist Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -15,37 +16,79 @@
                 }
                 else
                 {
-                    <dl class="row">
-                        <dt class="col-sm-4">ID</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(m => m.Id)</dd>
+                    <fieldset class="fieldset-custom">
 
-                        <dt class="col-sm-4">Branch</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchName)</dd>
+                        <!-- Header Card -->
+                        <div class="card bg-light mb-4 shadow-sm">
+                            <div class="card-body text-center">
+                                <h1 class="card-title text-primary fw-bold mb-2">
+                                    <i class="mdi mdi-account-cancel-outline me-2"></i> Black Listing Details
+                                </h1>
+                                <p class="card-text text-muted mb-1">
+                                    View detailed information about the blacklisted account
+                                </p>
+                            </div>
+                        </div>
 
-                        <dt class="col-sm-4">Menu</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(m => m.Menu)</dd>
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">ID:</td><td>@Model.Id</td></tr>
+                                    <tr><td class="fw-bold">Is Centralized:</td><td>@(Model.IsCentralized ? "Yes" : "No")</td></tr>
+                                    <tr><td class="fw-bold">Affiliate ID:</td><td>@(Model.AffiliateId ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Branch ID:</td><td>@(Model.BranchId ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Menu:</td><td>@(Model.Menu ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Is Active:</td><td>@(Model.IsActive ? "Yes" : "No")</td></tr>
+                                </table>
+                            </div>
 
-                        <dt class="col-sm-4">Affiliate Account</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(m => m.AffiliateAccountName)</dd>
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="mdi mdi-account-details me-2"></i> Account Information</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Branch Name:</td><td>@(Model.BranchName ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Affiliate Account Name:</td><td>@(Model.AffiliateAccountName ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Account Number:</td><td>@(Model.AccountNumber ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Branch Account Name:</td><td>@(Model.BranchAccountName ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Affiliate Account ID:</td><td>@(Model.AffiliateAccountId ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Branch Account ID:</td><td>@(Model.BranchAccountId ?? "-")</td></tr>
+                                </table>
+                            </div>
+                        </div>
 
-                        <dt class="col-sm-4">Branch Account</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(m => m.BranchAccountName)</dd>
+                        <!-- Blacklisting Status Section -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary"><i class="mdi mdi-shield-account-outline me-2"></i> Blacklisting Status</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Is Blacklisted:</td><td><span class="badge @(Model.IsBlacklisted ? "bg-danger" : "bg-success")">@(Model.IsBlacklisted ? "Yes" : "No")</span></td></tr>
+                                    <tr><td class="fw-bold">Reason:</td><td>@(Model.Reason ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Notes:</td><td>@(Model.Notes ?? "-")</td></tr>
+                                </table>
+                            </div>
+                        </div>
 
-                        <dt class="col-sm-4">Created Date (UTC)</dt>
-                        <dd class="col-sm-8">
-                            @(Model.CreatedDate == default(DateTime) ? "-" : Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss"))
-                        </dd>
+                        <!-- Timeline Section -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Created Date:</td><td>@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                                    <tr><td class="fw-bold">Created By:</td><td>@(Model.CreatedBy ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Modified Date:</td><td>@(Model.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                                    <tr><td class="fw-bold">Modified By:</td><td>@(Model.ModifiedBy ?? "-")</td></tr>
+                                </table>
+                            </div>
+                        </div>
 
-                        <dt class="col-sm-4">Notes</dt>
-                        <dd class="col-sm-8">@Html.Raw(Html.Encode(Model.Notes))</dd>
-                    </dl>
+                    </fieldset>
                 }
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                @if (Model != null)
-                {<button type="button" class="btn btn-primary btn-edit-from-details" data-id="@Model.Id">Edit</button>}
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -168,6 +169,33 @@ namespace CBS.BusinessService.AccountingV2.LiaisonMappingV2
 		}
 
 
+		//public async Task<CustomDataTable> GetLiaisonMappingDataTable(LiaisonMappingQuery query)
+		//{
+		//	try
+		//	{
+		//		// NE PLUS mettre ResponseObject<CustomDataTable>
+		//		var response = await _accountingV2ConfigApiHelper
+		//			.PostAsync<CustomDataTable>(APICallHelper.LiaisonMappingDatatable, query);
+
+		//		if (response == null)
+		//			throw new Exception("Empty API response.");
+
+		//		if (!response.IsSuccess)
+		//			throw new Exception($"API call failed: {response.Message}");
+
+		//		if (response.ApiResponseData == null)
+		//			throw new Exception("API returned null DataTable.");
+
+		//		return response.ApiResponseData;
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
+		//		throw new Exception($"Liaison Mapping service unavailable: {ex.Message}", ex);
+		//	}
+		//}
+
+
 		public async Task<CustomDataTable> GetLiaisonMappingDataTable(LiaisonMappingQuery query)
 		{
 			try
@@ -197,7 +225,6 @@ namespace CBS.BusinessService.AccountingV2.LiaisonMappingV2
 				throw new Exception($"Liaison Mapping service unavailable: {ex.Message}", ex);
 			}
 		}
-
 
 	}
 }

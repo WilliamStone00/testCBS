@@ -1437,7 +1437,7 @@ namespace CBS.FrontDesk.Helper
         //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
+        public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
         public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
@@ -1445,9 +1445,11 @@ namespace CBS.FrontDesk.Helper
         public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
         public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
 
-        //************************************Role Gl Resolution Endpoints  ********************************************////
+		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
-        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+		//************************************Role Gl Resolution Endpoints  ********************************************////
+
+		public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
         public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
@@ -1538,7 +1540,6 @@ namespace CBS.FrontDesk.Helper
         //public static string Createnot = "/api/v1/Notification/Config";
         //public static string Updatenot = "/api/NotificationConfig/{0}";
         //public static string Deletenot = "/api/NotificationConfig/{0}";
-
 
 
         //************************** END CHEQUE BOOK *******************************
@@ -1673,7 +1674,15 @@ namespace CBS.FrontDesk.Helper
             public const string RevokeApiKey = "/api/apikeys/revoke";
             public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
             public const string DeleteApiKey = "/api/apikeys/{0}";
-        
+
+
+        //------------------------ Dervice Management --------------------------------------
+        public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+        public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+        public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+        public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string CollectorDeviceresponse = "/api/apikeys/generate";
 
         //*************************** End of Accounting V2 **************************************
 
@@ -1688,6 +1697,7 @@ namespace CBS.FrontDesk.Helper
 
         // ================ trial balance reports    =======================//
         public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
+        public static string TrialBalance4 = "/api/v1/Reports/trial-balance4";
 
 
         // ================ Journals   =======================//
@@ -1703,12 +1713,24 @@ namespace CBS.FrontDesk.Helper
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
         
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
-        public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
+        
+
 
         //------------------------- Accounting Year --------------------
         public static string SaveAccountingYear = "/api/v1/AccountingYear";
         public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
         public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
         public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
+
+        //-------------------------  System Reconciliation ----------------------
+
+        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrack/GetUnProcessTrackedJournalDataTable";
+
+        public static string GetReconciliationSummary = "/api/v1/AccountingOperationTrack/GetBranchDailyStaticsQuery";
+
+        public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
+        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
+
     }
 }

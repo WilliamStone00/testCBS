@@ -1,0 +1,280 @@
+﻿@{
+    Layout = null;
+    string apiKey = ViewBag.ApiKey ?? "your-generated-api-key-here";
+}
+
+<div class="api-key-usage-guide">
+    <style>
+        .api-key-usage-guide h2 {
+            color: #34495e;
+            margin-top: 25px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #bdc3c7;
+        }
+
+        .api-key-usage-guide h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+
+        .api-key-usage-guide .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+        }
+
+        .api-key-usage-guide .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .api-key-usage-guide .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .api-key-usage-guide table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .api-key-usage-guide th {
+            background: #3498db;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .api-key-usage-guide td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .api-key-usage-guide tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .api-key-usage-guide .step {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+
+        .api-key-usage-guide ul {
+            padding-left: 20px;
+        }
+
+        .api-key-usage-guide li {
+            margin-bottom: 8px;
+        }
+
+        .api-key-display {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+
+    <div class="card bg-light mb-2">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary">
+                📚 API Key Usage Guide
+            </h1>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+        </div>
+    </div>
+
+    <!-- Display current API key if available -->
+    @if (apiKey != "your-generated-api-key-here")
+    {
+        <div class="alert alert-success">
+            <h5><i class="mdi mdi-key me-2"></i>Your Current API Key</h5>
+            <div class="api-key-display">
+                @apiKey
+            </div>
+            <small class="text-muted">
+                <i class="mdi mdi-information-outline me-1"></i>
+                This key will be used in the examples below. Store it securely!
+            </small>
+        </div>
+    }
+
+    <div class="info-box">
+        <strong>🚀 Quick Start:</strong> This guide explains how to properly use your API key for authentication and integration with our services.
+    </div>
+
+    <h2>1. Getting Your API Key</h2>
+    <div class="step">
+        <strong>Step 1:</strong> Create an API key using the form above by selecting a user and specifying key length
+    </div>
+    <div class="step">
+        <strong>Step 2:</strong> Copy and securely store your API key immediately after generation - it won't be shown again
+    </div>
+    <div class="step">
+        <strong>Step 3:</strong> Use the API key in your authentication headers as shown below
+    </div>
+
+    <h2>2. Authentication Header</h2>
+    <div class="warning-box">
+        <strong>🔐 Security Notice:</strong> Your API key provides full access to your account. Keep it secure and never expose it in client-side code.
+    </div>
+
+    <p>Include this header in every API request:</p>
+    <div class="code-block">H-TSC-API-KEY: @apiKey</div>
+
+    <h2>3. API Endpoint</h2>
+    <table>
+        <tr><th>Method</th><th>URL</th><th>Purpose</th></tr>
+        <tr><td>POST</td><td><code>/api/external-auth/authorize</code></td><td>Authenticate and receive session token</td></tr>
+    </table>
+
+    <h2>4. Making API Requests</h2>
+
+    <h3>Request Headers</h3>
+    <div class="code-block">
+        H-TSC-API-KEY: @apiKey
+        Content-Type: application/json
+    </div>
+
+    <h3>Request Body (JSON)</h3>
+    <div class="code-block">
+        {
+        "userName": "your-username@example.com",
+        "password": "your-password",
+        "geoLocationResponse": {
+        "ip": "197.210.46.1",
+        "city": "Douala",
+        "region": "Littoral",
+        "country": "Cameroon",
+        "loc": "4.0511,9.7679",
+        "org": "Your Organization",
+        "timezone": "Africa/Douala"
+        }
+        }
+    </div>
+
+    <h3>Success Response (200 OK)</h3>
+    <div class="code-block">
+        {
+        "data": {
+        "name": "your-username@example.com",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        },
+        "statusCode": 200,
+        "message": "Login successful.",
+        "status": "SUCCESS"
+        }
+    </div>
+
+    <h3>Error Response (401 Unauthorized)</h3>
+    <div class="code-block">
+        {
+        "data": null,
+        "errors": [],
+        "statusCode": 401,
+        "statusDescription": "Unauthorized.",
+        "message": "Invalid or unauthorized API key.",
+        "status": "FAILED"
+        }
+    </div>
+
+    <h2>5. API Key Management</h2>
+    <table>
+        <tr><th>Feature</th><th>Description</th></tr>
+        <tr><td>Key Expiration</td><td>API keys expire after 5 years (configurable)</td></tr>
+        <tr><td>Key Rotation</td><td>You can request key renewal before expiration</td></tr>
+        <tr><td>Expiration Warning</td><td>Notifications start 30 days before expiry</td></tr>
+        <tr><td>Key Binding</td><td>Each key is tied to a specific username</td></tr>
+        <tr><td>Key Revocation</td><td>Keys can be revoked for security reasons</td></tr>
+        <tr><td>Security Monitoring</td><td>Suspicious activity is monitored and alerted</td></tr>
+    </table>
+
+    <h2>6. Testing Your API Key</h2>
+    <div class="step">
+        <strong>Using Postman:</strong>
+    </div>
+    <div class="code-block">
+        1. Method: POST
+        2. URL: https://yourdomain.com/api/external-auth/authorize
+        3. Headers:
+        - H-TSC-API-KEY: @apiKey
+        - Content-Type: application/json
+        4. Body (raw JSON):
+        {
+        "userName": "your-username",
+        "password": "your-password",
+        "geoLocationResponse": {
+        "ip": "41.7.84.90",
+        "city": "Your City",
+        "region": "Your Region",
+        "country": "Your Country",
+        "loc": "latitude,longitude",
+        "org": "Your Organization",
+        "timezone": "Your/Timezone"
+        }
+        }
+    </div>
+
+    <h2>7. Security Best Practices</h2>
+    <div class="info-box">
+        <strong>✅ DO:</strong>
+        <ul>
+            <li>Store API keys in secure locations (environment variables, vaults)</li>
+            <li>Use HTTPS for all API communications</li>
+            <li>Monitor your API usage regularly</li>
+            <li>Rotate keys periodically for security</li>
+            <li>Use different keys for different applications</li>
+        </ul>
+    </div>
+
+    <div class="warning-box">
+        <strong>❌ DON'T:</strong>
+        <ul>
+            <li>Expose API keys in frontend code or mobile apps</li>
+            <li>Commit API keys to version control (Git)</li>
+            <li>Share keys via unsecured channels (email, chat)</li>
+            <li>Use the same key across multiple environments</li>
+            <li>Ignore expiration warnings</li>
+        </ul>
+    </div>
+
+    <h2>8. Troubleshooting</h2>
+    <table>
+        <tr><th>Issue</th><th>Solution</th></tr>
+        <tr><td>401 Unauthorized</td><td>Check your API key is correct and active</td></tr>
+        <tr><td>403 Forbidden</td><td>Verify user permissions and key binding</td></tr>
+        <tr><td>Key not working</td><td>Check if key has expired or been revoked</td></tr>
+        <tr><td>Missing header</td><td>Ensure H-TSC-API-KEY header is included</td></tr>
+    </table>
+
+    <h2>9. Getting Help</h2>
+    <p>If you encounter issues with your API key or need assistance:</p>
+    <table>
+        <tr><th>Support Channel</th><th>Contact Details</th><th>Availability</th></tr>
+        <tr><td>Phone</td><td>+237 650 76 84 67</td><td>Mon-Fri, 8:00 AM – 5:00 PM</td></tr>
+        <tr><td>WhatsApp</td><td>+237 650 76 84 67</td><td>Mon-Fri, 8:00 AM – 5:00 PM</td></tr>
+        <tr><td>Email</td><td>info@fluxcm.com</td><td>24/7 (Response within 24h)</td></tr>
+    </table>
+
+    <div class="info-box mt-4">
+        <strong>📝 Important:</strong> This API key provides access to your account. Keep it secure and report any suspected compromise immediately.
+    </div>
+</div>

@@ -714,6 +714,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             {
                 return () => _savingProductServices.UpdateProductAccountMappingV2(model.SavingProduct);
             }
+            else if (serviceOption == "productnarrations")
+            {
+                return () => _savingProductServices.UpdateProductAccountMappingV2(model.SavingProduct);
+            }
             else if (serviceOption == "mapformeventcharges")
             {
                 return () => _savingProductServices.UpdateProductEventMapping(model.SavingProduct);
@@ -989,7 +993,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
 
         private async Task GetEventNames()
         {
-            ViewBag.EventCodes = await _accountingServices.GetEventNames("INCOME");
+            ViewBag.EventCodes = await _affiliateAccountService.GetAllAffiliateAccounts();
 
         }
         public async Task<bool> GetListConf()
@@ -1009,20 +1013,20 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         {
             var conf = await _savingProductServices.GetSavingConfigurationAggregates();
             ViewBag.Products = await _savingProductServices.GetSavingProducts();
-            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            var chartOfAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();
             ViewBag.DepositLimitTypes = conf.depositTypes.ToList();
             ViewBag.TransferLimitTypes = conf.transferTypes.ToList();
             ViewBag.WithdrawalLimitTypes = conf.withdrawalTypes.ToList();
             ViewBag.Frequences = conf.freeQuencies.ToList();
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             ViewBag.Currencies = conf.currencies.ToList();
-            ViewBag.OperationEventAttributes = await _accountingServices.GetEventAttributeByOperationTypeID();
+            ViewBag.OperationEventAttributes = chartOfAccounts.ToList();
             ViewBag.operationAccounts = conf.operationAccounts.ToList();
             return true;
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await _accountingServices.GetChartOfAccounts();
+            var chartOfAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();
             ViewBag.chartOfAccounts = chartOfAccounts.ToList();
             return true;
         }

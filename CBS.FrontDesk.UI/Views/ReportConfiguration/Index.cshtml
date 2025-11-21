@@ -1,18 +1,19 @@
-﻿@{
-    ViewBag.Title = "Report Configuration";
-}
+﻿@*@{
+        ViewBag.Title = "Report Configuration";
+    }*@
 
+<!-- Header -->
 <div class="row">
     <div class="col-12">
-        <div class="card bg-light mb-2">
+        <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank me-2"></i> REPORT CONFIGURATION
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-cog-outline me-2"></i> REPORT CONFIGURATION
                 </h1>
                 <p class="card-text text-muted">
-                    Manage report configurations efficiently.
+                    Manage all report components: Definitions, Sections, Lines and Line Mappings.
                 </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                <hr class="my-3" style="border-top: 2px solid rgba(0, 0, 0, 0.1);">
             </div>
         </div>
     </div>
@@ -20,23 +21,37 @@
 
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
-    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Managing Report Configuration</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
+
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Use a short and unique identifier for each report.</li>
-                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Define the report category (e.g., Balance Sheet, Income Statement).</li>
-                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Specify the reporting currency for accurate aggregation.</li>
-                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Active:</strong> Toggle to activate or deactivate the report in the system.</li>
+                <li>
+                    <i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i>
+                    <strong>Definitions:</strong> Provide clear identifiers and report types.
+                </li>
+                <li>
+                    <i class="mdi mdi-view-list-outline text-success me-2"></i>
+                    <strong>Sections:</strong> Organize your reports by logical areas or categories.
+                </li>
+                <li>
+                    <i class="mdi mdi-file-tree-outline text-warning me-2"></i>
+                    <strong>Lines:</strong> Configure your calculations, values, and formulas accurately.
+                </li>
+                <li>
+                    <i class="mdi mdi-link-variant text-info me-2"></i>
+                    <strong>Line Mappings:</strong> Match and map your data correctly for consistent outputs.
+                </li>
             </ul>
         </div>
     </div>
 </div>
+
 
 <!-- Tabs -->
 <div class="card shadow-sm border-0">
@@ -50,8 +65,10 @@
                 <a class="nav-link active"
                    data-bs-toggle="tab"
                    href="#definitionContainer"
-                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"definition","partialView":"ReportConfiguration/ReportDefinition/_List"}'>
+                   onclick="LoadDataGen('ReportConfiguration', 'myDataTable_definition', 'ReportConfiguration/ReportDefinition/_List', 0, 'definitionContainer',null,'definition')"
+                   @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"definition","partialView":"ReportConfiguration/ReportDefinition/_List"}'
+                   *@>
                     <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
                 </a>
             </li>
@@ -60,8 +77,10 @@
                 <a class="nav-link"
                    data-bs-toggle="tab"
                    href="#sectionContainer"
-                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'>
+                   onclick="LoadDataGen('ReportConfiguration', 'myDataTable_section', 'ReportConfiguration/ReportSection/_List', 0, 'sectionContainer',null,'section')"
+                   @*data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'*@
+                   >
                     <i class="mdi mdi-view-list-outline me-1"></i> Section
                 </a>
             </li>
@@ -70,8 +89,9 @@
                 <a class="nav-link"
                    data-bs-toggle="tab"
                    href="#lineContainer"
-                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>
+                   onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line', 'ReportConfiguration/ReportLine/_List', 0, 'lineContainer',null,'line')">
+                  @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                   data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>*@
                     <i class="mdi mdi-format-line-weight me-1"></i> Line
                 </a>
             </li>
@@ -80,8 +100,11 @@
                 <a class="nav-link"
                    data-bs-toggle="tab"
                    href="#mappingContainer"
-                   data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                   data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'>
+                   onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line_mapping', 'ReportConfiguration/ReportLineMapping/_List', 0, 'mappingContainer',null,'line_mapping')">
+                    @*    data-url="@Url.Action("InitializeData", "ReportConfiguration")"
+                    data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'*@
+
+
                     <i class="mdi mdi-link-variant me-1"></i> Mapping
                 </a>
             </li>
@@ -93,18 +116,22 @@
             <div class="tab-pane fade" id="sectionContainer"></div>
             <div class="tab-pane fade" id="lineContainer"></div>
             <div class="tab-pane fade" id="mappingContainer"></div>
+
+        </div>
+
+        <div id="datalistingview">
         </div>
 
     </div>
 </div>
 
 <!-- Tab Contents -->
-<div class="tab-content">
+<!--<div class="tab-content">
     <div class="tab-pane fade show active" id="definitionContainer"></div>
     <div class="tab-pane fade" id="sectionContainer"></div>
     <div class="tab-pane fade" id="lineContainer"></div>
     <div class="tab-pane fade" id="mappingContainer"></div>
-</div>
+</div>-->
 
 <!-- MODAL POUR CRÉER/ÉDITER UN REPORT -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
@@ -133,7 +160,18 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+
+            // ⚡ Charge automatiquement la tab "Definition" au démarrage
+            LoadDataGen(
+                'ReportConfiguration',                // Controller
+                'myDataTable_definition',             // ID du DataTable
+                'ReportConfiguration/ReportDefinition/_List', // PartialView
+                0,                                    // Ordre ou autre paramètre
+                'definitionContainer',                // Container cible
+                null,                                 // KEY (aucun ici)
+                'definition'                          // Type/path
+            );
 
             function loadPartialView(url, target, data = {}) {
                 console.log("%c[AJAX LOAD]", "color: #28a745; font-weight: bold;", {
@@ -142,7 +180,7 @@
                     data: data
                 });
 
-               // $(target).html('<div class="text-center py-4"><div class="spinner-border text-success"></div></div>');
+                $(target).empty();
 
                 $.ajax({
                     url: url,
@@ -163,6 +201,7 @@
             const firstTab = $('#reportTabs a.active');
             const firstParams = JSON.parse(firstTab.attr('data-params'));
             loadPartialView(firstTab.data('url'), firstTab.attr('href'), firstParams);
+
 
             // When switching tabs
             $('#reportTabs a').on('shown.bs.tab', function (e) {
@@ -193,6 +232,7 @@
                     if (status === "success") {
                         // If the content loaded successfully, show the modal
                         var modal = new bootstrap.Modal(document.getElementById('reportModal'));
+                        //LoadDataGen('ReportDefinition','myDataTable','_List',0,'datalistingview')
                         modal.show();
                     } else {
                         // If an error occurred, log and alert the user

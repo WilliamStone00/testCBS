@@ -25,6 +25,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2
 		public string DueToLiabilityAccountName { get; set; }
 		public string DueToLiabilityAccountNumber { get; set; }
 
+		public string StatusFrom { get; set; }
+		public string StatusTo { get; set; }
+		public string Status { get; set; }
+
 		public DateTime? CreatedDate { get; set; }
 	}
 	

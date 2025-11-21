@@ -173,6 +173,11 @@
                 <label class="form-check-label" for="IsInterbranch">Interbranch Config</label>
             </div>
 
+            <div class="form-check d-none include_zero_group">
+                <input type="checkbox" id="IncludingZero" class="form-check-input" />
+                <label class="form-check-label" for="IncludingZero">  0s Inclusive</label>
+            </div>
+
             <div class="form-check">
                 <input type="checkbox" id="IsConsolidated" class="form-check-input" />
                 <label class="form-check-label" for="IsConsolidated">Consolidated</label>
@@ -252,6 +257,7 @@
                 excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
                 sourceMode: $('#SourceMode').val(),
                 language: "en",
+                zeroInclusive: $('#IncludingZero').is(':checked'),
                 accountNumber: selectedAccounts.length === 1 ? selectedAccounts[0] : null,
                 accountNumbers: selectedAccounts,
                 paging: { page: 0, pageSize: 0 },
@@ -262,6 +268,9 @@
         function Reprint(controller) {
             ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
         }
+
+
+
 
         $(document).ready(function () {
 
@@ -277,6 +286,8 @@
                 const show = this.checked;
                 $('.accounting-year-group').toggleClass('d-none', !show);
             });
+
+
 
             // Validate Filter button state
             function validateFilters() {
@@ -324,9 +335,7 @@
                 let reportTypeVal = ($reportType.val() || "").trim().toLowerCase();
 
                 const hasBranch = branches && branches.length > 0;
-                const loadsAccounts =
-                    reportTypeVal === "je" ||
-                    reportTypeVal === "account statement";
+                const loadsAccounts = reportTypeVal === "account statement" || reportTypeVal === "general ledger" ;
 
                 if (!(hasBranch && loadsAccounts)) {
                     $account_group.addClass('d-none');
@@ -359,10 +368,25 @@
                 loadAccountsIfNeeded();
             });
 
-            $reportType.on('change', function () {
+            $reportType.on('change', function (ev) {
                 loadAccountsIfNeeded();
                 validateFilters();
+                const val = ev.target.value.trim().toLowerCase();
+                showIncludero(val);
             });
+
+
+
+           function showIncludero(val){
+               if (val.includes('trial')) {
+                   $('.include_zero_group').removeClass('d-none');
+               } else {
+                   $('.include_zero_group').addClass('d-none');
+               }
+           }
+
+
+
 
             $('#SourceMode, #StartDate, #EndDate').on('change', validateFilters);
             $('.required-field').on('change', validateFilters);
@@ -400,6 +424,15 @@
                     case "trial balance 6 columns":
                         $.post({
                             url: '/TrialBalance/GenerateTrialBalance/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('TrialBalance')
+                        });
+                        break;
+
+                    case "trial balance 4 columns":
+                        $.post({
+                            url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
                             success: () => Reprint('TrialBalance')

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation.CashAndVaultInit
 @using Resources
 @{
-    ViewBag.Title = "Cash Reconciliation";
+    ViewBag.Title = "Account Reconciliation";
 }
 
 @using (Html.BeginForm("SaveCashReconciliation", "CashReconciliation", FormMethod.Post,
@@ -16,7 +16,7 @@
             <!-- Header / Accounting Date -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
-                    <i class="mdi mdi-book-plus-outline me-2"></i> Cash Reconciliation
+                    <i class="mdi mdi-book-plus-outline me-2"></i> Account Reconciliation
                 </h4>
                 <div class="col-md-4 text-end">
                     <label class="form-label fw-bold me-2">Accounting Date</label>
@@ -49,9 +49,9 @@
             <!-- Cash GL -->
             <div class="row mb-2 align-items-end">
                 <div class="col-md-12 mb-2">
-                    @Html.Label("SourceGlId", "Cash GL", new { @class = "form-label fw-semibold", @for = "SourceGlId" })
+                    @Html.Label("SourceGlId", "Select GL", new { @class = "form-label fw-semibold", @for = "SourceGlId" })
                     @Html.DropDownList("SourceGlId",
-                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Cash GL ---", Value = "" } },
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select  GL ---", Value = "" } },
                         new { @class = "form-control select2 mb-2", id = "SourceGlId", required = "required" })
                 </div>
             </div>

@@ -23,13 +23,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
     //[CheckSessionTimeOut]
     public class TrialBalanceController : BaseController
     {
-        private readonly TrialBalancesService _trialBalanceService;
+        private readonly TrialBalances6ColumnService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public TrialBalanceController(TrialBalancesService trialBalanceService,
+        public TrialBalanceController(TrialBalances6ColumnService trialBalanceService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
@@ -57,7 +57,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
                 if (response == null || response.Lines == null || !response.Lines.Any())
+                {
+                    this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
+                }
+                    
 
                 var data = response.Lines.Select(x => new TrialBalanceReportItem
                 {
