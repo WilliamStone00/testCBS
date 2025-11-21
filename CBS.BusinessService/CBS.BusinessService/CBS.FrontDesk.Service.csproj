@@ -267,7 +267,6 @@
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
-    <Compile Include="Accounting V2\CollectorDevice\CollectorDeviceService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
@@ -285,6 +284,7 @@
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\MockBranchCashConfigService.cs" />
+    <Compile Include="AccountingV2\GLSystemReconciliation\CloseOfDayModel.cs" />
     <Compile Include="AccountingV2\GLSystemReconciliation\GLSystemReconciliationService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />
