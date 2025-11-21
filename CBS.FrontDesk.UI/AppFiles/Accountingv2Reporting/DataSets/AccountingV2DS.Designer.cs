@@ -1259,6 +1259,26 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnMode;
             
+            private global::System.Data.DataColumn columnTotalOpeningDebit;
+            
+            private global::System.Data.DataColumn columnTotalOpeningCredit;
+            
+            private global::System.Data.DataColumn columnTotalMovementDebit;
+            
+            private global::System.Data.DataColumn columnTotalMovementCredit;
+            
+            private global::System.Data.DataColumn columnTotalClosingDebit;
+            
+            private global::System.Data.DataColumn columnTotalClosingCredit;
+            
+            private global::System.Data.DataColumn columnTotalOpeningDifference;
+            
+            private global::System.Data.DataColumn columnTotalMovementDifference;
+            
+            private global::System.Data.DataColumn columnTotalClosingDifference;
+            
+            private global::System.Data.DataColumn columnTotalGlobalDifference;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TrialBalance6ColumnDataTable() {
@@ -1502,6 +1522,86 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalOpeningDebitColumn {
+                get {
+                    return this.columnTotalOpeningDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalOpeningCreditColumn {
+                get {
+                    return this.columnTotalOpeningCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalMovementDebitColumn {
+                get {
+                    return this.columnTotalMovementDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalMovementCreditColumn {
+                get {
+                    return this.columnTotalMovementCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalClosingDebitColumn {
+                get {
+                    return this.columnTotalClosingDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalClosingCreditColumn {
+                get {
+                    return this.columnTotalClosingCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalOpeningDifferenceColumn {
+                get {
+                    return this.columnTotalOpeningDifference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalMovementDifferenceColumn {
+                get {
+                    return this.columnTotalMovementDifference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalClosingDifferenceColumn {
+                get {
+                    return this.columnTotalClosingDifference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalGlobalDifferenceColumn {
+                get {
+                    return this.columnTotalGlobalDifference;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1563,7 +1663,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         decimal Credit, 
                         string EndingBookingDirection, 
                         string BeginningBookingDirection, 
-                        string Mode) {
+                        string Mode, 
+                        decimal TotalOpeningDebit, 
+                        decimal TotalOpeningCredit, 
+                        decimal TotalMovementDebit, 
+                        decimal TotalMovementCredit, 
+                        decimal TotalClosingDebit, 
+                        decimal TotalClosingCredit, 
+                        decimal TotalOpeningDifference, 
+                        decimal TotalMovementDifference, 
+                        decimal TotalClosingDifference, 
+                        decimal TotalGlobalDifference) {
                 TrialBalance6ColumnRow rowTrialBalance6ColumnRow = ((TrialBalance6ColumnRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BranchName,
@@ -1591,7 +1701,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         Credit,
                         EndingBookingDirection,
                         BeginningBookingDirection,
-                        Mode};
+                        Mode,
+                        TotalOpeningDebit,
+                        TotalOpeningCredit,
+                        TotalMovementDebit,
+                        TotalMovementCredit,
+                        TotalClosingDebit,
+                        TotalClosingCredit,
+                        TotalOpeningDifference,
+                        TotalMovementDifference,
+                        TotalClosingDifference,
+                        TotalGlobalDifference};
                 rowTrialBalance6ColumnRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTrialBalance6ColumnRow);
                 return rowTrialBalance6ColumnRow;
@@ -1640,6 +1760,16 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnEndingBookingDirection = base.Columns["EndingBookingDirection"];
                 this.columnBeginningBookingDirection = base.Columns["BeginningBookingDirection"];
                 this.columnMode = base.Columns["Mode"];
+                this.columnTotalOpeningDebit = base.Columns["TotalOpeningDebit"];
+                this.columnTotalOpeningCredit = base.Columns["TotalOpeningCredit"];
+                this.columnTotalMovementDebit = base.Columns["TotalMovementDebit"];
+                this.columnTotalMovementCredit = base.Columns["TotalMovementCredit"];
+                this.columnTotalClosingDebit = base.Columns["TotalClosingDebit"];
+                this.columnTotalClosingCredit = base.Columns["TotalClosingCredit"];
+                this.columnTotalOpeningDifference = base.Columns["TotalOpeningDifference"];
+                this.columnTotalMovementDifference = base.Columns["TotalMovementDifference"];
+                this.columnTotalClosingDifference = base.Columns["TotalClosingDifference"];
+                this.columnTotalGlobalDifference = base.Columns["TotalGlobalDifference"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1697,6 +1827,26 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnBeginningBookingDirection);
                 this.columnMode = new global::System.Data.DataColumn("Mode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMode);
+                this.columnTotalOpeningDebit = new global::System.Data.DataColumn("TotalOpeningDebit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOpeningDebit);
+                this.columnTotalOpeningCredit = new global::System.Data.DataColumn("TotalOpeningCredit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOpeningCredit);
+                this.columnTotalMovementDebit = new global::System.Data.DataColumn("TotalMovementDebit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalMovementDebit);
+                this.columnTotalMovementCredit = new global::System.Data.DataColumn("TotalMovementCredit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalMovementCredit);
+                this.columnTotalClosingDebit = new global::System.Data.DataColumn("TotalClosingDebit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalClosingDebit);
+                this.columnTotalClosingCredit = new global::System.Data.DataColumn("TotalClosingCredit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalClosingCredit);
+                this.columnTotalOpeningDifference = new global::System.Data.DataColumn("TotalOpeningDifference", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalOpeningDifference);
+                this.columnTotalMovementDifference = new global::System.Data.DataColumn("TotalMovementDifference", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalMovementDifference);
+                this.columnTotalClosingDifference = new global::System.Data.DataColumn("TotalClosingDifference", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalClosingDifference);
+                this.columnTotalGlobalDifference = new global::System.Data.DataColumn("TotalGlobalDifference", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalGlobalDifference);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4496,6 +4646,176 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalOpeningDebit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalOpeningDebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOpeningDebit\' in table \'TrialBalance6Column\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalOpeningDebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalOpeningCredit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalOpeningCreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOpeningCredit\' in table \'TrialBalance6Column\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalOpeningCreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalMovementDebit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalMovementDebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalMovementDebit\' in table \'TrialBalance6Column\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalMovementDebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalMovementCredit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalMovementCreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalMovementCredit\' in table \'TrialBalance6Column\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalMovementCreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalClosingDebit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalClosingDebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalClosingDebit\' in table \'TrialBalance6Column\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalClosingDebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalClosingCredit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalClosingCreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalClosingCredit\' in table \'TrialBalance6Column\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalClosingCreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalOpeningDifference {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalOpeningDifferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalOpeningDifference\' in table \'TrialBalance6Column\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalOpeningDifferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalMovementDifference {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalMovementDifferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalMovementDifference\' in table \'TrialBalance6Column\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalMovementDifferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalClosingDifference {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalClosingDifferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalClosingDifference\' in table \'TrialBalance6Column\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalClosingDifferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalGlobalDifference {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalGlobalDifferenceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalGlobalDifference\' in table \'TrialBalance6Column\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalGlobalDifferenceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBranchNameNull() {
                 return this.IsNull(this.tableTrialBalance6Column.BranchNameColumn);
             }
@@ -4804,6 +5124,126 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetModeNull() {
                 this[this.tableTrialBalance6Column.ModeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalOpeningDebitNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalOpeningDebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalOpeningDebitNull() {
+                this[this.tableTrialBalance6Column.TotalOpeningDebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalOpeningCreditNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalOpeningCreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalOpeningCreditNull() {
+                this[this.tableTrialBalance6Column.TotalOpeningCreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalMovementDebitNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalMovementDebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalMovementDebitNull() {
+                this[this.tableTrialBalance6Column.TotalMovementDebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalMovementCreditNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalMovementCreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalMovementCreditNull() {
+                this[this.tableTrialBalance6Column.TotalMovementCreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalClosingDebitNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalClosingDebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalClosingDebitNull() {
+                this[this.tableTrialBalance6Column.TotalClosingDebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalClosingCreditNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalClosingCreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalClosingCreditNull() {
+                this[this.tableTrialBalance6Column.TotalClosingCreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalOpeningDifferenceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalOpeningDifferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalOpeningDifferenceNull() {
+                this[this.tableTrialBalance6Column.TotalOpeningDifferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalMovementDifferenceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalMovementDifferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalMovementDifferenceNull() {
+                this[this.tableTrialBalance6Column.TotalMovementDifferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalClosingDifferenceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalClosingDifferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalClosingDifferenceNull() {
+                this[this.tableTrialBalance6Column.TotalClosingDifferenceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalGlobalDifferenceNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalGlobalDifferenceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalGlobalDifferenceNull() {
+                this[this.tableTrialBalance6Column.TotalGlobalDifferenceColumn] = global::System.Convert.DBNull;
             }
         }
         
