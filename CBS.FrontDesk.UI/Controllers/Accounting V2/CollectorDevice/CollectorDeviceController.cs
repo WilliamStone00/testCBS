@@ -107,6 +107,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
 
-    
-}
+     
+    }
 }

@@ -74,28 +74,4 @@
     </div>
 </div>
 
-@*<script>
-    function collectorDeviceSubmitAjax(form) {
-        event.preventDefault();
 
-        $.ajax({
-            url: $(form).attr('action'),
-            type: 'POST',
-            data: $(form).serialize(),
-            success: function (response) {
-                if (response.success) {
-                    appalert(response.message, 1, 1);
-                    // Reload the list view
-                    LoadPartialView('datalistingview', '_CollectorDeviceTable', 'CollectorDevice', 'list');
-                } else {
-                    appalert(response.message, 0, 1);
-                }
-            },
-            error: function (xhr, status, error) {
-                appalert('Error submitting form: ' + error, 0, 1);
-            }
-        });
-
-        return false;
-    }
-</script>*@

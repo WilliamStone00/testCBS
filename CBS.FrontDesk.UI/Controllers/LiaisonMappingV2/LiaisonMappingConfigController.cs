@@ -68,16 +68,52 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 		}
 
-		private async Task GetValues()
+		//private async Task GetValues()
+		//{
+		//	var branches = await _branchServices.GetBranches();
+		//          var CounterpartyBranches = await _branchServices.GetCounterpartyBranches();
+		//          var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+		//	var newlistng = _branchAccountService.DropDownGen(accounts.ToList());
+		//	ViewBag.Branches = branches;
+		//          ViewBag.CounterpartyBranches = CounterpartyBranches;
+		//          ViewBag.Accounts = newlistng;
+		//}
+		//public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
+		//{
+		//	if (path == "list")
+		//	{
+		//		var data = await _services.GetAll();
+		//		return PartialView(partialView, data);
+		//	}
+
+		//	else if (path == "new")
+		//	{
+		//		await GetValues();
+		//		return PartialView(partialView, new LiaisonMapping());
+		//	}
+		//	else
+		//	{
+		//		await GetValues();
+		//		ViewBag.Key = KEY;
+		//		var LiaisonMapping = await _services.GetById(KEY);
+		//		return PartialView(partialView, LiaisonMapping);
+		//	}
+		//}
+
+		private async Task GetValues(string branchId = null)
 		{
 			var branches = await _branchServices.GetBranches();
-            var CounterpartyBranches = await _branchServices.GetCounterpartyBranches();
-            var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
-			var newlistng = _branchAccountService.DropDownGen(accounts.ToList());
+			var counterpartyBranches = await _branchServices.GetCounterpartyBranches();
+
+			// Si branchId est fourni, charger uniquement les comptes de cette branche
+			var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+			var accountsList = _branchAccountService.DropDownGen(accounts.ToList());
+
 			ViewBag.Branches = branches;
-            ViewBag.CounterpartyBranches = CounterpartyBranches;
-            ViewBag.Accounts = newlistng;
+			ViewBag.CounterpartyBranches = counterpartyBranches;
+			ViewBag.Accounts = accountsList;
 		}
+
 		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
 		{
 			if (path == "list")
@@ -85,20 +121,27 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.LiaisonMappingV2
 				var data = await _services.GetAll();
 				return PartialView(partialView, data);
 			}
-
 			else if (path == "new")
 			{
+				// Nouveau mapping : charger toutes les branches et tous les comptes
 				await GetValues();
 				return PartialView(partialView, new LiaisonMapping());
 			}
 			else
 			{
-				await GetValues();
+				// Édition : récupérer l'enregistrement existant
+				var liaisonMapping = await _services.GetById(KEY);
+				if (liaisonMapping == null)
+					return HttpNotFound();
+
+				// Charger uniquement les comptes de la branche sélectionnée
+				await GetValues(liaisonMapping.BranchId);
+
 				ViewBag.Key = KEY;
-				var LiaisonMapping = await _services.GetById(KEY);
-				return PartialView(partialView, LiaisonMapping);
+				return PartialView(partialView, liaisonMapping);
 			}
 		}
+
 		public async Task<ActionResult> Delete(string KEY)
 		{
 			var data = await _services.Delete(KEY);

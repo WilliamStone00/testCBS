@@ -1,26 +1,49 @@
 ﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice.CollectorDeviceresponse>
 
-<div class="card shadow-sm">
-    <div class="card-header bg-white">
-        <h5 class="card-title mb-0 text-primary">
-            <i class="mdi mdi-view-list me-2"></i> Collector Devices List
-        </h5>
-    </div>
+<style>
+    /* Force widths to be respected and keep cells neat */
+    #myDataTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+    #myDataTable th, #myDataTable td {
+        vertical-align: middle;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Column-specific max widths (for truncation only) */
+    .col-created { width: 15%; min-width: 140px; }
+    .col-name { width: 20%; min-width: 160px; }
+    .col-serial { width: 16%; min-width: 140px; }
+    .col-version { width: 8%; min-width: 80px; }
+    .col-status { width: 9%; min-width: 90px; }
+    .col-assigned { width: 20%; min-width: 160px; }
+    .col-actions { width: 12%; min-width: 110px; }
+
+   </style>
+
+
     <div class="card-body">
         <fieldset class="fieldset-custom">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="card-title mb-0 text-primary">
+                    <i class="mdi mdi-view-list me-2"></i> Collector Devices List
+                </h4>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover" id="myDataTable">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center" style="width: 12%">Device ID</th>
-                            <th class="text-center" style="width: 15%">Device Name</th>
-                            <th class="text-center" style="width: 15%">Serial Number</th>
-                            <th class="text-center" style="width: 10%">Version</th>
-                            <th class="text-center" style="width: 10%">Status</th>
-                            <th class="text-center" style="width: 13%">Assigned Collector</th>
-                            <th class="text-center" style="width: 10%">Assigned On</th>
-                            <th class="text-center" style="width: 10%">Created On</th>
-                            <th class="text-center" style="width: 5%">Actions</th>
+                            <th class="text-center col-created">Created On</th>
+                            <th class="text-center col-name">Device Name</th>
+                            <th class="text-center col-serial">Serial Number</th>
+                            <th class="text-center col-version">Version</th>
+                            <th class="text-center col-status">Status</th>
+                            <th class="text-center col-assigned">Assigned Collector</th>
+                            <th class="text-center col-actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,11 +52,23 @@
                             foreach (var device in Model)
                             {
                                 <tr>
-                                    <td class="text-center">@device.DeviceId</td>
-                                    <td class="text-center">@device.DeviceName</td>
-                                    <td class="text-center">@device.DeviceSerialNumber</td>
-                                    <td class="text-center">@device.DeviceVersion</td>
-                                    <td class="text-center">
+                                    <td class="text-center col-created" title="@device.CreatedOn.ToString()">
+                                        @device.CreatedOn.ToString()
+                                    </td>
+
+                                    <td class="text-center col-name" title="@device.DeviceName">
+                                        <small class="d-block text-truncate" style="max-width:220px;">@device.DeviceName</small>
+                                    </td>
+
+                                    <td class="text-center col-serial" title="@device.DeviceSerialNumber">
+                                        <small class="d-block text-truncate" style="max-width:180px;">@device.DeviceSerialNumber</small>
+                                    </td>
+
+                                    <td class="text-center col-version" title="@device.DeviceVersion">
+                                        <small>@device.DeviceVersion</small>
+                                    </td>
+
+                                    <td class="text-center col-status">
                                         @if (device.Status == 1)
                                         {
                                             <span class="badge bg-success">Active</span>
@@ -47,23 +82,19 @@
                                             <span class="badge bg-warning">Maintenance</span>
                                         }
                                     </td>
-                                    <td class="text-center">
+
+                                    <td class="text-center col-assigned" title="@device.AssignedCollectorUserId">
                                         @if (!string.IsNullOrEmpty(device.AssignedCollectorUserId))
                                         {
-                                            <small class="text-muted">@device.AssignedCollectorUserId</small>
+                                            <small class="text-muted d-block text-truncate" style="max-width:220px;">@device.AssignedCollectorUserId</small>
                                         }
                                         else
                                         {
                                             <span class="text-muted">Not Assigned</span>
                                         }
                                     </td>
-                                    <td class="text-center">
-                                        @device.AssignedOn.ToString()
-                                    </td>
-                                    <td class="text-center">
-                                        @device.CreatedOn.ToString()
-                                    </td>
-                                    <td class="text-center">
+
+                                    <td class="text-center col-actions">
                                         <div class="btn-group" role="group">
                                             <button type="button"
                                                     class="btn btn-sm btn-outline-primary"
@@ -94,7 +125,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-4">
+                                <td colspan="7" class="text-center text-muted py-4">
                                     <i class="mdi mdi-information-outline me-2"></i>No collector devices found.
                                 </td>
                             </tr>
@@ -104,7 +135,30 @@
             </div>
         </fieldset>
     </div>
-</div>
+
+
+@section Scripts {
+    <script>
+        // enable bootstrap tooltips for truncated values
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Optionally enable title tooltips for truncated cells (hover)
+        document.querySelectorAll('#myDataTable td[title]').forEach(function (td) {
+            td.setAttribute('data-bs-toggle', 'tooltip');
+            td.setAttribute('data-bs-placement', 'top');
+        });
+        // Re-init tooltips after adding attributes
+        var ttList = [].slice.call(document.querySelectorAll('#myDataTable [data-bs-toggle="tooltip"]'));
+        ttList.forEach(function (el) {
+            new bootstrap.Tooltip(el);
+        });
+    </script>
+}
+
+
 
 <script>
     // Initialize tooltips

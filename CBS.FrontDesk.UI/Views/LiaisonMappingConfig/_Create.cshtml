@@ -72,7 +72,7 @@
             @Html.LabelFor(m => m.DueFromAssetAccountId, "Select destination branch liason", htmlAttributes: new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(
                 m => m.DueFromAssetAccountId,
-                new SelectList(ViewBag.Accounts, "Value", "Text"),
+                new SelectList(ViewBag.Accounts, "Value", "Text", Model.DueFromAssetAccountId),
                 "--- Select destination branch liason ---",
                 new { @class = "form-control select2", @id = "DueFromAssetAccountId" }
             )
