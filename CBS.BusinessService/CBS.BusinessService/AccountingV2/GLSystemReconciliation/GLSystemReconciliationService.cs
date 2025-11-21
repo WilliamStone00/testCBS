@@ -192,5 +192,30 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
 
+
+
+        public async Task<CloseOfDayModel> SaveCloseOfDay(CloseOfDayModel model)
+        {
+
+
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+
+                var apiResponse = await _systemReconciliationapiCallerHelper.PostAsync<ResponseObject<CloseOfDayModel>>(
+                    APICallHelper.SubmitCloseOfDay, // your destination endpoint
+                    model
+                );
+
+                return apiResponse?.ApiResponseData?.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -193,6 +193,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.API
             return Json(new { success = true, data = data }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetApiGuide(string apiKey = "")
+        {
+            ViewBag.ApiKey = string.IsNullOrEmpty(apiKey) ? "your-generated-api-key-here" : apiKey;
+            return PartialView("_ApiIntegrationGuide");
+        }
+
         [HttpPost]
   
         public async Task<ActionResult> Delete(string KEY)

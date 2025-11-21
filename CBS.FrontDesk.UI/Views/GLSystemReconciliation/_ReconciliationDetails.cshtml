@@ -73,19 +73,36 @@
     }
 </style>
 
-<div class="header-viewer">
+@*<div class="header-viewer">
     <h6>
         <i class="mdi mdi-file-document-outline me-1"></i> SYSTEM RECONCILIATION DETAILS
     </h6>
     <p class="mb-0">
         Detailed information for the selected journal entry. Scroll to view reconciliations, and receipts.
     </p>
-</div>
+</div>*@
+
+
+
+
+
 
 @if (Model != null)
 {
     <div class="card shadow-sm mb-3">
         <div class="card-body card-body-padding">
+
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-swap-horizontal-bold me-2"></i> SYSTEM RECONCILIATION DETAILS
+                    </h1>
+                    <p class="card-text">
+                        Detailed information for the selected journal entry. Scroll to view reconciliations, and receipts.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
             <!-- added padding class -->
             <table class="table table-sm table-bordered table-striped mb-0">
                 <tbody>

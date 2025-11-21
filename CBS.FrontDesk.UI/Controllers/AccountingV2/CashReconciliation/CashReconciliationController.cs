@@ -44,8 +44,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
             var glAccounts = new List<SelectListItem>
     {
         new SelectListItem { Value = "OTHER GL ", Text = "OTHER GL " },
-        new SelectListItem { Value = "CASH RECONCILIATION", Text = "CASH RECONCILIATION " },
-        new SelectListItem { Value = "VAULT RECONCILIATION ", Text = "VAULT RECONCILIATION " }
+        new SelectListItem { Value = "CASH RECONCILIATION", Text = "CASH RECONCILIATION " }
     };
 
             ViewBag.DifferenceGLs = glAccounts;

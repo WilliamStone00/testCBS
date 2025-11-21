@@ -64,6 +64,12 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 			}
 		}
 
+		public async Task<ActionResult> ReloadList()
+		{
+			var list = await _services.GetAll();
+			return PartialView("~/Views/ReportConfiguration/ReportLine/_List.cshtml", list);
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> Create(ReportLine model)
 		{
@@ -80,7 +86,18 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 			{
 				// Adding Created Date
 				var data = await _services.Create(model);
-				return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+				return Json(new
+				{
+					success = data.Result,
+					status = data.MessageStatus,
+					message = Messaging.MessageResult(data),
+					reloadDataView = "Yes",
+					controllerName = "ReportLine",
+					option = "List",
+					divLoaderList = "lineContainer",
+					tableName = "myDataTable_line",
+					dataLoaderActionName = "ReloadList"
+				});
 			}
 			else
 			{
@@ -93,7 +110,18 @@ namespace CBS.FrontDesk.UI.Controllers.ReportConfiguration
 		public async Task<ActionResult> Update(ReportLine model)
 		{
 			var data = await _services.Update(model);
-			return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+			return Json(new
+			{
+				success = data.Result,
+				status = data.MessageStatus,
+				message = Messaging.MessageResult(data),
+				reloadDataView = "Yes",
+				controllerName = "ReportLine",
+				option = "List",
+				divLoaderList = "lineContainer",
+				tableName = "myDataTable_line",
+				dataLoaderActionName = "ReloadList"
+			});
 		}
 
 		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)

@@ -49,7 +49,7 @@
             <!-- Cash GL -->
             <div class="row mb-2 align-items-end">
                 <div class="col-md-12 mb-2">
-                    @Html.Label("SourceGlId", "Cash GL", new { @class = "form-label fw-semibold", @for = "SourceGlId" })
+                    @Html.Label("SourceGlId", "Select GL", new { @class = "form-label fw-semibold", @for = "SourceGlId" })
                     @Html.DropDownList("SourceGlId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select  GL ---", Value = "" } },
                         new { @class = "form-control select2 mb-2", id = "SourceGlId", required = "required" })

@@ -166,6 +166,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountBlackListing
         [HttpGet]
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
+            await Loader();
             // You can extend path switching here
             if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
@@ -175,6 +176,11 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountBlackListing
             else if (string.Equals(path, "new", StringComparison.OrdinalIgnoreCase))
             {
                 return PartialView(partialView, new AccountBlacklist());
+            }
+            else if (string.Equals(path, "Edit", StringComparison.OrdinalIgnoreCase))
+            {
+                var data = await _accountBlacklistService.Edit(KEY);
+                return PartialView(partialView, data);
             }
             else
             {

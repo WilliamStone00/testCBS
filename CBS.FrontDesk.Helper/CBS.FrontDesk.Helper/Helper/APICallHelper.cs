@@ -1675,7 +1675,15 @@ namespace CBS.FrontDesk.Helper
             public const string RevokeApiKey = "/api/apikeys/revoke";
             public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
             public const string DeleteApiKey = "/api/apikeys/{0}";
-        
+
+
+        //------------------------ Dervice Management --------------------------------------
+        public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+        public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+        public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+        public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string CollectorDeviceresponse = "/api/apikeys/generate";
 
         //*************************** End of Accounting V2 **************************************
 
@@ -1723,6 +1731,7 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string SubmitCloseOfDay = "/api/v1/AccountingOperationTrack/PushJournalExecution";
 
 
 

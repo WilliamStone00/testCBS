@@ -67,6 +67,15 @@
 <div class="card shadow p-3 mb-4">
     <div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">
+            <!-- New Developer Guide Button -->
+            <button type="button"
+                    class="btn btn-info btn-sm me-2"
+                    id="btnDeveloperGuide"
+                    data-bs-toggle="tooltip"
+                    title="View API Integration Guide">
+                <i class="mdi mdi-book-open-page-variant mdi-18px"></i> Developer Guide
+            </button>
+
             <a href="@Url.Action("List", "ApiKey")"
                class="btn btn-label-primary btn-sm me-2"
                id="btnViewList"
@@ -139,11 +148,128 @@
     </div>
 </div>
 
+<!-- Developer Guide Modal -->
+<div class="modal fade" id="developerGuideModal" tabindex="-1" aria-labelledby="developerGuideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-white text-black">
+
+                <button type="button" class="btn-close btn-close-Black" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div id="developerGuideContent">
+                    <!-- Partial view content will be loaded here -->
+                    @Html.Partial("_ApiIntegrationGuide")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printDeveloperGuide()">
+                    <i class="mdi mdi-printer me-1"></i> Print Guide
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        // handleFormSubmit: posts the form and uses appalert(...) for user messages.
-        // Usage: <form onsubmit="return handleFormSubmit(this, 'Created successfully')">
+        // Store the generated API key globally
+        let currentApiKey = '';
+
+        // Initialize Developer Guide Button
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize tooltips
+            try {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            } catch (err) {
+                console.warn('Tooltip init failed', err);
+            }
+
+            // Developer Guide Button Event Listener
+            document.getElementById('btnDeveloperGuide').addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('developerGuideModal'));
+
+                // Load partial view via AJAX with the current API key
+                const guideContent = document.getElementById('developerGuideContent');
+                const apiKey = currentApiKey || 'your-generated-api-key-here';
+
+                $.get('@Url.Action("GetApiGuide", "ApiKey")', { apiKey: apiKey }, function(data) {
+                    guideContent.innerHTML = data;
+                }).fail(function() {
+                    guideContent.innerHTML = '<div class="alert alert-danger">Failed to load guide content.</div>';
+                });
+
+                modal.show();
+            });
+
+            // Copy key functionality
+            document.getElementById('copyApiKeyBtn').addEventListener('click', function () {
+                const keyInput = document.getElementById('generatedApiKey');
+                keyInput.select();
+
+                try {
+                    navigator.clipboard.writeText(keyInput.value).then(function () {
+                        const originalHtml = this.innerHTML;
+                        this.innerHTML = '<i class="mdi mdi-check"></i>';
+                        this.classList.remove('btn-outline-secondary');
+                        this.classList.add('btn-success');
+
+                        setTimeout(() => {
+                            this.innerHTML = originalHtml;
+                            this.classList.remove('btn-success');
+                            this.classList.add('btn-outline-secondary');
+                        }, 2000);
+
+                        appalert('API key copied to clipboard!', 1, 1);
+                    }.bind(this));
+                } catch (err) {
+                    appalert('Failed to copy to clipboard. Please copy manually.', 0, 1);
+                }
+            });
+        });
+
+        // Function to display the generated key
+        function displayGeneratedKey(rawKey, message) {
+            const keySection = document.getElementById('generatedKeySection');
+            const keyInput = document.getElementById('generatedApiKey');
+            const copyBtn = document.getElementById('copyApiKeyBtn');
+
+            keyInput.value = rawKey;
+            keySection.classList.remove('d-none');
+            keySection.classList.add('d-block');
+
+            // Store the API key globally
+            currentApiKey = rawKey;
+
+            const alertHeading = keySection.querySelector('.alert-heading');
+            if (alertHeading && message) {
+                alertHeading.innerHTML = `<i class="mdi mdi-key-success me-1"></i>${message}`;
+            }
+
+            keySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            keyInput.select();
+            appalert('API Key created successfully! Copy and store the key securely.', 1, 1);
+        }
+
+        // Print Developer Guide
+        function printDeveloperGuide() {
+            const printContent = document.getElementById('developerGuideContent').innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+
+            // Re-initialize the modal
+            const modal = new bootstrap.Modal(document.getElementById('developerGuideModal'));
+        }
+
+        // handleFormSubmit function (existing functionality)
         async function handleFormSubmit(form, successMessage) {
             event.preventDefault();
             if (!form) return false;
@@ -152,20 +278,17 @@
             const origBtnHtml = submitBtn ? (submitBtn.innerHTML || '') : null;
 
             try {
-                // disable submit button & show spinner text
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     try { submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'; } catch (e) { }
                 }
 
-                // Convert FormData to object for jQuery
                 const formData = new FormData(form);
                 const data = {};
                 for (let [key, value] of formData.entries()) {
                     data[key] = value;
                 }
 
-                // Use jQuery AJAX instead of fetch
                 const response = await $.ajax({
                     url: form.action,
                     type: form.method || 'POST',
@@ -177,21 +300,13 @@
                 });
 
                 if (response && response.success) {
-                    // If rawKey exists, display it in the key section
                     if (response.data && response.data.rawKey) {
                         const rawKey = response.data.rawKey;
-
-                        // Display the generated key section
                         displayGeneratedKey(rawKey, response.message || successMessage);
-
-                        // Don't reset the form - keep the user and length values visible
-                        // The form stays as-is so user can create another key if needed
                     } else {
-                        // Fallback if no raw key
                         appalert(successMessage || response.message || 'Operation successful', 1, 1);
                     }
                 } else {
-                    // server-side validation / error - show error via appalert state "danger" (use 0 or other)
                     const msg = (response && response.message) ? response.message : 'Unknown error';
                     appalert('Error: ' + msg, 0, 1);
                 }
@@ -199,7 +314,6 @@
                 console.error('handleFormSubmit error', error);
                 let errMsg = 'An error occurred';
 
-                // Handle jQuery AJAX error format
                 if (error.responseJSON && error.responseJSON.message) {
                     errMsg = error.responseJSON.message;
                 } else if (error.statusText) {
@@ -210,7 +324,6 @@
 
                 appalert('Error: ' + errMsg, 0, 1);
             } finally {
-                // restore submit button
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     try { submitBtn.innerHTML = origBtnHtml; } catch (e) { }
@@ -220,110 +333,15 @@
             return false;
         }
 
-        // Function to display the generated key
-        function displayGeneratedKey(rawKey, message) {
-            const keySection = document.getElementById('generatedKeySection');
-            const keyInput = document.getElementById('generatedApiKey');
-            const copyBtn = document.getElementById('copyApiKeyBtn');
-
-            // Update the key value
-            keyInput.value = rawKey;
-
-            // Show the section
-            keySection.classList.remove('d-none');
-            keySection.classList.add('d-block');
-
-            // Update the message in the alert header
-            const alertHeading = keySection.querySelector('.alert-heading');
-            if (alertHeading && message) {
-                alertHeading.innerHTML = `<i class="mdi mdi-key-success me-1"></i>${message}`;
-            }
-
-            // Scroll to the key section
-            keySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            // Auto-select the key text for easy copying
-            keyInput.select();
-
-            // Show success message
-            appalert('API Key created successfully! Copy and store the key securely.', 1, 1);
-        }
-
-        // Copy key functionality
-        document.getElementById('copyApiKeyBtn').addEventListener('click', function () {
-            const keyInput = document.getElementById('generatedApiKey');
-            keyInput.select();
-
-            try {
-                navigator.clipboard.writeText(keyInput.value).then(function () {
-                    // Show success feedback
-                    const originalHtml = this.innerHTML;
-                    this.innerHTML = '<i class="mdi mdi-check"></i>';
-                    this.classList.remove('btn-outline-secondary');
-                    this.classList.add('btn-success');
-
-                    setTimeout(() => {
-                        this.innerHTML = originalHtml;
-                        this.classList.remove('btn-success');
-                        this.classList.add('btn-outline-secondary');
-                    }, 2000);
-
-                    appalert('API key copied to clipboard!', 1, 1);
-                }.bind(this));
-            } catch (err) {
-                appalert('Failed to copy to clipboard. Please copy manually.', 0, 1);
-            }
-        });
-
         // Reset form function
         function resetForm() {
             const form = document.getElementById('createApiKeyForm');
             const keySection = document.getElementById('generatedKeySection');
 
-            // Hide the key section but keep the form visible
             keySection.classList.add('d-none');
             keySection.classList.remove('d-block');
-
-            // Reset the form values
             form.reset();
+            currentApiKey = '';
         }
-
-        // Tooltip initialization (Bootstrap)
-        document.addEventListener('DOMContentLoaded', function () {
-            try {
-                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.map(function (tooltipTriggerEl) {
-                    return new bootstrap.Tooltip(tooltipTriggerEl);
-                });
-
-                // Initialize copy button event listener
-                document.getElementById('copyApiKeyBtn').addEventListener('click', function () {
-                    const keyInput = document.getElementById('generatedApiKey');
-                    keyInput.select();
-
-                    try {
-                        navigator.clipboard.writeText(keyInput.value).then(function () {
-                            // Show success feedback
-                            const originalHtml = this.innerHTML;
-                            this.innerHTML = '<i class="mdi mdi-check"></i>';
-                            this.classList.remove('btn-outline-secondary');
-                            this.classList.add('btn-success');
-
-                            setTimeout(() => {
-                                this.innerHTML = originalHtml;
-                                this.classList.remove('btn-success');
-                                this.classList.add('btn-outline-secondary');
-                            }, 2000);
-
-                            appalert('API key copied to clipboard!', 1, 1);
-                        }.bind(this));
-                    } catch (err) {
-                        appalert('Failed to copy to clipboard. Please copy manually.', 0, 1);
-                    }
-                });
-            } catch (err) {
-                console.warn('Tooltip init failed', err);
-            }
-        });
     </script>
 }
