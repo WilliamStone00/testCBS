@@ -1,4 +1,4 @@
-using CBS.BusinessService.Accounting_V2.BranchAccountService;
+﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
 
@@ -43,10 +43,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         [HttpPost]
         public async Task<ActionResult> GenerateTrialBalance(AccountingV2ReportsFilter model)
         {
-
             try
             {
                 this.HttpContext.Session["rptSource"] = null;
+
                 var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
                 var branchInfo = await _branchServices.GetBranch(model.BranchId);
 
@@ -64,26 +64,102 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     return Json(new { success = false, message = "Selected branch not found." }, JsonRequestBehavior.AllowGet);
                 }
 
-                // Build report dataset
-                var data = response.Lines.Select(x => new TrialBalanceReportItem
+                var now = DateTime.Now;
+
+                // 1) Map each line and compute per-line balances/differences
+                var data = response.Lines.Select(x =>
                 {
-                    AccountNumber = x.AccountNumber,
-                    AccountName = x.AccountName,
-                    OpeningDebit = x.OpeningDR ?? 0,
-                    OpeningCredit = x.OpeningCR ?? 0,
-                    MovementDebit = x.PeriodDR ?? 0,
-                    MovementCredit = x.PeriodCR ?? 0,
-                    ClosingDebit = x.ClosingDR ?? 0,
-                    ClosingCredit = x.ClosingCR ?? 0,
-                    BranchCode = branchInfo.BranchCode,
-                    Phone = branchInfo.Telephone,
-                    Address = branchInfo.Address,
-                    BranchName = branchInfo.Name,
-                    Username = _trialBalanceService.GetUserFullName(),
-                    From = model.From,
-                    Mode = model.SourceMode,
-                    To = model.To
+                    var openingDr = x.OpeningDR ?? 0m;
+                    var openingCr = x.OpeningCR ?? 0m;
+                    var periodDr = x.PeriodDR ?? 0m;
+                    var periodCr = x.PeriodCR ?? 0m;
+                    var closingDr = x.ClosingDR ?? 0m;
+                    var closingCr = x.ClosingCR ?? 0m;
+
+                    // Net balances
+                    var openingBalance = openingDr - openingCr;
+                    var closingBalance = closingDr - closingCr;
+
+                    // Totals for TB control (Opening + Movement)
+                    var totalDebit = openingDr + periodDr;
+                    var totalCredit = openingCr + periodCr;
+
+                    // Per-line differences
+                    var openingDiff = openingDr - openingCr;
+                    var movementDiff = periodDr - periodCr;
+                    var closingDiff = closingDr - closingCr;
+                    var totalDiff = totalDebit - totalCredit;
+
+                    return new TrialBalanceReportItem
+                    {
+                        AccountNumber = x.AccountNumber,
+                        AccountName = x.AccountName,
+
+                        OpeningDebit = openingDr,
+                        OpeningCredit = openingCr,
+                        MovementDebit = periodDr,
+                        MovementCredit = periodCr,
+                        ClosingDebit = closingDr,
+                        ClosingCredit = closingCr,
+
+                        OpeningBalance = openingBalance,
+                        ClosingBalance = closingBalance,
+                        Debit = totalDebit,
+                        Credit = totalCredit,
+
+                        OpeningDifference = openingDiff,
+                        MovementDifference = movementDiff,
+                        ClosingDifference = closingDiff,
+                        TotalDifference = totalDiff,
+
+                        BranchCode = branchInfo.BranchCode,
+                        Phone = branchInfo.Telephone,
+                        Address = branchInfo.Address,
+                        BranchName = branchInfo.Name,
+                        Username = _trialBalanceService.GetUserFullName(),
+
+                        From = model.From,
+                        To = model.To,
+                        Mode = model.SourceMode == "Temp" ? "TEMPORAL REPORT" : model.SourceMode.ToUpper(),
+
+                        Date = now.Date,
+                        DayTime = now,
+                        Time = now.TimeOfDay,
+                        Year = now.Year.ToString()
+                    };
                 }).ToList();
+
+                // 2) Compute GLOBAL SUMS for footer
+                var sumOpeningDr = data.Sum(r => r.OpeningDebit);
+                var sumOpeningCr = data.Sum(r => r.OpeningCredit);
+                var sumMovementDr = data.Sum(r => r.MovementDebit);
+                var sumMovementCr = data.Sum(r => r.MovementCredit);
+                var sumClosingDr = data.Sum(r => r.ClosingDebit);
+                var sumClosingCr = data.Sum(r => r.ClosingCredit);
+
+                var sumOpeningDiff = sumOpeningDr - sumOpeningCr;
+                var sumMovementDiff = sumMovementDr - sumMovementCr;
+                var sumClosingDiff = sumClosingDr - sumClosingCr;
+
+                var sumTotalDebit = data.Sum(r => r.Debit);
+                var sumTotalCredit = data.Sum(r => r.Credit);
+                var sumTotalDiff = sumTotalDebit - sumTotalCredit;
+
+                // 3) Push global sums into each row (Crystal footer can just read any row / group)
+                foreach (var row in data)
+                {
+                    row.TotalOpeningDebit = sumOpeningDr;
+                    row.TotalOpeningCredit = sumOpeningCr;
+                    row.TotalMovementDebit = sumMovementDr;
+                    row.TotalMovementCredit = sumMovementCr;
+                    row.TotalClosingDebit = sumClosingDr;
+                    row.TotalClosingCredit = sumClosingCr;
+
+                    row.TotalOpeningDifference = sumOpeningDiff;
+                    row.TotalMovementDifference = sumMovementDiff;
+                    row.TotalClosingDifference = sumClosingDiff;
+                    row.TotalGlobalDifference = sumTotalDiff;
+                }
 
                 this.HttpContext.Session["rptSource"] = data;
 

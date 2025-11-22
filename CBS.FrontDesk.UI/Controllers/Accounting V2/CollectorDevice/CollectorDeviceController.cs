@@ -1,8 +1,12 @@
-﻿using CBS.BusinessService.Accounting_V2.CollectorDevice;
+﻿using CBS.BusinessService.Accounting_V2.API;
+using CBS.BusinessService.Accounting_V2.CollectorDevice;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,6 +62,33 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetCollectorDevices()
+        {
+            try
+            {
+                // Simple GET all - no complex form parsing
+                var devices = await _CollectorDeviceService.GetAsync();
+
+                var result = devices.Select(d => new
+                {
+                    id = d.Id,
+                    createdOn = d.CreatedOn.ToString(),
+                    deviceName = d.DeviceName ?? string.Empty,
+                    deviceSerialNumber = d.DeviceSerialNumber ?? string.Empty,
+                    deviceVersion = d.DeviceVersion ?? string.Empty,
+                    status = d.Status,
+                    assignedCollectorUserId = d.AssignedCollectorUserId ?? string.Empty
+                }).ToList();
+
+                return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // _logger.LogError(ex, "Error loading collector devices");
+                return Json(new { error = "Error loading data" });
+            }
+        }
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(CollectorDeviceresponse model)
         {
