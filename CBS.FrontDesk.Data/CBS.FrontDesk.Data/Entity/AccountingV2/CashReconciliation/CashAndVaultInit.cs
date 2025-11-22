@@ -43,6 +43,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation
         public string DestinationGLId { get; set; }
        
         public decimal OGlBalance { get; set; }
+
+        public bool EnableSuperGL { get; set; }
+        public string SuperGLAccountNumber { get; set; }
     }
 
 
