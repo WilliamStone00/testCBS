@@ -272,6 +272,7 @@
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />
+    <Compile Include="Accounting V2\JournalReceiptsReports\JournalReceiptsService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\FileListingService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />

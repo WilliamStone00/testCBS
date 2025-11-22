@@ -1,4 +1,5 @@
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.JournalReceiptsReports;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
 
@@ -17,24 +18,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
+namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
 {
 
     //[CheckSessionTimeOut]
-    public class TrialBalanceController : BaseController
+    public class JournalReceiptsController : BaseController
     {
-        private readonly TrialBalances6ColumnService _trialBalanceService;
+        private readonly JournalReceiptsService _journalReceiptsService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public TrialBalanceController(TrialBalances6ColumnService trialBalanceService,
+        public JournalReceiptsController(JournalReceiptsService journalReceiptsService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
             _branchServices = branchServices;
-            _trialBalanceService = trialBalanceService;
+            _journalReceiptsService = journalReceiptsService;
             _branchAccountService = branchAccountService;
         }
 
@@ -44,46 +45,43 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         }
 
         [HttpPost]
-        public async Task<ActionResult> GenerateTrialBalance(AccountingV2ReportsFilter model)
+        public async Task<ActionResult> GenerateReciept(ReceiptV2Filter filter)
         {
             try
             {
                 
-                var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
-                var response2 = await _trialBalanceService.GetTrialMockInformation();
-                
-                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
+                var response = await _journalReceiptsService.GetReceiptAsync(filter);
 
+               
 
-
-                if (response == null || response.Lines == null || !response.Lines.Any())
+                if (response == null)
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
                 }
                     
 
-                var data = response.Lines.Select(x => new TrialBalanceReportItem
-                {
-                    AccountNumber = x.AccountNumber,
-                    AccountName = x.AccountName,
-                    OpeningDebit = x.OpeningDR ?? 0,
-                    OpeningCredit = x.OpeningCR ?? 0,
-                    MovementDebit = x.PeriodDR ?? 0,
-                    MovementCredit = x.PeriodCR ?? 0,
-                    ClosingDebit = x.ClosingDR ?? 0,
-                    ClosingCredit = x.ClosingCR ?? 0,
-                    BranchCode = BranchInformation.BranchCode,
-                    Phone = BranchInformation.Telephone,
-                    Address = BranchInformation.Address,
-                    BranchName = BranchInformation.Name,
-                    Username = _trialBalanceService.GetUserFullName(),
-                    From = model.From,
-                    To = model.To,
+                //var data = response.Lines.Select(x => new TrialBalanceReportItem
+                //{
+                //    AccountNumber = x.AccountNumber,
+                //    AccountName = x.AccountName,
+                //    OpeningDebit = x.OpeningDR ?? 0,
+                //    OpeningCredit = x.OpeningCR ?? 0,
+                //    MovementDebit = x.PeriodDR ?? 0,
+                //    MovementCredit = x.PeriodCR ?? 0,
+                //    ClosingDebit = x.ClosingDR ?? 0,
+                //    ClosingCredit = x.ClosingCR ?? 0,
+                //    BranchCode = BranchInformation.BranchCode,
+                //    Phone = BranchInformation.Telephone,
+                //    Address = BranchInformation.Address,
+                //    BranchName = BranchInformation.Name,
+                //    Username = _trialBalanceService.GetUserFullName(),
+                //    From = model.From,
+                //    To = model.To,
 
 
-                }).ToList();
-                this.HttpContext.Session["rptSource"] = data;
+                //}).ToList();
+                //this.HttpContext.Session["rptSource"] = data;
                 return Json(new { success = true, message = $"Report file not found." });
 
             }

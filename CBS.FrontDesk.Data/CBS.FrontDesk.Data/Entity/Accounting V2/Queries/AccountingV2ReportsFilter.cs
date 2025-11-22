@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 {
+
 
     public class AccountingV2ReportsFilter
     {
@@ -56,6 +58,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 
         [JsonProperty("zeroInclusive")]
         public bool ZeroInclusive { get; set; }
+
+        [JsonProperty("includeZeroGlAccount")]
+        public bool IncludeZeroGlAccount { get; set; }
     }
 
     public class Paging
@@ -76,4 +81,29 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
         public string SortDir { get; set; } = null;
     }
 
+
+
+
+    public class ReceiptV2Filter
+    {
+        [JsonPropertyName("receiptId")]
+        public string ReceiptId { get; set; } = null;
+
+        [JsonPropertyName("journalHeaderId")]
+        public string JournalHeaderId { get; set; } = null;
+
+
+
+        [JsonPropertyName("reference")]
+        public string Reference { get; set; } = null;
+
+        [JsonPropertyName("receiptNumber")]
+        public string ReceiptNumber { get; set; } = null;
+
+        [JsonPropertyName("lang")]
+        public string Lang { get; set; } = "en";
+
+        [JsonPropertyName("fromTemp")]
+        public bool FromTemp { get; set; } = true;
+    }
 }
