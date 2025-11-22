@@ -474,11 +474,6 @@
       <DependentUpon>JournalReceipts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalReceipts.rpt</DependentUpon>
-    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TB4.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -496,6 +491,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
       <AutoGen>True</AutoGen>

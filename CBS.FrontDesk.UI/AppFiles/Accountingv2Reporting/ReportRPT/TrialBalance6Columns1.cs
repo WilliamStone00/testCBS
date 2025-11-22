@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class JournalReceipts : ReportClass {
+    public class TrialBalance6Columns : ReportClass {
         
-        public JournalReceipts() {
+        public TrialBalance6Columns() {
         }
         
         public override string ResourceName {
             get {
-                return "JournalReceipts.rpt";
+                return "TrialBalance6Columns.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.JournalReceipts.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.TrialBalance6Columns.rp" +
+                    "t";
             }
             set {
                 // Do nothing
@@ -90,9 +91,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedJournalReceipts : Component, ICachedReport {
+    public class CachedTrialBalance6Columns : Component, ICachedReport {
         
-        public CachedJournalReceipts() {
+        public CachedTrialBalance6Columns() {
         }
         
         [Browsable(false)]
@@ -129,7 +130,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            JournalReceipts rpt = new JournalReceipts();
+            TrialBalance6Columns rpt = new TrialBalance6Columns();
             rpt.Site = this.Site;
             return rpt;
         }
