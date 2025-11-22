@@ -118,107 +118,120 @@
         </div>
     </div>
 
-    <!-- ROW 3: Report Type + Source Mode (shown only when branch is selected) -->
-    <div class="row g-3 mb-3 requires-branch d-none">
-        <div class="col-md-6">
-            @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
-            @Html.DropDownList(
-                "ReportType",
-                (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
-                "--- Select Report Type ---",
-                new
-                {
-                    @class = "form-select select2 reportype_custome required-field",
-                    id = "ReportType"
-                })
-            <small class="text-muted">
-                Choose <strong>JE</strong> or <strong>Account Statement</strong> to enable account selection.
-            </small>
+
+    @*==================== group controls one =======================*@
+    <div>
+        <!-- ROW 3: Report Type + Source Mode (shown only when branch is selected) -->
+        <div class="row g-3 mb-3 requires-branch d-none">
+            <div class="col-md-6">
+                @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList(
+                    "ReportType",
+                    (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
+                    "--- Select Report Type ---",
+                    new
+                    {
+                        @class = "form-select select2 reportype_custome required-field",
+                        id = "ReportType"
+                    })
+                <small class="text-muted">
+                    Choose <strong>JE</strong> or <strong>Account Statement</strong> to enable account selection.
+                </small>
+            </div>
+
+            <div class="col-md-6">
+                @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList(
+                    "SourceMode",
+                    new List<SelectListItem> {
+                        new SelectListItem { Text = "Temporary", Value = "Temp" },
+                        new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
+                        new SelectListItem { Text = "Auto", Value = "Auto" },
+                        new SelectListItem { Text = "RealTime", Value = "RealTime" }
+                    },
+                    "--- Select Source Mode ---",
+                    new
+                    {
+                        @class = "form-select select2 source_custome required-field",
+                        id = "SourceMode"
+                    })
+                <small class="text-muted">
+                    Select the transaction source you want to report on.
+                </small>
+            </div>
         </div>
 
-        <div class="col-md-6">
-            @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
-            @Html.DropDownList(
-                "SourceMode",
-                new List<SelectListItem> {
-                    new SelectListItem { Text = "Temporary", Value = "Temp" },
-                    new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
-                    new SelectListItem { Text = "Auto", Value = "Auto" },
-                    new SelectListItem { Text = "RealTime", Value = "RealTime" }
-                },
-                "--- Select Source Mode ---",
-                new
-                {
-                    @class = "form-select select2 source_custome required-field",
-                    id = "SourceMode"
-                })
-            <small class="text-muted">
-                Select the transaction source you want to report on.
-            </small>
+        <!-- ROW 4: Accounts + flags (shown only when branch is selected) -->
+        <div class="row g-3 mb-3 requires-branch d-none">
+
+
+            <div class="col-md-6 d-flex align-items-center gap-4">
+                @*<div class="form-check" >
+                        <input type="checkbox" hidden id="IsLiaison" class="form-check-input" />
+                        <label class="form-check-label" for="IsLiaison">Liaison</label>
+                    </div>*@
+
+                <div class="form-check" hidden>
+                    <input type="checkbox" id="IsInterbranch" class="form-check-input" />
+                    <label class="form-check-label" for="IsInterbranch">Laison</label>
+                </div>
+
+                <div class="form-check d-none include_zero_group">
+                    <input type="checkbox" id="IncludingZero" class="form-check-input" />
+                    <label class="form-check-label" for="IncludingZero">  0s Inclusive</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="IsConsolidated" class="form-check-input" />
+                    <label class="form-check-label" for="IsConsolidated">Consolidated</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 5: Accounts + flags (shown only when branch is selected) -->
+        <div class="row">
+            <div class="col-md-12 account account_group d-none">
+                <label class="form-label fw-semibold" for="AccountId">
+                    Select Accounts <span class="text-muted">(optional)</span>
+                </label>
+                @Html.DropDownList(
+                    "AccountId",
+                    new List<SelectListItem>(),
+                    "--- Select Account ---",
+                    new
+                    {
+                        @class = "select2 select-gray branches_accounts",
+                        multiple = "multiple",
+                        id = "AccountId"
+                    })
+                <small class="text-muted">
+                    Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
+                </small>
+            </div>
+        </div>
+        <!-- ROW 6: Date Range -->
+
+        <div class="row date_range_group d-none">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
+                <input type="date" id="StartDate" class="form-control select-gray required-field" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
+                <input type="date" id="EndDate" class="form-control select-gray required-field" />
+            </div>
         </div>
     </div>
 
-    <!-- ROW 4: Accounts + flags (shown only when branch is selected) -->
-    <div class="row g-3 mb-3 requires-branch d-none">
+    @*==================== group controls two =======================*@
 
 
-        <div class="col-md-6 d-flex align-items-center gap-4">
-            <div class="form-check" hidden>
-                <input type="checkbox" id="IsLiaison" class="form-check-input" />
-                <label class="form-check-label" for="IsLiaison">Liaison</label>
-            </div>
+    <div class="">
 
-            <div class="form-check" hidden>
-                <input type="checkbox" id="IsInterbranch" class="form-check-input" />
-                <label class="form-check-label" for="IsInterbranch">Interbranch Config</label>
-            </div>
-
-            <div class="form-check d-none include_zero_group">
-                <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                <label class="form-check-label" for="IncludingZero">  0s Inclusive</label>
-            </div>
-
-            <div class="form-check">
-                <input type="checkbox" id="IsConsolidated" class="form-check-input" />
-                <label class="form-check-label" for="IsConsolidated">Consolidated</label>
-            </div>
-        </div>
     </div>
 
-    <!-- ROW 5: Accounts + flags (shown only when branch is selected) -->
-    <div class="row">
-        <div class="col-md-12 account account_group d-none">
-            <label class="form-label fw-semibold" for="AccountId">
-                Select Accounts <span class="text-muted">(optional)</span>
-            </label>
-            @Html.DropDownList(
-                "AccountId",
-                new List<SelectListItem>(),
-                "--- Select Account ---",
-                new
-                {
-                    @class = "select2 select-gray branches_accounts",
-                    multiple = "multiple",
-                    id = "AccountId"
-                })
-            <small class="text-muted">
-                Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
-            </small>
-        </div>
-    </div>
-    <!-- ROW 6: Date Range -->
 
-    <div class="row date_range_group d-none">
-        <div class="col-md-6">
-            <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
-            <input type="date" id="StartDate" class="form-control select-gray required-field" />
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
-            <input type="date" id="EndDate" class="form-control select-gray required-field" />
-        </div>
-    </div>
     <!-- ROW 6: Filter + Reset Buttons (shown only when branch is selected) -->
     <div class="row mt-3 requires-branch d-none">
         <div class="col-md-6">
@@ -257,7 +270,7 @@
                 excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
                 sourceMode: $('#SourceMode').val(),
                 language: "en",
-                zeroInclusive: $('#IncludingZero').is(':checked'),
+                includeZeroGlAccount: $('#IncludingZero').is(':checked'),
                 accountNumber: selectedAccounts.length === 1 ? selectedAccounts[0] : null,
                 accountNumbers: selectedAccounts,
                 paging: { page: 0, pageSize: 0 },
@@ -407,7 +420,7 @@
                 }
 
                 const payload = buildReportPayload();
-                console.log("PAYLOAD SENT →", payload);
+               
 
                 let reportType = ($reportType.val() || "").trim().toLowerCase();
 
@@ -423,10 +436,10 @@
 
                     case "trial balance 6 columns":
                         $.post({
-                            url: '/TrialBalance/GenerateTrialBalance/',
+                            url: '/TrialBalance6Columns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
-                            success: () => Reprint('TrialBalance')
+                            success: () => Reprint('TrialBalance6Columns')
                         });
                         break;
 
@@ -435,7 +448,7 @@
                             url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
-                            success: () => Reprint('TrialBalance')
+                            success: () => Reprint('TrialBalance4Colmuns')
                         });
                         break;
 

@@ -13,57 +13,93 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
     public class JournalHeadExcelExportGenerator : BaseService
     {
 
-        public static void GenerateJournalHeadExcel(WorkflowTicket model, string filePath, string exportedBy)
+        public  void GenerateJournalHeadExcel(
+    WorkflowTicket model,
+    string filePath,
+    string exportedBy)
         {
             using (var workbook = new XLWorkbook())
             {
+                workbook.Style.Font.FontName = "Bahnschrift SemiCondensed";
+
                 var ws = workbook.Worksheets.Add("Journal Head");
+                int row = 1;
 
-                // ===== Title =====
-                ws.Cell(1, 1).Value = $"JOURNAL ENTRY - {model.Reference}";
-                ws.Cell(1, 1).Style.Font.Bold = true;
-                ws.Cell(1, 1).Style.Font.FontSize = 14;
-                ws.Range(1, 1, 1, 6).Merge();
-                ws.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                // ============================================================
+                // FETCH BANK + BRANCH (SAME AS MAIN METHOD)
+                // ============================================================
+                string bank = GetBankName();
+                string branchCode = GetBranchCode();
+                string branchName = GetBranchName();
 
-                // ===== Meta Info =====
-                ws.Cell(2, 1).Value = $"Exported On: {DateTime.Now:dd/MM/yyyy HH:mm}  |  Exported By: {exportedBy}";
-                ws.Range(2, 1, 2, 6).Merge();
-                ws.Cell(2, 1).Style.Font.Italic = true;
+                // ============================================================
+                // HEADER SECTION (Same style as first export)
+                // ============================================================
+                ws.Cell(row, 1).Value = bank;
+                ws.Range(row, 1, row, 5).Merge().Style
+                    .Font.SetBold()
+                    .Font.SetFontSize(18)
+                    .Font.SetFontColor(XLColor.White)
+                    .Fill.SetBackgroundColor(XLColor.FromArgb(0, 100, 0))
+                    .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Left);
+                row++;
 
-                ws.Cell(3, 1).Value = $"State: {model.State}";
-                ws.Range(3, 1, 3, 6).Merge();
+                ws.Cell(row, 1).Value =
+                    $"Branch Name: {branchName}   |   Code: {branchCode}";
+                ws.Range(row, 1, row, 5).Merge().Style
+                    .Font.SetBold()
+                    .Font.SetFontColor(XLColor.White)
+                    .Fill.SetBackgroundColor(XLColor.FromArgb(70, 130, 180))
+                    .Alignment.SetHorizontal(XLAlignmentHorizontalValues.Left);
+                row++;
 
-                ws.Cell(4, 1).Value = $"Operation Code: {model.OperationCode}";
-                ws.Range(4, 1, 4, 6).Merge();
+                ws.Cell(row, 1).Value =
+                    $"Exported On: {DateTime.Now:dd/MM/yyyy HH:mm}   |   Exported By: {exportedBy}";
+                ws.Range(row, 1, row, 5).Merge().Style
+                    .Font.SetBold()
+                    .Font.SetFontColor(XLColor.Gray);
+                row += 2;
 
-                ws.Cell(5, 1).Value = $"Branch ID: {model.BranchId}";
-                ws.Range(5, 1, 5, 6).Merge();
+                // ============================================================
+                // JOURNAL HEADER SECTION
+                // ============================================================
+                var sectionTitle = ws.Cell(row, 1);
+                sectionTitle.Value = "🧾 JOURNAL HEADER";
+                ws.Range(row, 1, row, 5).Merge();
+                ApplySectionTitleStyle(sectionTitle);
+                row += 2;
 
-                ws.Cell(6, 1).Value = $"Ticket Type: {model.TicketType}";
-                ws.Range(6, 1, 6, 6).Merge();
-
-                ws.Cell(7, 1).Value = $"Accounting Date: {model.AccountingDate:dd/MM/yyyy HH:mm}";
-                ws.Range(7, 1, 7, 6).Merge();
-
-                ws.Cell(8, 1).Value = $"Remarks: {model.Remarks}";
-                ws.Range(8, 1, 8, 6).Merge();
-
-                int headerRow = 10;
-
-                // ===== Table Header =====
-                var headers = new[] { "Account Number", "Account Name", "Description", "Debit (FCFA)", "Credit (FCFA)" };
-                for (int i = 0; i < headers.Length; i++)
+                var headerData = new[]
                 {
-                    ws.Cell(headerRow, i + 1).Value = headers[i];
-                    ws.Cell(headerRow, i + 1).Style.Font.Bold = true;
-                    ws.Cell(headerRow, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    ws.Cell(headerRow, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    ws.Cell(headerRow, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            ("Reference", model.Reference),
+            ("State", model.State),
+            ("Operation Code", model.OperationCode),
+            ("Branch ID", model.BranchId),
+            ("Ticket Type", model.TicketType),
+            ("Accounting Date", model.AccountingDate.ToString("dd/MM/yyyy HH:mm")),
+            ("Remarks", model.Remarks)
+        };
+
+                foreach (var item in headerData)
+                {
+                    ws.Cell(row, 1).Value = $"{item.Item1}: {item.Item2}";
+                    row++;
                 }
 
-                // ===== Table Data =====
-                int currentRow = headerRow + 1;
+                row += 1;
+
+                // ============================================================
+                // JOURNAL LINES SECTION
+                // ============================================================
+                var title2 = ws.Cell(row, 1);
+                title2.Value = "🧾 JOURNAL LINES";
+                ws.Range(row, 1, row, 5).Merge();
+                ApplySectionTitleStyle(title2);
+                row += 2;
+
+                var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
+                row = CreateTableHeaderRow(ws, row, headers);
+
                 decimal totalDebit = 0;
                 decimal totalCredit = 0;
 
@@ -74,37 +110,55 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
                         var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
 
-                        ws.Cell(currentRow, 1).Value = line.AccountNumber;
-                        ws.Cell(currentRow, 2).Value = line.AccountName;
-                        ws.Cell(currentRow, 3).Value = line.Description;
-                        ws.Cell(currentRow, 4).Value = debit;
-                        ws.Cell(currentRow, 5).Value = credit;
+                        ws.Cell(row, 1).Value = line.AccountNumber;
+                        ws.Cell(row, 2).Value = line.AccountName;
+                        ws.Cell(row, 3).Value = line.Description;
 
-                        for (int c = 1; c <= 5; c++)
-                            ws.Cell(currentRow, c).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        ws.Cell(row, 4).Value = debit;
+                        ws.Cell(row, 5).Value = credit;
+
+                        // 📌 FORMAT AS 1,000,000
+                        ws.Cell(row, 4).Style.NumberFormat.Format = "#,##0";
+                        ws.Cell(row, 5).Style.NumberFormat.Format = "#,##0";
+
+                        ApplyTableCellBorders(ws, row, 1, 5);
 
                         totalDebit += debit;
                         totalCredit += credit;
 
-                        currentRow++;
+                        row++;
                     }
 
-                    // ===== Totals Row =====
-                    ws.Cell(currentRow, 1).Value = "TOTALS";
-                    ws.Range(currentRow, 1, currentRow, 3).Merge();
-                    ws.Cell(currentRow, 4).Value = totalDebit;
-                    ws.Cell(currentRow, 5).Value = totalCredit;
-                    ws.Range(currentRow, 1, currentRow, 5).Style.Font.Bold = true;
-                    ws.Range(currentRow, 1, currentRow, 5).Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    row = CreateTotalsRow(ws, row, totalDebit, totalCredit, 5);
+                    row++;
                 }
                 else
                 {
-                    ws.Cell(currentRow, 1).Value = "No journal lines found.";
-                    ws.Range(currentRow, 1, currentRow, 5).Merge();
-                    ws.Cell(currentRow, 1).Style.Font.Italic = true;
+                    ws.Cell(row, 1).Value = "No journal lines found.";
+                    ws.Range(row, 1, row, 5).Merge().Style.Font.Italic = true;
+                    row++;
                 }
 
+                // ============================================================
+                // FOOTER
+                // ============================================================
+                var footer = ws.Cell(row, 1);
+                footer.Value = $"Generated on {DateTime.Now:yyyy-MM-dd HH:mm}";
+                footer.Style.Font.Bold = true;
+                footer.Style.Font.FontColor = XLColor.Gray;
+                ws.Range(row, 1, row, 6).Merge();
+
+                // ============================================================
+                // AUTO SIZING
+                // ============================================================
                 ws.Columns().AdjustToContents();
+                foreach (var column in ws.ColumnsUsed())
+                {
+                    if (column.Width < 10) column.Width = 10;
+                    else if (column.Width > 50) column.Width = 50;
+                }
+
                 workbook.SaveAs(filePath);
             }
         }
@@ -117,11 +171,11 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
 
-        
-            // ================================================================
-            // MAIN EXPORT METHOD
-            // ================================================================
-            public  void GenerateJournalHeadExcelSheet(
+
+        // ================================================================
+        // MAIN EXPORT METHOD
+        // ================================================================
+        public void GenerateJournalHeadExcelSheet(
                 CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
                 string filePath,
                 string exportedBy)
@@ -172,7 +226,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     // ============================================================
                     // FOOTER
                     // ============================================================
-                    CreateFooterSection(worksheet, currentRow);
+                    //CreateFooterSection(worksheet, currentRow);
 
                     // ============================================================
                     // ADJUST COLUMNS
@@ -369,95 +423,106 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         .GroupBy(r => new { r.BranchId, r.BranchName })
         .ToList();
 
-    foreach (var branchGroup in groupedByBranch)
-    {
-        // Branch header
-        var branchHeader = worksheet.Cell(currentRow, 1);
-        branchHeader.Value = $"Branch: {model.BranchName} ";
-        branchHeader.Style.Font.Bold = true;
-        currentRow += 2;
-
-        // Lines without counterparty
-        var linesWithoutCp = branchGroup.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList();
-        if (linesWithoutCp.Any())
-        {
-            currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
-
-            decimal totalDebit = 0, totalCredit = 0;
-            foreach (var line in linesWithoutCp)
+            foreach (var branchGroup in groupedByBranch)
             {
-                worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                worksheet.Cell(currentRow, 3).Value = line.Description;
-                worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
-                worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
-                worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
+                // Branch header
+                var branchHeader = worksheet.Cell(currentRow, 1);
+                branchHeader.Value = $"Branch: {model.BranchName} ";
+                branchHeader.Style.Font.Bold = true;
+                currentRow += 2;
 
-                totalDebit += Math.Abs(line.DebitAmount);
-                totalCredit += Math.Abs(line.CreditAmount);
+                // Lines without counterparty
+                var linesWithoutCp = branchGroup.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList();
+                if (linesWithoutCp.Any())
+                {
+                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
 
-                ApplyTableCellBorders(worksheet, currentRow, 1, 6);
-                currentRow++;
-            }
+                    decimal totalDebit = 0, totalCredit = 0;
+                    foreach (var line in linesWithoutCp)
+                    {
+                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
+                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
+                        worksheet.Cell(currentRow, 3).Value = line.Description;
+                        worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
 
-            currentRow = CreateTotalsRow(worksheet, currentRow, totalDebit, totalCredit, 6);
-            currentRow += 2;
-        }
+                        worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
+                        worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
 
-        // Lines with counterparty grouped by counterparty
-        var cpGroups = branchGroup
-            .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
-            .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
-            .ToList();
+                        // 📌 Format numbers with commas
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
 
-        foreach (var cpGroup in cpGroups)
-        {
-            // Counterparty header
-            var cpHeader = worksheet.Cell(currentRow, 1);
+                        totalDebit += Math.Abs(line.DebitAmount);
+                        totalCredit += Math.Abs(line.CreditAmount);
+
+                        ApplyTableCellBorders(worksheet, currentRow, 1, 6);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDebit, totalCredit, 6);
+                    currentRow += 2;
+                }
+
+                // Lines with counterparty grouped by counterparty
+                var cpGroups = branchGroup
+                    .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
+                    .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
+                    .ToList();
+
+                foreach (var cpGroup in cpGroups)
+                {
+                    // Counterparty header
+                    var cpHeader = worksheet.Cell(currentRow, 1);
                     cpHeader.Value = $"Counterparty Branch: {model.CounterpartyBranchName} ";
                     cpHeader.Style.Font.Bold = true;
-            currentRow += 2;
+                    currentRow += 2;
 
-            currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
+                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
 
-            decimal totalDebitCp = 0, totalCreditCp = 0;
-            foreach (var line in cpGroup)
-            {
-                worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
-                worksheet.Cell(currentRow, 2).Value = line.AccountName;
-                worksheet.Cell(currentRow, 3).Value = line.Description;
-                worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
-                worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
-                worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
+                    decimal totalDebitCp = 0, totalCreditCp = 0;
+                    foreach (var line in cpGroup)
+                    {
+                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
+                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
+                        worksheet.Cell(currentRow, 3).Value = line.Description;
+                        worksheet.Cell(currentRow, 4).Value = line.AuxiliaryRef;
 
-                totalDebitCp += Math.Abs(line.DebitAmount);
-                totalCreditCp += Math.Abs(line.CreditAmount);
+                        worksheet.Cell(currentRow, 5).Value = Math.Abs(line.DebitAmount);
+                        worksheet.Cell(currentRow, 6).Value = Math.Abs(line.CreditAmount);
 
-                ApplyTableCellBorders(worksheet, currentRow, 1, 6);
-                currentRow++;
+                        // 📌 Format numbers with commas
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+
+                        totalDebitCp += Math.Abs(line.DebitAmount);
+                        totalCreditCp += Math.Abs(line.CreditAmount);
+
+                        ApplyTableCellBorders(worksheet, currentRow, 1, 6);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDebitCp, totalCreditCp, 6);
+                    currentRow += 2;
+                }
             }
 
-            currentRow = CreateTotalsRow(worksheet, currentRow, totalDebitCp, totalCreditCp, 6);
-            currentRow += 2;
-        }
-    }
+            return currentRow;
 
-    return currentRow;
-}
+        }
 
 
 
         // ================================================================
         // FOOTER
         // ================================================================
-        private static void CreateFooterSection(IXLWorksheet worksheet, int row)
-            {
-                var footerCell = worksheet.Cell(row, 1);
-                footerCell.Value = $"Generated on {DateTime.Now:yyyy-MM-dd HH:mm}";
-                footerCell.Style.Font.Bold = true;
-                footerCell.Style.Font.FontColor = XLColor.Gray;
-                worksheet.Range(row, 1, row, 8).Merge();
-            }
+            //private static void CreateFooterSection(IXLWorksheet worksheet, int row)
+            //{
+            //    var footerCell = worksheet.Cell(row, 1);
+            //    footerCell.Value = $"Generated on {DateTime.Now:yyyy-MM-dd HH:mm}";
+            //    footerCell.Style.Font.Bold = true;
+            //    footerCell.Style.Font.FontColor = XLColor.Gray;
+            //    worksheet.Range(row, 1, row, 8).Merge();
+            //}
 
             // ================================================================
             // HELPER STYLES
@@ -497,35 +562,66 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 }
             }
 
-            private static int CreateTotalsRow(
-                IXLWorksheet worksheet,
-                int row,
-                decimal totalDebit,
-                decimal totalCredit,
-                int columnsCount)
+            //private static int CreateTotalsRow(
+            //    IXLWorksheet worksheet,
+            //    int row,
+            //    decimal totalDebit,
+            //    decimal totalCredit,
+            //    int columnsCount)
+            //{
+            //    var label = worksheet.Cell(row, columnsCount - 2);
+            //    label.Value = "Totals:";
+            //    label.Style.Font.Bold = true;
+
+            //    worksheet.Cell(row, columnsCount - 1).Value = totalDebit;
+            //    worksheet.Cell(row, columnsCount).Value = totalCredit;
+
+            //    for (int col = columnsCount - 2; col <= columnsCount; col++)
+            //    {
+            //        var cell = worksheet.Cell(row, col);
+            //        cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+            //        cell.Style.Font.Bold = true;
+            //        cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            //    }
+
+            //    return row + 1;
+            //}
+        private static int CreateTotalsRow(
+    IXLWorksheet worksheet,
+    int row,
+    decimal totalDebit,
+    decimal totalCredit,
+    int columnsCount)
+        {
+            var label = worksheet.Cell(row, columnsCount - 2);
+            label.Value = "Totals:";
+            label.Style.Font.Bold = true;
+
+            var debitCell = worksheet.Cell(row, columnsCount - 1);
+            var creditCell = worksheet.Cell(row, columnsCount);
+
+            debitCell.Value = totalDebit;
+            creditCell.Value = totalCredit;
+
+            // 📌 Format totals with commas
+            debitCell.Style.NumberFormat.Format = "#,##0";
+            creditCell.Style.NumberFormat.Format = "#,##0";
+
+            for (int col = columnsCount - 2; col <= columnsCount; col++)
             {
-                var label = worksheet.Cell(row, columnsCount - 2);
-                label.Value = "Totals:";
-                label.Style.Font.Bold = true;
-
-                worksheet.Cell(row, columnsCount - 1).Value = totalDebit;
-                worksheet.Cell(row, columnsCount).Value = totalCredit;
-
-                for (int col = columnsCount - 2; col <= columnsCount; col++)
-                {
-                    var cell = worksheet.Cell(row, col);
-                    cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
-                    cell.Style.Font.Bold = true;
-                    cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                }
-
-                return row + 1;
+                var cell = worksheet.Cell(row, col);
+                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#f8f9fa");
+                cell.Style.Font.Bold = true;
+                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             }
 
-            // ================================================================
-            // CLAIM ACCESS HELPERS
-            // ================================================================
-           
+            return row + 1;
+        }
+
+        // ================================================================
+        // CLAIM ACCESS HELPERS
+        // ================================================================
+
     }
 
 }

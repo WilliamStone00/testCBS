@@ -143,7 +143,7 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
         {
             try            {
                 payload.ReconciledBy = GetUserFullName();
-                  var response = await _apiCallerHelper.PostAsync<ServiceResponse<AffiliateCommand>>(APICallHelper.ReconciliationConfirmation, payload);
+                  var response = await _apiCallerHelper.PostAsync<ServiceResponse<object>>(APICallHelper.ReconciliationConfirmation, payload);
 
                 if (response.IsSuccess)
                 {

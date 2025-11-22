@@ -28,6 +28,28 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
     }
 
 
+    public class ReceiptDto
+    {
+        public string ReceiptId { get; set; } = null;
+        public string JournalHeaderId { get; set; } = null;
+        public string Reference { get; set; } = null;
+        public string ReceiptNumber { get; set; } = null;
+        public string Lang { get; set; } = "en";
+        public bool FromTemp { get; set; } = true;
+    }
+
+
+
+
+    //======================== journal reciepts respone ==========================
+    public class JournalReceiptsResponse
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public List<JournalDtoEntriesV2Dto> Movements { get; set; }
+        public decimal ClosingBalance { get; set; }
+    }
 
 
     public class JournalDtoEntriesV2Dto
@@ -71,10 +93,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public decimal? PeriodCR { get; set; }
         public decimal? ClosingDR { get; set; }
         public decimal? ClosingCR { get; set; }
+
         public decimal? Debit { get; set; }
         public decimal? Credit { get; set; }
-        public decimal? OpeningBalanceFour { get; set; }
+        public decimal? EndingBalance { get; set; }
         public decimal? ClosingBalanceFour { get; set; }
+        public decimal? BeginningBalance { get; set; }
+        public string BeginningSide { get; set; } = "D"; // "D" or "C"
+
+
+        public string EndingSide { get; set; } = "D"; // "D" or "C"
 
 
         // Optional computed helpers

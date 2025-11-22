@@ -27,13 +27,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
     //[CheckSessionTimeOut]
     public class AccntStatementController : BaseController
     {
-        private readonly AccntStatementService _accntStatementService;
+        private readonly JournalReceiptsService _accntStatementService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
         
 
 
-        public AccntStatementController(AccntStatementService accntStatementService,
+        public AccntStatementController(JournalReceiptsService accntStatementService,
             BranchServices branchServices,
             BranchAccountService branchAccountService)
         {
