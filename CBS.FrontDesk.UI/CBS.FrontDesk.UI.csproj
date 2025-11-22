@@ -496,6 +496,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrialBalance6Columns.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.cs">
       <AutoGen>True</AutoGen>
