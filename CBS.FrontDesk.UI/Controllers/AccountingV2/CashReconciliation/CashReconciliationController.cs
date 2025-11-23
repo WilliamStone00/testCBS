@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         public async Task<ActionResult> Index()
         {
             await Loader();
-            return View();
+            return View(new CashAndVaultInit());
         }
 
 

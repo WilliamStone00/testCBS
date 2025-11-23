@@ -9,7 +9,6 @@ using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,7 +76,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     BranchName = branchInfo.Name,
                     Username = _trialBalanceService.GetUserFullName(),
                     From = model.From,
-                    Mode = model.SourceMode,
+                    Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " : $"( {model.SourceMode.ToUpper()} REPORT )",
                     To = model.To
                 }).ToList();
 

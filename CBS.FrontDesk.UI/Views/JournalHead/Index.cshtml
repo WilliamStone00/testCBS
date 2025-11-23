@@ -192,6 +192,11 @@
 
 @section Scripts {
 
+  
+
+
+
+
     <script>
         // ==============================
         // Load Journal Header Data
@@ -245,11 +250,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                        <div class="text-center">
-                            <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                <i class="mdi mdi-eye-outline me-1"></i> Details
-                            </button>
-                        </div>`;
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                    <i class="mdi mdi-eye-outline me-1"></i> Details
+                                </button>
+                            </div>`;
                         }
                     }
                 ],
@@ -333,12 +338,12 @@
                     error: function (xhr, status, err) {
                         console.error("❌ Error loading details:", status, err);
                         $("#journalDetailsModal .modal-content").html(`
-                            <div class="modal-body">
-                                <div class="alert alert-danger">
-                                    Failed to load journal details. Status: ${xhr.status}
+                                <div class="modal-body">
+                                    <div class="alert alert-danger">
+                                        Failed to load journal details. Status: ${xhr.status}
+                                    </div>
                                 </div>
-                            </div>
-                        `);
+                            `);
 
                         const modalEl = document.getElementById('journalDetailsModal');
                         const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);

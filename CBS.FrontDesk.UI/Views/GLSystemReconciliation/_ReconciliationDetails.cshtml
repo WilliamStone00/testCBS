@@ -162,6 +162,14 @@
                     {
                         <tr><th class="bg-label">Receipt ID</th><td>@Model.ReceiptId</td></tr>
                     }
+                    @if (!string.IsNullOrWhiteSpace(Model.ResponseJson))
+                    {
+                        <tr><th class="bg-label">Response Json</th><td>@Model.ResponseJson</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.RequestJson))
+                    {
+                        <tr><th class="bg-label">Request Json</th><td>@Model.RequestJson</td></tr>
+                    }
                     @if (!string.IsNullOrWhiteSpace(Model.TempJournalId))
                     {
                         <tr><th class="bg-label">Temp Journal ID</th><td>@Model.TempJournalId</td></tr>

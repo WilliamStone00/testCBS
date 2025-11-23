@@ -223,15 +223,24 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     // ============================================================
                     currentRow = CreateReconciledEntriesSection(worksheet, currentRow, model);
 
-                    // ============================================================
-                    // FOOTER
-                    // ============================================================
-                    //CreateFooterSection(worksheet, currentRow);
+                // ============================================================
+                // FOOTER
+                // ============================================================
+                //CreateFooterSection(worksheet, currentRow);
 
-                    // ============================================================
-                    // ADJUST COLUMNS
-                    // ============================================================
-                    worksheet.Columns().AdjustToContents();
+                // ============================================================
+                // JOURNAL LINES (ONLY IF NO RECONCILED ENTRIES)
+                // ============================================================
+                if (model.ReconciledLedgerLines == null || !model.ReconciledLedgerLines.Any())
+                {
+                    currentRow = CreateJournalLinesSection(worksheet, currentRow, model);
+                }
+
+
+                // ============================================================
+                // ADJUST COLUMNS
+                // ============================================================
+                worksheet.Columns().AdjustToContents();
                     foreach (var column in worksheet.ColumnsUsed())
                     {
                         if (column.Width < 10) column.Width = 10;
@@ -301,7 +310,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 string exportedBy)
             {
                 var sectionTitle = worksheet.Cell(currentRow, 1);
-                sectionTitle.Value = " JOURNAL ENTRIES";
+                sectionTitle.Value = "🧾  JOURNAL ENTRIES REPORT";
             worksheet.Range(currentRow, 1, currentRow, 6).Merge();
 
             ApplySectionTitleStyle(sectionTitle);
@@ -411,7 +420,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
     // ----- Section Title -----
     var title = worksheet.Cell(currentRow, 1);
-    title.Value = "🧾 RECONCILED ENTRIES";
+    title.Value = "🧾 RECONCILED JOURNAL ENTRIES";
     worksheet.Range(currentRow, 1, currentRow, 6).Merge();
     ApplySectionTitleStyle(title);
     currentRow += 2;
@@ -513,21 +522,150 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
         // ================================================================
+        // JOURNAL LINES (Only when no reconciled entries exist)
+        // ================================================================
+        private static int CreateJournalLinesSection(
+            IXLWorksheet worksheet,
+            int currentRow,
+            CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model)
+        {
+            if (model.Lines == null || !model.Lines.Any())
+                return currentRow;
+
+            // Filter valid lines
+            var validLines = model.Lines
+                .Where(l => !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0)
+                .OrderBy(l => l.BranchName)
+                .ThenBy(l => l.CounterpartyBranchName)
+                .ToList();
+
+            if (!validLines.Any())
+                return currentRow;
+
+            // ----- Section Title -----
+            var title = worksheet.Cell(currentRow, 1);
+            title.Value = "🧾 JOURNAL LINE ENTRIES (UNRECONCILED)";
+            worksheet.Range(currentRow, 1, currentRow, 6).Merge();
+            ApplySectionTitleStyle(title);
+            currentRow += 2;
+
+            var headers = new[] { "Account Number", "Account Name", "Description", "Debit", "Credit" };
+
+            // Group by branch
+            var groupedByBranch = validLines
+                .GroupBy(l => new { l.BranchId, l.BranchName })
+                .ToList();
+
+            foreach (var branchGroup in groupedByBranch)
+            {
+                // Branch header
+                var branchHeader = worksheet.Cell(currentRow, 1);
+                branchHeader.Value = $"Branch: {branchGroup.Key.BranchName}";
+                branchHeader.Style.Font.Bold = true;
+                currentRow += 2;
+
+                // ============================ TABLE 1 — NO COUNTERPARTY ============================
+                var withoutCp = branchGroup
+                    .Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
+                    .ToList();
+
+                if (withoutCp.Any())
+                {
+                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
+
+                    decimal totalDebit = 0, totalCredit = 0;
+
+                    foreach (var line in withoutCp)
+                    {
+                        var debit = (line.DrCr?.ToLower() == "debit") ? Math.Abs(line.Amount) : 0;
+                        var credit = (line.DrCr?.ToLower() == "credit") ? Math.Abs(line.Amount) : 0;
+
+                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
+                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
+                        worksheet.Cell(currentRow, 3).Value = line.Description;
+                        worksheet.Cell(currentRow, 4).Value = debit;
+                        worksheet.Cell(currentRow, 5).Value = credit;
+
+                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+
+                        totalDebit += debit;
+                        totalCredit += credit;
+
+                        ApplyTableCellBorders(worksheet, currentRow, 1, 5);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDebit, totalCredit, 5);
+                    currentRow += 2;
+                }
+
+                // ============================ TABLE 2 — COUNTERPARTY GROUPS ============================
+                var cpGroups = branchGroup
+                    .Where(x => !string.IsNullOrWhiteSpace(x.CounterpartyBranchId))
+                    .GroupBy(x => new { x.CounterpartyBranchId, x.CounterpartyBranchName })
+                    .ToList();
+
+                foreach (var cpGroup in cpGroups)
+                {
+                    // Counterparty header
+                    var cpHeader = worksheet.Cell(currentRow, 1);
+                    cpHeader.Value = $"Counterparty Branch: {cpGroup.Key.CounterpartyBranchName}";
+                    cpHeader.Style.Font.Bold = true;
+                    currentRow += 2;
+
+                    currentRow = CreateTableHeaderRow(worksheet, currentRow, headers);
+
+                    decimal totalDebitCp = 0, totalCreditCp = 0;
+
+                    foreach (var line in cpGroup)
+                    {
+                        var debit = (line.DrCr?.ToLower() == "debit") ? Math.Abs(line.Amount) : 0;
+                        var credit = (line.DrCr?.ToLower() == "credit") ? Math.Abs(line.Amount) : 0;
+
+                        worksheet.Cell(currentRow, 1).Value = line.AccountNumber;
+                        worksheet.Cell(currentRow, 2).Value = line.AccountName;
+                        worksheet.Cell(currentRow, 3).Value = line.Description;
+                        worksheet.Cell(currentRow, 4).Value = debit;
+                        worksheet.Cell(currentRow, 5).Value = credit;
+
+                        worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(currentRow, 5).Style.NumberFormat.Format = "#,##0";
+
+                        totalDebitCp += debit;
+                        totalCreditCp += credit;
+
+                        ApplyTableCellBorders(worksheet, currentRow, 1, 5);
+                        currentRow++;
+                    }
+
+                    currentRow = CreateTotalsRow(worksheet, currentRow, totalDebitCp, totalCreditCp, 5);
+                    currentRow += 2;
+                }
+            }
+
+            return currentRow;
+        }
+
+
+
+
+        // ================================================================
         // FOOTER
         // ================================================================
-            //private static void CreateFooterSection(IXLWorksheet worksheet, int row)
-            //{
-            //    var footerCell = worksheet.Cell(row, 1);
-            //    footerCell.Value = $"Generated on {DateTime.Now:yyyy-MM-dd HH:mm}";
-            //    footerCell.Style.Font.Bold = true;
-            //    footerCell.Style.Font.FontColor = XLColor.Gray;
-            //    worksheet.Range(row, 1, row, 8).Merge();
-            //}
+        //private static void CreateFooterSection(IXLWorksheet worksheet, int row)
+        //{
+        //    var footerCell = worksheet.Cell(row, 1);
+        //    footerCell.Value = $"Generated on {DateTime.Now:yyyy-MM-dd HH:mm}";
+        //    footerCell.Style.Font.Bold = true;
+        //    footerCell.Style.Font.FontColor = XLColor.Gray;
+        //    worksheet.Range(row, 1, row, 8).Merge();
+        //}
 
-            // ================================================================
-            // HELPER STYLES
-            // ================================================================
-            private static void ApplySectionTitleStyle(IXLCell cell)
+        // ================================================================
+        // HELPER STYLES
+        // ================================================================
+        private static void ApplySectionTitleStyle(IXLCell cell)
             {
                 cell.Style.Font.Bold = true;
                 cell.Style.Font.FontSize = 13;
