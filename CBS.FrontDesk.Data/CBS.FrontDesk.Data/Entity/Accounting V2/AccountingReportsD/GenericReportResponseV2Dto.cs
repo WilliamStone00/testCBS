@@ -20,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
     public class AccountStatementResponse
     {
+      
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
         public decimal OpeningBalance { get; set; }
@@ -103,7 +104,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         /// Difference between total debits and total credits (TotalDR - TotalCR).
         /// In a balanced journal this should be zero.
         /// </summary>
-        public decimal TotalDifference => TotalDR - TotalCR;
+        public decimal TotalDifference { get; set; }
 
         public decimal OpeningBalance { get; set; }
         public decimal EndingBalance { get; set; }

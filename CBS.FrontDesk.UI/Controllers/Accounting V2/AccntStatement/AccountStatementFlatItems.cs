@@ -105,7 +105,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement {
         /// Difference between total debits and total credits (TotalDR - TotalCR).
         /// In a balanced journal this should be zero.
         /// </summary>
-        public decimal TotalDifference => TotalDR - TotalCR;
+        public decimal TotalDifference { get; set; }
 
        
         public decimal EndingBalance { get; set; }
