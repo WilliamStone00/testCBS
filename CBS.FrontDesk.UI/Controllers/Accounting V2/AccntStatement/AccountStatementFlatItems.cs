@@ -9,6 +9,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement {
         public string AccountName { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
+        public string BranchTel { get; set; }
+        public string BranchEmail { get; set; }
+        public string LogoUrl { get; set; }
+        public string PBox { get; set; }
+        public string DisplayName { get; set; }
+        public string ImmatriculationNumber { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string BankInitial { get; set; }
+        public string Motto { get; set; }
+        public string MottoDisplayName { get; set; }
+        public string HeadOfficeAddress { get; set; }
+        public string Towns { get; set; }
+        public string HeadOfficePhone { get; set; }
         public string InitByName { get; set; }
      
 
