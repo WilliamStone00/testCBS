@@ -108,6 +108,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                         BranchTel  = BranchInformation.Telephone,
                         HeadOfficePhone = BranchInformation.HeadOfficeTelehoneNumber,
                         BranchEmail = BranchInformation.Email,
+                        EndingBalance = acc.ClosingBalance,
                         ImmatriculationNumber = BranchInformation.ImmatriculationNumber,
                         LogoUrl = BranchInformation.LogoUrl,
                         Motto = BranchInformation.Motto,
