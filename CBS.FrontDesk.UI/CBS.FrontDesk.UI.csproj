@@ -8752,7 +8752,7 @@
     </Content>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>AccStatement.cs</LastGenOutput>
+      <LastGenOutput>AccStatement1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

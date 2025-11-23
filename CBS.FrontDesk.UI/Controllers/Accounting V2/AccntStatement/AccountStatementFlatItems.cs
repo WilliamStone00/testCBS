@@ -85,6 +85,30 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement {
         public string Phone { get; set; }
         public string Address { get; set; }
         public TimeSpan time{ get; set; }
+
+
+        public decimal RowDifference => DebitAmount - CreditAmount;
+
+        /// <summary>
+        /// Sum of all debit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalDR { get; set; }
+
+        /// <summary>
+        /// Sum of all credit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalCR { get; set; }
+
+        /// <summary>
+        /// Difference between total debits and total credits (TotalDR - TotalCR).
+        /// In a balanced journal this should be zero.
+        /// </summary>
+        public decimal TotalDifference { get; set; }
+
+       
+        public decimal EndingBalance { get; set; }
     }
 
 
