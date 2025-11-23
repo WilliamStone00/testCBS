@@ -94,13 +94,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public decimal TotalCredit { get; set; }
         public DateTime CreatedAtUtc { get; set; }
         public DateTime UpdatedAtUtc { get; set; }
+
+        public string RequestJson { get; set; } = null;
+        public string ResponseJson { get; set; } = null;
     }
-
-
-
-
-
-
 
     //************************************ push reconciliation ********************************************//
 

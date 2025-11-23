@@ -105,6 +105,23 @@
                 </div>
             </div>
 
+            <!-- Checkbox to enable Super GL -->
+            <div class="form-check mb-2">
+                @Html.CheckBoxFor(model => model.EnableSuperGL, new { @class = "form-check-input", id = "EnableSuperGL" })
+                @Html.LabelFor(model => model.EnableSuperGL, "Check to Merge the Selected GL to Super GL", new { @class = "form-check-label" })
+            </div>
+
+            <!-- Super GL Dropdown (initially hidden if checkbox is false) -->
+            <div class="row mb-2 align-items-end" id="SuperGLContainer" style="display:@(Model.EnableSuperGL ? "block" : "none");">
+                <div class="col-md-12 mb-2">
+                    @Html.Label("SuperGLAccountNumber", "Super GL", new { @class = "form-label fw-semibold", @for = "SuperGLAccountNumber" })
+                    @Html.DropDownList("SuperGLAccountNumber",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Super GL ---", Value = "" } },
+                        new { @class = "form-control select2 mb-2", id = "SuperGLAccountNumber", required = "required" })
+                </div>
+            </div>
+
+
             <!-- Till + Cashier -->
             <div class="row mb-2">
                 <div class="col-md-6 mb-2">
@@ -143,3 +160,9 @@
         </div>
     </div>
 }
+
+
+
+
+
+
