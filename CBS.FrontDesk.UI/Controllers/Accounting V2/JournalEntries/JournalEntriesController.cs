@@ -63,8 +63,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
     .ThenBy(s => s.AccountNumber)
     .ThenBy(s => s.Reference)
     .ThenBy(s => s.Seq)
-    .ThenBy(s => s.Dr)     // Debit
-    .ThenBy(s => s.Cr)     // Credit
+    .ThenBy(s => s.DR)     // Debit
+    .ThenBy(s => s.CR)     // Credit
     .Select(x => new AccountStatementFlatItems
     {
         // -------- Parent Fields --------
@@ -86,8 +86,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
         // -------- Movement Fields --------
         ReferenceNumber = x.Reference.ToLower(),
         BranchId = x.BranchId,
-        CreditAmount = x.Cr,
-        DebitAmount = x.Dr,
+        CreditAmount = x.CR,
+        DebitAmount = x.CR,
         Description = x.Narration.ToLower(),
         DrCr = x.DrCr,
         Amount = x.Amount,

@@ -54,13 +54,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
     public class JournalDtoEntriesV2Dto
     {
+
         public DateTime AccountingDate { get; set; }
         public string Reference { get; set; }
         public string BranchId { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public decimal Dr { get; set; }
-        public decimal Cr { get; set; }
+        public decimal DR { get; set; }
+        public decimal CR { get; set; }
         public string Narration { get; set; }
         public string DrCr { get; set; }
         public decimal Amount { get; set; }
@@ -72,6 +73,41 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public bool InterbranchStatus { get; set; }
         public string CounterpartyBranchId { get; set; }
         public string TimeOfOperation { get; set; }
+
+
+
+
+        // ─────────────────────────────────────────────────────────────
+        // Per-line and aggregate totals
+        // ─────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Per-line difference (DR - CR).
+        /// Useful when you want to see which side this line contributes to.
+        /// </summary>
+        public decimal RowDifference => DR - CR;
+
+        /// <summary>
+        /// Sum of all debit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalDR { get; set; }
+
+        /// <summary>
+        /// Sum of all credit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalCR { get; set; }
+
+        /// <summary>
+        /// Difference between total debits and total credits (TotalDR - TotalCR).
+        /// In a balanced journal this should be zero.
+        /// </summary>
+        public decimal TotalDifference => TotalDR - TotalCR;
+
+        public decimal OpeningBalance { get; set; }
+        public decimal EndingBalance { get; set; }
+
     }
 
     public class TrialBalanceV2Dto

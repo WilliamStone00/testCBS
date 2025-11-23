@@ -99,8 +99,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                         // Movement info
                         ReferenceNumber = m.Reference,
                         BranchId = m.BranchId,
-                        CreditAmount = m.Cr,
-                        DebitAmount = m.Dr,
+                        CreditAmount = m.CR,
+                        DebitAmount = m.DR,
                         Description = m.Narration,
                         BranchName = BranchInformation.Name,
                         BranchCode = BranchInformation.BranchCode,
