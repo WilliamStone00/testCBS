@@ -30,40 +30,37 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
         /// <summary>
         /// Fetch trial balances using provided filter (6-column format).
         /// </summary>
-        public async Task<GenericReportResponseV2Dto> GetTrialBalancesAsync4columns(AccountingV2ReportsFilter filter)
+        public async Task<List<TrialBalanceFourItemDto>> GetTrialBalancesAsync4columns(AccountingV2ReportsFilter filter)
         {
             try
             {
                
                 // POST request to the API
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<TrialBalanceV2Dto>>>(
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<TrialBalanceFourItemDto>>>(
                     APICallHelper.TrialBalance4,
                     filter
                 );
 
 
-                var result = new GenericReportResponseV2Dto();
+                
 
                 if (response?.IsSuccess == true)
                 {
-                    result.Lines = response.ApiResponseData?.Data ?? new List<TrialBalanceV2Dto>();
+                    return response.ApiResponseData.Data ?? new List<TrialBalanceFourItemDto>();
                 }
                 else
                 {
-                    result.Lines = new List<TrialBalanceV2Dto>();
+                     new List<TrialBalanceV2Dto>();
                     System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns: API returned failure ({response?.Message})");
                 }
 
-                return result;
+                return new List<TrialBalanceFourItemDto>();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns Error: {ex}");
                 // optional: throw new Exception("Failed to fetch trial balances", ex);
-                return new GenericReportResponseV2Dto
-                {
-                    Lines = new List<TrialBalanceV2Dto>()
-                };
+               throw ex;
             }
         }
 
