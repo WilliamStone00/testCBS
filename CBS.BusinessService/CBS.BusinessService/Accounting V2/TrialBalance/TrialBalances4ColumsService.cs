@@ -6,6 +6,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,6 +33,7 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
         /// </summary>
         public async Task<List<TrialBalanceFourItemDto>> GetTrialBalancesAsync4columns(AccountingV2ReportsFilter filter)
         {
+            string jsonFilter = JsonConvert.SerializeObject(filter, Formatting.Indented);
             try
             {
                
