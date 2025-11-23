@@ -122,6 +122,7 @@
               <xs:element name="TotalCredit" msprop:Generator_UserColumnName="TotalCredit" msprop:Generator_ColumnPropNameInTable="TotalCreditColumn" msprop:Generator_ColumnPropNameInRow="TotalCredit" msprop:Generator_ColumnVarNameInTable="columnTotalCredit" type="xs:decimal" minOccurs="0" />
               <xs:element name="TotalEndingSide" msprop:Generator_ColumnPropNameInRow="TotalEndingSide" msprop:Generator_ColumnPropNameInTable="TotalEndingSideColumn" msprop:Generator_ColumnVarNameInTable="columnTotalEndingSide" msprop:Generator_UserColumnName="TotalEndingSide" type="xs:string" minOccurs="0" />
               <xs:element name="TotalBeginningSide" msprop:Generator_ColumnPropNameInRow="TotalBeginningSide" msprop:Generator_ColumnPropNameInTable="TotalBeginningSideColumn" msprop:Generator_ColumnVarNameInTable="columnTotalBeginningSide" msprop:Generator_UserColumnName="TotalBeginningSide" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalMovementNet" msprop:Generator_ColumnPropNameInRow="TotalMovementNet" msprop:Generator_ColumnPropNameInTable="TotalMovementNetColumn" msprop:Generator_ColumnVarNameInTable="columnTotalMovementNet" msprop:Generator_UserColumnName="TotalMovementNet" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

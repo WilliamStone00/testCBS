@@ -86,7 +86,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     LogoUrl = BranchInformation.Bank.LogoUrl,
                     Motto = BranchInformation.Bank.Motto,
                     RegistrationNumber = BranchInformation.Bank.RegistrationNumber,
-                  
+                    TotalMovementNet = x.TotalMovementNet,
+
+
                     PBox = BranchInformation.PBox,
                     DisplayName = BranchInformation.DisplayName,
 
