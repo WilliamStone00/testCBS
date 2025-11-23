@@ -477,7 +477,7 @@
       <DependentUpon>JournalReceipts.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TB4.cs">
+    <Compile Include="AppFiles\AffiliateAccountUpload\TB4.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TB4.rpt</DependentUpon>
@@ -8766,7 +8766,7 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalReceipts1.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TB4.rpt">
+    <EmbeddedResource Include="AppFiles\AffiliateAccountUpload\TB4.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TB4.cs</LastGenOutput>
     </EmbeddedResource>
