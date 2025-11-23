@@ -120,7 +120,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
                         From = model.From,
                         To = model.To,
-                        Mode = model.SourceMode == "Temp" ? "TEMPORAL REPORT" : model.SourceMode.ToUpper(),
+                        Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " :  $"( {model.SourceMode.ToUpper()} REPORT )",
 
                         Date = now.Date,
                         DayTime = now,
