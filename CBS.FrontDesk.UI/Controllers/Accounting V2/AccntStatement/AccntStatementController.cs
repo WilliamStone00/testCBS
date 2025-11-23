@@ -116,6 +116,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement
                         PBox =  BranchInformation.PBox,
                         DisplayName= BranchInformation.DisplayName,
                         TotalDifference = m.TotalDifference,
+                        TotalCR = m.TotalCR,
+                        TotalDR = m.TotalDR,
                         DrCr = m.DrCr,
                         Amount = m.Amount,
                         Balance = m.Balance,
