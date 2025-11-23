@@ -46,34 +46,48 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
             {
                 // Service already handles IncludeZero filter
                 var response = await _trialBalanceService.GetTrialBalancesAsync4columns(model);
-                var branchInfo = await _branchServices.GetBranch(model.BranchId);
+                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
 
-                if (branchInfo == null)
+                if (BranchInformation == null)
                 {
                     return Json(new { success = false, message = "Branch not found." }, JsonRequestBehavior.AllowGet);
                 }
-
-                if (response?.Lines == null || !response.Lines.Any())
+                
+                if (response == null)
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
                 }
 
                 // Convert to report dataset format
-                var data = response.Lines.Select(x => new TrialBalanceFourColumnsFlatItens
+                var data = response.Select(x => new TrialBalanceFourColumnsFlatItens
                 {
                     AccountNumber = x.AccountNumber,
                     AccountName = x.AccountName,
-                    Credit = x.Credit ?? 0,
-                    Debit = x.Debit ?? 0,
-                    EndingBalance = x.EndingBalance ?? 0,
-                    BeginningBalance = x.BeginningBalance ?? 0,
-                    BranchCode = branchInfo.BranchCode,
+                    Credit = x.Credit,
+                    Debit = x.Debit,
+                    EndingBalance = x.EndingBalance,
+                    BeginningBalance = x.BeginningBalance,
+                    TotalCredit = x.TotalCredit,
+                    TotalDebit = x.TotalDebit,
+                    BranchCode = BranchInformation.BranchCode,
                     BeginningBookingDirection = x.BeginningSide,
                     EndingBookingDirection = x.EndingSide,
-                    Phone = branchInfo.Telephone,
-                    Address = branchInfo.Address,
-                    BranchName = branchInfo.Name,
+                    Phone = BranchInformation.Telephone,
+                    Address = BranchInformation.Address,
+                    BranchName = BranchInformation.Name,
+                    BranchTel = BranchInformation.Telephone,
+                    HeadOfficePhone = BranchInformation.Bank.Telephone,
+                    BranchEmail = BranchInformation.Email,
+                    ImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                    LogoUrl = BranchInformation.Bank.LogoUrl,
+                    Motto = BranchInformation.Bank.Motto,
+                    RegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                  
+                    PBox = BranchInformation.PBox,
+                    DisplayName = BranchInformation.DisplayName,
+
+
                     Username = _trialBalanceService.GetUserFullName(),
                     From = model.From,
                     Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " : $"( {model.SourceMode.ToUpper()} REPORT )",

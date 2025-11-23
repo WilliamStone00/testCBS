@@ -140,8 +140,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
 
         public string EndingSide { get; set; } = "D"; // "D" or "C"
-
-
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+     
         // Optional computed helpers
         public decimal OpeningBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
         public decimal PeriodBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
@@ -153,5 +154,39 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
         public string BranchId { get; set; }
     }
+
+
+
+
+
+
+
+
+
+    //======================== trial balance columns  ==========================
+
+
+    public class TrialBalanceFourItemDto
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal BeginningBalance { get; set; }
+        public string BeginningSide { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal EndingBalance { get; set; }
+        public string EndingSide { get; set; }
+
+        public decimal TotalBeginningBalance { get; set; }
+        public string TotalBeginningSide { get; set; }
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public decimal TotalEndingBalance { get; set; }
+        public string TotalEndingSide { get; set; }
+        public decimal TotalBeginningNet { get; set; }
+        public decimal TotalEndingNet { get; set; }
+        public decimal TotalMovementNet { get; set; }
+    }
+
 
 }
