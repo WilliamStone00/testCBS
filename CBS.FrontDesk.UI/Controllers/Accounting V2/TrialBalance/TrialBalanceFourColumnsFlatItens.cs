@@ -57,7 +57,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance {
         public string DisplayName { get; set; }
         public string PBox { get; set; }
         public decimal TotalBeginningNet { get; set; }
-        public decimal totalBeginningNet { get; set; }
+        public decimal TotalBeginningNet { get; set; }
        
  
 
