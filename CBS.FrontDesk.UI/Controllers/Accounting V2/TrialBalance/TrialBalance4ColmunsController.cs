@@ -60,7 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 }
 
                 // Convert to report dataset format
-                var data = response.Select(x => new TrialBalanceFourColumnsFlatItens
+                var data = response.Select(x => new TrialBalanceFourColumnsFlatItems
                 {
                     AccountNumber = x.AccountNumber,
                     AccountName = x.AccountName,
@@ -68,7 +68,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     Debit = x.Debit,
                     EndingBalance = x.TotalEndingNet,
                     BeginningBalance = x.TotalEndingNet,
-                    
+
+                    TotalBeginningNet = x.TotalBeginningNet,
+                    OpeningDebit = x.BeginningBalance,
+                    TotalEndingNet = x.TotalEndingNet,
+                  
+
                     TotalCredit = x.TotalCredit,
                     TotalDebit = x.TotalDebit,
                     BranchCode = BranchInformation.BranchCode,
@@ -82,7 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     BranchEmail = BranchInformation.Email,
                     TotalBeginningSide = x.TotalBeginningSide,
                     TotalEndingSide = x.TotalEndingSide,
-                    ImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                    BranchImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
                     LogoUrl = BranchInformation.Bank.LogoUrl,
                     Motto = BranchInformation.Bank.Motto,
                     RegistrationNumber = BranchInformation.Bank.RegistrationNumber,

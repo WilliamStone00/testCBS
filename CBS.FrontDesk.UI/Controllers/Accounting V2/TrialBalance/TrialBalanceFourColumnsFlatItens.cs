@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance { 
 
-    public class TrialBalanceFourColumnsFlatItens:BankHeaderInformation
+    public class TrialBalanceFourColumnsFlatItems:BankHeaderInformation
     {
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
@@ -46,17 +46,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance {
         public TimeSpan Time { get; set; } = DateTime.Now.TimeOfDay;
 
 
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
+   
         public string Username { get; set; }
         public string Phone { get; set; }
-        public string BranchEmail { get; set; }
+    
         public string HeadOfficePhone { get; set; }
         public string BranchTel { get; set; }
         public string RegistrationNumber { get; set; }
         public string Motto { get; set; }
         public string LogoUrl { get; set; }
-        public string ImmatriculationNumber { get; set; }
         public string DisplayName { get; set; }
         public string PBox { get; set; }
    
