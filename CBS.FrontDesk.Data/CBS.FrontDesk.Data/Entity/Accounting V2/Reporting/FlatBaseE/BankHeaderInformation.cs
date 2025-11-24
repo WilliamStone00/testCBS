@@ -44,7 +44,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
 
         public bool BranchIsHavingBank { get; set; } 
 
-        public string BranchBranchCode { get; set; }
+        public string BranchCode { get; set; }
 
         public string BranchName { get; set; }
 
@@ -78,7 +78,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
 
         public string BranchDateOfCreation { get; set; }
 
-        public string BranchBankInitial { get; set; }
 
         public string BranchMotto { get; set; }
 

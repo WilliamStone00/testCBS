@@ -1,8 +1,9 @@
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using System;
 using System.ComponentModel.DataAnnotations;
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance { 
 
-    public class TrialBalanceFourColumnsFlatItens
+    public class TrialBalanceFourColumnsFlatItens:BankHeaderInformation
     {
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }

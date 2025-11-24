@@ -1563,7 +1563,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnAmountInWords;
             
-            private global::System.Data.DataColumn columnBankBankCode;
+            private global::System.Data.DataColumn columnBankCode;
             
             private global::System.Data.DataColumn columnBankName;
             
@@ -1607,8 +1607,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnBranchIsHavingBank;
             
-            private global::System.Data.DataColumn columnBranchBranchCode;
-            
             private global::System.Data.DataColumn columnBranchId;
             
             private global::System.Data.DataColumn columnBranchLocation;
@@ -1646,6 +1644,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             private global::System.Data.DataColumn columnBranchImageVirtualPath;
             
             private global::System.Data.DataColumn columnBranchHeadOfficeAddress;
+            
+            private global::System.Data.DataColumn columnBankInitial;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -2146,9 +2146,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BankBankCodeColumn {
+            public global::System.Data.DataColumn BankCodeColumn {
                 get {
-                    return this.columnBankBankCode;
+                    return this.columnBankCode;
                 }
             }
             
@@ -2322,14 +2322,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn BranchBranchCodeColumn {
-                get {
-                    return this.columnBranchBranchCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn BranchIdColumn {
                 get {
                     return this.columnBranchId;
@@ -2482,6 +2474,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BankInitialColumn {
+                get {
+                    return this.columnBankInitial;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2576,7 +2576,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string PrintedBy, 
                         string Currency, 
                         string AmountInWords, 
-                        string BankBankCode, 
+                        string BankCode, 
                         string BankName, 
                         string BankDescription, 
                         string BankTelephone, 
@@ -2598,7 +2598,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string BankFax, 
                         string BankRegistrationInformation, 
                         string BranchIsHavingBank, 
-                        string BranchBranchCode, 
                         string BranchId, 
                         string BranchLocation, 
                         string BranchTelephone, 
@@ -2617,7 +2616,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string BranchMotto, 
                         string BranchHeadOfficeTelehoneNumber, 
                         string BranchImageVirtualPath, 
-                        string BranchHeadOfficeAddress) {
+                        string BranchHeadOfficeAddress, 
+                        string BankInitial) {
                 _GenericDtTb_GL_LedgerLineRow row_GenericDtTb_GL_LedgerLineRow = ((_GenericDtTb_GL_LedgerLineRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BranchName,
@@ -2678,7 +2678,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         PrintedBy,
                         Currency,
                         AmountInWords,
-                        BankBankCode,
+                        BankCode,
                         BankName,
                         BankDescription,
                         BankTelephone,
@@ -2700,7 +2700,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         BankFax,
                         BankRegistrationInformation,
                         BranchIsHavingBank,
-                        BranchBranchCode,
                         BranchId,
                         BranchLocation,
                         BranchTelephone,
@@ -2719,7 +2718,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         BranchMotto,
                         BranchHeadOfficeTelehoneNumber,
                         BranchImageVirtualPath,
-                        BranchHeadOfficeAddress};
+                        BranchHeadOfficeAddress,
+                        BankInitial};
                 row_GenericDtTb_GL_LedgerLineRow.ItemArray = columnValuesArray;
                 this.Rows.Add(row_GenericDtTb_GL_LedgerLineRow);
                 return row_GenericDtTb_GL_LedgerLineRow;
@@ -2800,7 +2800,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnPrintedBy = base.Columns["PrintedBy"];
                 this.columnCurrency = base.Columns["Currency"];
                 this.columnAmountInWords = base.Columns["AmountInWords"];
-                this.columnBankBankCode = base.Columns["BankBankCode"];
+                this.columnBankCode = base.Columns["BankCode"];
                 this.columnBankName = base.Columns["BankName"];
                 this.columnBankDescription = base.Columns["BankDescription"];
                 this.columnBankTelephone = base.Columns["BankTelephone"];
@@ -2822,7 +2822,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnBankFax = base.Columns["BankFax"];
                 this.columnBankRegistrationInformation = base.Columns["BankRegistrationInformation"];
                 this.columnBranchIsHavingBank = base.Columns["BranchIsHavingBank"];
-                this.columnBranchBranchCode = base.Columns["BranchBranchCode"];
                 this.columnBranchId = base.Columns["BranchId"];
                 this.columnBranchLocation = base.Columns["BranchLocation"];
                 this.columnBranchTelephone = base.Columns["BranchTelephone"];
@@ -2842,6 +2841,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnBranchHeadOfficeTelehoneNumber = base.Columns["BranchHeadOfficeTelehoneNumber"];
                 this.columnBranchImageVirtualPath = base.Columns["BranchImageVirtualPath"];
                 this.columnBranchHeadOfficeAddress = base.Columns["BranchHeadOfficeAddress"];
+                this.columnBankInitial = base.Columns["BankInitial"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2963,8 +2963,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnCurrency);
                 this.columnAmountInWords = new global::System.Data.DataColumn("AmountInWords", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAmountInWords);
-                this.columnBankBankCode = new global::System.Data.DataColumn("BankBankCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBankBankCode);
+                this.columnBankCode = new global::System.Data.DataColumn("BankCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBankCode);
                 this.columnBankName = new global::System.Data.DataColumn("BankName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBankName);
                 this.columnBankDescription = new global::System.Data.DataColumn("BankDescription", typeof(string), null, global::System.Data.MappingType.Element);
@@ -3007,8 +3007,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnBankRegistrationInformation);
                 this.columnBranchIsHavingBank = new global::System.Data.DataColumn("BranchIsHavingBank", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchIsHavingBank);
-                this.columnBranchBranchCode = new global::System.Data.DataColumn("BranchBranchCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBranchBranchCode);
                 this.columnBranchId = new global::System.Data.DataColumn("BranchId", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchId);
                 this.columnBranchLocation = new global::System.Data.DataColumn("BranchLocation", typeof(string), null, global::System.Data.MappingType.Element);
@@ -3047,6 +3045,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnBranchImageVirtualPath);
                 this.columnBranchHeadOfficeAddress = new global::System.Data.DataColumn("BranchHeadOfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchHeadOfficeAddress);
+                this.columnBankInitial = new global::System.Data.DataColumn("BankInitial", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBankInitial);
                 this.ExtendedProperties.Add("Generator_TableVarName", "_tableGenericDtTb_GL_LedgerLine");
                 this.ExtendedProperties.Add("Generator_UserTableName", "GenericDtTb&GL&LedgerLine");
             }
@@ -6851,18 +6851,17 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string BankBankCode {
+            public string BankCode {
                 get {
                     try {
-                        return ((string)(this[this._tableGenericDtTb_GL_LedgerLine.BankBankCodeColumn]));
+                        return ((string)(this[this._tableGenericDtTb_GL_LedgerLine.BankCodeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BankBankCode\' in table \'GenericDtTb&GL&LedgerLine\' is DBNul" +
-                                "l.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'BankCode\' in table \'GenericDtTb&GL&LedgerLine\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this._tableGenericDtTb_GL_LedgerLine.BankBankCodeColumn] = value;
+                    this[this._tableGenericDtTb_GL_LedgerLine.BankCodeColumn] = value;
                 }
             }
             
@@ -7221,23 +7220,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string BranchBranchCode {
-                get {
-                    try {
-                        return ((string)(this[this._tableGenericDtTb_GL_LedgerLine.BranchBranchCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BranchBranchCode\' in table \'GenericDtTb&GL&LedgerLine\' is D" +
-                                "BNull.", e);
-                    }
-                }
-                set {
-                    this[this._tableGenericDtTb_GL_LedgerLine.BranchBranchCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string BranchId {
                 get {
                     try {
@@ -7555,6 +7537,23 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 }
                 set {
                     this[this._tableGenericDtTb_GL_LedgerLine.BranchHeadOfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string BankInitial {
+                get {
+                    try {
+                        return ((string)(this[this._tableGenericDtTb_GL_LedgerLine.BankInitialColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BankInitial\' in table \'GenericDtTb&GL&LedgerLine\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this._tableGenericDtTb_GL_LedgerLine.BankInitialColumn] = value;
                 }
             }
             
@@ -8256,14 +8255,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBankBankCodeNull() {
-                return this.IsNull(this._tableGenericDtTb_GL_LedgerLine.BankBankCodeColumn);
+            public bool IsBankCodeNull() {
+                return this.IsNull(this._tableGenericDtTb_GL_LedgerLine.BankCodeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBankBankCodeNull() {
-                this[this._tableGenericDtTb_GL_LedgerLine.BankBankCodeColumn] = global::System.Convert.DBNull;
+            public void SetBankCodeNull() {
+                this[this._tableGenericDtTb_GL_LedgerLine.BankCodeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8520,18 +8519,6 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsBranchBranchCodeNull() {
-                return this.IsNull(this._tableGenericDtTb_GL_LedgerLine.BranchBranchCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetBranchBranchCodeNull() {
-                this[this._tableGenericDtTb_GL_LedgerLine.BranchBranchCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBranchIdNull() {
                 return this.IsNull(this._tableGenericDtTb_GL_LedgerLine.BranchIdColumn);
             }
@@ -8756,6 +8743,18 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetBranchHeadOfficeAddressNull() {
                 this[this._tableGenericDtTb_GL_LedgerLine.BranchHeadOfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBankInitialNull() {
+                return this.IsNull(this._tableGenericDtTb_GL_LedgerLine.BankInitialColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBankInitialNull() {
+                this[this._tableGenericDtTb_GL_LedgerLine.BankInitialColumn] = global::System.Convert.DBNull;
             }
         }
         
