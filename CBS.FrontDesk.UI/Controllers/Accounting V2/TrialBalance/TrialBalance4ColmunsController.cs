@@ -52,7 +52,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 {
                     return Json(new { success = false, message = "Branch not found." }, JsonRequestBehavior.AllowGet);
                 }
-                
+
                 if (response == null)
                 {
                     this.HttpContext.Session["rptSource"] = null;
@@ -66,13 +66,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     AccountName = x.AccountName,
                     Credit = x.Credit,
                     Debit = x.Debit,
-                    EndingBalance = x.TotalEndingNet,
-                    BeginningBalance = x.TotalEndingNet,
-
+                    totalBeginningNet = x.TotalBeginningNet,
                     TotalBeginningNet = x.TotalBeginningNet,
                     OpeningDebit = x.BeginningBalance,
                     TotalEndingNet = x.TotalEndingNet,
-                  
+                    EndingBalance = x.EndingBalance,
+                    Logo = BranchInformation.Bank.LogoUrl,
+                    BeginningBalance = x.BeginningBalance,
 
                     TotalCredit = x.TotalCredit,
                     TotalDebit = x.TotalDebit,
