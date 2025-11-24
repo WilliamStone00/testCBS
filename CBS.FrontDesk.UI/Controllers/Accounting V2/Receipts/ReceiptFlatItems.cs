@@ -1,12 +1,13 @@
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts;
 using System;
 
-public class ReceiptFlatItems
+public class ReceiptFlatItems:BankHeaderInformation
 {
     public string Id { get; set; }
-    public string BranchId { get; set; }
+    
     public string BranchCode { get; set; }
-    public string BranchName { get; set; }
+   
     public string Reference { get; set; }
     public decimal Dr { get; set; }
     public decimal Cr { get; set; }

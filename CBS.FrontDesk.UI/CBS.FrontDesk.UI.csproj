@@ -471,12 +471,6 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
