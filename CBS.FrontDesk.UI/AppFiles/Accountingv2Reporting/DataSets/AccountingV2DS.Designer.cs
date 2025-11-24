@@ -1545,6 +1545,12 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnTotalMovementNet;
             
+            private global::System.Data.DataColumn columnTotalBeginningNet;
+            
+            private global::System.Data.DataColumn columnTotalEndingNet;
+            
+            private global::System.Data.DataColumn columnDataColumn1;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public TrialBalance6ColumnDataTable() {
@@ -1972,6 +1978,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalBeginningNetColumn {
+                get {
+                    return this.columnTotalBeginningNet;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalEndingNetColumn {
+                get {
+                    return this.columnTotalEndingNet;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DataColumn1Column {
+                get {
+                    return this.columnDataColumn1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2056,7 +2086,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         decimal TotalCredit, 
                         string TotalEndingSide, 
                         string TotalBeginningSide, 
-                        decimal TotalMovementNet) {
+                        decimal TotalMovementNet, 
+                        decimal TotalBeginningNet, 
+                        decimal TotalEndingNet, 
+                        string DataColumn1) {
                 TrialBalance6ColumnRow rowTrialBalance6ColumnRow = ((TrialBalance6ColumnRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         BranchName,
@@ -2107,7 +2140,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         TotalCredit,
                         TotalEndingSide,
                         TotalBeginningSide,
-                        TotalMovementNet};
+                        TotalMovementNet,
+                        TotalBeginningNet,
+                        TotalEndingNet,
+                        DataColumn1};
                 rowTrialBalance6ColumnRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTrialBalance6ColumnRow);
                 return rowTrialBalance6ColumnRow;
@@ -2179,6 +2215,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnTotalEndingSide = base.Columns["TotalEndingSide"];
                 this.columnTotalBeginningSide = base.Columns["TotalBeginningSide"];
                 this.columnTotalMovementNet = base.Columns["TotalMovementNet"];
+                this.columnTotalBeginningNet = base.Columns["TotalBeginningNet"];
+                this.columnTotalEndingNet = base.Columns["TotalEndingNet"];
+                this.columnDataColumn1 = base.Columns["DataColumn1"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2282,6 +2321,12 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnTotalBeginningSide);
                 this.columnTotalMovementNet = new global::System.Data.DataColumn("TotalMovementNet", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalMovementNet);
+                this.columnTotalBeginningNet = new global::System.Data.DataColumn("TotalBeginningNet", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalBeginningNet);
+                this.columnTotalEndingNet = new global::System.Data.DataColumn("TotalEndingNet", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalEndingNet);
+                this.columnDataColumn1 = new global::System.Data.DataColumn("DataColumn1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataColumn1);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5919,6 +5964,55 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalBeginningNet {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalBeginningNetColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalBeginningNet\' in table \'TrialBalance6Column\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalBeginningNetColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalEndingNet {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableTrialBalance6Column.TotalEndingNetColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalEndingNet\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.TotalEndingNetColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DataColumn1 {
+                get {
+                    try {
+                        return ((string)(this[this.tableTrialBalance6Column.DataColumn1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataColumn1\' in table \'TrialBalance6Column\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTrialBalance6Column.DataColumn1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsBranchNameNull() {
                 return this.IsNull(this.tableTrialBalance6Column.BranchNameColumn);
             }
@@ -6503,6 +6597,42 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalMovementNetNull() {
                 this[this.tableTrialBalance6Column.TotalMovementNetColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalBeginningNetNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalBeginningNetColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalBeginningNetNull() {
+                this[this.tableTrialBalance6Column.TotalBeginningNetColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalEndingNetNull() {
+                return this.IsNull(this.tableTrialBalance6Column.TotalEndingNetColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalEndingNetNull() {
+                this[this.tableTrialBalance6Column.TotalEndingNetColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDataColumn1Null() {
+                return this.IsNull(this.tableTrialBalance6Column.DataColumn1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDataColumn1Null() {
+                this[this.tableTrialBalance6Column.DataColumn1Column] = global::System.Convert.DBNull;
             }
         }
         
