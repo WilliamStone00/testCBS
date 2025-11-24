@@ -7,7 +7,7 @@
 <DiagramLayout xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ex:showrelationlabel="False" ViewPortX="63" ViewPortY="81" xmlns:ex="urn:schemas-microsoft-com:xml-msdatasource-layout-extended" xmlns="urn:schemas-microsoft-com:xml-msdatasource-layout">
   <Shapes>
     <Shape ID="DesignTable:ReconciledLedgerLineRptDS" ZOrder="5" X="576" Y="91" Height="335" Width="302" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="331" />
-    <Shape ID="DesignTable:TrialBalance6Column" ZOrder="4" X="89" Y="221" Height="442" Width="279" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="438" />
+    <Shape ID="DesignTable:TrialBalance6Column" ZOrder="4" X="89" Y="221" Height="551" Width="293" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="547" />
     <Shape ID="DesignTable:AccountStatement" ZOrder="3" X="1458" Y="378" Height="361" Width="237" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="357" />
     <Shape ID="DesignTable:BalanceSheet" ZOrder="2" X="1136" Y="180" Height="308" Width="216" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="304" />
     <Shape ID="DesignTable:IncomeStatement" ZOrder="1" X="1439" Y="152" Height="172" Width="229" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="168" />
