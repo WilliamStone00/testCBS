@@ -19,6 +19,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance {
         public string TotalBeginningSide { get; set; }
         public string TotalEndingSide { get; set; }
         public decimal TotalMovementNet { get; set; }
+        public decimal TotalEndingNet { get; set; }
+        public decimal TotalBeginningNet { get; set; }
         public string EndingBookingDirection { get; set; }
 
 
