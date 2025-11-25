@@ -172,6 +172,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 var sumMovementDr = data.Sum(r => r.MovementDebit);
                 var sumMovementCr = data.Sum(r => r.MovementCredit);
                 var sumClosingDr = data.Sum(r => r.ClosingDebit);
+
                 var sumClosingCr = data.Sum(r => r.ClosingCredit);
 
                 var sumOpeningDiff = sumOpeningDr - sumOpeningCr;
@@ -189,6 +190,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 // objects. To ensure the totals appear accurately in all export formats
                 // (PDF, Excel, Print), the totals are assigned to each row of the dataset.
                 // ========================================================================
+
                 foreach (var row in data)
                 {
                     row.TotalOpeningDebit = sumOpeningDr;
