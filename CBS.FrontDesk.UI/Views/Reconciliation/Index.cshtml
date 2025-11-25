@@ -369,7 +369,7 @@
             function ensureSelect2Init(selectorOrJq) {
                 var $el = (selectorOrJq && selectorOrJq.jquery) ? selectorOrJq : $(selectorOrJq);
                 if (!$el || $el.length === 0) return;
-                
+
                 // Check if Select2 is available and not already initialized
                 if ($.fn.select2 && !$el.data('select2')) {
                     const optionCount = $el.find('option').length;
@@ -378,13 +378,13 @@
                         console.log('Skipping Select2 for large dropdown with', optionCount, 'options');
                         return;
                     }
-                    try { 
-                        $el.select2({ 
+                    try {
+                        $el.select2({
                             width: '100%',
                             minimumResultsForSearch: 10 // Only show search if enough items
-                        }); 
-                    } catch (e) { 
-                        console.warn('select2 init failed', e); 
+                        });
+                    } catch (e) {
+                        console.warn('select2 init failed', e);
                     }
                 }
             }
@@ -466,7 +466,7 @@
 
                             $loadingSpan.addClass('d-none');
                             $initialSpan.removeClass('d-none');
-                            
+
                             reject(error);
                         }
                     });
@@ -688,7 +688,7 @@
                         loadBranchAccounts(branchId, $('#BranchAccountId')),
                         currentMode === 'member' ? loadMemberAccountTypes(branchId) : Promise.resolve()
                     ]);
-                    
+
                     console.log('Branch data loaded successfully');
                 } catch (error) {
                     console.error('Error loading branch data:', error);
@@ -707,209 +707,258 @@
             // -----------------------------
             // Balance loading functionality
             // -----------------------------
-            async function loadBalance() {
-                // Validate branch selection
-                if (!validateBranchSelected()) {
-                    return null;
-                }
+           async function loadBalance() {
+    // Validate branch selection
+    if (!validateBranchSelected()) {
+        return null;
+    }
 
-                // Validate account type selection
-                if (!validateAccountTypeSelected()) {
-                    return null;
-                }
+    // Validate account type selection
+    if (!validateAccountTypeSelected()) {
+        return null;
+    }
 
-                const accountTypeId = currentMode === 'member' ? $('#AccountType').val() : $('#LoanType').val();
-                if (!accountTypeId) return null;
+    const accountTypeId = currentMode === 'member' ? $('#AccountType').val() : $('#LoanType').val();
+    if (!accountTypeId) return null;
 
-                const isLoan = (currentMode === 'loan');
-                const isMember = (currentMode === 'member');
+    const isLoan = (currentMode === 'loan');
+    const isMember = (currentMode === 'member');
 
-                // Show loading state
-                $('#btnGetBalance').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Loading...');
+    // Show loading state
+    $('#btnGetBalance').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Loading...');
 
-                // Create FormData with proper naming for model binding
-                const formData = new FormData();
-                formData.append('mode', currentMode);
-                formData.append('accountTypeId', accountTypeId);
-                formData.append('loan', isLoan);
-                formData.append('member', isMember);
-                formData.append('BranchId', $('#BranchId').val());
+    // Create FormData with proper naming for model binding
+    const formData = new FormData();
+    formData.append('mode', currentMode);
+    formData.append('accountTypeId', accountTypeId);
+    formData.append('loan', isLoan);
+    formData.append('member', isMember);
+    formData.append('BranchId', $('#BranchId').val());
 
-                // Use the correct property names for your model binding
-                if (isMember) {
-                    formData.append('AccountType', accountTypeId);
-                } else if (isLoan) {
-                    formData.append('LoanType', accountTypeId);
-                }
+    // Use the correct property names for your model binding
+    if (isMember) {
+        formData.append('AccountType', accountTypeId);
+    } else if (isLoan) {
+        formData.append('LoanType', accountTypeId);
 
-                // Read antiforgery token
-                const tokenInput = $('input[name="__RequestVerificationToken"]');
-                const token = tokenInput.length ? tokenInput.val() : '';
+        // Read the IsTaxable radio buttons and send value (only for loans)
+        // Radio button name comes from Html.RadioButtonFor(m => m.IsTaxable, ...)
+        const isTaxableVal = $('input[name="IsTaxable"]:checked').val();
+        // Normalize to boolean-like string that model binder will accept ("true"/"false")
+        const isTaxableNormalized = (typeof isTaxableVal === 'string')
+            ? (isTaxableVal.toLowerCase() === 'true' ? 'true' : 'false')
+            : ''; // send empty if not set
+        formData.append('IsTaxable', isTaxableNormalized);
+    }
 
-                try {
-                    const url = '@Url.Action("GetAccountBalance", "Reconciliation")';
-                    const resp = await fetch(url, {
-                        method: 'POST',
-                        credentials: 'same-origin',
-                        headers: {
-                            'Accept': 'application/json',
-                            'RequestVerificationToken': token
-                        },
-                        body: formData
-                    });
+    // Read antiforgery token
+    const tokenInput = $('input[name="__RequestVerificationToken"]');
+    const token = tokenInput.length ? tokenInput.val() : '';
 
-                    if (!resp.ok) {
-                        const txt = await resp.text().catch(() => '');
-                        console.error('loadBalance HTTP', resp.status, resp.statusText, txt);
-                        return null;
-                    }
+    try {
+        const url = '@Url.Action("GetAccountBalance", "Reconciliation")';
+        const resp = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: formData
+        });
 
-                    const json = await resp.json().catch(() => null);
-                    if (!json) return null;
+        if (!resp.ok) {
+            const txt = await resp.text().catch(() => '');
+            console.error('loadBalance HTTP', resp.status, resp.statusText, txt);
+            return null;
+        }
 
-                    console.log('Balance response:', json);
+        const json = await resp.json().catch(() => null);
+        if (!json) return null;
 
-                    // Handle the response - data might be an array or single object
-                    let balanceData = null;
+        console.log('Balance response:', json);
 
-                    if (json.success && json.data) {
-                        // If data is an array, take the first item
-                        if (Array.isArray(json.data)) {
-                            balanceData = json.data[0] || {};
-                        } else {
-                            balanceData = json.data;
-                        }
-                    }
+        // Handle the response - data might be an array or single object
+        let balanceData = null;
 
-                    // If no data from success path, check if response itself has the properties
-                    if (!balanceData && json.TotalBalance !== undefined) {
-                        balanceData = json;
-                    }
-
-                    // Update progress after successful balance load
-                    updateProgress();
-
-                    return balanceData;
-
-                } catch (err) {
-                    console.error('Error loading balance:', err);
-                    return null;
-                } finally {
-                    // Reset button state
-                    $('#btnGetBalance').prop('disabled', false).html('<i class="mdi mdi-calculator me-1"></i>Get Balance');
-                }
+        if (json.success && json.data) {
+            // If data is an array, take the first item
+            if (Array.isArray(json.data)) {
+                balanceData = json.data[0] || {};
+            } else {
+                balanceData = json.data;
             }
+        }
+
+        // If no data from success path, check if response itself has the properties
+        if (!balanceData && json.TotalBalance !== undefined) {
+            balanceData = json;
+        }
+
+        // Update progress after successful balance load
+        updateProgress();
+
+        return balanceData;
+
+    } catch (err) {
+        console.error('Error loading balance:', err);
+        return null;
+    } finally {
+        // Reset button state
+        $('#btnGetBalance').prop('disabled', false).html('<i class="mdi mdi-calculator me-1"></i>Get Balance');
+    }
+}
+
 
             // -----------------------------
             // Reconciliation Functionality
             // -----------------------------
-            async function reconcileTrialBalance() {
-                const branchId = $('#BranchId').val();
-                const branchAccountId = $('#BranchAccountId').val();
+          async function reconcileTrialBalance() {
+    const branchId = $('#BranchId').val();
+    const branchAccountId = $('#BranchAccountId').val();
 
-                // Extract branch account name from the selected option text
-                const branchAccountName = $('#BranchAccountId option:selected').text();
-                const BRANCHName = $('#BranchId option:selected').text();
+    // Initialize Select2 if not already initialized
+    if ($.fn.select2) {
+        // Initialize BranchId Select2 if it exists and isn't already initialized
+        if ($('#BranchId').length > 0 && !$('#BranchId').hasClass('select2-hidden-accessible')) {
+            $('#BranchId').select2({
+                placeholder: '--- Select Branch ---',
+                allowClear: true,
+                width: '100%'
+            });
+        }
 
-                // Skip if it's a placeholder/loading text
-                const branchName = (branchAccountName.includes('--- Select') ||
-                                   branchAccountName.includes('Loading') ||
-                                   branchAccountName.includes('Error')) ? '' : branchAccountName;
+        // Initialize BranchAccountId Select2 if it exists and isn't already initialized
+        if ($('#BranchAccountId').length > 0 && !$('#BranchAccountId').hasClass('select2-hidden-accessible')) {
+            $('#BranchAccountId').select2({
+                placeholder: '--- Select Branch Account ---',
+                allowClear: true,
+                width: '100%'
+            });
+        }
 
-                const branchName2 = (BRANCHName.includes('--- Select') ||
-                                     BRANCHName.includes('Loading') ||
-                                     BRANCHName.includes('Error')) ? '' : BRANCHName;
-
-                if (!branchId || !branchAccountId || !currentBalanceData) {
-                    console.error('Missing required data for reconciliation');
-                    return false;
-                }
-
-                // Show loading state
-                $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
-
-                try {
-                    const formData = new FormData();
-                    formData.append('BranchId', branchId);
-                    formData.append('BRANCHName', branchName2);
-                    formData.append('BranchAccountId', branchAccountId);
-                    formData.append('BranchAccountName', branchName);
-                    formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
-                    formData.append('AccountCount', currentBalanceData.AccountCount || 0);
-                    formData.append('LoanCount', currentBalanceData.LoanCount || 0);
-                    formData.append('mode', currentMode);
-                    formData.append('accountTypeId', currentAccountTypeId);
-
-                    if (currentMode === 'member') {
-                        formData.append('AccountType', currentAccountTypeId);
-                        formData.append('member', 'true');
-                    } else if (currentMode === 'loan') {
-                        formData.append('LoanType', currentAccountTypeId);
-                        formData.append('loan', 'true');
-                    }
-
-                    const tokenInput = $('input[name="__RequestVerificationToken"]');
-                    const token = tokenInput.length ? tokenInput.val() : '';
-
-                    const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
-                    const resp = await fetch(url, {
-                        method: 'POST',
-                        credentials: 'same-origin',
-                        headers: {
-                            'Accept': 'text/html',
-                            'RequestVerificationToken': token
-                        },
-                        body: formData
-                    });
-
-                    if (!resp.ok) {
-                        const txt = await resp.text().catch(() => '');
-                        console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
-                        return false;
-                    }
-
-                    const html = await resp.text();
-                    console.log('Reconciliation response received as HTML');
-
-                    if (html && html.trim().length > 0) {
-                        $('#reconciliationResultModal').remove();
-                        $('body').append(html);
-
-                        const modalElement = document.getElementById('reconciliationResultModal');
-                        if (modalElement) {
-                            const modal = new bootstrap.Modal(modalElement);
-                            modal.show();
-                            initializeModalScripts();
-                            return true;
-                        } else {
-                            console.error('Modal element not found in HTML response');
-                            if (typeof appalert === 'function') {
-                                appalert('Error: Could not load reconciliation results', 2, 1);
-                            }
-                            return false;
-                        }
-                    } else {
-                        console.error('Empty HTML response received');
-                        if (typeof appalert === 'function') {
-                            appalert('No reconciliation data received from server', 2, 1);
-                        } else {
-                            alert('No reconciliation data received from server');
-                        }
-                        return false;
-                    }
-
-                } catch (err) {
-                    console.error('Error during reconciliation:', err);
-                    if (typeof appalert === 'function') {
-                        appalert('Error during reconciliation: ' + err.message, 2, 1);
-                    } else {
-                        alert('Error during reconciliation: ' + err.message);
-                    }
-                    return false;
-                } finally {
-                    $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
-                }
+        // Also check for any other potential Select2 elements in the form
+        $('select').each(function() {
+            const $select = $(this);
+            if ($select.length > 0 && !$select.hasClass('select2-hidden-accessible') &&
+                ($select.attr('id')?.includes('select') || $select.attr('class')?.includes('select'))) {
+                $select.select2({
+                    placeholder: 'Select an option',
+                    allowClear: true,
+                    width: '100%'
+                });
             }
+        });
+    }
+
+    // Extract branch account name from the selected option text
+    const branchAccountName = $('#BranchAccountId option:selected').text();
+    const BRANCHName = $('#BranchId option:selected').text();
+
+    // Skip if it's a placeholder/loading text
+    const branchName = (branchAccountName.includes('--- Select') ||
+                       branchAccountName.includes('Loading') ||
+                       branchAccountName.includes('Error')) ? '' : branchAccountName;
+
+    const branchName2 = (BRANCHName.includes('--- Select') ||
+                         BRANCHName.includes('Loading') ||
+                         BRANCHName.includes('Error')) ? '' : BRANCHName;
+
+    if (!branchId || !branchAccountId || !currentBalanceData) {
+        console.error('Missing required data for reconciliation');
+        if (typeof appalert === 'function') {
+            appalert('Please select both Branch and Branch Account before reconciling.', 2, 1);
+        } else {
+            alert('Please select both Branch and Branch Account before reconciling.');
+        }
+        return false;
+    }
+
+    // Show loading state
+    $('#btnReconcile').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i>Processing...');
+
+    try {
+        const formData = new FormData();
+        formData.append('BranchId', branchId);
+        formData.append('BRANCHName', branchName2);
+        formData.append('BranchAccountId', branchAccountId);
+        formData.append('BranchAccountName', branchName);
+        formData.append('TotalBalance', currentBalanceData.TotalBalance || 0);
+        formData.append('AccountCount', currentBalanceData.AccountCount || 0);
+        formData.append('LoanCount', currentBalanceData.LoanCount || 0);
+        formData.append('mode', currentMode);
+        formData.append('accountTypeId', currentAccountTypeId);
+
+        if (currentMode === 'member') {
+            formData.append('AccountType', currentAccountTypeId);
+            formData.append('member', 'true');
+        } else if (currentMode === 'loan') {
+            formData.append('LoanType', currentAccountTypeId);
+            formData.append('loan', 'true');
+        }
+
+        const tokenInput = $('input[name="__RequestVerificationToken"]');
+        const token = tokenInput.length ? tokenInput.val() : '';
+
+        const url = '@Url.Action("ReconcileTrialBalance", "Reconciliation")';
+        const resp = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'text/html',
+                'RequestVerificationToken': token
+            },
+            body: formData
+        });
+
+        if (!resp.ok) {
+            const txt = await resp.text().catch(() => '');
+            console.error('Reconciliation HTTP error:', resp.status, resp.statusText, txt);
+            return false;
+        }
+
+        const html = await resp.text();
+        console.log('Reconciliation response received as HTML');
+
+        if (html && html.trim().length > 0) {
+            $('#reconciliationResultModal').remove();
+            $('body').append(html);
+
+            const modalElement = document.getElementById('reconciliationResultModal');
+            if (modalElement) {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+                initializeModalScripts();
+                return true;
+            } else {
+                console.error('Modal element not found in HTML response');
+                if (typeof appalert === 'function') {
+                    appalert('Error: Could not load reconciliation results', 2, 1);
+                }
+                return false;
+            }
+        } else {
+            console.error('Empty HTML response received');
+            if (typeof appalert === 'function') {
+                appalert('No reconciliation data received from server', 2, 1);
+            } else {
+                alert('No reconciliation data received from server');
+            }
+            return false;
+        }
+
+    } catch (err) {
+        console.error('Error during reconciliation:', err);
+        if (typeof appalert === 'function') {
+            appalert('Error during reconciliation: ' + err.message, 2, 1);
+        } else {
+            alert('Error during reconciliation: ' + err.message);
+        }
+        return false;
+    } finally {
+        $('#btnReconcile').prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i>Reconcile Now');
+    }
+}
 
             function initializeModalScripts() {
                 if ($.fn.select2) {
@@ -1085,7 +1134,7 @@
             // DOM Ready with Optimized Event Handlers
             // -----------------------------
             $(function () {
-                
+
                 // Initialize select2 for all dropdowns (optimized)
                 ensureSelect2Init('#AccountType');
                 ensureSelect2Init('#LoanType');
@@ -1101,10 +1150,10 @@
                 // Debounced Branch Change Handler - MAIN PERFORMANCE FIX
                 $('#BranchId').on('change', function() {
                     const branchId = $(this).val();
-                    
+
                     // Clear any pending timeout
                     clearTimeout(branchChangeTimeout);
-                    
+
                     // Add slight debounce to prevent rapid firing
                     branchChangeTimeout = setTimeout(async () => {
                         await handleBranchChange(branchId);

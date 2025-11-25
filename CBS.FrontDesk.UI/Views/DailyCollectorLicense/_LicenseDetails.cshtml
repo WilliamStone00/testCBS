@@ -1,0 +1,129 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.DailyCollectorLicense
+
+<div class="card bg-light mb-2">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-license me-2"></i>License Details
+        </h1>
+        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">License ID</label>
+                <div class="form-control bg-light">@Model.Id</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">License Code</label>
+                <div class="input-group">
+                    <div class="form-control bg-light font-monospace">@Model.LicenseCode</div>
+                    <button class="btn btn-outline-secondary" type="button"
+                            onclick="copyToClipboard('@Model.LicenseCode')">
+                        <i class="mdi mdi-content-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Collector User</label>
+                <div class="form-control bg-light">@Model.CollectorUserName</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Collector Code</label>
+                <div class="form-control bg-light">@Model.CollectorCode</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Branch</label>
+                <div class="form-control bg-light">@Model.BranchId</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Status</label>
+                <div class="form-control bg-light">
+                    <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Start Date</label>
+                <div class="form-control bg-light">@Model.StartDate.ToString()</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Expiry Date</label>
+                <div class="form-control bg-light @(Model.ExpiryDate < DateTime.Now ? "text-danger" : "text-success")">
+                    @Model.ExpiryDate.ToString()
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Bound Device</label>
+                <div class="form-control bg-light">@(Model.BoundDeviceId ?? "Not Bound")</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Devices Activated</label>
+                <div class="form-control bg-light">
+                    @Model.DevicesActivatedCount / @Model.MaxDevicesAllowed
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Licensed</label>
+                <div class="form-control bg-light">
+                    @if (Model.IsLicensed)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Revoked</label>
+                <div class="form-control bg-light">
+                    @if (Model.IsRevoked)
+                    {
+                        <span class="badge bg-danger">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">No</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold">Message</label>
+                <div class="form-control bg-light">@(Model.Message ?? "No message")</div>
+            </div>
+        </div>
+
+        <div class="modal-footer mt-3">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "active" => "bg-success",
+            "inactive" => "bg-warning",
+            "revoked" => "bg-danger",
+            "expired" => "bg-secondary",
+            _ => "bg-info"
+        };
+    }
+}

@@ -6,8 +6,6 @@ public class ReceiptFlatItems:BankHeaderInformation
 {
     public string Id { get; set; }
     
-    public string BranchCode { get; set; }
-   
     public string Reference { get; set; }
     public decimal Dr { get; set; }
     public decimal Cr { get; set; }
