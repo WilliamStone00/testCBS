@@ -46,7 +46,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         public decimal TotalMovementDifference { get; set; }  // ΣMovementDR - ΣMovementCR
         public decimal TotalClosingDifference { get; set; }   // ΣClosingDR - ΣClosingCR
         public decimal TotalGlobalDifference { get; set; }    // ΣDebit - ΣCredit
-
+        public string ConsolidationStatus { get; set; }
         public string Logo { get; set; } = string.Empty;
 
         public DateTime DayTime { get; set; }
