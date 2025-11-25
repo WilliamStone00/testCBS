@@ -11,7 +11,7 @@ public class ReceiptFlatItems:BankHeaderInformation
     public decimal Cr { get; set; }
     public string Number { get; set; }
     public string Title { get; set; }
-    public DateTime date { get; set; }
+    public DateTime Date { get; set; }
     public string Memo { get; set; }
     public string OperationCode { get; set; }
     public string OperationLabel { get; set; }
@@ -57,5 +57,5 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string PayloadHash { get; set; }
 
     // Flattened entries as JSON text
-    public string EntriesJson { get; set; }
+    //public string EntriesJson { get; set; }
 }

@@ -146,6 +146,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
+                        Date = response.IssuedAtUtc,
 
                         // Embedded payload information (JSON formatted)
                         PayloadDisplayTitle = response.Payload?.DisplayTitle,
@@ -164,7 +165,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         Description = x.Description,
 
                         // Embed original entries collection for display
-                        EntriesJson = JsonConvert.SerializeObject(response.Entries)
+                        //EntriesJson = JsonConvert.SerializeObject(response.Entries)
                     };
 
                     // Merge bank & branch header into flat dataset row
@@ -219,13 +220,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
         [HttpPost]
         public ActionResult GetReport(string path)
         {
-            this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = $"CrystalReport1.rpt";
-            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/CrystalReport1.rpt";
-            this.HttpContext.Session["rpttitle"] = $"JBR";
+            // Resolve report path (CrystalReport1.rpt)
+            var reportPath = Server.MapPath("~/AppFiles/Accountingv2Reporting/ReportRPT/CrystalReport1.rpt");
 
-            return Json(new { success = true, status = false, message = "Parameters OK." },
-                JsonRequestBehavior.AllowGet);
+            // Check if the report file exists before assigning to session
+            if (!System.IO.File.Exists(reportPath))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Report template file missing."
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Set report session parameters
+            Session["rptType"] = "ReportParameterLess";
+            Session["ReportName"] = "CrystalReport1.rpt";
+            Session["rptpath"] = "~/AppFiles/Accountingv2Reporting/ReportRPT/CrystalReport1.rpt";
+            Session["rpttitle"] = "JBR";
+
+            return Json(new
+            {
+                success = true,
+                message = "Parameters OK."
+            }, JsonRequestBehavior.AllowGet);
         }
+
     }
 }
