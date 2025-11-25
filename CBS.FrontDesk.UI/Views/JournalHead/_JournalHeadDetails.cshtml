@@ -113,17 +113,17 @@
                     <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
                 }
                 @*@if (!string.IsNullOrWhiteSpace(Model.BranchId))
-                {
-                    <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
-                }*@
+                    {
+                        <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
+                    }*@
                 @if (!string.IsNullOrWhiteSpace(Model.BranchName))
                 {
                     <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
                 }
                 @*@if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
-                {
-                    <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
-                }*@
+                    {
+                        <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
+                    }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchName))
                 {
                     <tr><th class="bg-label">Counterparty Branch Name</th><td>@Model.CounterpartyBranchName</td></tr>
@@ -272,94 +272,42 @@
     }
 
     @* ==================== RECONCILED LEDGER LINES ======================== *@
-   @if (hasReconciledLines)
-{
-    var validReconciled = Model.ReconciledLedgerLines
-        .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) || r.DebitAmount != 0 || r.CreditAmount != 0)
-        .OrderBy(r => r.BranchName)
-        .ThenBy(r => r.CounterpartyBranchName)
-        .ThenBy(r => r.Seq)
-        .ToList();
-
-    var groupedByBranchAndCounterparty = validReconciled
-        .GroupBy(r => new { r.BranchId, r.BranchName })
-        .Select(b => new
-        {
-            Branch = b.Key,
-            Counterparties = b.GroupBy(r => new { r.CounterpartyBranchId, r.CounterpartyBranchName })
-                             .Where(c => !string.IsNullOrWhiteSpace(c.Key.CounterpartyBranchId))
-                             .ToList(),
-            LinesWithoutCounterparty = b.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList()
-        }).ToList();
-
-    <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
-        <i class="mdi mdi-home-city-outline me-1"></i>
-        Reconciled Entries
-    </h6>
-
-    foreach (var branchGroup in groupedByBranchAndCounterparty)
+    @if (hasReconciledLines)
     {
-        <div class="mb-4">
+        var validReconciled = Model.ReconciledLedgerLines
+            .Where(r => !string.IsNullOrWhiteSpace(r.BranchId) || r.DebitAmount != 0 || r.CreditAmount != 0)
+            .OrderBy(r => r.BranchName)
+            .ThenBy(r => r.CounterpartyBranchName)
+            .ThenBy(r => r.Seq)
+            .ToList();
 
-            <!-- BRANCH HEADER (Once) -->
-            <h6 class="fw-bold text-secondary mt-3">
-                Branch: @Model.BranchName 
-            </h6>
-
-            <!-- TABLE 1: Entries Without Counterparty -->
-            @if (branchGroup.LinesWithoutCounterparty.Any())
+        var groupedByBranchAndCounterparty = validReconciled
+            .GroupBy(r => new { r.BranchId, r.BranchName })
+            .Select(b => new
             {
-                <table class="table table-sm table-bordered mb-4 align-middle text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Account Number</th>
-                            <th>Account Name</th>
-                            <th>Description</th>
-                            <th>Auxiliary Ref</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            decimal totalDebit = 0;
-                            decimal totalCredit = 0;
+                Branch = b.Key,
+                Counterparties = b.GroupBy(r => new { r.CounterpartyBranchId, r.CounterpartyBranchName })
+                                 .Where(c => !string.IsNullOrWhiteSpace(c.Key.CounterpartyBranchId))
+                                 .ToList(),
+                LinesWithoutCounterparty = b.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList()
+            }).ToList();
 
-                            foreach (var line in branchGroup.LinesWithoutCounterparty)
-                            {
-                                totalDebit += Math.Abs(line.DebitAmount);
-                                totalCredit += Math.Abs(line.CreditAmount);
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
+            <i class="mdi mdi-home-city-outline me-1"></i>
+            Reconciled Entries
+        </h6>
 
-                                <tr>
-                                    <td>@line.AccountNumber</td>
-                                    <td>@line.AccountName</td>
-                                    <td>@line.Description</td>
-                                    <td>@line.AuxiliaryRef</td>
-                                    <td>@Math.Abs(line.DebitAmount).ToString("N0")</td>
-                                    <td>@Math.Abs(line.CreditAmount).ToString("N0")</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr class="fw-bold bg-light">
-                            <td colspan="4" class="text-end">Total:</td>
-                            <td>@totalDebit.ToString("N0")</td>
-                            <td>@totalCredit.ToString("N0")</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            }
+        foreach (var branchGroup in groupedByBranchAndCounterparty)
+        {
+            <div class="mb-4">
 
-            <!-- COUNTERPARTY HEADER (Once) -->
-            @if (branchGroup.Counterparties.Any())
-            {
+                <!-- BRANCH HEADER (Once) -->
                 <h6 class="fw-bold text-secondary mt-3">
-                    Counterparty Branch: @Model.CounterpartyBranchName 
+                    Branch: @Model.BranchName
                 </h6>
 
-                <!-- TABLES FOR EACH COUNTERPARTY GROUP -->
-                foreach (var cpGroup in branchGroup.Counterparties)
+                <!-- TABLE 1: Entries Without Counterparty -->
+                @if (branchGroup.LinesWithoutCounterparty.Any())
                 {
                     <table class="table table-sm table-bordered mb-4 align-middle text-center">
                         <thead class="table-light">
@@ -377,7 +325,7 @@
                                 decimal totalDebit = 0;
                                 decimal totalCredit = 0;
 
-                                foreach (var line in cpGroup)
+                                foreach (var line in branchGroup.LinesWithoutCounterparty)
                                 {
                                     totalDebit += Math.Abs(line.DebitAmount);
                                     totalCredit += Math.Abs(line.CreditAmount);
@@ -402,103 +350,102 @@
                         </tfoot>
                     </table>
                 }
-            }
 
-        </div>
+                <!-- COUNTERPARTY HEADER (Once) -->
+                @if (branchGroup.Counterparties.Any())
+                {
+                    <h6 class="fw-bold text-secondary mt-3">
+                        Counterparty Branch: @Model.CounterpartyBranchName
+                    </h6>
+
+                    <!-- TABLES FOR EACH COUNTERPARTY GROUP -->
+                    foreach (var cpGroup in branchGroup.Counterparties)
+                    {
+                        <table class="table table-sm table-bordered mb-4 align-middle text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Account Number</th>
+                                    <th>Account Name</th>
+                                    <th>Description</th>
+                                    <th>Auxiliary Ref</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    decimal totalDebit = 0;
+                                    decimal totalCredit = 0;
+
+                                    foreach (var line in cpGroup)
+                                    {
+                                        totalDebit += Math.Abs(line.DebitAmount);
+                                        totalCredit += Math.Abs(line.CreditAmount);
+
+                                        <tr>
+                                            <td>@line.AccountNumber</td>
+                                            <td>@line.AccountName</td>
+                                            <td>@line.Description</td>
+                                            <td>@line.AuxiliaryRef</td>
+                                            <td>@Math.Abs(line.DebitAmount).ToString("N0")</td>
+                                            <td>@Math.Abs(line.CreditAmount).ToString("N0")</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold bg-light">
+                                    <td colspan="4" class="text-end">Total:</td>
+                                    <td>@totalDebit.ToString("N0")</td>
+                                    <td>@totalCredit.ToString("N0")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    }
+                }
+
+            </div>
+        }
     }
-}
 
 
     @* =========================== JOURNAL LINES ============================ *@
     @if (hasJournalLines)
-{
-    var validLines = Model.Lines
-        .Where(l => !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0)
-        .OrderBy(l => l.BranchName)
-        .ThenBy(l => l.CounterpartyBranchName)
-        .ToList();
-
-    var groupedByBranchAndCounterparty = validLines
-        .GroupBy(l => new { l.BranchId, l.BranchName })
-        .Select(b => new
-        {
-            Branch = b.Key,
-            Counterparties = b.GroupBy(r => new { r.CounterpartyBranchId, r.CounterpartyBranchName })
-                             .Where(c => !string.IsNullOrWhiteSpace(c.Key.CounterpartyBranchId))
-                             .ToList(),
-            LinesWithoutCounterparty = b.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList()
-        }).ToList();
-
-    <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
-        <i class="mdi mdi-home-city-outline me-1"></i>
-        Journal Line Entries
-    </h6>
-
-    foreach (var branchGroup in groupedByBranchAndCounterparty)
     {
-        <div class="card border-0 mb-4">
-            <div class="card-body card-body-tight">
+        var validLines = Model.Lines
+            .Where(l => !string.IsNullOrWhiteSpace(l.AccountName) || l.Amount != 0)
+            .OrderBy(l => l.BranchName)
+            .ThenBy(l => l.CounterpartyBranchName)
+            .ToList();
 
-                <!-- BRANCH HEADER -->
-                <h6 class="fw-bold text-secondary mt-2">
-                    Branch: @Model.BranchName 
-                </h6>
+        var groupedByBranchAndCounterparty = validLines
+            .GroupBy(l => new { l.BranchId, l.BranchName })
+            .Select(b => new
+            {
+                Branch = b.Key,
+                Counterparties = b.GroupBy(r => new { r.CounterpartyBranchId, r.CounterpartyBranchName })
+                                 .Where(c => !string.IsNullOrWhiteSpace(c.Key.CounterpartyBranchId))
+                                 .ToList(),
+                LinesWithoutCounterparty = b.Where(x => string.IsNullOrWhiteSpace(x.CounterpartyBranchId)).ToList()
+            }).ToList();
 
-                <!-- TABLE 1: No Counterparty -->
-                @if (branchGroup.LinesWithoutCounterparty.Any())
-                {
-                    <table class="table table-hover table-striped mb-4">
-                        <thead>
-                            <tr>
-                                <th>Account Number</th>
-                                <th>Account Name</th>
-                                <th>Description</th>
-                                <th>Debit (FCFA)</th>
-                                <th>Credit (FCFA)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                decimal totalDebit = 0;
-                                decimal totalCredit = 0;
+        <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
+            <i class="mdi mdi-home-city-outline me-1"></i>
+            Journal Line Entries
+        </h6>
 
-                                foreach (var line in branchGroup.LinesWithoutCounterparty)
-                                {
-                                    var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
-                                    var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+        foreach (var branchGroup in groupedByBranchAndCounterparty)
+        {
+            <div class="card border-0 mb-4">
+                <div class="card-body card-body-tight">
 
-                                    totalDebit += debit;
-                                    totalCredit += credit;
-
-                                    <tr>
-                                        <td>@line.AccountNumber</td>
-                                        <td>@line.AccountName</td>
-                                        <td>@line.Description</td>
-                                        <td>@debit.ToString("N0")</td>
-                                        <td>@credit.ToString("N0")</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr class="fw-bold bg-light">
-                                <td colspan="3" class="text-end">Total:</td>
-                                <td>@totalDebit.ToString("N0")</td>
-                                <td>@totalCredit.ToString("N0")</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                }
-
-                <!-- COUNTERPARTY HEADER -->
-                @if (branchGroup.Counterparties.Any())
-                {
+                    <!-- BRANCH HEADER -->
                     <h6 class="fw-bold text-secondary mt-2">
-                        Counterparty Branch: @Model.CounterpartyBranchName 
+                        Branch: @Model.BranchName
                     </h6>
 
-                    <!-- TABLE 2: With Counterparty -->
-                    foreach (var cpGroup in branchGroup.Counterparties)
+                    <!-- TABLE 1: No Counterparty -->
+                    @if (branchGroup.LinesWithoutCounterparty.Any())
                     {
                         <table class="table table-hover table-striped mb-4">
                             <thead>
@@ -515,7 +462,7 @@
                                     decimal totalDebit = 0;
                                     decimal totalCredit = 0;
 
-                                    foreach (var line in cpGroup)
+                                    foreach (var line in branchGroup.LinesWithoutCounterparty)
                                     {
                                         var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
                                         var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
@@ -542,12 +489,65 @@
                             </tfoot>
                         </table>
                     }
-                }
 
+                    <!-- COUNTERPARTY HEADER -->
+                    @if (branchGroup.Counterparties.Any())
+                    {
+                        <h6 class="fw-bold text-secondary mt-2">
+                            Counterparty Branch: @Model.CounterpartyBranchName
+                        </h6>
+
+                        <!-- TABLE 2: With Counterparty -->
+                        foreach (var cpGroup in branchGroup.Counterparties)
+                        {
+                            <table class="table table-hover table-striped mb-4">
+                                <thead>
+                                    <tr>
+                                        <th>Account Number</th>
+                                        <th>Account Name</th>
+                                        <th>Description</th>
+                                        <th>Debit (FCFA)</th>
+                                        <th>Credit (FCFA)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        decimal totalDebit = 0;
+                                        decimal totalCredit = 0;
+
+                                        foreach (var line in cpGroup)
+                                        {
+                                            var debit = line.DrCr?.ToLower() == "debit" ? Math.Abs(line.Amount) : 0;
+                                            var credit = line.DrCr?.ToLower() == "credit" ? Math.Abs(line.Amount) : 0;
+
+                                            totalDebit += debit;
+                                            totalCredit += credit;
+
+                                            <tr>
+                                                <td>@line.AccountNumber</td>
+                                                <td>@line.AccountName</td>
+                                                <td>@line.Description</td>
+                                                <td>@debit.ToString("N0")</td>
+                                                <td>@credit.ToString("N0")</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="fw-bold bg-light">
+                                        <td colspan="3" class="text-end">Total:</td>
+                                        <td>@totalDebit.ToString("N0")</td>
+                                        <td>@totalCredit.ToString("N0")</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        }
+                    }
+
+                </div>
             </div>
-        </div>
+        }
     }
-}
 
 
 
@@ -563,7 +563,7 @@
             <tbody>
                 @if (!string.IsNullOrWhiteSpace(Model.Receipt.Number))
                 {
-                    <tr><th class="bg-label">Number</th><td>@Model.Receipt.Number</td></tr>
+                    <tr><th class="bg-label">Number</th><td class="rc_number">@Model.Receipt.Number</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Receipt.Title))
                 {
@@ -611,16 +611,64 @@
 
 
 
+        <button type="button" id="btnPrintAccountingReport" class="btn btn-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> Print
+        </button>
+
+
         <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
             <i class="mdi mdi-file-excel-outline"></i> Export Excel
         </button>
 
         @*<button type="button" id="btnApprove" class="btn btn-success">
-            <i class="mdi mdi-check-circle-outline"></i>
-            <span class="btn-text">Approve</span>
-        </button>*@
+                <i class="mdi mdi-check-circle-outline"></i>
+                <span class="btn-text">Approve</span>
+            </button>*@
     </div>
 </div>
+
+
+@*=========================================================================== Accounting Reports Start =======================================*@
+<script>
+
+    function Reprint(controller) {
+        ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
+    }
+
+    $(document).on("click", "#btnPrintAccountingReport", function () {
+
+
+        const payload = {
+            receiptId: null,
+            journalHeaderId: null,
+            reference: '@Model.Reference',
+            lang: "string",
+            fromTemp: true
+        };
+
+        console.log(payload);
+
+        $.ajax({
+            url: "/JournalReceipts/GenerateReciept",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(payload),
+            success: function (response) {
+                Reprint('JournalReceipts')
+                console.log("Success:", response);
+            },
+            error: function (xhr) {
+                console.error("Error:", xhr);
+            }
+        });
+
+    });
+</script>
+@*=========================================================================== Accounting Reports END =======================================*@
+
+
+
+
 
 
 

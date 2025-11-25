@@ -9,7 +9,7 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> CASH RECONCILIATION
+                    <i class="mdi mdi-cash-multiple me-2"></i> ACCOUNT RECONCILIATION
                 </h1>
                 <p class="card-text text-muted">Manage all cash related operations in your branch efficiently.</p>
                 <hr style="border:2px solid rgba(128,128,128,.5)" />
@@ -52,249 +52,271 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-        (function () {
-            "use strict";
+    <script>
+(function () {
+    "use strict";
 
-            // ---------- Utilities ----------
-            function formatNumber(x) {
-                if (isNaN(x)) return "";
-                return Number(x).toLocaleString();
-            }
-            function parseNumber(s) {
-                if (!s) return 0;
-                return Number(String(s).replace(/,/g, "").trim()) || 0;
-            }
-            function setDisabled(sel, val) {
-                $(sel).prop("disabled", !!val);
-            }
-            function camelOrPascal(obj, key) { // tolerate both casings
-                return obj?.[key] ?? obj?.[key && key[0].toUpperCase() + key.slice(1)];
-            }
+    // ---------- Utilities ----------
+    function formatNumber(x) {
+        if (isNaN(x)) return "";
+        return Number(x).toLocaleString();
+    }
+    function parseNumber(s) {
+        if (!s) return 0;
+        return Number(String(s).replace(/,/g, "").trim()) || 0;
+    }
+    function setDisabled(sel, val) {
+        $(sel).prop("disabled", !!val);
+    }
+    function camelOrPascal(obj, key) { // tolerate both casings
+        return obj?.[key] ?? obj?.[key && key[0].toUpperCase() + key.slice(1)];
+    }
 
-            // Keep a local copy of fetched GL balance
-            let treasuryBalance = 0;
+    // Keep a local copy of fetched GL balance
+    let treasuryBalance = 0;
 
-            // Init select2 once DOM is ready
-            $(document).ready(function () {
-                $('.select2').select2();
+    $(document).ready(function () {
+        $('.select2').select2();
 
-                // when Source GL changes, fetch its balance
-                $("#SourceGlId").on("change", function () {
-                    const accountId = $(this).val();
-                    treasuryBalance = 0;
-                    $("#Balance").val("");
-                    $("#CashDiff").val("");
+        // ---------- Source GL change ----------
+        $("#SourceGlId").on("change", function () {
+            const accountId = $(this).val();
+            treasuryBalance = 0;
+            $("#Balance").val("");
+            $("#CashDiff").val("");
 
-                    if (!accountId) return;
+            if (!accountId) return;
 
-                    $.ajax({
-                    url: '@Url.Action("GetAccountBalance", "CashReconciliation")',
-                    type: 'GET',
-                    data: { accountId },
-                    success: function (response) {
-                        if (response && response.success) {
-                            // access the actual decimal value
-                            treasuryBalance = parseFloat(response.balance.TrialBalanceBalance) || 0;
-                            $("#Balance").val(formatNumber(treasuryBalance));
-                            $("#GlBalance").val(treasuryBalance);
-                            recalcCashDiff();
-                        } else {
-                            appalert(response?.message || "Balance not found.", 3, 1);
-                        }
-                    },
-                    error: function () {
-                        appalert("Failed to get balance.", 0, 1);
-                    }
-                });
-
-                });
-
-                // amount typing -> recalc diff
-                $("#Amount").on("input", recalcCashDiff);
-
-                function recalcCashDiff() {
-                    const amount = parseNumber($("#Amount").val());
-                    const diff = amount - treasuryBalance; // GL − counted
-                    $("#CashDiff").val(formatNumber(diff));
-
-                    const $indicator = $("#CashDiffIndicator");
-                    $indicator.removeClass("text-success text-danger");
-
-                    if (diff === 0) {
-                        $indicator.text("✔").addClass("text-success");  // green check
-                    } else if (diff < 0) {
-                        $indicator.text("✖").addClass("text-danger");   // red X
+            $.ajax({
+                url: '@Url.Action("GetAccountBalance", "CashReconciliation")',
+                type: 'GET',
+                data: { accountId },
+                success: function (response) {
+                    if (response && response.success) {
+                        treasuryBalance = parseFloat(response.balance.TrialBalanceBalance) || 0;
+                        $("#Balance").val(formatNumber(treasuryBalance));
+                        $("#GlBalance").val(treasuryBalance);
+                        recalcCashDiff();
                     } else {
-                        $indicator.text("");
+                        appalert(response?.message || "Balance not found.", 3, 1);
                     }
+                },
+                error: function () {
+                    appalert("Failed to get balance.", 0, 1);
                 }
+            });
+        });
 
-                // expose globally for onchange on Branch
-                window.loadReconciliationAccounts = function (branchId) {
-                    if (!branchId) {
-                        $("#SourceGlId").html('<option value="">--- Select  GL ---</option>').trigger('change');
-                        $("#DestinationGlId").html('<option value="">--- Select cash diff GL ---</option>').trigger('change');
-                        $("#Balance, #CashDiff").val("");
-                        appalert("Please select a valid branch.", 3, 1);
+        // ---------- Amount input ----------
+        $("#Amount").on("input", recalcCashDiff);
+
+        function recalcCashDiff() {
+            const amount = parseNumber($("#Amount").val());
+            const diff = amount - treasuryBalance;
+            $("#CashDiff").val(formatNumber(diff));
+
+            const $indicator = $("#CashDiffIndicator");
+            $indicator.removeClass("text-success text-danger");
+
+            if (diff === 0) {
+                $indicator.text("✔").addClass("text-success");
+            } else if (diff < 0) {
+                $indicator.text("✖").addClass("text-danger");
+            } else {
+                $indicator.text("");
+            }
+        }
+
+        // ---------- Load Accounts ----------
+        window.loadReconciliationAccounts = function (branchId) {
+            if (!branchId) {
+                $("#SourceGlId").html('<option value="">--- Select GL ---</option>').trigger('change');
+                $("#DestinationGlId").html('<option value="">--- Select cash diff GL ---</option>').trigger('change');
+                $("#SuperGLAccountNumber").html('<option value="">--- Select Super GL ---</option>').trigger('change');
+                $("#Balance, #CashDiff").val("");
+                appalert("Please select a valid branch.", 3, 1);
+                return;
+            }
+
+            setDisabled("#SourceGlId, #DestinationGlId, #SuperGLAccountNumber", true);
+
+            $.ajax({
+                url: '@Url.Action("GetCashReconciliationAccounts", "CashReconciliation")',
+                type: 'GET',
+                data: { branchId },
+                success: function (response) {
+                    if (!response || !response.success) {
+                        appalert(response?.message || "Failed to load accounts.", 2, 1);
                         return;
                     }
 
-                    setDisabled("#SourceGlId, #DestinationGlId", true);
+                    const data = response.data || {};
+                    const treasury = camelOrPascal(data, 'treasuryAccounts') || [];
+                    const deficit = camelOrPascal(data, 'deficitAccounts') || [];
 
-                $.ajax({
-                    url: '@Url.Action("GetCashReconciliationAccounts", "CashReconciliation")',
-                    type: 'GET',
-                    data: { branchId },
-                    success: function (response) {
-                        if (!response || !response.success) {
-                            appalert(response?.message || "Failed to load accounts.", 2, 1);
-                            return;
-                        }
+                    // ✅ Treasury (Source GL)
+                    let src = '<option value="">--- Select GL ---</option>';
+                    treasury.forEach(function (acc) {
+                        const id = acc.accountId || acc.AccountId;
+                        const name = acc.accountName || acc.AccountName;
+                        const number = acc.accountNumber || acc.AccountNumber;
+                        const displayText = `[${number}] ${name}`;
+                        src += `<option value="${id}">${displayText}</option>`;
+                    });
+                    $("#SourceGlId").html(src).trigger('change');
 
-                        const data = response.data || {};
-                        const treasury = camelOrPascal(data, 'treasuryAccounts') || [];
-                        const deficit = camelOrPascal(data, 'deficitAccounts') || [];
+                    // ✅ Deficit (Destination GL)
+                    let dst = '<option value="">--- Select cash diff GL ---</option>';
+                    deficit.forEach(function (acc) {
+                        const id = acc.accountId || acc.AccountId;
+                        const name = acc.accountName || acc.AccountName;
+                        const number = acc.accountNumber || acc.AccountNumber;
+                        const displayText = `[${number}] ${name}`;
+                        dst += `<option value="${id}">${displayText}</option>`;
+                    });
+                    $("#DestinationGlId").html(dst).trigger('change');
 
-                        // ✅ Treasury (Source GL)
-                        let src = '<option value="">--- Select GL ---</option>';
-                        treasury.forEach(function (acc) {
-                            const id = acc.accountId || acc.AccountId;
-                            const name = acc.accountName || acc.AccountName;
-                            const number = acc.accountNumber || acc.AccountNumber; // ✅ include account number
-                            const displayText = `[${number}] ${name}`;
-                            src += `<option value="${id}">${displayText}</option>`;
-                        });
-                        $("#SourceGlId").html(src).trigger('change');
+                    // ✅ Super GL (same as Destination GL)
+                    let superGLOptions = '<option value="">--- Select Super GL ---</option>';
+                    deficit.forEach(function (acc) {
+                        const id = acc.accountId || acc.AccountId;
+                        const name = acc.accountName || acc.AccountName;
+                        const number = acc.accountNumber || acc.AccountNumber;
+                        const displayText = `[${number}] ${name}`;
+                        superGLOptions += `<option value="${id}">${displayText}</option>`;
+                    });
+                    $("#SuperGLAccountNumber").html(superGLOptions).trigger('change');
 
-                        // ✅ Deficit (Destination GL)
-                        let dst = '<option value="">--- Select cash diff GL ---</option>';
-                        deficit.forEach(function (acc) {
-                            const id = acc.accountId || acc.AccountId;
-                            const name = acc.accountName || acc.AccountName;
-                            const number = acc.accountNumber || acc.AccountNumber; // ✅ include account number
-                            const displayText = `[${number}] ${name}`;
-                            dst += `<option value="${id}">${displayText}</option>`;
-                        });
-                        $("#DestinationGlId").html(dst).trigger('change');
+                    appalert("Accounts loaded successfully.", 1, 1);
+                },
+                error: function () {
+                    appalert("Error loading accounts.", 0, 1);
+                },
+                complete: function () {
+                    setDisabled("#SourceGlId, #DestinationGlId, #SuperGLAccountNumber", false);
+                }
+            });
+        };
 
-                        appalert("Accounts loaded successfully.", 1, 1);
-                    },
-                    error: function () {
-                        appalert("Error loading accounts.", 0, 1);
-                    },
-                    complete: function () {
-                        setDisabled("#SourceGlId, #DestinationGlId", false);
+        // ---------- Form Submit ----------
+        window.cashReconciliationSubmitAjax = function (form) {
+            if (!$(form).valid()) return false;
+
+            const branchText = $('#BranchId option:selected').text();
+            const srcText = $('#SourceGlId option:selected').text();
+            const dstText = $('#DestinationGlId option:selected').text();
+            const superGLText = $('#SuperGLAccountNumber option:selected').text();
+            const amount = $('#Amount').val();
+            const balance = $('#Balance').val();
+            const cashDiff = $('#CashDiff').val();
+            const till = $('#TillName').val();
+            const cashier = $('#NameOfCashier').val();
+            const memo = $('#Memo').val();
+
+            // Guard required selects
+            if (!$('#BranchId').val()) { appalert("Select a branch.", 3, 1); return false; }
+            if (!$('#SourceGlId').val()) { appalert("Select a Cash GL.", 3, 1); return false; }
+            if (!$('#DestinationGlId').val()) { appalert("Select a Difference GL.", 3, 1); return false; }
+            if ($('#EnableSuperGL').is(':checked') && !$('#SuperGLAccountNumber').val()) {
+                appalert("Select a Super GL.", 3, 1);
+                return false;
+            }
+            if (parseNumber(amount) <= 0) { appalert("Enter a valid Amount.", 3, 1); return false; }
+
+            const title = "Confirm Cash Reconciliation";
+            const message = `
+                <p>Please review the details below before confirming:</p>
+                <table class="table table-sm table-bordered">
+                    <tbody>
+                        <tr><th>Branch</th><td>${branchText}</td></tr>
+                        <tr><th>Cash GL (Source)</th><td>${srcText}</td></tr>
+                        <tr><th>Difference GL (Destination)</th><td>${dstText}</td></tr>
+                        ${$('#EnableSuperGL').is(':checked') ? `<tr><th>Super GL</th><td>${superGLText}</td></tr>` : ''}
+                        <tr><th>Amount</th><td>${amount}</td></tr>
+                        <tr><th>Balance</th><td>${balance}</td></tr>
+                        <tr><th>Cash Diff</th><td>${cashDiff}</td></tr>
+                        <tr><th>Till Name</th><td>${till}</td></tr>
+                        <tr><th>Cashier</th><td>${cashier}</td></tr>
+                        <tr><th>Note</th><td>${memo}</td></tr>
+                    </tbody>
+                </table>
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+                    <label for="alertifyConfirmCheckbox" class="form-check-label">
+                        I confirm that the above reconciliation details are correct.
+                    </label>
+                </div>
+            `;
+
+            alertify.confirm(title, message,
+                function () {
+                    if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                        appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                        return false;
                     }
-                });
-                };
 
-                // expose submit handler
-                window.cashReconciliationSubmitAjax = function (form) {
-                    // basic client-side checks
-                    if (!$(form).valid()) return false;
+                    const token = $('input[name="__RequestVerificationToken"]').val();
 
-                    const branchText = $('#BranchId option:selected').text();
-                    const srcText = $('#SourceGlId option:selected').text();
-                    const dstText = $('#DestinationGlId option:selected').text();
-
-                    const amount = $('#Amount').val();
-                    const balance = $('#Balance').val();
-                    const cashDiff = $('#CashDiff').val();
-                    const till = $('#TillName').val();
-                    const cashier = $('#NameOfCashier').val();
-                    const memo = $('#Memo').val();
-
-                    // Guard required selects (HTML5 required sometimes doesn’t kick in for Select2)
-                    if (!$('#BranchId').val()) { appalert("Select a branch.", 3, 1); return false; }
-                    if (!$('#SourceGlId').val()) { appalert("Select a Cash GL.", 3, 1); return false; }
-                    if (!$('#DestinationGlId').val()) { appalert("Select a Difference GL.", 3, 1); return false; }
-                    if (parseNumber(amount) <= 0) { appalert("Enter a valid Amount.", 3, 1); return false; }
-
-                    const title = "Confirm Cash Reconciliation";
-                    const message = `
-                        <p>Please review the details below before confirming:</p>
-                        <table class="table table-sm table-bordered">
-                            <tbody>
-                                <tr><th>Branch</th><td>${branchText}</td></tr>
-                                <tr><th>Cash GL (Source)</th><td>${srcText}</td></tr>
-                                <tr><th>Difference GL (Destination)</th><td>${dstText}</td></tr>
-                                <tr><th>Amount</th><td>${amount}</td></tr>
-                                <tr><th>Balance</th><td>${balance}</td></tr>
-                                <tr><th>Cash Diff</th><td>${cashDiff}</td></tr>
-                                <tr><th>Till Name</th><td>${till}</td></tr>
-                                <tr><th>Cashier</th><td>${cashier}</td></tr>
-                                <tr><th>Note</th><td>${memo}</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="form-check mt-3">
-                            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-                            <label for="alertifyConfirmCheckbox" class="form-check-label">
-                                I confirm that the above reconciliation details are correct.
-                            </label>
-                        </div>
-                    `;
-
-                    alertify.confirm(title, message,
-                        function () {
-                            if (!$('#alertifyConfirmCheckbox').is(':checked')) {
-                                appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
-                                return false;
-                            }
-
-                            // anti-forgery token
-                            const token = $('input[name="__RequestVerificationToken"]').val();
-
-                            $.ajax({
-                                type: 'POST',
-                                url: form.action,
-                                data: new FormData(form),
-                                processData: false,
-                                contentType: false,
-                                headers: token ? { 'RequestVerificationToken': token } : {},
-                                beforeSend: function () {
-                                    $('.alertify .ajs-ok').prop('disabled', true)
-                                        .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
-                                },
-                                success: function (response) {
-                                    if (response && response.success) {
-                                        appalert(response.message || "✅ Saved successfully!", 1, 1);
-                                        alertify.dismissAll();
-                                        if (String(response.reloadDataView).toLowerCase() === "yes") {
-                                            form.reset();
-                                            $('.select2').val(null).trigger('change');
-                                            treasuryBalance = 0;
-                                            $("#Balance,#CashDiff").val("");
-                                        }
-                                    } else {
-                                        appalert(response?.message || "❌ Failed to save cash reconciliation.", 2, 1);
-                                    }
-                                },
-                                error: function (xhr) {
-                                    appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
-                                },
-                                complete: function () {
-                                    $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
-                                }
-                            });
+                    $.ajax({
+                        type: 'POST',
+                        url: form.action,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+                        beforeSend: function () {
+                            $('.alertify .ajs-ok').prop('disabled', true)
+                                .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
                         },
-                        function () {
-                            appalert("🚫 Operation cancelled.", 2, 1);
-                        }
-                    ).set({
-                        labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
-                        onshow: function () {
-                            const okBtn = $('.alertify .ajs-ok');
-                            okBtn.prop('disabled', true);
-                            $('#alertifyConfirmCheckbox').off('change').on('change', function () {
-                                okBtn.prop('disabled', !this.checked);
-                            });
+                        success: function (response) {
+                            if (response && response.success) {
+                                appalert(response.message || "✅ Saved successfully!", 1, 1);
+                                alertify.dismissAll();
+                                if (String(response.reloadDataView).toLowerCase() === "yes") {
+                                    form.reset();
+                                    $('.select2').val(null).trigger('change');
+                                    treasuryBalance = 0;
+                                    $("#Balance,#CashDiff").val("");
+                                }
+                            } else {
+                                appalert(response?.message || "❌ Failed to save cash reconciliation.", 2, 1);
+                            }
+                        },
+                        error: function (xhr) {
+                            appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                        },
+                        complete: function () {
+                            $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
                         }
                     });
-
-                    return false;
-                };
+                },
+                function () {
+                    appalert("🚫 Operation cancelled.", 2, 1);
+                }
+            ).set({
+                labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                onshow: function () {
+                    const okBtn = $('.alertify .ajs-ok');
+                    okBtn.prop('disabled', true);
+                    $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                        okBtn.prop('disabled', !this.checked);
+                    });
+                }
             });
-        })();
-</script>
+
+            return false;
+        };
+
+        // ---------- Super GL toggle ----------
+        $('#EnableSuperGL').change(function () {
+            if ($(this).is(':checked')) {
+                $('#SuperGLContainer').show();
+            } else {
+                $('#SuperGLContainer').hide();
+            }
+        });
+    });
+})();
+    </script>
+
 }

@@ -1,15 +1,15 @@
-using CBS.BusinessService.Accounting_V2.BranchAccountService;
+﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
 
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,45 +41,143 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         }
 
         [HttpPost]
+
         public async Task<ActionResult> GenerateTrialBalance(AccountingV2ReportsFilter model)
         {
             try
             {
                 // Service already handles IncludeZero filter
                 var response = await _trialBalanceService.GetTrialBalancesAsync4columns(model);
-                var branchInfo = await _branchServices.GetBranch(model.BranchId);
+                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
 
-                if (branchInfo == null)
+                if (BranchInformation == null)
                 {
                     return Json(new { success = false, message = "Branch not found." }, JsonRequestBehavior.AllowGet);
                 }
 
-                if (response?.Lines == null || !response.Lines.Any())
+                if (response == null)
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." }, JsonRequestBehavior.AllowGet);
                 }
 
-                // Convert to report dataset format
-                var data = response.Lines.Select(x => new TrialBalanceFourColumnsFlatItens
+                var header = new BankHeaderInformation
                 {
-                    AccountNumber = x.AccountNumber,
-                    AccountName = x.AccountName,
-                    Credit = x.Credit ?? 0,
-                    Debit = x.Debit ?? 0,
-                    EndingBalance = x.EndingBalance ?? 0,
-                    BeginningBalance = x.BeginningBalance ?? 0,
-                    BranchCode = branchInfo.BranchCode,
-                    BeginningBookingDirection = x.BeginningSide,
-                    EndingBookingDirection = x.EndingSide,
-                    Phone = branchInfo.Telephone,
-                    Address = branchInfo.Address,
-                    BranchName = branchInfo.Name,
-                    Username = _trialBalanceService.GetUserFullName(),
-                    From = model.From,
-                    Mode = model.SourceMode,
-                    To = model.To
+                    BankId = BranchInformation.Bank.Id,
+                    BankBankCode = BranchInformation.Bank.BankCode,
+                    BankName = BranchInformation.Bank.Name,
+                    BankTelephone = BranchInformation.Bank.Telephone,
+                    BankEmail = BranchInformation.Bank.Email,
+                    BankAddress = BranchInformation.Bank.Address,
+                    BankLogoUrl = BranchInformation.Bank.LogoUrl,
+                    BankMotto = BranchInformation.Bank.Motto,
+                    BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                    BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                    BankPBox = BranchInformation.Bank.PBox,
+
+                    BranchId = BranchInformation.Id,
+                    BranchCode = BranchInformation.BranchCode,
+                    BranchName = BranchInformation.Name,
+                    BranchTelephone = BranchInformation.Telephone,
+                    BranchEmail = BranchInformation.Email,
+                    BranchAddress = BranchInformation.Address,
+                    BranchLogoUrl = BranchInformation.LogoUrl,
+                    BranchCapital = BranchInformation.Capital,
+                    BranchRegistrationNumber = BranchInformation.RegistrationNumber,
+                    BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
+                    BranchPBox = BranchInformation.PBox
+                };
+
+
+
+                // Convert to report dataset format
+                var data = response.Select(x =>
+                {
+                    var item = new TrialBalanceFourColumnsFlatItems
+                    {
+                        AccountNumber = x.AccountNumber,
+                        AccountName = x.AccountName,
+                        Credit = x.Credit,
+                        Debit = x.Debit,
+                        TotalBeginningNet = x.TotalBeginningNet,
+                        OpeningDebit = x.BeginningBalance,
+                        TotalEndingNet = x.TotalEndingNet,
+                        EndingBalance = x.EndingBalance,
+                        BeginningBalance = x.BeginningBalance,
+                        TotalCredit = x.TotalCredit,
+                        TotalDebit = x.TotalDebit,           
+                        BeginningBookingDirection = x.BeginningSide,
+                        EndingBookingDirection = x.EndingSide,
+                        Phone = BranchInformation.Telephone,
+                        Address = BranchInformation.Address,
+                        BranchName = BranchInformation.Name,
+                        BranchTel = BranchInformation.Telephone,
+                        HeadOfficePhone = BranchInformation.Bank.Telephone,
+                        BranchEmail = BranchInformation.Email,
+                        TotalEndingSide = x.TotalEndingSide,
+                        BranchImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                        LogoUrl = BranchInformation.Bank.LogoUrl,
+                        PBox = BranchInformation.PBox,
+                        RegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                        DisplayName = BranchInformation.DisplayName,                   
+                        TotalMovementNet = x.TotalMovementNet,
+                        TotalBeginningSide = x.TotalBeginningSide,
+                        Username = _trialBalanceService.GetUserFullName(),
+                        From = model.From,
+                        Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " : $"( {model.SourceMode.ToUpper()} REPORT )",
+                        To = model.To
+                    };
+
+                    // 🔥 This is where ApplyHeader is used
+                    ApplyHeader(item, header);
+
+                    return item;
                 }).ToList();
+
+
+                //var data = response.Select(x => new TrialBalanceFourColumnsFlatItems
+                //{
+                //    AccountNumber = x.AccountNumber,
+                //    AccountName = x.AccountName,
+                //    Credit = x.Credit,
+                //    Debit = x.Debit,
+                //    TotalBeginningNet = x.TotalBeginningNet,
+                //    OpeningDebit = x.BeginningBalance,
+                //    TotalEndingNet = x.TotalEndingNet,
+                //    EndingBalance = x.EndingBalance,
+                //    BeginningBalance = x.BeginningBalance,
+                //    TotalCredit = x.TotalCredit,
+                //    TotalDebit = x.TotalDebit,
+
+
+                //    BranchLogoUrl = BranchInformation.LogoUrl,
+                //    BranchCode = BranchInformation.BranchCode,
+                //    BeginningBookingDirection = x.BeginningSide,
+                //    EndingBookingDirection = x.EndingSide,
+                //    Phone = BranchInformation.Telephone,
+                //    Address = BranchInformation.Address,
+                //    BranchName = BranchInformation.Name,
+                //    BranchTel = BranchInformation.Telephone,
+                //    HeadOfficePhone = BranchInformation.Bank.Telephone,
+                //    BranchEmail = BranchInformation.Email,
+                //    TotalEndingSide = x.TotalEndingSide,
+                //    BranchImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                //    LogoUrl = BranchInformation.Bank.LogoUrl,
+                //    PBox = BranchInformation.PBox,
+                //    RegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                //    DisplayName = BranchInformation.DisplayName,
+                //    Motto = BranchInformation.Bank.Motto,
+
+
+
+
+                //    TotalMovementNet = x.TotalMovementNet,
+                //    TotalBeginningSide = x.TotalBeginningSide,
+                //    Username = _trialBalanceService.GetUserFullName(),
+                //    From = model.From,
+                //    Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " : $"( {model.SourceMode.ToUpper()} REPORT )",
+                //    To = model.To
+                //}).ToList();
 
                 // Store records for Crystal
                 this.HttpContext.Session["rptSource"] = data;
@@ -92,6 +190,58 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+
+
+        private void ApplyHeader(TrialBalanceFourColumnsFlatItems item, BankHeaderInformation header)
+        {
+            item.BankId = header.BankId;
+            item.BankBankCode = header.BankBankCode;
+            item.BankName = header.BankName;
+            item.BankTelephone = header.BankTelephone;
+            item.BankEmail = header.BankEmail;
+            item.BankAddress = header.BankAddress;
+            item.BankLogoUrl = header.BankLogoUrl;
+            item.BankMotto = header.BankMotto;
+            item.BankRegistrationNumber = header.BankRegistrationNumber;
+            item.BankImmatriculationNumber = header.BankImmatriculationNumber;
+            item.BankPBox = header.BankPBox;
+
+            item.BranchId = header.BranchId;
+            item.BranchCode = header.BranchCode;
+            item.BranchName = header.BranchName;
+            item.BranchTelephone = header.BranchTelephone;
+            item.BranchEmail = header.BranchEmail;
+            item.BranchAddress = header.BranchAddress;
+            item.BranchLogoUrl = header.BranchLogoUrl;
+            item.BranchCapital = header.BranchCapital;
+            item.BranchRegistrationNumber = header.BranchRegistrationNumber;
+            item.BranchImmatriculationNumber = header.BranchImmatriculationNumber;
+            item.BranchPBox = header.BranchPBox;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [HttpPost]
         public ActionResult GetReport(string path)

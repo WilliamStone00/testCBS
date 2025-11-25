@@ -1,15 +1,13 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
-
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using CBS.FrontDesk.Data.ReportDataSetDto;
 using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
-
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,26 +45,64 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
             {
                 this.HttpContext.Session["rptSource"] = null;
 
+                // Retrieve 6-column trial balance dataset
                 var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
-                var branchInfo = await _branchServices.GetBranch(model.BranchId);
 
-                // Validate response
+                // Retrieve branch and bank metadata (for report header)
+                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
+
+                // Stop processing if no financial records available
                 if (response?.Lines == null || !response.Lines.Any())
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "No records found for the selected filters." }, JsonRequestBehavior.AllowGet);
                 }
 
-                // Validate branch
-                if (branchInfo == null)
+                // Stop processing if branch cannot be found
+                if (BranchInformation == null)
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     return Json(new { success = false, message = "Selected branch not found." }, JsonRequestBehavior.AllowGet);
                 }
 
+                // Build report header (bank + branch static details displayed in the report)
+                var header = new BankHeaderInformation
+                {
+                    BankId = BranchInformation.Bank.Id,
+                    BankBankCode = BranchInformation.Bank.BankCode,
+                    BankName = BranchInformation.Bank.Name,
+                    BankTelephone = BranchInformation.Bank.Telephone,
+                    BankEmail = BranchInformation.Bank.Email,
+                    BankAddress = BranchInformation.Bank.Address,
+                    BankLogoUrl = BranchInformation.Bank.LogoUrl,
+                    BankMotto = BranchInformation.Bank.Motto,
+                    BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                    BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                    BankPBox = BranchInformation.Bank.PBox,
+
+                    BranchId = BranchInformation.Id,
+                    BranchCode = BranchInformation.BranchCode,
+                    BranchName = BranchInformation.Name,
+                    BranchTelephone = BranchInformation.Telephone,
+                    BranchEmail = BranchInformation.Email,
+                    BranchAddress = BranchInformation.Address,
+                    BranchLogoUrl = BranchInformation.LogoUrl,
+                    BranchCapital = BranchInformation.Capital,
+                    BranchRegistrationNumber = BranchInformation.RegistrationNumber,
+                    BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
+                    BranchPBox = BranchInformation.PBox
+                };
+
                 var now = DateTime.Now;
 
-                // 1) Map each line and compute per-line balances/differences
+                // ========================================================================
+                // STEP 1: Build each report line (per account)
+                // ------------------------------------------------------------------------
+                // • Extract opening / movement / closing values from the dataset
+                // • Compute balances and differences for the current account only
+                // • Attach bank & branch header metadata to the report row
+                //   Crystal Reports requires the header to be present in each row
+                // ========================================================================
                 var data = response.Lines.Select(x =>
                 {
                     var openingDr = x.OpeningDR ?? 0m;
@@ -76,21 +112,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     var closingDr = x.ClosingDR ?? 0m;
                     var closingCr = x.ClosingCR ?? 0m;
 
-                    // Net balances
                     var openingBalance = openingDr - openingCr;
                     var closingBalance = closingDr - closingCr;
 
-                    // Totals for TB control (Opening + Movement)
                     var totalDebit = openingDr + periodDr;
                     var totalCredit = openingCr + periodCr;
 
-                    // Per-line differences
                     var openingDiff = openingDr - openingCr;
                     var movementDiff = periodDr - periodCr;
                     var closingDiff = closingDr - closingCr;
                     var totalDiff = totalDebit - totalCredit;
 
-                    return new TrialBalanceReportItem
+                    var item = new TrialBalanceReportItem
                     {
                         AccountNumber = x.AccountNumber,
                         AccountName = x.AccountName,
@@ -101,35 +134,39 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                         MovementCredit = periodCr,
                         ClosingDebit = closingDr,
                         ClosingCredit = closingCr,
-
                         OpeningBalance = openingBalance,
                         ClosingBalance = closingBalance,
                         Debit = totalDebit,
                         Credit = totalCredit,
-
                         OpeningDifference = openingDiff,
                         MovementDifference = movementDiff,
                         ClosingDifference = closingDiff,
                         TotalDifference = totalDiff,
 
-                        BranchCode = branchInfo.BranchCode,
-                        Phone = branchInfo.Telephone,
-                        Address = branchInfo.Address,
-                        BranchName = branchInfo.Name,
+                        Phone = BranchInformation.Telephone,
+                        Address = BranchInformation.Address,
                         Username = _trialBalanceService.GetUserFullName(),
-
                         From = model.From,
                         To = model.To,
-                        Mode = model.SourceMode == "Temp" ? "TEMPORAL REPORT" : model.SourceMode.ToUpper(),
-
+                        Mode = model.SourceMode == "Temp" ? "( TEMPORAL REPORT) " : $"( {model.SourceMode.ToUpper()} REPORT )",
                         Date = now.Date,
                         DayTime = now,
                         Time = now.TimeOfDay,
                         Year = now.Year.ToString()
                     };
+
+                    ApplyHeader(item, header);
+                    return item;
                 }).ToList();
 
-                // 2) Compute GLOBAL SUMS for footer
+
+                // ========================================================================
+                // STEP 2: Calculate global totals for footer
+                // ------------------------------------------------------------------------
+                // These totals are used by Crystal Reports to display financial control
+                // totals covering the entire trial balance — not just a single account.
+                // (Opening totals, movement totals, closing totals and net differences)
+                // ========================================================================
                 var sumOpeningDr = data.Sum(r => r.OpeningDebit);
                 var sumOpeningCr = data.Sum(r => r.OpeningCredit);
                 var sumMovementDr = data.Sum(r => r.MovementDebit);
@@ -145,7 +182,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 var sumTotalCredit = data.Sum(r => r.Credit);
                 var sumTotalDiff = sumTotalDebit - sumTotalCredit;
 
-                // 3) Push global sums into each row (Crystal footer can just read any row / group)
+                // ========================================================================
+                // STEP 3: Embed global totals inside every row
+                // ------------------------------------------------------------------------
+                // Crystal Reports reads footer totals from rows, not from separate summary
+                // objects. To ensure the totals appear accurately in all export formats
+                // (PDF, Excel, Print), the totals are assigned to each row of the dataset.
+                // ========================================================================
                 foreach (var row in data)
                 {
                     row.TotalOpeningDebit = sumOpeningDr;
@@ -161,6 +204,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     row.TotalGlobalDifference = sumTotalDiff;
                 }
 
+                // Send fully prepared dataset to Crystal
                 this.HttpContext.Session["rptSource"] = data;
 
                 return Json(new { success = true, message = "Trial balance report ready." }, JsonRequestBehavior.AllowGet);
@@ -171,11 +215,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
             }
         }
 
-
         [HttpPost]
         public ActionResult GetReport(string path)
         {
-            // Report file physical path
+            // Path pointing to the .rpt file for Crystal Reports
             var reportPath = Server.MapPath("~/AppFiles/Accountingv2Reporting/ReportRPT/TrialBalance6Columns.rpt");
 
             if (!System.IO.File.Exists(reportPath))
@@ -187,6 +230,34 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
             this.HttpContext.Session["rpttitle"] = "TB6";
 
             return Json(new { success = true, message = "Report parameters set successfully." }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Map bank and branch header details into each report row
+        private void ApplyHeader(TrialBalanceReportItem item, BankHeaderInformation header)
+        {
+            item.BankId = header.BankId;
+            item.BankBankCode = header.BankBankCode;
+            item.BankName = header.BankName;
+            item.BankTelephone = header.BankTelephone;
+            item.BankEmail = header.BankEmail;
+            item.BankAddress = header.BankAddress;
+            item.BankLogoUrl = header.BankLogoUrl;
+            item.BankMotto = header.BankMotto;
+            item.BankRegistrationNumber = header.BankRegistrationNumber;
+            item.BankImmatriculationNumber = header.BankImmatriculationNumber;
+            item.BankPBox = header.BankPBox;
+
+            item.BranchId = header.BranchId;
+            item.BranchCode = header.BranchCode;
+            item.BranchName = header.BranchName;
+            item.BranchTelephone = header.BranchTelephone;
+            item.BranchEmail = header.BranchEmail;
+            item.BranchAddress = header.BranchAddress;
+            item.BranchLogoUrl = header.BranchLogoUrl;
+            item.BranchCapital = header.BranchCapital;
+            item.BranchRegistrationNumber = header.BranchRegistrationNumber;
+            item.BranchImmatriculationNumber = header.BranchImmatriculationNumber;
+            item.BranchPBox = header.BranchPBox;
         }
     }
 }

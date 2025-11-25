@@ -267,7 +267,6 @@
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
-    <Compile Include="Accounting V2\CollectorDevice\CollectorDeviceService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\DaillyCollectorLicenseService\DaillyCollectorLicenseService.cs" />

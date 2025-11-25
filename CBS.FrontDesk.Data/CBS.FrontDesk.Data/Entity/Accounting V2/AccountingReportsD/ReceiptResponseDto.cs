@@ -38,6 +38,16 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public decimal? CashOutAmount { get; set; }
         public decimal? NetAmount { get; set; }
         public List<ReceiptEntryDto> Entries { get; set; }
+        public bool IsInterBranch { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public string CounterpartyBranchName { get; set; }
+        public string CounterpartyBranchCode { get; set; }
+        public string DisplayTitle { get; set; }
+        public Payload Payload { get; set; }
+        public int PrintedCount { get; set; }
+        public bool IsReprint { get; set; }
+        public string PayloadVersion { get; set; }  // you must add these 2 too ⬇
+        public string PayloadHash { get; set; }
     }
 
     public class ReceiptEntryDto
@@ -48,5 +58,13 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public DateTime Date { get; set; }
         public decimal Dr { get; set; }
         public decimal Cr { get; set; }
+    }
+    public class Payload
+    {
+        public string DisplayTitle { get; set; }
+        public string Description { get; set; }
+        public List<object> Lines { get; set; }
+        public List<object> CashDenominations { get; set; }
+        public Dictionary<string, object> ExtraMetadata { get; set; }
     }
 }
