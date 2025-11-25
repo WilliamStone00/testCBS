@@ -447,6 +447,45 @@
                                 Default VAT liability GL when a fee/commission operation does not specify a VAT GL explicitly.
                             </div>
                         </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Group 6: Global Fallback Suspense GL -->
+                    <h6 class="text-uppercase text-muted small mb-3">
+                        <i class="mdi mdi-alert-outline me-1"></i>Global Fallback Suspense GL
+                    </h6>
+                    <div class="row gy-3">
+                        <div class="col-md-8">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.FallbackSuspenseAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Fallback Suspense GL --",
+                                    new { @class = "form-select select2", id = "FallbackSuspenseAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.FallbackSuspenseAccountId, "", new { @class = "text-danger" })
+                                <label>Fallback Suspense GL</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                This GL is used as a <strong>last-resort suspense account</strong> when the system cannot
+                                resolve a more specific Branch GL (e.g. missing Affiliate→Branch mapping, invalid config, etc.).
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="small text-muted">
+                                <strong>Implication:</strong> when resolution fails, postings are directed here instead of failing.
+                                Each such posting is <strong>logged for EOD review</strong>, including the supposed GL, the actual
+                                suspense GL, and the amount. If this field is left empty, the system will attempt to
+                                <strong>auto-create the affiliated GL at the level of the Branch GL accounts</strong> and use it,
+                                but this is <em>not recommended</em> because it scatters suspense balances across multiple GLs.
+                                <br />
+                                <strong>Best practice:</strong> configure a single, controlled suspense GL per branch here and
+                                reclassify its balance during End-of-Day using the fallback mapping console.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

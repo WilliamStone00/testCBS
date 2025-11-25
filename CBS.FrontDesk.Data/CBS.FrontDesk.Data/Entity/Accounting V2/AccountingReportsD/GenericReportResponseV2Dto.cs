@@ -142,7 +142,19 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public string EndingSide { get; set; } = "D"; // "D" or "C"
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }
-     
+
+        // 🔹 Global totals (mirroring your JSON: totalOpeningDR, ...)
+        public decimal TotalOpeningDR { get; set; }
+        public decimal TotalOpeningCR { get; set; }
+        public decimal TotalMovementDR { get; set; }
+        public decimal TotalMovementCR { get; set; }
+        public decimal TotalClosingDR { get; set; }
+        public decimal TotalClosingCR { get; set; }
+
+        public decimal TotalOpeningDifference { get; set; }
+        public decimal TotalMovementDifference { get; set; }
+        public decimal TotalClosingDifference { get; set; }
+
         // Optional computed helpers
         public decimal OpeningBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
         public decimal PeriodBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);

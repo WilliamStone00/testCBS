@@ -24,6 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string InterestGeneratedFromAccountId { get; set; }
         public string MomocashAccountId { get; set; }
         public string MomocashCommissionGlId { get; set; }
+        public string FallbackSuspenseAccountId { get; set; }
 
 
     }
@@ -79,6 +80,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string MomocashCommissionGlNumber { get; set; }
         public string MomocashAccountNumber { get; set; }
         public string MomocashAccountName { get; set; }
+        public string FallbackSuspenseAccountName { get; set; }
+        public string FallbackSuspenseAccountNumber { get; set; }
+
     }
 
     // DTO used only by the Details partial
@@ -119,6 +123,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         // Mobile Money (MoMoCash)
         public AccountPair Momocash { get; set; }
         public AccountPair MomocashCommission { get; set; }
+        public AccountPair FallbackSuspense { get; set; }
+
+        
     }
 
 
