@@ -2089,6 +2089,7 @@
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -11037,6 +11038,22 @@
     <Content Include="Views\ReportConfiguration\ReportLine\_List.cshtml" />
     <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
     <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_ReconciliationDetails.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_CloseOfDayForm.cshtml" />
+    <Content Include="Views\APIKey\_ApiKeyRows.cshtml" />
+    <Content Include="Views\APIKey\_ApiIntegrationGuide.cshtml" />
+    <Content Include="Views\CollectorDevice\Index.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceForm.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceTable.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceDetails.cshtml" />
+    <Content Include="Views\CollectorDevice\List.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\Index.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\List.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseDetails.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_RevokeLicense.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_ActivateLicense.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseAction.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11066,6 +11083,7 @@
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
+    <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
