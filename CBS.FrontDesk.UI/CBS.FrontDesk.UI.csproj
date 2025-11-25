@@ -453,11 +453,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.cs">
-      <DependentUpon>AccStatement.rpt</DependentUpon>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement1.cs">
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <DependentUpon>AccStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.cs">
       <AutoGen>True</AutoGen>
@@ -465,11 +465,11 @@
       <DependentUpon>BalanceSheet.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts.cs">
       <AutoGen>True</AutoGen>

@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.MockData;
@@ -65,6 +66,41 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
                throw ex;
             }
         }
+
+
+        private BankHeaderInformation BuildHeader(dynamic BranchInformation)
+        {
+            return new BankHeaderInformation
+            {
+                BankId = BranchInformation.Bank.Id,
+                BankBankCode = BranchInformation.Bank.BankCode,
+                BankName = BranchInformation.Bank.Name,
+                BankTelephone = BranchInformation.Bank.Telephone,
+                BankEmail = BranchInformation.Bank.Email,
+                BankAddress = BranchInformation.Bank.Address,
+                BankLogoUrl = BranchInformation.Bank.LogoUrl,
+                BankMotto = BranchInformation.Bank.Motto,
+                BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                BankPBox = BranchInformation.Bank.PBox,
+
+                BranchId = BranchInformation.Id,
+                BranchCode = BranchInformation.BranchCode,
+                BranchName = BranchInformation.Name,
+                BranchTelephone = BranchInformation.Telephone,
+                BranchEmail = BranchInformation.Email,
+                BranchAddress = BranchInformation.Address,
+                BranchLogoUrl = BranchInformation.LogoUrl,
+                BranchCapital = BranchInformation.Capital,
+                BranchRegistrationNumber = BranchInformation.RegistrationNumber,
+                BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
+                BranchPBox = BranchInformation.PBox
+            };
+        }
+
+        
+
+
 
         public async Task<GenericReportResponseV2Dto> GetTrialMockInformation()
         {
