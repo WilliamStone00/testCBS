@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
+using System;
 using System.ComponentModel.DataAnnotations;
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 {
-    public class TrialBalanceReportItem
+    public class TrialBalanceReportItem:BankHeaderInformation
     {
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
@@ -66,8 +67,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         [DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss}", ApplyFormatInEditMode = true)]
         public TimeSpan Time { get; set; } = DateTime.Now.TimeOfDay;
 
-        public string BranchName { get; set; }
-        public string BranchCode { get; set; }
         public string Username { get; set; }
         public string Phone { get; set; }
         public string Year { get; set; } = DateTime.Now.Year.ToString();
