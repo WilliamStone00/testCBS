@@ -159,6 +159,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     return item;
                 }).ToList();
 
+
                 // ========================================================================
                 // STEP 2: Calculate global totals for footer
                 // ------------------------------------------------------------------------

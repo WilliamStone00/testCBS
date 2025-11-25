@@ -630,6 +630,11 @@
 
 @*=========================================================================== Accounting Reports Start =======================================*@
 <script>
+
+    function Reprint(controller) {
+        ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
+    }
+
     $(document).on("click", "#btnPrintAccountingReport", function () {
 
 
@@ -649,6 +654,7 @@
             contentType: "application/json",
             data: JSON.stringify(payload),
             success: function (response) {
+                Reprint('JournalReceipts')
                 console.log("Success:", response);
             },
             error: function (xhr) {
