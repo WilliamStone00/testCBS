@@ -1684,6 +1684,17 @@ namespace CBS.FrontDesk.Helper
         public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
         public const string CollectorDeviceresponse = "/api/apikeys/generate";
 
+        //----------------------------- Dailly Collector License Management ---------------------------
+        public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";
+        public const string RevokeLicense = "/api/v1/DailyCollectorLicense/{0}/revoke";
+        public const string DeactivateLicense = "/api/v1/DailyCollectorLicense/{0}/deactivate";
+        public const string ReactivateLicense = "/api/v1/DailyCollectorLicense/{0}/reactivate";
+        public const string GetLicenseById = "/api/v1/DailyCollectorLicense/{0}";
+        public const string GetCollectorLicenses = "/api/v1/DailyCollectorLicense/collector/{0}";
+        public const string ActivateLicense = "/api/v1/DailyCollectorLicense/activate";
+        public const string CheckLicenseStatus = "/api/v1/DailyCollectorLicense/status";
+        public const string LicenseDataTable = "/api/v1/DailyCollectorLicense/datatable";
+
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------

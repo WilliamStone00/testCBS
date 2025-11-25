@@ -1,0 +1,79 @@
+﻿@model List<CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.DailyCollectorLicense>
+
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> License Records</h5>
+    <div class="table-responsive">
+        <table id="licenseDataTable" class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Created On</th>
+                    <th>User Name</th>
+                    <th>Branch</th>
+                    <th>BoundDeviceId</th>
+                    <th>Status</th>
+                    <th>Expiry Date</th>
+                    <th>License Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be loaded via AJAX -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- License Details Modal -->
+<div class="modal fade" id="licenseDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="mdi mdi-license me-1"></i> License Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Details content will be loaded here -->
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- License Action Modal -->
+<div class="modal fade" id="licenseActionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Action form content will be loaded here -->
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Activate License Modal -->
+<div class="modal fade" id="activateLicenseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Activation form content will be loaded here -->
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
