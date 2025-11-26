@@ -77,6 +77,7 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
 
         public async Task<ExecutionMessages> CreateAsync(CollectorDeviceresponse model)
         {
+
             try
             {
 

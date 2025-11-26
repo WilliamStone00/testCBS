@@ -35,9 +35,9 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string Description { get; set; }
     public decimal TotalDebit { get; set; }
     public decimal TotalCredit { get; set; }
-    //public decimal? CashInAmount { get; set; }
-    //public decimal? CashOutAmount { get; set; }
-    //public decimal? NetAmount { get; set; }
+    public decimal CashInAmount { get; set; }
+    public decimal CashOutAmount { get; set; }
+    public decimal NetAmount { get; set; }
     public bool IsInterBranch { get; set; }
     public string CounterpartyBranchId { get; set; }
     public string CounterpartyBranchCode { get; set; }
