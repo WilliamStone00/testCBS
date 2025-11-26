@@ -1734,6 +1734,12 @@ namespace CBS.FrontDesk.Helper
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
 
+        //--------------------------- Collector Device MANAGEMENT ----------------------------------------  
+        public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+        public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+        public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+        public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
 
 
     }
