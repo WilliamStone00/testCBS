@@ -155,21 +155,21 @@ namespace CBS.BusinessService.Accounting_V2.DaillyCollectorLicenseService
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.CollectorUserId,
+                    GetExecutionMessages(response.ApiResponseData.Data, true, model.CollectorUserName,
                         MessagesResults.Success, ExecutionProcessOption.UpdateUpject,
                         SystemMessageStatus.Success.ToString(), null,
                         response.ApiResponseData?.Message ?? "License activated successfully");
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.CollectorUserId, MessagesResults.Failed,
+                    GetExecutionMessages(model, false, model.CollectorUserName, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(),
                         null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, model.CollectorUserId, MessagesResults.Error,
+                GetExecutionMessages(model, false, model.CollectorUserName, MessagesResults.Error,
                     ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;

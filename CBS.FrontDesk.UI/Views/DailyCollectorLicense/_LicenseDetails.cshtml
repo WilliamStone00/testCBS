@@ -1,129 +1,176 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.DailyCollectorLicense
+@using Resources
 
-<div class="card bg-light mb-2">
-    <div class="card-body text-center">
-        <h1 class="card-title text-primary">
-            <i class="mdi mdi-license me-2"></i>License Details
-        </h1>
-        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-    </div>
-</div>
+<fieldset class="fieldset-custom">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
-<div class="card">
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">License ID</label>
-                <div class="form-control bg-light">@Model.Id</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">License Code</label>
-                <div class="input-group">
-                    <div class="form-control bg-light font-monospace">@Model.LicenseCode</div>
-                    <button class="btn btn-outline-secondary" type="button"
-                            onclick="copyToClipboard('@Model.LicenseCode')">
-                        <i class="mdi mdi-content-copy"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Collector User</label>
-                <div class="form-control bg-light">@Model.CollectorUserName</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Collector Code</label>
-                <div class="form-control bg-light">@Model.CollectorCode</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Branch</label>
-                <div class="form-control bg-light">@Model.BranchId</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Status</label>
-                <div class="form-control bg-light">
-                    <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Start Date</label>
-                <div class="form-control bg-light">@Model.StartDate.ToString()</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Expiry Date</label>
-                <div class="form-control bg-light @(Model.ExpiryDate < DateTime.Now ? "text-danger" : "text-success")">
-                    @Model.ExpiryDate.ToString()
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Bound Device</label>
-                <div class="form-control bg-light">@(Model.BoundDeviceId ?? "Not Bound")</div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Devices Activated</label>
-                <div class="form-control bg-light">
-                    @Model.DevicesActivatedCount / @Model.MaxDevicesAllowed
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Licensed</label>
-                <div class="form-control bg-light">
-                    @if (Model.IsLicensed)
-                    {
-                        <span class="badge bg-success">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No</span>
-                    }
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Revoked</label>
-                <div class="form-control bg-light">
-                    @if (Model.IsRevoked)
-                    {
-                        <span class="badge bg-danger">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-success">No</span>
-                    }
-                </div>
-            </div>
-
-            <div class="col-12">
-                <label class="form-label fw-bold">Message</label>
-                <div class="form-control bg-light">@(Model.Message ?? "No message")</div>
-            </div>
-        </div>
-
-        <div class="modal-footer mt-3">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+    <!-- Header Card -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-certificate-outline me-2"></i> License Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                here we have the details for a collector's license being mapped to a device
+            </p>
         </div>
     </div>
-</div>
+
+    <!-- Details Card (tables) -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <!-- Left Column: Basic Information -->
+                <div class="col-md-6">
+                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                    <table class="table table-sm table-bordered mb-0">
+                        <tr><td class="fw-bold">License ID</td><td>@Model.Id</td></tr>
+                        <tr>
+                            <td class="fw-bold">License Code</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="font-monospace me-2 mb-0">@Model.LicenseCode</div>
+                                    <button class="btn btn-outline-secondary btn-sm" type="button"
+                                            onclick="copyToClipboard('@Model.LicenseCode')">
+                                        <i class="mdi mdi-content-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td class="fw-bold">Collector User</td><td>@Model.CollectorUserName</td></tr>
+                        <tr><td class="fw-bold">Collector Code</td><td>@Model.CollectorCode</td></tr>
+                        <tr><td class="fw-bold">Branch</td><td>@(Model.BranchId ?? "-")</td></tr>
+                        <tr>
+                            <td class="fw-bold">Status</td>
+                            <td>
+                                <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Right Column: License Settings -->
+                <div class="col-md-6">
+                    <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> License Settings</h6>
+                    <table class="table table-sm table-bordered mb-0">
+                        <tr>
+                            <td class="fw-bold">Start Date</td>
+                            <td>@Model.StartDate.ToString()</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Expiry Date</td>
+                            <td>
+                                <span class="@(Model.ExpiryDate < DateTime.Now ? "text-danger" : "text-success")">
+                                    @Model.ExpiryDate.ToString()
+                                </span>
+                            </td>
+                        </tr>
+                        <tr><td class="fw-bold">Bound Device</td><td>@(string.IsNullOrEmpty(Model.BoundDeviceId) ? "Not Bound" : Model.BoundDeviceId)</td></tr>
+                        <tr><td class="fw-bold">Devices Activated</td><td>@Model.DevicesActivatedCount / @Model.MaxDevicesAllowed</td></tr>
+                        <tr>
+                            <td class="fw-bold">Licensed</td>
+                            <td>
+                                @(Model.IsLicensed
+                                    ? (Html.Raw("<span class=\"badge bg-success\">Yes</span>"))
+                                    : (Html.Raw("<span class=\"badge bg-secondary\">No</span>")))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Revoked</td>
+                            <td>
+                                @(Model.IsRevoked
+                                    ? (Html.Raw("<span class=\"badge bg-danger\">Yes</span>"))
+                                    : (Html.Raw("<span class=\"badge bg-success\">No</span>")))
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Message / Notes Section -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h6 class="text-primary"><i class="mdi mdi-note-outline me-2"></i> Message</h6>
+                    <table class="table table-sm table-bordered mb-0">
+                        <tr>
+                            <td class="fw-bold">Message</td>
+                            <td>@(Model.Message ?? "No Message")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                    <table class="table table-sm table-bordered mb-0">
+                        <tr><td class="fw-bold">Created Date</td><td>@Model.StartDate.ToString()</td></tr>
+                        <tr><td class="fw-bold">Created By</td><td>@Model.CollectorUserName</td></tr>
+                        <tr><td class="fw-bold">Modified Date</td><td>@Model.ExpiryDate.ToString()</td></tr>
+                        <tr><td class="fw-bold">Modified By</td><td>@Model.CollectorUserName</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- card-body -->
+    </div> <!-- card -->
+
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+            <i class="mdi mdi-close me-1"></i> Cancel
+        </button>
+    </div>
+
+</fieldset>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(text) {
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function () {
+                    console.log('Copied: ' + text);
+                }).catch(function () {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+
+            function fallbackCopy(t) {
+                var el = document.createElement('textarea');
+                el.value = t;
+                el.style.position = 'fixed';
+                el.style.left = '-9999px';
+                document.body.appendChild(el);
+                el.select();
+                try { document.execCommand('copy'); } catch (e) { console.warn(e); }
+                document.body.removeChild(el);
+            }
+        }
+    </script>
+}
 
 @functions {
     public string GetStatusBadgeClass(string status)
     {
-        return status?.ToLower() switch
+        if (string.IsNullOrEmpty(status))
         {
-            "active" => "bg-success",
-            "inactive" => "bg-warning",
-            "revoked" => "bg-danger",
-            "expired" => "bg-secondary",
-            _ => "bg-info"
-        };
+            return "bg-info";
+        }
+
+        switch (status.ToLower())
+        {
+            case "active":
+                return "bg-success";
+            case "inactive":
+                return "bg-warning";
+            case "revoked":
+                return "bg-danger";
+            case "expired":
+                return "bg-secondary";
+            default:
+                return "bg-info";
+        }
     }
 }

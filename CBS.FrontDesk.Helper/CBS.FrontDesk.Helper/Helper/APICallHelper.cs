@@ -1672,9 +1672,15 @@ namespace CBS.FrontDesk.Helper
             public const string RenewApiKey = "/api/apikeys/renew";
             public const string RevokeApiKey = "/api/apikeys/revoke";
             public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
-            public const string DeleteApiKey = "/api/apikeys/{0}";
-        
+        public const string DeleteApiKey = "/api/apikeys/{0}";
 
+        //--------------------------- Collector Device MANAGEMENT ----------------------------------------  
+            public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+            public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+            public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+            
         //----------------------------- Dailly Collector License Management ---------------------------
         public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";
         public const string RevokeLicense = "/api/v1/DailyCollectorLicense/{0}/revoke";
