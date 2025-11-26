@@ -217,5 +217,31 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
 
+
+        public async Task<CustomDataTable2> GetReconciliationDetailsAsync(ReconciliationQuery query)
+        {
+            try
+            {
+                query.Options.sortColumnName = "";
+                query.Options.sortColumnDirection = "";
+
+                var response = await _systemReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetReconciliationDetails, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Reconciliation): {ex.Message}");
+                throw new Exception($"Reconciliation service unavailable: {ex.Message}", ex);
+            }
+        }
+
     }
 }

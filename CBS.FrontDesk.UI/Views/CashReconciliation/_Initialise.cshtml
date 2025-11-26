@@ -90,7 +90,6 @@
                         "--- Select Reconciliation Type ---",
                         new { @class = "form-control select2 mb-2", id = "ReconciliationType", required = "required" }
                     )
-
                 </div>
             </div>
 
@@ -123,20 +122,22 @@
 
 
             <!-- Till + Cashier -->
-            <div class="row mb-2">
-                <div class="col-md-6 mb-2">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name", required = "required" })
-                        <label for="TillName">Till Name</label>
-                        @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
+            <div id="TillCashierContainer">
+                <div class="row mb-2">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name" })
+                            <label for="TillName">Till Name</label>
+                            @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6 mb-2">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name", required = "required" })
-                        <label for="NameOfCashier">Cashier Name</label>
-                        @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name" })
+                            <label for="NameOfCashier">Cashier Name</label>
+                            @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             </div>

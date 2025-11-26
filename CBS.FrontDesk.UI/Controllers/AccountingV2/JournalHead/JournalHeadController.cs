@@ -265,46 +265,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> ApproveDestination(JournalApproval model)
-        //{
-
-
-        //    if (model == null || string.IsNullOrEmpty(model.Reference))
-        //        return Json(new { success = false, message = "Destination Reference is required" });
-
-        //    try
-        //    {
-        //        var result = await _journalHeadService.ApproveDestinationAsync(model);
-
-        //        if (result == null)
-        //            return Json(new { success = false, message = "No response from destination approval service." });
-
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            statusCode = 200,
-        //            message = result.Message ?? "Destination approved successfully",
-        //            data = new
-        //            {
-        //                result.Reference,
-        //                result.BranchId,
-        //                result.TicketId,
-        //                result.TicketState,
-        //                result.JournalId
-        //            }
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            statusCode = 500,
-        //            message = $"Destination approval failed: {ex.Message}"
-        //        });
-        //    }
-        //}
 
 
 
@@ -321,6 +281,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             try
             {
                 entry = await _journalHeadService.GetJournalSourceByIdAsync(id);
+
+                var Branch = await _branchServices.GetBranch(entry.BranchId);
+                entry.BranchName = Branch?.Name ?? "—";
             }
             catch (Exception ex)
             {

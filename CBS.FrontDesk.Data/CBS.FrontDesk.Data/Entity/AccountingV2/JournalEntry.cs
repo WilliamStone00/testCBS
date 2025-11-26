@@ -256,8 +256,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalDebit { get; set; }
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
+        public bool IsInterBranch { get; set; }
 
-        
+
     }
    
 
