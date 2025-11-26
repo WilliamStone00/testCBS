@@ -23,10 +23,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
         private readonly BranchServices _branchServices;
         private readonly CollectorDeviceService _CollectorDeviceService;
 
-        /// <summary>
-        /// Injects the required AffiliateController via dependency injection.
-        /// </summary>
-        /// <param name="CategoryConfigService">The service for cheque admin operations.</param>
         public CollectorDeviceController(BranchServices branchServices, CollectorDeviceService collectorDeviceService)
         {
             _branchServices = branchServices;
@@ -34,6 +30,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
         }
 
         public async Task<ActionResult> Index()
+        {
+            return View();
+        }
+        public async Task<ActionResult> List()
         {
             return View();
         }
@@ -78,13 +78,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             }
             catch (Exception ex)
             {
-                // _logger.LogError(ex, "Error loading collector devices");
                 return Json(new { error = "Error loading data" });
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetDeviceDetails(string KEY)
+        public async Task<JsonResult> GetDeviceDetails(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
                 return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
@@ -116,8 +115,27 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             }
             catch (Exception ex)
             {
-                // _logger.LogError(ex, "Error loading device details");
                 return Json(new { success = false, message = "Error loading device details." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDeviceDetailsPartial(string KEY)
+        {
+            if (string.IsNullOrEmpty(KEY))
+                return Content("<div class='alert alert-danger'>Invalid ID provided.</div>");
+
+            try
+            {
+                var device = await _CollectorDeviceService.GetByIdAsync(KEY);
+                if (device == null)
+                    return Content("<div class='alert alert-danger'>Device not found.</div>");
+
+                return PartialView("_CollectorDeviceDetails", device);
+            }
+            catch (Exception ex)
+            {
+                return Content("<div class='alert alert-danger'>Error loading device details.</div>");
             }
         }
 
@@ -162,5 +180,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
 
             return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }
