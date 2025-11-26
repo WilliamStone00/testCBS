@@ -25,13 +25,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
         private readonly ManualDailyCollectionService _manualService;
         private readonly DailyCollectorLicenseService _licenseService;
         private readonly UserManagementServices _userManagementServices;
-             private readonly CollectorDeviceService _CollectorDeviceService;
+        private readonly CollectorDeviceService _CollectorDeviceService;
         private readonly BranchServices _branchServices;
 
         public DailyCollectorLicenseController(
             DailyCollectorLicenseService licenseService,
             UserManagementServices userManagementServices,
-            BranchServices baseService, CollectorDeviceService collectorDeviceService,ManualDailyCollectionService manualDailyCollectionService)
+            BranchServices baseService, CollectorDeviceService collectorDeviceService, ManualDailyCollectionService manualDailyCollectionService)
         {
             _licenseService = licenseService;
             _userManagementServices = userManagementServices;
@@ -61,7 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
             ViewBag.Devices = devices;
         }
 
-        
+
         [HttpPost]
         public async Task<JsonResult> LoadData(LicenseQuery query)
         {
@@ -72,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
                 var dataTable = JsonConvert.DeserializeObject<CustomDataTable3>(JsonConvert.SerializeObject(data));
                 var licenses = JsonConvert.DeserializeObject<List<DailyCollectorLicense>>(JsonConvert.SerializeObject(dataTable.data));
 
-                return Json(new                                  
+                return Json(new
                 {
                     draw = dataTable.draw,
                     recordsTotal = dataTable.recordsTotal,
