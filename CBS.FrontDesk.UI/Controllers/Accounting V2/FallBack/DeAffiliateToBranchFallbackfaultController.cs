@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
 {
-    [CheckSessionTimeOut]
+    //[CheckSessionTimeOut]
     public class AffiliateToBranchFallbackController : Controller
     {
         private readonly AffiliateToBranchFallbackService _fallbackService;
@@ -19,10 +19,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
             _fallbackService = fallbackService;
         }
 
-        public async Task<ActionResult> Index()
-        {
-            return View();
-        }
 
         [HttpGet]
         public async Task<ActionResult> List()
