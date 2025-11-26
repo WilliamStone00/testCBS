@@ -52,6 +52,8 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+
     <script>
 (function () {
     "use strict";
@@ -77,6 +79,22 @@
 
     $(document).ready(function () {
         $('.select2').select2();
+
+        // ---------- Reconciliation Type change ----------
+        $('#ReconciliationType').on('change', function () {
+            const type = $(this).val().trim();
+
+            if (type === "OTHER GL") {
+                $('#TillCashierContainer').show();
+                $('#TillName, #NameOfCashier').prop('required', true);
+            } else {
+                $('#TillCashierContainer').hide();
+                $('#TillName, #NameOfCashier').prop('required', false).val('');
+            }
+        });
+
+        // Trigger on page load
+        $('#ReconciliationType').trigger('change');
 
         // ---------- Source GL change ----------
         $("#SourceGlId").on("change", function () {
@@ -206,11 +224,11 @@
             const srcText = $('#SourceGlId option:selected').text();
             const dstText = $('#DestinationGlId option:selected').text();
             const superGLText = $('#SuperGLAccountNumber option:selected').text();
+            let till = $('#TillName').val().trim();
+            let cashier = $('#NameOfCashier').val().trim();
             const amount = $('#Amount').val();
             const balance = $('#Balance').val();
             const cashDiff = $('#CashDiff').val();
-            const till = $('#TillName').val();
-            const cashier = $('#NameOfCashier').val();
             const memo = $('#Memo').val();
 
             // Guard required selects
@@ -222,6 +240,17 @@
                 return false;
             }
             if (parseNumber(amount) <= 0) { appalert("Enter a valid Amount.", 3, 1); return false; }
+
+            // Set Till/Cashier based on type
+            if ($('#ReconciliationType').val() === "CASH RECONCILIATION") {
+                if (!till) till = "N/A";
+                if (!cashier) cashier = "N/A";
+            } else if ($('#ReconciliationType').val() === "OTHER GL") {
+                // Fields already required; leave as-is
+            } else {
+                till = "";
+                cashier = "";
+            }
 
             const title = "Confirm Cash Reconciliation";
             const message = `
@@ -235,8 +264,7 @@
                         <tr><th>Amount</th><td>${amount}</td></tr>
                         <tr><th>Balance</th><td>${balance}</td></tr>
                         <tr><th>Cash Diff</th><td>${cashDiff}</td></tr>
-                        <tr><th>Till Name</th><td>${till}</td></tr>
-                        <tr><th>Cashier</th><td>${cashier}</td></tr>
+                        ${($('#ReconciliationType').val() === "CASH RECONCILIATION" || $('#ReconciliationType').val() === "OTHER GL") ? `<tr><th>Till Name</th><td>${till}</td></tr><tr><th>Cashier</th><td>${cashier}</td></tr>` : ''}
                         <tr><th>Note</th><td>${memo}</td></tr>
                     </tbody>
                 </table>
@@ -277,6 +305,7 @@
                                     $('.select2').val(null).trigger('change');
                                     treasuryBalance = 0;
                                     $("#Balance,#CashDiff").val("");
+                                    $('#TillCashierContainer').hide();
                                 }
                             } else {
                                 appalert(response?.message || "❌ Failed to save cash reconciliation.", 2, 1);
