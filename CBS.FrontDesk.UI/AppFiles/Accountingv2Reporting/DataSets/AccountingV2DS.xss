@@ -11,6 +11,11 @@
     <Shape ID="DesignTable:AccountStatement" ZOrder="5" X="1314" Y="536" Height="335" Width="370" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="331" />
     <Shape ID="DesignTable:BalanceSheet" ZOrder="4" X="1136" Y="180" Height="308" Width="216" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="304" />
     <Shape ID="DesignTable:IncomeStatement" ZOrder="3" X="1439" Y="152" Height="172" Width="229" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="168" />
+    <Shape ID="DesignTable:ReconciledLedgerLineRptDS" ZOrder="5" X="576" Y="91" Height="361" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="357" />
+    <Shape ID="DesignTable:GenericDtTb&amp;GL&amp;LedgerLine" ZOrder="1" X="120" Y="83" Height="794" Width="286" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="790" />
+    <Shape ID="DesignTable:AccountStatement" ZOrder="4" X="557" Y="468" Height="335" Width="370" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="331" />
+    <Shape ID="DesignTable:BalanceSheet" ZOrder="3" X="1136" Y="180" Height="308" Width="216" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="304" />
+    <Shape ID="DesignTable:IncomeStatement" ZOrder="2" X="1439" Y="152" Height="172" Width="229" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="168" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

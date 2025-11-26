@@ -124,18 +124,18 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public string AccountName { get; set; }
         public string Sign { get; set; }
 
-        public decimal? OpeningDR { get; set; }
-        public decimal? OpeningCR { get; set; }
-        public decimal? PeriodDR { get; set; }
-        public decimal? PeriodCR { get; set; }
-        public decimal? ClosingDR { get; set; }
-        public decimal? ClosingCR { get; set; }
+        public decimal OpeningDR { get; set; }
+        public decimal OpeningCR { get; set; }
+        public decimal PeriodDR { get; set; }
+        public decimal PeriodCR { get; set; }
+        public decimal ClosingDR { get; set; }
+        public decimal ClosingCR { get; set; }
 
-        public decimal? Debit { get; set; }
-        public decimal? Credit { get; set; }
-        public decimal? EndingBalance { get; set; }
-        public decimal? ClosingBalanceFour { get; set; }
-        public decimal? BeginningBalance { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal EndingBalance { get; set; }
+        public decimal ClosingBalanceFour { get; set; }
+        public decimal BeginningBalance { get; set; }
         public string BeginningSide { get; set; } = "D"; // "D" or "C"
 
 
@@ -154,11 +154,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public decimal TotalOpeningDifference { get; set; }
         public decimal TotalMovementDifference { get; set; }
         public decimal TotalClosingDifference { get; set; }
-
-        // Optional computed helpers
-        public decimal OpeningBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
-        public decimal PeriodBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
-        public decimal ClosingBalance => (ClosingDR ?? 0) - (ClosingCR ?? 0);
     }
 
 
