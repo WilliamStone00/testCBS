@@ -97,7 +97,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     public class JournalHead
     {
         public string Id { get; set; }
-        public string Reference { get; set; } 
+        public string Reference { get; set; }
         public string Narrative { get; set; } = null;
         public DateTime AccountingDate { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -274,7 +274,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Title { get; set; } = null;
         
         public string PayloadJson { get; set; } = null;
-        public string Number { get; set; } 
+        public string Number { get; set; } = null;
         public DateTime IssuedAtUtc { get; set; } = DateTime.UtcNow;
         public string Payor { get; set; } = null;
         public string Memo { get; set; } = null;

@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TB4 : ReportClass {
+    public class JER : ReportClass {
         
-        public TB4() {
+        public JER() {
         }
         
         public override string ResourceName {
             get {
-                return "TB4.rpt";
+                return "JER.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.TB4.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT.JER.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTB4 : Component, ICachedReport {
+    public class CachedJER : Component, ICachedReport {
         
-        public CachedTB4() {
+        public CachedJER() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.ReportRPT {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TB4 rpt = new TB4();
+            JER rpt = new JER();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,7 +26,7 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
         public string lang { get; set; }
     }
 
-    public class CustomDataTable : ICustomDataTable
+    public class CustomDataTable
     {
         public int draw { get; set; }
         public int recordsTotal { get; set; }
@@ -44,7 +45,8 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
             this.DataTableOptions = dataTableOptions;
         }
     }
-    public class CustomDataTable2 
+
+    public class CustomDataTable2
     {
         public int draw { get; set; }
         public int recordsTotal { get; set; }
@@ -62,6 +64,18 @@ namespace CBS.FrontDesk.Data.Entity.DataTable
             this.data = data;
             this.Options = dataTableOptions;
         }
+    }
+
+    //data table which returns an array
+    public class CustomDataTable3 
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public  object data { get; set; } // Change from object to List<DailyCollectorLicense>
+        public DataTableOptions dataTableOptions { get; set; }
+
+        
     }
 
     public class CustomDataTable<T> : ICustomDataTable<T> where T : class 

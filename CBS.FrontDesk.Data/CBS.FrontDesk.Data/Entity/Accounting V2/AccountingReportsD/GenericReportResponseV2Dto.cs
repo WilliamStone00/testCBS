@@ -20,6 +20,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
     public class AccountStatementResponse
     {
+      
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
         public decimal OpeningBalance { get; set; }
@@ -54,13 +55,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
     public class JournalDtoEntriesV2Dto
     {
+
         public DateTime AccountingDate { get; set; }
         public string Reference { get; set; }
         public string BranchId { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
-        public decimal Dr { get; set; }
-        public decimal Cr { get; set; }
+        public decimal DR { get; set; }
+        public decimal CR { get; set; }
         public string Narration { get; set; }
         public string DrCr { get; set; }
         public decimal Amount { get; set; }
@@ -72,6 +74,41 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public bool InterbranchStatus { get; set; }
         public string CounterpartyBranchId { get; set; }
         public string TimeOfOperation { get; set; }
+
+
+
+
+        // ─────────────────────────────────────────────────────────────
+        // Per-line and aggregate totals
+        // ─────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Per-line difference (DR - CR).
+        /// Useful when you want to see which side this line contributes to.
+        /// </summary>
+        public decimal RowDifference => DR - CR;
+
+        /// <summary>
+        /// Sum of all debit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalDR { get; set; }
+
+        /// <summary>
+        /// Sum of all credit amounts in the journal result set
+        /// (same value populated on every row by the query helper).
+        /// </summary>
+        public decimal TotalCR { get; set; }
+
+        /// <summary>
+        /// Difference between total debits and total credits (TotalDR - TotalCR).
+        /// In a balanced journal this should be zero.
+        /// </summary>
+        public decimal TotalDifference { get; set; }
+
+        public decimal OpeningBalance { get; set; }
+        public decimal EndingBalance { get; set; }
+
     }
 
     public class TrialBalanceV2Dto
@@ -87,28 +124,36 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
         public string AccountName { get; set; }
         public string Sign { get; set; }
 
-        public decimal? OpeningDR { get; set; }
-        public decimal? OpeningCR { get; set; }
-        public decimal? PeriodDR { get; set; }
-        public decimal? PeriodCR { get; set; }
-        public decimal? ClosingDR { get; set; }
-        public decimal? ClosingCR { get; set; }
+        public decimal OpeningDR { get; set; }
+        public decimal OpeningCR { get; set; }
+        public decimal PeriodDR { get; set; }
+        public decimal PeriodCR { get; set; }
+        public decimal ClosingDR { get; set; }
+        public decimal ClosingCR { get; set; }
 
-        public decimal? Debit { get; set; }
-        public decimal? Credit { get; set; }
-        public decimal? EndingBalance { get; set; }
-        public decimal? ClosingBalanceFour { get; set; }
-        public decimal? BeginningBalance { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal EndingBalance { get; set; }
+        public decimal ClosingBalanceFour { get; set; }
+        public decimal BeginningBalance { get; set; }
         public string BeginningSide { get; set; } = "D"; // "D" or "C"
 
 
         public string EndingSide { get; set; } = "D"; // "D" or "C"
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
 
+        // 🔹 Global totals (mirroring your JSON: totalOpeningDR, ...)
+        public decimal TotalOpeningDR { get; set; }
+        public decimal TotalOpeningCR { get; set; }
+        public decimal TotalMovementDR { get; set; }
+        public decimal TotalMovementCR { get; set; }
+        public decimal TotalClosingDR { get; set; }
+        public decimal TotalClosingCR { get; set; }
 
-        // Optional computed helpers
-        public decimal OpeningBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
-        public decimal PeriodBalance => (OpeningDR ?? 0) - (OpeningCR ?? 0);
-        public decimal ClosingBalance => (ClosingDR ?? 0) - (ClosingCR ?? 0);
+        public decimal TotalOpeningDifference { get; set; }
+        public decimal TotalMovementDifference { get; set; }
+        public decimal TotalClosingDifference { get; set; }
     }
 
 
@@ -116,5 +161,39 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
         public string BranchId { get; set; }
     }
+
+
+
+
+
+
+
+
+
+    //======================== trial balance columns  ==========================
+
+
+    public class TrialBalanceFourItemDto
+    {
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public decimal BeginningBalance { get; set; }
+        public string BeginningSide { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
+        public decimal EndingBalance { get; set; }
+        public string EndingSide { get; set; }
+
+        public decimal TotalBeginningBalance { get; set; }
+        public string TotalBeginningSide { get; set; }
+        public decimal TotalDebit { get; set; }
+        public decimal TotalCredit { get; set; }
+        public decimal TotalEndingBalance { get; set; }
+        public string TotalEndingSide { get; set; }
+        public decimal TotalBeginningNet { get; set; }
+        public decimal TotalEndingNet { get; set; }
+        public decimal TotalMovementNet { get; set; }
+    }
+
 
 }

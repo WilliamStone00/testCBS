@@ -1,0 +1,337 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.LicenseQuery
+@using Resources;
+
+<div id="datalistingview2">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2 shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary fw-bold">
+                        <i class="mdi mdi-format-list-bulleted me-2"></i> Daily Collector Licenses
+                    </h1>
+                    <p class="card-text">
+                        Manage and monitor all daily collector licenses with advanced filtering and actions.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <a href="@Url.Action("List", "DailyCollectorLicense")"
+               class="btn btn-label-primary btn-sm me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="@GlobalShared.ViewList">
+                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+            </a>
+            <a type="button" onclick="AddORUpdateGen(null,'datalistingview2','Index','new','DailyCollectorLicense')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+                <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="card shadow p-3 mb-4" id="filtersSection">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+
+        <form id="licenseFilterForm" autocomplete="off">
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label>@GlobalUserManagement.Branch</label>
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---" + @GlobalUserManagement.SelectBranch + "---", new { @class = "form-control select2" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">User Name</label>
+                    <input type="text" id="userName" name="UserName" class="form-control" placeholder="Enter user name..." />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Status</label>
+                    <select id="status" name="Status" class="form-control">
+                        <option value="">--- All Status ---</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Revoked">Revoked</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Expiry From</label>
+                    <input type="datetime-local" id="expiryFrom" name="ExpiryFrom" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Expiry To</label>
+                    <input type="datetime-local" id="expiryTo" name="ExpiryTo" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                        <i class="mdi mdi-magnify"></i> Apply Filters
+                    </button>
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- DataTable -->
+    <div id="datalistingview">
+        @Html.Partial("_LicenseDataTable")
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var licenseTable = null;
+        var licenseTableInitialized = false;
+
+        function collectLicenseFilters() {
+            return {
+                BranchId: $('#filterBranchId').val() || null,
+                UserName: $('#userName').val() || null,
+                Status: $('#status').val() || null,
+                ExpiryFrom: $('#expiryFrom').val() || null,
+                ExpiryTo: $('#expiryTo').val() || null,
+                options: {}
+            };
+        }
+
+        function ShowModalGen(key, partialView, controller, path, serviceOption = null) {
+            var url = '/' + controller + '/InitializeData?KEY=' + encodeURIComponent(key) +
+                '&partialView=' + encodeURIComponent(partialView) +
+                '&path=' + encodeURIComponent(path);
+
+            if (serviceOption) {
+                url += '&serviceOption=' + encodeURIComponent(serviceOption);
+            }
+
+            $.get(url).done(function (html) {
+                var modalContent = $('#genericModal .modal-content');
+                if (modalContent.length === 0) {
+                    $('body').append(`
+                            <div class="modal fade" id="genericModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content"></div>
+                                </div>
+                            </div>
+                        `);
+                }
+                $('#genericModal .modal-content').html(html);
+                var modal = new bootstrap.Modal(document.getElementById('genericModal'));
+                modal.show();
+            }).fail(function () {
+                appalert('Failed to load content', 0, 1);
+            });
+        }
+
+        function initLicenseDataTable() {
+            // if already initialized, don't init again
+            if (licenseTableInitialized) return;
+
+            licenseTable = $('#licenseDataTable').DataTable({
+                serverSide: true,
+                searching: true,
+                responsive: true,
+                destroy: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/DailyCollectorLicense/LoadData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectLicenseFilters();
+                        filters.dataTableOptions = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: 'createdOn',
+                            sortColumnDirection: 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (jqXHR) {
+                        var msg = 'Failed to load data. Please try again.';
+                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
+                        appalert(msg, 0, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreatedOn',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '-';
+                        }
+                    },
+                    { data: 'CollectorUserName', defaultContent: '-' },
+                    { data: 'BranchId', defaultContent: '-' },
+                    { data: 'BoundDeviceId', defaultContent: '-' },
+                    {
+                        data: 'Status',
+                        render: function (data) {
+                            var badgeClass = 'secondary';
+                            if (data === 'Active') badgeClass = 'success';
+                            else if (data === 'Revoked') badgeClass = 'danger';
+                            else if (data === 'Expired') badgeClass = 'warning';
+
+                            return `<span class="badge bg-${badgeClass}">${data || '-'}</span>`;
+                        }
+                    },
+                    {
+                        data: 'ExpiryDate',
+                        render: function (data) {
+                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '-';
+                        }
+                    },
+                    {
+                        data: 'IsLicensed',
+                        render: function (data) {
+                            return data ?
+                                '<span class="badge bg-success">Licensed</span>' :
+                                '<span class="badge bg-secondary">Not Licensed</span>';
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            var safeId = (row.id || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                            var btnId = 'actionDropdown_' + safeId;
+
+                            var detailsBtn = `<button class="dropdown-item btn-details" data-id="${row.Id}">
+                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                    </button>`;
+
+                            var activateBtn = !row.isLicensed ?
+                                `<button class="dropdown-item btn-activate text-success" data-id="${row.Id}">
+                                            <i class="mdi mdi-check-circle me-1"></i> Activate
+                                        </button>` : '';
+
+                            var revokeBtn = row.Status === 'Active' ?
+                                `<button class="dropdown-item btn-action text-warning" data-id="${row.Id}" data-action="revoke">
+                                            <i class="mdi mdi-cancel me-1"></i> Revoke
+                                        </button>` : '';
+
+                            var deactivateBtn = row.Status === 'Active' ?
+                                `<button class="dropdown-item btn-action text-info" data-id="${row.Id}" data-action="deactivate">
+                                            <i class="mdi mdi-pause me-1"></i> Deactivate
+                                        </button>` : '';
+
+                            var reactivateBtn = row.Status === 'Deactivated' ?
+                                `<button class="dropdown-item btn-action text-success" data-id="${row.Id}" data-action="reactivate">
+                                            <i class="mdi mdi-play me-1"></i> Reactivate
+                                        </button>` : '';
+
+                            var extendBtn = row.Status === 'Active' && new Date(row.ExpiryDate) > new Date() ?
+                                `<button class="dropdown-item btn-action text-primary" data-id="${row.Id}" data-action="extend">
+                                            <i class="mdi mdi-calendar-range me-1"></i> Extend
+                                        </button>` : '';
+
+                            return `
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                type="button" id="${btnId}"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                            <li>${detailsBtn}</li>
+                                            ${activateBtn ? `<li>${activateBtn}</li>` : ''}
+                                            ${revokeBtn || deactivateBtn || reactivateBtn || extendBtn ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                            ${revokeBtn ? `<li>${revokeBtn}</li>` : ''}
+                                            ${deactivateBtn ? `<li>${deactivateBtn}</li>` : ''}
+                                            ${reactivateBtn ? `<li>${reactivateBtn}</li>` : ''}
+                                            ${extendBtn ? `<li>${extendBtn}</li>` : ''}
+                                        </ul>
+                                    </div>
+                                `;
+                        }
+                    }
+                ],
+                language: { emptyTable: 'No license records found' },
+                lengthMenu: [10, 25, 50],
+                pageLength: 10
+            });
+
+            licenseTableInitialized = true;
+        }
+
+        function loadLicenseData() {
+            if (licenseTableInitialized && licenseTable) {
+                licenseTable.ajax.reload(null, false);
+            } else {
+                // initialize the table (will load first page using current filters)
+                initLicenseDataTable();
+            }
+        }
+
+        function resetLicenseFilters() {
+            $('#licenseFilterForm')[0].reset();
+            if ($.fn.select2) {
+                $('#filterBranchId').val(null).trigger('change');
+            }
+            // reload only if table already initialized
+            if (licenseTableInitialized) {
+                loadLicenseData();
+            }
+            appalert('Filters reset', 3, 1);
+        }
+
+        function showLicenseAction(licenseId, actionType) {
+            ShowModalGen(licenseId, '_LicenseAction', 'DailyCollectorLicense', 'action', actionType);
+        }
+
+        $(document).ready(function () {
+            // Initialize components
+            if ($.fn.select2) {
+                $('.select2').select2({ width: '100%' });
+            }
+
+            // NOTE: Do NOT initialize table here. It will be created on Apply Filters click.
+            // initLicenseDataTable();
+
+            // Event handlers
+            $('#applyFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                loadLicenseData();
+            });
+
+            $('#resetFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                resetLicenseFilters();
+            });
+
+            // Action handlers
+            $(document).on('click', '.btn-details', function () {
+                var licenseId = $(this).data('id');
+                ShowModalGen(licenseId, '_LicenseDetails', 'DailyCollectorLicense', 'details');
+            });
+
+            $(document).on('click', '.btn-activate', function () {
+                var licenseId = $(this).data('id');
+                ShowModalGen(licenseId, '_ActivateLicense', 'DailyCollectorLicense', 'activate');
+            });
+
+            $(document).on('click', '.btn-action', function () {
+                var licenseId = $(this).data('id');
+                var actionType = $(this).data('action');
+                showLicenseAction(licenseId, actionType);
+            });
+        });
+    </script>
+}

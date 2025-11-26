@@ -12,6 +12,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice
         public string Id { get; set; }
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
+        public string Name { get; set; }
         public string DeviceVersion { get; set; }
         public string DeviceSerialNumber { get; set; }
         public int Status { get; set; }

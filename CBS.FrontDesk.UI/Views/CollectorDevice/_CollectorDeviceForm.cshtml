@@ -2,8 +2,13 @@
 
 <div class="card">
     <div class="modal-body">
-
-        @using (Html.BeginForm("CreateOrUpdate", "CollectorDevice", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        @using (Html.BeginForm("CreateOrUpdate", "CollectorDevice", FormMethod.Post,
+               new
+               {
+                   enctype = "multipart/form-data",
+                   id = "editDeviceForm",
+                   onsubmit = "return false;"
+               }))
         {
             @Html.HiddenFor(m => m.Id)
             @Html.AntiForgeryToken()
@@ -54,8 +59,8 @@
                         <button type="submit" class="btn btn-primary shadow-sm px-4">
                             <i class="mdi mdi-content-save me-1"></i> Create Device
                         </button>
-                        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                            Reset
+                        <button type="button" class="btn btn-outline-secondary shadow-sm px-4" data-bs-dismiss="modal">
+                            Cancel
                         </button>
                     }
                     else
@@ -63,9 +68,8 @@
                         <button type="submit" class="btn btn-primary me-2">
                             <i class="mdi mdi-content-save me-1"></i> Update Device
                         </button>
-                        <button type="button" class="btn btn-outline-secondary"
-                                onclick="LoadPartialView('datalistingview', '_CollectorDeviceTable', 'CollectorDevice', 'list')">
-                            Back to List
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Cancel
                         </button>
                     }
                 </div>
@@ -73,5 +77,3 @@
         }
     </div>
 </div>
-
-

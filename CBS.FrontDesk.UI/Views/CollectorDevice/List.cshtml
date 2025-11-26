@@ -30,18 +30,41 @@
     </div>
 </div>
 
-<div class="card mb-4">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0 text-primary">
-                <i class="mdi mdi-devices me-2"></i>Collector Devices Management
-            </h5>
-            <a href="@Url.Action("Index", "CollectorDevice")"
-               class="btn btn-label-primary btn-sm"
-               data-bs-toggle="tooltip"
-               title="Go to Create Form">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New Device
-            </a>
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-devices me-2"></i>Device Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-pencil me-2"></i>Edit Device
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Edit form will be loaded here -->
+            </div>
         </div>
     </div>
 </div>
@@ -55,10 +78,17 @@
                 </h4>
                 <button type="button"
                         class="btn btn-sm btn-outline-primary ms-auto"
-                        onclick="deviceManager.refreshDataTable()"
+                        onclick="listingDeviceManager.refreshDataTable()"
                         data-bs-toggle="tooltip"
                         title="Refresh Table">
                     <i class="mdi mdi-refresh"></i> Refresh
+                </button>
+                <button type="button"
+                        class="btn btn-sm btn-primary ms-2"
+                        onclick="listingDeviceManager.showCreateForm()"
+                        data-bs-toggle="tooltip"
+                        title="Add New Device">
+                    <i class="mdi mdi-plus me-1"></i> Add Device
                 </button>
             </div>
 
@@ -135,6 +165,11 @@
             min-width: 110px;
         }
 
+        /* Modal customizations */
+        .modal-lg {
+            max-width: 800px;
+        }
+
         /* DataTable customizations */
         .dataTables_wrapper .dataTables_filter input {
             border: 1px solid #ddd;
@@ -176,6 +211,9 @@
                 $('#confirmationModal').on('hidden.bs.modal', () => {
                     $('#confirmationModal .modal-body').empty();
                 });
+
+                // Edit modal form submission
+                $(document).on('submit', '#editDeviceForm', this.handleEditFormSubmit.bind(this));
 
                 // Refresh button event
                 $(document).on('click', '.btn-refresh', () => {
@@ -352,6 +390,151 @@
                 this.showAlert('Error loading device data. Please try again.', 'error');
             }
 
+            async viewDevice(deviceId) {
+                try {
+                    const response = await $.ajax({
+                        url: '/CollectorDevice/GetDeviceDetails',
+                        type: 'GET',
+                        data: { KEY: deviceId }
+                    });
+
+                    if (response.success) {
+                        const device = response.data;
+                        this.showDeviceDetails(device);
+                    } else {
+                        this.showAlert(response.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading device details:', error);
+                    this.showAlert('Error loading device details. Please try again.', 'error');
+                }
+            }
+
+            showDeviceDetails(device) {
+                const statusBadge = device.status === 1 ? 'bg-success' :
+                    device.status === 0 ? 'bg-danger' : 'bg-warning';
+                const statusText = device.status === 1 ? 'Active' :
+                    device.status === 0 ? 'Inactive' : 'Maintenance';
+
+                const detailsHtml = `
+                        <fieldset class="fieldset-custom">
+                            <div class="row">
+                                <!-- Left Column - Basic Information -->
+                                <div class="col-md-6">
+                                    <label class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</label>
+                                    <table class="table table-sm table-bordered">
+                                        <tr><td class="fw-bold">Device ID:</td><td>${device.deviceId || 'N/A'}</td></tr>
+                                        <tr><td class="fw-bold">Device Name:</td><td>${device.deviceName || 'N/A'}</td></tr>
+                                        <tr><td class="fw-bold">Serial Number:</td><td>${device.deviceSerialNumber || 'N/A'}</td></tr>
+                                        <tr><td class="fw-bold">Version:</td><td>${device.deviceVersion || 'N/A'}</td></tr>
+                                        <tr>
+                                            <td class="fw-bold">Status:</td>
+                                            <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <!-- Right Column - Assignment Information -->
+                                <div class="col-md-6">
+                                    <h6 class="text-primary"><i class="mdi mdi-account-check me-2"></i> Assignment Information</h6>
+                                    <table class="table table-sm table-bordered">
+                                        <tr>
+                                            <td class="fw-bold">Assigned Collector:</td>
+                                            <td>
+                                                ${device.assignedCollectorUserId ? device.assignedCollectorUserId : '<span class="text-muted">Not Assigned</span>'}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Assigned On:</td>
+                                            <td>${device.assignedOn || 'N/A'}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Section -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                                    <table class="table table-sm table-bordered">
+                                        <tr><td class="fw-bold">Created On:</td><td>${device.createdOn || 'N/A'}</td></tr>
+                                        <tr><td class="fw-bold">Last Modified:</td><td>${device.modifiedOn || 'N/A'}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+                    `;
+
+                $('#detailsModalBody').html(detailsHtml);
+                $('#detailsModal').modal('show');
+            }
+
+            async editDevice(deviceId) {
+                try {
+                    const response = await $.ajax({
+                        url: '/CollectorDevice/InitializeData',
+                        type: 'GET',
+                        data: {
+                            KEY: deviceId,
+                            partialView: '_CollectorDeviceForm',
+                            path: 'edit'
+                        }
+                    });
+
+                    $('#editModalBody').html(response);
+                    $('#editModal').modal('show');
+                } catch (error) {
+                    console.error('Error loading edit form:', error);
+                    this.showAlert('Error loading edit form. Please try again.', 'error');
+                }
+            }
+
+            showCreateForm() {
+                $.ajax({
+                    url: '/CollectorDevice/InitializeData',
+                    type: 'GET',
+                    data: {
+                        partialView: '_CollectorDeviceForm',
+                        path: 'new'
+                    },
+                    success: (response) => {
+                        $('#editModalBody').html(response);
+                        $('#editModal').modal('show');
+                    },
+                    error: (error) => {
+                        console.error('Error loading create form:', error);
+                        this.showAlert('Error loading create form. Please try again.', 'error');
+                    }
+                });
+            }
+
+            async handleEditFormSubmit(event) {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+
+                try {
+                    const response = await $.ajax({
+                        url: '/CollectorDevice/CreateOrUpdate',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    });
+
+                    if (response.success) {
+                        this.showAlert(response.message, 'success');
+                        $('#editModal').modal('hide');
+                        this.refreshDataTable();
+                    } else {
+                        this.showAlert(response.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error saving device:', error);
+                    this.showAlert('Error saving device. Please try again.', 'error');
+                }
+            }
+
             async confirmAction(message) {
                 return new Promise((resolve) => {
                     $('#confirmationModal .modal-body').text(message);
@@ -367,6 +550,29 @@
                         resolve(false);
                     });
                 });
+            }
+
+            async deleteDevice(deviceId) {
+                const confirmed = await this.confirmAction('Are you sure you want to delete this device? This action cannot be undone.');
+                if (!confirmed) return;
+
+                try {
+                    const response = await $.ajax({
+                        url: '/CollectorDevice/Delete',
+                        type: 'GET',
+                        data: { KEY: deviceId }
+                    });
+
+                    if (response.success) {
+                        this.showAlert(response.message, 'success');
+                        this.refreshDataTable();
+                    } else {
+                        this.showAlert(response.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    this.showAlert('Error deleting device. Please try again.', 'error');
+                }
             }
 
             showAlert(message, type = 'info', duration = 5000) {
@@ -400,37 +606,6 @@
                     setTimeout(() => {
                         $('.alert').alert('close');
                     }, duration);
-                }
-            }
-
-            viewDevice(deviceId) {
-                window.location.href = `/CollectorDevice/Index?deviceId=${deviceId}`;
-            }
-
-            editDevice(deviceId) {
-                window.location.href = `/CollectorDevice/Index?edit=${deviceId}`;
-            }
-
-            async deleteDevice(deviceId) {
-                const confirmed = await this.confirmAction('Are you sure you want to delete this device? This action cannot be undone.');
-                if (!confirmed) return;
-
-                try {
-                    const response = await $.ajax({
-                        url: '/CollectorDevice/Delete',
-                        type: 'GET',
-                        data: { KEY: deviceId }
-                    });
-
-                    if (response.success) {
-                        this.showAlert(response.message, 'success');
-                        this.refreshDataTable();
-                    } else {
-                        this.showAlert(response.message, 'error');
-                    }
-                } catch (error) {
-                    console.error('Delete error:', error);
-                    this.showAlert('Error deleting device. Please try again.', 'error');
                 }
             }
 

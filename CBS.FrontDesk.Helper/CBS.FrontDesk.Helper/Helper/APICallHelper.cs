@@ -1437,7 +1437,7 @@ namespace CBS.FrontDesk.Helper
         //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
-        public static string CreateLiaisonMapping = "/api/v1/LiaisonMapping";
+        public static string CreateLiaisonMapping = "api/v1/LiaisonMapping";
         public static string UpdateLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string DeleteLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
         public static string GetLiaisonMappingsDataTable = "api/v1/LiaisonMapping/datatable";
@@ -1445,11 +1445,9 @@ namespace CBS.FrontDesk.Helper
         public const string CheckLiaisonMappingExists = "api/liaisonmapping/checkexists";
         public const string GetCounterpartyBranches = "api/liaisonmapping/counterpartybranches";
 
-		public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
+        //************************************Role Gl Resolution Endpoints  ********************************************////
 
-		//************************************Role Gl Resolution Endpoints  ********************************************////
-
-		public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
+        public const string CreateRoleGlResolution = "/api/v1/RoleGlResolution";
         public const string UpdateRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string DeleteRoleGlResolution = "/api/v1/RoleGlResolution/{0}";
         public const string GetRoleGlResolution = "/api/v1/RoleGlResolution";
@@ -1540,6 +1538,7 @@ namespace CBS.FrontDesk.Helper
         //public static string Createnot = "/api/v1/Notification/Config";
         //public static string Updatenot = "/api/NotificationConfig/{0}";
         //public static string Deletenot = "/api/NotificationConfig/{0}";
+
 
 
         //************************** END CHEQUE BOOK *******************************
@@ -1673,16 +1672,25 @@ namespace CBS.FrontDesk.Helper
             public const string RenewApiKey = "/api/apikeys/renew";
             public const string RevokeApiKey = "/api/apikeys/revoke";
             public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
-            public const string DeleteApiKey = "/api/apikeys/{0}";
+        public const string DeleteApiKey = "/api/apikeys/{0}";
 
-
-        //------------------------ Dervice Management --------------------------------------
-        public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
-        public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
-        public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
-        public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
-        public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
-        public const string CollectorDeviceresponse = "/api/apikeys/generate";
+        //--------------------------- Collector Device MANAGEMENT ----------------------------------------  
+            public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+            public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+            public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+            
+        //----------------------------- Dailly Collector License Management ---------------------------
+        public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";
+        public const string RevokeLicense = "/api/v1/DailyCollectorLicense/{0}/revoke";
+        public const string DeactivateLicense = "/api/v1/DailyCollectorLicense/{0}/deactivate";
+        public const string ReactivateLicense = "/api/v1/DailyCollectorLicense/{0}/reactivate";
+        public const string GetLicenseById = "/api/v1/DailyCollectorLicense/{0}";
+        public const string GetCollectorLicenses = "/api/v1/DailyCollectorLicense/collector/{0}";
+        public const string ActivateLicense = "/api/v1/DailyCollectorLicense/activate";
+        public const string CheckLicenseStatus = "/api/v1/DailyCollectorLicense/status";
+        public const string LicenseDataTable = "/api/v1/DailyCollectorLicense/datatable";
 
         //*************************** End of Accounting V2 **************************************
 
@@ -1702,7 +1710,7 @@ namespace CBS.FrontDesk.Helper
 
         // ================ Journals   =======================//
         public static string JournalEntries = "/api/v1/Reports/journal";
-        public static string JournalReceipts = "/api/v1/Reports/journalReciepts";
+        public static string JournalReceipts = "/api/v1/Reports/gl-receipt";
 
 
         // ================ Accnts  Statements   =======================//
@@ -1714,8 +1722,7 @@ namespace CBS.FrontDesk.Helper
         public static string Update_SavingProduct_AccountingV2Mapping = "/api/v1/SavingProduct/AccountingV2Mapping/{0}";
         
         public static string GetLiaisonMappingById = "/api/v1/LiaisonMapping/{0}";
-        
-
+        public static string LiaisonMappingDatatable = "/api/v1/LiaisonMapping/datatable";
 
         //------------------------- Accounting Year --------------------
         public static string SaveAccountingYear = "/api/v1/AccountingYear";
@@ -1734,5 +1741,8 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
 
+       
+
+       
     }
 }

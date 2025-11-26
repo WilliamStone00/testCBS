@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,6 +23,7 @@ namespace CBS.BusinessService.Accounting_V2.JournalEntries
 
         public async Task<List<JournalDtoEntriesV2Dto>> GetJournalEntriesAsync(AccountingV2ReportsFilter filter)
         {
+            string jsonFilter = JsonConvert.SerializeObject(filter, Formatting.Indented);
             try
             {
                 var response = await _apiCallerHelper.PostAsync<

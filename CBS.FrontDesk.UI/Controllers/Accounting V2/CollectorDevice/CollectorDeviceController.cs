@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
 {
-   // [CheckSessionTimeOut]
+    // [CheckSessionTimeOut]
     public class CollectorDeviceController : Controller
     {
         private readonly BranchServices _branchServices;
@@ -38,27 +38,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             return View();
         }
 
-
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
-            //await loader();
             if (path == "list")
             {
                 var data = await _CollectorDeviceService.GetAsync();
                 return PartialView(partialView, data);
-
             }
-            //GetRolePermissions
             else if (path == "new")
             {
                 return PartialView(partialView, new CollectorDeviceresponse());
             }
-
             else
             {
                 var data = await _CollectorDeviceService.GetByIdAsync(KEY);
                 return PartialView(partialView, data);
-
             }
         }
 
@@ -67,7 +61,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
         {
             try
             {
-                // Simple GET all - no complex form parsing
                 var devices = await _CollectorDeviceService.GetAsync();
 
                 var result = devices.Select(d => new
@@ -89,10 +82,48 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
                 return Json(new { error = "Error loading data" });
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDeviceDetails(string KEY)
+        {
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
+            try
+            {
+                var device = await _CollectorDeviceService.GetByIdAsync(KEY);
+                if (device == null)
+                    return Json(new { success = false, message = "Device not found." }, JsonRequestBehavior.AllowGet);
+
+                var result = new
+                {
+                    success = true,
+                    data = new
+                    {
+                        deviceId = device.DeviceId,
+                        deviceName = device.DeviceName,
+                        deviceSerialNumber = device.DeviceSerialNumber,
+                        deviceVersion = device.DeviceVersion,
+                        status = device.Status,
+                        assignedCollectorUserId = device.AssignedCollectorUserId ?? string.Empty,
+                        assignedOn = device.AssignedOn.ToString(),
+                        createdOn = device.CreatedOn.ToString(),
+                        modifiedOn = device.ModifiedOn.ToString()
+                    }
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // _logger.LogError(ex, "Error loading device details");
+                return Json(new { success = false, message = "Error loading device details." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(CollectorDeviceresponse model)
         {
-            // Use IsNullOrWhiteSpace so empty string Ids don't behave like null
             if (string.IsNullOrWhiteSpace(model.Id))
             {
                 if (!ModelState.IsValid)
@@ -103,12 +134,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
             }
             else
             {
-                // IMPORTANT: return the ActionResult from Update
                 return await Update(model);
             }
-
-            // unreachable now but keep for safety (or remove)
-            // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
         }
 
         [HttpPost]
@@ -123,7 +150,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
         }
 
         [HttpGet]
-        // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
@@ -131,13 +157,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.CollectorDevice
 
             var result = await _CollectorDeviceService.DeleteAsync(KEY);
 
-            // Map to simple JSON shape the client expects. Adjust if result has different property names.
             bool success = result?.Result ?? false;
             string message = Messaging.MessageResult(result) ?? "Operation completed.";
 
             return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
-
-     
     }
 }

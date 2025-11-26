@@ -33,15 +33,15 @@ namespace CBS.BusinessService.Accounting_V2.JournalReceiptsReports
         /// </summary>
 
 
-        public async Task<List<ReceiptResponseDto>> GetReceiptAsync(ReceiptV2Filter filter)
+        public async Task<ReceiptResponseDto> GetReceiptAsync(ReceiptV2Filter filter)
         {
             string jsonFilter = JsonConvert.SerializeObject(filter, Formatting.Indented);
 
             var response = await _apiCallerHelper.PostAsync<
-                ServiceResponse<List<ReceiptResponseDto>>
+                ServiceResponse<ReceiptResponseDto>
             >(APICallHelper.JournalReceipts, filter);
 
-            return response?.ApiResponseData?.Data ?? new List<ReceiptResponseDto>();
+            return response?.ApiResponseData?.Data ?? new ReceiptResponseDto();
         }
 
         /// <summary>
