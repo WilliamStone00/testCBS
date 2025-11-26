@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
@@ -27,12 +28,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly CashDeskServices _cashDeskService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
 
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly BranchAccountService _branchAccountService;
 
-        public LoanRepaymentBackOfficeController(CashDeskServices cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
+        public LoanRepaymentBackOfficeController(CashDeskServices cashDeskService = null, BranchAccountService chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
         {
             _cashDeskService = cashDeskService;
-            this.chartOfAccountServices=chartOfAccountServices;
+            this._branchAccountService = chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
         }
         public ActionResult Index()
@@ -251,8 +252,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(true);
-            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var listing1 = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            ViewBag.chartOfAccounts = _branchAccountService.DropDownGen(listing1.ToList());
+
             return true;
         }
     }

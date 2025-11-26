@@ -60,8 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance {
    
 
         public string Year { get; set; } = DateTime.Now.Year.ToString();
-
-
+        public string ConsolidationStatus { get; internal set; }
     }
 
 
