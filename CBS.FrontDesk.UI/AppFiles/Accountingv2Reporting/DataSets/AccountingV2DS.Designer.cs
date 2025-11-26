@@ -557,6 +557,74 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnBranchPBox;
             
+            private global::System.Data.DataColumn columnPayloadDisplayTitle;
+            
+            private global::System.Data.DataColumn columnOperationCode;
+            
+            private global::System.Data.DataColumn columnOperationLabel;
+            
+            private global::System.Data.DataColumn columnJournalHeaderId;
+            
+            private global::System.Data.DataColumn columnIssuedAtUtc;
+            
+            private global::System.Data.DataColumn columnIssuedAtLocal;
+            
+            private global::System.Data.DataColumn columnMemberNumber;
+            
+            private global::System.Data.DataColumn columnPayor;
+            
+            private global::System.Data.DataColumn columnTitle;
+            
+            private global::System.Data.DataColumn columnTellerName;
+            
+            private global::System.Data.DataColumn columnTillName;
+            
+            private global::System.Data.DataColumn columnIssuedBy;
+            
+            private global::System.Data.DataColumn columnTotalDebit;
+            
+            private global::System.Data.DataColumn columnTotalCredit;
+            
+            private global::System.Data.DataColumn columnCashInAmount;
+            
+            private global::System.Data.DataColumn columnCashOutAmount;
+            
+            private global::System.Data.DataColumn columnNetAmount;
+            
+            private global::System.Data.DataColumn columnDr;
+            
+            private global::System.Data.DataColumn columnCr;
+            
+            private global::System.Data.DataColumn columnIsInterBranch;
+            
+            private global::System.Data.DataColumn columnCounterpartyBranchId;
+            
+            private global::System.Data.DataColumn columnCounterpartyBranchCode;
+            
+            private global::System.Data.DataColumn columnCounterpartyBranchName;
+            
+            private global::System.Data.DataColumn columnPrintedCount;
+            
+            private global::System.Data.DataColumn columnIsReprint;
+            
+            private global::System.Data.DataColumn columnDisplayTitle;
+            
+            private global::System.Data.DataColumn columnPayloadCashDenominationsJson;
+            
+            private global::System.Data.DataColumn columnPayloadVersion;
+            
+            private global::System.Data.DataColumn columnPayloadLinesJson;
+            
+            private global::System.Data.DataColumn columnPayloadDescription;
+            
+            private global::System.Data.DataColumn columnPayloadHash;
+            
+            private global::System.Data.DataColumn columnPayloadExtraMetadataJson;
+            
+            private global::System.Data.DataColumn columnMemo;
+            
+            private global::System.Data.DataColumn columnDataColumn1;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public ReconciledLedgerLineRptDSDataTable() {
@@ -1144,6 +1212,278 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadDisplayTitleColumn {
+                get {
+                    return this.columnPayloadDisplayTitle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OperationCodeColumn {
+                get {
+                    return this.columnOperationCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OperationLabelColumn {
+                get {
+                    return this.columnOperationLabel;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn JournalHeaderIdColumn {
+                get {
+                    return this.columnJournalHeaderId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IssuedAtUtcColumn {
+                get {
+                    return this.columnIssuedAtUtc;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IssuedAtLocalColumn {
+                get {
+                    return this.columnIssuedAtLocal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemberNumberColumn {
+                get {
+                    return this.columnMemberNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayorColumn {
+                get {
+                    return this.columnPayor;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TitleColumn {
+                get {
+                    return this.columnTitle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TellerNameColumn {
+                get {
+                    return this.columnTellerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TillNameColumn {
+                get {
+                    return this.columnTillName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IssuedByColumn {
+                get {
+                    return this.columnIssuedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalDebitColumn {
+                get {
+                    return this.columnTotalDebit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalCreditColumn {
+                get {
+                    return this.columnTotalCredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CashInAmountColumn {
+                get {
+                    return this.columnCashInAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CashOutAmountColumn {
+                get {
+                    return this.columnCashOutAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn NetAmountColumn {
+                get {
+                    return this.columnNetAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DrColumn {
+                get {
+                    return this.columnDr;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CrColumn {
+                get {
+                    return this.columnCr;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsInterBranchColumn {
+                get {
+                    return this.columnIsInterBranch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CounterpartyBranchIdColumn {
+                get {
+                    return this.columnCounterpartyBranchId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CounterpartyBranchCodeColumn {
+                get {
+                    return this.columnCounterpartyBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CounterpartyBranchNameColumn {
+                get {
+                    return this.columnCounterpartyBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PrintedCountColumn {
+                get {
+                    return this.columnPrintedCount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn IsReprintColumn {
+                get {
+                    return this.columnIsReprint;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DisplayTitleColumn {
+                get {
+                    return this.columnDisplayTitle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadCashDenominationsJsonColumn {
+                get {
+                    return this.columnPayloadCashDenominationsJson;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadVersionColumn {
+                get {
+                    return this.columnPayloadVersion;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadLinesJsonColumn {
+                get {
+                    return this.columnPayloadLinesJson;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadDescriptionColumn {
+                get {
+                    return this.columnPayloadDescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadHashColumn {
+                get {
+                    return this.columnPayloadHash;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PayloadExtraMetadataJsonColumn {
+                get {
+                    return this.columnPayloadExtraMetadataJson;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemoColumn {
+                get {
+                    return this.columnMemo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DataColumn1Column {
+                get {
+                    return this.columnDataColumn1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1248,7 +1588,41 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string BranchLogoUrl, 
                         string BranchRegistrationNumber, 
                         string BranchImmatriculationNumber, 
-                        string BranchPBox) {
+                        string BranchPBox, 
+                        string PayloadDisplayTitle, 
+                        string OperationCode, 
+                        string OperationLabel, 
+                        string JournalHeaderId, 
+                        System.TimeSpan IssuedAtUtc, 
+                        System.TimeSpan IssuedAtLocal, 
+                        string MemberNumber, 
+                        string Payor, 
+                        string Title, 
+                        string TellerName, 
+                        string TillName, 
+                        string IssuedBy, 
+                        decimal TotalDebit, 
+                        decimal TotalCredit, 
+                        decimal CashInAmount, 
+                        decimal CashOutAmount, 
+                        decimal NetAmount, 
+                        decimal Dr, 
+                        decimal Cr, 
+                        bool IsInterBranch, 
+                        string CounterpartyBranchId, 
+                        string CounterpartyBranchCode, 
+                        string CounterpartyBranchName, 
+                        string PrintedCount, 
+                        string IsReprint, 
+                        string DisplayTitle, 
+                        string PayloadCashDenominationsJson, 
+                        string PayloadVersion, 
+                        string PayloadLinesJson, 
+                        string PayloadDescription, 
+                        string PayloadHash, 
+                        string PayloadExtraMetadataJson, 
+                        string Memo, 
+                        string DataColumn1) {
                 ReconciledLedgerLineRptDSRow rowReconciledLedgerLineRptDSRow = ((ReconciledLedgerLineRptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Logo,
@@ -1319,7 +1693,41 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         BranchLogoUrl,
                         BranchRegistrationNumber,
                         BranchImmatriculationNumber,
-                        BranchPBox};
+                        BranchPBox,
+                        PayloadDisplayTitle,
+                        OperationCode,
+                        OperationLabel,
+                        JournalHeaderId,
+                        IssuedAtUtc,
+                        IssuedAtLocal,
+                        MemberNumber,
+                        Payor,
+                        Title,
+                        TellerName,
+                        TillName,
+                        IssuedBy,
+                        TotalDebit,
+                        TotalCredit,
+                        CashInAmount,
+                        CashOutAmount,
+                        NetAmount,
+                        Dr,
+                        Cr,
+                        IsInterBranch,
+                        CounterpartyBranchId,
+                        CounterpartyBranchCode,
+                        CounterpartyBranchName,
+                        PrintedCount,
+                        IsReprint,
+                        DisplayTitle,
+                        PayloadCashDenominationsJson,
+                        PayloadVersion,
+                        PayloadLinesJson,
+                        PayloadDescription,
+                        PayloadHash,
+                        PayloadExtraMetadataJson,
+                        Memo,
+                        DataColumn1};
                 rowReconciledLedgerLineRptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowReconciledLedgerLineRptDSRow);
                 return rowReconciledLedgerLineRptDSRow;
@@ -1411,6 +1819,40 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnBranchRegistrationNumber = base.Columns["BranchRegistrationNumber"];
                 this.columnBranchImmatriculationNumber = base.Columns["BranchImmatriculationNumber"];
                 this.columnBranchPBox = base.Columns["BranchPBox"];
+                this.columnPayloadDisplayTitle = base.Columns["PayloadDisplayTitle"];
+                this.columnOperationCode = base.Columns["OperationCode"];
+                this.columnOperationLabel = base.Columns["OperationLabel"];
+                this.columnJournalHeaderId = base.Columns["JournalHeaderId"];
+                this.columnIssuedAtUtc = base.Columns["IssuedAtUtc"];
+                this.columnIssuedAtLocal = base.Columns["IssuedAtLocal"];
+                this.columnMemberNumber = base.Columns["MemberNumber"];
+                this.columnPayor = base.Columns["Payor"];
+                this.columnTitle = base.Columns["Title"];
+                this.columnTellerName = base.Columns["TellerName"];
+                this.columnTillName = base.Columns["TillName"];
+                this.columnIssuedBy = base.Columns["IssuedBy"];
+                this.columnTotalDebit = base.Columns["TotalDebit"];
+                this.columnTotalCredit = base.Columns["TotalCredit"];
+                this.columnCashInAmount = base.Columns["CashInAmount"];
+                this.columnCashOutAmount = base.Columns["CashOutAmount"];
+                this.columnNetAmount = base.Columns["NetAmount"];
+                this.columnDr = base.Columns["Dr"];
+                this.columnCr = base.Columns["Cr"];
+                this.columnIsInterBranch = base.Columns["IsInterBranch"];
+                this.columnCounterpartyBranchId = base.Columns["CounterpartyBranchId"];
+                this.columnCounterpartyBranchCode = base.Columns["CounterpartyBranchCode"];
+                this.columnCounterpartyBranchName = base.Columns["CounterpartyBranchName"];
+                this.columnPrintedCount = base.Columns["PrintedCount"];
+                this.columnIsReprint = base.Columns["IsReprint"];
+                this.columnDisplayTitle = base.Columns["DisplayTitle"];
+                this.columnPayloadCashDenominationsJson = base.Columns["PayloadCashDenominationsJson"];
+                this.columnPayloadVersion = base.Columns["PayloadVersion"];
+                this.columnPayloadLinesJson = base.Columns["PayloadLinesJson"];
+                this.columnPayloadDescription = base.Columns["PayloadDescription"];
+                this.columnPayloadHash = base.Columns["PayloadHash"];
+                this.columnPayloadExtraMetadataJson = base.Columns["PayloadExtraMetadataJson"];
+                this.columnMemo = base.Columns["Memo"];
+                this.columnDataColumn1 = base.Columns["DataColumn1"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1554,6 +1996,74 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnBranchImmatriculationNumber);
                 this.columnBranchPBox = new global::System.Data.DataColumn("BranchPBox", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchPBox);
+                this.columnPayloadDisplayTitle = new global::System.Data.DataColumn("PayloadDisplayTitle", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadDisplayTitle);
+                this.columnOperationCode = new global::System.Data.DataColumn("OperationCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOperationCode);
+                this.columnOperationLabel = new global::System.Data.DataColumn("OperationLabel", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOperationLabel);
+                this.columnJournalHeaderId = new global::System.Data.DataColumn("JournalHeaderId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnJournalHeaderId);
+                this.columnIssuedAtUtc = new global::System.Data.DataColumn("IssuedAtUtc", typeof(global::System.TimeSpan), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIssuedAtUtc);
+                this.columnIssuedAtLocal = new global::System.Data.DataColumn("IssuedAtLocal", typeof(global::System.TimeSpan), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIssuedAtLocal);
+                this.columnMemberNumber = new global::System.Data.DataColumn("MemberNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemberNumber);
+                this.columnPayor = new global::System.Data.DataColumn("Payor", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayor);
+                this.columnTitle = new global::System.Data.DataColumn("Title", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTitle);
+                this.columnTellerName = new global::System.Data.DataColumn("TellerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTellerName);
+                this.columnTillName = new global::System.Data.DataColumn("TillName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTillName);
+                this.columnIssuedBy = new global::System.Data.DataColumn("IssuedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIssuedBy);
+                this.columnTotalDebit = new global::System.Data.DataColumn("TotalDebit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDebit);
+                this.columnTotalCredit = new global::System.Data.DataColumn("TotalCredit", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalCredit);
+                this.columnCashInAmount = new global::System.Data.DataColumn("CashInAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashInAmount);
+                this.columnCashOutAmount = new global::System.Data.DataColumn("CashOutAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashOutAmount);
+                this.columnNetAmount = new global::System.Data.DataColumn("NetAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNetAmount);
+                this.columnDr = new global::System.Data.DataColumn("Dr", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDr);
+                this.columnCr = new global::System.Data.DataColumn("Cr", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCr);
+                this.columnIsInterBranch = new global::System.Data.DataColumn("IsInterBranch", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsInterBranch);
+                this.columnCounterpartyBranchId = new global::System.Data.DataColumn("CounterpartyBranchId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCounterpartyBranchId);
+                this.columnCounterpartyBranchCode = new global::System.Data.DataColumn("CounterpartyBranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCounterpartyBranchCode);
+                this.columnCounterpartyBranchName = new global::System.Data.DataColumn("CounterpartyBranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCounterpartyBranchName);
+                this.columnPrintedCount = new global::System.Data.DataColumn("PrintedCount", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrintedCount);
+                this.columnIsReprint = new global::System.Data.DataColumn("IsReprint", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIsReprint);
+                this.columnDisplayTitle = new global::System.Data.DataColumn("DisplayTitle", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDisplayTitle);
+                this.columnPayloadCashDenominationsJson = new global::System.Data.DataColumn("PayloadCashDenominationsJson", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadCashDenominationsJson);
+                this.columnPayloadVersion = new global::System.Data.DataColumn("PayloadVersion", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadVersion);
+                this.columnPayloadLinesJson = new global::System.Data.DataColumn("PayloadLinesJson", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadLinesJson);
+                this.columnPayloadDescription = new global::System.Data.DataColumn("PayloadDescription", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadDescription);
+                this.columnPayloadHash = new global::System.Data.DataColumn("PayloadHash", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadHash);
+                this.columnPayloadExtraMetadataJson = new global::System.Data.DataColumn("PayloadExtraMetadataJson", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPayloadExtraMetadataJson);
+                this.columnMemo = new global::System.Data.DataColumn("Memo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemo);
+                this.columnDataColumn1 = new global::System.Data.DataColumn("DataColumn1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDataColumn1);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5801,6 +6311,575 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadDisplayTitle {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadDisplayTitleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadDisplayTitle\' in table \'ReconciledLedgerLineRptDS\' i" +
+                                "s DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadDisplayTitleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string OperationCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.OperationCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OperationCode\' in table \'ReconciledLedgerLineRptDS\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.OperationCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string OperationLabel {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.OperationLabelColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OperationLabel\' in table \'ReconciledLedgerLineRptDS\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.OperationLabelColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string JournalHeaderId {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.JournalHeaderIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'JournalHeaderId\' in table \'ReconciledLedgerLineRptDS\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.JournalHeaderIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.TimeSpan IssuedAtUtc {
+                get {
+                    try {
+                        return ((global::System.TimeSpan)(this[this.tableReconciledLedgerLineRptDS.IssuedAtUtcColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IssuedAtUtc\' in table \'ReconciledLedgerLineRptDS\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.IssuedAtUtcColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.TimeSpan IssuedAtLocal {
+                get {
+                    try {
+                        return ((global::System.TimeSpan)(this[this.tableReconciledLedgerLineRptDS.IssuedAtLocalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IssuedAtLocal\' in table \'ReconciledLedgerLineRptDS\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.IssuedAtLocalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string MemberNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.MemberNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MemberNumber\' in table \'ReconciledLedgerLineRptDS\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.MemberNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Payor {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Payor\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayorColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Title {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.TitleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Title\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.TitleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TellerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.TellerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TellerName\' in table \'ReconciledLedgerLineRptDS\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.TellerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string TillName {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.TillNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TillName\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.TillNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string IssuedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.IssuedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IssuedBy\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.IssuedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalDebit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.TotalDebitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDebit\' in table \'ReconciledLedgerLineRptDS\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.TotalDebitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalCredit {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.TotalCreditColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalCredit\' in table \'ReconciledLedgerLineRptDS\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.TotalCreditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CashInAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.CashInAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashInAmount\' in table \'ReconciledLedgerLineRptDS\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CashInAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal CashOutAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.CashOutAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashOutAmount\' in table \'ReconciledLedgerLineRptDS\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CashOutAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal NetAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.NetAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NetAmount\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.NetAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Dr {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.DrColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Dr\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.DrColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Cr {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableReconciledLedgerLineRptDS.CrColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Cr\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CrColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInterBranch {
+                get {
+                    try {
+                        return ((bool)(this[this.tableReconciledLedgerLineRptDS.IsInterBranchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsInterBranch\' in table \'ReconciledLedgerLineRptDS\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.IsInterBranchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CounterpartyBranchId {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CounterpartyBranchId\' in table \'ReconciledLedgerLineRptDS\' " +
+                                "is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CounterpartyBranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CounterpartyBranchCode\' in table \'ReconciledLedgerLineRptDS" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string CounterpartyBranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CounterpartyBranchName\' in table \'ReconciledLedgerLineRptDS" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PrintedCount {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PrintedCountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrintedCount\' in table \'ReconciledLedgerLineRptDS\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PrintedCountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string IsReprint {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.IsReprintColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IsReprint\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.IsReprintColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DisplayTitle {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.DisplayTitleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DisplayTitle\' in table \'ReconciledLedgerLineRptDS\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.DisplayTitleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadCashDenominationsJson {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadCashDenominationsJsonColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadCashDenominationsJson\' in table \'ReconciledLedgerLin" +
+                                "eRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadCashDenominationsJsonColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadVersion {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadVersionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadVersion\' in table \'ReconciledLedgerLineRptDS\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadVersionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadLinesJson {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadLinesJsonColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadLinesJson\' in table \'ReconciledLedgerLineRptDS\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadLinesJsonColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadDescription {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadDescriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadDescription\' in table \'ReconciledLedgerLineRptDS\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadDescriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadHash {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadHashColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadHash\' in table \'ReconciledLedgerLineRptDS\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadHashColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PayloadExtraMetadataJson {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.PayloadExtraMetadataJsonColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PayloadExtraMetadataJson\' in table \'ReconciledLedgerLineRpt" +
+                                "DS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.PayloadExtraMetadataJsonColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Memo {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.MemoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Memo\' in table \'ReconciledLedgerLineRptDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.MemoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DataColumn1 {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.DataColumn1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DataColumn1\' in table \'ReconciledLedgerLineRptDS\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.DataColumn1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsLogoNull() {
                 return this.IsNull(this.tableReconciledLedgerLineRptDS.LogoColumn);
             }
@@ -6625,6 +7704,414 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetBranchPBoxNull() {
                 this[this.tableReconciledLedgerLineRptDS.BranchPBoxColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadDisplayTitleNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadDisplayTitleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadDisplayTitleNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadDisplayTitleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOperationCodeNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.OperationCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOperationCodeNull() {
+                this[this.tableReconciledLedgerLineRptDS.OperationCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsOperationLabelNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.OperationLabelColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetOperationLabelNull() {
+                this[this.tableReconciledLedgerLineRptDS.OperationLabelColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsJournalHeaderIdNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.JournalHeaderIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetJournalHeaderIdNull() {
+                this[this.tableReconciledLedgerLineRptDS.JournalHeaderIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIssuedAtUtcNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.IssuedAtUtcColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIssuedAtUtcNull() {
+                this[this.tableReconciledLedgerLineRptDS.IssuedAtUtcColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIssuedAtLocalNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.IssuedAtLocalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIssuedAtLocalNull() {
+                this[this.tableReconciledLedgerLineRptDS.IssuedAtLocalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemberNumberNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.MemberNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemberNumberNull() {
+                this[this.tableReconciledLedgerLineRptDS.MemberNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayorNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayorColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayorNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayorColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTitleNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.TitleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTitleNull() {
+                this[this.tableReconciledLedgerLineRptDS.TitleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTellerNameNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.TellerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTellerNameNull() {
+                this[this.tableReconciledLedgerLineRptDS.TellerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTillNameNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.TillNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTillNameNull() {
+                this[this.tableReconciledLedgerLineRptDS.TillNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIssuedByNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.IssuedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIssuedByNull() {
+                this[this.tableReconciledLedgerLineRptDS.IssuedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalDebitNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.TotalDebitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalDebitNull() {
+                this[this.tableReconciledLedgerLineRptDS.TotalDebitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalCreditNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.TotalCreditColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalCreditNull() {
+                this[this.tableReconciledLedgerLineRptDS.TotalCreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCashInAmountNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CashInAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCashInAmountNull() {
+                this[this.tableReconciledLedgerLineRptDS.CashInAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCashOutAmountNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CashOutAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCashOutAmountNull() {
+                this[this.tableReconciledLedgerLineRptDS.CashOutAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsNetAmountNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.NetAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetNetAmountNull() {
+                this[this.tableReconciledLedgerLineRptDS.NetAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDrNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.DrColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDrNull() {
+                this[this.tableReconciledLedgerLineRptDS.DrColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCrNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CrColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCrNull() {
+                this[this.tableReconciledLedgerLineRptDS.CrColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsInterBranchNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.IsInterBranchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsInterBranchNull() {
+                this[this.tableReconciledLedgerLineRptDS.IsInterBranchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCounterpartyBranchIdNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CounterpartyBranchIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCounterpartyBranchIdNull() {
+                this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCounterpartyBranchCodeNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CounterpartyBranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCounterpartyBranchCodeNull() {
+                this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCounterpartyBranchNameNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.CounterpartyBranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCounterpartyBranchNameNull() {
+                this[this.tableReconciledLedgerLineRptDS.CounterpartyBranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPrintedCountNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PrintedCountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPrintedCountNull() {
+                this[this.tableReconciledLedgerLineRptDS.PrintedCountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsIsReprintNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.IsReprintColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetIsReprintNull() {
+                this[this.tableReconciledLedgerLineRptDS.IsReprintColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDisplayTitleNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.DisplayTitleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDisplayTitleNull() {
+                this[this.tableReconciledLedgerLineRptDS.DisplayTitleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadCashDenominationsJsonNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadCashDenominationsJsonColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadCashDenominationsJsonNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadCashDenominationsJsonColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadVersionNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadVersionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadVersionNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadVersionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadLinesJsonNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadLinesJsonColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadLinesJsonNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadLinesJsonColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadDescriptionNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadDescriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadDescriptionNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadDescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadHashNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadHashColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadHashNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadHashColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPayloadExtraMetadataJsonNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.PayloadExtraMetadataJsonColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPayloadExtraMetadataJsonNull() {
+                this[this.tableReconciledLedgerLineRptDS.PayloadExtraMetadataJsonColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemoNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.MemoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemoNull() {
+                this[this.tableReconciledLedgerLineRptDS.MemoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDataColumn1Null() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.DataColumn1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDataColumn1Null() {
+                this[this.tableReconciledLedgerLineRptDS.DataColumn1Column] = global::System.Convert.DBNull;
             }
         }
         

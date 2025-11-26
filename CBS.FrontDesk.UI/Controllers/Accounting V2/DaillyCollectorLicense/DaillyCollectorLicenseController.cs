@@ -25,13 +25,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
         private readonly ManualDailyCollectionService _manualService;
         private readonly DailyCollectorLicenseService _licenseService;
         private readonly UserManagementServices _userManagementServices;
-             private readonly CollectorDeviceService _CollectorDeviceService;
+        private readonly CollectorDeviceService _CollectorDeviceService;
         private readonly BranchServices _branchServices;
 
         public DailyCollectorLicenseController(
             DailyCollectorLicenseService licenseService,
             UserManagementServices userManagementServices,
-            BranchServices baseService, CollectorDeviceService collectorDeviceService,ManualDailyCollectionService manualDailyCollectionService)
+            BranchServices baseService, CollectorDeviceService collectorDeviceService, ManualDailyCollectionService manualDailyCollectionService)
         {
             _licenseService = licenseService;
             _userManagementServices = userManagementServices;
@@ -48,7 +48,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
 
         public async Task<ActionResult> List()
         {
-            return View(new List<DailyCollectorLicense>());
+            await LoadDropdownData();
+            return View();
         }
 
         private async Task LoadDropdownData()
@@ -60,17 +61,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
             ViewBag.Devices = devices;
         }
 
-        
+
         [HttpPost]
         public async Task<JsonResult> LoadData(LicenseQuery query)
         {
+         
             try
             {
                 var data = await _licenseService.GetDataTableAsync(query);
                 var dataTable = JsonConvert.DeserializeObject<CustomDataTable3>(JsonConvert.SerializeObject(data));
                 var licenses = JsonConvert.DeserializeObject<List<DailyCollectorLicense>>(JsonConvert.SerializeObject(dataTable.data));
 
-                return Json(new                                  
+                return Json(new
                 {
                     draw = dataTable.draw,
                     recordsTotal = dataTable.recordsTotal,
@@ -115,6 +117,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
                 var data = await _licenseService.GetLicenseByIdAsync(KEY);
                 var actionModel = new LicenseActionRequest
                 {
+                    CollectorUserName = data.CollectorUserName,
                     LicenseId = data?.Id ?? KEY,
                     ActionType = serviceOption // "Revoke", "Deactivate", "Reactivate", "Extend"
                 };
@@ -122,7 +125,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
             }
             else if (path == "activate")
             {
-                return PartialView(partialView, new ActivateLicenseRequest());
+                var data = await _licenseService.GetLicenseByIdAsync(KEY);
+                var actionModel = new ActivateLicenseRequest
+                {
+                   CollectorUserName = data.CollectorUserName,
+                  LicenseCode = data.LicenseCode,
+                    CollectorUserId = data.CollectorUserId
+                };
+                return PartialView(partialView, actionModel);
             }
             else if (path == "status")
             {
@@ -137,7 +147,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
 
         // Add this action method
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> PerformAction(LicenseActionRequest model)
         {
             if (!ModelState.IsValid)
@@ -191,7 +200,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Activate(ActivateLicenseRequest model)
         {
             if (!ModelState.IsValid)

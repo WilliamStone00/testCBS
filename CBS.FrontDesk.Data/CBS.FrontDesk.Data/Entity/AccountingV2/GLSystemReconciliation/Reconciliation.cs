@@ -22,6 +22,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public DateTime? NextRetryAtUtc { get; set; }
         public string RequestJson { get; set; }
         public string DestinationUrl { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+          public bool IsInterBranch { get; set; }
+        
     }
 
 
@@ -44,6 +50,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
 
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public bool IsInterBranch { get; set; }
+        
 
     }
     public class ReconciliationQuerys
@@ -129,6 +138,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         public ReconciliationStatus ReconciliationStatus { get; set; }
         public string BranchCode { get; set; }
         public string BranchId { get; set; }
+
+        public bool IsInterBranch { get; set; }
+        public string OperationCode { get; set; }
     }
 
     public class Statistics

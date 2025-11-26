@@ -77,9 +77,10 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
 
         public async Task<ExecutionMessages> CreateAsync(CollectorDeviceresponse model)
         {
+
             try
             {
-              
+
                 // Change from ServiceResponse<string> to ServiceResponse<CollectorDeviceresponse>
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<CollectorDeviceresponse>>(APICallHelper.CreateCollectorDevice, model);
 
@@ -161,7 +162,7 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
         {
             try
             {
-             
+
                 string formattedUrl = string.Format(APICallHelper.GetAllCollectorDevice);
 
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<List<CollectorDeviceresponse>>>(formattedUrl);
@@ -178,7 +179,7 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
                     {
                         Id = "All",
                         DeviceName = "All devices",
-                       
+
                     };
                     affiliates.Insert(0, defaultAffiliate);
                 }

@@ -471,6 +471,12 @@
       <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JER.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2086,10 +2092,11 @@
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
+    <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -8769,6 +8776,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JER.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
@@ -11054,6 +11065,10 @@
     <Content Include="Views\DailyCollectorLicense\_ActivateLicense.cshtml" />
     <Content Include="Views\DailyCollectorLicense\_LicenseAction.cshtml" />
     <Content Include="Views\DailyCollectorLicense\_LicenseDataTable.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\List.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11084,6 +11099,7 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
+    <Folder Include="Views\Default\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

@@ -1,0 +1,346 @@
+﻿@using Resources
+@{
+    ViewBag.Title = "Affiliate to Branch Fallback Reconciliation";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-sync-alert me-2"></i> Fallback Reconciliation
+                </h1>
+                <p class="card-text">
+                    Manage and reconcile affiliate to branch fallback transactions
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Review and reconcile transactions that fell back to branch accounts
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4" id="reconciliationStats">
+    <div class="col-md-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h4 class="card-title" id="toBeReconciledCount">0</h4>
+                <p class="card-text">To Be Reconciled</p>
+                <i class="mdi mdi-alert-circle-outline display-4"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h4 class="card-title" id="alreadyReconciledCount">0</h4>
+                <p class="card-text">Already Reconciled</p>
+                <i class="mdi mdi-check-circle-outline display-4"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4 class="card-title" id="totalCount">0</h4>
+                <p class="card-text">Total Records</p>
+                <i class="mdi mdi-format-list-bulleted display-4"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters Section -->
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
+
+    <form id="fallbackFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Branch ID</label>
+                    <input type="text" id="branchId" name="BranchId" class="form-control" placeholder="Enter Branch ID" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Operation Code</label>
+                    <input type="text" id="operationCode" name="OperationCode" class="form-control" placeholder="Enter Operation Code" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Reference</label>
+                    <input type="text" id="reference" name="Reference" class="form-control" placeholder="Enter Reference" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <select id="status" name="Status" class="form-control">
+                        <option value="">All</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="unresolved">Unresolved</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Supposed GL Contains</label>
+                    <input type="text" id="supposedGlContains" name="SupposedGlContains" class="form-control" placeholder="Search in supposed GL" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Fallback GL Contains</label>
+                    <input type="text" id="fallbackGlContains" name="FallbackGlContains" class="form-control" placeholder="Search in fallback GL" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">From Date</label>
+                    <input type="date" id="fromDate" name="From" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">To Date</label>
+                    <input type="date" id="toDate" name="To" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> Apply Filter
+                </button>
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_FallbackDataTable")
+</div>
+
+@section Scripts {
+    <script>
+        var fallbackTable = null;
+
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function collectFallbackFilters() {
+            return {
+                BranchId: emptyToNull($('#branchId').val()),
+                OperationCode: emptyToNull($('#operationCode').val()),
+                Reference: emptyToNull($('#reference').val()),
+                Status: emptyToNull($('#status').val()),
+                SupposedGlContains: emptyToNull($('#supposedGlContains').val()),
+                FallbackGlContains: emptyToNull($('#fallbackGlContains').val()),
+                From: emptyToNull($('#fromDate').val()),
+                To: emptyToNull($('#toDate').val()),
+                options: {}
+            };
+        }
+
+        function updateStatistics(stats) {
+            if (stats) {
+                $('#toBeReconciledCount').text(stats.toBeReconciled || 0);
+                $('#alreadyReconciledCount').text(stats.alreadyReconciled || 0);
+                $('#totalCount').text(stats.total || 0);
+            }
+        }
+
+        function initDataTableIfNeeded() {
+            if ($.fn.DataTable.isDataTable('#fallbackDataTable') && fallbackTable) {
+                return;
+            }
+
+            if (!$('#fallbackDataTable').length) {
+                appalert('Table element #fallbackDataTable not found on page', 0, 1);
+                return;
+            }
+
+            fallbackTable = $('#fallbackDataTable').DataTable({
+                serverSide: true,
+                searching: true,
+                responsive: true,
+                destroy: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/AffiliateToBranchFallback/LoadFallbackData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectFallbackFilters();
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: 'createdDate',
+                            sortColumnDirection: 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    dataSrc: function (json) {
+                        // Update statistics from server response
+                        if (json.statistics) {
+                            updateStatistics(json.statistics);
+                        }
+                        return json.data;
+                    },
+                    error: function (jqXHR) {
+                        var msg = 'Failed to load data. Please try again.';
+                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
+                        appalert(msg, 0, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'createdDate',
+                        render: function (data) {
+                            return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                        }
+                    },
+                    { data: 'branchName', defaultContent: '-' },
+                    { data: 'operationCode', defaultContent: '-' },
+                    { data: 'reference', defaultContent: '-' },
+                    {
+                        data: 'supposedGlAccountNumber',
+                        render: function (data, type, row) {
+                            return data || row.supposedGlAccountName || '-';
+                        }
+                    },
+                    {
+                        data: 'fallbackBranchAccountNumber',
+                        render: function (data, type, row) {
+                            return data || row.fallbackBranchAccountName || '-';
+                        }
+                    },
+                    {
+                        data: 'amount',
+                        render: function (v) { return (v == null) ? '-' : parseFloat(v).toFixed(2); }
+                    },
+                    {
+                        data: 'isResolved',
+                        render: function (val) {
+                            return (val === true || val === 'true')
+                                ? '<span class="badge bg-success">Resolved</span>'
+                                : '<span class="badge bg-warning">Pending</span>';
+                        }
+                    },
+                    {
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            var rawId = String(row.id || data || '');
+                            var recordId = encodeURIComponent(rawId);
+                            var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                            var btnId = 'actionDropdown_' + safeId;
+
+                            var isResolved = row.isResolved === true || row.isResolved === 'true';
+
+                            var viewBtn = `<button type="button" class="dropdown-item btn-view" data-id="${recordId}">
+                                            <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                          </button>`;
+
+                            var reconcileBtn = !isResolved ?
+                                `<button type="button" class="dropdown-item btn-reconcile" data-id="${recordId}">
+                                    <i class="mdi mdi-check-circle me-1 text-success"></i> Reconcile
+                                 </button>` : '';
+
+                            return `
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                        <li>${viewBtn}</li>
+                                        ${!isResolved ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                        ${!isResolved ? `<li>${reconcileBtn}</li>` : ''}
+                                    </ul>
+                                </div>
+                            `.trim();
+                        }
+                    }
+                ],
+                language: { emptyTable: 'No fallback records found' },
+                lengthMenu: [10, 25, 50],
+                pageLength: 10
+            });
+        }
+
+        function loadFallbackData() {
+            initDataTableIfNeeded();
+            if (fallbackTable) {
+                fallbackTable.ajax.reload(null, false);
+            }
+        }
+
+        function resetFallbackFilters() {
+            var form = document.getElementById('fallbackFilterForm');
+            if (form) form.reset();
+            if (fallbackTable) {
+                fallbackTable.ajax.reload(null, false);
+            } else {
+                initDataTableIfNeeded();
+            }
+        }
+
+        $(document).ready(function () {
+            $('#applyFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                loadFallbackData();
+            });
+
+            $('#resetFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                resetFallbackFilters();
+            });
+
+            $('#fallbackFilterForm input').off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    loadFallbackData();
+                }
+            });
+
+            // View details
+            $(document).off('click', '.btn-view').on('click', '.btn-view', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) { appalert('Missing id for details', 0, 1); return; }
+
+                AddORUpdateGen(id, 'datalistingview', '_FallbackDetails', 'get', 'AffiliateToBranchFallback', 'details');
+            });
+
+            // Reconcile
+            $(document).off('click', '.btn-reconcile').on('click', '.btn-reconcile', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) { appalert('Missing id for reconciliation', 0, 1); return; }
+
+                AddORUpdateGen(id, 'datalistingview', '_ReconcileFallback', 'get', 'AffiliateToBranchFallback', 'reconcile');
+            });
+
+            // Back to list
+            $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
+                e.preventDefault();
+                AddORUpdateGen(null, 'datalistingview', '_FallbackDataTable', 'get', 'AffiliateToBranchFallback');
+            });
+
+            initDataTableIfNeeded();
+        });
+    </script>
+}

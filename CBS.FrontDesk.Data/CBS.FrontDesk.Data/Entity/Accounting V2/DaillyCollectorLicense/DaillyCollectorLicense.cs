@@ -43,6 +43,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // RevokeLicenseRequest.cs
     public class RevokeLicenseRequest
     {
+        public string CollectorUserName { get; set; }
         public string LicenseId { get; set; }
         public string Reason { get; set; }
     }
@@ -50,6 +51,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // DeactivateLicenseRequest.cs
     public class DeactivateLicenseRequest
     {
+        public string CollectorUserName { get; set; }
         public string LicenseId { get; set; }
         public string Reason { get; set; }
     }
@@ -57,6 +59,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // ReactivateLicenseRequest.cs
     public class ReactivateLicenseRequest
     {
+        public string CollectorUserName { get; set; }
         public string LicenseId { get; set; }
         public string Reason { get; set; }
     }
@@ -64,6 +67,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // ActivateLicenseRequest.cs
     public class ActivateLicenseRequest
     {
+        public string CollectorUserName { get; set; }
         public string CollectorUserId { get; set; }
         public string LicenseCode { get; set; }
     }
@@ -72,6 +76,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     public class CheckLicenseStatusRequest
     {
         public string CollectorUserId { get; set; }
+        public string CollectorUserName { get; set; }
         public string LicenseCode { get; set; }
     }
 
@@ -90,6 +95,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // Add this new model for the unified action request
     public class LicenseActionRequest
     {
+        public string CollectorUserName { get; set; }
         public string LicenseId { get; set; }
         public string ActionType { get; set; } // "Revoke", "Deactivate", "Reactivate", "Extend"
         public string Reason { get; set; }
@@ -99,6 +105,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense
     // Keep existing models but add ExtendLicenseRequest
     public class ExtendLicenseRequest
     {
+        public string CollectorUserName { get; set; }
         public string LicenseId { get; set; }
         public DateTime NewExpiryDate { get; set; }
         public string Reason { get; set; }

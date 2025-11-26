@@ -1,20 +1,13 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.JournalReceiptsReports;
-using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
+
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
-using CBS.FrontDesk.Data.Entity.AccountingV2;
-using CBS.FrontDesk.Data.MockData;
-using CBS.FrontDesk.Data.ReportDataSetDto;
-using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
-using CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement;
 
 using Humanizer;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -53,27 +46,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
         {
             try
             {
-                // ==============================================================
-                // STEP 1 — Retrieve receipt dataset from backend service
-                // ==============================================================                
+                // STEP 1 — Retrieve dataset
                 var response = await _journalReceiptsService.GetReceiptAsync(filter);
 
-                if (response == null)
+                if (response == null || response.Entries == null || !response.Entries.Any())
                 {
-                    this.HttpContext.Session["rptSource"] = null;
+                    Session["rptSource"] = null;
+                    Session["BranchInfo"] = null;
                     return Json(new { success = false, message = "No data found for the selected filters." },
                         JsonRequestBehavior.AllowGet);
                 }
 
-                // ==============================================================
-                // STEP 2 — Retrieve bank & branch metadata for report header
-                // ==============================================================                
+                // STEP 2 — Retrieve branch + bank metadata
                 var BranchInformation = await _branchServices.GetBranch(_branchServices.GetBranchID());
 
-                // Convert numeric amount to amount in words
+                // Convert numeric amount to words
                 decimal amount = response.TotalDebit;
-                long whole = (long)amount;
-                string words = whole.ToWords().Transform(To.TitleCase) + " Francs";
+                string words = ((long)amount).ToWords().Transform(To.TitleCase) + " Francs";
 
                 var header = new BankHeaderInformation
                 {
@@ -102,12 +91,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                     BranchPBox = BranchInformation.PBox
                 };
 
-                // ==============================================================
-                // STEP 3 — Flatten receipt lines so Crystal Report can bind easily
-                // --------------------------------------------------------------
-                // • Each row includes the receipt header + one movement/entry
-                // • Header (bank + branch) merged per-row using ApplyHeader()
-                // ==============================================================
+                // STEP 3 — Flatten receipt rows for Crystal Reports
                 var data = response.Entries.Select(x =>
                 {
                     var item = new ReceiptFlatItems
@@ -116,6 +100,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         BranchId = response.BranchId,
                         BranchCode = response.BranchCode,
                         BranchName = response.BranchName,
+
                         Reference = response.Reference,
                         Number = response.Number,
                         Title = response.Title,
@@ -136,9 +121,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         Currency = response.Currency,
                         TotalDebit = response.TotalDebit,
                         TotalCredit = response.TotalCredit,
-                        CashInAmount = response.CashInAmount,
-                        CashOutAmount = response.CashOutAmount,
-                        NetAmount = response.NetAmount,
+                        CashInAmount = response.CashInAmount  ?? 0,
+                        CashOutAmount = response.CashOutAmount ?? 0,
+                        NetAmount = response.NetAmount ?? 0,
                         IsInterBranch = response.IsInterBranch,
                         CounterpartyBranchId = response.CounterpartyBranchId,
                         CounterpartyBranchCode = response.CounterpartyBranchCode,
@@ -146,35 +131,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
-
-                        // Embedded payload information (JSON formatted)
-                        PayloadDisplayTitle = response.Payload?.DisplayTitle,
-                        PayloadDescription = response.Payload?.Description,
-                        PayloadLinesJson = JsonConvert.SerializeObject(response.Payload?.Lines),
-                        PayloadCashDenominationsJson = JsonConvert.SerializeObject(response.Payload?.CashDenominations),
-                        PayloadExtraMetadataJson = JsonConvert.SerializeObject(response.Payload?.ExtraMetadata),
-                        PayloadVersion = response.PayloadVersion,
-                        PayloadHash = response.PayloadHash,
-
-                        PrintedBy = _journalReceiptsService.GetUserFullName(),
+                        Date = x.Date,
 
                         // Movement line
+                        AccountNumber = x.AccountNumber,
+                        AccountName = x.AccountName,
                         Dr = x.Dr,
                         Cr = x.Cr,
                         Description = x.Description,
 
-                        // Embed original entries collection for display
-                        EntriesJson = JsonConvert.SerializeObject(response.Entries)
+                        PrintedBy = _journalReceiptsService.GetUserFullName()
                     };
 
-                    // Merge bank & branch header into flat dataset row
+                    // Attach bank & branch header
                     ApplyHeader(item, header);
                     return item;
                 }).ToList();
 
-                // ⚠ NOTE: report binding commented because final Crystal section not shown
-                this.HttpContext.Session["rptSource"] = data;
-                return Json(new { success = true, message = $"Report file not found." });
+
+                // STEP 4 — Save dataset to session
+                Session["rptSource"] = data;
+                Session["BranchInfo"] = BranchInformation;
+
+
+                return Json(new { success = true, message = "Report generated successfully." },
+                    JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -183,8 +164,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
         }
 
         /// <summary>
-        /// Copies bank and branch metadata into a single flattened receipt row.
-        /// Report requires header fields available on every row.
+        /// Copies bank and branch metadata to each flattened row.
         /// </summary>
         private void ApplyHeader(ReceiptFlatItems item, BankHeaderInformation header)
         {
@@ -214,18 +194,21 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
         }
 
         /// <summary>
-        /// Sets required Crystal Report metadata for rendering Journal Receipt.
+        /// Sets Crystal Report metadata.
         /// </summary>
         [HttpPost]
         public ActionResult GetReport(string path)
         {
-            this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = $"CrystalReport1.rpt";
-            this.HttpContext.Session["rptpath"] = $"~/AppFiles/Accountingv2Reporting/ReportRPT/CrystalReport1.rpt";
-            this.HttpContext.Session["rpttitle"] = $"JBR";
+            Session["rptType"] = "ReportParameterLess";
+            Session["ReportName"] = "JournalReceipts.rpt";
+            Session["rptpath"] = "~/AppFiles/Accountingv2Reporting/ReportRPT/JournalReceipts.rpt";
+            Session["rpttitle"] = "JER3";
 
-            return Json(new { success = true, status = false, message = "Parameters OK." },
-                JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                success = true,
+                message = "Parameters OK."
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
