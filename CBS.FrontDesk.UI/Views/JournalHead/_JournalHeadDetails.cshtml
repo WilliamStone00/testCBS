@@ -630,13 +630,19 @@
 
 @*=========================================================================== Accounting Reports Start =======================================*@
 <script>
-
     function Reprint(controller) {
         ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
     }
 
     $(document).on("click", "#btnPrintAccountingReport", function () {
 
+        let btn = $(this);
+        let originalHtml = btn.html();
+
+        // Show spinner + disable button
+        btn.prop("disabled", true).html(
+            `<span class="spinner-border spinner-border-sm"></span> Processing...`
+        );
 
         const payload = {
             receiptId: null,
@@ -646,24 +652,27 @@
             fromTemp: true
         };
 
-        console.log(payload);
-
         $.ajax({
             url: "/JournalReceipts/GenerateReciept",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(payload),
             success: function (response) {
-                Reprint('JournalReceipts')
-                console.log("Success:", response);
+                Reprint('JournalReceipts');
+                // Restore button AFTER success/error **before** showing the print
+                btn.prop("disabled", false).html(originalHtml);
             },
             error: function (xhr) {
                 console.error("Error:", xhr);
+            },
+            complete: function () {
+               
             }
         });
 
     });
 </script>
+
 @*=========================================================================== Accounting Reports END =======================================*@
 
 

@@ -44,7 +44,8 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string CounterpartyBranchName { get; set; }
     public int PrintedCount { get; set; }
     public bool IsReprint { get; set; }
-
+    public int TDebit { get; set; } = 0;
+    public int TCredit { get; set; } = 0;
     // Newly added properties
     public string PrintedBy { get; set; }
     public string Logo { get; set; }    // now a logo path instead of byte[]
@@ -57,6 +58,7 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string PayloadExtraMetadataJson { get; set; }
     public string PayloadVersion { get; set; }
     public string PayloadHash { get; set; }
+    public string ReadableDate { get; set; }
 
     // Flattened entries as JSON text
     //public string EntriesJson { get; set; }

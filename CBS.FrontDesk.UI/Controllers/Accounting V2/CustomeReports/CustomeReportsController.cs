@@ -71,4 +71,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             };
         }
     }
+
+
+    //public class CustomReportViewModel
+    //{
+    //    public IEnumerable<SelectListItem> Branches { get; set; }
+    //    public IEnumerable<SelectListItem> Accounts { get; set; }
+    //    public IEnumerable<SelectListItem> ReportTypes { get; set; }
+    //}
 }
