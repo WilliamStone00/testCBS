@@ -2092,10 +2092,11 @@
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
-    <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
+    <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -11064,6 +11065,10 @@
     <Content Include="Views\DailyCollectorLicense\_ActivateLicense.cshtml" />
     <Content Include="Views\DailyCollectorLicense\_LicenseAction.cshtml" />
     <Content Include="Views\DailyCollectorLicense\_LicenseDataTable.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\List.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11094,6 +11099,7 @@
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
+    <Folder Include="Views\Default\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

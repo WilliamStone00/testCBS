@@ -48,7 +48,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
 
         public async Task<ActionResult> List()
         {
-            return View(new List<DailyCollectorLicense>());
+            await LoadDropdownData();
+            return View();
         }
 
         private async Task LoadDropdownData()
@@ -64,6 +65,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
         [HttpPost]
         public async Task<JsonResult> LoadData(LicenseQuery query)
         {
+         
             try
             {
                 var data = await _licenseService.GetDataTableAsync(query);
@@ -115,6 +117,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
                 var data = await _licenseService.GetLicenseByIdAsync(KEY);
                 var actionModel = new LicenseActionRequest
                 {
+                    CollectorUserName = data.CollectorUserName,
                     LicenseId = data?.Id ?? KEY,
                     ActionType = serviceOption // "Revoke", "Deactivate", "Reactivate", "Extend"
                 };
@@ -122,7 +125,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
             }
             else if (path == "activate")
             {
-                return PartialView(partialView, new ActivateLicenseRequest());
+                var data = await _licenseService.GetLicenseByIdAsync(KEY);
+                var actionModel = new ActivateLicenseRequest
+                {
+                   CollectorUserName = data.CollectorUserName,
+                  LicenseCode = data.LicenseCode,
+                    CollectorUserId = data.CollectorUserId
+                };
+                return PartialView(partialView, actionModel);
             }
             else if (path == "status")
             {
@@ -137,7 +147,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
 
         // Add this action method
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> PerformAction(LicenseActionRequest model)
         {
             if (!ModelState.IsValid)
@@ -191,7 +200,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.DaillyCollectorLicense
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Activate(ActivateLicenseRequest model)
         {
             if (!ModelState.IsValid)

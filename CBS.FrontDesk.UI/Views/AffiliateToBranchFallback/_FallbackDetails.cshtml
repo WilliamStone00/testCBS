@@ -1,0 +1,133 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.FallbackLogResponse
+
+<fieldset class="fieldset-custom">
+     Header Card 
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-sync-alert me-2"></i> Fallback Log Details
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Detailed information about the fallback transaction
+            </p>
+        </div>
+    </div>
+
+     Back Button 
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm btn-back-to-list">
+            <i class="mdi mdi-arrow-left me-1"></i> Back to List
+        </button>
+    </div>
+
+    <div class="row">
+         Left Column - Basic Information 
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">ID</td><td>@Model.id</td></tr>
+                <tr><td class="fw-bold">Branch</td><td>@Model.branchName</td></tr>
+                <tr><td class="fw-bold">Operation Code</td><td>@Model.operationCode</td></tr>
+                <tr><td class="fw-bold">Reference</td><td>@Model.reference</td></tr>
+                <tr><td class="fw-bold">Amount</td><td>@String.Format("{0:N2}", Model.amount)</td></tr>
+                <tr>
+                    <td class="fw-bold">Status</td>
+                    <td>
+                        @if (Model.isResolved)
+                        {
+                            <span class="badge bg-success">Resolved</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Pending Reconciliation</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+         Right Column - Account Information 
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-bank me-2"></i> Account Information</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Requested Affiliate</td><td>@Model.requestedAffiliateAccountIdOrBranchCode</td></tr>
+                <tr><td class="fw-bold">Requested Branch Code</td><td>@Model.requestedBranchAccountCode</td></tr>
+                <tr><td class="fw-bold">Auto Created</td><td>@(Model.isBranchAccountAutoCreated ? "Yes" : "No")</td></tr>
+            </table>
+        </div>
+    </div>
+
+     GL Accounts Section 
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-arrow-top-right me-2"></i> Supposed GL Account</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Account ID</td><td>@Model.supposedGlAccountId</td></tr>
+                <tr><td class="fw-bold">Account Number</td><td>@Model.supposedGlAccountNumber</td></tr>
+                <tr><td class="fw-bold">Account Name</td><td>@Model.supposedGlAccountName</td></tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-arrow-bottom-left me-2"></i> Fallback GL Account</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Account ID</td><td>@Model.fallbackBranchAccountId</td></tr>
+                <tr><td class="fw-bold">Account Number</td><td>@Model.fallbackBranchAccountNumber</td></tr>
+                <tr><td class="fw-bold">Account Name</td><td>@Model.fallbackBranchAccountName</td></tr>
+            </table>
+        </div>
+    </div>
+
+     Timeline Section 
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Created Date</td><td>@Model.createdDate?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                <tr><td class="fw-bold">Created On</td><td>@Model.createdOn?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                @if (Model.isResolved)
+                {
+                    <tr><td class="fw-bold">Resolved On</td><td>@Model.resolvedOn?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+                    <tr><td class="fw-bold">Resolved By</td><td>@Model.resolvedBy</td></tr>
+                }
+            </table>
+        </div>
+    </div>
+
+     Resolution Tips 
+    @if (!string.IsNullOrEmpty(Model.resolutionTips))
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="text-primary"><i class="mdi mdi-lightbulb-on-outline me-2"></i> Resolution Tips</h6>
+                <div class="alert alert-info">
+                    @Model.resolutionTips
+                </div>
+            </div>
+        </div>
+    }
+
+     Reconcile Button for unresolved items 
+    @if (!Model.isResolved)
+    {
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <button type="button" class="btn btn-success btn-reconcile-from-details" data-id="@Model.id">
+                    <i class="mdi mdi-check-circle me-1"></i> Reconcile Now
+                </button>
+            </div>
+        </div>
+    }
+</fieldset>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-reconcile-from-details').off('click').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            if (id) {
+                AddORUpdateGen(id, 'datalistingview', '_ReconcileFallback', 'get', 'AffiliateToBranchFallback', 'reconcile');
+            }
+        });
+    });
+</script>

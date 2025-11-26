@@ -1,42 +1,51 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.LicenseActionRequest
 
 @{
-    var actionType = Model.ActionType?.ToLower() ?? "";
-    var title = actionType switch
-    {
-        "revoke" => "Revoke License",
-        "deactivate" => "Deactivate License",
-        "reactivate" => "Reactivate License",
-        "extend" => "Extend License",
-        _ => "License Action"
-    };
+    var actionType = (Model.ActionType ?? "").ToLowerInvariant();
 
-    var icon = actionType switch
+    // classic switch for title
+    string title;
+    switch (actionType)
     {
-        "revoke" => "mdi-cancel",
-        "deactivate" => "mdi-pause",
-        "reactivate" => "mdi-play",
-        "extend" => "mdi-calendar-range",
-        _ => "mdi-cog"
-    };
+        case "revoke": title = "Revoke License"; break;
+        case "deactivate": title = "Deactivate License"; break;
+        case "reactivate": title = "Reactivate License"; break;
+        case "extend": title = "Extend License"; break;
+        default: title = "License Action"; break;
+    }
 
-    var buttonClass = actionType switch
+    // classic switch for icon
+    string icon;
+    switch (actionType)
     {
-        "revoke" => "btn-danger",
-        "deactivate" => "btn-warning",
-        "reactivate" => "btn-success",
-        "extend" => "btn-info",
-        _ => "btn-primary"
-    };
+        case "revoke": icon = "mdi-cancel"; break;
+        case "deactivate": icon = "mdi-pause"; break;
+        case "reactivate": icon = "mdi-play"; break;
+        case "extend": icon = "mdi-calendar-range"; break;
+        default: icon = "mdi-cog"; break;
+    }
 
-    var buttonText = actionType switch
+    // classic switch for buttonClass
+    string buttonClass;
+    switch (actionType)
     {
-        "revoke" => "Revoke License",
-        "deactivate" => "Deactivate License",
-        "reactivate" => "Reactivate License",
-        "extend" => "Extend License",
-        _ => "Perform Action"
-    };
+        case "revoke": buttonClass = "btn-danger"; break;
+        case "deactivate": buttonClass = "btn-warning"; break;
+        case "reactivate": buttonClass = "btn-success"; break;
+        case "extend": buttonClass = "btn-info"; break;
+        default: buttonClass = "btn-primary"; break;
+    }
+
+    // classic switch for buttonText
+    string buttonText;
+    switch (actionType)
+    {
+        case "revoke": buttonText = "Revoke License"; break;
+        case "deactivate": buttonText = "Deactivate License"; break;
+        case "reactivate": buttonText = "Reactivate License"; break;
+        case "extend": buttonText = "Extend License"; break;
+        default: buttonText = "Perform Action"; break;
+    }
 }
 
 <div class="card bg-light mb-2">
@@ -71,9 +80,9 @@
     </div>
 </div>
 
-<form method="post" action="@Url.Action("PerformAction", "DailyCollectorLicense")"
-      id="licenseActionForm" onsubmit="return handleLicenseActionSubmit(this)">
-    @Html.AntiForgeryToken()
+@using (Html.BeginForm("PerformAction", "DailyCollectorLicense", FormMethod.Post, new { id = "licenseActionForm", enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+{
+
     @Html.HiddenFor(m => m.LicenseId)
     @Html.HiddenFor(m => m.ActionType)
 
@@ -83,12 +92,23 @@
         </div>
 
         <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Collector User Name</label>
+                @Html.TextBoxFor(m => m.CollectorUserName, new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    @readonly = "readonly",
+                    style = "background-color:#f8f9fa;"
+                })
+                @Html.ValidationMessageFor(m => m.CollectorUserName, "", new { @class = "text-danger small" })
+            </div>
             <div class="row g-3">
                 @if (actionType == "extend")
                 {
                     <div class="col-12">
                         <label class="form-label fw-bold">New Expiry Date *</label>
-                        <input type="datetime-local" asp-for="NewExpiryDate" class="form-control" required
+                        <input type="datetime-local" name="NewExpiryDate" class="form-control" required
                                min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                         @Html.ValidationMessageFor(m => m.NewExpiryDate, "", new { @class = "text-danger small" })
                     </div>
@@ -102,14 +122,11 @@
                     {
                         @class = "form-control",
                         rows = "3",
-                        placeholder = actionType switch
-                        {
-                            "revoke" => "Enter reason for revoking this license...",
-                            "deactivate" => "Enter reason for deactivating this license...",
-                            "reactivate" => "Enter reason for reactivating this license...",
-                            "extend" => "Enter reason for extending this license...",
-                            _ => "Enter reason for this action..."
-                        },
+                        placeholder = (actionType == "revoke" ? "Enter reason for revoking this license..." :
+                                       actionType == "deactivate" ? "Enter reason for deactivating this license..." :
+                                       actionType == "reactivate" ? "Enter reason for reactivating this license..." :
+                                       actionType == "extend" ? "Enter reason for extending this license..." :
+                                       "Enter reason for this action..."),
                         required = "required"
                     })
                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
@@ -136,69 +153,27 @@
             </button>
         </div>
     </div>
-</form>
+}
 
 @functions {
     public string GetActionDescription(string actionType)
     {
-        return actionType?.ToLower() switch
+        if (string.IsNullOrEmpty(actionType)) return "Perform action on the selected license.";
+
+        switch (actionType.ToLowerInvariant())
         {
-            "revoke" => "Revoking a license permanently invalidates it and cannot be undone. The collector will no longer be able to use this license.",
-            "deactivate" => "Deactivating a license temporarily disables it. The license can be reactivated later without generating a new one.",
-            "reactivate" => "Reactivating a license restores a previously deactivated license to active status.",
-            "extend" => "Extending a license increases its validity period. The new expiry date must be in the future.",
-            _ => "Perform action on the selected license."
-        };
+            case "revoke":
+                return "Revoking a license permanently invalidates it and cannot be undone. The collector will no longer be able to use this license.";
+            case "deactivate":
+                return "Deactivating a license temporarily disables it. The license can be reactivated later without generating a new one.";
+            case "reactivate":
+                return "Reactivating a license restores a previously deactivated license to active status.";
+            case "extend":
+                return "Extending a license increases its validity period. The new expiry date must be in the future.";
+            default:
+                return "Perform action on the selected license.";
+        }
     }
 }
 
-<script>
-    function handleLicenseActionSubmit(form) {
-        var $form = $(form);
-        var $submitBtn = $form.find('button[type="submit"]');
-        var originalText = $submitBtn.html();
 
-        $submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Processing...');
-
-        $.ajax({
-            url: $form.attr('action'),
-            type: 'POST',
-            data: $form.serialize(),
-            success: function (response) {
-                if (response.success) {
-                    var successMessage = getSuccessMessage('@actionType');
-                    appalert(successMessage, 1, 1);
-
-                    // Close modal
-                    var modal = bootstrap.Modal.getInstance($form.closest('.modal')[0]);
-                    if (modal) modal.hide();
-
-                    // Reload datatable
-                    if (typeof licenseTable !== 'undefined' && licenseTable) {
-                        licenseTable.ajax.reload();
-                    }
-                } else {
-                    appalert(response.message, 0, 1);
-                }
-            },
-            error: function () {
-                appalert('An error occurred while processing your request', 0, 1);
-            },
-            complete: function () {
-                $submitBtn.prop('disabled', false).html(originalText);
-            }
-        });
-
-        return false;
-    }
-
-    function getSuccessMessage(actionType) {
-        switch (actionType) {
-            case 'revoke': return 'License revoked successfully!';
-            case 'deactivate': return 'License deactivated successfully!';
-            case 'reactivate': return 'License reactivated successfully!';
-            case 'extend': return 'License extended successfully!';
-            default: return 'Action completed successfully!';
-        }
-    }
-</script>

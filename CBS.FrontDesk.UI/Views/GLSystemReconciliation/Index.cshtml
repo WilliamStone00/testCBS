@@ -200,6 +200,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
+
+
+
+
                 // ==============================
                 // Collect Summary Filters (API expected)
                 // ==============================
@@ -482,6 +486,15 @@
             return false;
         }
 
+        // -------------------------
+        // ✅ COMMENT MUST NOT BE EMPTY
+        // -------------------------
+        const comment = $("#Comment").val().trim();
+        if (!comment) {
+            appalert("Please enter a comment before closing the day.", 3, 1);
+            return false;
+        }
+
         // Build payload
         const payload = {
             BranchId: branchId,
@@ -490,7 +503,7 @@
             CashVaultVerified: $("#CashVaultVerified").is(":checked"),
             InterBranchConfirmed: $("#InterBranchConfirmed").is(":checked"),
             AnyIssueToBeRaised: $("#AnyIssueToBeRaised").is(":checked"),
-            Comment: $("#Comment").val(),
+            Comment: comment,   // ✔ already trimmed
             ClosedBy : '@User.Identity.Name'
         };
 
@@ -529,7 +542,15 @@
 
 
 
+    // Re-initialize Select2 whenever the modal content is loaded dynamically
+    $('#closeOfDayModal').on('shown.bs.modal', function () {
+        $('.select2').select2({
+            dropdownParent: $('#closeOfDayModal')   // IMPORTANT fix for modals
+        });
+    });
 
+
+ 
 
 
 </script>

@@ -259,6 +259,41 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         }
 
 
+        public async Task<JsonResult> LoadOperationDetailsData(ReconciliationQuery query)
+        {
+            try
+            {
+                var data = await _glSystemReconciliationService.GetReconciliationDetailsAsync(query);
+
+                var reconciliations = JsonConvert.DeserializeObject<List<Reconciliation>>(
+                    JsonConvert.SerializeObject(data.data));
+
+
+
+                return Json(new
+                {
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = reconciliations,
+                    success = true,
+                    message = "Reconciliation Details loaded successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
     }
 }
 
