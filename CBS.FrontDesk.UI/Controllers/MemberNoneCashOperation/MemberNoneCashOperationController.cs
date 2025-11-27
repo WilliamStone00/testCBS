@@ -72,9 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
-            var accountsDto = _branchAccountService.DropDownGen(listing.ToList());
-            ViewBag.chartOfAccounts = accountsDto.ToList();
+  
             var Branches = await _branchServices.GetBranches();
             
             ViewBag.Branches = Branches.ToList();
