@@ -1,6 +1,7 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,8 +47,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack
             public string Reference { get; set; }
             public string SupposedGlContains { get; set; }
             public string FallbackGlContains { get; set; }
-            public DataTableOptions Options { get; set; }
-        }
+        public DataTableOptions DataTable { get; set; }
+        public FallbackLogQuery() { DataTable = new DataTableOptions(); }
+    }
 
         public class ReconcileFallbackRequest
         {

@@ -69,7 +69,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
             {
                 return Json(new
                 {
-                    draw = query?.Options?.draw ?? "1",
+                    draw = query?.DataTable?.draw ?? "1",
                     recordsTotal = 0,
                     recordsFiltered = 0,
                     data = new List<object>(),
