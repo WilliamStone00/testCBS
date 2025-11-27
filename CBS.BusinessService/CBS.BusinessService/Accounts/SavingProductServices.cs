@@ -279,7 +279,7 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.PrivateInstitutionSalarySourceChartofAccountId = model.PrivateInstitutionSalarySourceChartofAccountId;
                     SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId = model.PrivateInstitutionSalarySourceSalaryChartofAccountId;
                     SavingProduct.UpdateOption = "n/a";
-                    SavingProduct.SuspenseChartOfAccountId=model.SuspenseChartOfAccountId;
+                    SavingProduct.SuspenseChartOfAccountId = model.SuspenseChartOfAccountId;
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
                     {
@@ -337,11 +337,11 @@ namespace CBS.BusinessService.Accounts
                     SavingProduct.ChartOfAccountIdCamCCULShareCMoneyTransferCommission = model.ChartOfAccountIdCamCCULShareCMoneyTransferCommission;
                     SavingProduct.ChartOfAccountIdSourceCMoneyTransferCommission = model.ChartOfAccountIdSourceCMoneyTransferCommission;
                     SavingProduct.ChartOfAccountIdDestinationCMoneyTransferCommission = model.ChartOfAccountIdDestinationCMoneyTransferCommission;
-                    SavingProduct.TransitChartofAccountId  = model.TransitChartofAccountId;
-                    SavingProduct.SuspenseChartOfAccountId  = model.SuspenseChartOfAccountId;
-                    SavingProduct.MemberDeficitChartofAccountId  = model.MemberDeficitChartofAccountId;
+                    SavingProduct.TransitChartofAccountId = model.TransitChartofAccountId;
+                    SavingProduct.SuspenseChartOfAccountId = model.SuspenseChartOfAccountId;
+                    SavingProduct.MemberDeficitChartofAccountId = model.MemberDeficitChartofAccountId;
 
-                    
+
 
                     var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<SavingProduct>>(string.Format(APICallHelper.Get_Update_Delete_SavingProduct, model.Id), SavingProduct);
                     if (response.IsSuccess)
@@ -372,7 +372,7 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
-                
+
                 // Build the Accounting V2 command from the current model
                 var command = BuildAccountingV2Cmd(model);
 
@@ -392,6 +392,42 @@ namespace CBS.BusinessService.Accounts
 
                 // Failure
                 var errMsg = response?.Message ?? "Failed to update Accounting V2 mapping.";
+                GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages,
+                    SystemMessageStatus.Failed.ToString(), null, errMsg);
+            }
+            catch (Exception ex)
+            {
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Failed.ToString(), ex);
+            }
+
+            return ExecutionMessage;
+        }
+        public async Task<ExecutionMessages> UpdateProductAccountMappingV2_Narrations(SavingProduct model)
+        {
+            try
+            {
+
+                // Build the Accounting V2 command from the current model
+                var command = BuildAccountingV2Cmd_narration(model);
+
+                // Prepare endpoint
+                var url = string.Format(APICallHelper.Update_SavingProduct_AccountingV2Mapping, model.Id);
+
+                // Call API
+                var response = await _savingConfigApiHelper.PutAsync<ServiceResponse<bool>>(url, command);
+
+                if (response != null && response.IsSuccess)
+                {
+                    GetExecutionMessages(response, true, model.Name, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages,
+                        SystemMessageStatus.Success.ToString(), null, response.Message);
+                    return ExecutionMessage;
+                }
+
+                // Failure
+                var errMsg = response?.Message ?? "Failed to update Accounting V2 narrations.";
                 GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
                     ExecutionProcessOption.DefaultFailedMessages,
                     SystemMessageStatus.Failed.ToString(), null, errMsg);
@@ -430,6 +466,28 @@ namespace CBS.BusinessService.Accounts
                 AccountingV2PayOutCashTillChartofAccountId = m.AccountingV2PayOutCashTillChartofAccountId,
                 AccountingV2SuspenseChartOfAccountId = m.AccountingV2SuspenseChartOfAccountId,
 
+                AccountingV2CashInCommissionChartOfAccountId = m.AccountingV2CashInCommissionChartOfAccountId,
+                AccountingV2CashOutCommissionChartOfAccountId = m.AccountingV2CashOutCommissionChartOfAccountId,
+                AccountingV2TransferCommissionChartOfAccountId = m.AccountingV2TransferCommissionChartOfAccountId,
+                AccountingV2SuplusChartOfAccountId = m.AccountingV2SuplusChartOfAccountId,
+                AccountingV2ShortageChartOfAccountId = m.AccountingV2ShortageChartOfAccountId
+
+            };
+        }
+
+        private static AddOrUpdateSavingProductNarrationsCommand BuildAccountingV2Cmd_narration(SavingProduct m)
+        {
+            return new AddOrUpdateSavingProductNarrationsCommand
+            {
+                Id = m.Id,
+                CashInNarration = m.CashInNarration,
+
+                CashOutNarration = m.CashOutNarration,
+                CashinNarrationForCommision = m.CashinNarrationForCommision,
+                CashOutNarrationForCommision = m.CashOutNarrationForCommision,
+                TransfterNarration = m.TransfterNarration,
+                TransfterNarrationForCommision = m.TransfterNarrationForCommision,
+                
             };
         }
 
@@ -440,7 +498,7 @@ namespace CBS.BusinessService.Accounts
                 var SavingProduct = await GetSavingProduct(model.Id);
                 if (SavingProduct != null)
                 {
-                   
+
                     SavingProduct.UpdateOption = "N/A";
                     SavingProduct.EventCodeAdvanceOfSalaryFormFee = model.EventCodeAdvanceOfSalaryFormFee;
                     SavingProduct.EventCodeMoralPersonWithdrawalFormFee = model.EventCodeMoralPersonWithdrawalFormFee;

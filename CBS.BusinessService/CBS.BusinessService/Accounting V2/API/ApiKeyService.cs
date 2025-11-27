@@ -1,13 +1,20 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.UserManagement;
+using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
+using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.API
@@ -15,8 +22,9 @@ namespace CBS.BusinessService.Accounting_V2.API
     public class ApiKeyService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
+        private readonly UserManagementServices _user;
 
-        public ApiKeyService()
+        public ApiKeyService(UserManagementServices userManagementServices)
         {
             string baseUrl = ConfigurationManager.AppSettings["IdentityServerBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
@@ -24,14 +32,22 @@ namespace CBS.BusinessService.Accounting_V2.API
                 throw new ConfigurationErrorsException("The 'IdentityServerBaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
+            _user = userManagementServices;
         }
 
         public async Task<IEnumerable<ApiKey>> GetAsync()
         {
+            string roleName = GetRoleName();
             try
             {
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<ApiKey>>>(APICallHelper.GetAllApiKeys);
+                if (roleName == "ThirdPartyProviders")
+                {
+                    string Username = GetUserName();
+                    await GetByUserNameAsync(Username);
+                }
 
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<ApiKey>>>(APICallHelper.GetAllApiKeys);
+           
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
                     return response.ApiResponseData.Data;
@@ -44,7 +60,7 @@ namespace CBS.BusinessService.Accounting_V2.API
             }
         }
 
-          public async Task<IEnumerable<ApiKey>> GetByUserNameAsync(string userName)
+        public async Task<IEnumerable<ApiKey>> GetByUserNameAsync(string userName)
         {
             try
             {
@@ -118,17 +134,20 @@ namespace CBS.BusinessService.Accounting_V2.API
             }
         }
 
-      
+
 
         public async Task<ExecutionMessages> CreateAsync(CreateApiKeyRequest model)
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.CreateApiKey, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.CreateApiKey, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.UserName, MessagesResults.Success,
+                    // Store the raw key in the execution message data
+                    var rawKey = response.ApiResponseData?.Data?.ToString(); // Adjust based on your API response structure
+
+                    GetExecutionMessages(rawKey, true, model.UserName, MessagesResults.Success,
                         ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
@@ -149,7 +168,7 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.RenewApiKey, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.RenewApiKey, model);
 
                 if (response.IsSuccess)
                 {
@@ -178,7 +197,7 @@ namespace CBS.BusinessService.Accounting_V2.API
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, null, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
@@ -199,16 +218,16 @@ namespace CBS.BusinessService.Accounting_V2.API
         {
             try
             {
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<ApiKey>>(APICallHelper.ChangeApiKeyStatus, model);
+                var response = await _apiCallerHelper.PostAsync<ServiceResponse<string>>(APICallHelper.ChangeApiKeyStatus, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, model.Id, MessagesResults.Success,
+                    GetExecutionMessages(null, true, model.Id, MessagesResults.Success,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData?.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, model.Id, MessagesResults.Failed,
+                    GetExecutionMessages(null, false, model.Id, MessagesResults.Failed,
                         ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
@@ -248,5 +267,7 @@ namespace CBS.BusinessService.Accounting_V2.API
 
             return ExecutionMessage;
         }
+
+        
     }
 }

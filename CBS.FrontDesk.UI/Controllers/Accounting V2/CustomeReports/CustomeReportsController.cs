@@ -38,6 +38,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             //}).ToList();
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> loadAccountById(string branchId)
+        {
+          var results  =   await  _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+            return  Json(new { success = true, results });
+        }
+       
+
         private async Task LoadAccountsAsync()
         {
             var branchAccounts = await _branchAccountService.GetAsync();
@@ -55,11 +64,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             {
                 new SelectListItem { Value = "Trial Balance 6 Columns", Text = "Trial Balance 6 Columns" },
                 new SelectListItem { Value = "Trial Balance 4 Columns", Text = "Trial Balance 4 Columns" },
-                new SelectListItem { Value = "General Ledger", Text = "General Ledger" },
-                new SelectListItem { Value = "Balance Sheet", Text = "Balance Sheet" },
-                new SelectListItem { Value = "Account Statement", Text = "Account Statement" },
-                new SelectListItem { Value = "Income Statement", Text = "Income Statement" },
+                //new SelectListItem { Value = "Balance Sheet", Text = "Balance Sheet" },
+                new SelectListItem { Value = "JE", Text = "General Accounting Journal" },
+                new SelectListItem { Value = "Account Statement", Text = "General Ledger" },
+                //new SelectListItem { Value = "Income Statement", Text = "Income Statement" },
             };
         }
     }
+
+
+    //public class CustomReportViewModel
+    //{
+    //    public IEnumerable<SelectListItem> Branches { get; set; }
+    //    public IEnumerable<SelectListItem> Accounts { get; set; }
+    //    public IEnumerable<SelectListItem> ReportTypes { get; set; }
+    //}
 }

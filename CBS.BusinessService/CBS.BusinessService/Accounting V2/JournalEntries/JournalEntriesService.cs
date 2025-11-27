@@ -1,77 +1,57 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
-using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
-using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.JournalEntries
 {
-    public class AccntStatementService : BaseService
+    public class JournalEntriesService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
-        private readonly TrialBalance6ColumnsMock _trialBalance6ColumnsMock;
-
-        public AccntStatementService()
+        public JournalEntriesService()
         {
-            // Hardcoded base URL (intentionally allowed)
-            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+            var baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
-            _trialBalance6ColumnsMock = new TrialBalance6ColumnsMock();
         }
 
-        /// <summary>
-        /// Fetch trial balances using provided filter (6-column format).
-        /// </summary>
-        public async Task<GenericReportResponseV2Dto> GetTrialBalancesAsync6columns(AccountingV2ReportsFilter filter)
+        public async Task<List<JournalDtoEntriesV2Dto>> GetJournalEntriesAsync(AccountingV2ReportsFilter filter)
         {
+            string jsonFilter = JsonConvert.SerializeObject(filter, Formatting.Indented);
             try
             {
-               
-                // POST request to the API
-                var response = await _apiCallerHelper.PostAsync<ServiceResponse<List<JournalDtoEntriesV2Dto>>>(
-                    APICallHelper.JournalEntries,
-                    filter
-                );
-
-                var result = new GenericReportResponseV2Dto();
-
+                var response = await _apiCallerHelper.PostAsync<
+                ServiceResponse<List<JournalDtoEntriesV2Dto>>
+            >(APICallHelper.JournalEntries, filter);
+                // If API returned success
                 if (response?.IsSuccess == true)
                 {
-
-                    result.JournalEntries = response.ApiResponseData?.Data ?? new List<JournalDtoEntriesV2Dto>();
-                }
-                else
-                {
-                    result.JournalEntries = new List<JournalDtoEntriesV2Dto>();
-                    System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns: API returned failure ({response?.Message})");
+                    return response.ApiResponseData?.Data
+                           ?? new List<JournalDtoEntriesV2Dto>();
                 }
 
-                return result;
+                // API returned failure
+                System.Diagnostics.Debug.WriteLine(
+                    $"JournalEntriesService.GetJournalEntriesAsync: API returned failure ({response?.Message})"
+                );
+
+                return new List<JournalDtoEntriesV2Dto>();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns Error: {ex}");
-                // optional: throw new Exception("Failed to fetch trial balances", ex);
-                return new GenericReportResponseV2Dto
-                {
-                    Lines = new List<TrialBalanceV2Dto>()
-                };
+                System.Diagnostics.Debug.WriteLine(
+                    $"JournalEntriesService.GetJournalEntriesAsync Error: {ex}"
+                );
+
+                return new List<JournalDtoEntriesV2Dto>();
             }
         }
 
-        public async Task<GenericReportResponseV2Dto> GetTrialMockInformation()
-        {
-            
-            var results  =    TrialBalance6ColumnsMock.GetMockData();
-            return results;
-        }
     }
 }

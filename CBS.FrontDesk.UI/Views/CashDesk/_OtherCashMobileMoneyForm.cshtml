@@ -45,15 +45,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.MemberReference, new { @class = "form-control shadow-input-boxes", @id = "customerId" })
-                        @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.MemberReference, "", new { @class = "text-danger " })
-                        <label>@CashDesk_OtherCashMobileMoneyForm.NoneMemberRef</label>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.CustomerName, new { @class = "form-control shadow-input-boxes", @id = "MemberName" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.CustomerName, "", new { @class = "text-danger " })
@@ -68,7 +60,7 @@
                         <label>@CashDesk_OtherCashMobileMoneyForm.Number</label>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.CNI, new { @class = "form-control shadow-input-boxes", @id = "CNI" })
                         @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.CNI, "", new { @class = "text-danger " })
@@ -77,9 +69,18 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.TextBoxFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, new { @class = "form-control shadow-input-boxes", @id = "TellerCode" })
-                        @Html.ValidationMessageFor(m => m.AddOtherTransactionMobileMoneyCommand.TellerCode, "", new { @class = "text-danger " })
-                        <label>@CashDesk_OtherCashMobileMoneyForm.TillCode</label>
+                        @Html.DropDownListFor(
+                            m => m.AddOtherTransactionMobileMoneyCommand.MobileMoneyGLId,
+                            (IEnumerable<SelectListItem>)ViewBag.AccountIds,
+                            "-- Select Mobile/Orange Money GL --",
+                            new { @class = "form-select shadow-input-boxes select2", @id = "MobileMoneyGLId" }
+                        )
+                        @Html.ValidationMessageFor(
+                            m => m.AddOtherTransactionMobileMoneyCommand.MobileMoneyGLId,
+                            "",
+                            new { @class = "text-danger" }
+                        )
+                        <label for="MobileMoneyGLId">Select MTN Or Orange GL</label>
                     </div>
                 </div>
                 <div class="table-responsive" id="cash_collected" style="width: 100%;">
@@ -148,5 +149,7 @@
         <hr style="border: 2px solid green;" />
     </fieldset>
 </div>
+
+
 
 

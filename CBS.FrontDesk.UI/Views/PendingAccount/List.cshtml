@@ -425,6 +425,17 @@
               : `<span class="badge bg-secondary">${v}</span>`;
       }
 
+      function escapeHtml(str) {
+          if (str === undefined || str === null) return '';
+          return String(str)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+      }
+
+
 
       // ----- DataTable -----
       function initDataTable() {
@@ -454,7 +465,7 @@
               autoWidth: false,
               pageLength: 10,
               order: [[0, 'desc']],
-              columnDefs: [
+              /*columnDefs: [
                   { targets: [0], width: '15%' },  // CreatedDate
                   { targets: [1], width: '10%' },  // Scope
                   { targets: [2], width: '12%' },  // Code
@@ -464,7 +475,7 @@
                   { targets: [6], width: '10%' },  // AccountUpdateType
                   { targets: [7], width: '10%' },  // Status
                   { targets: [8], width: '10%', orderable: false, searchable: false, className: 'text-end' } // Actions
-              ],
+              ],*/
               ajax: {
                   url: dataUrl,
                   type: 'POST',
@@ -476,25 +487,20 @@
                   data: function (d) {
                       const filters = getFilters();
 
-                      // Map sort to server: use the column "name" you set below
-                      let sortExpr = '';
-                      if (d.order && d.order.length && d.columns) {
-                          const ord = d.order[0];
-                          const colName = d.columns[ord.column]?.name || d.columns[ord.column]?.data || '';
-                          const dir = (ord.dir || 'asc').toLowerCase();
-                          if (colName) sortExpr = `${colName} ${dir}`;
-                      }
+                      const orderIdx = (d.order && d.order[0] && d.order[0].column) ?? 0;
+                      const sortCol = (d.columns && d.columns[orderIdx] && d.columns[orderIdx].data) || '';
+                      const sortDir = (d.order && d.order[0] && d.order[0].dir) || '';
 
                       // IMPORTANT: match your model casing => Options
                       filters.Options = {
-                          Draw: d.draw,
-                          Page: Math.floor((d.start || 0) / (d.length || 10)) + 1,
-                          PageSize: d.length,
-                          Sort: sortExpr,
-                          // optional passthrough if your backend uses them
-                          Start: d.start,
-                          Length: d.length,
-                          SearchValue: d.search?.value || ''
+                          draw: d.draw,
+                          start: d.start,
+                          length: d.length,
+                          skip: d.start,
+                          pageSize: d.length,
+                          searchValue: d.search?.value || '',
+                          sortColumnName: sortCol,
+                          sortColumnDirection: sortDir
                       };
 
                       return JSON.stringify(filters);
@@ -535,6 +541,7 @@
                               return renderScopeTypeBadge(row.Scope || row.Scope);
                           } 
                   },
+                  { data: 'BranchName', name: 'Branch Name', defaultContent: '-' },
                   { data: 'Code', name: 'Code', defaultContent: '' },
                   { // Name
                       data: null, name: 'Name',
@@ -561,22 +568,54 @@
                           return renderStatusBadge(row.Status || row.status);
                       }
                   },
-                  { // Actions
-                      data: null, orderable: false, searchable: false, className: 'text-end',
-                      render: function (_, __, row) {
-                          const id = row.Id || row.id;
-                          const btnId = 'act_' + (id || Math.random().toString(36).slice(2));
-                          return `
-            <div class="dropdown text-end">
-              <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="mdi mdi-cog-outline"></i> Actions
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="${btnId}">
-                <li><button type="button" class="dropdown-item js-detail" data-id="${id}"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
-                <li><button type="button" class="dropdown-item js-validate" data-id="${id}"><i class="mdi mdi-check-circle-outline me-1 text-success"></i> Validate</button></li>
-                <li><button type="button" class="dropdown-item js-reject" data-id="${id}"><i class="mdi mdi-close-circle-outline me-1 text-warning"></i> Reject</button></li>
-              </ul>
-            </div>`;
+                  {
+                      data: 'Id',
+                      orderable: false,
+                      searchable: false,
+                      render: function (data, type, row) {
+                          var rawId = String(row.Id || row.id );
+                          var recordId = encodeURIComponent(rawId);
+                          var safeId = rawId.replace(/[^a-zA-Z0-9_\-]/g, '') || 'x';
+                          var btnId = 'actionDropdown_' + safeId;
+
+                          var status = (row.Status || '').toString().trim().toLowerCase();
+
+                          var detailsBtn = `
+                                             <button type="button" class="dropdown-item js-detail" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                             </button>`;
+
+                                                          var reviewBtn = `
+                                             <button type="button" class="dropdown-item js-validate" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-clipboard-check me-1 text-success"></i> Approve
+                                             </button>`;
+
+                                                          var rejectBtn = `
+                                             <button type="button" class="dropdown-item js-reject text-danger" data-id="${recordId}" data-title="${escapeHtml(row.Scope)}">
+                                                 <i class="mdi mdi-close-circle-outline me-1"></i> Reject
+                                             </button>`;
+
+                                            var menuItems = '';
+                                            if (status === 'pending' || status === 'open') {
+                                                menuItems = `
+                                                    <li>${detailsBtn}</li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>${reviewBtn}</li>
+                                                    <li>${rejectBtn}</li>`;
+                                            }
+                                            else {
+                                                menuItems = `<li>${detailsBtn}</li>`;
+                                            }
+
+                                                          return `
+                                             <div class="dropdown text-center">
+                                                 <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" id="${btnId}"  data-bs-toggle="dropdown" aria-expanded="false">
+                                                     <i class="mdi mdi-cog-outline"></i> Actions
+                                                 </button>
+                                                 <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                     ${menuItems}
+                                                 </ul>
+                                             </div>`;
                       }
                   }
               ],

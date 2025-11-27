@@ -97,7 +97,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     public class JournalHead
     {
         public string Id { get; set; }
-        public string Reference { get; set; } 
+        public string Reference { get; set; }
         public string Narrative { get; set; } = null;
         public DateTime AccountingDate { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -153,7 +153,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     public class JournalLine
     {
         public string Id { get; set; } 
-        public string JournalHeaderId { get; set; } 
+        public string JournalHeaderId { get; set; }
+        public string BranchId { get; set; }
+        public string BranchName { get; set; }
+        public string CounterpartyBranchId { get; set; }
+        public string CounterpartyBranchName { get; set; }
         public string AccountId { get; set; }
         public string AccountNumber { get; set; }
         public string AccountName { get; set; }
@@ -170,6 +174,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CreatedBy { get; set; } 
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; } = null;
+
+        public decimal DebitAmount { get; set; }
+        public decimal CreditAmount { get; set; }
+
+        public string AuxiliaryRef { get; set; }
     }
 
     // ==============================================
@@ -210,6 +219,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string UserName { get; set; } = null;
         public bool InterbranchStatus { get; set; }
         public  string CounterpartyBranchId { get; set; } = null;
+        public string CounterpartyBranchName { get; set; } = null;
 
         public string AccountNumber  { get; set; }
         public string AccountName { get; set; }
@@ -246,8 +256,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalDebit { get; set; }
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
+        public bool IsInterBranch { get; set; }
 
-        
+
     }
    
 
@@ -263,7 +274,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Title { get; set; } = null;
         
         public string PayloadJson { get; set; } = null;
-        public string Number { get; set; } 
+        public string Number { get; set; } = null;
         public DateTime IssuedAtUtc { get; set; } = DateTime.UtcNow;
         public string Payor { get; set; } = null;
         public string Memo { get; set; } = null;

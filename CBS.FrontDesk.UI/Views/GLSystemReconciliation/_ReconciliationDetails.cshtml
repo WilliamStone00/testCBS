@@ -1,0 +1,220 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationDetails
+
+<style>
+    /* ===================== HEADER VIEWER ===================== */
+    .header-viewer {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin: 1rem 0;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #555;
+        border-left: 4px solid #198754;
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+        .header-viewer h6 {
+            font-weight: 700;
+            color: #198754;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+    .card-body-padding {
+        padding: 1rem 1.25rem; /* Add space around table */
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #ffffff;
+    }
+
+    .table tbody tr td {
+        vertical-align: middle;
+        color: #555;
+    }
+
+    .table thead th {
+        background-color: #f1f1f1;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 230px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .table-sm td, .table-sm th {
+        vertical-align: middle;
+    }
+
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        padding: 1rem 1.25rem;
+    }
+</style>
+
+@*<div class="header-viewer">
+    <h6>
+        <i class="mdi mdi-file-document-outline me-1"></i> SYSTEM RECONCILIATION DETAILS
+    </h6>
+    <p class="mb-0">
+        Detailed information for the selected journal entry. Scroll to view reconciliations, and receipts.
+    </p>
+</div>*@
+
+
+
+
+
+
+@if (Model != null)
+{
+    <div class="card shadow-sm mb-3">
+        <div class="card-body card-body-padding">
+
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-swap-horizontal-bold me-2"></i> SYSTEM RECONCILIATION DETAILS
+                    </h1>
+                    <p class="card-text">
+                        Detailed information for the selected journal entry. Scroll to view reconciliations, and receipts.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+            <!-- added padding class -->
+            <table class="table table-sm table-bordered table-striped mb-0">
+                <tbody>
+                    @if (!string.IsNullOrWhiteSpace(Model.Reference))
+                    {
+                        <tr><th class="bg-label">Reference</th><td>@Model.Reference</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
+                    {
+                        <tr><th class="bg-label">Operation Code</th><td>@Model.OperationCode</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.BranchId))
+                    {
+                        <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.BranchName))
+                    {
+                        <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
+                    {
+                        <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.AuxillaryReference))
+                    {
+                        <tr><th class="bg-label">Auxiliary Reference</th><td>@Model.AuxillaryReference</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.PostMode))
+                    {
+                        <tr><th class="bg-label">Post Mode</th><td>@Model.PostMode</td></tr>
+                    }
+                    @if (Model.AccountingDate != default(DateTime))
+                    {
+                        <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    }
+                    @if (Model.CreatedAtUtc != default(DateTime))
+                    {
+                        <tr><th class="bg-label">Created At</th><td>@Model.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    }
+                    @if (Model.UpdatedAtUtc != default(DateTime))
+                    {
+                        <tr><th class="bg-label">Updated At</th><td>@Model.UpdatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.CorrelationId))
+                    {
+                        <tr><th class="bg-label">Correlation Id</th><td>@Model.CorrelationId</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.DestinationUrl))
+                    {
+                        <tr><th class="bg-label">Destination URL</th><td>@Model.DestinationUrl</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ExternalApplicationName))
+                    {
+                        <tr><th class="bg-label">External Application</th><td>@Model.ExternalApplicationName</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ReceiptId))
+                    {
+                        <tr><th class="bg-label">Receipt ID</th><td>@Model.ReceiptId</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ResponseJson))
+                    {
+                        <tr><th class="bg-label">Response Json</th><td>@Model.ResponseJson</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.RequestJson))
+                    {
+                        <tr><th class="bg-label">Request Json</th><td>@Model.RequestJson</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.TempJournalId))
+                    {
+                        <tr><th class="bg-label">Temp Journal ID</th><td>@Model.TempJournalId</td></tr>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ReconciledJournalId))
+                    {
+                        <tr><th class="bg-label">Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
+                    }
+                    <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
+                    <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
+                    <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
+                    <tr><th class="bg-label">Operation By</th><td>@Model.OperationBy</td></tr>
+                    <tr><th class="bg-label">Attempts</th><td>@Model.Attempts</td></tr>
+                    @if (!string.IsNullOrWhiteSpace(Model.LastError))
+                    {
+                        <tr><th class="bg-label">Last Error</th><td>@Model.LastError</td></tr>
+                    }
+                    @if (Model.NextRetryAtUtc.HasValue)
+                    {
+                        <tr><th class="bg-label">Next Retry At</th><td>@Model.NextRetryAtUtc.Value.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+
+            <!-- PUSH BUTTON (wired to your script) -->
+            <button class="btn btn-success btn-sm push-details"
+                    data-id="@Model.Id"
+                    data-branchid="@Model.BranchId"
+                    data-branchname="@Model.BranchName"
+                    data-branchcode="@Model.BranchCode">
+                <i class="mdi mdi-check-outline me-1"></i> Push
+            </button>
+
+            <!-- CLOSE BUTTON -->
+            <button type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+                <i class="mdi mdi-close-circle-outline me-1"></i> Close
+            </button>
+
+        </div>
+
+    </div>
+}
+

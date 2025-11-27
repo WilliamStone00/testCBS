@@ -1,4 +1,5 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +83,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string BranchId { get; set; } = string.Empty;
         public string BranchName { get; set; } = string.Empty;
         public string BranchCode { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = string.Empty;
         public string Month { get; set; } = string.Empty;
         public string OperationType { get; set; } = string.Empty;
         public List<MemberStat> MemberStats { get; set; } = new List<MemberStat>();
@@ -100,12 +102,27 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
     {
         public string MemberId { get; set; } = string.Empty;
         public string AccountId { get; set; }
+        public string PaymentStatus { get; set; } = string.Empty;
         public string AccountNumber { get; set; }
         public string MemberName { get; set; } = string.Empty;
         public decimal TotalActivityAmount { get; set; }
         public decimal FeeCharged { get; set; }
         public decimal ActualBalance { get; set; }
         public DateTime? LastTransactionDate { get; set; }
+
+        // Add a string property to handle the date string from JSON
+        [JsonIgnore]
+        public string LastTransactionDateString
+        {
+            get => LastTransactionDate?.ToString("yyyy-MM-ddTHH:mm:sszzz");
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && DateTime.TryParse(value, out DateTime date))
+                {
+                    LastTransactionDate = date;
+                }
+            }
+        }
     }
 
     public class Payment
@@ -122,7 +139,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public List<SharedAmount> SharedAmounts { get; set; } = new List<SharedAmount>();
         public int Month { get; set; }
         public int Year { get; set; }
-
     }
 
     public class SharedAmount
@@ -174,10 +190,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string ReferenceNumber { get; set; }
         public string ProcessedByUserId { get; set; }
         public string Currency { get; set; }
+        public bool IsExport { get; set; }
 
     }
 
-   
+
     public class ExportCommissionRequest
     {
         public CollectorComissionResponse CommissionData { get; set; }
@@ -192,6 +209,14 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission
         public string ReportType { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+    }
+
+    public class ExportTableRequest
+    {
+        public List<DataTableResponse> Data { get; set; }
+        public int TotalRecords { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public dynamic Filters { get; set; }
     }
 
     public class DataTableResponse

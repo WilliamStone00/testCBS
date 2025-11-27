@@ -1,0 +1,127 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.CloseOfDayModel
+
+
+@* ----------------- Close Of Day Form ----------------- *@
+@using (Html.BeginForm("SubmitCloseOfDay", "GLSystemReconciliation", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return closeOfDaySubmitAjax(this);" }))
+{
+    @Html.AntiForgeryToken()
+
+
+
+    @*<div class="card shadow p-3 mb-4 mt-3">*@
+    <div class="card bg-light mb-2">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary">
+                <i class="mdi mdi-swap-horizontal-bold me-2"></i> Close Of Day
+            </h1>
+            <p class="card-text">
+                Make Sure every Box is Checked before you can Close the Day
+            </p>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+        </div>
+    </div>
+    @*</div>*@
+
+    <div id="closeOfDayForm" class="card shadow p-3 mb-4 mt-3">
+        <h5 class="text-danger mb-3">
+            <i class="mdi mdi-lock me-1"></i> Close of Day
+        </h5>
+
+        <div class="row">
+
+            
+
+            <div class="row mb-1">
+                <div class="col-md-12 mb-1">
+                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 mb-1", @id = "branchId" })
+                </div>
+            </div>
+
+           
+
+            <div class="col-md-12 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.Reference, new { @class = "form-control", id = "Reference", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Reference, "", new { @class = "text-danger" })
+                    <label for="Reference">Reference</label>
+                </div>
+            </div>
+
+            <p class="text-danger fw-bold">
+                Read and then check the following boxes carefully:
+            </p>
+
+
+            <!-- All Transactions Reconciled -->
+            <div class="col-md-6 mb-3">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.AllTransactionsReconciled, new { @class = "form-check-input", id = "AllTransactionsReconciled" })
+                    <label class="form-check-label" for="AllTransactionsReconciled">
+                        Have  All Transactions be Reconciled ?
+                    </label>
+                </div>
+            </div>
+
+            <!-- Cash Vault Verified -->
+            <div class="col-md-6 mb-3">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.CashVaultVerified, new { @class = "form-check-input", id = "CashVaultVerified" })
+                    <label class="form-check-label" for="CashVaultVerified">
+                        Cash Vault Verified ?
+                    </label>
+                </div>
+            </div>
+
+            <!-- Inter-Branch Confirmed -->
+            <div class="col-md-6 mb-3">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.InterBranchConfirmed, new { @class = "form-check-input", id = "InterBranchConfirmed" })
+                    <label class="form-check-label" for="InterBranchConfirmed">
+                        Inter-Branch Confirmed ?
+                    </label>
+                </div>
+            </div>
+
+            <!-- Any Issue to be Raised -->
+            <div class="col-md-6 mb-3">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.AnyIssueToBeRaised, new { @class = "form-check-input", id = "AnyIssueToBeRaised" })
+                    <label class="form-check-label" for="AnyIssueToBeRaised">
+                        Any Issue to be Raised ?
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="form-floating shadow-sm">
+                    @Html.TextAreaFor(
+                        m => m.Comment,
+                        new
+                        {
+                            @class = "form-control",
+                            placeholder = "Enter comment",
+                            id = "Comment",
+                            style = "height: 100px"
+                        })
+                    <label for="Comment">Comment</label>
+                    @Html.ValidationMessageFor(m => m.Comment, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-danger px-4">
+                <i class="mdi mdi-lock-check"></i> Close of Day
+            </button>
+        </div>
+    </div>
+}
+

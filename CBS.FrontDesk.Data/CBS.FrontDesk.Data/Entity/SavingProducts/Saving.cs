@@ -412,12 +412,26 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
             MemberAccountActivations = new List<MemberAccountActivation>();
         }
     }
+    public class AddOrUpdateSavingProductNarrationsCommand
+    {
+        /// <summary>
+        /// Id of the SavingProduct whose narrations should be updated.
+        /// </summary>
+        public string Id { get; set; }
+
+        public string CashInNarration { get; set; }
+        public string CashOutNarration { get; set; }
+        public string CashinNarrationForCommision { get; set; }
+        public string CashOutNarrationForCommision { get; set; }
+        public string TransfterNarration { get; set; }
+        public string TransfterNarrationForCommision { get; set; }
+    }
     public sealed class UpdateSavingProductAccountingV2MappingCommand
     {
         public string Id { get; set; }
 
         // Toggle – if provided: when true we expect at least the principal account id
-        public bool? IsAccountingV2Mapping { get; set; }
+        public bool IsAccountingV2Mapping { get; set; }
 
         public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
         public string AccountingV2InterestAmountChartOfAccountId { get; set; }
@@ -435,6 +449,11 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public string AccountingV2PayOutNoneMemberSalaryChartofAccountId { get; set; }
         public string AccountingV2PayOutCashTillChartofAccountId { get; set; }
         public string AccountingV2SuspenseChartOfAccountId { get; set; }
+        public string AccountingV2CashInCommissionChartOfAccountId { get; set; }
+        public string AccountingV2CashOutCommissionChartOfAccountId { get; set; }
+        public string AccountingV2TransferCommissionChartOfAccountId { get; set; }
+        public string AccountingV2SuplusChartOfAccountId { get; set; }
+        public string AccountingV2ShortageChartOfAccountId { get; set; }
     }
     public class SavingProduct
     {
@@ -556,11 +575,25 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         public decimal MinDailySaverSharesOpeningBalanceMoral { get; set; }
 
         // Toggle – if provided: when true we expect at least the principal account id
-        public bool? IsAccountingV2Mapping { get; set; }
+        public bool IsAccountingV2Mapping { get; set; }
 
         public string AccountingV2PrincipalAmountChartOfAccountId { get; set; }
         public string AccountingV2InterestAmountChartOfAccountId { get; set; }
         public string AccountingV2TransitChartOfAccountId { get; set; }
+
+        public string AccountingV2CashInCommissionChartOfAccountId { get; set; }
+        public string AccountingV2CashOutCommissionChartOfAccountId { get; set; }
+        public string AccountingV2TransferCommissionChartOfAccountId { get; set; }
+        public string AccountingV2SuplusChartOfAccountId { get; set; }
+        public string AccountingV2ShortageChartOfAccountId { get; set; }
+
+
+        public string CashInNarration { get; set; }
+        public string CashOutNarration { get; set; }
+        public string CashinNarrationForCommision { get; set; }
+        public string CashOutNarrationForCommision { get; set; }
+        public string TransfterNarration { get; set; }
+        public string TransfterNarrationForCommision { get; set; }
 
         public string AccountingV2CivilServantsSalarySourceChartofAccountId { get; set; }
         public string AccountingV2CivilServantsSalaryDestinationPayableChartofAccountId { get; set; }
@@ -1464,18 +1497,52 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
     }
     public class AddOtherTransactionMobileMoneyCommand
     {
+       
+
+        [Required(ErrorMessage = "Amount is required.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Amount { get; set; }
+
+        [Required(ErrorMessage = "None Customer Name is required.")]
+        [StringLength(100, ErrorMessage = "Customer Name cannot be longer than 100 characters.")]
         public string CustomerName { get; set; }
-        public string SourceType { get; set; }//MobileMoneyMTN Or MobileMoneyORANGE
+
+        [Required(ErrorMessage = "Operator Type is required.")]
+        [RegularExpression("MobileMoneyMTN|MobileMoneyORANGE", ErrorMessage = "Operator Type must be either 'Mobile Money MTN' or 'Mobile Money Orange'.")]
+        public string SourceType { get; set; }
+
+        [Required(ErrorMessage = "National identity card is required.")]
+        [StringLength(30, ErrorMessage = "National identity card cannot be longer than 30 characters.")]
         public string CNI { get; set; }
+
+        [Required(ErrorMessage = "Telephone Number is required.")]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "Telephone Number must be a valid 9-digit number.")]
         public string TelephoneNumber { get; set; }
-        public string BookingDirection { get; set; }//Deposit, Withdrawal
-        public string OperationType { get; set; }//MobileMoney
+
+        [Required(ErrorMessage = "Booking Direction is required.")]
+        [RegularExpression("Deposit|Withdrawal", ErrorMessage = "Booking Direction must be either 'Deposit' or 'Withdrawal'.")]
+        public string BookingDirection { get; set; }
+
+        [Required(ErrorMessage = "Operation Type is required.")]
+        [StringLength(50, ErrorMessage = "Operation Type cannot be longer than 50 characters.")]
+        public string OperationType { get; set; }
+
+        [Required(ErrorMessage = "Cash Operation status is required.")]
         public bool IsCashOperation { get; set; }
-        public string MemberReference { get; set; }
-        public string TellerCode { get; set; }
+
+        [Required(ErrorMessage = "None Member Reference is required.")]
+        [StringLength(11, ErrorMessage = "Member Reference cannot be longer than 10 characters.")]
         public CurrencyNotes CurrencyNotesRequest { get; set; }
+        /// <summary>
+        /// The GL account ID to credit or debit for Mobile Money operations.
+        /// </summary>
+        [Required(ErrorMessage = "Mobile Money GL Id is required.")]
+        [StringLength(50, ErrorMessage = "Mobile Money GL Id cannot be longer than 50 characters.")]
+        public string MobileMoneyGLId { get; set; }
     }
+
+
+
     public class AddMembersNoneCashOperationCommand
     {
         public decimal Amount { get; set; }

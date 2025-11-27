@@ -1,73 +1,322 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklist
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountBlackList.AccountBlacklistresponse
+@using Resources
 
-<div class="modal fade" id="blacklistEditModal" tabindex="-1" aria-labelledby="blacklistEditModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="accountBlacklistModal" tabindex="-1" aria-labelledby="accountBlacklistModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="blacklistEditModalLabel"><i class="mdi mdi-pencil-outline me-2"></i> Edit Blacklist</h5>
+                <h5 class="modal-title" id="accountBlacklistModalLabel">
+                    <i class="mdi mdi-shield-account-outline me-2"></i>
+                    @(string.IsNullOrWhiteSpace(Model?.Id) ? "Add Account Blacklist" : "Edit Account Blacklist")
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
-                @using (Html.BeginForm("Update", "AccountBlancklist", FormMethod.Post, new { id = "editBlacklistForm" }))
+                <!-- Tips -->
+                <div class="card mb-3 shadow-sm">
+                    <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
+                        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips</span>
+                        <button class="btn btn-sm btn-outline-secondary" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseBlacklistTips"
+                                aria-expanded="false" aria-controls="collapseBlacklistTips">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h6>
+                    <div id="collapseBlacklistTips" class="collapse">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>Upload mode</strong>
+                                    <div class="small text-muted mt-1">
+                                        Check <strong>Is Centralized</strong> to manage a centralized chart-of-accounts and menu routing.
+                                        Uncheck to manage branch-specific accounts.
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Transaction Type</strong>
+                                    <div class="small text-muted mt-1">
+                                        Choose the transaction category (Manual entries, Other Cash In/Out, Member↔GL, GL↔GL).
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>File formats</strong>
+                                    <div class="small text-muted mt-1">
+                                        Use the templates available (Download Template button). Files should be within 10MB.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("CreateOrUpdate", "AccountBlancklist", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.Id)
 
-                    <div class="row g-3">
+                    <div class="card">
+                        <div class="card-header bg-white border-0 py-3">
+                            <h6 class="mb-0 text-primary d-flex align-items-center">
+                                <i class="mdi mdi-cloud-upload-outline me-2"></i>
+                                Configure Account Menu Blacklist
+                            </h6>
+                        </div>
 
-                        <div class="col-12">
-                            <div class="form-check">
-                                @Html.CheckBoxFor(m => m.IsCentralized, new { @class = "form-check-input", id = "IsCentralizedEdit" })
-                                <label class="form-check-label" for="IsCentralizedEdit">Is Centralized (use centralized CoA)</label>
+                        <div class="card-body">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <div class="row g-3">
+                                <!-- IsCentralized -->
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(m => m.IsCentralized, new { @class = "form-check-input", id = "IsCentralizedCheckbox" })
+                                        <label class="form-check-label" for="IsCentralizedCheckbox">Is Centralized (use centralized CoA)</label>
+                                    </div>
+                                </div>
+
+                                <!-- CENTRALIZED -->
+                                <div class="col-12 centralized-row">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account", new { @class = "form-label" })
+                                            @Html.DropDownListFor(
+                                                m => m.AffiliateAccountId, new SelectList(ViewBag.AffiliateAccounts ?? new List<SelectListItem>(), "Value", "Text"),
+                                                "--- Select Affiliate Account (Chart of Account) ---",
+                                                new { @class = "form-select select2", aria_label = "Affiliate Account" })
+                                            @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
+                                            @Html.DropDownListFor(
+                                                m => m.Menu,
+                                                ViewBag.Menu as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>(),
+                                                "--- Select Menu ---",
+                                                new { @class = "form-select select2", id = "TransactionTypeCentral" })
+                                            @Html.ValidationMessageFor(m => m.Menu, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label" })
+                                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Enter Notes...", maxlength = "150" })
+                                            @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger small" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- NON-CENTRALIZED -->
+                                <div class="col-12 non-centralized-row d-none">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.BranchId, "Select Branch", new { @class = "form-label fw-semibold" })
+                                            @Html.DropDownListFor(
+                                                m => m.BranchId, new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                                                "--- Select Branch ---",
+                                                new { @class = "form-select select2", id = "BranchId" })
+                                            @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.BranchAccountId, "Branch Account reference", new { @class = "form-label fw-semibold" })
+                                            @Html.DropDownListFor(
+                                                m => m.BranchAccountId,
+                                                new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch Account ---", Value = "" } },
+                                                new { @class = "form-select select2", id = "BranchAccountId" })
+                                            @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
+                                            @Html.DropDownListFor(
+                                                m => m.Menu,
+                                                ViewBag.Menu as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>(),
+                                                "--- Select Menu ---",
+                                                new { @class = "form-select select2", id = "TransactionTypeLocal" })
+                                            @Html.ValidationMessageFor(m => m.Menu, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label" })
+                                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control form-control-sm", placeholder = "Enter Notes...", maxlength = "150" })
+                                            @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger small" })
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Menu, new { @class = "form-control", placeholder = "ManualEntries / OtherCashIn / ..." })
+                        <div class="modal-footer">
+                            @if (string.IsNullOrWhiteSpace(Model?.Id))
+                            {
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-save me-1"></i> @GlobalShared.Save
+                                </button>
+                                <button id="btnReset" type="button" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="mdi mdi-refresh"></i> @GlobalBank.Update
+                                </button>
+                                <button id="btnReset" type="button" class="btn btn-outline-secondary me-2">Reset</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            }
                         </div>
-
-                        <div class="col-md-6">
-                            @Html.LabelFor(m => m.BranchID, "Branch", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.BranchID, new { @class = "form-control", placeholder = "Branch ID (non-centralized)" })
-                        </div>
-
-                        <div class="col-md-6">
-                            @Html.LabelFor(m => m.AffiliateAccountId, "Affiliate Account Id", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.AffiliateAccountId, new { @class = "form-control", placeholder = "Affiliate Account Id (centralized)" })
-                        </div>
-
-                        <div class="col-md-6">
-                            @Html.LabelFor(m => m.BranchAccountId, "Branch Account Id", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.BranchAccountId, new { @class = "form-control", placeholder = "Branch Account Id (non-centralized)" })
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-check form-check-inline">
-                                @Html.CheckBoxFor(m => m.IsBlacklisted, new { @class = "form-check-input", id = "IsBlacklistedEdit" })
-                                <label class="form-check-label" for="IsBlacklistedEdit">Is Blacklisted</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActiveEdit" })
-                                <label class="form-check-label" for="IsActiveEdit">Is Active</label>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            @Html.LabelFor(m => m.Notes, "Notes", new { @class = "form-label" })
-                            @Html.TextAreaFor(m => m.Notes, 4, 50, new { @class = "form-control", placeholder = "Optional notes" })
-                        </div>
-
-                    </div>
-
-                    <div class="text-end mt-3">
-                        <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     </div>
                 }
             </div>
         </div>
     </div>
-</div>
+    }
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+        (function ($) {
+            'use strict';
+
+            function ensureSelect2Init(selectorOrJq) {
+                var $el = (selectorOrJq && selectorOrJq.jquery) ? selectorOrJq : $(selectorOrJq);
+                if (!$el || !$el.length) return;
+                if ($.fn.select2 && !$el.data('select2')) {
+                    try { $el.select2({ width: '100%' }); } catch (e) { console.warn('select2 init failed', e); }
+                }
+            }
+
+            function setCentralized(isCentralized) {
+                if (isCentralized) {
+                    $('.centralized-row').removeClass('d-none').show();
+                    $('.non-centralized-row').addClass('d-none').hide();
+                    $('#BranchId').prop('disabled', true);
+                } else {
+                    $('.centralized-row').addClass('d-none').hide();
+                    $('.non-centralized-row').removeClass('d-none').show();
+                    $('#BranchId').prop('disabled', false);
+                    $('#BranchAccountId').empty().append($('<option>').val('').text('--- Select Branch Account reference ---'))
+                                          .prop('disabled', false);
+                }
+                if ($.fn.select2) $('.select2').each(function () { $(this).trigger('change.select2'); });
+            }
+
+            async function loadBranchAccounts(branchId, $targetDropdown) {
+                $targetDropdown = $targetDropdown || $('#BranchAccountId');
+                if (!$targetDropdown || !$targetDropdown.length) return;
+
+                const textLoading = 'Loading branch accounts...';
+                const textEmpty = '--- Select Branch Account reference ---';
+                const textNone = 'No branch accounts available';
+                const textError = 'Error loading branch accounts';
+
+                $targetDropdown.prop('disabled', true).empty().append($('<option>').val('').text(textLoading));
+
+                if (!branchId) {
+                    $targetDropdown.prop('disabled', false).empty().append($('<option>').val('').text(textEmpty));
+                    if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                    return;
+                }
+
+                const url = '@Url.Action("GetBranchAccountsByBranch", "AccountBlacklist")';
+
+                try {
+                    const resp = await fetch(url + '?branchId=' + encodeURIComponent(branchId), {
+                        method: 'GET',
+                        credentials: 'same-origin',
+                        cache: 'no-cache',
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (!resp.ok) {
+                        const body = await resp.text().catch(() => '');
+                        console.error('Fetch failed', resp.status, resp.statusText, body);
+                        $targetDropdown.empty().prop('disabled', false)
+                            .append($('<option>').val('').text(textError));
+                        if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                        return;
+                    }
+
+                    const payload = await resp.json().catch(() => null);
+                    let items = [];
+                    if (Array.isArray(payload)) items = payload;
+                    else if (payload && Array.isArray(payload.items)) items = payload.items;
+                    else if (payload && Array.isArray(payload.data)) items = payload.data;
+
+                    $targetDropdown.empty().prop('disabled', false);
+
+                    if (items && items.length) {
+                        $targetDropdown.append($('<option>').val('').text(textEmpty));
+                        items.forEach(acc => {
+                            const id = acc.id ?? acc.Id ?? acc.Value ?? acc.value ?? '';
+                            const name = acc.text ?? acc.Text ?? acc.Name ?? acc.name ?? acc.Description ?? id;
+                            $targetDropdown.append($('<option>').val(id).text(name));
+                        });
+                    } else {
+                        $targetDropdown.append($('<option>').val('').text(textNone));
+                    }
+
+                    if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                } catch (e) {
+                    console.error('Error loading branch accounts:', e);
+                    $targetDropdown.empty().prop('disabled', false)
+                        .append($('<option>').val('').text(textError));
+                    if ($.fn.select2) $targetDropdown.trigger('change.select2');
+                }
+            }
+
+            // Initialize when modal is shown
+            $('#accountBlacklistModal').on('shown.bs.modal', function () {
+                ensureSelect2Init('#BranchId');
+                ensureSelect2Init('#BranchAccountId');
+                ensureSelect2Init('#TransactionTypeCentral');
+                ensureSelect2Init('#TransactionTypeLocal');
+                ensureSelect2Init('select.form-select');
+
+                var $central = $('#IsCentralizedCheckbox');
+                setCentralized($central.is(':checked'));
+
+                $central.off('change.central').on('change.central', function () {
+                    setCentralized($(this).is(':checked'));
+                });
+
+                $('#BranchId').off('change.branch').on('change.branch', function () {
+                    loadBranchAccounts($(this).val(), $('#BranchAccountId'));
+                });
+
+                // Sync menu choice across views (central/local)
+                $('#TransactionTypeCentral').on('change', function () {
+                    $('#TransactionTypeLocal').val($(this).val()).trigger('change');
+                });
+                $('#TransactionTypeLocal').on('change', function () {
+                    $('#TransactionTypeCentral').val($(this).val()).trigger('change');
+                });
+
+                // If editing & non-centralized, preload accounts for current branch
+                var preBranch = $('#BranchId').val();
+                if (preBranch && !$central.is(':checked')) {
+                    loadBranchAccounts(preBranch, $('#BranchAccountId'));
+                }
+
+                // Reset
+                $('#btnReset').on('click', function (e) {
+                    e.preventDefault();
+                    var $form = $(this).closest('form');
+                    if ($form && $form[0]) $form[0].reset();
+                    $central.prop('checked', true);
+                    setCentralized(true);
+                    if ($.fn.select2) $('.select2').val('').trigger('change');
+                });
+            });
+
+            // Cleanup when modal is hidden
+            $('#accountBlacklistModal').on('hidden.bs.modal', function () {
+                // Reset form and state when modal is closed
+                var $form = $(this).find('form');
+                if ($form && $form[0]) {
+                    $form[0].reset();
+                }
+                $('#IsCentralizedCheckbox').prop('checked', true);
+                setCentralized(true);
+            });
+
+        })(jQuery);
+        </script>
+    }

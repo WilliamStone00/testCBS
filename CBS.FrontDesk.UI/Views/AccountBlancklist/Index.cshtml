@@ -113,12 +113,20 @@
                                 new { @class = "form-select select2", aria_label = "Affiliate Account" })
                             @Html.ValidationMessageFor(m => m.AffiliateAccountId, "", new { @class = "text-danger" })
                         </div>
+                        @*<div class="col-md-6">
+                            @Html.LabelFor(m => m.Menu, "Affiliate Account", new { @class = "form-label" })
+                            @Html.DropDownListFor(
+                                m => m.Menu, new SelectList(ViewBag.Menu ?? new List<SelectListItem>(), "Value", "Text"),
+                                "--- Select Affiliate Account (Chart of Account) ---",
+                                new { @class = "form-select select2", aria_label = "Affiliate Account" })
+                            @Html.ValidationMessageFor(m => m.Menu, "", new { @class = "text-danger" })
+                        </div>*@
 
                         <div class="col-md-6">
                             @Html.LabelFor(m => m.Menu, "Menu", new { @class = "form-label" })
                             @Html.DropDownListFor(
                                 m => m.Menu,
-                                ViewBag.Menu as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>(),
+                              new SelectList(ViewBag.Menu ?? new List<SelectListItem>(), "Value", "Text"),
                                 "--- Select Menu ---",
                                 new { @class = "form-select select2", id = "TransactionTypeCentral" })
                             @Html.ValidationMessageFor(m => m.Menu, "", new { @class = "text-danger" })

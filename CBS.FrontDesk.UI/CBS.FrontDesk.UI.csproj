@@ -149,6 +149,9 @@
     <Reference Include="Hangfire.SqlServer, Version=1.8.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.8.12\lib\net451\Hangfire.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Humanizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.3.0.1\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
       <HintPath>..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
       <Private>True</Private>
@@ -289,8 +292,11 @@
     <Reference Include="System">
       <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=9.0.0.10, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.9.0.10\lib\net462\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
@@ -316,9 +322,8 @@
     <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -326,14 +331,12 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -450,14 +453,50 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.cs">
-      <DependentUpon>AccStatement.rpt</DependentUpon>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement1.cs">
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <DependentUpon>AccStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.cs">
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JER.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>JournalEntries.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JournalReceipts.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\AffiliateAccountUpload\TB4.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TB4.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.cs">
+      <DependentUpon>TrialBalance4Columns.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -900,16 +939,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LiaisonLedger.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlobalConfigurationManualEntry.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\AccountingV2\ManaulJournalEntryV2\ManualEntry.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2056,24 +2085,35 @@
       <DependentUpon>GlobalWithdrawalNotification.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
+    <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
     <Compile Include="Controllers\Accounting V2\CustomeReports\CustomeReportsController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
+    <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
+    <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
+    <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
     <Compile Include="Controllers\Accounting V2\PendingAccount\PendingAccountController.cs" />
+    <Compile Include="Controllers\Accounting V2\Receipts\JournalReceiptsController.cs" />
+    <Compile Include="Controllers\Accounting V2\Receipts\ReceiptFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\Reporting\ReportsController.cs" />
-    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceController.cs" />
+    <Compile Include="Controllers\Accounting V2\AccntStatement\AccntStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance4ColmunsController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalance6ColumnsController.cs" />
+    <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceFourColumnsFlatItens.cs" />
     <Compile Include="Controllers\Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Controllers\Accounting V2\UploadFile\FileUploadController.cs" />
     <Compile Include="Controllers\AccountingReconciliation\AccountingReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\AccountingYear\AccountingYearController.cs" />
     <Compile Include="Controllers\AccountingV2\ConfigurationManualEntry\ConfigurationManualEntryController.cs" />
+    <Compile Include="Controllers\AccountingV2\GLSystemReconciliation\GLSystemReconciliationController.cs" />
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
@@ -2191,11 +2231,11 @@
     <Compile Include="Controllers\Overdraft\OverdraftFacilityConfigController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceCashDeskController.cs" />
     <Compile Include="Controllers\RemittanceP\RemittanceController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportDefinition\ReportDefinitionController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportingV2Controller.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportLine\ReportLineController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportLineMapping\ReportLineMappingController.cs" />
-    <Compile Include="Controllers\ReportingV2\ReportSection\ReportSectionController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportConfigurationController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportDefinition\ReportDefinitionController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportLineMapping\ReportLineMappingController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportLine\ReportLineController.cs" />
+    <Compile Include="Controllers\ReportConfiguration\ReportSection\ReportSectionController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuMasterController.cs" />
     <Compile Include="Controllers\RoleManagement\MenuTranslationController.cs" />
@@ -7750,11 +7790,6 @@
     <Content Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xss">
       <DependentUpon>AccountingV2DS.xsd</DependentUpon>
     </Content>
-    <EmbeddedResource Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry.fr.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="DataSet\Loan\DeliquentLoanSummaryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -8731,15 +8766,39 @@
     </Content>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\AccStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>AccStatement.cs</LastGenOutput>
+      <LastGenOutput>AccStatement1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\CrystalReport1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JER.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JournalEntries1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>JournalReceipts1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\AffiliateAccountUpload\TB4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TB4.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance4Columns.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance4Columns.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\TrialBalance6Columns.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TrialBalance6Columns1.cs</LastGenOutput>
+      <LastGenOutput>TrialBalance6Columns.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Accounting\Accounting Journal Receipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -9438,10 +9497,6 @@
     <Content Include="App_GlobalResources\AccountingV2\BranchCashConfigV2\BranchCashConfig.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\AccountingV2\ConfigurationManualEntry\GlobalConfigurationManualEntry.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>GlobalConfigurationManualEntry.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -10910,8 +10965,6 @@
     <Content Include="Views\BranchAccount\_DetailsPartial.cshtml" />
     <Content Include="Views\BranchAccount\_EditPartial.cshtml" />
     <Content Include="Views\FileUpload\Corespondancelist.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceData.cshtml" />
-    <Content Include="Views\FileUpload\_CorrespondanceDetails.cshtml" />
     <Content Include="Views\BranchAccount\_Create.cshtml" />
     <Content Include="Views\PendingAccount\List.cshtml" />
     <Content Include="Views\PendingAccount\_Data.cshtml" />
@@ -10938,7 +10991,6 @@
     <Content Include="Views\MobileMoneyConfigV2\_MobileMoneyDetailsPartial.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\Index.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_Create.cshtml" />
-    <Content Include="Views\LiaisonMappingConfig\_Data.cshtml" />
     <Content Include="Views\LiaisonMappingConfig\_LiaisonMappingDetailsPartial.cshtml" />
     <Content Include="Views\JournalHead\_MemberReconciliationDetails.cshtml" />
     <Content Include="Views\JournalHead\_CashReconciliationDetails.cshtml" />
@@ -10975,21 +11027,48 @@
     <Content Include="Views\APIKey\_Revoke.cshtml" />
     <Content Include="Views\APIKey\_ChangeStatus.cshtml" />
     <Content Include="Views\APIKey\_Details.cshtml" />
-    <Content Include="Views\ReportingV2\Index.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_Edit.cshtml" />
-    <Content Include="Views\ReportingV2\ReportSection\Initilization.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLine\Initilization.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLineMapping\Initilization.cshtml" />
     <Content Include="Views\AccountBlancklist\_BlacklistEditPartial.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportDefinition\_Create.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLine\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportLineMapping\_List.cshtml" />
-    <Content Include="Views\ReportingV2\ReportSection\_List.cshtml" />
     <Content Include="Views\CustomeReports\_ReportResultsPartial.cshtml" />
     <Content Include="Views\CollectorCommission\List.cshtml" />
     <Content Include="Views\CollectorCommission\_Data.cshtml" />
     <Content Include="Views\CollectorCommission\_Details.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\Index.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_DataTable.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_RecordsForm.cshtml" />
+    <Content Include="Views\FileListing\_DetailsGLH.cshtml" />
+    <Content Include="Views\CollectorCommission\_CommissionRetreat.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestDetails.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondanceRequestTableData.cshtml" />
+    <Content Include="Views\FileUpload\_CorrespondenceApprovalAndRejectionRequest.cshtml" />
+    <Content Include="Views\ReportConfiguration\Index.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportDefinition\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLineMapping\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLineMapping\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportLine\_List.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReportConfiguration\ReportSection\_List.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_ReconciliationDetails.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_CloseOfDayForm.cshtml" />
+    <Content Include="Views\APIKey\_ApiKeyRows.cshtml" />
+    <Content Include="Views\APIKey\_ApiIntegrationGuide.cshtml" />
+    <Content Include="Views\CollectorDevice\Index.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceForm.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceTable.cshtml" />
+    <Content Include="Views\CollectorDevice\_CollectorDeviceDetails.cshtml" />
+    <Content Include="Views\CollectorDevice\List.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\Index.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\List.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseDetails.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_RevokeLicense.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_ActivateLicense.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseAction.cshtml" />
+    <Content Include="Views\DailyCollectorLicense\_LicenseDataTable.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\List.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
+    <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -10997,7 +11076,6 @@
     <Folder Include="AppFiles\Migration\TrialBalance\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\AttachedLoanDocuments\" />
-    <Folder Include="App_GlobalResources\CashReconciliation\" />
     <Folder Include="bin\bin\fr\" />
     <Folder Include="bin\ca\" />
     <Folder Include="bin\de\" />
@@ -11020,6 +11098,8 @@
     <Folder Include="Views\BulkOperation\Contribution\" />
     <Folder Include="Views\BulkOperation\Topup\" />
     <Folder Include="Views\ChequeNumber\" />
+    <Folder Include="Views\DaillyCollectorLicense\" />
+    <Folder Include="Views\Default\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

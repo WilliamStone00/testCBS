@@ -129,6 +129,11 @@ else
             <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             <tr>
+                <th class="bg-label">IsInterBranch</th>
+                <td>@(Model?.IsInterBranch.ToString() ?? "")</td>
+            </tr>
+
+            <tr>
                 <th class="bg-label">Accounting Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
             </tr>
@@ -544,6 +549,10 @@ else
                     <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
                     <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
                     <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
+                    <tr>
+                        <th class="bg-label">IsInterBranch</th>
+                        <td>@(Model?.IsInterBranch.ToString() ?? "")</td>
+                    </tr>
                     <tr>
                         <th class="bg-label">Accounting Date</th>
                         <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>

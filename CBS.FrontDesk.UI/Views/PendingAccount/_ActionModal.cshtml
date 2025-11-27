@@ -26,8 +26,8 @@
             <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Context</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Request Id</td>
-                    <td>@(Model?.Id ?? "-")</td>
+                    <td class="fw-bold">Account Number</td>
+                    <td>@(Model?.Account ?? "-")</td>
                 </tr>
                 <tr>
                     <td class="fw-bold">Action</td>
@@ -55,6 +55,7 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.Account)
                 @Html.HiddenFor(m => m.ActionType)
 
              
@@ -62,7 +63,7 @@
                 if (isValidation)
                 {
                     <div class="mb-3">
-                        @Html.LabelFor(m => m.ApprovalNotes, new { @class = "form-label text-primary fw-semibold" })
+                        @Html.LabelFor(m => m.ApprovalNotes,"Approval Notes", new { @class = "form-label text-primary fw-semibold" })
                         @Html.TextAreaFor(m => m.ApprovalNotes, new { @class = "form-control", rows = "3", placeholder = "Optional notes for the approval" })
                         @Html.ValidationMessageFor(m => m.ApprovalNotes, "", new { @class = "text-danger" })
                     </div>
@@ -70,7 +71,7 @@
                 else
                 {
                     <div class="mb-3">
-                        @Html.LabelFor(m => m.RejectionReason, new { @class = "form-label text-primary fw-semibold" })
+                        @Html.LabelFor(m => m.RejectionReason,"Reason For Rejection", new { @class = "form-label text-primary fw-semibold" })
                         @Html.TextAreaFor(m => m.RejectionReason, new { @class = "form-control", rows = "3", placeholder = "Explain why this request is rejected" })
                         @Html.ValidationMessageFor(m => m.RejectionReason, "", new { @class = "text-danger" })
                     </div>
@@ -85,7 +86,7 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="mdi mdi-close"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
                         <i class="mdi mdi-check-circle-outline"></i> Confirm
                     </button>
                 </div>

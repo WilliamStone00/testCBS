@@ -19,13 +19,15 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
     {
         private readonly BranchServices _branchServices;
         private readonly JournalHeadService _journalHeadService;
+        private readonly JournalHeadExcelExportGenerator _JournalHeadExcelExportGenerator;
 
-        public JournalHeadController(BranchServices branchServices, JournalHeadService journalHeadService)
+
+        public JournalHeadController(BranchServices branchServices, JournalHeadService journalHeadService, JournalHeadExcelExportGenerator journalHeadExcelExportGenerator)
         {
 
             _branchServices = branchServices;
             _journalHeadService = journalHeadService;
-
+            _JournalHeadExcelExportGenerator = journalHeadExcelExportGenerator;
 
         }
         // GET: JournalHead
@@ -106,6 +108,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+        
+
+
+
+
         [HttpGet]
         public async Task<ActionResult> GetDetails(string id)
         {
@@ -113,17 +120,21 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 return new HttpStatusCodeResult(400, "Journal Entry ID is required");
 
             Data.Entity.AccountingV2.JournalHead entry = null;
+
             try
             {
+                // 1️⃣ Get Journal Entry
                 entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
+                
+                var counterpartyBranch = await _branchServices.GetBranch(entry.CounterpartyBranchId);
+                entry.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
+
             }
             catch (Exception ex)
             {
-                // log as needed
                 return new HttpStatusCodeResult(404, ex.Message);
             }
 
-            // return HTML fragment (partial) — this will be injected into main modal body
             return PartialView("_JournalHeadDetails", entry);
         }
 
@@ -254,71 +265,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
 
 
-        [HttpPost]
-        public async Task<ActionResult> ApproveDestination(JournalApproval model)
-        {
-
-
-            if (model == null || string.IsNullOrEmpty(model.Reference))
-                return Json(new { success = false, message = "Destination Reference is required" });
-
-            try
-            {
-                var result = await _journalHeadService.ApproveDestinationAsync(model);
-
-                if (result == null)
-                    return Json(new { success = false, message = "No response from destination approval service." });
-
-                return Json(new
-                {
-                    success = true,
-                    statusCode = 200,
-                    message = result.Message ?? "Destination approved successfully",
-                    data = new
-                    {
-                        result.Reference,
-                        result.BranchId,
-                        result.TicketId,
-                        result.TicketState,
-                        result.JournalId
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    success = false,
-                    statusCode = 500,
-                    message = $"Destination approval failed: {ex.Message}"
-                });
-            }
-        }
 
 
 
 
-        //[HttpGet]
-        //public async Task<ActionResult> Details(string id)
-        //{
-        //    if (string.IsNullOrEmpty(id))
-        //        return new HttpStatusCodeResult(400, "Journal Entry ID is required");
-
-        //    Data.Entity.AccountingV2.WorkflowTicket entry = null;
-
-        //    try
-        //    {
-        //        entry = await _journalHeadService.GetJournalSourceByIdAsync(id);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // You can log the exception here
-        //        return new HttpStatusCodeResult(404, ex.Message);
-        //    }
-
-        //    //return View(entry); // MVC 5 expects Details.cshtml
-        //    return PartialView("_SourceDetails", entry);
-        //}
+        
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
@@ -330,6 +281,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             try
             {
                 entry = await _journalHeadService.GetJournalSourceByIdAsync(id);
+
+                var Branch = await _branchServices.GetBranch(entry.BranchId);
+                entry.BranchName = Branch?.Name ?? "—";
             }
             catch (Exception ex)
             {
@@ -353,7 +307,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             try
             {
                 // ✅ Fetch the journal entry by ID instead of by reference
-                var model =  await _journalHeadService.GetJournalEntryByIdAsync(id);
+                var model = await _journalHeadService.GetJournalEntryByIdAsync(id);
+                var counterpartyBranch = await _branchServices.GetBranch(model.CounterpartyBranchId);
+                model.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
+
+
                 if (model == null)
                     return HttpNotFound();
 
@@ -368,7 +326,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 string exportedBy = Session["FullName"]?.ToString() ?? "System";
 
                 // ✅ Generate Excel file
-                JournalHeadExcelExportGenerator.GenerateJournalHeadExcelSheet(model, filePath, exportedBy);
+                _JournalHeadExcelExportGenerator.GenerateJournalHeadExcelSheet(model, filePath, exportedBy);
 
                 // ✅ Read and send file to browser
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -412,7 +370,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 string exportedBy = Session["FullName"]?.ToString() ?? "System";
 
                 // ✅ Generate Excel file
-                JournalHeadExcelExportGenerator.GenerateJournalHeadExcel(model, filePath, exportedBy);
+                _JournalHeadExcelExportGenerator.GenerateJournalHeadExcel(model, filePath, exportedBy);
 
                 // ✅ Read and send file to browser
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);

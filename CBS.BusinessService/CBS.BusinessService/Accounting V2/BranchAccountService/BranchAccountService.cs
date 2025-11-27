@@ -172,6 +172,26 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
 
             return items;
         }
+        public List<SelectListItem> DropDownGen1(List<BranchAccountResponse> branchAccounts)
+        {
+            if (branchAccounts is null) return new List<SelectListItem>();
+
+            // Sort & distinct (optional: by Id)
+            var items = branchAccounts
+                .Where(a => a != null && !string.IsNullOrWhiteSpace(a.Id))
+                //.GroupBy(a => a.Id)
+                //.Select(g => g.First())
+                //.OrderBy(a => a.Name ?? string.Empty)
+                .Select(a => new SelectListItem
+                {
+                    // Show number if you have it; remove if not applicable
+                    Text = string.IsNullOrWhiteSpace(a.Code) ? $"{a.Name}" : $"{a.Name}",
+                    Value = a.Id
+                })
+                .ToList();
+
+            return items;
+        }
 
         public List<AccountDto> DroupDownGenAccounts(List<BranchAccountResponse> branchAccounts)
         {

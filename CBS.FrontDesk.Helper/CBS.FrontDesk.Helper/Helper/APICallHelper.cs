@@ -1615,7 +1615,8 @@ namespace CBS.FrontDesk.Helper
         public static string createawaitingcorrespondanceRequest = "/api/v1/AccountAwaitingCorrespondence";
 
 
-        public static string createCorrespondanceRequest = "/api/v1/CorrespondenceRequest?lang={0}";
+        public static string GetCorrespondanceRequest = "/api/v1/CorrespondenceRequest/{0}?lang={1}";
+        public static string CreateCorrespondanceRequest = "/api/v1/CorrespondenceRequest?lang={0}";
         public static string Correspondancedatatable = "/api/v1/CorrespondenceRequest/datatable";
         public static string RejectCorrespondence = "/api/v1/CorrespondenceRequest/{0}/reject?lang={1}";
         public static string ApproveCorrespondence = "/api/v1/CorrespondenceRequest/{0}/approve?lang={1}";
@@ -1671,8 +1672,25 @@ namespace CBS.FrontDesk.Helper
             public const string RenewApiKey = "/api/apikeys/renew";
             public const string RevokeApiKey = "/api/apikeys/revoke";
             public const string ChangeApiKeyStatus = "/api/apikeys/change-status";
-            public const string DeleteApiKey = "/api/apikeys/{0}";
-        
+        public const string DeleteApiKey = "/api/apikeys/{0}";
+
+        //--------------------------- Collector Device MANAGEMENT ----------------------------------------  
+            public const string GetAllCollectorDevice = "/api/v1/CollectorDevice/all";
+            public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
+            public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
+            public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+            
+        //----------------------------- Dailly Collector License Management ---------------------------
+        public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";
+        public const string RevokeLicense = "/api/v1/DailyCollectorLicense/{0}/revoke";
+        public const string DeactivateLicense = "/api/v1/DailyCollectorLicense/{0}/deactivate";
+        public const string ReactivateLicense = "/api/v1/DailyCollectorLicense/{0}/reactivate";
+        public const string GetLicenseById = "/api/v1/DailyCollectorLicense/{0}";
+        public const string GetCollectorLicenses = "/api/v1/DailyCollectorLicense/collector/{0}";
+        public const string ActivateLicense = "/api/v1/DailyCollectorLicense/activate";
+        public const string CheckLicenseStatus = "/api/v1/DailyCollectorLicense/status";
+        public const string LicenseDataTable = "/api/v1/DailyCollectorLicense/datatable";
 
         //*************************** End of Accounting V2 **************************************
 
@@ -1687,10 +1705,12 @@ namespace CBS.FrontDesk.Helper
 
         // ================ trial balance reports    =======================//
         public static string TrialBalance6 = "/api/v1/Reports/trial-balance6";
+        public static string TrialBalance4 = "/api/v1/Reports/trial-balance4";
 
 
         // ================ Journals   =======================//
-        public static string JournalEntries = "/api/v1/Reports/Journal";
+        public static string JournalEntries = "/api/v1/Reports/journal";
+        public static string JournalReceipts = "/api/v1/Reports/gl-receipt";
 
 
         // ================ Accnts  Statements   =======================//
@@ -1709,5 +1729,20 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
         public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
         public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
+
+        //-------------------------  System Reconciliation ----------------------
+
+        public static string GetReconciliationDataTable = "/api/v1/AccountingOperationTrack/GetUnProcessTrackedJournalDataTable";
+
+        public static string GetReconciliationSummary = "/api/v1/AccountingOperationTrack/GetBranchDailyStaticsQuery";
+
+        public static string GetReconciliationById = "/api/v1/AccountingOperationTrack/GetAccountingOperationByIdQuery/{0}";
+        public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
+        public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
+        public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
+
+       
+
+       
     }
 }

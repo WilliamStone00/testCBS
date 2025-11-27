@@ -1,63 +1,109 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 {
+
 
     public class AccountingV2ReportsFilter
     {
         [JsonProperty("from")]
-        public DateTime From { get; set; } = DateTime.Parse("2025-09-01");
+        public DateTime From { get; set; }
 
         [JsonProperty("to")]
-        public DateTime To { get; set; } = DateTime.Parse("2025-11-30");
+        public DateTime To { get; set; }
+
+        [JsonProperty("dateFrom")]
+
+        
+
+        public DateTime DateFrom { get; set; }
+
+        [JsonProperty("dateTo")]
+        public DateTime DateTo { get; set; }
 
         [JsonProperty("branchId")]
-        public string BranchId { get; set; } = "717373842079233";
+        public string BranchId { get; set; }
 
         [JsonProperty("consolidated")]
-        public bool Consolidated { get; set; } = false;
+        public bool Consolidated { get; set; }
 
         [JsonProperty("selectedBranchIds")]
-        public List<string> SelectedBranchIds { get; set; } = null;
+        public List<string> SelectedBranchIds { get; set; }
 
         [JsonProperty("excludeLiaisonInternal")]
-        public bool ExcludeLiaisonInternal { get; set; } = true;
+        public bool ExcludeLiaisonInternal { get; set; }
 
         [JsonProperty("sourceMode")]
-        public string SourceMode { get; set; } = "temp"; // ✅ lowercase to match API
+        public string SourceMode { get; set; }
 
         [JsonProperty("language")]
-        public string Language { get; set; } = "en";
+        public string Language { get; set; }
 
-        [JsonProperty("search")]
-        public string Search { get; set; } = "";
+        [JsonProperty("accountNumber")]
+        public string AccountNumber { get; set; }
+
+        [JsonProperty("accountNumbers")]
+        public List<string> AccountNumbers { get; set; }
+
+        [JsonProperty("accountingYear")]
+        public string AccountingYear { get; set; }
 
         [JsonProperty("paging")]
-        public Paging Paging { get; set; } = new Paging();
+        public Paging Paging { get; set; }
 
         [JsonProperty("sorting")]
-        public Sorting Sorting { get; set; } = new Sorting();
+        public Sorting Sorting { get; set; }
 
-        [JsonProperty("accounts")]
-        public List<string> Accounts { get; set; } = new List<string>();
+        [JsonProperty("zeroInclusive")]
+        public bool ZeroInclusive { get; set; }
+
+        [JsonProperty("includeZeroGlAccount")]
+        public bool IncludeZeroGlAccount { get; set; }
     }
 
     public class Paging
     {
-        [JsonProperty("pageNumber")]
-        public int PageNumber { get; set; } = 1;
+        [JsonProperty("page")]
+        public int Page { get; set; }
 
         [JsonProperty("pageSize")]
-        public int PageSize { get; set; } = 100;
+        public int PageSize { get; set; }
     }
 
     public class Sorting
     {
-        [JsonProperty("sortColumn")]
-        public string SortColumn { get; set; } = "AccountNumber";
+        [JsonProperty("sortBy")]
+        public string SortBy { get; set; } = null;
 
-        [JsonProperty("sortDirection")]
-        public string SortDirection { get; set; } = "asc";
+        [JsonProperty("sortDir")]
+        public string SortDir { get; set; } = null;
+    }
+
+
+
+
+    public class ReceiptV2Filter
+    {
+        [JsonPropertyName("receiptId")]
+        public string ReceiptId { get; set; } = null;
+
+        [JsonPropertyName("journalHeaderId")]
+        public string JournalHeaderId { get; set; } = null;
+
+
+
+        [JsonPropertyName("reference")]
+        public string Reference { get; set; } = null;
+
+        [JsonPropertyName("receiptNumber")]
+        public string ReceiptNumber { get; set; } = null;
+
+        [JsonPropertyName("lang")]
+        public string Lang { get; set; } = "en";
+
+        [JsonPropertyName("fromTemp")]
+        public bool FromTemp { get; set; } = true;
     }
 }

@@ -1,242 +1,497 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.AccountingEntryQuery
-@{
-    ViewBag.Title = "Accounting Reports";
-}
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance.CustomeResportItemS
 
-
-<!-- Title Section -->
-<div class="row">
+<!-- ▬▬▬ HEADER ▬▬▬ -->
+<div class="row mb-2">
     <div class="col-12">
-        <div class="card bg-light mb-3 shadow-sm">
-            <div class="card-body text-center">
-                <h2 class="text-primary mb-2">
-                    <i class="mdi mdi-finance me-2"></i> Accounting Reports
+        <div class="card bg-light shadow-sm">
+            <div class="card-body text-center py-3">
+                <h2 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-file-chart-outline me-2"></i> Custom Trial Balance Report
                 </h2>
-                <p class="text-muted mb-2">
-                    View, filter, and export your accounting reports with precision and flexibility.
+                <p class="card-text small mb-2">
+                    Generate a custom trial balance based on branch, report type, source mode and date range.
+                    Use this tool to extract targeted data for reconciliation, analysis and auditing.
                 </p>
-                <p class="fw-semibold text-warning">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Use filters below to refine report results.
-                </p>
-                <hr class="border border-secondary opacity-50" />
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.4);" />
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tips Section -->
-<!-- Tips Section -->
-<div class="card mb-3 shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Better Reporting</span>
-        <button class="btn btn-sm btn-outline-secondary" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseTips"
-                aria-expanded="false" aria-controls="collapseTips">
+<!-- ▬▬▬ TIPS ▬▬▬ -->
+<div class="card shadow-sm mb-3 border-0">
+    <div class="card-header d-flex justify-content-between align-items-center text-primary py-2 bg-light">
+        <span class="fw-semibold">
+            <i class="mdi mdi-information-outline me-2"></i> Tips &amp; Usage Guide
+        </span>
+        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </div>
+
     <div id="collapseTips" class="collapse">
-        <div class="card-body">
-            <ul class="mb-0" style="line-height: 1.6;">
+        <div class="card-body small text-muted">
+            <ul class="list-unstyled mb-2">
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <strong>Filter by Branch:</strong> Select one or multiple branches to focus the report on specific locations. Ideal for analyzing performance or transactions at individual branches.
+                    <i class="mdi mdi-checkbox-marked-outline text-success me-1"></i>
+                    Select a <strong>branch</strong> first – other filters will appear after a branch is chosen.
                 </li>
                 <li>
-                    <i class="mdi mdi-calendar-month-outline text-primary me-2"></i>
-                    <strong>Date Range:</strong> Use the 'From' and 'To' fields to narrow the report to a specific period. This is essential for monthly, quarterly, or yearly analysis.
+                    <i class="mdi mdi-calendar-range text-primary me-1"></i>
+                    Choose a clear <strong>start date</strong> and <strong>end date</strong> for precise results.
                 </li>
                 <li>
-                    <i class="mdi mdi-account-outline text-info me-2"></i>
-                    <strong>Filter by Account:</strong> Enable this option to select specific accounts. Multi-select allows targeting multiple accounts at once for focused insights.
+                    <i class="mdi mdi-format-list-bulleted-square text-primary me-1"></i>
+                    Select a <strong>Report Type</strong>. Accounts are only used for <strong>JE</strong> and
+                    <strong>Account Statement</strong>.
                 </li>
                 <li>
-                    <i class="mdi mdi-file-export-outline text-warning me-2"></i>
-                    <strong>Export Reports:</strong> Download the report in Excel or PDF format for sharing, presentation, or record-keeping. Always export for audits or team review.
+                    <i class="mdi mdi-database-search text-warning me-1"></i>
+                    Choose a <strong>Source Mode</strong> (Temporary, Reconciled, Auto, or RealTime).
                 </li>
                 <li>
-                    <i class="mdi mdi-filter-outline text-secondary me-2"></i>
-                    <strong>Source Mode:</strong> Choose between Temporary, Reconciled, Auto, or RealTime data. Selecting the appropriate mode ensures your report reflects the correct state of transactions.
+                    <i class="mdi mdi-calendar-clock text-info me-1"></i>
+                    Enable <strong>Accounting Year</strong> only if you want to filter by a specific year.
+                </li>
+                <li>
+                    <i class="mdi mdi-shield-check-outline text-success me-1"></i>
+                    The filter becomes active when <strong>dates</strong>, <strong>branch</strong>,
+                    <strong>report type</strong> and <strong>source mode</strong> are selected.
+                    Accounts and accounting year are optional.
                 </li>
             </ul>
         </div>
     </div>
 </div>
 
+<!-- ▬▬▬ FILTER UI ▬▬▬ -->
+<div class="card p-4 card-flat-gray shadow">
+
+    <!-- ROW 1: Dates + Accounting Year (top row, accounting year on the right) -->
+    <div class="row g-3 mb-3 align-items-end">
+
+        <div class="col-md-6">
+            <div class="form-check mt-3 mt-md-0">
+                <input class="form-check-input" type="checkbox" id="ToggleAccountingYear" />
+                <label class="form-check-label fw-semibold" for="ToggleAccountingYear">
+                    Filter by Accounting Year
+                </label>
+                <small class="text-muted d-block">
+                    Check to enable the accounting year dropdown.
+                </small>
+            </div>
+        </div>
+
+        <div class="col-md-6 accounting-year-group d-none">
+            @Html.Label("AccountingYear", "Accounting Year", new { @class = "form-label fw-semibold" })
+            @Html.DropDownList(
+                "AccountingYear",
+                new List<SelectListItem> {
+                    new SelectListItem { Text = "2021", Value = "2021" },
+                    new SelectListItem { Text = "2022", Value = "2022" },
+                    new SelectListItem { Text = "2023", Value = "2023" },
+                    new SelectListItem { Text = "2024", Value = "2024" },
+                    new SelectListItem { Text = "2025", Value = "2025" }
+                },
+                "--- Select Accounting Year ---",
+                new { @class = "form-select select2 accountingyear_custome", id = "AccountingYear" }
+            )
+        </div>
+    </div>
+
+    <!-- ROW 2: Branch (single full row) -->
+    <div class="row g-3 mb-3">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold" for="BranchId">🏢 Select Branch</label>
+
+            @Html.DropDownListFor(m => m.BranchId,
+                new SelectList(ViewBag.Branches, "Id", "Name"),
+                "--- Select Branch ---",
+                new
+                {
+                    @class = "form-control branches_custome select2 required-field",
+                    multiple = "multiple",
+                    id = "BranchId"
+                })
+            <small class="text-muted">
+                Select one or more branches. Other filters will appear after a branch is selected.
+            </small>
+        </div>
+    </div>
 
 
+    @*==================== group controls one =======================*@
+    <div>
+        <!-- ROW 3: Report Type + Source Mode (shown only when branch is selected) -->
+        <div class="row g-3 mb-3 requires-branch d-none">
+            <div class="col-md-6">
+                @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList(
+                    "ReportType",
+                    (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
+                    "--- Select Report Type ---",
+                    new
+                    {
+                        @class = "form-select select2 reportype_custome required-field",
+                        id = "ReportType"
+                    })
+                <small class="text-muted">
+                    Choose <strong>JE</strong> or <strong>Account Statement</strong> to enable account selection.
+                </small>
+            </div>
 
-<!-- Filters -->
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Filter Options
-    </h5>
+            <div class="col-md-6">
+                @Html.Label("SourceMode", "Source Mode", new { @class = "form-label fw-semibold" })
+                @Html.DropDownList(
+                    "SourceMode",
+                    new List<SelectListItem> {
+                        new SelectListItem { Text = "Temporary", Value = "Temp" },
+                        new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
+                        new SelectListItem { Text = "Auto", Value = "Auto" },
+                        new SelectListItem { Text = "RealTime", Value = "RealTime" }
+                    },
+                    "--- Select Source Mode ---",
+                    new
+                    {
+                        @class = "form-select select2 source_custome required-field",
+                        id = "SourceMode"
+                    })
+                <small class="text-muted">
+                    Select the transaction source you want to report on.
+                </small>
+            </div>
+        </div>
 
-    <div class="card p-3 bg-light">
-        <form id="reportFilterForm">
-            <div class="row g-3">
+        <!-- ROW 4: Accounts + flags (shown only when branch is selected) -->
+        <div class="row g-3 mb-3 requires-branch d-none">
 
-                <!-- Branch (full row) -->
-                @*<div class="col-12 mb-3">
-                        @Html.Label("Branch", new { @class = "form-label fw-semibold" })
-                        @Html.DropDownList(
-                            "BranchId",
-                            (IEnumerable<SelectListItem>)ViewBag.Branches,
-                            "--- Select Branch ---",
-                            new { @class = "form-select select2 branches_custome", multiple = "multiple" }
-                        )
+
+            <div class="col-md-8 d-flex align-items-center gap-4">
+                @*<div class="form-check" >
+                        <input type="checkbox" hidden id="IsLiaison" class="form-check-input" />
+                        <label class="form-check-label" for="IsLiaison">Liaison</label>
                     </div>*@
 
-                <div class="col-12 mb-3">
-                    <label for="BranchId" class="form-label fw-semibold">Select Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId,
-                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control select2 branches_custome", multiple = "multiple", id = "BranchId" })
-                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-
+                <div class="form-check" hidden>
+                    <input type="checkbox" id="IsInterbranch" class="form-check-input" />
+                    <label class="form-check-label" for="IsInterbranch">Laison</label>
                 </div>
 
-                <!-- Other filters in row -->
-                <!-- Report Type -->
-                <div class="col-md-4">
-                    @Html.Label("Report Type", new { @class = "form-label fw-semibold" })
-                    @Html.DropDownList(
-                        "ReportType",
-                        (IEnumerable<SelectListItem>)ViewBag.ReportTypes,
-                        "--- Select Report Type ---",
-                        new { @class = "form-select select2 reportype_custome" }
-                    )
+                <div class="form-check d-none include_zero_group">
+                    <input type="checkbox" id="IncludingZero" class="form-check-input" />
+                    <label class="form-check-label" for="IncludingZero">  Include Zero Balance On TB</label>
                 </div>
 
-                <!-- Date From -->
-                <div class="col-md-4">
-                    @Html.Label("Date From", new { @class = "form-label fw-semibold" })
-                    @Html.TextBox("DateFrom", null, new { @class = "form-control datefrom_custome ", type = "date" })
+                <div class="form-check">
+                    <input type="checkbox" id="IsConsolidated" class="form-check-input" />
+                    <label class="form-check-label" for="IsConsolidated">Consolidated</label>
                 </div>
-
-                <!-- Date To -->
-                <div class="col-md-4">
-                    @Html.Label("Date To", new { @class = "form-label fw-semibold" })
-                    @Html.TextBox("DateTo", null, new { @class = "form-control dateto_custome", type = "date" })
-                </div>
-
-                <!-- Source Mode -->
-                <div class="col-md-4">
-                    @Html.Label("Source Mode", new { @class = "form-label fw-semibold" })
-                    @Html.DropDownList(
-                        "SourceMode",
-                        new List<SelectListItem> {
-                            new SelectListItem { Text = "Temporary", Value = "Temp" },
-                            new SelectListItem { Text = "Reconciled", Value = "Reconciled" },
-                            new SelectListItem { Text = "Auto", Value = "Auto" },
-                            new SelectListItem { Text = "RealTime", Value = "RealTime" }
-                        },
-                        "--- Select Source Mode ---",
-                        new { @class = "form-select select2 source_custome" }
-                    )
-                </div>
-
-                <!-- Exclude Liaison/Internal -->
-                <div class="col-md-4">
-                    <div class="form-check mt-4">
-                        <input type="checkbox" class="form-check-input excludeLiaisonInternal_custome" id="excludeLiaisonInternal" name="ExcludeLiaisonInternal" />
-                        <label class="form-check-label fw-semibold" for="excludeLiaisonInternal">
-                            Exclude Liaison/Internal
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Filter by Account -->
-                <div class="col-md-4">
-                    <div class="form-check mt-4">
-                        <input type="checkbox" class="form-check-input filterByAccount_custome " id="filterByAccount" />
-                        <label class="form-check-label fw-semibold " for="filterByAccount">
-                            Filter by Account
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Account Multi-select -->
-                <div class="col-md-8" id="accountNumberContainer" style="display: none;">
-                    @Html.Label("Accounts", new { @class = "form-label fw-semibold" })
-                    @Html.ListBox(
-                        "AccountIds",
-                        (IEnumerable<SelectListItem>)ViewBag.AccountNumbers,
-                        new { @class = "form-select select2", multiple = "multiple", style = "width:100%;" }
-                    )
-                </div>
-
-                <!-- Consolidated -->
-                <div class="col-md-4">
-                    <div class="form-check mt-4">
-                        <input type="checkbox" class="form-check-input consolidated_custome" id="consolidated " name="Consolidated" />
-                        <label class="form-check-label fw-semibold" for="consolidated">
-                            Consolidated Report
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Hidden Pagination & Sorting -->
-                <input type="hidden" name="Page" value="0" />
-                <input type="hidden" name="PageSize" value="0" />
-                <input type="hidden" name="SortBy" value="" />
-                <input type="hidden" name="SortDir" value="" />
-
-                <!-- Buttons -->
-                <div class="col-12 text-end mt-3">
-                    <button id="submitBtn" type="submit" class="btn btn-primary px-4">
-                        <i class="mdi mdi-magnify me-1"></i> Search
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary px-4">
-                        <i class="mdi mdi-refresh me-1"></i> Reset
-                    </button>
-                </div>
-
             </div>
-        </form>
+        </div>
+
+        <!-- ROW 5: Accounts + flags (shown only when branch is selected) -->
+        <div class="row">
+            <div class="col-md-12 account account_group d-none">
+                <label class="form-label fw-semibold" for="AccountId">
+                    Select Accounts <span class="text-muted">(optional)</span>
+                </label>
+                @Html.DropDownList(
+                    "AccountId",
+                    new List<SelectListItem>(),
+                    "--- Select Account ---",
+                    new
+                    {
+                        @class = "select2 select-gray branches_accounts",
+                        multiple = "multiple",
+                        id = "AccountId"
+                    })
+                <small class="text-muted">
+                    Accounts are only required for <strong>JE</strong> and <strong>Account Statement</strong> reports.
+                </small>
+            </div>
+        </div>
+        <!-- ROW 6: Date Range -->
+
+        <div class="row date_range_group d-none">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
+                <input type="date" id="StartDate" class="form-control select-gray required-field" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold" for="EndDate">📆 End Date</label>
+                <input type="date" id="EndDate" class="form-control select-gray required-field" />
+            </div>
+        </div>
     </div>
+
+    @*==================== group controls two =======================*@
+
+
+    <div class="">
+
+    </div>
+
+
+    <!-- ROW 6: Filter + Reset Buttons (shown only when branch is selected) -->
+    <div class="row mt-3 requires-branch d-none">
+        <div class="col-md-6">
+            <button type="button"
+                    style="background:green"
+                    id="btnGetCommission"
+                    class="btn btn-success w-100 disabled">
+                <i class="mdi mdi-search me-1"></i> Apply Filter
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" id="btnReset" class="btn btn-secondary w-100">
+                <i class="mdi mdi-refresh me-1"></i> Reset
+            </button>
+        </div>
+    </div>
+
 </div>
 
-<!-- Report Data -->
-<div id="reportResults">
-    @Html.Partial("_ReportResultsPartial")
-</div>
-
+<!-- ▬▬▬ JS ▬▬▬ -->
 @section Scripts {
-
-
-
     <script>
+        function buildReportPayload() {
+            const selectedBranches = $('#BranchId').val() || [];
+            const selectedAccounts = $('#AccountId').val() || [];
+
+            return {
+                from: $('#StartDate').val(),
+                to: $('#EndDate').val(),
+                dateFrom: $('#StartDate').val(),
+                dateTo: $('#EndDate').val(),
+                branchId: selectedBranches.length === 1 ? selectedBranches[0] : null,
+                selectedBranchIds: selectedBranches,
+                consolidated: $('#IsConsolidated').is(':checked'),
+                accountingYear: $('#ToggleAccountingYear').is(':checked') ? $('#AccountingYear').val() : null,
+                excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
+                sourceMode: $('#SourceMode').val(),
+                language: "en",
+                includeZeroGlAccount: $('#IncludingZero').is(':checked'),
+                accountNumber: selectedAccounts.length === 1 ? selectedAccounts[0] : null,
+                accountNumbers: selectedAccounts,
+                paging: { page: 0, pageSize: 0 },
+                sorting: { sortBy: null, sortDir: null }
+            };
+        }
+
+        function Reprint(controller) {
+            ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
+        }
+
+
+
+
         $(document).ready(function () {
-            // Initialize Select2
-            $('.select2').select2({
-                placeholder: "--- Select ---",
-                allowClear: true,
-                width: '100%'
+
+            const $branch = $('#BranchId');
+            const $reportType = $('#ReportType');
+            const $accountDropdown = $('#AccountId');
+            const $account_group = $('.account_group');
+            const $btn = $('#btnGetCommission');
+            const $requiresBranch = $('.requires-branch');
+
+            // Toggle Accounting Year visibility (checkbox controls dropdown)
+            $('#ToggleAccountingYear').on('change', function () {
+                const show = this.checked;
+                $('.accounting-year-group').toggleClass('d-none', !show);
             });
 
-            // Show/Hide account select
-            $('#filterByAccount').on('change', function () {
-                if ($(this).is(':checked')) {
-                    $('#accountNumberContainer').slideDown();
+
+
+            // Validate Filter button state
+            function validateFilters() {
+                const branchSelected = $branch.val() && $branch.val().length > 0;
+                const hasReportType = $reportType.val();
+                const hasSource = $('#SourceMode').val();
+                const hasStartDate = $('#StartDate').val();
+                const hasEndDate = $('#EndDate').val();
+
+                const ok = branchSelected && hasReportType && hasSource && hasStartDate && hasEndDate;
+
+                $btn.prop('disabled', !ok).toggleClass('disabled', !ok);
+            }
+
+            // Show/hide rows that depend on branch selection
+            function toggleBranchDependentFields() {
+                const hasBranch = $branch.val() && $branch.val().length > 0;
+
+                $requiresBranch.toggleClass('d-none', !hasBranch);
+                $('.date_range_group').toggleClass('d-none', !hasBranch);
+
+                if (!hasBranch) {
+                    // Clear dependent selections when branch is removed
+                    $reportType.val(null).trigger('change');
+                    $('#SourceMode').val(null).trigger('change');
+                    $accountDropdown.empty();
+                    $account_group.addClass('d-none');
+                    $('#IsConsolidated').prop('checked', false);
+                    $('#IsLiaison').prop('checked', false);
+                    $('#IsInterbranch').prop('checked', false);
+
+                    // Reset accounting year toggle + dropdown visibility (values are optional)
+                    $('#ToggleAccountingYear').prop('checked', false);
+                    $('.accounting-year-group').addClass('d-none');
+                }
+
+                validateFilters();
+            }
+
+            // Load accounts only when:
+            //  - at least one branch is selected
+            //  - report type is JE or Account Statement
+            function loadAccountsIfNeeded() {
+                const branches = $branch.val();
+                let reportTypeVal = ($reportType.val() || "").trim().toLowerCase();
+
+                const hasBranch = branches && branches.length > 0;
+                const loadsAccounts = reportTypeVal === "account statement" || reportTypeVal === "general ledger" ;
+
+                if (!(hasBranch && loadsAccounts)) {
+                    $account_group.addClass('d-none');
+                    $accountDropdown.empty();
+                    return;
+                }
+
+                $.ajax({
+                    url: '/CustomeReports/loadAccountById/',
+                    type: 'POST',
+                    data: { branchId: branches },
+                    success: function (response) {
+                        const data = response.results || [];
+                        $accountDropdown.empty().append('<option value="">--- Select Account ---</option>');
+
+                        $.each(data, function (i, item) {
+                            $accountDropdown.append(
+                                `<option value="${item.Code}">${item.Name}</option>`
+                            );
+                        });
+
+                        $account_group.removeClass('d-none');
+                    }
+                });
+            }
+
+            // Event bindings
+            $branch.on('change', function () {
+                toggleBranchDependentFields();
+                loadAccountsIfNeeded();
+
+
+                if ($branch.val() && $branch.val().length > 1) {
+                    $('#IsConsolidated').prop('checked', true);
                 } else {
-                    $('#accountNumberContainer').slideUp();
-                    $('#AccountIds').val(null).trigger('change'); // clear selections
+                    $('#IsConsolidated').prop('checked', false);
                 }
             });
+
+            $reportType.on('change', function (ev) {
+                loadAccountsIfNeeded();
+                validateFilters();
+                const val = ev.target.value.trim().toLowerCase();
+                showIncludero(val);
+            });
+
+
+
+           function showIncludero(val){
+               if (val.includes('trial')) {
+                   $('.include_zero_group').removeClass('d-none');
+               } else {
+                   $('.include_zero_group').addClass('d-none');
+               }
+           }
+
+
+
+
+            $('#SourceMode, #StartDate, #EndDate').on('change', validateFilters);
+            $('.required-field').on('change', validateFilters);
+
+            // Generic change hook for safety
+            $('input, select').on('change', validateFilters);
+
+            // Initial state on page load
+            toggleBranchDependentFields();
+            validateFilters();
+
+            // Generate Report
+            $btn.on('click', function (e) {
+                e.preventDefault();
+
+                if ($btn.prop('disabled')) {
+                    return;
+                }
+
+                const payload = buildReportPayload();
+               
+
+                let reportType = ($reportType.val() || "").trim().toLowerCase();
+
+                switch (reportType) {
+                    case "account statement":
+                        $.post({
+                            url: '/AccntStatement/GenerateReport/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('AccntStatement')
+                        });
+                        break;
+
+                    case "trial balance 6 columns":
+                        $.post({
+                            url: '/TrialBalance6Columns/GenerateTrialBalance/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('TrialBalance6Columns')
+                        });
+                        break;
+
+                    case "trial balance 4 columns":
+                        $.post({
+                            url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('TrialBalance4Colmuns')
+                        });
+                        break;
+
+                    case "je":
+                        $.post({
+                            url: '/JournalEntries/GenerateJournalEntries/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('JournalEntries')
+                        });
+                        break;
+                }
+            });
+
+            // Reset button – clear UI but keep structure/ids/classes
+            $('#btnReset').on('click', function () {
+                $('#StartDate').val('');
+                $('#EndDate').val('');
+
+                $branch.val(null).trigger('change');
+                $reportType.val(null).trigger('change');
+                $('#SourceMode').val(null).trigger('change');
+
+                $('#IsConsolidated').prop('checked', false);
+                $('#IsLiaison').prop('checked', false);
+                $('#IsInterbranch').prop('checked', false);
+
+                $('#ToggleAccountingYear').prop('checked', false);
+                $('.accounting-year-group').addClass('d-none');
+                $accountDropdown.empty();
+                $account_group.addClass('d-none');
+
+                toggleBranchDependentFields();
+                validateFilters();
+            });
         });
-
-
-
-
-
-
-
     </script>
-
-
 }
-<script src="~/Scripts/Js/Accounting_V2/axios.js"></script>
-<script src="~/Scripts/Js/Accounting_V2/customeReports.js"></script>

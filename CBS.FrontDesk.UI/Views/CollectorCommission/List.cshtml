@@ -45,24 +45,25 @@
 
     <form id="commissionFilterForm" autocomplete="off">
         <div class="card p-2 mb-1 bg-light">
+            <div class="col-md-12">
+                <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
+                @Html.DropDownListFor(m => m.BranchId,
+                    new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control form-control-sm select2", id = "BranchId" })
+            </div>
+
             <!-- Basic Filters - Compact Row -->
             <div class="row g-2 mb-2">
-                <div class="col-md-4">
-                    <label for="BranchId" class="form-label small fw-semibold">🏢 Branch</label>
-                    @Html.DropDownListFor(m => m.BranchId,
-                        new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control form-control-sm select2", id = "BranchId" })
-                </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="CollectorId" class="form-label small fw-semibold">👤 Collector</label>
                     @Html.DropDownList("CollectorId",
                         new List<SelectListItem> { new SelectListItem { Text = "--- Select Collector ---", Value = "" } },
                         new { @class = "form-control form-control-sm select2", id = "CollectorId" })
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label small fw-semibold">Member Ref</label>
                     <input type="text" id="MemberReference" name="MemberReference" class="form-control form-control-sm" placeholder="Member reference" />
                 </div>
@@ -70,7 +71,7 @@
 
             <!-- Period Filters - Compact Row -->
             <div class="row g-2 mb-2">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Year</label>
                     <select id="Year" name="Year" class="form-control form-control-sm">
                         <option value="">--- Year ---</option>
@@ -81,7 +82,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Month</label>
                     <select id="Month" name="Month" class="form-control form-control-sm">
                         <option value="">--- Month ---</option>
@@ -98,9 +99,9 @@
                         <option value="11">Nov</option>
                         <option value="12">Dec</option>
                     </select>
-                </div>          
+                </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label small fw-semibold">Ref Number</label>
                     <input type="text" id="ReferenceNumber" name="ReferenceNumber" class="form-control form-control-sm" placeholder="Reference number" />
                 </div>
@@ -146,22 +147,30 @@
                         <input type="number" id="MaxPaidAmount" name="MaxPaidAmount" class="form-control form-control-sm" placeholder="0.00" step="0.01" min="0" />
                     </div>
                 </div>
-            </div>       
+            </div>
         </div>
 
         <!-- Compact Buttons -->
         <div class="row g-2 mt-2">
-            <div class="col-md-6">
+            <div class="col-12 col-md-4">
                 <button id="applyCommissionFilterBtn" type="button" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1" aria-hidden="true"></i> Apply Filters
                 </button>
             </div>
-            <div class="col-md-6">
+
+            <div class="col-12 col-md-4">
                 <button id="resetCommissionFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset
+                    <i class="mdi mdi-refresh me-1" aria-hidden="true"></i> Reset
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1" aria-hidden="true"></i> Export
                 </button>
             </div>
         </div>
+
     </form>
 </div>
 
@@ -169,588 +178,530 @@
     @Html.Partial("_Data")
 </div>
 
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportCommission")
+        </div>
+    </div>
+</div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
-        var commissionTable = null;
-        var isTableInitialized = false;
+        // ---------- Configuration: use your existing endpoints ----------
+        const API_ENDPOINTS = {
+            getByUserName: '/APIKey/GetByUserName',
+            initializeData: '/APIKey/InitializeData'
+        };
 
-        function emptyToNull(v) {
-            return (v === undefined || v === null || v === '') ? null : v;
-        }
-
-        function collectCommissionFilters() {
-            console.log('Collecting filters...');
-            // Collect the filter values
-            const filters = {
-                BranchId: emptyToNull($('#BranchId').val()),
-                CollectorId: emptyToNull($('#CollectorId').val()),
-                MemberReference: emptyToNull($('#MemberReference').val()),
-                Year: $('#Year').val() ? parseInt($('#Year').val()) : null,
-                Month: $('#Month').val() ? parseInt($('#Month').val()) : null,
-                StartDate: emptyToNull($('#StartDate').val()),
-                EndDate: emptyToNull($('#EndDate').val()),
-                MinPaidAmount: $('#MinPaidAmount').val() ? parseFloat($('#MinPaidAmount').val()) : null,
-                MaxPaidAmount: $('#MaxPaidAmount').val() ? parseFloat($('#MaxPaidAmount').val()) : null,
-                ReferenceNumber: emptyToNull($('#ReferenceNumber').val()),
-                ProcessedByUserId: emptyToNull($('#ProcessedByUserId').val()),
-                Currency: emptyToNull($('#Currency').val())
-            };
-
-            console.log('Filters collected:', filters);
-            return filters;
-        }
-
-        function escapeHtml(str) {
-            if (!str && str !== 0) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        function formatCurrency(amount) {
-            if (amount == null || amount === '') return '-';
-            return parseFloat(amount).toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+        // Basic HTML-escape helpers
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            return String(text).replace(/[&<>"'`]/g, function (s) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
             });
         }
 
+        function escapeHtmlAttr(text) {
+            return escapeHtml(text).replace(/"/g, '&quot;');
+        }
+
+        // Utility: render a single table row (returns DOM tr element)
+        function populateRow(item) {
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-id', item.Id || '');
+
+            const expirationClass = (new Date(item.ExpirationDate) < new Date()) ? 'text-danger' : 'text-success';
+            const statusBadge = item.RevokedAt ? '<span class="badge bg-danger">Revoked</span>'
+                : (!item.IsActive ? '<span class="badge bg-warning">Inactive</span>' : '<span class="badge bg-success">Active</span>');
+
+            const activeBadge = item.IsActive ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
+
+            // Check if user role is ThirdPartyProviders
+            const isThirdPartyProvider = item.UserRole === 'ThirdPartyProviders';
+
+            // Generate actions based on role
+            let actionsHtml = '';
+            if (isThirdPartyProvider) {
+                // ThirdPartyProviders only see Details button
+                actionsHtml = `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-cog-outline"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                            </ul>
+                        </div>
+                    `;
+            } else {
+                // Other roles see all actions
+                actionsHtml = `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-cog-outline"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" onclick="showDetails('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-eye me-1 text-primary"></i> Details</button></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><button class="dropdown-item" onclick="showRenew('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-calendar-refresh me-1 text-warning"></i> Renew</button></li>
+                                <li>
+                                    ${item.IsActive
+                        ? '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch-off me-1 text-secondary"></i> Deactivate</button>'
+                        : '<button class="dropdown-item" onclick="showChangeStatus(\'' + escapeHtmlAttr(item.Id) + '\')"><i class="mdi mdi-toggle-switch me-1 text-success"></i> Activate</button>'
+                    }
+                                </li>
+                                <li><button class="dropdown-item text-danger" onclick="showRevoke('${escapeHtmlAttr(item.Id)}')"><i class="mdi mdi-key-remove me-1 text-danger"></i> Revoke</button></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><button class="dropdown-item text-danger" onclick="deleteApiKey('${escapeHtmlAttr(item.Id)}','${escapeHtmlAttr(item.UserName)}')"><i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button></li>
+                            </ul>
+                        </div>
+                    `;
+            }
+
+            tr.innerHTML = `
+                            <td>${escapeHtml(item.UserName)}</td>
+                            <td>
+                                <code>${escapeHtml(item.KeyPrefix)}</code>
+                                <button class="btn btn-sm btn-outline-secondary ms-1 copy-prefix-btn" data-prefix="${escapeHtmlAttr(item.KeyPrefix)}" data-bs-toggle="tooltip" title="Copy Prefix">
+                                    <i class="mdi mdi-content-copy"></i>
+                                </button>
+                            </td>
+                            <td>${escapeHtml(formatDate(item.CreatedAt))}</td>
+                            <td><span class="${expirationClass}">${escapeHtml(formatDate(item.ExpirationDate))}</span></td>
+                            <td>${escapeHtml(formatDate(item.ModifiedDate))}</td>
+                            <td>${statusBadge}</td>
+                            <td>${activeBadge}</td>
+                            <td>${actionsHtml}</td>
+                        `;
+            return tr;
+        }
+
+        // Format date for display
         function formatDate(dateString) {
-            if (!dateString) return '-';
-            try {
-                return new Date(dateString).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            } catch (e) {
-                return '-';
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+
+        // Render array into tbody
+        function renderTable(items) {
+            const tbody = document.getElementById('apiKeysTbody');
+            tbody.innerHTML = ''; // clear
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                                <tr id="noDataRow">
+                                    <td colspan="8" class="text-center text-muted py-4">
+                                        <i class="mdi mdi-key-remove mdi-48px mb-2"></i><br/>No API keys found
+                                    </td>
+                                </tr>`;
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            items.forEach(i => fragment.appendChild(populateRow(i)));
+            tbody.appendChild(fragment);
+
+            // re-initialize tooltips & copy buttons for new elements
+            initTooltipsAndCopy();
+        }
+
+        // Initialize tooltips and attach copy handlers
+        function initTooltipsAndCopy() {
+            // bootstrap tooltip init (if bootstrap 5)
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // copy buttons
+            document.querySelectorAll('.copy-prefix-btn').forEach(btn => {
+                btn.removeEventListener('click', copyToClipboardWrapped);
+                btn.addEventListener('click', copyToClipboardWrapped);
+            });
+        }
+
+        // wrapper to provide event to copyToClipboard
+        function copyToClipboardWrapped(e) {
+            const prefix = e.currentTarget.getAttribute('data-prefix') || '';
+            copyToClipboard(prefix, e);
+        }
+
+        // copyToClipboard updated to accept event and text
+        function copyToClipboard(text, evt) {
+            if (!navigator.clipboard) return;
+            navigator.clipboard.writeText(text).then(function () {
+                // Show success feedback on the specific button
+                const btn = evt.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="mdi mdi-check"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-success');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 1000);
+            }).catch(() => {
+                // optionally show failure
+            });
+        }
+
+        // Enhanced loading state for buttons
+        function setButtonLoading(button, isLoading) {
+            if (!button) return;
+
+            if (isLoading) {
+                button.disabled = true;
+                const originalText = button.innerHTML;
+                button.setAttribute('data-original-text', originalText);
+                button.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Loading...';
+            } else {
+                button.disabled = false;
+                const originalText = button.getAttribute('data-original-text');
+                if (originalText) {
+                    button.innerHTML = originalText;
+                }
             }
         }
 
-        function initCommissionDataTable() {
-            console.log('=== INIT DATATABLE START ===');
+        // ---------- Filter actions ----------
+        async function applyApiKeyFilter() {
+            const username = document.getElementById('filterUserName').value.trim();
+            const id = document.getElementById('filterId').value.trim();
+            const applyBtn = document.getElementById('applyApiKeyFilterBtn');
+            const resetBtn = document.getElementById('resetApiKeyFilterBtn');
 
-            // Check if DataTable library is available
-            if (typeof $.fn.DataTable === 'undefined') {
-                console.error('DataTable library not loaded!');
-                appalert('DataTable library not loaded. Please check your scripts.', 0, 1);
-                return false;
-            }
-
-            // If already initialized, destroy it first to avoid conflicts
-            if ($.fn.DataTable.isDataTable('#myDataTable')) {
-                console.log('DataTable already exists, destroying...');
-                if (commissionTable) {
-                    commissionTable.destroy();
-                    commissionTable = null;
-                }
-            }
-
-            // defensive: ensure element exists
-            var $table = $('#myDataTable');
-            if (!$table.length) {
-                console.error('Table element #myDataTable not found on page. Current page elements:');
-                console.log('All tables on page:', $('table').length);
-                console.log('All elements with ID myDataTable:', $('#myDataTable').length);
-                appalert('Table element not found on page. Please check the console for details.', 0, 1);
-                return false;
-            }
-
-            console.log('Table found, creating new DataTable instance...');
+            setButtonLoading(applyBtn, true);
+            setButtonLoading(resetBtn, true);
 
             try {
-                commissionTable = $table.DataTable({
-                    serverSide: true,
-                    searching: false,
-                    responsive: true,
-                    deferRender: true,
-                    deferLoading: true, // Don't load automatically
-                    order: [[0, 'desc']], // default sort by CreatedDate desc
-                    ajax: {
-                        url: '/CollectorCommission/DataTable',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: function (d) {
-                            console.log('DataTable requesting data with params:', d);
-                            const filters = collectCommissionFilters();
+                // Case 1: no filters => load all data via InitializeData
+                if (!username && !id) {
+                    await loadAllApiKeys();
+                    return;
+                }
 
-                            // Create the payload that matches your C# model
-                            const payload = {
-                                DataTableOptions: {
-                                    draw: d.draw,
-                                    start: d.start,
-                                    length: d.length,
-                                    skip: d.start,
-                                    pageSize: d.length,
-                                    searchValue: d.search?.value || '',
-                                    sortColumnName: d.columns && d.order && d.order[0] ? d.columns[d.order[0].column].data : 'CreatedDate',
-                                    sortColumnDirection: d.order && d.order[0] ? d.order[0].dir : 'desc',
-                                    recordsTotal: 0,
-                                    recordsFiltered: 0,
-                                    search: d.search?.value || '',
-                                    sortDirection: d.order && d.order[0] ? d.order[0].dir : 'desc'
-                                },
-                                // Spread the filters into the payload
-                                ...filters
-                            };
+                // Case 2: username only => call GetByUserName
+                if (username && !id) {
+                    const json = await $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    });
 
-                            console.log('Sending payload to server:', payload);
-                            return JSON.stringify(payload);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error('AJAX error:', textStatus, errorThrown);
-                            console.error('Response text:', jqXHR.responseText);
-                            var msg = 'Failed to load commission data. Please try again.';
-                            try {
-                                msg = jqXHR.responseJSON?.message || msg;
-                            } catch (e) {
-                                console.error('Error parsing response:', e);
-                            }
-                            appalert(msg, 0, 1);
-                        }
-                    },
-                    columns: [
-                        {
-                            data: 'CreatedDate',
-                            render: function (data) {
-                                return data ? formatDate(data) : '-';
-                            }
-                        },
-                        {
-                            data: 'BranchName',
-                            defaultContent: '-',
-                            render: function (data, type, row) {
-                                return escapeHtml(data || row.BranchName || '-');
-                            }
-                        },
-                        {
-                            data: 'CollectorName',
-                            defaultContent: '-',
-                            render: function (data, type, row) {
-                                return escapeHtml(data || row.CollectorName || '-');
-                            }
-                        },
-                        {
-                            data: 'AmountPaid',
-                            defaultContent: '-',
-                            render: function (data, type, row) {
-                                return data ? formatCurrency(data) : '-';
-                            }
-                        },
-                        {
-                            data: 'Month',
-                            defaultContent: '-',
-                            render: function (data, type, row) {
-                                return escapeHtml(data || row.Month || '-');
-                            }
-                        },
-                        {
-                            data: 'Id',
-                            orderable: false,
-                            searchable: false,
-                            render: function (data, type, row) {
-                                // compute ids safely
-                                var rawId = String(row.Id || row.id || data || '');
-                                var recordId = encodeURIComponent(rawId);
-                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
-                                var btnId = 'actionDropdown_' + safeId;
-
-                                var collectorName = escapeHtml(row.CollectorName || 'N/A');
-                                var isDeleted = row.IsDeleted === true || row.IsDeleted === 'true' || row.IsDeleted === 1;
-
-                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${collectorName}">
-                                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                  </button>`;
-
-                                var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${collectorName}">
-                                                               <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                             </button>` : '';
-
-                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${collectorName}">
-                                                                 <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                                                               </button>` : '';
-
-                                return `
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                type="button" id="${btnId}"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="mdi mdi-cog-outline"></i> Actions
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                            <li>${detailsBtn}</li>
-                                            ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                            ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                            ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
-                                        </ul>
-                                    </div>
-                                `.trim();
-                            }
-                        }
-                    ],
-                    language: {
-                        emptyTable: 'No commission records found. Apply filters to load data.',
-                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-                        infoEmpty: 'Showing 0 to 0 of 0 entries',
-                        infoFiltered: '(filtered from _MAX_ total entries)',
-                        lengthMenu: 'Show _MENU_ entries',
-                        loadingRecords: 'Loading...',
-                        processing: 'Processing...',
-                        zeroRecords: 'No matching records found'
-                    },
-                    lengthMenu: [10, 25, 50, 100],
-                    pageLength: 10,
-                    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-                    initComplete: function (settings, json) {
-                        console.log('=== DATATABLE INIT COMPLETE ===');
-                        console.log('DataTable settings:', settings);
-                        console.log('DataTable JSON response:', json);
-
-                        // Initialize tooltips
-                        try {
-                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                    new bootstrap.Tooltip(el);
-                                });
-                            }
-                        } catch (e) {
-                            console.warn('Tooltip initialization failed:', e);
-                        }
-                        isTableInitialized = true;
-                    },
-                    drawCallback: function () {
-                        console.log('DataTable draw complete');
-                        // Re-initialize tooltips after each draw
-                        try {
-                            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                    new bootstrap.Tooltip(el);
-                                });
-                            }
-                        } catch (e) {
-                            console.warn('Tooltip re-initialization failed:', e);
-                        }
+                    if (json && json.success && Array.isArray(json.data)) {
+                        renderTable(json.data);
+                    } else {
+                        renderTable([]);
                     }
+                    return;
+                }
+
+                // Case 3: id only => get single item and render as array
+                if (id && !username) {
+                    // Use InitializeData to get single item
+                    const html = await $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+
+                    // Replace the tbody content with the HTML response
+                    document.getElementById('apiKeysTbody').innerHTML = html;
+                    initTooltipsAndCopy();
+                    return;
+                }
+
+                // Case 4: both username & id => get both and merge
+                const [userJson, idHtml] = await Promise.all([
+                    $.ajax({
+                        url: `${API_ENDPOINTS.getByUserName}?userName=${encodeURIComponent(username)}`,
+                        type: 'GET',
+                        dataType: 'json'
+                    }),
+                    $.ajax({
+                        url: `${API_ENDPOINTS.initializeData}?KEY=${encodeURIComponent(id)}&partialView=_ApiKeyRows`,
+                        type: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                ]);
+
+                const userItems = (userJson && userJson.success && Array.isArray(userJson.data)) ? userJson.data : [];
+
+                // Parse the HTML response to extract the single item
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(idHtml, 'text/html');
+                const idTr = doc.querySelector('tr[data-id]');
+
+                let mergedItems = [...userItems];
+
+                // If we found a TR element in the HTML response, extract data and add to merged items
+                if (idTr) {
+                    const idFromTr = idTr.getAttribute('data-id');
+                    // Check if this item is already in userItems
+                    const exists = userItems.some(item => item.Id === idFromTr);
+                    if (!exists) {
+                        // You would need to extract the data from the TR or make another API call
+                        // For now, we'll just use the userItems
+                    }
+                }
+
+                renderTable(mergedItems);
+
+            } catch (err) {
+                console.error('Error applying filter:', err);
+                if (typeof appalert === 'function') {
+                    appalert('Error applying filters: ' + err.message, 0, 1);
+                } else {
+                    alert('Error applying filters: ' + err.message);
+                }
+                // Fallback to loading all data
+                await loadAllApiKeys();
+            } finally {
+                setButtonLoading(applyBtn, false);
+                setButtonLoading(resetBtn, false);
+            }
+        }
+
+        // Load all API keys
+        async function loadAllApiKeys() {
+            try {
+                const html = await $.ajax({
+                    url: `${API_ENDPOINTS.initializeData}?path=list&partialView=_ApiKeyRows`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
 
-                console.log('DataTable created successfully');
-                return true;
+                document.getElementById('apiKeysTbody').innerHTML = html;
+                initTooltipsAndCopy();
+            } catch (err) {
+                console.error('Error loading API keys:', err);
+                renderTable([]);
+                if (typeof appalert === 'function') {
+                    appalert('Error loading API keys: ' + err.message, 0, 1);
+                }
+            }
+        }
+
+        // Reset inputs and reload full list
+        function resetApiKeyFilter() {
+            document.getElementById('filterUserName').value = '';
+            document.getElementById('filterId').value = '';
+            loadAllApiKeys();
+        }
+
+        // Action functions - Updated to use jQuery AJAX
+        async function showDetails(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=details&partialView=_Details`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
 
             } catch (error) {
-                console.error('Error creating DataTable:', error);
-                console.error('Error stack:', error.stack);
-                appalert('Error initializing table: ' + error.message, 0, 1);
-                return false;
+                console.error('Error loading details:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load API key details: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load API key details: ' + error.message);
+                }
             }
         }
 
-        function loadCommissionData() {
-            console.log('=== LOAD COMMISSION DATA START ===');
-
-            // Initialize table if not already done
-            if (!isTableInitialized || !commissionTable) {
-                console.log('Table not initialized, initializing now...');
-                var success = initCommissionDataTable();
-                if (!success) {
-                    console.error('Failed to initialize DataTable');
-                    $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
-                    return;
-                }
-            }
-
-            if (commissionTable) {
-                console.log('Reloading DataTable with filters...');
-                // Show loading state
-                $('#applyCommissionFilterBtn').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Loading...');
-
-                // reload with current filters - this will trigger the first AJAX call
-                commissionTable.ajax.reload(function() {
-                    console.log('DataTable reload complete');
-                    // Re-enable button after load
-                    $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
-                }, false);
-            } else {
-                console.error('commissionTable not initialized after init attempt');
-                $('#applyCommissionFilterBtn').prop('disabled', false).html('<i class="mdi mdi-magnify"></i> Apply Filters');
-            }
-        }
-
-        function resetCommissionFilters() {
-            console.log('Resetting filters...');
-            // reset form fields
-            var form = document.getElementById('commissionFilterForm');
-            if (form) form.reset();
-
-            // reset select2 if present
-            if ($.fn.select2) {
-                if ($('#BranchId').hasClass('select2-hidden-accessible')) {
-                    $('#BranchId').val(null).trigger('change');
-                }
-                if ($('#CollectorId').hasClass('select2-hidden-accessible')) {
-                    $('#CollectorId').val(null).trigger('change');
-                }
-                if ($('#Currency').hasClass('select2-hidden-accessible')) {
-                    $('#Currency').val(null).trigger('change');
-                }
-            }
-
-            // Set current year and month as default
-            var currentDate = new Date();
-            $('#Year').val(currentDate.getFullYear());
-            $('#Month').val(currentDate.getMonth() + 1);
-
-            // hide optional filter sections
-            $('#dateRangeFilters, #amountRangeFilters').addClass('d-none');
-            $('#toggleDateRange, #toggleAmountRange').prop('checked', false);
-
-            // Clear table data if table exists
-            if (commissionTable && isTableInitialized) {
-                commissionTable.clear().draw();
-            }
-
-            appalert('Filters reset', 3, 1);
-        }
-
-        function showCommissionDetails(id) {
-            console.log('Showing commission details for ID:', id);
-            var modalEl = document.getElementById('commissionDetailsModal');
-            if (!modalEl) {
-                // Create modal if it doesn't exist
-                modalEl = document.createElement('div');
-                modalEl.className = 'modal fade';
-                modalEl.id = 'commissionDetailsModal';
-                modalEl.innerHTML = `
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-white text-black">
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="text-center">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modalEl);
-            }
-
-            var bsModal = null;
+        async function showRenew(id) {
             try {
-                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                    bsModal = new bootstrap.Modal(modalEl);
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=renew&partialView=_Renew`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading renew form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load renew form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load renew form: ' + error.message);
                 }
-            } catch (e) {
-                console.error('Bootstrap Modal not available', e);
+            }
+        }
+
+        async function showChangeStatus(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=change-status&partialView=_ChangeStatus`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading status change form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load status change form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load status change form: ' + error.message);
+                }
+            }
+        }
+
+        async function showRevoke(id) {
+            try {
+                const html = await $.ajax({
+                    url: `/APIKey/InitializeData?KEY=${encodeURIComponent(id)}&path=revoke&partialView=_Revoke`,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                // Inject into modal and show
+                const modalBody = document.querySelector('#affiliateDetailsModal .modal-body');
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(document.getElementById('affiliateDetailsModal'));
+                modal.show();
+
+            } catch (error) {
+                console.error('Error loading revoke form:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Failed to load revoke form: ' + error.message, 0, 1);
+                } else {
+                    alert('Failed to load revoke form: ' + error.message);
+                }
+            }
+        }
+
+        async function deleteApiKey(id, userName) {
+            alertify.confirm(
+                'Confirm Deletion',
+                `Are you sure you want to delete API key for user "${userName}"? This action cannot be undone.`,
+                async function onOk() {
+                    try {
+                        const result = await $.ajax({
+                            url: `/APIKey/Delete`,
+                            type: 'POST',
+                            data: { KEY: id },
+                            dataType: 'json'
+                        });
+
+                        if (result && result.success) {
+                            if (typeof appalert === 'function') {
+                                appalert('API key deleted successfully!', 3, 1);
+                            } else {
+                                alert('API key deleted successfully!');
+                            }
+                            // Reload the table
+                            await loadAllApiKeys();
+                        } else {
+                            const msg = (result && result.message) ? result.message : 'Failed to delete API key.';
+                            if (typeof appalert === 'function') {
+                                appalert(msg, 0, 1);
+                            } else {
+                                alert(msg);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error deleting API key:', error);
+                        const msg = error && error.message ? error.message : 'An error occurred during deletion.';
+                        if (typeof appalert === 'function') {
+                            appalert('Error deleting API key: ' + msg, 0, 1);
+                        } else {
+                            alert('Error deleting API key: ' + msg);
+                        }
+                    }
+                },
+                function onCancel() {
+                    // Cancelled by user
+                    if (typeof appalert === 'function') {
+                        appalert('Delete operation cancelled.', 3, 1);
+                    }
+                }
+            );
+        }
+
+        // Global form submit handler - Updated to use jQuery AJAX
+        function handleFormSubmit(form, successMessage) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            setButtonLoading(submitBtn, true);
+
+            // Convert FormData to object for jQuery
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
             }
 
-            // Show loading state
-            $('#commissionDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-
-            if (bsModal) bsModal.show();
-
-            // Load details partial view
-            $.get('/CollectorCommission/GetbyId', { id: id })
-                .done(function (html) {
-                    $('#commissionDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
-                    try {
-                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                new bootstrap.Tooltip(el);
-                            });
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: data,
+                dataType: 'json'
+            })
+                .done(function (result) {
+                    if (result.success) {
+                        if (typeof appalert === 'function') {
+                            appalert(successMessage, 1, 1);
+                        } else {
+                            alert(successMessage);
                         }
-                    } catch (e) { /* ignore */ }
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('affiliateDetailsModal'));
+                        if (modal) modal.hide();
+                        // Reload table
+                        loadAllApiKeys();
+                    } else {
+                        if (typeof appalert === 'function') {
+                            appalert('Operation failed: ' + result.message, 0, 1);
+                        } else {
+                            alert('Operation failed: ' + result.message);
+                        }
+                    }
                 })
                 .fail(function (xhr, status, error) {
-                    console.error('Error loading commission details:', error);
-                    $('#commissionDetailsModal .modal-body').html(
-                        '<div class="alert alert-danger text-center">Error loading commission details. Please try again.</div>'
-                    );
-                    appalert('Failed to load commission details', 0, 1);
-                });
-        }
-
-        // Function to load collectors by branch
-        function loadCollectorsByBranch(branchId) {
-            console.log('Loading collectors for branch:', branchId);
-            $.ajax({
-                url: '@Url.Action("GetCollectorsByBranch", "CollectorCommission")',
-                type: 'GET',
-                data: { branchId: branchId },
-                beforeSend: function () {
-                    $('#CollectorId').prop('disabled', true);
-                    $('#CollectorId').html('<option value="">Loading collectors...</option>');
-                },
-                success: function (response) {
-                    console.log('Collectors loaded:', response);
-                    var options = '<option value="">--- Select Collector ---</option>';
-
-                    if (response && response.length > 0) {
-                        $.each(response, function (index, collector) {
-                            if (collector.Value && collector.Text) {
-                                options += '<option value="' + collector.Value + '">' + collector.Text + '</option>';
-                            }
-                        });
+                    console.error('Error:', error);
+                    if (typeof appalert === 'function') {
+                        appalert('An error occurred while processing your request: ' + error, 0, 1);
                     } else {
-                        options = '<option value="">No collectors found</option>';
+                        alert('An error occurred while processing your request: ' + error);
                     }
+                })
+                .always(function () {
+                    setButtonLoading(submitBtn, false);
+                });
 
-                    $('#CollectorId').html(options);
-
-                    if ($.fn.select2) {
-                        $('#CollectorId').select2();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error loading collectors:', error);
-                    $('#CollectorId').html('<option value="">Error loading collectors</option>');
-                },
-                complete: function () {
-                    $('#CollectorId').prop('disabled', false);
-                }
-            });
+            return false;
         }
 
-        $(document).ready(function () {
-            console.log('=== DOCUMENT READY START ===');
-            console.log('jQuery version:', $.fn.jquery);
-            console.log('DataTable available:', typeof $.fn.DataTable !== 'undefined');
-            console.log('Bootstrap available:', typeof bootstrap !== 'undefined');
-
-            // Debug: Check if table exists
-            console.log('Table element exists:', $('#myDataTable').length);
-            if ($('#myDataTable').length) {
-                console.log('Table HTML:', $('#myDataTable').prop('outerHTML'));
-            } else {
-                console.error('TABLE NOT FOUND! Looking for #myDataTable');
-                console.log('All tables on page:', $('table').length);
-                $('table').each(function(i) {
-                    console.log('Table ' + i + ' ID:', $(this).attr('id'));
-                });
-            }
-
-            // Debug: Check if buttons exist
-            console.log('Apply button exists:', $('#applyCommissionFilterBtn').length);
-            console.log('Reset button exists:', $('#resetCommissionFilterBtn').length);
-            console.log('Branch dropdown exists:', $('#BranchId').length);
-            console.log('Collector dropdown exists:', $('#CollectorId').length);
-
-            // Initialize Select2 for dropdowns
-            if ($.fn.select2) {
-                console.log('Initializing Select2...');
-                $('#BranchId').select2({
-                    width: '100%',
-                    placeholder: 'Select Branch'
-                });
-                $('#CollectorId').select2({
-                    width: '100%',
-                    placeholder: 'Select Collector'
-                });
-                $('#Currency').select2({
-                    width: '100%',
-                    placeholder: 'Select Currency'
-                });
-            }
-
-            // Set current year and month as default
-            var currentDate = new Date();
-            $('#Year').val(currentDate.getFullYear());
-            $('#Month').val(currentDate.getMonth() + 1);
-
-            // Apply filter button click - THIS IS THE MAIN ENTRY POINT
-            $('#applyCommissionFilterBtn').off('click').on('click', function (e) {
-                console.log('Apply button clicked!');
-                e.preventDefault();
-                console.log('Apply commission filter clicked');
-                loadCommissionData();
-            });
-
-            // Reset filter button click
-            $('#resetCommissionFilterBtn').off('click').on('click', function (e) {
-                console.log('Reset button clicked!');
-                e.preventDefault();
-                console.log('Reset commission filter clicked');
-                resetCommissionFilters();
-            });
-
-            // Enter key triggers apply
-            $('#commissionFilterForm input').off('keypress').on('keypress', function (e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    loadCommissionData();
-                }
-            });
-
-            // Load collectors when branch is selected - ADD THIS
-            $('#BranchId').change(function () {
-                console.log('Branch changed:', $(this).val());
-                var branchId = $(this).val();
-                if (branchId) {
-                    loadCollectorsByBranch(branchId);
-                } else {
-                    $('#CollectorId').html('<option value="">--- Select Collector ---</option>');
-                    if ($.fn.select2) {
-                        $('#CollectorId').select2();
-                    }
-                }
-            });
-
-            // Delegated actions (details/edit/delete)
-            $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
-                e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) {
-                    appalert('Missing id for details', 0, 1);
-                    return;
-                }
-                showCommissionDetails(id);
-            });
-
-            $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
-                e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) {
-                    appalert('Missing id for edit', 0, 1);
-                    return;
-                }
-                // Implement edit functionality here
-                appalert('Edit functionality to be implemented', 3, 1);
-            });
-
-            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
-                e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) {
-                    appalert('Missing id for delete', 0, 1);
-                    return;
-                }
-
-                // Confirm deletion
-                if (confirm('Are you sure you want to delete this commission record?')) {
-                    // Implement delete functionality here
-                    appalert('Delete functionality to be implemented', 3, 1);
-                }
-            });
-
-            console.log('=== COMMISSION PAGE INITIALIZATION COMPLETE ===');
-            // NOTE: Table is NOT initialized automatically on page load
-            // It will be initialized only when user clicks "Apply Filters"
+        // on page load - ensure tooltips and copy buttons bind
+        document.addEventListener('DOMContentLoaded', function () {
+            initTooltipsAndCopy();
         });
     </script>
 }
