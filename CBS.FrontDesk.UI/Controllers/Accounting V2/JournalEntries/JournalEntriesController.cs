@@ -137,6 +137,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                             InterbranchStatus = x.InterbranchStatus,
                             CounterpartyBranchId = x.CounterpartyBranchId,
                             TimeOfOperation = x.TimeOfOperation,
+                            
 
                             // Branch and contact
                             BranchCode = BranchInformation.BranchCode,

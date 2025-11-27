@@ -91,9 +91,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                     BranchPBox = BranchInformation.PBox
                 };
 
+                var tdebit = response.Entries.Count(x => x.Dr > 0);
+                var tcredit = response.Entries.Count(x => x.Cr > 0);
+
                 // STEP 3 — Flatten receipt rows for Crystal Reports
                 var data = response.Entries.Select(x =>
                 {
+                    var entry = response.IssuedAtLocal.ToString("MMM dd yyyy hh:mm:ss.fff tt");
+                    
+
                     var item = new ReceiptFlatItems
                     {
                         Id = response.Id,
@@ -132,7 +138,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
                         Date = x.Date,
-
+                        TCredit = tcredit,
+                        TDebit = tdebit,
+                        ReadableDate = entry,
+                       
                         // Movement line
                         AccountNumber = x.AccountNumber,
                         AccountName = x.AccountName,
