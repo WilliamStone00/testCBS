@@ -138,6 +138,8 @@ $(document).ready(function () {
         const branchText = $('#BranchId option:selected').text();
         const yearText = $('#Year option:selected').text();
         const statusText = $('#Status option:selected').text();
+        const openingDateText = $('#openingDate').val() ? new Date($('#openingDate').val()).toLocaleString() : '';
+        const closingDateText = $('#closingDate').val() ? new Date($('#closingDate').val()).toLocaleString() : '';
 
         if (!$('#BranchId').val()) { appalert("Select a branch.", 3, 1); return false; }
         if (!$('#Year').val()) { appalert("Select an accounting year.", 3, 1); return false; }
@@ -145,21 +147,23 @@ $(document).ready(function () {
 
         const title = "Confirm Accounting Year Details";
         const message = `
-            <p>Please review the details below before confirming:</p>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr><th>Branch</th><td>${branchText}</td></tr>
-                    <tr><th>Accounting Year</th><td>${yearText}</td></tr>
-                    <tr><th>Status</th><td>${statusText}</td></tr>
-                </tbody>
-            </table>
-            <div class="form-check mt-3">
-                <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-                <label for="alertifyConfirmCheckbox" class="form-check-label">
-                    I confirm that the above details are correct.
-                </label>
-            </div>
-        `;
+        <p>Please review the details below before confirming:</p>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr><th>Branch</th><td>${branchText}</td></tr>
+                <tr><th>Accounting Year</th><td>${yearText}</td></tr>
+                <tr><th>Status</th><td>${statusText}</td></tr>
+                <tr><th>Opening Date</th><td>${openingDateText}</td></tr>
+                <tr><th>Closing Date</th><td>${closingDateText}</td></tr>
+            </tbody>
+        </table>
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+            <label for="alertifyConfirmCheckbox" class="form-check-label">
+                I confirm that the above details are correct.
+            </label>
+        </div>
+    `;
 
         alertify.confirm(title, message,
             function () {
