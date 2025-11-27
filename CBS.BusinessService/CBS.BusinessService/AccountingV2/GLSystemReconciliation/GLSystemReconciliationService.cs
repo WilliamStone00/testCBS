@@ -217,31 +217,35 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
             }
         }
 
-
-        public async Task<CustomDataTable2> GetReconciliationDetailsAsync(ReconciliationQuery query)
+        public async Task<ReconciliationDetails> GetOperationDetailAsync(OperationDetailsFilter filter)
         {
             try
             {
-                query.Options.sortColumnName = "";
-                query.Options.sortColumnDirection = "";
+                // Call your API endpoint and get raw JSON
+                var jsonResponse = await _systemReconciliationapiCallerHelper
+                    .PostAsync<ServiceResponse<ReconciliationDetails>>(APICallHelper.GetReconciliationDetails, filter);
 
-                var response = await _systemReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
-                    APICallHelper.GetReconciliationDetails, query);
+                // Check if API response or data is null
+                if (jsonResponse == null || jsonResponse.ApiResponseData == null || jsonResponse.ApiResponseData.Data == null)
+                {
+                    // Return null or throw, depending on your handling strategy
+                    return null;
+                }
 
-                if (!response.IsSuccess)
-                    throw new Exception($"API call failed: {response.Message}");
-
-                if (response.ApiResponseData == null)
-                    throw new Exception("API returned null data");
-
-                return response.ApiResponseData.Data;
+                // Return the actual data object
+                return jsonResponse.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"API Error (Reconciliation): {ex.Message}");
-                throw new Exception($"Reconciliation service unavailable: {ex.Message}", ex);
+                // Log error and optionally rethrow
+                System.Diagnostics.Debug.WriteLine($"GetOperationDetailAsync Error: {ex.Message}");
+                throw;
             }
         }
+
+
+
+
 
     }
 }

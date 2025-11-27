@@ -1,33 +1,74 @@
 ﻿using CBS.FrontDesk.Data.Entity.DataTable;
+using System.ComponentModel.DataAnnotations;
 
 namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
 {
+
     public class BranchCashConfig
     {
         public string Id { get; set; }
-       public string BranchId { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
+
+        [Required(ErrorMessage = "Cash-in-hand (teller till) account is required.")]
         public string CashInHandAccountId { get; set; } // teller till
+
+        [Required(ErrorMessage = "Vault account is required.")]
         public string VaultAccountId { get; set; }
+
+        [Required(ErrorMessage = "Surplus income (overage) account is required.")]
         public string SurplusIncomeAccountId { get; set; } // overage
+
+        [Required(ErrorMessage = "Revenue account is required.")]
         public string RevenueAccountId { get; set; }
+
+        [Required(ErrorMessage = "Shortage expense account is required.")]
         public string ShortageExpenseAccountId { get; set; } // shortage
+
+        // Optional toggle – no [Required] needed
         public bool RealTimeCashPosting { get; set; } = true; // cash ops impacted in real time
+
+        [Required(ErrorMessage = "Partner account is required.")]
         public string PartnerAccountId { get; set; }
+
+        [Required(ErrorMessage = "CamCCUL account is required.")]
         public string CamcculAccountId { get; set; }
+
+        [Required(ErrorMessage = "Head Office liaison account is required.")]
         public string HeadOfficeLiaisonAccountId { get; set; }
+
+        [Required(ErrorMessage = "Form fee income account is required.")]
         public string FormFeeIncomeAccountId { get; set; }
+
+        [Required(ErrorMessage = "Loan transit account is required.")]
         public string LoanTransitAccountId { get; set; }
+
+        [Required(ErrorMessage = "Cash-in commission account is required.")]
         public string CashInCommisionAccountIDAccountId { get; set; }
+
+        [Required(ErrorMessage = "Cash-out commission account is required.")]
         public string CashOutCommisionAccountIDAccountId { get; set; }
+
+        [Required(ErrorMessage = "Transfer commission account is required.")]
         public string TransfterCommisionAccountIDAccountId { get; set; }
+
+        [Required(ErrorMessage = "VAT account is required.")]
         public string VATAccountId { get; set; }
+
+        [Required(ErrorMessage = "Interest-generated-from account is required.")]
         public string InterestGeneratedFromAccountId { get; set; }
+
+        [Required(ErrorMessage = "MoMo cash account is required.")]
         public string MomocashAccountId { get; set; }
+
+        [Required(ErrorMessage = "MoMo cash commission GL account is required.")]
         public string MomocashCommissionGlId { get; set; }
+
+        [Required(ErrorMessage = "Fallback suspense account is required.")]
         public string FallbackSuspenseAccountId { get; set; }
-
-
     }
+
 
     public sealed class BranchCashConfigRowDto
     {

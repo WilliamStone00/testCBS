@@ -38,7 +38,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             _cashDeskService = cashDeskService;
             _accountingServices = accountingServices;
-            this._branchAccountService=chartOfAccountServices;
+            this._branchAccountService = chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
             _branchServices=branchServices;
             _individualProfileServices=individualProfileServices;
@@ -72,7 +72,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
+  
             var Branches = await _branchServices.GetBranches();
+            
             ViewBag.Branches = Branches.ToList();
 
             var listing1 = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
@@ -96,6 +98,15 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> LoadGLbyBranchId(string branchid)
+        {
+            var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchid);
+            var selectListItems = _branchAccountService.DropDownGen(listing.ToList());
+
+            return Json(selectListItems, JsonRequestBehavior.AllowGet);
+        }
+
 
         public async Task<ActionResult> LoadMomoAccountsProfiles(string branchid, string category)
         {
