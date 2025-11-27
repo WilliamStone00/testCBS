@@ -241,7 +241,7 @@ namespace CBS.BusinessService.Accounting_V2.BranchAccountService
                         Code = a.Code,
                         Name = $"[{a.Code}] - {a.Name}".Trim()
                     })
-                    .OrderBy(a => a.Name) // nicer UX for dropdown; change if you prefer Id
+                    .OrderBy(a => a.Code) // nicer UX for dropdown; change if you prefer Id
                     .ToList();
 
                 return formatted;
