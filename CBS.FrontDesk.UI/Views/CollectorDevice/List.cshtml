@@ -30,44 +30,6 @@
     </div>
 </div>
 
-<!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary">
-                    <i class="mdi mdi-devices me-2"></i>Device Details
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="detailsModalBody">
-                <!-- Details content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary">
-                    <i class="mdi mdi-pencil me-2"></i>Edit Device
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="editModalBody">
-                <!-- Edit form will be loaded here -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="card">
     <div class="card-body">
@@ -197,36 +159,44 @@
         class ListingDeviceManager {
             constructor() {
                 this.dataTable = null;
-                this.init();
+                // Do not auto-init here — we'll init once on document ready to avoid double init.
             }
 
             init() {
+                // Called once from document.ready
                 this.initializeDataTable();
                 this.bindEvents();
                 this.enableTooltips();
             }
 
             bindEvents() {
-                // Confirmation modal events
+                // Confirmation modal cleanup
                 $('#confirmationModal').on('hidden.bs.modal', () => {
                     $('#confirmationModal .modal-body').empty();
                 });
 
-                // Edit modal form submission
+                // Edit modal form submission (delegated)
                 $(document).on('submit', '#editDeviceForm', this.handleEditFormSubmit.bind(this));
 
-                // Refresh button event
+                // Refresh button handler (class btn-refresh used on some buttons)
                 $(document).on('click', '.btn-refresh', () => {
                     this.refreshDataTable();
                 });
             }
 
-            enableTooltips() {
-                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            enableTooltips(scope) {
+                // scope optional: element or document by default
+                const root = scope || document;
+                const triggers = [].slice.call(root.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                triggers.forEach(el => {
+                    try { new bootstrap.Tooltip(el); } catch (e) { /* ignore */ }
+                });
             }
 
             initializeDataTable() {
+                // guard: don't init twice
+                if (this.dataTable) return;
+
                 this.dataTable = $('#collectorDevicesTable').DataTable({
                     processing: true,
                     serverSide: true,
@@ -243,10 +213,8 @@
                             data: 'createdOn',
                             name: 'CreatedOn',
                             className: 'text-center col-created',
-                            render: (data, type, row) => {
-                                if (type === 'display' || type === 'filter') {
-                                    return this.formatDate(data);
-                                }
+                            render: (data, type) => {
+                                if (type === 'display' || type === 'filter') return this.formatDate(data);
                                 return data;
                             }
                         },
@@ -254,9 +222,10 @@
                             data: 'deviceName',
                             name: 'DeviceName',
                             className: 'text-center col-name',
-                            render: (data, type, row) => {
+                            render: (data, type) => {
                                 if (type === 'display' || type === 'filter') {
-                                    return `<small class="d-block text-truncate" style="max-width:220px;" title="${data}">${data}</small>`;
+                                    const safe = (data || '').toString();
+                                    return `<small class="d-block text-truncate" style="max-width:220px;" title="${safe}">${safe}</small>`;
                                 }
                                 return data;
                             }
@@ -265,9 +234,10 @@
                             data: 'deviceSerialNumber',
                             name: 'DeviceSerialNumber',
                             className: 'text-center col-serial',
-                            render: (data, type, row) => {
+                            render: (data, type) => {
                                 if (type === 'display' || type === 'filter') {
-                                    return `<small class="d-block text-truncate" style="max-width:180px;" title="${data}">${data}</small>`;
+                                    const safe = (data || '').toString();
+                                    return `<small class="d-block text-truncate" style="max-width:180px;" title="${safe}">${safe}</small>`;
                                 }
                                 return data;
                             }
@@ -276,30 +246,18 @@
                             data: 'deviceVersion',
                             name: 'DeviceVersion',
                             className: 'text-center col-version',
-                            render: (data, type, row) => {
-                                if (type === 'display' || type === 'filter') {
-                                    return `<small>${data}</small>`;
-                                }
-                                return data;
-                            }
+                            render: (data, type) => (type === 'display' || type === 'filter') ? `<small>${data ?? ''}</small>` : data
                         },
                         {
                             data: 'status',
                             name: 'Status',
                             className: 'text-center col-status',
-                            render: (data, type, row) => {
+                            render: (data, type) => {
                                 if (type === 'display' || type === 'filter') {
                                     let badgeClass = 'bg-warning';
                                     let statusText = 'Maintenance';
-
-                                    if (data === 1) {
-                                        badgeClass = 'bg-success';
-                                        statusText = 'Active';
-                                    } else if (data === 0) {
-                                        badgeClass = 'bg-danger';
-                                        statusText = 'Inactive';
-                                    }
-
+                                    if (data === 1 || data === '1') { badgeClass = 'bg-success'; statusText = 'Active'; }
+                                    else if (data === 0 || data === '0') { badgeClass = 'bg-danger'; statusText = 'Inactive'; }
                                     return `<span class="badge ${badgeClass}">${statusText}</span>`;
                                 }
                                 return data;
@@ -309,10 +267,11 @@
                             data: 'assignedCollectorUserId',
                             name: 'AssignedCollectorUserId',
                             className: 'text-center col-assigned',
-                            render: (data, type, row) => {
+                            render: (data, type) => {
                                 if (type === 'display' || type === 'filter') {
-                                    if (data && data.trim() !== '') {
-                                        return `<small class="text-muted d-block text-truncate" style="max-width:220px;" title="${data}">${data}</small>`;
+                                    if (data && data.toString().trim() !== '') {
+                                        const safe = data.toString();
+                                        return `<small class="text-muted d-block text-truncate" style="max-width:220px;" title="${safe}">${safe}</small>`;
                                     } else {
                                         return '<span class="text-muted">Not Assigned</span>';
                                     }
@@ -326,26 +285,14 @@
                             className: 'text-center col-actions',
                             orderable: false,
                             searchable: false,
-                            render: (data, type, row) => {
+                            render: (data) => {
+                                const id = (data || '').toString().replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
                                 return `
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-primary"
-                                                    onclick="listingDeviceManager.viewDevice('${data}')"
-                                                    data-bs-toggle="tooltip" title="View Details">
-                                                <i class="mdi mdi-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    onclick="listingDeviceManager.editDevice('${data}')"
-                                                    data-bs-toggle="tooltip" title="Edit Device">
-                                                <i class="mdi mdi-pencil"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    onclick="listingDeviceManager.deleteDevice('${data}')"
-                                                    data-bs-toggle="tooltip" title="Delete Device">
-                                                <i class="mdi mdi-delete"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="listingDeviceManager.viewDevice('${id}')" data-bs-toggle="tooltip" title="View Details"><i class="mdi mdi-eye"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="listingDeviceManager.editDevice('${id}')" data-bs-toggle="tooltip" title="Edit Device"><i class="mdi mdi-pencil"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="listingDeviceManager.deleteDevice('${id}')" data-bs-toggle="tooltip" title="Delete Device"><i class="mdi mdi-delete"></i></button>
+                                    </div>`;
                             }
                         }
                     ],
@@ -359,29 +306,18 @@
                         infoEmpty: "Showing 0 to 0 of 0 devices",
                         infoFiltered: "(filtered from _MAX_ total devices)",
                         search: "Search:",
-                        paginate: {
-                            first: "First",
-                            last: "Last",
-                            next: "Next",
-                            previous: "Previous"
-                        },
+                        paginate: { first: "First", last: "Last", next: "Next", previous: "Previous" },
                         processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div> Loading devices...'
                     },
-                    initComplete: () => {
-                        this.enableTooltips();
-                    },
-                    drawCallback: () => {
-                        this.enableTooltips();
-                    }
+                    initComplete: () => { this.enableTooltips(); },
+                    drawCallback: () => { this.enableTooltips(); }
                 });
             }
 
             formatDate(dateString) {
                 if (!dateString) return '';
-
                 const date = new Date(dateString);
                 if (isNaN(date.getTime())) return dateString;
-
                 return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
             }
 
@@ -398,11 +334,11 @@
                         data: { KEY: deviceId }
                     });
 
-                    if (response.success) {
+                    if (response && response.success) {
                         const device = response.data;
                         this.showDeviceDetails(device);
                     } else {
-                        this.showAlert(response.message, 'error');
+                        this.showAlert((response && response.message) ? response.message : 'Failed to load device details', 'error');
                     }
                 } catch (error) {
                     console.error('Error loading device details:', error);
@@ -411,62 +347,56 @@
             }
 
             showDeviceDetails(device) {
-                const statusBadge = device.status === 1 ? 'bg-success' :
-                    device.status === 0 ? 'bg-danger' : 'bg-warning';
-                const statusText = device.status === 1 ? 'Active' :
-                    device.status === 0 ? 'Inactive' : 'Maintenance';
+                if (!device) {
+                    this.showAlert('Device information is empty', 'error');
+                    return;
+                }
+
+                const statusBadge = device.status === 1 ? 'bg-success' : (device.status === 0 ? 'bg-danger' : 'bg-warning');
+                const statusText = device.status === 1 ? 'Active' : (device.status === 0 ? 'Inactive' : 'Maintenance');
 
                 const detailsHtml = `
-                        <fieldset class="fieldset-custom">
-                            <div class="row">
-                                <!-- Left Column - Basic Information -->
-                                <div class="col-md-6">
-                                    <label class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</label>
-                                    <table class="table table-sm table-bordered">
-                                        <tr><td class="fw-bold">Device ID:</td><td>${device.deviceId || 'N/A'}</td></tr>
-                                        <tr><td class="fw-bold">Device Name:</td><td>${device.deviceName || 'N/A'}</td></tr>
-                                        <tr><td class="fw-bold">Serial Number:</td><td>${device.deviceSerialNumber || 'N/A'}</td></tr>
-                                        <tr><td class="fw-bold">Version:</td><td>${device.deviceVersion || 'N/A'}</td></tr>
-                                        <tr>
-                                            <td class="fw-bold">Status:</td>
-                                            <td><span class="badge ${statusBadge}">${statusText}</span></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <!-- Right Column - Assignment Information -->
-                                <div class="col-md-6">
-                                    <h6 class="text-primary"><i class="mdi mdi-account-check me-2"></i> Assignment Information</h6>
-                                    <table class="table table-sm table-bordered">
-                                        <tr>
-                                            <td class="fw-bold">Assigned Collector:</td>
-                                            <td>
-                                                ${device.assignedCollectorUserId ? device.assignedCollectorUserId : '<span class="text-muted">Not Assigned</span>'}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Assigned On:</td>
-                                            <td>${device.assignedOn || 'N/A'}</td>
-                                        </tr>
-                                    </table>
-                                </div>
+                    <fieldset class="fieldset-custom">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</label>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Device ID:</td><td>${device.deviceId || 'N/A'}</td></tr>
+                                    <tr><td class="fw-bold">Device Name:</td><td>${device.deviceName || 'N/A'}</td></tr>
+                                    <tr><td class="fw-bold">Serial Number:</td><td>${device.deviceSerialNumber || 'N/A'}</td></tr>
+                                    <tr><td class="fw-bold">Version:</td><td>${device.deviceVersion || 'N/A'}</td></tr>
+                                    <tr><td class="fw-bold">Status:</td><td><span class="badge ${statusBadge}">${statusText}</span></td></tr>
+                                </table>
                             </div>
 
-                            <!-- Timeline Section -->
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
-                                    <table class="table table-sm table-bordered">
-                                        <tr><td class="fw-bold">Created On:</td><td>${device.createdOn || 'N/A'}</td></tr>
-                                        <tr><td class="fw-bold">Last Modified:</td><td>${device.modifiedOn || 'N/A'}</td></tr>
-                                    </table>
-                                </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="mdi mdi-account-check me-2"></i> Assignment Information</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Assigned Collector:</td><td>${device.assignedCollectorUserId ? device.assignedCollectorUserId : '<span class="text-muted">Not Assigned</span>'}</td></tr>
+                                    <tr><td class="fw-bold">Assigned On:</td><td>${device.assignedOn || 'N/A'}</td></tr>
+                                </table>
                             </div>
-                        </fieldset>
-                    `;
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                                <table class="table table-sm table-bordered">
+                                    <tr><td class="fw-bold">Created On:</td><td>${device.createdOn || 'N/A'}</td></tr>
+                                    <tr><td class="fw-bold">Last Modified:</td><td>${device.modifiedOn || 'N/A'}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>`;
 
                 $('#detailsModalBody').html(detailsHtml);
-                $('#detailsModal').modal('show');
+
+                // Bootstrap 5 modal show
+                const detailsModalEl = document.getElementById('detailsModal');
+                if (detailsModalEl) {
+                    const detailsModal = new bootstrap.Modal(detailsModalEl);
+                    detailsModal.show();
+                }
             }
 
             async editDevice(deviceId) {
@@ -474,15 +404,16 @@
                     const response = await $.ajax({
                         url: '/CollectorDevice/InitializeData',
                         type: 'GET',
-                        data: {
-                            KEY: deviceId,
-                            partialView: '_CollectorDeviceForm',
-                            path: 'edit'
-                        }
+                        data: { KEY: deviceId, partialView: '_CollectorDeviceForm', path: 'edit' }
                     });
 
                     $('#editModalBody').html(response);
-                    $('#editModal').modal('show');
+
+                    const editModalEl = document.getElementById('editModal');
+                    if (editModalEl) {
+                        const editModal = new bootstrap.Modal(editModalEl);
+                        editModal.show();
+                    }
                 } catch (error) {
                     console.error('Error loading edit form:', error);
                     this.showAlert('Error loading edit form. Please try again.', 'error');
@@ -493,13 +424,11 @@
                 $.ajax({
                     url: '/CollectorDevice/InitializeData',
                     type: 'GET',
-                    data: {
-                        partialView: '_CollectorDeviceForm',
-                        path: 'new'
-                    },
+                    data: { partialView: '_CollectorDeviceForm', path: 'new' },
                     success: (response) => {
                         $('#editModalBody').html(response);
-                        $('#editModal').modal('show');
+                        const editModalEl = document.getElementById('editModal');
+                        if (editModalEl) new bootstrap.Modal(editModalEl).show();
                     },
                     error: (error) => {
                         console.error('Error loading create form:', error);
@@ -522,12 +451,16 @@
                         contentType: false
                     });
 
-                    if (response.success) {
+                    if (response && response.success) {
                         this.showAlert(response.message, 'success');
-                        $('#editModal').modal('hide');
+                        const editModalEl = document.getElementById('editModal');
+                        if (editModalEl) {
+                            const inst = bootstrap.Modal.getInstance(editModalEl);
+                            if (inst) inst.hide();
+                        }
                         this.refreshDataTable();
                     } else {
-                        this.showAlert(response.message, 'error');
+                        this.showAlert((response && response.message) ? response.message : 'Error saving device', 'error');
                     }
                 } catch (error) {
                     console.error('Error saving device:', error);
@@ -538,15 +471,18 @@
             async confirmAction(message) {
                 return new Promise((resolve) => {
                     $('#confirmationModal .modal-body').text(message);
-                    $('#confirmationModal').modal('show');
+                    const confEl = document.getElementById('confirmationModal');
+                    let confModal = bootstrap.Modal.getInstance(confEl);
+                    if (!confModal) confModal = new bootstrap.Modal(confEl);
+                    confModal.show();
 
                     $('#confirmAction').off('click').on('click', () => {
-                        $('#confirmationModal').modal('hide');
+                        confModal.hide();
                         resolve(true);
                     });
 
                     $('#cancelAction').off('click').on('click', () => {
-                        $('#confirmationModal').modal('hide');
+                        confModal.hide();
                         resolve(false);
                     });
                 });
@@ -563,11 +499,11 @@
                         data: { KEY: deviceId }
                     });
 
-                    if (response.success) {
+                    if (response && response.success) {
                         this.showAlert(response.message, 'success');
                         this.refreshDataTable();
                     } else {
-                        this.showAlert(response.message, 'error');
+                        this.showAlert((response && response.message) ? response.message : 'Delete failed', 'error');
                     }
                 } catch (error) {
                     console.error('Delete error:', error);
@@ -576,58 +512,48 @@
             }
 
             showAlert(message, type = 'info', duration = 5000) {
-                const alertClass = {
-                    'success': 'alert-success',
-                    'error': 'alert-danger',
-                    'warning': 'alert-warning',
-                    'info': 'alert-info'
-                }[type] || 'alert-info';
-
-                const icon = {
-                    'success': 'mdi-check-circle',
-                    'error': 'mdi-alert-circle',
-                    'warning': 'mdi-alert',
-                    'info': 'mdi-information'
-                }[type] || 'mdi-information';
+                const alertClass = { 'success': 'alert-success', 'error': 'alert-danger', 'warning': 'alert-warning', 'info': 'alert-info' }[type] || 'alert-info';
+                const icon = { 'success': 'mdi-check-circle', 'error': 'mdi-alert-circle', 'warning': 'mdi-alert', 'info': 'mdi-information' }[type] || 'mdi-information';
 
                 const alertHtml = `
-                        <div class="alert ${alertClass} alert-dismissible fade show shadow" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="mdi ${icon} mdi-18px me-2"></i>
-                                <div class="flex-grow-1">${message}</div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
+                    <div class="alert ${alertClass} alert-dismissible fade show shadow" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="mdi ${icon} mdi-18px me-2"></i>
+                            <div class="flex-grow-1">${message}</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
-                    `;
+                    </div>`;
 
                 $('#alertContainer').html(alertHtml);
 
                 if (duration > 0) {
                     setTimeout(() => {
-                        $('.alert').alert('close');
+                        const el = document.querySelector('#alertContainer .alert');
+                        if (el) {
+                            try { bootstrap.Alert.getOrCreateInstance(el).close(); } catch (e) { $(el).alert('close'); }
+                        }
                     }, duration);
                 }
             }
 
             refreshDataTable() {
                 if (this.dataTable) {
-                    this.dataTable.ajax.reload();
+                    this.dataTable.ajax.reload(null, false);
                     this.showAlert('Device list refreshed', 'success', 3000);
                 }
             }
         }
 
-        // Initialize listing device manager
+        // Initialize listing device manager once on document ready
         const listingDeviceManager = new ListingDeviceManager();
+
+        $(document).ready(() => {
+            listingDeviceManager.init();
+        });
 
         // Global function for backward compatibility
         function refreshDataTable() {
             listingDeviceManager.refreshDataTable();
         }
-
-        // Initialize on document ready
-        $(document).ready(() => {
-            listingDeviceManager.init();
-        });
     </script>
 }

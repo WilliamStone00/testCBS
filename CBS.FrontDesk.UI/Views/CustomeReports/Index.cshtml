@@ -103,6 +103,7 @@
     <div class="row g-3 mb-3">
         <div class="col-md-12">
             <label class="form-label fw-semibold" for="BranchId">🏢 Select Branch</label>
+
             @Html.DropDownListFor(m => m.BranchId,
                 new SelectList(ViewBag.Branches, "Id", "Name"),
                 "--- Select Branch ---",
@@ -165,7 +166,7 @@
         <div class="row g-3 mb-3 requires-branch d-none">
 
 
-            <div class="col-md-6 d-flex align-items-center gap-4">
+            <div class="col-md-8 d-flex align-items-center gap-4">
                 @*<div class="form-check" >
                         <input type="checkbox" hidden id="IsLiaison" class="form-check-input" />
                         <label class="form-check-label" for="IsLiaison">Liaison</label>
@@ -178,7 +179,7 @@
 
                 <div class="form-check d-none include_zero_group">
                     <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                    <label class="form-check-label" for="IncludingZero">  0s Inclusive</label>
+                    <label class="form-check-label" for="IncludingZero">  Include Zero Balance On TB</label>
                 </div>
 
                 <div class="form-check">
@@ -379,6 +380,13 @@
             $branch.on('change', function () {
                 toggleBranchDependentFields();
                 loadAccountsIfNeeded();
+
+
+                if ($branch.val() && $branch.val().length > 1) {
+                    $('#IsConsolidated').prop('checked', true);
+                } else {
+                    $('#IsConsolidated').prop('checked', false);
+                }
             });
 
             $reportType.on('change', function (ev) {
