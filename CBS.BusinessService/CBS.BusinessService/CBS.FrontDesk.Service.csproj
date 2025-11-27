@@ -264,6 +264,7 @@
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
     <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
     <Compile Include="Accounting V2\API\ApiKeyService.cs" />
+    <Compile Include="Accounting V2\BalanceSheet\BalanceSheetService.cs" />
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />

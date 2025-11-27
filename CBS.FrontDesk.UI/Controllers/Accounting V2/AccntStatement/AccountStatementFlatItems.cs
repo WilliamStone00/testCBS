@@ -21,7 +21,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccntStatement {
         public string HeadOfficeAddress { get; set; }
         public string Towns { get; set; }
         public string HeadOfficePhone { get; set; }
+        public string Mode { get; set; }
         public string InitByName { get; set; }
+        public string ReportName { get; set; }
 
         // ---------- Movement Fields ----------
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
