@@ -2,147 +2,466 @@
 @{
     ViewBag.Title = "Number Config Overview";
 }
-
-<div class="row">
-    <div class="col-12">
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-format-list-numbered me-2"></i> Number Configuration
-                </h1>
-                <p class="card-text">
-                    Manage serial/number configuration per branch and date range.
-                </p>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+<div id="checknumdrop">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-format-list-numbered me-2"></i> Number Configuration
+                    </h1>
+                    <p class="card-text">
+                        Manage serial/number configuration per branch and date range.
+                    </p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Tips Section -->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Number Configuration</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseTips" class="collapse">
-        <div class="card-body">
-            <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Branch:</strong> Select the branch to apply this numbering scheme.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Dates:</strong> Use date range to enable/disable configuration across time.</li>
-                <li><i class="mdi mdi-numeric text-secondary me-2"></i> <strong>Positions:</strong> Bank/branch/year/serial positions control how numbers are built.</li>
-            </ul>
+    <!-- Tips Section -->
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Number Configuration</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Branch:</strong> Select the branch to apply this numbering scheme.</li>
+                    <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Dates:</strong> Use date range to enable/disable configuration across time.</li>
+                    <li><i class="mdi mdi-numeric text-secondary me-2"></i> <strong>Positions:</strong> Bank/branch/year/serial positions control how numbers are built.</li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Number Config Filters -->
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Number Config Filters</h5>
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <a href="@Url.Action("List", "NumConfig")"
+               class="btn btn-label-primary btn-sm me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="@GlobalShared.ViewList">
+                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+            </a>
+            <a href="@Url.Action("Index", "NumConfig")"
+               class="btn btn-label-primary btn-sm me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="Add New Configuration">
+                <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
+            </a>
+        </div>
+    </div>
+    <!-- Number Config Filters -->
+    <div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Number Config Filters</h5>
 
-    <form id="numconfigFilterForm" autocomplete="off">
-        <div class="card p-3 mb-3 bg-light">
-            <!-- Toggle switches (Branch / Dates) -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch</label>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Default Filters -->
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Name</label>
-                    <input type="text" id="name" name="Name" class="form-control" placeholder="Configuration name" />
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Serial Number Position</label>
-                    <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
-                </div>
-            </div>
-
-            <!-- Branch Filter (togglable) -->
-            <div id="branchFilter" class="d-none">
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label class="form-label fw-bold">Branch</label>
-                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
-                    </div>
-                </div>
-            </div>
-
-            <!-- Position Settings -->
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Bank Code Position</label>
-                    <input type="number" id="bankCodePosition" name="BankCodePosition" class="form-control" min="0" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Branch Code Position</label>
-                    <input type="number" id="branchCodePosition" name="BranchCodePosition" class="form-control" min="0" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Year Position</label>
-                    <input type="number" id="yearPosition" name="YearPosition" class="form-control" min="0" />
-                </div>
-            </div>
-
-            <!-- Flags -->
-            <div class="row mb-3">
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="acceptSerialNumber" name="AcceptSerialNumber" />
-                        <label class="form-check-label fw-bold" for="acceptSerialNumber">Accept Serial Number</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Date Filters (togglable) -->
-            <div id="dateFilters" class="d-none">
+        <form id="numconfigFilterForm" autocomplete="off">
+            <div class="card p-3 mb-3 bg-light">
+                <!-- Toggle switches (Branch / Dates) -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
-                        <input type="date" id="startDate" name="StartDate" class="form-control" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                            <label class="form-check-label fw-bold" for="toggleBranch">Show Branch</label>
+                        </div>
                     </div>
+
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
-                        <input type="date" id="endDate" name="EndDate" class="form-control" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                            <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Default Filters -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Name</label>
+                        <input type="text" id="name" name="Name" class="form-control" placeholder="Configuration name" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Serial Number Position</label>
+                        <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
+                    </div>
+                </div>
+
+                <!-- Branch Filter (togglable) -->
+                <div id="branchFilter" class="d-none">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Branch</label>
+                            @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Position Settings -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Bank Code Position</label>
+                        <input type="number" id="bankCodePosition" name="BankCodePosition" class="form-control" min="0" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Branch Code Position</label>
+                        <input type="number" id="branchCodePosition" name="BranchCodePosition" class="form-control" min="0" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Year Position</label>
+                        <input type="number" id="yearPosition" name="YearPosition" class="form-control" min="0" />
+                    </div>
+                </div>
+
+                <!-- Flags -->
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="acceptSerialNumber" name="AcceptSerialNumber" />
+                            <label class="form-check-label fw-bold" for="acceptSerialNumber">Accept Serial Number</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Filters (togglable) -->
+                <div id="dateFilters" class="d-none">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Start Date</label>
+                            <input type="date" id="startDate" name="StartDate" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">End Date</label>
+                            <input type="date" id="endDate" name="EndDate" class="form-control" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
-                </button>
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
-                </button>
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex">
+                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                        <i class="mdi mdi-magnify"></i> Apply Filter
+                    </button>
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                        <i class="mdi mdi-refresh"></i> Reset
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
-<!-- DataTable Partial -->
-<div id="datalistingview">
-    @Html.Partial("_NumconfogData")
+    <!-- DataTable Partial -->
+    <div id="datalistingview">
+        @Html.Partial("_NumconfogData")
+    </div>
 </div>
 
 @section Scripts {
-    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Make functions globally available
+        window.numConfigTable = null;
+        window.isTableInitialized = false;
+
+        window.emptyToNull = function (v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        };
+
+        window.collectNumConfigFilters = function () {
+            console.log('Collecting NumConfig filters...');
+            try {
+                const filters = {
+                    Name: window.emptyToNull($('#name').val()),
+                    BranchId: window.emptyToNull($('#branchId').val()),
+                    BankCodePosition: $('#bankCodePosition').val() ? parseInt($('#bankCodePosition').val()) : null,
+                    BranchCodePosition: $('#branchCodePosition').val() ? parseInt($('#branchCodePosition').val()) : null,
+                    YearPosition: $('#yearPosition').val() ? parseInt($('#yearPosition').val()) : null,
+                    AcceptSerialNumber: $('#acceptSerialNumber').is(':checked') ? true : null,
+                    SerialNumberPosition: $('#serialNumberPosition').val() ? parseInt($('#serialNumberPosition').val()) : null,
+                    StartDate: window.emptyToNull($('#startDate').val()),
+                    EndDate: window.emptyToNull($('#endDate').val()),
+                    options: {}
+                };
+                return filters;
+            } catch (error) {
+                console.error('Error collecting filters:', error);
+                return {};
+            }
+        };
+
+        window.initializeNumConfigTable = function () {
+            console.log('Initializing NumConfig DataTable...');
+
+            if (!$('#myDataTable').length) {
+                console.error('Table element #myDataTable not found');
+                return false;
+            }
+
+            try {
+                // Destroy existing table if it exists
+                if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                    window.numConfigTable.destroy();
+                    $('#myDataTable').closest('.dataTables_wrapper').remove();
+                }
+
+                window.numConfigTable = $('#myDataTable').DataTable({
+                    serverSide: true,
+                    destroy: true,
+                    searching: false,
+                    responsive: true,
+                    order: [[0, 'desc']],
+                    ajax: {
+                        url: '/NumConfig/LoadNumConfigData',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: function (d) {
+                            const filters = window.collectNumConfigFilters();
+                            filters.options = {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: d.columns[d.order[0].column].data,
+                                sortColumnDirection: d.order[0].dir
+                            };
+                            console.log('Sending filters to server:', filters);
+                            return JSON.stringify(filters);
+                        },
+                        error: function (xhr, error, thrown) {
+                            console.error('AJAX error:', error, thrown);
+                            if (typeof appalert === 'function') {
+                                appalert('Failed to load data. Please try again.', 0, 1);
+                            }
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'CreatedDate',
+                            render: function (data, type, row) {
+                                const v = row.CreatedDate || row.CreatedOn;
+                                return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+                            }
+                        },
+                        { data: 'Name' },
+                        { data: 'BranchName' },
+                        { data: 'BankCodePosition' },
+                        { data: 'BranchCodePosition' },
+                        { data: 'YearPosition' },
+                        {
+                            data: 'AcceptSerialNumber',
+                            render: function (data) {
+                                return data ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
+                            }
+                        },
+                        {
+                            data: 'Id',
+                            orderable: false,
+                            render: function (data, type, row) {
+                                var recordId = encodeURIComponent(data || '');
+                                var name = (row.name || row.Name || '').replace(/"/g, '&quot;');
+
+                                return `
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown">
+                                                <i class="mdi mdi-cog-outline"></i> Actions
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
+                                                        <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
+                                                        <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    `;
+                            }
+                        }
+                    ],
+                    language: {
+                        emptyTable: 'No number configurations found. Click "Apply Filter" to load data.',
+                        processing: '<i class="mdi mdi-loading mdi-spin"></i> Loading data...',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                        infoEmpty: 'Showing 0 to 0 of 0 entries',
+                        infoFiltered: '(filtered from _MAX_ total entries)',
+                        lengthMenu: 'Show _MENU_ entries',
+                        loadingRecords: 'Loading...',
+                        zeroRecords: 'No matching records found',
+                        paginate: {
+                            first: 'First',
+                            last: 'Last',
+                            next: 'Next',
+                            previous: 'Previous'
+                        }
+                    },
+                    initComplete: function () {
+                        console.log('NumConfig DataTable initialized');
+                        window.isTableInitialized = true;
+                        window.attachNumConfigEventHandlers();
+                    }
+                });
+
+                return true;
+            } catch (error) {
+                console.error('Error initializing DataTable:', error);
+                if (typeof appalert === 'function') {
+                    appalert('Error initializing table. Please check console for details.', 0, 1);
+                }
+                return false;
+            }
+        };
+
+        window.loadNumConfigData = function () {
+            console.log('Loading NumConfig data...');
+            if (window.numConfigTable && window.isTableInitialized) {
+                console.log('Table exists, reloading data...');
+                window.numConfigTable.ajax.reload(null, false);
+            } else {
+                console.log('Table not initialized, initializing now...');
+                window.initializeNumConfigTable();
+            }
+        };
+
+        window.applyNumConfigFilters = function () {
+            console.log('Applying NumConfig filters...');
+            window.loadNumConfigData();
+        };
+
+        window.resetNumConfigFilters = function () {
+            console.log('Resetting NumConfig filters...');
+            $('#numconfigFilterForm')[0].reset();
+            if ($.fn.select2 && $('#branchId').length) {
+                $('#branchId').val('').trigger('change');
+            }
+            $('#branchFilter, #dateFilters').addClass('d-none');
+            $('#toggleBranch, #toggleDates').prop('checked', false);
+
+            // Only reload if table is already initialized
+            if (window.isTableInitialized && window.numConfigTable) {
+                window.numConfigTable.ajax.reload(null, false);
+            }
+            // Don't initialize table on reset if it doesn't exist
+
+            console.log('Filters reset successfully');
+            if (typeof appalert === 'function') {
+                appalert('Filters reset', 3, 1);
+            }
+        };
+
+        window.initializeNumConfigListView = function () {
+            console.log('Loading NumConfig list view...');
+            LoadDataGen('NumConfig', 'myDataTable', 'List', 0, 'listingviewdrop', null);
+        };
+
+        window.attachNumConfigEventHandlers = function () {
+            console.log('Attaching NumConfig event handlers...');
+
+            // Remove existing handlers to prevent duplicates
+            $('#applyFilterBtn').off('click');
+            $('#resetFilterBtn').off('click');
+            $('#toggleBranch').off('change');
+            $('#toggleDates').off('change');
+            $(document).off('click', '.btn-edit');
+            $(document).off('click', '.btn-delete');
+
+            // Filter buttons - ONLY attach handlers, don't initialize table
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                console.log('Apply Filter button clicked - initializing table...');
+                window.applyNumConfigFilters();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                console.log('Reset Filter button clicked...');
+                window.resetNumConfigFilters();
+            });
+
+            // Toggle filters
+            $('#toggleBranch').on('change', function () {
+                $('#branchFilter').toggleClass('d-none', !this.checked);
+            });
+
+            $('#toggleDates').on('change', function () {
+                $('#dateFilters').toggleClass('d-none', !this.checked);
+            });
+
+            // Action buttons - use event delegation since they're dynamically created
+            $(document).on('click', '.btn-edit', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                if (id) {
+                    console.log('Edit button clicked for ID:', id);
+                    AddORUpdateGen(id, 'checknumdrop', 'Index', 'get', 'NumConfig');
+                }
+            });
+
+            $(document).on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                if (id) {
+                    console.log('Delete button clicked for ID:', id);
+                    DeleteRecordDataTable('NumConfig', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list');
+                }
+            });
+
+            // Form enter key prevention
+            $('#numconfigFilterForm input').off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    console.log('Enter key pressed - initializing table...');
+                    window.applyNumConfigFilters();
+                }
+            });
+        };
+
+        // Initialize when main page loads - BUT DON'T INITIALIZE TABLE AUTOMATICALLY
+        $(document).ready(function () {
+            console.log('NumConfig main page loaded - table will be initialized on filter apply');
+
+            // Only attach event handlers, don't initialize the table
+            if ($('#numconfigFilterForm').length) {
+                console.log('NumConfig list view detected - attaching event handlers only');
+                window.attachNumConfigEventHandlers();
+
+                // Initialize select2 if available
+                if ($.fn.select2 && $('#branchId').length && !$('#branchId').hasClass('select2-hidden-accessible')) {
+                    $('#branchId').select2({ width: '100%', placeholder: 'Select Branch' });
+                }
+            }
+
+            // Update View List button
+            $('[onclick*="LoadDataGen"][onclick*="NumConfig"]').attr('onclick', 'initializeNumConfigListView()');
+        });
+
+        // Handle AJAX complete to reattach handlers when partials load
+        $(document).ajaxComplete(function (event, xhr, settings) {
+            // Check if this is a NumConfig related request
+            if (settings.url && settings.url.includes('NumConfig')) {
+                setTimeout(function () {
+                    console.log('NumConfig AJAX complete - reattaching event handlers');
+                    if ($('#numconfigFilterForm').length) {
+                        window.attachNumConfigEventHandlers();
+
+                        // Reinitialize select2 if needed
+                        if ($.fn.select2 && $('#branchId').length && !$('#branchId').hasClass('select2-hidden-accessible')) {
+                            $('#branchId').select2({ width: '100%', placeholder: 'Select Branch' });
+                        }
+                    }
+                }, 100);
+            }
+        });
+    </script>
 }

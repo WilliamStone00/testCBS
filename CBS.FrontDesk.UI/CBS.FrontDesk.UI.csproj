@@ -2090,6 +2090,8 @@
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
+    <Compile Include="Controllers\Accounting V2\BalanceSheet\BalanceSheetController.cs" />
+    <Compile Include="Controllers\Accounting V2\BalanceSheet\BalanceSheetFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
@@ -11069,6 +11071,7 @@
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDetails.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11092,6 +11095,7 @@
     <Folder Include="bin\tr-TR\" />
     <Folder Include="bin\zh-TW\" />
     <Folder Include="bin\zh\" />
+    <Folder Include="Controllers\Accounting V2\NewFolder1\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\AccountingV2\" />

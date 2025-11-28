@@ -30,6 +30,14 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation
         
     }
 
+    public class OperationDetailsFilter
+    {
+        public string BranchId { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string OperationCode { get; set; }
+        public bool IsInterBranch { get; set; }
+    }
 
 
     public class ReconciliationQuery

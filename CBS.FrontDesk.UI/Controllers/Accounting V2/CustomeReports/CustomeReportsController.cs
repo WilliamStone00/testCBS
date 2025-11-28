@@ -64,7 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
             {
                 new SelectListItem { Value = "Trial Balance 6 Columns", Text = "Trial Balance 6 Columns" },
                 new SelectListItem { Value = "Trial Balance 4 Columns", Text = "Trial Balance 4 Columns" },
-                //new SelectListItem { Value = "Balance Sheet", Text = "Balance Sheet" },
+                new SelectListItem { Value = "BS", Text = "Balance Sheet" },
                 new SelectListItem { Value = "JE", Text = "General Accounting Journal" },
                 new SelectListItem { Value = "Account Statement", Text = "General Ledger" },
                 //new SelectListItem { Value = "Income Statement", Text = "Income Statement" },

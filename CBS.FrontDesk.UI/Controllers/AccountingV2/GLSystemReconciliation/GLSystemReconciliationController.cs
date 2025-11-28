@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.AccountingV2.CashReconciliation;
+﻿using CBS.BusinessService.Accounting_V2.MemberReconciliation;
+using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
@@ -258,40 +259,22 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
-
-        public async Task<JsonResult> LoadOperationDetailsData(ReconciliationQuery query)
+        public async Task<ActionResult> LoadOperationDetailsData(OperationDetailsFilter filter, string partialView = null)
         {
-            try
+            var data = await _glSystemReconciliationService.GetOperationDetailAsync(filter);
+
+            if (string.IsNullOrEmpty(partialView))
             {
-                var data = await _glSystemReconciliationService.GetReconciliationDetailsAsync(query);
-
-                var reconciliations = JsonConvert.DeserializeObject<List<Reconciliation>>(
-                    JsonConvert.SerializeObject(data.data));
-
-
-
-                return Json(new
-                {
-                    draw = data.Options.draw ?? "1",
-                    recordsTotal = data.Options.recordsTotal,
-                    recordsFiltered = data.Options.recordsFiltered,
-                    data = reconciliations,
-                    success = true,
-                    message = "Reconciliation Details loaded successfully"
-                }, JsonRequestBehavior.AllowGet);
+                // Returns the full Razor view pre-populated
+                return View("_OperationDetail", data);
             }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    draw = query?.Options?.draw ?? "1",
-                    recordsTotal = 0,
-                    recordsFiltered = 0,
-                    data = new List<object>(),
-                    error = ex.Message
-                });
-            }
+
+            // Only return partial if specified
+            return PartialView(partialView, data);
         }
+
+
+
 
 
     }

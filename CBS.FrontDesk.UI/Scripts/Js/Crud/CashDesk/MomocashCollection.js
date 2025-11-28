@@ -354,6 +354,13 @@ function collectDeposits() {
     // one-time values
     const accountingDate = $('#BulkDeposit_AccountingDate').val();
 
+    // NEW: branch + GL + source type
+    const branchId = $('#branchInput').val();
+    const branchName = $('#branchInput option:selected').text().trim();
+    const chartOfAccountId = $('#account_number').val();
+    const chartOfAccountName = $('#account_number option:selected').text().trim();
+    const sourceType = $("input[name='BulkDeposit.SourceType']:checked").val();
+
     // read depositor fields with fallback for old IDs (typos)
     const depositorName = tv('#DepositorName');
     const depositorPhoneNumber = tv('#DepositorTelephone, #DepositerTelephone'); // fallback
@@ -384,7 +391,14 @@ function collectDeposits() {
             CheckNumber: tv('#CheckNumber'),
             IsSWS: true,
             CustomerId: $('#customerId').val(),
-            SourceType: $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val(),
+
+            // NEW: momocash / bulk-deposit context
+            SourceType: sourceType,
+            BranchId: branchId,
+            BranchName: branchName,
+            ChartOfAccountId: chartOfAccountId,
+            ChartOfAccountName: chartOfAccountName,
+
             LoanApplicationId: $row.find('.loan-application-id').val(),
             Period: $row.find('.period').val(),
             AccountingDate: accountingDate,
@@ -501,14 +515,29 @@ function successCallback(response, operationType) {
     resetDepositorForm();
     switch (operationType) {
         case 'CashInMomocashCollection':
-            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'cashin');
+            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'cashin_momokash_collection');
             break;
         case 'LoanRepaymentMomocashCollection':
-            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'repayment');
+            GetMemberData($("#customerId").val(), '_MomocashCollectionDesk', 'datalistingview', 'repayment_momokash_collection');
             break;
         default:
             break;
     }
+}
+function formatAmount(val) {
+    var n = parseFloat(val);
+    if (!Number.isFinite(n)) n = 0;
+    return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 function failureCallback(response) {
@@ -522,37 +551,169 @@ function PostCashIn() {
         return;
     }
 
-    // Calculate total amount from user inputs in the table
+    // 1) Require Branch selection
+    var branchId = $('#branchInput').val();
+    var branchName = $('#branchInput option:selected').text().trim() || "-";
+    if (!branchId) {
+        appalert("Please select the branch for this Momocash collection.", 3, 1);
+        return;
+    }
+
+    // 2) Require Momocash collection GL account
+    var momoCollectionAccountId = $('#account_number').val();
+    var momoCollectionAccountName = $('#account_number option:selected').text().trim() || "-";
+    if (!momoCollectionAccountId) {
+        appalert("Please select the Momocash collection GL account.", 3, 1);
+        return;
+    }
+
+    // 3) Validate total vs per-row input & build row summaries
     var totalInfo = calculateTotalAmount();
 
-    // Collect the selected amounts from the input fields (Amount + Fee)
     var selectedTotalAmount = 0;
+    var rowSummaries = [];   // for table
+    var depositsTotal = 0;
+    var loanTotal = 0;
+    var totalFee = 0;
+
     $('#myDataTableT tbody tr').each(function () {
-        var amount = parseFloat($(this).find('.amount-input').val()) || 0;
-        var fee = parseFloat($(this).find('.fee-input').val()) || 0;
-        selectedTotalAmount += (amount + fee);
+        var $row = $(this);
+        var checked = $row.find('.form-check-input').first().prop('checked');
+        if (!checked) return;
+
+        var accountNumber = $row.find('td:eq(0)').text().trim();
+        var accountType = $row.find('td:eq(1)').text().trim();
+        var amount = parseFloat($row.find('.amount-input').val()) || 0;
+        var fee = parseFloat($row.find('.fee-input').val()) || 0;
+        var total = amount + fee;
+
+        selectedTotalAmount += total;
+        totalFee += fee;
+
+        // classify deposit vs loan (defensive – your cash-in table excludes loans already)
+        if (accountType.toLowerCase().includes("loan")) {
+            loanTotal += total;
+        } else {
+            depositsTotal += total;
+        }
+
+        rowSummaries.push({
+            accountNumber: accountNumber,
+            accountType: accountType,
+            amount: amount,
+            fee: fee,
+            total: total
+        });
     });
 
-    // Compare calculated total with the user input
     if (totalInfo.total !== selectedTotalAmount) {
         appalert("The total amount does not match the sum of the selected account amounts and fees.", 3, 1);
         return;
     }
 
+    // 4) Attach currency notes & depositor
     deposits[0].currencyNotes = collectCurrencyNotes();
     deposits[0].Depositer = collectDepositorInfo();
 
-    // Check if one of the radio buttons is selected
-    var sourceType = $("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked").val();
+    // 5) Attach branch + GL to payload
+    deposits[0].BranchId = branchId;
+    deposits[0].BranchName = branchName;
+    deposits[0].ChartOfAccountId = momoCollectionAccountId;
+    deposits[0].ChartOfAccountName = momoCollectionAccountName;
+
+    // 6) Require operator (MTN / Orange)
+    var $sourceInput =
+        $("input[name='BulkDeposit.SourceType']:checked")
+            .add("input[name='AddOtherTransactionMobileMoneyCommand.SourceType']:checked");
+
+    var sourceType = $sourceInput.val();
     if (!sourceType) {
-        appalert("Please select operator type, Either Mobile Money MTN OR Mobile Money Orange", 3, 1);
+        appalert("Please select operator type: either MTN Mobile Money or Orange Money.", 3, 1);
         return;
     }
 
-    var message = "";
-    message += "Are you sure you want to perform a cash-in of " + totalInfo.total + " to the selected account numbers?\n";
-    message += "Account Numbers: " + getSelectedAccountNumbers() + "\n";
-    confirmTransaction('Confirm Cash-In Operation', message, '/CashDesk/PostRequestCash', deposits, 'CashInMomocashCollection');
+    var operatorLabel = $sourceInput.closest('label').text().trim() || sourceType;
+    deposits[0].SourceType = sourceType;
+    deposits[0].SourceTypeLabel = operatorLabel;
+
+    // 7) Extra context for confirmation
+    var accountingDate = $('#BulkDeposit_AccountingDate').val() || "-";
+    var memberName = $('#memberName').val() || "-";
+    var memberAccountNumber = $('#memberAccountNumber').val() || "";
+
+    if (!memberAccountNumber && rowSummaries.length > 0) {
+        // fallback: use first selected account number
+        memberAccountNumber = rowSummaries[0].accountNumber || "";
+    }
+
+    // 8) Build HTML table for confirm dialog
+    var rowsHtml = rowSummaries.map(function (r) {
+        return (
+            '<tr>' +
+            '<td>' + escapeHtml(r.accountType) + '</td>' +
+            '<td class="text-end">' + formatAmount(r.amount) + '</td>' +
+            '<td class="text-end">' + formatAmount(r.fee) + '</td>' +
+            '</tr>'
+        );
+    }).join('');
+
+    var html =
+        '<div class="momo-confirm">' +
+        '<p><strong>Member:</strong> ' + escapeHtml(memberName) + '</p>' +
+        (memberAccountNumber
+            ? '<p><strong>Member Account Number:</strong> ' + escapeHtml(memberAccountNumber) + '</p>'
+            : '') +
+        '<p>You\'re about to perform a <strong>CASH-IN of ' + formatAmount(totalInfo.total) + '.</strong></p>' +
+        '<p><strong>Branch:</strong> ' + escapeHtml(branchName) + '<br />' +
+        '<strong>Operator:</strong> ' + escapeHtml(operatorLabel) + '<br />' +
+        '<strong>Collection GL:</strong> ' + escapeHtml(momoCollectionAccountName) + '<br />' +
+        '<strong>Accounting Date:</strong> ' + escapeHtml(accountingDate) + '</p>' +
+
+        '<h6 class="text-success mt-3 mb-2">Member Accounts</h6>' +
+        '<table class="table table-sm table-bordered mb-2">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>Account Type</th>' +
+        '<th class="text-end">Amount</th>' +
+        '<th class="text-end">Fee</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        rowsHtml +
+        '<tr class="fw-bold bg-light">' +
+        '<td>Total</td>' +
+        '<td class="text-end">' + formatAmount(depositsTotal + loanTotal) + '</td>' +
+        '<td class="text-end">' + formatAmount(totalFee) + '</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+
+        '<table class="table table-sm table-bordered mb-0">' +
+        '<tbody>' +
+        '<tr>' +
+        '<td><strong>Deposits Total</strong></td>' +
+        '<td class="text-end">' + formatAmount(depositsTotal) + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td><strong>Loan Total</strong></td>' +
+        '<td class="text-end">' + formatAmount(loanTotal) + '</td>' +
+        '</tr>' +
+        '<tr class="fw-bold bg-light">' +
+        '<td><strong>Grand Total</strong></td>' +
+        '<td class="text-end">' + formatAmount(totalInfo.total) + '</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '</div>';
+
+    // 9) Ask for confirmation (message is now HTML)
+    confirmTransaction(
+        '💰 CONFIRM CASH-IN OPERATION',
+        html,
+        '/CashDesk/PostRequestCash',
+        deposits,
+        'CashInMomocashCollection'
+    );
 }
 
 function PostLoanRepayment() {
@@ -658,11 +819,11 @@ function GetMemberData(Key, partialView, divToloadPV, path) {
     spanElement.style.textDecoration = "underline";
     spanElement.style.textDecorationThickness = "2px";
 
-    if (path == "cashin") {
+    if (path == "cashin_momokash_collection") {
         spanElement.innerText = "MOMO CASH COLLECTION >> NONE-CASH-IN OPERATIONS";
         spanElement.style.color = "green";
     }
-    else if (path == "repayment") {
+    else if (path == "repayment_momokash_collection") {
         spanElement.innerText = "MOMO CASH COLLECTION >> NONE-CASH LOAN REPAYMENT OPERATIONS";
         spanElement.style.color = "green";
     }

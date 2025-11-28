@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-    @using Resources
+@using Resources
 @{
     ViewBag.Title = @MomocashCollection.MomocashCollectionTitle;
 }
@@ -7,39 +7,36 @@
 
 <div class="row">
     <div class="col">
-        <div class="row my-4">
+        <div class="row mt-3">
             <div class="accordion" id="collapsibleSection">
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingDeliveryAddress">
-
+                <div class="accordion-item card mb-2">
+                    <h2 class="accordion-header" id="headingMomocash">
                         <button type="button"
-                                class="accordion-button"
+                                class="accordion-button py-2"
                                 data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
+                                data-bs-target="#collapseMomocash"
                                 aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
+                                aria-controls="collapseMomocash">
                             <i class="mdi mdi-bank me-2"></i>
-                            @*<i class="mdi mdi-cash-bank me-2"></i>*@
-                        <span id="cashDeskOperations">@MomocashCollection.MomocashCollectionNoneCashOperation</span>
+                            <span id="cashDeskOperations">
+                                @MomocashCollection.MomocashCollectionNoneCashOperation
+                            </span>
                         </button>
                     </h2>
-                  
-                    <div id="collapseDeliveryAddress"
+
+                    <div id="collapseMomocash"
+                         class="accordion-collapse collapse show"
+                         aria-labelledby="headingMomocash"
                          data-bs-parent="#collapsibleSection">
-                        <div class="accordion-body">
-                            <hr style="border: 2px solid blue;" />
+                        <div class="accordion-body py-1">
                             @Html.Partial("_MomocashCollectionSearchBox")
-                            <hr style="border: 2px solid blue;" />
                             <div id="datalistingview">
-
-
+                                @* member search results will load here *@
                             </div>
                         </div>
                     </div>
-                  
                 </div>
             </div>
-            @*}*@
         </div>
     </div>
 </div>

@@ -24,7 +24,7 @@ using ZXing.Common;
 
 namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 {
-   [CheckSessionTimeOutAttribute]
+    [CheckSessionTimeOutAttribute]
 
     public class CashDeskController : BaseController
     {
@@ -63,10 +63,13 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         {
             return View();
         }
-        public ActionResult MomocashCollection()
+        public async Task<ActionResult> MomocashCollection()
         {
+           
+
             return View();
         }
+
         public ActionResult NoneCashOperations()
         {
             return View();
@@ -84,7 +87,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             mode = (mode ?? "cashin").Trim().ToLowerInvariant();
             bool isCashIn = mode == "cashin";
             ViewBag.Branches = await _branchServices.GetLiaison();
-       //     ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch();
+            //     ViewBag.AccountIds = await chartOfAccountServices.GetGLAccountsQueryByBranch();
 
             var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
             var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
@@ -174,10 +177,10 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             var cashDesk = await _cashDeskService.GetOtherCashDeskMobileMoney();
             return View(cashDesk);
         }
-        
+
         public async Task<ActionResult> Ajaxloader(string Key, string path)
         {
-            if (path== "getmember")
+            if (path == "getmember")
             {
                 var listing = await _cashDeskService.GetCustomer(Key);
                 return Json(listing, JsonRequestBehavior.AllowGet);
@@ -199,7 +202,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             try
             {
                 // Call service/repo to get loans for this member
-                var loans = await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId=memberId, QueryParameter= "Open" });
+                var loans = await _loanServices.GetLoanByCustomerID(new GetAllLoanByCustomerIdQuery { CustomerId = memberId, QueryParameter = "Open" });
 
                 if (loans == null || !loans.Any())
                     return Json(new { success = false, message = "⚠️ No active loans found for this member." }, JsonRequestBehavior.AllowGet);
@@ -273,7 +276,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                 // 💰 Handle operations like cashin, cashout, repayment, etc.
                 var validPaths = new[]
                 {
-                    "cashin", "repayment", "cashout", "cashoutsws",
+                    "cashin", "repayment", "cashout", "cashoutsws","cashin_momokash_collection","repayment_momokash_collection",
                     "withdrawalnotification", "loanapplicationfeepayment", "newsubcription"
                 };
 
@@ -287,7 +290,26 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
                         ViewBag.message = "⚠️ You submitted an empty value. Please enter a valid Account Number or Reference.\nResolution: Fill in a valid account number or member reference before retrying.";
                         return PartialView("_DataNotFound", new CashDesk());
                     }
+                    if (path == "cashin_momokash_collection" || path == "repayment_momokash_collection")
+                    {
+                        // Load branches for the Branch dropdown (used by the Html.DropDownListFor with ViewBag.Branches)
+                        var branches = await _branchServices.GetBranches();
+                        ViewBag.Branches = branches;
 
+                        // If you still need this for other parts of the page, keep it.
+                        // It is not used by the new branch/GL Html helpers anymore.
+                        var chartOfAccounts = await _branchAccountService
+                            .GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
+
+                        ViewBag.StandingOrderSourceAccountOptions =
+                            _branchAccountService.DropDownGen(chartOfAccounts.ToList());
+
+                        ViewBag.OperationType = path;
+
+                        // TODO: Build and pass your CashDesk model here if needed
+                        // var model = await _cashDeskService.GetMomocashCollectionModel(...);
+                        // return View(model);
+                    }
                     var cashDesk = await _cashDeskService.GetAccountByAccountNumberSearch(KEY, path);
                     if (cashDesk == null)
                     {
@@ -425,7 +447,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
             {
                 // Report with no sub reports
             }
-            
+
             // STEP 3: Parameter binding
             var parameters = new Dictionary<string, object>
             {
@@ -495,8 +517,8 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         [HttpPost]
         public async Task<ActionResult> GetReport(string path)
         {
-            
-            if (path=="loan")
+
+            if (path == "loan")
             {
                 this.HttpContext.Session["rptType"] = "ReportParameterLess";
                 this.HttpContext.Session["ReportName"] = $"MainReportLoan.rpt";
