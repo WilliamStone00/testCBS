@@ -13,11 +13,13 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem
         public string BranchId { get; set; }
         public string Name { get; set; }
         public string BankCode { get; set; }
+        public string BranchName { get; set; }
         public int BankCodePosition { get; set; }
         public int BranchCodePosition { get; set; }
         public int YearPosition { get; set; }
         public int SeriaNumberPosition { get; set; }
         public bool AcceptSerialNumber { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
     public class NumconfogQuery
     {
