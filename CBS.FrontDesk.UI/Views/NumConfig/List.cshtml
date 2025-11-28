@@ -51,9 +51,11 @@
                class="btn btn-label-primary btn-sm me-2"
                id="btnViewList"
                data-bs-toggle="tooltip"
-               title="Add New Configuration">
+               title="Add New Configuration"
+               target="_blank">
                 <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
             </a>
+
         </div>
     </div>
     <!-- Number Config Filters -->
@@ -399,14 +401,57 @@
             });
 
             // Action buttons - use event delegation since they're dynamically created
+            //$(document).on('click', '.btn-edit', function (e) {
+            //    e.preventDefault();
+            //    var id = $(this).data('id');
+
+            //    if (id) {
+            //        console.log('Edit button clicked for ID:', id);
+            //        AddORUpdateGen(id, 'checknumdrop', 'Index', 'get', 'NumConfig');
+
+            //        // Reload the entire page after action
+            //        location.reload();
+            //    }
+            //});
+
             $(document).on('click', '.btn-edit', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                if (id) {
-                    console.log('Edit button clicked for ID:', id);
-                    AddORUpdateGen(id, 'checknumdrop', 'Index', 'get', 'NumConfig');
-                }
+                if (!id) return;
+
+                console.log('Edit clicked, loading Index partial for id:', id);
+
+                // Build the URL to your InitializeData action
+                var url = '/NumConfig/InitializeData'
+                    + '?KEY=' + encodeURIComponent(id)
+                    + '&partialView=' + encodeURIComponent('Index')
+                    + '&path=details'; // path as needed (details/new/list)
+
+                // Call the controller directly
+                $.ajax({
+                    url: url,
+                    type: 'GET',         // or 'POST' if needed
+                    dataType: 'html',    // we expect HTML partial
+                    success: function (html) {
+                        // Inject the partial into the target container
+                        $('#checknumdrop').html(html);
+
+                        // Initialize the injected Index view
+                        if (typeof initializeIndexView === 'function') {
+                            initializeIndexView();
+                        } else {
+                            console.log('initializeIndexView not defined — implement init logic.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to load Index partial:', status, error, xhr.responseText);
+                        if (typeof appalert === 'function') appalert('Failed to load edit view', 0, 1);
+                    }
+                });
             });
+
+
+
 
             $(document).on('click', '.btn-delete', function (e) {
                 e.preventDefault();

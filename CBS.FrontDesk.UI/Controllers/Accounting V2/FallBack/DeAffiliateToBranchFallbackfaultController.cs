@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.FallBack;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorCommission;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack;
@@ -18,11 +19,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
     {
         private readonly AffiliateToBranchFallbackService _fallbackService;
         private readonly FallbackExcelExportGenerator _FallbackExcelExportGenerator;
+        private readonly BranchAccountService _BranchAccountService;
 
-        public AffiliateToBranchFallbackController(AffiliateToBranchFallbackService fallbackService, FallbackExcelExportGenerator fallbackExcelExportGenerator)
+        public AffiliateToBranchFallbackController( AffiliateToBranchFallbackService fallbackService, FallbackExcelExportGenerator fallbackExcelExportGenerator, BranchAccountService branchAccountService)
         {
             _fallbackService = fallbackService;
             _FallbackExcelExportGenerator = fallbackExcelExportGenerator;
+            _BranchAccountService = branchAccountService;
         }
 
 
@@ -95,7 +98,31 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
             if (path == "details")
             {
                 var data = await _fallbackService.GetByIdAsync(KEY);
-                return PartialView(partialView, data);
+
+                // Build reconcile model from the fetched data
+                var reconcile = new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest
+                {
+                    Id = data.id,
+                    SourceGlAccountNumber = data.supposedGlAccountNumber,
+                    SourceAmount = data.amount,
+                    SourceSit = data.operationCode,
+                    SourceDescription = data.reference
+                };
+
+                var BranchAccount = await _BranchAccountService.GetAllBranchAccountsFromDataTableAsync(data.branchId);
+
+                // Create a view model that contains both the main data and the reconcile model
+                var viewModel = new FallbackDetailsViewModel
+                {
+                    FallbackData = data,
+                    ReconcileModel = reconcile,
+                    BranchAccount = BranchAccount
+                };
+
+                ViewBag.BranchAccount = BranchAccount;
+                ViewData["ReconcileModel"] = reconcile;
+
+                return PartialView(partialView, viewModel);
             }
             else if (path == "reconcile")
             {

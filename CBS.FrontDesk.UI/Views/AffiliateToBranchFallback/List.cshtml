@@ -24,7 +24,7 @@
 </div>
 
 <!-- Filters Section -->
-<div class="card shadow p-3 mb-4" id="filtersSection">
+<div class="card shadow p-3 mb-1" id="filtersSection">
     <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" style="cursor: pointer;">
         <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
         <i class="mdi mdi-chevron-down"></i>
@@ -33,8 +33,8 @@
     <div class="collapse show" id="filtersCollapse">
         <div class="card-body">
             <form id="fallbackFilterForm" autocomplete="off">
-                <div class="card p-3 mb-3 bg-light">
-                    <div class="row mb-3">
+                <div class="card p-3 mb-1 bg-light">
+                    <div class="row mb-1">
                         <div class="col-md-3">
                             <label class="form-label fw-bold">Branch ID</label>
                             <input type="text" id="branchId" name="BranchId" class="form-control" placeholder="Enter Branch ID" />
@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-1">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Supposed GL Contains</label>
                             <input type="text" id="supposedGlContains" name="SupposedGlContains" class="form-control" placeholder="Search in supposed GL" />
@@ -191,7 +191,7 @@
 </div>
 
 <!-- Export Modal -->
-<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+<!--<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
@@ -255,10 +255,9 @@
                     <i class="mdi mdi-alert-outline me-2"></i>
                     <strong>Export Information:</strong> This will export all data currently loaded in the table with applied filters.
                     Make sure you've applied the desired filters before exporting.
-                </div>
-
-                <!-- Export Progress -->
-                <div id="exportProgress" class="mt-3 d-none">
+                </div>-->
+<!-- Export Progress -->
+<!--<div id="exportProgress" class="mt-3 d-none">
                     <div class="progress mb-2">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
                     </div>
@@ -275,13 +274,30 @@
             </div>
         </div>
     </div>
+</div>-->
+<!-- inside your current view -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("~/Views/CollectorCommission/_ExportCommission.cshtml")
+            @* or if in Shared folder: @Html.Partial("_ExportCommission", ModelForExport) *@
+        </div>
+    </div>
 </div>
+
 
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <div class="modal-body" id="detailsModalBody">
-            <!-- Content will be loaded here -->
+        <div class="modal-content">
+            <!-- Add this wrapper -->
+            <div class="modal-header">
+            
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Content will be loaded here -->
+            </div>
         </div>
     </div>
 </div>
@@ -477,28 +493,28 @@
                             var isResolved = row.isResolved === true || row.isResolved === 'true';
 
                             var viewBtn = `<button type="button" class="dropdown-item btn-view" data-id="${recordId}">
-                                                        <i class="mdi mdi-eye me-1 text-primary"></i> View Details
-                                                      </button>`;
+                                                            <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                                          </button>`;
 
                             var reconcileBtn = !isResolved ?
                                 `<button type="button" class="dropdown-item btn-reconcile" data-id="${recordId}">
-                                                <i class="mdi mdi-check-circle me-1 text-success"></i> Reconcile
-                                             </button>` : '';
+                                                    <i class="mdi mdi-check-circle me-1 text-success"></i> Reconcile
+                                                 </button>` : '';
 
                             return `
-                                            <div class="dropdown text-center">
-                                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                        type="button" id="${btnId}"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="mdi mdi-cog-outline"></i> Actions
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                                    <li>${viewBtn}</li>
-                                                    ${!isResolved ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                                    ${!isResolved ? `<li>${reconcileBtn}</li>` : ''}
-                                                </ul>
-                                            </div>
-                                        `.trim();
+                                                <div class="dropdown text-center">
+                                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                            type="button" id="${btnId}"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                        <li>${viewBtn}</li>
+                                                        ${!isResolved ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                        ${!isResolved ? `<li>${reconcileBtn}</li>` : ''}
+                                                    </ul>
+                                                </div>
+                                            `.trim();
                         }
                     }
                 ],
@@ -525,6 +541,7 @@
             }
         }
 
+        // Update the loadDetailsInModal function
         function loadDetailsInModal(id) {
             $.get('/AffiliateToBranchFallback/InitializeData', {
                 KEY: id,
@@ -532,9 +549,25 @@
                 path: 'details'
             }, function (data) {
                 $('#detailsModalBody').html(data);
+
+                // Re-initialize accordion behavior after loading content
+                initAccordionBehavior();
+
                 $('#detailsModal').modal('show');
             }).fail(function () {
                 appalert('Failed to load details', 0, 1);
+            });
+        }
+
+        // Function to handle accordion behavior
+        function initAccordionBehavior() {
+            // Update accordion icons based on state
+            $('.collapse').on('show.bs.collapse', function () {
+                $(this).prev('.card-header').find('.accordion-icon').removeClass('mdi-chevron-down').addClass('mdi-chevron-up');
+            });
+
+            $('.collapse').on('hide.bs.collapse', function () {
+                $(this).prev('.card-header').find('.accordion-icon').removeClass('mdi-chevron-up').addClass('mdi-chevron-down');
             });
         }
 
@@ -834,6 +867,8 @@
                 $('.progress-bar').css('width', '0%');
                 $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
             });
+
+            initAccordionBehavior();
         });
     </script>
 }
