@@ -1,24 +1,55 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
-    @using Resources
+@using Resources
 
 <div class="card-body d-sm-flex d-block">
-    <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-        @*<a href="#" onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="View customer details">
-            <i class="fas fa-user"></i>
-        </a>*@
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','cashin')" class="btn btn-icon btn-label-success btn-sm btn-fab demo btn-space cashin" data-bs-toggle="tooltip" title="@CashDesk_MomocashCollectionTabs.PerformCashinOperation">
-            <i class="fas fa-money-check"></i>
+    <div class="d-flex align-items-center flex-wrap lh-1 gap-2 mb-2 mb-sm-0">
+
+        @* Optional: customer details button – keep commented if not used now
+            <a href="#"
+               onclick="SearchByCustomerNumber('_CustomerCard','datalistingview')"
+               class="btn btn-outline-secondary btn-sm d-flex align-items-center"
+               data-bs-toggle="tooltip"
+               title="View customer details">
+                <i class="fas fa-user me-1"></i>
+                <span class="d-none d-md-inline">Customer</span>
+            </a>
+        *@
+
+        <!-- Cash-in button -->
+        <a href="#"
+           class="btn btn-success btn-sm d-flex align-items-center momo-op-btn active"
+           data-operation="cashin_momokash_collection"
+           data-bs-toggle="tooltip"
+           title="@CashDesk_MomocashCollectionTabs.PerformCashinOperation"
+           onclick="setMomoOperation('cashin_momokash_collection'); GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','cashin_momokash_collection'); return false;">
+            <i class="fas fa-money-check me-1"></i>
+            <span>Cash-in</span>
         </a>
-        <a href="#" onclick="GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','repayment')" class="btn btn-icon btn-label-dark btn-sm btn-fab demo btn-space loan-repayment" data-bs-toggle="tooltip" title="@CashDesk_MomocashCollectionTabs.PerformLoanRepaymentOperation">
-            <i class="fas fa-hand-holding-usd"></i>
+
+        <!-- Loan repayment button -->
+        <a href="#"
+           class="btn btn-dark btn-sm d-flex align-items-center momo-op-btn"
+           data-operation="repayment_momokash_collection"
+           data-bs-toggle="tooltip"
+           title="@CashDesk_MomocashCollectionTabs.PerformLoanRepaymentOperation"
+           onclick="setMomoOperation('repayment_momokash_collection'); GetMemberData('@Model.CustomerId','_MomocashCollectionDesk','datalistingview','repayment_momokash_collection'); return false;">
+            <i class="fas fa-hand-holding-usd me-1"></i>
+            <span>Loan repayment</span>
         </a>
-        <!--<a href="#" onclick="AddDepositor()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="@CashDesk_MomocashCollectionTabs.AddDepositor">
-            <i class="fas fa-user"></i>--> <!-- Customer details icon -->
-            <!--<i class="fas fa-money-check"></i>--> <!-- Depositor icon -->
-        <!--</a>
-        <a href="#" onclick="AddNote()" data-toggle="modal" data-target="#depositerModal" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space customer-details" data-bs-toggle="tooltip" title="@CashDesk_MomocashCollectionTabs.AddNote">
-            <i class="fas fa-user"></i>--> <!-- Customer details icon -->
-            <!--<i class="fas fa-sticky-note"></i>--> <!-- Note icon -->
-        <!--</a>-->
+
     </div>
 </div>
+<script>
+    function setMomoOperation(op) {
+        // update hidden field
+        var $opInput = $('#currentselectedOperation');
+        if ($opInput.length) {
+            $opInput.val(op);
+        }
+
+        // toggle active state on buttons
+        $('.momo-op-btn').removeClass('active');
+        $('.momo-op-btn[data-operation="' + op + '"]').addClass('active');
+    }
+
+</script>
