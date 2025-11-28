@@ -4,99 +4,99 @@
     ViewBag.Title = "Cheque Number Configuration";
 }
 @using Resources
-
-<div class="row">
-    <div class="col-12">
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cog-outline me-2"></i> Cheque Number Configurations
-                </h1>
-                <p class="card-text">
-                    Define and manage the structure of cheque number identifiers by arranging variables
-                    (Bank Code, Branch Code, Year, Serial Number).
-                </p>
-                <div class="alert alert-info mt-3 py-2">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.
+<div id="listingviewdrop">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-cog-outline me-2"></i> Cheque Number Configurations
+                    </h1>
+                    <p class="card-text">
+                        Define and manage the structure of cheque number identifiers by arranging variables
+                        (Bank Code, Branch Code, Year, Serial Number).
+                    </p>
+                    <div class="alert alert-info mt-3 py-2">
+                        <i class="mdi mdi-information-outline me-1"></i>
+                        Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.
+                    </div>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
-</div>
-<!--tips-->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Cheque Number Configuration</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChequeTips" aria-expanded="false">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseChequeTips" class="collapse">
-        <div class="card-body">
-            <ul>
-                <li>
-                    <i class="mdi mdi-cursor-move text-success me-2"></i>
-                    <strong>Drag & Drop:</strong> Drag placeholders (e.g. <code>{BranchCode}</code>, <code>{Year}</code>, <code>{Sequence}</code>) in the template area to build your cheque number format.
-                </li>
-                <li>
-                    <i class="mdi mdi-eye text-info me-2"></i>
-                    <strong>Preview:</strong> The template area shows your current format in real time.
-                    Example: <code>{BranchCode}-{Year}-{Sequence}</code>.
-                </li>
-                <li>
-                    <i class="mdi mdi-check-decagram text-warning me-2"></i>
-                    <strong>Validation:</strong> Ensure each required placeholder (like <code>{Sequence}</code>) is included at least once.
-                </li>
-                <li>
-                    <i class="mdi mdi-content-save text-primary me-2"></i>
-                    <strong>Save:</strong> Click "Save" to store your template. You can also <strong>Reset</strong> to clear and start fresh.
-                </li>
-                <li>
-                    <i class="mdi mdi-refresh text-secondary me-2"></i>
-                    <strong>Reorder:</strong> Drag placeholders horizontally to adjust the order of fields in your cheque number.
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Configurations</h5>
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button"
-               onclick="LoadDataGen('NumConfig', 'myDataTable', 'List', 0, 'datalistingview', null, 'list')"
-               class="btn btn-label-primary btn-sm me-2"
-               data-bs-toggle="tooltip" title="View List">
-                <i class="mdi mdi-view-list mdi-18px"></i> View List
-            </a>
-            <a type="button"
-               onclick="AddORUpdateGen(null,'datalistingview','_Create','new','NumConfig')"
-               class="btn btn-label-secondary btn-sm"
-               data-bs-toggle="tooltip" title="Add New Configuration">
-                <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
-            </a>
+    <!--tips-->
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Cheque Number Configuration</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChequeTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseChequeTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li>
+                        <i class="mdi mdi-cursor-move text-success me-2"></i>
+                        <strong>Drag & Drop:</strong> Drag placeholders (e.g. <code>{BranchCode}</code>, <code>{Year}</code>, <code>{Sequence}</code>) in the template area to build your cheque number format.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-eye text-info me-2"></i>
+                        <strong>Preview:</strong> The template area shows your current format in real time.
+                        Example: <code>{BranchCode}-{Year}-{Sequence}</code>.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-check-decagram text-warning me-2"></i>
+                        <strong>Validation:</strong> Ensure each required placeholder (like <code>{Sequence}</code>) is included at least once.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-content-save text-primary me-2"></i>
+                        <strong>Save:</strong> Click "Save" to store your template. You can also <strong>Reset</strong> to clear and start fresh.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-refresh text-secondary me-2"></i>
+                        <strong>Reorder:</strong> Drag placeholders horizontally to adjust the order of fields in your cheque number.
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <!-- Placeholder for modals/forms -->
-    @Html.Partial("_model")
 
-    <!-- DataTable Partial -->
-    <div id="datalistingview">
-        @Html.Partial("_Create",Model)
+    <div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Configurations</h5>
+        <div class="card mb-1">
+            <div class="card-body d-flex justify-content-end align-items-center">
+                <a href="@Url.Action("List", "NumConfig")"
+                   class="btn btn-label-primary btn-sm me-2"
+                   id="btnViewList"
+                   data-bs-toggle="tooltip"
+                   title="@GlobalShared.ViewList">
+                    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                </a>
+                <a href="@Url.Action("Index", "NumConfig")"
+                   class="btn btn-label-primary btn-sm me-2"
+                   id="btnViewList"
+                   data-bs-toggle="tooltip"
+                   title="Add New Configuration">
+                    <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
+                </a>
+             </div>
+        </div>
+
+        <!-- Placeholder for modals/forms -->
+        @Html.Partial("_model")
+
+        <!-- DataTable Partial -->
+        <div id="datalistingview">
+            @Html.Partial("_Create", Model)
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
-
-    <script>
+   <script>
 
         // Toggle numeric inputs
         document.getElementById('toggleNumericPositions').addEventListener('change', function () {

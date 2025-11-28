@@ -264,6 +264,7 @@
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
     <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
     <Compile Include="Accounting V2\API\ApiKeyService.cs" />
+    <Compile Include="Accounting V2\BalanceSheet\BalanceSheetService.cs" />
     <Compile Include="Accounting V2\BranchAccountService\BranchAccountService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2mockService.cs" />
     <Compile Include="Accounting V2\ChatoFAccount\ChartOfAccountV2Service.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\DaillyCollectorLicenseService\DaillyCollectorLicenseService.cs" />
+    <Compile Include="Accounting V2\FallBack\FallbackExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\FallBack\fallbackservice.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />

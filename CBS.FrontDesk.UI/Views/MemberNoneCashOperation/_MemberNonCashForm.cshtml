@@ -34,6 +34,7 @@
         .fieldset-custom .table tfoot td {
             padding-top: .25rem;
         }
+
     #momoPathContainer .form-check-label strong {
         display: inline-block;
     }
@@ -76,7 +77,7 @@
             </div>
         </div>
 
-        <h6 class="fw-bold text-dark mb-2"  style="display:none">Mobile Money</h6>
+        <h6 class="fw-bold text-dark mb-2" style="display:none">Mobile Money</h6>
 
         <div class="row g-3" style="display:none">
             <!-- Left side: Checkbox + categories under it -->
@@ -192,7 +193,7 @@
         </div>
     </div>
 
-    
+
 
     <!-- Booking dir + Accounting date on one line -->
     <div class="section">
@@ -310,6 +311,84 @@
 
     <hr class="mt-2" style="border: 2px solid green;" />
 </fieldset>
+<script>
+    $(document).ready(function () {
+        var $branch = $('#branchInput');
+        var $account = $('#account_number');
+
+        function resetGlDropdown(placeholderText) {
+            $account.empty();
+            $account.append($('<option/>', {
+                value: '',
+                text: placeholderText || '---GL Account---'
+            }));
+            $account.trigger('change.select2');
+        }
+
+        function setGlDisabled(isDisabled) {
+            $account.prop('disabled', isDisabled);
+            if ($.fn.select2) {
+                $account.trigger('change.select2');
+            }
+        }
+
+        // Initialize select2 if not already done elsewhere
+        if ($.fn.select2) {
+            $branch.select2();
+            $account.select2();
+        }
+
+        // Initial state: if no branch selected, disable GL dropdown
+        if (!$branch.val()) {
+            resetGlDropdown('Select a branch first');
+            setGlDisabled(true);
+        }
+
+        $branch.on('change', function () {
+            var branchId = $(this).val();
+            var branchName = $branch.find('option:selected').text().trim();
+
+            if (!branchId) {
+                // No branch selected
+                resetGlDropdown('Select a branch first');
+                setGlDisabled(true);
+                return;
+            }
+
+            // While we fetch GLs, disable dropdown & show loading text
+            setGlDisabled(true);
+            resetGlDropdown('Loading ' + branchName + ' GL accounts...');
+
+            $.ajax({
+                url: '@Url.Action("LoadGLbyBranchId", "MemberNoneCashOperation")', // adjust controller if needed
+                type: 'GET',
+                dataType: 'json',
+                data: { branchid: branchId },
+                success: function (data) {
+                    $account.empty();
+                    $account.append($('<option/>', {
+                        value: '',
+                        text: '---GL Account---'
+                    }));
+
+                    $.each(data, function (i, item) {
+                        $account.append($('<option/>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+
+                    // Re-enable GL dropdown after loading
+                    setGlDisabled(false);
+                },
+                error: function () {
+                    resetGlDropdown('Error loading ' + branchName + ' GL accounts');
+                    setGlDisabled(false);
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {

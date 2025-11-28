@@ -62,6 +62,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
         {
             try
             {
+                
                 // Call the main service to get the DataTable
                 var data = await _NumConfigService.GetNumConfigDataTableAsync(query);
 
@@ -95,6 +96,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
 
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
+            await loader();
             if (path == "list")
             {
                 var data = await _NumConfigService.GetAsync();
@@ -147,11 +149,19 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
             return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
 
-        [HttpGet]
+         [HttpGet]
         public async Task<ActionResult> Delete(string KEY)
         {
+            if (string.IsNullOrEmpty(KEY))
+                return Json(new { success = false, message = "Invalid ID provided." }, JsonRequestBehavior.AllowGet);
+
             var result = await _NumConfigService.DelateAsync(KEY);
-            return Json(new { success = result.Result, status = result.MessageStatus, message = Messaging.MessageResult(result) });
+
+            bool success = result?.Result ?? false;
+            string message = Messaging.MessageResult(result) ?? "Operation completed.";
+
+            return Json(new { success = success, message = message }, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

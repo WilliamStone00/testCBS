@@ -84,7 +84,7 @@
         $('#ReconciliationType').on('change', function () {
             const type = $(this).val().trim();
 
-            if (type === "OTHER GL") {
+            if (type === "CASH RECONCILIATION") {
                 $('#TillCashierContainer').show();
                 $('#TillName, #NameOfCashier').prop('required', true);
             } else {
@@ -242,10 +242,10 @@
             if (parseNumber(amount) <= 0) { appalert("Enter a valid Amount.", 3, 1); return false; }
 
             // Set Till/Cashier based on type
-            if ($('#ReconciliationType').val() === "CASH RECONCILIATION") {
+            if ($('#ReconciliationType').val() === "OTHER GL") {
                 if (!till) till = "N/A";
                 if (!cashier) cashier = "N/A";
-            } else if ($('#ReconciliationType').val() === "OTHER GL") {
+            } else if ($('#ReconciliationType').val() === "CASH RECONCILIATION") {
                 // Fields already required; leave as-is
             } else {
                 till = "";
@@ -264,7 +264,7 @@
                         <tr><th>Amount</th><td>${amount}</td></tr>
                         <tr><th>Balance</th><td>${balance}</td></tr>
                         <tr><th>Cash Diff</th><td>${cashDiff}</td></tr>
-                        ${($('#ReconciliationType').val() === "CASH RECONCILIATION" || $('#ReconciliationType').val() === "OTHER GL") ? `<tr><th>Till Name</th><td>${till}</td></tr><tr><th>Cashier</th><td>${cashier}</td></tr>` : ''}
+                        ${($('#ReconciliationType').val() === "OTHER GL" || $('#ReconciliationType').val() === "CASH RECONCILIATION") ? `<tr><th>Till Name</th><td>${till}</td></tr><tr><th>Cashier</th><td>${cashier}</td></tr>` : ''}
                         <tr><th>Note</th><td>${memo}</td></tr>
                     </tbody>
                 </table>
