@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly SalaryProcessedServices _salaryProcessedServices;
         private readonly BranchServices _branchServices;
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+
         private readonly UserManagementServices _userManagementServices;
         private readonly IndividualProfileServices _individualProfileServices;
 
