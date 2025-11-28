@@ -441,6 +441,7 @@
     <Compile Include="ImageProperties\ImagesProperties.cs" />
     <Compile Include="LocalContext\MongoDbContext.cs" />
     <Compile Include="Message\Messaging.cs" />
+    <Compile Include="MockData\BalanceSheetMock.cs" />
     <Compile Include="MockData\DTos\GenericTransferDto.cs" />
     <Compile Include="MockData\TrialBalance6ColumnsMock.cs" />
     <Compile Include="PropertiesBuilder\PropertyBuilder.cs" />

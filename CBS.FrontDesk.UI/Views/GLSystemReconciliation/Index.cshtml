@@ -550,8 +550,25 @@
     });
 
 
- 
+ $(document).on('click', '.view-details', function() {
+    const filter = {
+        branchId: $("#branchId").val(),
+        startDate: $("#startDate").val(),
+        endDate: $("#endDate").val(),
+        operationCode: $(this).data("operation"),
+        isInterBranch: $(this).data("interbranch")
+    };
 
+    // Convert filter object to query string
+    const query = $.param(filter);
+
+    // Open new tab and call controller immediately
+    window.open('/GLSystemReconciliation/LoadOperationDetailsData?' + query, '_blank');
+ });
+
+
+
+  
 
 </script>
 }

@@ -271,6 +271,7 @@
                 excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
                 sourceMode: $('#SourceMode').val(),
                 language: "en",
+                
                 includeZeroGlAccount: $('#IncludingZero').is(':checked'),
                 accountNumber: selectedAccounts.length === 1 ? selectedAccounts[0] : null,
                 accountNumbers: selectedAccounts,
@@ -457,6 +458,14 @@
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
                             success: () => Reprint('TrialBalance4Colmuns')
+                        });
+                        break;
+                    case "bs":
+                        $.post({
+                            url: '/BalanceSheet/GenerateBalanceSheet/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('BalanceSheet')
                         });
                         break;
 

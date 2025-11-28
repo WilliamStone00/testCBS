@@ -1,0 +1,224 @@
+﻿
+
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationDetails
+@using Resources
+
+
+
+
+
+
+<style>
+    .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2a5298;
+        margin: 1rem 0 0.6rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .table-section {
+        margin-bottom: 1rem;
+    }
+
+    .table-sm th {
+        width: 260px;
+        background: #f1f1f1;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #333;
+    }
+
+    .table-sm td {
+        color: #444;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+</style>
+
+<fieldset class="fieldset-custom">
+
+    <!-- Header Card -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-swap-horizontal-bold me-2"></i> SYSTEM RECONCILIATION DETAILS
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Detailed information for the selected journal entry including reconciliation, status, and metadata.
+            </p>
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        <div class="row">
+            <!-- BASIC INFORMATION -->
+            <div class="col-md-6">
+                <h6 class="section-title"><i class="mdi mdi-information-outline me-1"></i> BASIC INFORMATION</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        @if (!string.IsNullOrWhiteSpace(Model.Reference))
+                        {
+                            <tr><th>Reference</th><td>@Model.Reference</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
+                        {
+                            <tr><th>Operation Code</th><td>@Model.OperationCode</td></tr>
+}
+
+                        <tr><th>Status</th><td>@Model.Status</td></tr>
+                        <tr><th>Operation By</th><td>@Model.OperationBy</td></tr>
+                        <tr><th>Attempts</th><td>@Model.Attempts</td></tr>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.LastError))
+                        {
+                            <tr><th>Last Error</th><td>@Model.LastError</td></tr>
+}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- REFERENCE & IDENTIFIERS -->
+            <div class="col-md-6">
+                <h6 class="section-title"><i class="mdi mdi-link-variant me-1"></i> REFERENCE & IDENTIFIERS</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
+                        {
+                            <tr><th>Member Reference</th><td>@Model.MemberReference</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.AuxillaryReference))
+                        {
+                            <tr><th>Auxiliary Reference</th><td>@Model.AuxillaryReference</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.TempJournalId))
+                        {
+                            <tr><th>Temp Journal ID</th><td>@Model.TempJournalId</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ReconciledJournalId))
+                        {
+                            <tr><th>Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ReceiptId))
+                        {
+                            <tr><th>Receipt ID</th><td>@Model.ReceiptId</td></tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- BRANCH INFORMATION -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h6 class="section-title"><i class="mdi mdi-office-building-outline me-1"></i> BRANCH INFORMATION</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchId))
+                        {
+                            <tr><th>Branch ID</th><td>@Model.BranchId</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchName))
+                        {
+                            <tr><th>Branch Name</th><td>@Model.BranchName</td></tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FINANCIAL DETAILS -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h6 class="section-title"><i class="mdi mdi-currency-usd me-1"></i> FINANCIAL DETAILS</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        <tr><th>Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
+                        <tr><th>Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h6 class="section-title"><i class="mdi mdi-timeline-clock-outline me-1"></i> TIMELINE</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        @if (Model.AccountingDate != default(DateTime))
+                        {
+                            <tr><th>Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+}
+
+                        @if (Model.CreatedAtUtc != default(DateTime))
+                        {
+                            <tr><th>Created At</th><td>@Model.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+}
+
+                        @if (Model.UpdatedAtUtc != default(DateTime))
+                        {
+                            <tr><th>Updated At</th><td>@Model.UpdatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+}
+
+                        @if (Model.NextRetryAtUtc.HasValue)
+                        {
+                            <tr><th>Next Retry</th><td>@Model.NextRetryAtUtc.Value.ToString("yyyy-MM-dd HH:mm")</td></tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TECHNICAL DETAILS -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h6 class="section-title"><i class="mdi mdi-cog-outline me-1"></i> TECHNICAL DETAILS</h6>
+                <table class="table table-sm table-bordered table-section">
+                    <tbody>
+                        @if (!string.IsNullOrWhiteSpace(Model.CorrelationId))
+                        {
+                            <tr><th>Correlation ID</th><td>@Model.CorrelationId</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.DestinationUrl))
+                        {
+                            <tr><th>Destination URL</th><td>@Model.DestinationUrl</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ExternalApplicationName))
+                        {
+                            <tr><th>External Application</th><td>@Model.ExternalApplicationName</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.RequestJson))
+                        {
+                            <tr><th>Request JSON</th><td>@Model.RequestJson</td></tr>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ResponseJson))
+                        {
+                            <tr><th>Response JSON</th><td>@Model.ResponseJson</td></tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</fieldset>
+
+
+
+
