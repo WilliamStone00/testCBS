@@ -7,10 +7,12 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string Id { get; set; }
     
     public string Reference { get; set; }
+    public string ReferenceNumber { get; set; }
     public decimal Dr { get; set; }
     public decimal Cr { get; set; }
     public string Number { get; set; }
     public string TitlesDestribution { get; set; }
+    public string AuxiliaryRef { get; set; }
    
     public string Title { get; set; }
     public DateTime Date { get; set; }

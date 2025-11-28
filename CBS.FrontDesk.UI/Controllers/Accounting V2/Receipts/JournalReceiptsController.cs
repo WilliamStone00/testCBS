@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                 }
 
                 // STEP 2 — Retrieve branch + bank metadata
-                var BranchInformation = await _branchServices.GetBranch(_branchServices.GetBranchID());
+                var BranchInformation = await _branchServices.GetBranch(response.BranchId);
 
                 // Convert numeric amount to words
                 decimal amount = response.TotalDebit;
@@ -106,8 +106,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         BranchId = response.BranchId,
                         BranchCode = response.BranchCode,
                         BranchName = response.BranchName,
-
                         Reference = response.Reference,
+                        ReferenceNumber = response.Reference,
                         Number = response.Number,
                         Title = response.Title,
                         Memo = response.Memo,
@@ -125,6 +125,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         TillName = response.TillName,
                         IssuedBy = response.IssuedBy,
                         Currency = response.Currency,
+                        AuxiliaryRef = response.IssuedBy.ToUpper(),
                         TotalDebit = response.TotalDebit,
                         TotalCredit = response.TotalCredit,
                         CashInAmount = response.CashInAmount  ?? 0,
@@ -137,6 +138,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
+                       
                         Date = x.Date,
                         TCredit = tcredit,
                         TDebit = tdebit,
