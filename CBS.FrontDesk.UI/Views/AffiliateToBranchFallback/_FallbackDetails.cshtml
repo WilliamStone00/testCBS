@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.FallbackLogResponse
-@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.FallbackDetailsViewModel 
+
 <fieldset class="fieldset-custom">
     <div class="card bg-light mb-2">
         <div class="card-body text-center">
@@ -13,10 +13,10 @@
         </div>
     </div>
 
-    <!-- Accordion Parent Container -->
+     @*Accordion Parent Container*@ 
     <div class="accordion" id="fallbackAccordion">
 
-        <!-- Basic Information Card - OPEN by default -->
+         @*Basic Information Card - OPEN by default*@ 
         <div class="card mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center"
                  data-bs-toggle="collapse"
@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <!-- Account Information Card - CLOSED by default -->
+         @*Account Information Card - CLOSED by default*@ 
         <div class="card mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center"
                  data-bs-toggle="collapse"
@@ -70,7 +70,7 @@
             </div>
             <div id="accountInfoCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
                 <div class="card-body">
-                    <!-- Your account information content here -->
+                     Your account information content here 
                     <div class="row">
                         <div class="col-md-6">
                             <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-top-right me-2"></i> Supposed GL Account</h6>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
 
-                    <!-- Timeline section inside Account Information -->
+                     @*Timeline section inside Account Information*@ 
                     <div class="row mt-3">
                         <div class="col-12">
                             <table class="table table-sm table-bordered">
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <!-- Resolution Tips Card - CLOSED by default -->
+         @*Resolution Tips Card - CLOSED by default*@ 
         @if (!string.IsNullOrEmpty(Model.resolutionTips))
         {
             <div class="card mb-4">
@@ -146,7 +146,7 @@
             </div>
         }
 
-        <!-- Reconciliation Section - CLOSED by default -->
+         @*Reconciliation Section - CLOSED by default*@ 
         @if (!Model.isResolved)
         {
             <div class="card">
@@ -159,7 +159,20 @@
                 </div>
                 <div id="reconcileCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
                     <div class="card-body">
-                        @Html.Partial("_ReconcileFallback", new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest { Id = Model.id })
+                        @{
+                            var reconcileModel = ViewData["ReconcileModel"] as CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest;
+                        }
+
+                        @if (reconcileModel != null)
+                        {
+                            @Html.Partial("_ReconcileFallback", reconcileModel)
+                        }
+                        else
+                        {
+                            // Fallback: build minimal reconcile model inline (defensive)
+                            @Html.Partial("_ReconcileFallback", new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest { Id = Model.id })
+                        }
+                      
                     </div>
                 </div>
             </div>

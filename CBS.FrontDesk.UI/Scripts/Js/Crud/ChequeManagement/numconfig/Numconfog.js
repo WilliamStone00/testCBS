@@ -1,266 +1,491 @@
-﻿var numConfigTable = null;
+﻿// numconfig-shared.js - Shared functionality for NumConfig
+window.NumConfig = window.NumConfig || {};
 
-function emptyToNull(v) {
-    return (v === undefined || v === null || v === '') ? null : v;
-}
+// --- ENHANCED DRAG & DROP SYSTEM ---
+window.initializeDragAndDrop = function (container) {
+    console.log('Initializing drag and drop...');
 
-function collectNumConfigFilters() {
-    console.log('Collecting filters...');
-    try {
-        const filters = {
-            Name: emptyToNull($('#name').val()),
-            BranchId: emptyToNull($('#branchId').val()),
-            BankCodePosition: $('#bankCodePosition').val() ? parseInt($('#bankCodePosition').val()) : null,
-            BranchCodePosition: $('#branchCodePosition').val() ? parseInt($('#branchCodePosition').val()) : null,
-            YearPosition: $('#yearPosition').val() ? parseInt($('#yearPosition').val()) : null,
-            AcceptSerialNumber: $('#acceptSerialNumber').is(':checked') ? true : null,
-            SerialNumberPosition: $('#serialNumberPosition').val() ? parseInt($('#serialNumberPosition').val()) : null,
-            StartDate: emptyToNull($('#startDate').val()),
-            EndDate: emptyToNull($('#endDate').val()),
-            options: {}
-        };
-        console.log('Filters collected:', filters);
-        return filters;
-    } catch (error) {
-        console.error('Error collecting filters:', error);
-        return {};
+    // Use specific container or search for dragZone
+    const dragZone = container ? container.find('#dragZone').get(0) : document.getElementById('dragZone');
+    if (!dragZone) {
+        console.log('Drag zone not found');
+        return;
     }
-}
 
-function loadNumConfigData() {
-    console.log('Loading NumConfig data...');
-    try {
-        // Destroy existing DataTable if it exists
-        if ($.fn.DataTable.isDataTable('#myDataTable')) {
-            numConfigTable.destroy();
-            $('#myDataTable').empty();
+    let draggedItem = null;
+
+    function updateNumericPositionsFromDrag() {
+        const items = [...dragZone.querySelectorAll('.draggable')];
+        console.log('Updating positions from drag, items:', items.length);
+
+        items.forEach((item, index) => {
+            const varName = item.dataset.variable;
+            const position = index + 1;
+
+            console.log(`Setting ${varName} to position ${position}`);
+
+            const positionInput = document.getElementById(varName.toLowerCase() + 'Position');
+            if (positionInput) {
+                positionInput.value = position;
+            }
+        });
+    }
+
+    // Clear existing event listeners
+    dragZone.querySelectorAll('.draggable').forEach(item => {
+        item.replaceWith(item.cloneNode(true));
+    });
+
+    // Make draggable and add events
+    dragZone.querySelectorAll('.draggable').forEach(item => {
+        item.setAttribute('draggable', true);
+
+        item.addEventListener('dragstart', (e) => {
+            draggedItem = item;
+            setTimeout(() => item.style.opacity = '0.4', 0);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        item.addEventListener('dragend', () => {
+            if (draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem = null;
+            }
+            updateNumericPositionsFromDrag();
+        });
+    });
+
+    // Improved drag over handler
+    dragZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+
+        const afterElement = getDragAfterElement(dragZone, e.clientX);
+        if (!afterElement) {
+            dragZone.appendChild(draggedItem);
+        } else {
+            dragZone.insertBefore(draggedItem, afterElement);
         }
+    });
 
-        numConfigTable = $('#myDataTable').DataTable({
-            serverSide: true,
-            destroy: true,
-            searching: false,
-            responsive: true,
-            processing: true,
-            order: [[0, 'desc']],
-            ajax: {
-                url: '/NumConfig/LoadNumConfigData',
-                type: 'POST',
-                contentType: 'application/json',
-                data: function (d) {
-                    const filters = collectNumConfigFilters();
+    function getDragAfterElement(container, x) {
+        const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+        let closest = null;
+        let closestOffset = Number.NEGATIVE_INFINITY;
 
-                    filters.options = {
-                        draw: d.draw,
-                        start: d.start,
-                        length: d.length,
-                        skip: d.start,
-                        pageSize: d.length,
-                        searchValue: '',
-                        sortColumnName: d.columns[d.order[0].column].data,
-                        sortColumnDirection: d.order[0].dir
-                    };
+        draggableElements.forEach(element => {
+            const box = element.getBoundingClientRect();
+            const offset = x - box.left - box.width / 2;
 
-                    console.log('Sending AJAX data:', filters);
-                    return JSON.stringify(filters);
-                },
-                error: function (xhr, error, thrown) {
-                    console.error('AJAX error:', error, thrown);
-                    alert('Failed to load data. Please try again.');
-                }
-            },
-            columns: [
-                {
-                    data: 'CreatedDate',
-                    name: 'Created Date',
-                    render: function (data) {
-                        return data && window.moment
-                            ? moment(data).format('DD/MM/YYYY HH:mm:ss')
-                            : (data || '');
-                    }
-                },
-                { data: 'Name', name: 'Name' },
-                { data: 'BranchName', name: 'Branch' },
-                { data: 'BankCodePosition', name: 'Bank Code Pos.' },
-                { data: 'BranchCodePosition', name: 'Branch Code Pos.' },
-                { data: 'YearPosition', name: 'Year Pos.' },
-                { data: 'SerialNumberPosition', name: 'Serial No. Pos.' },
-                {
-                    data: 'AcceptSerialNumber',
-                    name: 'Accept Serial',
-                    render: function (data) {
-                        return data
-                            ? '<span class="badge bg-success">Yes</span>'
-                            : '<span class="badge bg-secondary">No</span>';
-                    }
-                },
-                {
-                    data: 'Id',
-                    orderable: false,
-                    searchable: false,
-                    render: function (id) {
-                        return `
-                            <a href="#"
-                               class="btn btn-sm btn-outline-primary me-1"
-                               data-toggle="tooltip" title="Edit"
-                               onclick="AddORUpdateGen('${id}', 'datalistingview', '_Create', 'get', 'NumConfig')">
-                               <i class="mdi mdi-pencil"></i> Edit
-                            </a>
-                            <a href="#"
-                               class="btn btn-sm btn-outline-danger"
-                               data-toggle="tooltip" title="Delete"
-                               onclick="DeleteRecordDataTable('NumConfig', '${id}', 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list')">
-                               <i class="mdi mdi-trash-can"></i> Delete
-                            </a>
-                        `;
-                    }
-                }
-            ],
-            language: {
-                emptyTable: 'No number configurations found',
-                processing: '<i class="mdi mdi-loading mdi-spin"></i> Loading...',
-                info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-                infoEmpty: 'Showing 0 to 0 of 0 entries',
-                infoFiltered: '(filtered from _MAX_ total entries)',
-                lengthMenu: 'Show _MENU_ entries',
-                loadingRecords: 'Loading...',
-                zeroRecords: 'No matching records found',
-                paginate: {
-                    first: 'First',
-                    last: 'Last',
-                    next: 'Next',
-                    previous: 'Previous'
-                }
-            },
-            drawCallback: function () {
-                console.log('DataTable draw callback');
-                if (typeof ($.fn.tooltip) !== 'undefined') {
-                    $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
-                }
-            },
-            initComplete: function () {
-                console.log('DataTable initialization complete');
+            if (offset < 0 && offset > closestOffset) {
+                closestOffset = offset;
+                closest = element;
             }
         });
 
-        console.log('DataTable initialized successfully');
-    } catch (error) {
-        console.error('Error initializing DataTable:', error);
-        alert('Error initializing table. Please check console for details.');
+        return closest;
     }
-}
 
-// Apply Filter button handler
-function applyNumConfigFilters() {
-    console.log('applyNumConfigFilters function called');
-    try {
-        if (numConfigTable) {
-            console.log('Reloading DataTable with filters...');
-            numConfigTable.ajax.reload();
-        } else {
-            console.log('DataTable not initialized, loading data...');
-            loadNumConfigData();
+    // Initialize numeric positions from current drag zone state
+    updateNumericPositionsFromDrag();
+
+    // Set up numeric position toggle
+    const toggleCheckbox = document.getElementById('toggleNumericPositions');
+    const numericContainer = document.getElementById('numericPositions');
+
+    if (toggleCheckbox && numericContainer) {
+        // Remove existing event listeners
+        toggleCheckbox.replaceWith(toggleCheckbox.cloneNode(true));
+        const newToggle = document.getElementById('toggleNumericPositions');
+
+        newToggle.addEventListener('change', function () {
+            numericContainer.style.display = this.checked ? 'flex' : 'none';
+        });
+
+        // Initialize state
+        numericContainer.style.display = newToggle.checked ? 'flex' : 'none';
+    }
+
+    console.log('Drag and drop initialized successfully');
+};
+
+// --- UNIFIED FORM INITIALIZATION ---
+window.initializeNumConfigForm = function (container) {
+    console.log('Initializing NumConfig form...');
+
+    const $container = container ? $(container) : $(document);
+
+    // Disable template customizer for AJAX-loaded content to prevent errors
+    if (window.TemplateCustomizer) {
+        console.log('TemplateCustomizer detected, disabling for AJAX content');
+        // Prevent template customizer from running on AJAX content
+        $container.find('.template-customizer').remove();
+    }
+
+    // Initialize drag and drop
+    if (typeof initializeDragAndDrop === 'function') {
+        initializeDragAndDrop($container);
+    }
+
+    // Initialize Select2
+    if ($.fn.select2) {
+        $container.find('#branchId').each(function () {
+            if (!$(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2({
+                    width: '100%',
+                    placeholder: 'Select Branch',
+                    dropdownParent: $container.closest('.modal-body') || $('body')
+                });
+            }
+        });
+    }
+
+    // Initialize tooltips
+    if ($.fn.tooltip) {
+        $container.find('[data-bs-toggle="tooltip"]').tooltip({ container: 'body' });
+    }
+
+    // Form submission handler
+    $container.find('#manualForm').off('submit').on('submit', function (e) {
+        console.log('Form submitted, updating positions...');
+        // Ensure positions are updated before submit
+        if (typeof initializeDragAndDrop === 'function') {
+            const $formContainer = $(this).closest('#dragZone').length ? $(this).closest('#dragZone').parent() : $(this);
+            initializeDragAndDrop($formContainer);
         }
-    } catch (error) {
-        console.error('Error applying filters:', error);
-        alert('Error applying filters. Please check console for details.');
-    }
-}
+        return true;
+    });
 
-// Reset Filter button handler
-function resetNumConfigFilters() {
-    console.log('resetNumConfigFilters function called');
-    try {
-        // Reset form fields
+    console.log('NumConfig form initialization complete');
+};
+
+// --- LIST VIEW MANAGEMENT ---
+window.NumConfigListView = {
+    table: null,
+    isInitialized: false,
+
+    emptyToNull: function (v) {
+        return (v === undefined || v === null || v === '') ? null : v;
+    },
+
+    collectFilters: function () {
+        console.log('Collecting NumConfig filters...');
+        try {
+            const filters = {
+                Name: this.emptyToNull($('#name').val()),
+                BranchId: this.emptyToNull($('#branchId').val()),
+                BankCodePosition: $('#bankCodePosition').val() ? parseInt($('#bankCodePosition').val()) : null,
+                BranchCodePosition: $('#branchCodePosition').val() ? parseInt($('#branchCodePosition').val()) : null,
+                YearPosition: $('#yearPosition').val() ? parseInt($('#yearPosition').val()) : null,
+                AcceptSerialNumber: $('#acceptSerialNumber').is(':checked') ? true : null,
+                SerialNumberPosition: $('#serialNumberPosition').val() ? parseInt($('#serialNumberPosition').val()) : null,
+                StartDate: this.emptyToNull($('#startDate').val()),
+                EndDate: this.emptyToNull($('#endDate').val()),
+                options: {}
+            };
+            return filters;
+        } catch (error) {
+            console.error('Error collecting filters:', error);
+            return {};
+        }
+    },
+
+    initializeTable: function () {
+        console.log('Initializing NumConfig DataTable...');
+
+        if (!$('#myDataTable').length) {
+            console.error('Table element #myDataTable not found');
+            return false;
+        }
+
+        try {
+            // Destroy existing table if it exists
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                this.table.destroy();
+                $('#myDataTable').closest('.dataTables_wrapper').remove();
+            }
+
+            this.table = $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                searching: false,
+                responsive: true,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/NumConfig/LoadNumConfigData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = NumConfigListView.collectFilters();
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        };
+                        console.log('Sending filters to server:', filters);
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, error, thrown) {
+                        console.error('AJAX error:', error, thrown);
+                        if (typeof appalert === 'function') {
+                            appalert('Failed to load data. Please try again.', 0, 1);
+                        }
+                    }
+                },
+                columns: [
+                    {
+                        data: 'CreatedDate',
+                        render: function (data, type, row) {
+                            const v = row.CreatedDate || row.CreatedOn;
+                            return v ? (window.moment ? moment(v).format('DD/MM/YYYY HH:mm:ss') : v) : '-';
+                        }
+                    },
+                    { data: 'Name' },
+                    { data: 'BranchName' },
+                    { data: 'BankCodePosition' },
+                    { data: 'BranchCodePosition' },
+                    { data: 'YearPosition' },
+                    {
+                        data: 'AcceptSerialNumber',
+                        render: function (data) {
+                            return data ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            var recordId = encodeURIComponent(data || '');
+                            var name = (row.name || row.Name || '').replace(/"/g, '&quot;');
+
+                            return `
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown">
+                                            <i class="mdi mdi-cog-outline"></i> Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
+                                                    <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
+                                                    <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                `;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: 'No number configurations found. Click "Apply Filter" to load data.',
+                    processing: '<i class="mdi mdi-loading mdi-spin"></i> Loading data...',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                    infoEmpty: 'Showing 0 to 0 of 0 entries',
+                    infoFiltered: '(filtered from _MAX_ total entries)',
+                    lengthMenu: 'Show _MENU_ entries',
+                    loadingRecords: 'Loading...',
+                    zeroRecords: 'No matching records found',
+                    paginate: {
+                        first: 'First',
+                        last: 'Last',
+                        next: 'Next',
+                        previous: 'Previous'
+                    }
+                },
+                initComplete: function () {
+                    console.log('NumConfig DataTable initialized');
+                    NumConfigListView.isInitialized = true;
+                    NumConfigListView.attachEventHandlers();
+                }
+            });
+
+            return true;
+        } catch (error) {
+            console.error('Error initializing DataTable:', error);
+            if (typeof appalert === 'function') {
+                appalert('Error initializing table. Please check console for details.', 0, 1);
+            }
+            return false;
+        }
+    },
+
+    loadData: function () {
+        console.log('Loading NumConfig data...');
+        if (this.table && this.isInitialized) {
+            console.log('Table exists, reloading data...');
+            this.table.ajax.reload(null, false);
+        } else {
+            console.log('Table not initialized, initializing now...');
+            this.initializeTable();
+        }
+    },
+
+    applyFilters: function () {
+        console.log('Applying NumConfig filters...');
+        this.loadData();
+    },
+
+    resetFilters: function () {
+        console.log('Resetting NumConfig filters...');
         $('#numconfigFilterForm')[0].reset();
-
-        // Reset select2 if used
         if ($.fn.select2 && $('#branchId').length) {
             $('#branchId').val('').trigger('change');
         }
+        $('#branchFilter, #dateFilters').addClass('d-none');
+        $('#toggleBranch, #toggleDates').prop('checked', false);
 
-        // Hide the togglable sections
-        $('#branchFilter').addClass('d-none');
-        $('#dateFilters').addClass('d-none');
-        $('#toggleBranch').prop('checked', false);
-        $('#toggleDates').prop('checked', false);
-
-        // Reload DataTable with reset filters
-        if (numConfigTable) {
-            console.log('Reloading DataTable after reset...');
-            numConfigTable.ajax.reload();
-        } else {
-            console.log('DataTable not initialized, loading data...');
-            loadNumConfigData();
+        if (this.isInitialized && this.table) {
+            this.table.ajax.reload(null, false);
         }
 
         console.log('Filters reset successfully');
-    } catch (error) {
-        console.error('Error resetting filters:', error);
-        alert('Error resetting filters. Please check console for details.');
-    }
-}
+        if (typeof appalert === 'function') {
+            appalert('Filters reset', 3, 1);
+        }
+    },
 
-// Enhanced document ready with better event handling
-$(document).ready(function () {
-    console.log('Document ready - initializing NumConfig functionality');
+    loadEditForm: function (id) {
+        console.log('Loading edit form for ID:', id);
 
-    try {
-        // Initialize DataTable first
-        loadNumConfigData();
+        var url = '/NumConfig/InitializeData' +
+            '?KEY=' + encodeURIComponent(id) +
+            '&partialView=' + encodeURIComponent('Index') +
+            '&path=details';
 
-        // Use event delegation for buttons to handle dynamic content
-        $(document).on('click', '#applyFilterBtn', function (e) {
-            console.log('Apply Filter button clicked');
-            e.preventDefault();
-            e.stopPropagation();
-            applyNumConfigFilters();
-        });
+        var $target = $('#checknumdrop');
+        var previousHtml = $target.html();
 
-        $(document).on('click', '#resetFilterBtn', function (e) {
-            console.log('Reset Filter button clicked');
-            e.preventDefault();
-            e.stopPropagation();
-            resetNumConfigFilters();
-        });
+        // Show loading
+        $target.html('<div class="text-center p-4"><i class="mdi mdi-loading mdi-spin mdi-36px"></i><div class="mt-2">Loading form...</div></div>');
 
-        // Form enter key prevention
-        $(document).on('keypress', '#numconfigFilterForm input', function (e) {
-            if (e.which === 13) {
-                console.log('Enter key pressed in filter form');
-                e.preventDefault();
-                applyNumConfigFilters();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html',
+            cache: false
+        }).done(function (html) {
+            $target.html(html);
+            console.log('Edit form loaded successfully');
+
+            // Initialize the form with all components
+            if (typeof initializeNumConfigForm === 'function') {
+                initializeNumConfigForm($target);
+            } else {
+                console.error('initializeNumConfigForm function not found - make sure numconfig-shared.js is loaded');
+            }
+
+        }).fail(function (xhr, status, error) {
+            console.error('Failed to load edit form:', status, error);
+            $target.html(previousHtml);
+            if (typeof appalert === 'function') {
+                appalert('Failed to load edit form. Please try again.', 0, 1);
             }
         });
+    },
 
-        // Toggle functionality for branch and date filters
-        $(document).on('change', '#toggleBranch', function () {
+    attachEventHandlers: function () {
+        console.log('Attaching NumConfig event handlers...');
+
+        // Remove existing handlers to prevent duplicates
+        $('#applyFilterBtn').off('click');
+        $('#resetFilterBtn').off('click');
+        $('#toggleBranch').off('change');
+        $('#toggleDates').off('change');
+        $(document).off('click', '.btn-edit');
+        $(document).off('click', '.btn-delete');
+
+        // Filter buttons
+        $('#applyFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            NumConfigListView.applyFilters();
+        });
+
+        $('#resetFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            NumConfigListView.resetFilters();
+        });
+
+        // Toggle filters
+        $('#toggleBranch').on('change', function () {
             $('#branchFilter').toggleClass('d-none', !this.checked);
         });
 
-        $(document).on('change', '#toggleDates', function () {
+        $('#toggleDates').on('change', function () {
             $('#dateFilters').toggleClass('d-none', !this.checked);
         });
 
-        console.log('NumConfig event handlers attached successfully');
+        // Edit button
+        $(document).on('click', '.btn-edit', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            if (id) {
+                NumConfigListView.loadEditForm(id);
+            }
+        });
 
-    } catch (error) {
-        console.error('Error during NumConfig initialization:', error);
+        $(document).on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            if (id) {
+                DeleteRecordDataTable('NumConfig', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list');
+            }
+        });
+
+        // Form enter key prevention
+        $('#numconfigFilterForm input').off('keypress').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                NumConfigListView.applyFilters();
+            }
+        });
+    },
+
+    initializeListView: function () {
+        console.log('Initializing NumConfig list view...');
+
+        // Attach event handlers first
+        this.attachEventHandlers();
+
+        // Initialize Select2
+        if ($.fn.select2 && $('#branchId').length && !$('#branchId').hasClass('select2-hidden-accessible')) {
+            $('#branchId').select2({
+                width: '100%',
+                placeholder: 'Select Branch'
+            });
+        }
+
+        // Initialize tooltips
+        if ($.fn.tooltip) {
+            $('[data-bs-toggle="tooltip"]').tooltip({ container: 'body' });
+        }
+
+        console.log('NumConfig list view initialized');
     }
-});
+};
 
-// Global function to handle page reloads or external calls
-function refreshNumConfigTable() {
-    console.log('Refreshing NumConfig table');
-    if (numConfigTable) {
-        numConfigTable.ajax.reload();
-    } else {
-        loadNumConfigData();
+// --- GLOBAL INITIALIZATION ---
+$(document).ready(function () {
+    console.log('NumConfig shared scripts loaded');
+
+    // Initialize based on current page content
+    if ($('#dragZone').length) {
+        console.log('Form view detected - initializing form');
+        if (typeof initializeNumConfigForm === 'function') {
+            initializeNumConfigForm();
+        }
     }
-}
 
-// Handle browser back/forward buttons
-$(window).on('popstate', function () {
-    console.log('Page state changed, refreshing table');
-    refreshNumConfigTable();
+    if ($('#numconfigFilterForm').length) {
+        console.log('List view detected - initializing list view');
+        NumConfigListView.initializeListView();
+    }
 });

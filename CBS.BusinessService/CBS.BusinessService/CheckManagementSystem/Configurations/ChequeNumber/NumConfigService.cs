@@ -133,7 +133,8 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
             {
                 try
                 {
-                    string formattedUrl = string.Format(APICallHelper.Update);
+                     string id = model.Id;
+                    string formattedUrl = string.Format(APICallHelper.Update, id);
                     var response = await _apiCallerHelper.PutAsync<ServiceResponse<NumConfig>>(formattedUrl, model);
 
                     // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages

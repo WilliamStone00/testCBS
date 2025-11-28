@@ -81,7 +81,7 @@
                    title="Add New Configuration">
                     <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
                 </a>
-             </div>
+            </div>
         </div>
 
         <!-- Placeholder for modals/forms -->
@@ -93,75 +93,177 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-   <script>
+    <script>
+        // --- ENHANCED DRAG & DROP SYSTEM ---
+        window.initializeDragAndDrop = function(container) {
+            console.log('Initializing drag and drop...');
 
-        // Toggle numeric inputs
-        document.getElementById('toggleNumericPositions').addEventListener('change', function () {
-            document.getElementById('numericPositions').style.display = this.checked ? 'flex' : 'none';
-        });
+            // Use specific container or search for dragZone
+            const dragZone = container ? container.find('#dragZone').get(0) : document.getElementById('dragZone');
+            if (!dragZone) {
+                console.log('Drag zone not found');
+                return;
+            }
 
-        // Drag-and-drop logic
-        const dragZone = document.getElementById('dragZone');
-        let draggedItem = null;
+            let draggedItem = null;
 
-        function updateNumericPositionsFromDrag() {
-            const items = [...dragZone.querySelectorAll('.draggable')];
-            items.forEach((item, index) => {
-                const varName = item.dataset.variable;
-                switch (varName) {
-                    case 'BankCode': document.getElementById('bankCodePosition').value = index + 1; break;
-                    case 'BranchCode': document.getElementById('branchCodePosition').value = index + 1; break;
-                    case 'Year': document.getElementById('yearPosition').value = index + 1; break;
-                    case 'SerialNumber': document.getElementById('seriaNumberPosition').value = index + 1; break;
+            function updateNumericPositionsFromDrag() {
+                const items = [...dragZone.querySelectorAll('.draggable')];
+                console.log('Updating positions from drag, items:', items.length);
+
+                items.forEach((item, index) => {
+                    const varName = item.dataset.variable;
+                    const position = index + 1;
+
+                    console.log(`Setting ${varName} to position ${position}`);
+
+                    switch (varName) {
+                        case 'BankCode':
+                            $('#bankCodePosition').val(position).trigger('change');
+                            break;
+                        case 'BranchCode':
+                            $('#branchCodePosition').val(position).trigger('change');
+                            break;
+                        case 'Year':
+                            $('#yearPosition').val(position).trigger('change');
+                            break;
+                        case 'SerialNumber':
+                            $('#seriaNumberPosition').val(position).trigger('change');
+                            break;
+                    }
+                });
+            }
+
+            // Clear existing event listeners
+            dragZone.querySelectorAll('.draggable').forEach(item => {
+                item.replaceWith(item.cloneNode(true));
+            });
+
+            // Make draggable and add events
+            dragZone.querySelectorAll('.draggable').forEach(item => {
+                item.setAttribute('draggable', true);
+
+                item.addEventListener('dragstart', (e) => {
+                    draggedItem = item;
+                    setTimeout(() => item.style.opacity = '0.4', 0);
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+
+                item.addEventListener('dragend', () => {
+                    if (draggedItem) {
+                        draggedItem.style.opacity = '1';
+                        draggedItem = null;
+                    }
+                    updateNumericPositionsFromDrag();
+                });
+            });
+
+            // Improved drag over handler
+            dragZone.addEventListener('dragover', e => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+
+                const afterElement = getDragAfterElement(dragZone, e.clientX);
+                if (!afterElement) {
+                    dragZone.appendChild(draggedItem);
+                } else {
+                    dragZone.insertBefore(draggedItem, afterElement);
                 }
             });
-        }
 
-        dragZone.querySelectorAll('.draggable').forEach(item => {
-            item.setAttribute('draggable', true);
+            function getDragAfterElement(container, x) {
+                const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+                let closest = null;
+                let closestOffset = Number.NEGATIVE_INFINITY;
 
-            item.addEventListener('dragstart', () => {
-                draggedItem = item;
-                setTimeout(() => item.style.opacity = '0.4', 0);
+                draggableElements.forEach(element => {
+                    const box = element.getBoundingClientRect();
+                    const offset = x - box.left - box.width / 2;
+
+                    if (offset < 0 && offset > closestOffset) {
+                        closestOffset = offset;
+                        closest = element;
+                    }
+                });
+
+                return closest;
+            }
+
+            // Initialize numeric positions from current drag zone state
+            updateNumericPositionsFromDrag();
+
+            // Set up numeric position toggle
+            const toggleCheckbox = document.getElementById('toggleNumericPositions');
+            const numericContainer = document.getElementById('numericPositions');
+
+            if (toggleCheckbox && numericContainer) {
+                toggleCheckbox.addEventListener('change', function() {
+                    numericContainer.style.display = this.checked ? 'flex' : 'none';
+                });
+
+                // Initialize state
+                numericContainer.style.display = toggleCheckbox.checked ? 'flex' : 'none';
+            }
+
+            console.log('Drag and drop initialized successfully');
+        };
+
+        // --- UNIFIED FORM INITIALIZATION ---
+        window.initializeNumConfigForm = function(container) {
+            console.log('Initializing NumConfig form...');
+
+            const $container = container ? $(container) : $(document);
+
+            // Initialize drag and drop
+            initializeDragAndDrop($container);
+
+            // Initialize Select2
+            if ($.fn.select2) {
+                $container.find('#branchId').each(function() {
+                    if (!$(this).hasClass('select2-hidden-accessible')) {
+                        $(this).select2({
+                            width: '100%',
+                            placeholder: 'Select Branch',
+                            dropdownParent: $container.closest('.modal-body') || $('body')
+                        });
+                    }
+                });
+            }
+
+            // Initialize tooltips
+            if ($.fn.tooltip) {
+                $container.find('[data-bs-toggle="tooltip"]').tooltip({ container: 'body' });
+            }
+
+            // Form submission handler
+            $container.find('#manualForm').off('submit').on('submit', function(e) {
+                console.log('Form submitted, updating positions...');
+                if (typeof window.NumconfogSyncBeforeSubmit === 'function') {
+                    window.NumconfogSyncBeforeSubmit(this);
+                }
+                return true;
             });
 
-            item.addEventListener('dragend', () => {
-                draggedItem.style.opacity = '1';
-                draggedItem = null;
-                updateNumericPositionsFromDrag(); // update numeric positions on drag end
-            });
+            console.log('NumConfig form initialization complete');
+        };
+
+        // --- MAIN PAGE INITIALIZATION ---
+        $(document).ready(function(){
+            console.log('NumConfig main page loading...');
+
+            // Initialize form if we're on the create page
+            if ($('#dragZone').length) {
+                initializeNumConfigForm();
+            }
+
+            // Initialize list view if we're on the list page
+            if ($('#numconfigFilterForm').length) {
+                initializeNumConfigListView();
+            }
         });
-
-        dragZone.addEventListener('dragover', e => {
-            e.preventDefault();
-            const afterElement = getDragAfterElement(dragZone, e.clientX);
-            if (!afterElement) dragZone.appendChild(draggedItem);
-            else dragZone.insertBefore(draggedItem, afterElement);
-        });
-
-        function getDragAfterElement(container, x) {
-            const draggableElements = [...container.querySelectorAll('.draggable')].filter(el => el !== draggedItem);
-            let closest = null;
-            let offset = Number.NEGATIVE_INFINITY;
-            draggableElements.forEach(child => {
-                const box = child.getBoundingClientRect();
-                const off = x - box.left - box.width / 2;
-                if (off < 0 && off > offset) { offset = off; closest = child; }
-            });
-            return closest;
-        }
-
-        function NumconfogSyncBeforeSubmit(form) {
-            updateNumericPositionsFromDrag(); // ensure numeric positions always reflect drag order
-            return true;
-        }
-
-        // Initial sync in case editing an existing config
-        updateNumericPositionsFromDrag();
     </script>
-
 }
-

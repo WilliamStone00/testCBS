@@ -132,11 +132,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack
         public string FileName { get; set; }
         public byte[] FileBytes { get; set; }
     }
-    public class FallbackDetailsViewModel
-    {
-        public FallbackLogResponse FallbackData { get; set; }
-        public ReconcileFallbackRequest ReconcileModel { get; set; }
-        public IEnumerable<BranchAccountResponse> BranchAccount { get; set; }
-    }
+   
 }
 

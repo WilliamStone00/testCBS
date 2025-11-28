@@ -98,8 +98,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
             if (path == "details")
             {
                 var data = await _fallbackService.GetByIdAsync(KEY);
+                if (data == null)
+                {
+                    // return a not-found partial or an error partial
+                    return PartialView("_NotFoundPartial");
+                }
 
-                // Build reconcile model from the fetched data
+                // Build reconcile model
                 var reconcile = new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest
                 {
                     Id = data.id,
@@ -109,20 +114,15 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.FallBack
                     SourceDescription = data.reference
                 };
 
-                var BranchAccount = await _BranchAccountService.GetAllBranchAccountsFromDataTableAsync(data.branchId);
+                // Get branch accounts
+                var branchAccounts = await _BranchAccountService.GetAllBranchAccountsFromDataTableAsync(data.branchId);
 
-                // Create a view model that contains both the main data and the reconcile model
-                var viewModel = new FallbackDetailsViewModel
-                {
-                    FallbackData = data,
-                    ReconcileModel = reconcile,
-                    BranchAccount = BranchAccount
-                };
+                // Put reconcile and branchAccounts into ViewData (typed) and ViewBag for compatibility
+                ViewData["ReconcileModel"] = reconcile;                // typed access in razor
+                ViewBag.BranchAccount = branchAccounts;                // used by your partial for the dropdown
 
-                ViewBag.BranchAccount = BranchAccount;
-                ViewData["ReconcileModel"] = reconcile;
-
-                return PartialView(partialView, viewModel);
+                // Return the fallback details partial using the FallbackLogResponse as the model
+                return PartialView(partialView, data);
             }
             else if (path == "reconcile")
             {
