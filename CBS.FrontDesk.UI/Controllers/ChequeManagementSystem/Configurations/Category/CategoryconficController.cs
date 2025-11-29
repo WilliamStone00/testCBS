@@ -141,53 +141,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem
             // return Json(new { success = false, status = false, message = "Fillsss the required fields." });
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> CreateOrUpdate(CategoryConfig model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        // For a validation failure, success should definitely be false.
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            status = "ValidationError", // Provide a more specific status
-        //            message = "Validation failed. Please check the form for errors."
-        //        });
-        //    }
-
-        //    ExecutionMessages result;
-        //    string operationType;
-
-        //    if (string.IsNullOrWhiteSpace(model.Id))
-        //    {
-        //        result = await _CategoryConfigService.CreateCategoryAsync(model);
-        //        operationType = "Insert";
-        //    }
-        //    else
-        //    {
-        //        result = await _CategoryConfigService.UpdateCategoryAsync(model);
-        //        operationType = "Update";
-        //    }
-
-        //    bool isAjaxSuccess = result.Result ||
-        //                         (result.MessageStatus == SystemMessageStatus.Exist.ToString());
-
-        //     return Json(new
-        //    {
-        //        success = isAjaxSuccess,
-        //        status = result.MessageStatus,
-        //        message = Messaging.MessageResult(result),
-        //        optype = operationType,
-        //        reloadDataView = "Yes",
-        //        controllerName = "Categoryconfic",
-        //        divLoaderList = "datalistingview",
-        //        tableName = "myDataTable",
-        //        dataLoaderActionName = "_CategoryDataTable",
-        //        divLoaderCreator = "datalistingview",
-        //        reinitializedActionName = "_Categories"
-        //    });
-        //}
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(CategoryConfig model)

@@ -1256,8 +1256,8 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllChequeBookCategories = "/api/v1/get-checkbook-categories";
         public static string GetChequeBookCategoryById = "/api/v1/get-checkbook-category/{0}";
         public static string CreateChequeBookCategory = "/api/v1/checkbook-category";
-        public static string UpdateChequeBookCategory = "/api/CheckBookCategory/{0}";
-        public static string DeactivateChequeBookCategory = "/api/CheckBookCategory/{0}";
+        public static string UpdateChequeBookCategory = "/api/v1/update-checkbook-category/{0}";
+        public static string DeactivateChequeBookCategory = "/api/v1/delete-checkbook-category/{0}";
         public static string categorydatatable = "/api/v1/checkbook-category/data-table";
 
         // ---------------- cheque number position CRUD ----------------
@@ -1679,8 +1679,13 @@ namespace CBS.FrontDesk.Helper
             public const string DeactivateCollectorDevice = "/api/v1/CollectorDevice/{0}";
             public const string UpdateCollectorDevice = "/api/v1/CollectorDevice/{0}";
             public const string CreateCollectorDevice = "/api/v1/CollectorDevice/register";
-            public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
-            
+        public const string GetCollectorDeviceById = "/api/v1/CollectorDevice/{0}";
+
+        //------------------------ Reconciliation Fall back ----------------------------------------
+        public const string GetFallbackLogDataTable = "/api/v1/AffiliateToBranchFallbackLog/datatable";
+        public const string GetFallbackLogById = "/api/v1/AffiliateToBranchFallbackLog/{0}";
+        public const string ResolveFallbackLog = "/api/v1/AffiliateToBranchFallbackLog/{0}/resolve";
+
         //----------------------------- Dailly Collector License Management ---------------------------
         public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";
         public const string RevokeLicense = "/api/v1/DailyCollectorLicense/{0}/revoke";

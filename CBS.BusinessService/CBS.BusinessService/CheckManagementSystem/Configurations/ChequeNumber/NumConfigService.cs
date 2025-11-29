@@ -163,7 +163,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
                     if (string.IsNullOrEmpty(APICallHelper.Delete))
                         throw new InvalidOperationException("DeactivateChequeBookCategory URL is not configured.");
 
-                    string formattedUrl = string.Format(APICallHelper.DeactivateChequeBookCategory, categoryId);
+                    string formattedUrl = string.Format(APICallHelper.Delete, categoryId);
 
                     if (_apiCallerHelper == null)
                         throw new InvalidOperationException("_apiCallerHelper is not initialized.");
@@ -176,13 +176,13 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
                     if (response.IsSuccess)
                     {
                         GetExecutionMessages(null, true, $"Category ID: {categoryId}", MessagesResults.Success,
-                            ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
                             response.ApiResponseData?.Message ?? "Category deactivated successfully.");
                     }
                     else
                     {
                         GetExecutionMessages(null, false, $"Category ID: {categoryId}", MessagesResults.Failed,
-                            ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                             response.ApiResponseData?.Message ?? response.Message ?? "Unknown error.");
                     }
                 }

@@ -1,7 +1,10 @@
 ﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
+using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Message;
@@ -22,9 +25,9 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly SalaryUploadServices _salaryUploadServices;
         private readonly BranchServices _branchServices;
         private readonly SalaryAnalysisResultServices _salaryAnalysisResultServices;
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly BranchAccountService chartOfAccountServices;
         private readonly FileUploadServices _fileUploadServices;
-        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, ChartOfAccountServicesAnnex chartOfAccountServices, FileUploadServices fileUploadServices)
+        public SalaryUploadController(SalaryUploadServices salaryUploadServices, SalaryAnalysisResultServices salaryAnalysisResultServices, BranchServices branchServices, BranchAccountService chartOfAccountServices, FileUploadServices fileUploadServices)
         {
             _salaryUploadServices = salaryUploadServices;
             _salaryAnalysisResultServices=salaryAnalysisResultServices;
@@ -63,20 +66,14 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         // One helper to populate common dropdowns; optionally include Chart of Accounts
         private async Task PopulateDropdownsAsync(bool includeChartOfAccounts)
         {
-            var branchesTask = _branchServices.GetBranches();
-            Task<IEnumerable<object>> coaTask = Task.FromResult(Enumerable.Empty<object>());
-
+            var branchesTask = await _branchServices.GetBranches();
             if (includeChartOfAccounts)
-                coaTask = chartOfAccountServices.GetChartOfAccounts(false).ContinueWith(t => t.Result.Cast<object>());
-
-            // Run in parallel when both are needed
-            await Task.WhenAll(includeChartOfAccounts ? new Task[] { branchesTask, coaTask } : new Task[] { branchesTask });
-
-            ViewBag.Branches = (await branchesTask);                 // original behavior
-            ViewBag.FileTypes = FileTypeOptions;                     // reused list
-
-            if (includeChartOfAccounts)
-                ViewBag.StandingOrderSourceAccountOptions = (await coaTask).ToList(); // original ToList()
+            {
+                var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(null);
+                ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
+            }
+            ViewBag.Branches = branchesTask;                
+            ViewBag.FileTypes = FileTypeOptions;                    
         }
 
         // Actions
