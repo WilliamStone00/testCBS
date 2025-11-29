@@ -67,11 +67,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private async Task PopulateDropdownsAsync(bool includeChartOfAccounts)
         {
             var branchesTask = await _branchServices.GetBranches();
-            if (includeChartOfAccounts)
-            {
-                var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(null);
-                ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
-            }
+            var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
+            ViewBag.StandingOrderSourceAccountOptions = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
             ViewBag.Branches = branchesTask;                
             ViewBag.FileTypes = FileTypeOptions;                    
         }

@@ -731,7 +731,7 @@ namespace CBS.BusinessService.Accounts
                 }
                 else if (bulkDeposits.FirstOrDefault().OperationType == "CashInMomocashCollection")
                 {
-                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate };
+                    var BulkOperation = new BulkOperation { BulkOperations = bulkDeposits, IsCashOperation = false, OperationType = "Deposit", DepositType = "CashInMomocashCollection", AccountingDate = bulkDeposits.FirstOrDefault().AccountingDate, LedgerChartOfAccountId= bulkDeposits.FirstOrDefault().ChartOfAccountId };
                     var response = await _transactionApiHelper.PostAsync<ServiceResponse<PaymentReceipt>>(APICallHelper.BulkDeposit, BulkOperation);
                     if (response.ApiResponseData != null)
                     {
