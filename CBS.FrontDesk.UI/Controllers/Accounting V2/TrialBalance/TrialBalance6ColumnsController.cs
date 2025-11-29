@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.ExportReports;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
@@ -9,6 +10,7 @@ using CBS.FrontDesk.UI.AppFiles.Reporting.Accounting;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using CrystalDecisions.Web;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,14 +25,17 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         private readonly TrialBalances6ColumnService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
+        private readonly TrialBalance6ColumnsExport _repoExcel;
 
         public TrialBalance6ColumnsController(
             TrialBalances6ColumnService trialBalanceService,
             BranchServices branchServices,
+            TrialBalance6ColumnsExport repoexcel,
             BranchAccountService branchAccountService)
         {
             _branchServices = branchServices;
             _trialBalanceService = trialBalanceService;
+            _repoExcel = repoexcel;
             _branchAccountService = branchAccountService;
         }
 
@@ -51,6 +56,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 // 1) Load trial balance (6 columns)
                 // ─────────────────────────────────────────────
                 var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
+
+                string jsonFilter = JsonConvert.SerializeObject(model, Formatting.Indented);
 
                 if (response?.Lines == null || !response.Lines.Any())
                 {
@@ -165,6 +172,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                         return item;
                     })
                     .ToList();
+
+
+                _repoExcel.ExportTb6(data);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 // ─────────────────────────────────────────────
                 // 5) Push prepared dataset to session for Crystal

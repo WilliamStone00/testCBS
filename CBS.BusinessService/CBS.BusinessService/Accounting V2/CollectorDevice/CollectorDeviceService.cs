@@ -158,15 +158,18 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
 
             return ExecutionMessage;
         }
+
         public async Task<IEnumerable<CollectorDeviceresponse>> GetDevicedropAsync()
         {
             try
             {
-
                 string formattedUrl = string.Format(APICallHelper.GetAllCollectorDevice);
 
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<List<CollectorDeviceresponse>>>(formattedUrl);
                 var affiliates = response?.ApiResponseData?.Data ?? new List<CollectorDeviceresponse>();
+
+                // Filter devices where assignedCollectorUserId is null
+                affiliates = affiliates.Where(a => a.AssignedCollectorUserId == null).ToList();
 
                 if (!IsHeadOffice())
                 {
@@ -179,7 +182,6 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
                     {
                         Id = "All",
                         DeviceName = "All devices",
-
                     };
                     affiliates.Insert(0, defaultAffiliate);
                 }

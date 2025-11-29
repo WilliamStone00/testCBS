@@ -1,57 +1,59 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <style>
-    /* tighter vertical rhythm */
-    .fieldset-custom .section {
-        border: 1px solid var(--bs-primary);
-        border-radius: .5rem;
-        padding: .75rem;
-        margin-bottom: .75rem;
+    .fieldset-custom {
+        padding: 0.75rem 1rem;
     }
 
-        .fieldset-custom .section h6 {
-            margin: 0 0 .25rem 0;
-            font-weight: 700;
+        .fieldset-custom legend {
+            margin-bottom: .5rem;
+            font-size: 1rem;
         }
 
-    .fieldset-custom .form-floating {
-        padding: .5rem;
-    }
+        .fieldset-custom .row {
+            margin-bottom: .25rem;
+        }
 
-    .fieldset-custom .form-check.form-switch {
-        padding: .5rem .75rem;
-    }
+            .fieldset-custom .row:last-child {
+                margin-bottom: 0;
+            }
 
-    .fieldset-custom .form-control,
-    .fieldset-custom .select2-selection--single {
-        min-height: 36px;
-    }
+        .fieldset-custom .form-floating {
+            padding: .25rem 0;
+        }
 
-    .fieldset-custom .table {
-        margin: .5rem 0 0 0;
-    }
-
-        .fieldset-custom .table tfoot td {
+        .fieldset-custom .form-control,
+        .fieldset-custom .select2-selection--single {
+            min-height: 34px;
             padding-top: .25rem;
+            padding-bottom: .25rem;
+            font-size: .9rem;
         }
 
-    #momoPathContainer .form-check-label strong {
-        display: inline-block;
-    }
+        .fieldset-custom .table {
+            margin-bottom: .25rem;
+        }
 
-    #momoPathContainer .form-check {
-        padding-left: 0.25rem;
+            .fieldset-custom .table th,
+            .fieldset-custom .table td {
+                padding-top: .35rem;
+                padding-bottom: .35rem;
+                font-size: .9rem;
+            }
+
+    .header-buttons {
+        margin-top: .75rem !important;
     }
 </style>
 
-@if (ViewBag.Operation == "cashin")
+@if (ViewBag.Operation == "cashin_momokash_collection")
 {
     <fieldset class="fieldset-custom">
         <legend style="color: green">@CashDesk_MomocashCollectionForm.CashinMomocashCollections</legend>
 
-
         <div class="row g-3">
 
+            <!-- Member summary -->
             <div class="row g-2 align-items-center mb-2">
                 <div class="col-12">
                     <span class="formatted-amount shadow-sm d-block py-2 px-3 bg-light rounded border border-secondary">
@@ -61,16 +63,24 @@
                     </span>
                 </div>
             </div>
+
+            <!-- Source type + accounting date -->
             <div class="row g-3 align-items-center">
                 <div class="col-md-8">
                     <label class="fw-semibold text-dark mb-1">Source Type:</label>
                     <div class="d-flex flex-wrap gap-3">
                         <label class="booking-option">
-                            @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { id = "MobileMoneyMTN" })
+                            @Html.RadioButtonFor(
+                                m => m.BulkDeposit.SourceType,
+                                "MomocashCollectionMTN",
+                                new { id = "MobileMoneyMTN" })
                             @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN
                         </label>
                         <label class="booking-option">
-                            @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { id = "MobileMoneyORANGE" })
+                            @Html.RadioButtonFor(
+                                m => m.BulkDeposit.SourceType,
+                                "MomocashCollectionOrange",
+                                new { id = "MobileMoneyORANGE" })
                             @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange
                         </label>
                     </div>
@@ -84,7 +94,7 @@
                             ? Model.BulkDeposit.AccountingDate.Value.ToString("yyyy-MM-dd")
                             : DateTime.Today.ToString("yyyy-MM-dd"),
                         new
-                             {
+                        {
                             @class = "form-control form-control-sm d-inline-block accounting-date",
                             style = "width: 180px",
                             type = "date",
@@ -93,12 +103,37 @@
                         })
                     @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
                 </div>
+
                 <!-- Toggle Representative/Depositor section -->
-
-
                 <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
-            </div>    <!-- Members Accounts (compact table) -->
-            <!-- Collapsible Representative/Depositor section -->
+            </div>
+
+            <!-- Branch + GL account selection -->
+            <div class="row g-3 mb-2">
+                <div class="col-md-6">
+                    <div class="form-floating border rounded">
+                        @Html.DropDownListFor(
+                            m => m.BulkDeposit.BranchId,
+                            new SelectList(ViewBag.Branches, "Id", "Name"),
+                            "---Select branch---",
+                            new { @class = "form-control shadow-sm select2", id = "branchInput" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.BranchId, "", new { @class = "text-danger" })
+                        <label for="branchInput">Branch</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating border rounded">
+                        @Html.DropDownListFor(
+                            m => m.BulkDeposit.ChartOfAccountId,
+                            Enumerable.Empty<SelectListItem>(),
+                            "---GL Account---",
+                            new { @class = "form-control select2", id = "account_number", @search = "true" })
+                        @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
+                        <label id="accountNumberLabel" for="account_number">Correspondent account</label>
+                    </div>
+                </div>
+            </div>
+            <!-- End Branch + GL account selection -->
             <!-- Flex row to push button to the right -->
             <div class="d-flex justify-content-end mb-2">
                 <button class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
@@ -110,7 +145,7 @@
                 </button>
             </div>
 
-            <!-- Collapsible content -->
+            <!-- Collapsible Representative/Depositor content -->
             <div class="col-12">
                 <div id="repSection" class="collapse">
                     <div class="border rounded-3 p-3 bg-light-subtle">
@@ -175,8 +210,7 @@
                 </div>
             </div>
 
-
-
+            <!-- Accounts table -->
             <div class="table-responsive" style="width: 100%;">
                 <table class="table table-hover" id="myDataTableT">
                     <thead class="table-light">
@@ -192,7 +226,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var d in Model.BulkDeposits.Where(x => !x.AccountType.ToLower().Contains("loan")).OrderBy(t => t.AccountType))
+                        @foreach (var d in Model.BulkDeposits
+                            .Where(x => !x.AccountType.ToLower().Contains("loan"))
+                            .OrderBy(t => t.AccountType))
                         {
                             <tr>
                                 <td style="display:none;">@d.AccountNumber</td>
@@ -218,7 +254,9 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Total:</strong></td>
+                            <td colspan="3" style="text-align: right;">
+                                <strong>@CashDesk_MomocashCollectionForm.Total:</strong>
+                            </td>
                             <td id="tableTotal">0</td>
                         </tr>
                     </tfoot>
@@ -226,7 +264,7 @@
             </div>
         </div>
 
-
+        <!-- Action buttons -->
         <div class="header-buttons mt-4 float-end">
             <input type="hidden" name="OperationType" value="CashInMomocashCollection" id="OperationType" />
             <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
@@ -240,13 +278,11 @@
                 <i class="fas fa-sync-alt me-1"></i> @CashDesk_MomocashCollectionForm.Reset
             </button>
         </div>
-
     </fieldset>
-
 }
 
 
-else if (ViewBag.Operation == "repayment")
+else if (ViewBag.Operation == "repayment_momokash_collection")
 {
 
 
@@ -268,17 +304,32 @@ else if (ViewBag.Operation == "repayment")
                     <div class="row">
                         <div class="col-6">
                             <div class="form-check">
-                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionMTN", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
-                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionMTN" style="background-color: yellow; color: black;">@CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN</label>
+                                @Html.RadioButtonFor(
+                                    m => m.AddOtherTransactionMobileMoneyCommand.SourceType,
+                                    "MomocashCollectionMTN",
+                                    new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
+                                <label class="form-check-label shadow-input-boxes"
+                                       for="MobileMoneyMTN"
+                                       style="background-color: yellow; color: black;">
+                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyMTN
+                                </label>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-check">
-                                @Html.RadioButtonFor(m => m.AddOtherTransactionMobileMoneyCommand.SourceType, "MomocashCollectionOrange", new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
-                                <label class="form-check-label shadow-input-boxes" for="MomocashCollectionOrange" style="background-color: orange; color: white;">@CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange</label>
+                                @Html.RadioButtonFor(
+                                    m => m.AddOtherTransactionMobileMoneyCommand.SourceType,
+                                    "MomocashCollectionOrange",
+                                    new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
+                                <label class="form-check-label shadow-input-boxes"
+                                       for="MobileMoneyORANGE"
+                                       style="background-color: orange; color: white;">
+                                    @CashDesk_MomocashCollectionForm.MomoCashCollectionMobileMoneyOrange
+                                </label>
                             </div>
                         </div>
                     </div>
+
                     <hr style="border: 1px solid green;" />
                     <div class="row mb-3">
                         <div class="col text-end">
@@ -300,353 +351,438 @@ else if (ViewBag.Operation == "repayment")
                             @Html.ValidationMessageFor(m => m.BulkDeposit.AccountingDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
+                    <!-- Branch + GL account selection (loan repayment) -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating border rounded">
+                                @Html.DropDownListFor(
+                                    m => m.BulkDeposit.BranchId,
+                                    new SelectList(ViewBag.Branches, "Id", "Name"),
+                                    "---Select branch---",
+                                    new { @class = "form-control shadow-sm select2", id = "branchInput" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.BranchId, "", new { @class = "text-danger" })
+                                <label for="branchInput">Branch</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating border rounded">
+                                @Html.DropDownListFor(
+                                    m => m.BulkDeposit.ChartOfAccountId,
+                                    Enumerable.Empty<SelectListItem>(),
+                                    "---GL Account---",
+                                    new { @class = "form-control select2", id = "account_number", @search = "true" })
+                                @Html.ValidationMessageFor(m => m.BulkDeposit.ChartOfAccountId, "", new { @class = "text-danger" })
+                                <label id="accountNumberLabel" for="account_number">Correspondent account</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Branch + GL account selection (loan repayment) -->
+
                     <div class="row">
 
-
-                        <div class="table-responsive" style="width: 100%;">
-                            <table class="table table-hover" id="myDataTableT">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="display:none;">@CashDesk_MomocashCollectionForm.LoanId</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Date</th>
-                                        <th style="display:none;">@CashDesk_MomocashCollectionForm.Amount</th> <!-- Hide Amount column -->
-                                        <th>@CashDesk_MomocashCollectionForm.Balance</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Int</th>
-                                        <th style="display:none;">@CashDesk_MomocashCollectionForm.VRate</th> <!-- Hide V.Rate column -->
-                                        <th style="display:none;">@CashDesk_MomocashCollectionForm.DueA</th> <!-- Hide Due A column -->
-                                        <th>@CashDesk_MomocashCollectionForm.EnterCapital</th>
-                                        <th>@CashDesk_MomocashCollectionForm.EnterInterest</th>
-                                        <th>@CashDesk_MomocashCollectionForm.EnterPenalty</th> <!-- Added Penalty input column -->
-                                        <th>@CashDesk_MomocashCollectionForm.Total</th>
-                                        <th>@CashDesk_MomocashCollectionForm.Conf</th>
-                                        <th>@CashDesk_MomocashCollectionForm.VatIncExc</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var d in Model.Loans)
-                                    {
-                                        <tr id="row-@d.Id">
-                                            <td style="display:none;">@d.Id</td>
-                                            <td>@d.LoanDate.ToString("dd/MM/yy")</td>
-                                            <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
-                                            <td>@d.Balance.ToString("#,##0.0")</td>
-                                            <td>@d.AccrualInterest.ToString("#,##0.0")</td>
-                                            <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
-                                            <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
-                                            <td>
-                                                <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
-                                            </td>
-                                            <td>
-                                                <input type="number"
-                                                       class="form-control interest-input shadow-input-boxes"
-                                                       id="interest-@d.Id"
-                                                       value="0"
-                                                       oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
-                                                       onblur="applyVatAdjustment('@d.Id')" />
+                        <div class="row">
 
 
-
-                                            </td>
-                                            <td>
-                                                <!-- Penalty input field -->
-                                                <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
-                                            </td>
-                                            <td>
-                                                <span class="total-span" id="total-@d.Id">0</span>
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input">
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"
-                                                       class="form-check-input vat-exclusive-check"
-                                                       id="vatExclusive-@d.Id"
-                                                       onchange="handleVatToggle('@d.Id')" />
-                                            </td>
+                            <div class="table-responsive" style="width: 100%;">
+                                <table class="table table-hover" id="myDataTableT">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="display:none;">@CashDesk_MomocashCollectionForm.LoanId</th>
+                                            <th>@CashDesk_MomocashCollectionForm.Date</th>
+                                            <th style="display:none;">@CashDesk_MomocashCollectionForm.Amount</th> <!-- Hide Amount column -->
+                                            <th>@CashDesk_MomocashCollectionForm.Balance</th>
+                                            <th>@CashDesk_MomocashCollectionForm.Int</th>
+                                            <th style="display:none;">@CashDesk_MomocashCollectionForm.VRate</th> <!-- Hide V.Rate column -->
+                                            <th style="display:none;">@CashDesk_MomocashCollectionForm.DueA</th> <!-- Hide Due A column -->
+                                            <th>@CashDesk_MomocashCollectionForm.EnterCapital</th>
+                                            <th>@CashDesk_MomocashCollectionForm.EnterInterest</th>
+                                            <th>@CashDesk_MomocashCollectionForm.EnterPenalty</th> <!-- Added Penalty input column -->
+                                            <th>@CashDesk_MomocashCollectionForm.Total</th>
+                                            <th>@CashDesk_MomocashCollectionForm.Conf</th>
+                                            <th>@CashDesk_MomocashCollectionForm.VatIncExc</th>
                                         </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Total:</strong></td>
-                                        <td id="tableTotal">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Balance:</strong></td>
-                                        <td id="tableBalance">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.CalculatedVat:</strong></td>
-                                        <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var d in Model.Loans)
+                                        {
+                                            <tr id="row-@d.Id">
+                                                <td style="display:none;">@d.Id</td>
+                                                <td>@d.LoanDate.ToString("dd/MM/yy")</td>
+                                                <td style="display:none;">@d.LoanAmount.ToString("#,##0.0")</td> <!-- Hide Amount column -->
+                                                <td>@d.Balance.ToString("#,##0.0")</td>
+                                                <td>@d.AccrualInterest.ToString("#,##0.0")</td>
+                                                <td style="display:none;">@d.VatRate.ToString("#,##0.00")</td> <!-- Hide V.Rate column -->
+                                                <td style="display:none;">@d.DueAmount.ToString("#,##0.0")</td> <!-- Hide Due A column -->
+                                                <td>
+                                                    <input type="number" class="form-control amount-input shadow-input-boxes" id="capital-@d.Id" value="0">
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                           class="form-control interest-input shadow-input-boxes"
+                                                           id="interest-@d.Id"
+                                                           value="0"
+                                                           oninput="previewVat('@d.Id', this.value, '@d.VatRate', '@d.LoanAmount')"
+                                                           onblur="applyVatAdjustment('@d.Id')" />
+
+
+
+                                                </td>
+                                                <td>
+                                                    <!-- Penalty input field -->
+                                                    <input type="number" class="form-control penalty-input shadow-input-boxes" id="penalty-@d.Id" value="0">
+                                                </td>
+                                                <td>
+                                                    <span class="total-span" id="total-@d.Id">0</span>
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input">
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                           class="form-check-input vat-exclusive-check"
+                                                           id="vatExclusive-@d.Id"
+                                                           onchange="handleVatToggle('@d.Id')" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Total:</strong></td>
+                                            <td id="tableTotal">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.Balance:</strong></td>
+                                            <td id="tableBalance">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6" style="text-align: right;"><strong>@CashDesk_MomocashCollectionForm.CalculatedVat:</strong></td>
+                                            <td id="calculatedVat">0</td> <!-- This will display the calculated VAT -->
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Loan Details Modal -->
-                    <div class="modal fade" id="loanDetailsModal" tabindex="-1" role="dialog" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content shadow-lg border-0">
-                                <div class="modal-header bg-info text-white">
-                                    <h5 class="modal-title" id="loanDetailsModalLabel">📋 @CashDesk_MomocashCollectionForm.LoanDetails</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="@CashDesk_MomocashCollectionForm.Close"></button>
-                                </div>
-                                <div class="modal-body p-4">
-                                    <!-- Loan Details Section -->
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.LoanDate</h6>
-                                                    <h4 class="card-text text-dark" id="detailLoanDate">@CashDesk_MomocashCollectionForm.na</h4>
+                        <!-- Loan Details Modal -->
+                        <div class="modal fade" id="loanDetailsModal" tabindex="-1" role="dialog" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content shadow-lg border-0">
+                                    <div class="modal-header bg-info text-white">
+                                        <h5 class="modal-title" id="loanDetailsModalLabel">📋 @CashDesk_MomocashCollectionForm.LoanDetails</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="@CashDesk_MomocashCollectionForm.Close"></button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <!-- Loan Details Section -->
+                                        <div class="row mb-4">
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.LoanDate</h6>
+                                                        <h4 class="card-text text-dark" id="detailLoanDate">@CashDesk_MomocashCollectionForm.na</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Amount</h6>
+                                                        <h4 class="card-text text-dark" id="detailLoanAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Amount</h6>
-                                                    <h4 class="card-text text-dark" id="detailLoanAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                        <div class="row mb-4">
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Balance</h6>
+                                                        <h4 class="card-text text-dark" id="detailBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Interest</h6>
+                                                        <h4 class="card-text text-dark" id="detailInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.DueAmount</h6>
+                                                        <h4 class="card-text text-dark" id="detailDueAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Penalty</h6>
+                                                        <h4 class="card-text text-dark" id="detailPenalty">@CashDesk_MomocashCollectionForm.xaf 0</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Vat</h6>
+                                                        <h4 class="card-text text-dark" id="vatRate">0 %</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.InterestRate</h6>
+                                                        <h4 class="card-text text-dark" id="interestRate">0 %</h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Balance</h6>
-                                                    <h4 class="card-text text-dark" id="detailBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Interest</h6>
-                                                    <h4 class="card-text text-dark" id="detailInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-circle"></i> @CashDesk_MomocashCollectionForm.Close
+                                        </button>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.DueAmount</h6>
-                                                    <h4 class="card-text text-dark" id="detailDueAmount">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Penalty</h6>
-                                                    <h4 class="card-text text-dark" id="detailPenalty">@CashDesk_MomocashCollectionForm.xaf 0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.Vat</h6>
-                                                    <h4 class="card-text text-dark" id="vatRate">0 %</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1">@CashDesk_MomocashCollectionForm.InterestRate</h6>
-                                                    <h4 class="card-text text-dark" id="interestRate">0 %</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                                        <i class="bi bi-x-circle"></i> @CashDesk_MomocashCollectionForm.Close
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                        <input type="hidden" id="modalLoanId">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content shadow-lg border-0">
-                                <div class="modal-header bg-primary text-white">
-                                    <h5 class="modal-title" id="paymentModalLabel">💵  @CashDesk_MomocashCollectionForm.PaymentDetails</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body p-4">
-                                    <!-- Loan Information Section (Due Amount and Balance) -->
-                                    <div class="row mb-4">
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.AccrualInterest</h6>
-                                                    <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4> <!-- Dynamically populated -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                            <input type="hidden" id="modalLoanId">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content shadow-lg border-0">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title" id="paymentModalLabel">💵  @CashDesk_MomocashCollectionForm.PaymentDetails</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <!-- Loan Information Section (Due Amount and Balance) -->
+                                        <div class="row mb-4">
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.AccrualInterest</h6>
+                                                        <h4 class="card-text text-dark" id="modalAccrualInterest">@CashDesk_MomocashCollectionForm.xaf 0</h4> <!-- Dynamically populated -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-light shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.Balance</h6>
+                                                        <h4 class="card-text text-dark" id="modalBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4> <!-- Dynamically populated -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="card bg-light shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <h6 class="card-title text-muted mb-1"> @CashDesk_MomocashCollectionForm.Balance</h6>
-                                                    <h4 class="card-text text-dark" id="modalBalance">@CashDesk_MomocashCollectionForm.xaf 0</h4> <!-- Dynamically populated -->
-                                                </div>
-                                            </div>
+
+                                        <!-- Capital Input Group -->
+                                        <div class="input-group mb-4">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bi bi-cash-stack"></i>  @CashDesk_MomocashCollectionForm.Capital
+                                            </span>
+                                            <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder=" @CashDesk_MomocashCollectionForm.EnterCapitalAmount" oninput="updateTotal()">
+                                        </div>
+
+                                        <!-- Interest Input Group -->
+                                        <div class="input-group mb-4">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bi bi-piggy-bank"></i>  @CashDesk_MomocashCollectionForm.Interest
+                                            </span>
+                                            <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder=" @CashDesk_MomocashCollectionForm.EnterInterest" oninput="updateTotal()">
+                                        </div>
+
+                                        <!-- Penalty Input Group -->
+                                        <div class="input-group mb-4">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bi bi-exclamation-triangle"></i>  @CashDesk_MomocashCollectionForm.Penalty
+                                            </span>
+                                            <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder=" @CashDesk_MomocashCollectionForm.EnterPenalty" oninput="updateTotal()">
+                                        </div>
+
+                                        <!-- Total Amount Display -->
+                                        <div class="input-group mb-4">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bi bi-calculator"></i>  @CashDesk_MomocashCollectionForm.TotalEntered
+                                            </span>
+                                            <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value=" @CashDesk_MomocashCollectionForm.xaf 0">
                                         </div>
                                     </div>
 
-                                    <!-- Capital Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-cash-stack"></i>  @CashDesk_MomocashCollectionForm.Capital
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalAmount" placeholder=" @CashDesk_MomocashCollectionForm.EnterCapitalAmount" oninput="updateTotal()">
+                                    <!-- Modal Footer -->
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-circle"></i>  @CashDesk_MomocashCollectionForm.Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
+                                            <i class="bi bi-check-circle"></i>  @CashDesk_MomocashCollectionForm.Confirm
+                                        </button>
                                     </div>
-
-                                    <!-- Interest Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-piggy-bank"></i>  @CashDesk_MomocashCollectionForm.Interest
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalInterest" placeholder=" @CashDesk_MomocashCollectionForm.EnterInterest" oninput="updateTotal()">
-                                    </div>
-
-                                    <!-- Penalty Input Group -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-exclamation-triangle"></i>  @CashDesk_MomocashCollectionForm.Penalty
-                                        </span>
-                                        <input type="number" class="form-control form-control-lg shadow-sm" id="modalPenalty" placeholder=" @CashDesk_MomocashCollectionForm.EnterPenalty" oninput="updateTotal()">
-                                    </div>
-
-                                    <!-- Total Amount Display -->
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calculator"></i>  @CashDesk_MomocashCollectionForm.TotalEntered
-                                        </span>
-                                        <input type="text" class="form-control form-control-lg shadow-sm" id="modalTotalAmount" readonly value=" @CashDesk_MomocashCollectionForm.xaf 0">
-                                    </div>
-                                </div>
-
-                                <!-- Modal Footer -->
-                                <div class="modal-footer d-flex justify-content-between">
-                                    <button type="button" class="btn btn-secondary btn-lg shadow-sm" data-bs-dismiss="modal">
-                                        <i class="bi bi-x-circle"></i>  @CashDesk_MomocashCollectionForm.Cancel
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="applyPayment()">
-                                        <i class="bi bi-check-circle"></i>  @CashDesk_MomocashCollectionForm.Confirm
-                                    </button>
                                 </div>
                             </div>
                         </div>
+
+
+
+
+                        <!-- Add Bootstrap Icons in case they are not loaded -->
+                        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+                        <style>
+                            /* Custom modal content styling */
+                            .modal-content {
+                                border-radius: 12px;
+                                overflow: hidden;
+                            }
+
+                            .modal-header {
+                                padding: 1rem 1.5rem;
+                                border-bottom: none;
+                            }
+
+                            .modal-body {
+                                background-color: #f9fafb;
+                            }
+
+                            .modal-footer {
+                                border-top: none;
+                                padding: 1rem 1.5rem;
+                            }
+
+                            /* Card styling for Loan Details */
+                            .card {
+                                border: none;
+                                border-radius: 8px;
+                                padding: 10px;
+                            }
+
+                            .card-body {
+                                padding: 1rem;
+                            }
+
+                            .card-title {
+                                font-size: 0.9rem;
+                            }
+
+                            .card-text {
+                                font-size: 1.4rem;
+                            }
+
+                            /* Shadow effects for form controls */
+                            .form-control-lg {
+                                border-radius: 8px;
+                                font-size: 1.2rem;
+                            }
+
+                            /* Input group text styling */
+                            .input-group-text {
+                                border: none;
+                                border-radius: 8px 0 0 8px;
+                                font-size: 1.1rem;
+                            }
+
+                            .input-group {
+                                border-radius: 12px;
+                                overflow: hidden;
+                            }
+
+                            /* Modal button styling */
+                            .btn-lg {
+                                padding: 0.75rem 1.5rem;
+                                font-size: 1.2rem;
+                            }
+
+                            .shadow-sm {
+                                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            }
+                        </style>
+
                     </div>
-
-
-
-
-                    <!-- Add Bootstrap Icons in case they are not loaded -->
-                    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-                    <style>
-                        /* Custom modal content styling */
-                        .modal-content {
-                            border-radius: 12px;
-                            overflow: hidden;
-                        }
-
-                        .modal-header {
-                            padding: 1rem 1.5rem;
-                            border-bottom: none;
-                        }
-
-                        .modal-body {
-                            background-color: #f9fafb;
-                        }
-
-                        .modal-footer {
-                            border-top: none;
-                            padding: 1rem 1.5rem;
-                        }
-
-                        /* Card styling for Loan Details */
-                        .card {
-                            border: none;
-                            border-radius: 8px;
-                            padding: 10px;
-                        }
-
-                        .card-body {
-                            padding: 1rem;
-                        }
-
-                        .card-title {
-                            font-size: 0.9rem;
-                        }
-
-                        .card-text {
-                            font-size: 1.4rem;
-                        }
-
-                        /* Shadow effects for form controls */
-                        .form-control-lg {
-                            border-radius: 8px;
-                            font-size: 1.2rem;
-                        }
-
-                        /* Input group text styling */
-                        .input-group-text {
-                            border: none;
-                            border-radius: 8px 0 0 8px;
-                            font-size: 1.1rem;
-                        }
-
-                        .input-group {
-                            border-radius: 12px;
-                            overflow: hidden;
-                        }
-
-                        /* Modal button styling */
-                        .btn-lg {
-                            padding: 0.75rem 1.5rem;
-                            font-size: 1.2rem;
-                        }
-
-                        .shadow-sm {
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        }
-                    </style>
-
+                    <div class="header-buttons mt-4 float-end">
+                        <input type="hidden" name="OperationType" value="LoanRepaymentMomocashCollection" id="OperationType" />
+                        <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
+                        <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
+                            <i class="fas fa-money-bill-wave me-1"></i>@CashDesk_MomocashCollectionForm.RePay
+                        </button>
+                        <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
+                            <i class="fas fa-print me-1"></i> @CashDesk_MomocashCollectionForm.RePrint
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="fas fa-sync-alt me-1"></i> @CashDesk_MomocashCollectionForm.Reset
+                        </button>
+                    </div>
                 </div>
-                <div class="header-buttons mt-4 float-end">
-                    <input type="hidden" name="OperationType" value="LoanRepaymentMomocashCollection" id="OperationType" />
-                    <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
-                    <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostLoanRepayment()">
-                        <i class="fas fa-money-bill-wave me-1"></i>@CashDesk_MomocashCollectionForm.RePay
-                    </button>
-                    <button type="submit" id="submit" class="btn btn-secondary me-2" onclick="Reprint()">
-                        <i class="fas fa-print me-1"></i> @CashDesk_MomocashCollectionForm.RePrint
-                    </button>
-                    <button type="reset" class="btn btn-outline-secondary">
-                        <i class="fas fa-sync-alt me-1"></i> @CashDesk_MomocashCollectionForm.Reset
-                    </button>
-                </div>
-            </div>
-            <hr style="border: 2px solid green;" />
+                <hr style="border: 2px solid green;" />
         </fieldset>
 
     </div>
 
 }
+
+
+<script>
+    $(document).ready(function () {
+        var $branch = $('#branchInput');
+        var $account = $('#account_number');
+
+        function resetGlDropdown() {
+            $account.empty();
+            $account.append($('<option/>', {
+                value: '',
+                text: '---Select Momocash GL Account---'
+            }));
+            $account.trigger('change.select2');
+        }
+
+        // Initialize select2 if available
+        if ($.fn.select2) {
+            $branch.select2();
+            $account.select2();
+        }
+
+        $branch.on('change', function () {
+            var branchId = $(this).val();
+
+            resetGlDropdown();
+
+            if (!branchId) {
+                return; // no branch selected
+            }
+
+            $.ajax({
+                url: '@Url.Action("LoadGLbyBranchId", "MemberNoneCashOperation")', // adjust controller if needed
+                type: 'GET',
+                dataType: 'json',
+                data: { branchid: branchId },
+                success: function (data) {
+                    // Expecting data as [{ value: '...', text: '...' }, ...]
+                    $.each(data, function (i, item) {
+                        $account.append($('<option/>', {
+                            value: item.value || item.Value,
+                            text: item.text || item.Text
+                        }));
+                    });
+                    $account.trigger('change.select2');
+                },
+                error: function () {
+                    // Optional: simple error handling
+                    alert('Unable to load GL accounts for the selected branch.');
+                }
+            });
+        });
+    });
+</script>
+
 <script>
     // Show a tiny summary in the toggle button once name/phone typed
     (function () {

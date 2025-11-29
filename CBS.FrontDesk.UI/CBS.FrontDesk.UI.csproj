@@ -471,6 +471,12 @@
       <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IncomeStatament.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2090,6 +2096,8 @@
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
+    <Compile Include="Controllers\Accounting V2\BalanceSheet\BalanceSheetController.cs" />
+    <Compile Include="Controllers\Accounting V2\BalanceSheet\BalanceSheetFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\BranchAccounting\BranchAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\ChartOfAccount\ChartOfAccountV2Controller.cs" />
     <Compile Include="Controllers\Accounting V2\CollectorDevice\CollectorDeviceController.cs" />
@@ -8776,6 +8784,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IncomeStatament1.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JER.cs</LastGenOutput>
@@ -11094,6 +11106,7 @@
     <Folder Include="bin\tr-TR\" />
     <Folder Include="bin\zh-TW\" />
     <Folder Include="bin\zh\" />
+    <Folder Include="Controllers\Accounting V2\NewFolder1\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\AccountingV2\" />

@@ -11,6 +11,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
         //====================================== bank information ===================================================
         public string BankId { get; set; }
         public string BankBankCode { get; set; }
+        public string BankCode { get; set; }
         public string BankName { get; set; }
         public string BankDescription { get; set; }
         public string BankTelephone { get; set; }

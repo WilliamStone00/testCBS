@@ -13,12 +13,7 @@
     </div>
 </div>
 
-<!-- Back Button -->
-<div class="mb-3">
-    <button type="button" class="btn btn-outline-secondary btn-sm btn-back-to-list">
-        <i class="mdi mdi-arrow-left me-1"></i> Back to List
-    </button>
-</div>
+
 
 @using (Html.BeginForm("Reconcile", "AffiliateToBranchFallback", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {

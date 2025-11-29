@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting_V2.AccntStatements;
+using CBS.BusinessService.Accounting_V2.BalanceSheet;
 using CBS.BusinessService.Accounting_V2.JournalEntries;
 using CBS.BusinessService.Config;
 
@@ -12,45 +13,47 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
+namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BalanceSheet
 {
-    public class JournalEntriesController : BaseController
+    public class BalanceSheetController : BaseController
     {
-        private readonly JournalEntriesService _journalEntriesService;
+        private readonly BalanceSheetService _balanceSheetService;
         private readonly BranchServices _branchServices;
 
-        public JournalEntriesController(BranchServices branchServices)
+        public BalanceSheetController(BalanceSheetService balanceSheetService, BranchServices branchServices)
         {
-            _journalEntriesService = new JournalEntriesService();
+            _balanceSheetService = balanceSheetService;
             _branchServices = branchServices;
         }
 
         /// <summary>
-        /// Loads the Journal Entries main page.
+        /// Loads the Balance Sheet main page.
         /// </summary>
         public ActionResult Index()
         {
             return View();
         }
 
+
         /// <summary>
-        /// Generates Journal Entries report dataset based on user-selected filters.
+        /// Generates Balance Sheet report dataset based on user-selected filters.
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult> GenerateJournalEntries(AccountingV2ReportsFilter model)
+        public async Task<ActionResult> GenerateBalanceSheet(AccountingV2ReportsFilter model)
         {
             try
             {
                 // ==============================================================
-                // STEP 1 — Retrieve journal entries dataset based on filters
-                // ==============================================================                
-                var entries = await _journalEntriesService.GetJournalEntriesAsync(model);
+                // STEP 1 — Retrieve balance sheet dataset based on filters
+                // ==============================================================           
+                var groups = await _balanceSheetService.GetBalanceSheetAsync(model);
+
 
                 // Retrieve branch metadata for report header display
-                var BranchInformation = await _branchServices.GetBranch(model.BranchId);
+                var BranchInformation = await _branchServices.GetBranch(_branchServices.GetBranchID());
 
                 // Stop processing if no entries were returned
-                if (entries == null || !entries.Any())
+                if (groups == null || !groups.Any())
                 {
                     this.HttpContext.Session["rptSource"] = null;
                     this.HttpContext.Session["BranchInfo"] = null;
@@ -67,18 +70,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                 // ==============================================================                
                 var header = new BankHeaderInformation
                 {
-                    BankId = BranchInformation.Bank?.Id,
-                    BankBankCode = BranchInformation.Bank?.BankCode,
-                    BankCode = BranchInformation.Bank?.BankCode,
-                    BankName = BranchInformation.Bank?.Name,
-                    BankTelephone = BranchInformation.Bank?.Telephone,
-                    BankEmail = BranchInformation.Bank?.Email,
-                    BankAddress = BranchInformation.Bank?.Address,
-                    BankLogoUrl = BranchInformation.Bank?.LogoUrl,
-                    BankMotto = BranchInformation.Bank?.Motto,
-                    BankRegistrationNumber = BranchInformation.Bank?.RegistrationNumber,
-                    BankImmatriculationNumber = BranchInformation.Bank?.ImmatriculationNumber,
-                    BankPBox = BranchInformation.Bank?.PBox ?? "",
+                    BankId = BranchInformation.Bank.Id,
+                    BankBankCode = BranchInformation.Bank.BankCode,
+                    BankCode = BranchInformation.Bank.BankCode,
+                    BankName = BranchInformation.Bank.Name,
+                    BankTelephone = BranchInformation.Bank.Telephone,
+                    BankEmail = BranchInformation.Bank.Email,
+                    BankAddress = BranchInformation.Bank.Address,
+                    BankLogoUrl = BranchInformation.Bank.LogoUrl,
+                    BankMotto = BranchInformation.Bank.Motto,
+                    BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
+                    BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
+                    BankPBox = BranchInformation.Bank.PBox,
 
                     BranchId = BranchInformation.Id,
                     BranchCode = BranchInformation.BranchCode,
@@ -90,74 +93,36 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                     BranchCapital = BranchInformation.Capital,
                     BranchRegistrationNumber = BranchInformation.RegistrationNumber,
                     BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
-                    BranchPBox = BranchInformation.PBox ?? ""
+                    BranchPBox = BranchInformation.PBox
                 };
 
-
                 // ==============================================================
-                // STEP 3 — Transform journal entries into flat rows
+                // STEP 3 — Transform balance sheet groups into flat rows
                 // --------------------------------------------------------------
-                // • Each journal movement becomes one report record
+                // • Each group item becomes one report line
                 // • Each row includes:
-                //     - Journal Movement data
+                //     - Balance sheet item values (Gross / Provision / NetN / NetN1)
+                //     - Group and reference information
                 //     - Bank + Branch header for report rendering
-                // ==============================================================                
-                var data = entries
-                    .Select(x =>
-                    {
-                        var item = new AccountStatementFlatItems
-                        {
-                            // Core account references
-                            AccountNumber = x.AccountNumber,
-                            AccountName = x.AccountName,
-                            // Date filter fields for report header
-                            AccountingDate = x.AccountingDate.ToString("dd-MM-yyyy"),
-                            Year = DateTime.Now.Year.ToString(),
-                            From = model.From,
-                            To = model.To,
-                            DateFrom = model.DateFrom,
-                            DateTo = model.DateTo,
-
-                            // Convert "hh:mm:ss.ffffff" → hh:mm:ss
-                            time = TimeSpan.TryParse(x.TimeOfOperation, out var ts)
-                                    ? TimeSpan.Parse(ts.ToString(@"hh\:mm\:ss"))
-                                    : TimeSpan.Zero,
-
-                            // Journal movement
-                            ReferenceNumber = x.Reference,
-                            BranchId = x.BranchId,
-                            CreditAmount = x.CR,
-                            DebitAmount = x.DR,
-                            Description = x.Narration,
-                            DrCr = x.DrCr,
-                            Amount = x.Amount,
-                            Balance = x.Balance,
-                            Seq = x.Seq,
-                            AuxiliaryRef = x.AuxiliaryRef,
-                            EntryDate = x.EntryDate,
-                            UserName = x.UserName,
-                            InterbranchStatus = x.InterbranchStatus,
-                            CounterpartyBranchId = x.CounterpartyBranchId,
-                            TimeOfOperation = x.TimeOfOperation,
-                            ReportName = "GENERAL ACCOUNTING JOURNAL",
-
-
-                            // Branch and contact
-                            BranchCode = BranchInformation.BranchCode,
-                            Phone = BranchInformation.Telephone,
-                            Address = BranchInformation.Address,
-                            BranchName = BranchInformation.Name,
-
-                            // Report display fields
-                            Currency = "XAF FRANCE CFA",
-                            PrintedBy = _journalEntriesService.GetUserFullName()
-                        };
-
-                        // Inject bank + branch header information
-                        ApplyHeader(item, header);
-                        return item;
-                    })
-                    .ToList();
+                // ==============================================================
+                // 
+                var data = groups
+                .SelectMany(g => g.Items.Select(i => new BalanceSheetFlatItems
+                {
+                    GroupName = g.Name,
+                    GroupReference = g.Refernce,
+                    Reference = i.Ref,
+                    Referernce = i.Ref,
+                    Heading = i.Heading,
+                    Gross = i.Gross ?? 0,
+                    AmountProv = i.AmortProvision ?? 0,
+                    NetN = i.NetN ?? 0,
+                    NetN1 = i.NetN1 ?? 0,
+                    PrintedBy = _balanceSheetService.GetUserFullName(),
+                  
+                }))
+                .ToList();
+                data.ForEach(item => ApplyHeader(item, header));
 
                 // Save flattened dataset for Crystal Report viewer
                 this.HttpContext.Session["rptSource"] = data;
@@ -179,7 +144,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
         /// Attach bank and branch header into one statement row.
         /// Crystal Reports requires header metadata available on each record.
         /// </summary>
-        private void ApplyHeader(AccountStatementFlatItems item, BankHeaderInformation header)
+        private void ApplyHeader(BalanceSheetFlatItems item, BankHeaderInformation header)
         {
             item.BankId = header.BankId;
             item.BankBankCode = header.BankBankCode;
@@ -206,6 +171,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
             item.BranchPBox = header.BranchPBox;
         }
 
+
+
         /// <summary>
         /// Setup Crystal Report parameters for the Journal Entries report.
         /// </summary>
@@ -213,9 +180,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
         public ActionResult GetReport(string path)
         {
             this.HttpContext.Session["rptType"] = "ReportParameterLess";
-            this.HttpContext.Session["ReportName"] = "JournalEntries.rpt";
-            this.HttpContext.Session["rptpath"] = "~/AppFiles/Accountingv2Reporting/ReportRPT/JournalEntries.rpt";
-            this.HttpContext.Session["rpttitle"] = "JEV2";
+            this.HttpContext.Session["ReportName"] = "BalanceSheet.rpt";
+            this.HttpContext.Session["rptpath"] = "~/AppFiles/Accountingv2Reporting/ReportRPT/BalanceSheet.rpt";
+            this.HttpContext.Session["rpttitle"] = "BS";
 
             return Json(new
             {
