@@ -106,7 +106,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string PostMode { get; set; } = null;
         public string OperationCode { get; set; } 
         public string BranchId { get; set; }
-        public string BranchNamw { get; set; }
+        public string BranchName { get; set; }
         public string Memo { get; set; } = null;
         public string Stage { get; set; }
         public string State { get; set; }
@@ -119,7 +119,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CashDenomsJson { get; set; } = null;
         public string CashTillId { get; set; } = null;
         public decimal CashDenomsTotal { get; set; }
-        public string BranchName { get; set; }
+       
         public DateTime? ClosedAtUtc { get; set; }
         public string TicketType { get; set; }
 
@@ -145,6 +145,25 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string WorkflowTicketNotes { get; set; } = null;
         public string CreatedBy { get; set; }
        
+    }
+
+
+
+
+    public class ExportJournalRequest
+    {
+        public List<JournalHead> JournalData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+    }
+
+    public class ExportOptions
+    {
+        public string Format { get; set; }
+        public bool IncludeSummary { get; set; }
+        public string FileName { get; set; }
+        public string ReportType { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 
     // ==============================================
