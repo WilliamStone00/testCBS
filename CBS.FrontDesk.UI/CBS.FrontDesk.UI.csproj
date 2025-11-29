@@ -11082,6 +11082,7 @@
     <Content Include="Views\AffiliateToBranchFallback\_ReconcileFallback.cshtml" />
     <Content Include="Views\AffiliateToBranchFallback\_FallbackDataTable.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
+    <Content Include="Views\GLSystemReconciliation\_StatisticsDataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

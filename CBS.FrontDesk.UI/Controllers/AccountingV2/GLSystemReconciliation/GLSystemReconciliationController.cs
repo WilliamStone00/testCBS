@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 
+
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 {
     public class GLSystemReconciliationController : Controller
@@ -106,8 +107,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
          {
 
+            model.EndUtc = model.StartDate;
             model.StartUtc = model.StartDate;
-            model.EndUtc = model.EndDate;
+            
+           
             try
             {
                 var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
@@ -259,22 +262,44 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
         }
 
-        public async Task<ActionResult> LoadOperationDetailsData(OperationDetailsFilter filter, string partialView = null)
+
+
+        public async Task<JsonResult> LoadStatisticsData(OperationDetailsFilter query)
         {
-            var data = await _glSystemReconciliationService.GetOperationDetailAsync(filter);
-
-            if (string.IsNullOrEmpty(partialView))
+            try
             {
-                // Returns the full Razor view pre-populated
-                return View("_OperationDetail", data);
-            }
+                var data = await _glSystemReconciliationService.GetStatisticDataTableAsync(query);
 
-            // Only return partial if specified
-            return PartialView(partialView, data);
+                var reconciliations = JsonConvert.DeserializeObject<List<StatisticsDetails>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    //draw = data.Options.draw ?? "1",
+                    //recordsTotal = data.Options.recordsTotal,
+                    //recordsFiltered = data.Options.recordsFiltered,
+                    data = reconciliations,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
         }
 
 
-
+        public async Task<ActionResult> LoadOperationDetailsData(OperationDetailsFilter query)
+        {
+            return View("_StatisticsDataTable",query);
+        }
 
 
     }

@@ -1746,8 +1746,8 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
 
-       
+      
 
-       
+
     }
 }

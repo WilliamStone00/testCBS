@@ -1,7 +1,9 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
+﻿using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config; // Assuming BranchServices is here
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,10 +45,31 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
            // ViewBag.Customers = await _customerService.GetActiveCustomersForDropdown();
         }
 
+
+
+        [HttpGet]
+        public async Task<ActionResult> Search(string CustomerId)
+        {
+            if (string.IsNullOrEmpty(CustomerId))
+                return new HttpStatusCodeResult(400, "Custormer ID is required");
+
+            Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques entry = null;
+
+            try
+            {
+                entry = await _counterChequeService.GetChequeDetails(CustomerId);
+            }
+            catch (Exception ex)
+            {
+                // You can log the exception here
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_ReconciliationDetails", entry);
+        }
+
         /// <summary>
-        /// The central router action that loads different partial views based on the path.
-        /// Works with your generic 'LoadDataGen' and 'AddORUpdateGen' scripts.
-        /// </summary>
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             await Loader();
@@ -73,7 +96,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         /// Handles the submission of a new counter cheque. Called by 'AjaxPostAndUpdate'.
         /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> Create(CounterCheques model)
         {
             if (!ModelState.IsValid)
@@ -97,34 +120,6 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             });
         }
 
-        ///// <summary>
-        ///// The dedicated AJAX endpoint for the server-side DataTable.
-        ///// </summary>
-        //[HttpPost]
-        //public async Task<ActionResult> LoadCounterCheques(CounterChequeQuery query)
-        //{
-        //    try
-        //    {
-        //        var dataTable = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
-
-        //        // Deserialize the generic 'data' into our strongly-typed object
-        //        var dataList = JsonConvert.DeserializeObject<List<CounterCheques>>(JsonConvert.SerializeObject(dataTable.data));
-
-        //        // Return the data in the exact format the DataTable expects
-        //        return Json(new
-        //        {
-        //            draw = dataTable.draw,
-        //            recordsTotal = dataTable.recordsTotal,
-        //            recordsFiltered = dataTable.recordsFiltered,
-        //            data = dataList
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception
-        //        return new HttpStatusCodeResult(500, "An error occurred while loading data.");
-        //    }
-        //}
         [HttpGet]
         public async Task<ActionResult> GetCounterChequeDetails(string id)
         {
