@@ -93,6 +93,46 @@
     (function ($) {
         'use strict';
 
+
+
+        $("#searchCustomerBtn").click(function () {
+            let customerId = $("#customerIdInput").val();
+
+            $.ajax({
+                url: '/CounterCheque/Search',
+                type: 'GET',
+                data: { CustomerId: customerId },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         window.showActionModal = function(action, id) {
             const url = `@Url.Action("InitializeData", "CounterCheque")`;
             const $modalBody = $('#actionModalBody');

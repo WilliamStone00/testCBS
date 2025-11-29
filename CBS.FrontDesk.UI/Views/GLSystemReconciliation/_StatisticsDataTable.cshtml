@@ -1,0 +1,65 @@
+﻿
+@using Resources
+@using Newtonsoft.Json
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.OperationDetailsFilter
+
+<!-- existing table markup -->
+<table id="myDataTable" class="table table-bordered table-striped align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Reference</th>
+            <th>Accounting Date</th>
+            <th>MemberReference</th>
+            <th>Narrative</th>
+            <th>PostMode</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <script>
+  $(function () {
+    // Render the server model into JS safely
+      
+
+      var queryFilter = @Html.Raw(JsonConvert.SerializeObject(Model));
+    queryFilter.Options = {};   // always initialize Options
+
+    // make sure Options exists
+   
+
+    // Initialize DataTable in the new window
+      $('#myDataTable').DataTable({
+          serverSide: true,
+          destroy: true,
+          searching: false,
+          ajax: {
+              url: '/GLSystemReconciliation/LoadStatisticsData',
+              type: 'POST',
+              contentType: 'application/json',
+              data: function (d) {
+                  queryFilter.Options = {
+                      draw: d.draw,
+                      start: d.start,
+                      length: d.length,
+                      searchValue: d.search?.value || '',
+                      sortColumnName: d.columns[d.order[0].column].data,
+                      sortColumnDirection: d.order[0].dir
+                  };
+                  return JSON.stringify(queryFilter);
+              }
+          },
+          columns: [
+              { data: 'Reference' },
+              { data: 'AccountingDate', render: d => d ? moment(d).format('DD/MM/YYYY') : '' },
+              { data: 'MemberReference' },
+              { data: 'Narrative' },
+              { data: 'PostMode' }
+          ]
+      });
+
+  });
+    </script>
+}

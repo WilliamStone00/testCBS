@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -25,6 +26,30 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
 
+
+
+       
+
+        public async Task<CounterCheques> GetChequeDetails(string CustomerId)
+        {
+            try
+            {
+
+                var response = await _apiHelper.GetAsync<
+                    ResponseObject<CounterCheques>>(string.Format(APICallHelper.GetReconciliationById, CustomerId));
+                if (response.ApiResponseData != null)
+                {
+                    return response.ApiResponseData.Data;
+                }
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
         {
             try
