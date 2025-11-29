@@ -273,6 +273,7 @@
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\DaillyCollectorLicenseService\DaillyCollectorLicenseService.cs" />
     <Compile Include="Accounting V2\FallBack\FallbackExcelExportGenerator.cs" />
+    <Compile Include="Accounting V2\ExportReports\TrialBalance6ColumnsExport.cs" />
     <Compile Include="Accounting V2\FallBack\fallbackservice.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
     <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />
