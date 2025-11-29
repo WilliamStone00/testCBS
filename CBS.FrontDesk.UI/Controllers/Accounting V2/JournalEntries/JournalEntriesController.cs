@@ -112,6 +112,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                             AccountName = x.AccountName,
                             // Date filter fields for report header
                             AccountingDate = x.AccountingDate.ToString("dd-MM-yyyy"),
+                            DayTime = x.AccountingDate,
                             Year = DateTime.Now.Year.ToString(),
                             From = model.From,
                             To = model.To,
@@ -147,6 +148,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                             Phone = BranchInformation.Telephone,
                             Address = BranchInformation.Address,
                             BranchName = BranchInformation.Name,
+                           
 
                             // Report display fields
                             Currency = "XAF FRANCE CFA",

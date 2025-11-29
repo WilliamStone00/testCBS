@@ -17,6 +17,8 @@ public class ReceiptFlatItems:BankHeaderInformation
    
     public string Title { get; set; }
     public DateTime Date { get; set; }
+    public DateTime DateTime { get; set; }
+    public DateTime DayTime { get; set; }
     public string Memo { get; set; }
     public string OperationCode { get; set; }
     public string OperationLabel { get; set; }

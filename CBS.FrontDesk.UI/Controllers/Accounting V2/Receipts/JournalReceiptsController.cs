@@ -108,6 +108,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         BranchName = response.BranchName,
                         Reference = response.Reference,
                         ReferenceNumber = response.Reference,
+                        DateTime = response.AccountingDate,
+                        DayTime = response.AccountingDate,
                         Number = response.Number,
                         Title = response.Title,
                         Memo = response.Memo,
