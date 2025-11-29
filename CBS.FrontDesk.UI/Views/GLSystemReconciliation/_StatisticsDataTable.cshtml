@@ -3,32 +3,38 @@
 @using Newtonsoft.Json
 @model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.OperationDetailsFilter
 
-<!-- existing table markup -->
-<table id="myDataTable" class="table table-bordered table-striped align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>Reference</th>
-            <th>Accounting Date</th>
-            <th>MemberReference</th>
-            <th>Narrative</th>
-            <th>PostMode</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+
+
+
+<div class="card p-3 shadow mb-2">
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Reference</th>
+                    <th>Accounting Date</th>
+                    <th>MemberReference</th>
+                    <th>Narrative</th>
+                    <th>PostMode</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
 
 @section Scripts {
     <script>
   $(function () {
     // Render the server model into JS safely
-      
+
 
       var queryFilter = @Html.Raw(JsonConvert.SerializeObject(Model));
     queryFilter.Options = {};   // always initialize Options
 
     // make sure Options exists
-   
+
 
     // Initialize DataTable in the new window
       $('#myDataTable').DataTable({
