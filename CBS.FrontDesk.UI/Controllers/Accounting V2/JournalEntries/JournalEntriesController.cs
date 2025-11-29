@@ -67,17 +67,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                 // ==============================================================                
                 var header = new BankHeaderInformation
                 {
-                    BankId = BranchInformation.Bank.Id,
-                    BankBankCode = BranchInformation.Bank.BankCode,
-                    BankName = BranchInformation.Bank.Name,
-                    BankTelephone = BranchInformation.Bank.Telephone,
-                    BankEmail = BranchInformation.Bank.Email,
-                    BankAddress = BranchInformation.Bank.Address,
-                    BankLogoUrl = BranchInformation.Bank.LogoUrl,
-                    BankMotto = BranchInformation.Bank.Motto,
-                    BankRegistrationNumber = BranchInformation.Bank.RegistrationNumber,
-                    BankImmatriculationNumber = BranchInformation.Bank.ImmatriculationNumber,
-                    BankPBox = BranchInformation.Bank.PBox,
+                    BankId = BranchInformation.Bank?.Id,
+                    BankBankCode = BranchInformation.Bank?.BankCode,
+                    BankCode = BranchInformation.Bank?.BankCode,
+                    BankName = BranchInformation.Bank?.Name,
+                    BankTelephone = BranchInformation.Bank?.Telephone,
+                    BankEmail = BranchInformation.Bank?.Email,
+                    BankAddress = BranchInformation.Bank?.Address,
+                    BankLogoUrl = BranchInformation.Bank?.LogoUrl,
+                    BankMotto = BranchInformation.Bank?.Motto,
+                    BankRegistrationNumber = BranchInformation.Bank?.RegistrationNumber,
+                    BankImmatriculationNumber = BranchInformation.Bank?.ImmatriculationNumber,
+                    BankPBox = BranchInformation.Bank?.PBox ?? "",
 
                     BranchId = BranchInformation.Id,
                     BranchCode = BranchInformation.BranchCode,
@@ -89,8 +90,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
                     BranchCapital = BranchInformation.Capital,
                     BranchRegistrationNumber = BranchInformation.RegistrationNumber,
                     BranchImmatriculationNumber = BranchInformation.ImmatriculationNumber,
-                    BranchPBox = BranchInformation.PBox
+                    BranchPBox = BranchInformation.PBox ?? ""
                 };
+
 
                 // ==============================================================
                 // STEP 3 — Transform journal entries into flat rows

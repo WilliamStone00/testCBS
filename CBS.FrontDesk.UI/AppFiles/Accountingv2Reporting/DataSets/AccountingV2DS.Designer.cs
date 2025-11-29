@@ -635,6 +635,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnTCredit;
             
+            private global::System.Data.DataColumn columnMemberAccount;
+            
+            private global::System.Data.DataColumn columnMemberName;
+            
             private global::System.Data.DataColumn columnDataColumn1;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1536,6 +1540,22 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemberAccountColumn {
+                get {
+                    return this.columnMemberAccount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn MemberNameColumn {
+                get {
+                    return this.columnMemberName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn DataColumn1Column {
                 get {
                     return this.columnDataColumn1;
@@ -1688,6 +1708,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         string Mode, 
                         short TDebit, 
                         short TCredit, 
+                        string MemberAccount, 
+                        string MemberName, 
                         string DataColumn1) {
                 ReconciledLedgerLineRptDSRow rowReconciledLedgerLineRptDSRow = ((ReconciledLedgerLineRptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -1799,6 +1821,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         Mode,
                         TDebit,
                         TCredit,
+                        MemberAccount,
+                        MemberName,
                         DataColumn1};
                 rowReconciledLedgerLineRptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowReconciledLedgerLineRptDSRow);
@@ -1930,6 +1954,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnMode = base.Columns["Mode"];
                 this.columnTDebit = base.Columns["TDebit"];
                 this.columnTCredit = base.Columns["TCredit"];
+                this.columnMemberAccount = base.Columns["MemberAccount"];
+                this.columnMemberName = base.Columns["MemberName"];
                 this.columnDataColumn1 = base.Columns["DataColumn1"];
             }
             
@@ -2152,6 +2178,10 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnTDebit);
                 this.columnTCredit = new global::System.Data.DataColumn("TCredit", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTCredit);
+                this.columnMemberAccount = new global::System.Data.DataColumn("MemberAccount", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemberAccount);
+                this.columnMemberName = new global::System.Data.DataColumn("MemberName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMemberName);
                 this.columnDataColumn1 = new global::System.Data.DataColumn("DataColumn1", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDataColumn1);
             }
@@ -7525,6 +7555,40 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string MemberAccount {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.MemberAccountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MemberAccount\' in table \'ReconciledLedgerLineRptDS\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.MemberAccountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string MemberName {
+                get {
+                    try {
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.MemberNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MemberName\' in table \'ReconciledLedgerLineRptDS\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableReconciledLedgerLineRptDS.MemberNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string DataColumn1 {
                 get {
                     try {
@@ -8834,6 +8898,30 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTCreditNull() {
                 this[this.tableReconciledLedgerLineRptDS.TCreditColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemberAccountNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.MemberAccountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemberAccountNull() {
+                this[this.tableReconciledLedgerLineRptDS.MemberAccountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsMemberNameNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.MemberNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetMemberNameNull() {
+                this[this.tableReconciledLedgerLineRptDS.MemberNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

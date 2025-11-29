@@ -119,8 +119,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         IssuedAtUtc = response.IssuedAtUtc,
                         IssuedAtLocal = response.IssuedAtLocal,
                         Payor = response.Payor,
-                        MemberNumber = response.MemberNumber,
-                        MemberName = response.MemberName,
+                        MemberNumber = response.MemberNumber ?? "N/A",
+                        MemberAccount = response.AccountNumber ?? "N/A",
+                        MemberName = response.MemberName ?? "N/A",
                         TellerName = response.TellerName,
                         TillName = response.TillName,
                         IssuedBy = response.IssuedBy,
@@ -138,14 +139,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
-                       
-                        Date = x.Date,
+                      
+                        EntryDate = response.IssuedAtLocal,
                         TCredit = tcredit,
                         TDebit = tdebit,
                         ReadableDate = entry,
                        
                         // Movement line
-                        AccountNumber = x.AccountNumber,
+                        AccountNumber = x.AccountNumber ?? "N/A",
                         AccountName = x.AccountName,
                         Dr = x.Dr,
                         Cr = x.Cr,
