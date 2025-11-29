@@ -4,6 +4,7 @@ using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
 using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SalaryManagement;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -298,8 +299,7 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
 
                         // If you still need this for other parts of the page, keep it.
                         // It is not used by the new branch/GL Html helpers anymore.
-                        var chartOfAccounts = await _branchAccountService
-                            .GetAllBranchAccountsFromDataTableAsync(_branchServices.GetBranchID());
+                        var chartOfAccounts = new List<BranchAccountResponse>();
 
                         ViewBag.StandingOrderSourceAccountOptions =
                             _branchAccountService.DropDownGen(chartOfAccounts.ToList());
