@@ -147,18 +147,28 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filters
+        <div class="row g-2 mt-2">
+            <div class="col-12 col-md-4">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100"
                         onclick="document.getElementById('journalHeaderFilterForm').reset();">
-                    <i class="mdi mdi-refresh"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
         </div>
+
+
 
 
     </form>
@@ -187,17 +197,28 @@
 
 
 
+<div class="modal fade" id="journalExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportJournalHeadDataTable")
+
+        </div>
+    </div>
+</div>
 
 
 
 @section Scripts {
 
-  
+
 
 
 
 
     <script>
+
+        let filtersApplied = false;
+
         // ==============================
         // Load Journal Header Data
         // ==============================
@@ -250,11 +271,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                            <div class="text-center">
-                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                    <i class="mdi mdi-eye-outline me-1"></i> Details
-                                </button>
-                            </div>`;
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> Details
+                                    </button>
+                                </div>`;
                         }
                     }
                 ],
@@ -306,6 +327,7 @@
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 loadJournalHeaderData();
+                filtersApplied = true; // ✅ Allow Export
             });
 
             // 🔹 Reset filters
@@ -338,12 +360,12 @@
                     error: function (xhr, status, err) {
                         console.error("❌ Error loading details:", status, err);
                         $("#journalDetailsModal .modal-content").html(`
-                                <div class="modal-body">
-                                    <div class="alert alert-danger">
-                                        Failed to load journal details. Status: ${xhr.status}
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger">
+                                            Failed to load journal details. Status: ${xhr.status}
+                                        </div>
                                     </div>
-                                </div>
-                            `);
+                                `);
 
                         const modalEl = document.getElementById('journalDetailsModal');
                         const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
@@ -354,19 +376,85 @@
 
 
             // ==========================
-            // 🔹 PRINT MODAL CONTENT
+            // 🔹 EXPORT JOURNAL HEADER
             // ==========================
-            $(document).on('click', '#printJournalBtn', function () {
-                const modalContent = document.querySelector("#journalDetailsModal .modal-content");
-                const printWindow = window.open("", "_blank", "width=900,height=700");
-                printWindow.document.write("<html><head><title>Journal Entry Details</title></head><body>");
-                printWindow.document.write(modalContent.innerHTML);
-                printWindow.document.write("</body></html>");
-                printWindow.document.close();
-                printWindow.print();
+            $('#btnExport').on('click', function () {
 
-                appalert('🖨️ Journal details sent to printer.', 1, 1);
+                if (!filtersApplied) {
+                    appalert("⚠️ Please apply filters before exporting.", 2, 1);
+                    return;
+                }
+
+                // Show Export Modal
+                const modalEl = document.getElementById('journalExportModal');
+                const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                bsModal.show();
             });
+
+
+
+                           // ======================
+                        $(document).on("click", "#btnConfirmJournalExport", function () {
+
+                // ✅ Get filters from your function
+                let filters = collectJournalHeaderFilters();
+
+                let exportOptions = {
+                    FileName: $("#jhFileName").val(),
+                    Format: $("#jhExportFormat").val(),
+                    ReportType: $("#jhReportType").val(),
+                    StartDate: $("#jhStartDate").val(),
+                    EndDate: $("#jhEndDate").val()
+                };
+
+                let request = {
+                    Filters: filters,
+                    ExportOptions: exportOptions
+                };
+
+                // Disable button and show spinner
+                $("#btnConfirmJournalExport")
+                    .prop("disabled", true)
+                    .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+                $.ajax({
+                    url: '@Url.Action("ExportJournalData", "JournalHead")',
+                    type: "POST",
+                    data: JSON.stringify(request),
+                    contentType: "application/json",
+                    xhrFields: { responseType: 'blob' },
+                    success: function (data, status, xhr) {
+
+                        // Extract filename from header
+                        let disposition = xhr.getResponseHeader("Content-Disposition");
+                        let filename = "JournalHeader.xlsx";
+
+                        if (disposition && disposition.indexOf("filename=") !== -1) {
+                            filename = disposition.split("filename=")[1].trim();
+                        }
+
+                        // Download file
+                        let blob = new Blob([data]);
+                        let link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+
+                        $("#journalExportModal").modal("hide");
+                        toastr.success("Export completed.");
+                    },
+                    error: function () {
+                        toastr.error("Export failed.");
+                    },
+                    complete: function () {
+                        $("#btnConfirmJournalExport")
+                            .prop("disabled", false)
+                            .html(`<i class="mdi mdi-export"></i> Export`);
+                    }
+                });
+
+            });
+
 
         });
     </script>
