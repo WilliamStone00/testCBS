@@ -13,10 +13,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
     public class JournalHeadExcelExportGenerator : BaseService
     {
 
-        public void GenerateJournalHeadExcel(
-    WorkflowTicket model,
-    string filePath,
-    string exportedBy)
+        public void GenerateJournalHeadExcel(WorkflowTicket model,string filePath, string exportedBy)
         {
             using (var workbook = new XLWorkbook())
             {
@@ -178,9 +175,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         // ======================================================================
         // MAIN EXPORT METHOD (WITH OPTION C)
         // ======================================================================
-        public void GenerateJournalHeadExcelSheet(
-                CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,
-                string filePath,
+        public void GenerateJournalHeadExcelSheet(CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead model,string filePath,
                 string exportedBy)
         {
             using (var workbook = new XLWorkbook())

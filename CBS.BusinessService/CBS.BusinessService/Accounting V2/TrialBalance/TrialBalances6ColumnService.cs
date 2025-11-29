@@ -50,8 +50,14 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
                 else
                 {
                     result.Lines = new List<TrialBalanceV2Dto>();
+
+
+
                     System.Diagnostics.Debug.WriteLine($"TrialBalanceService.GetTrialBalancesAsync6columns: API returned failure ({response?.Message})");
                 }
+
+
+
 
                 return result;
             }
