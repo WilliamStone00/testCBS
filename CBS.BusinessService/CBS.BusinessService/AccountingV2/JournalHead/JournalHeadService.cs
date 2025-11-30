@@ -148,7 +148,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         // Non-HO + Source (or anything else): filter by BranchId only
                         query.BranchId = myBranchId;
                         query.CounterpartyBranchId = null; // ensure Counterparty is NOT set
-                        query.TicketType = "Source";
+                        //query.TicketType = "Source";
                     }
                 }
 
