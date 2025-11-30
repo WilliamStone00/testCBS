@@ -174,20 +174,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     .ToList();
 
 
-                _repoExcel.ExportTb6(data);
-
-
-
-
-
-
-
-
-
-
-
-
-
+                _repoExcel.ExportTb6(data,@"C:\Exports\TB65454.xlsx", _trialBalanceService.GetUserFullName());
 
 
 

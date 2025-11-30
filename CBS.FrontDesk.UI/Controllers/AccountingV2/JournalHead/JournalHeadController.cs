@@ -332,6 +332,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 // ✅ Generate Excel file
                 _JournalHeadExcelExportGenerator.GenerateJournalHeadExcelSheet(model, filePath, exportedBy);
 
+
+
+
                 // ✅ Read and send file to browser
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
