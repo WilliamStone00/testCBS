@@ -159,7 +159,7 @@ namespace CBS.BusinessService.Accounts
                 if (Fee != null)
                 {
                     // Manage Centralization and Branch Selection
-                    if (model.IsCentralised)
+                    if (!model.IsCentralised)
                     {
                         model.BranchId = "N/A";
                     }
