@@ -399,133 +399,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
         [HttpPost]
 
-        //public async Task<ActionResult> ExportJournalData(ExportJournalRequest request)
-        //{
-        //    try
-        //    {
-
-        //        // Build query object from request filters
-        //        var query = new JournalEntryQuery
-        //        {
-
-        //            Options = new DataTableOptions
-        //            {
-        //                draw = "1",
-        //                start = 0,
-        //                length = int.MaxValue // fetch all records for export
-        //            }
-        //        };
-
-        //        // Now call your service
-        //        var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
-
-        //        // Data from service
-        //        var journalList = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
-        //            JsonConvert.SerializeObject(data.data));
-
-        //        if (!journalList.Any())
-        //            return Json(new { success = false, message = "No journal data available for export." });
-
-        //        // Convert data for Excel
-        //        var journalDataForExcel = JournalDataTableExcelExportGenerator.ConvertToJournalData(journalList);
-
-        //        if (!journalDataForExcel.Any())
-        //            return Json(new { success = false, message = "No valid journal data could be processed for export." });
-
-
-        //        Console.WriteLine($"=== JOURNAL EXPORT DEBUG START ===");
-        //        Console.WriteLine($"Request received: {request != null}");
-        //        Console.WriteLine($"Data count: {request?.JournalData?.Count ?? 0}");
-        //        Console.WriteLine($"Export Options: {request?.ExportOptions?.FileName ?? "N/A"}");
-
-        //        if (request?.JournalData == null || !request.JournalData.Any())
-        //        {
-        //            Console.WriteLine("No journal data to export");
-        //            return Json(new { success = false, message = "No journal data available for export." });
-        //        }
-
-        //        // Convert data to strongly typed list
-        //        Console.WriteLine($"=== CONVERTING JOURNAL DATA ===");
-        //        var journalData = JournalDataTableExcelExportGenerator.ConvertToJournalData(request.JournalData);
-        //        Console.WriteLine($"Successfully converted {journalData.Count} journal records");
-
-        //        if (!journalData.Any())
-        //        {
-        //            Console.WriteLine("No journal data converted successfully");
-        //            return Json(new { success = false, message = "No valid journal data could be processed for export." });
-        //        }
-
-        //        // Prepare file name and paths
-        //        string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-        //        string fileName = $"{request.ExportOptions?.FileName ?? "Journal_Report"}_{timestamp}.xlsx";
-        //        string directoryPath = Server.MapPath("~/TempFiles");
-
-        //        Console.WriteLine($"=== FILE PREPARATION ===");
-        //        Console.WriteLine($"Directory: {directoryPath}");
-        //        Console.WriteLine($"File Name: {fileName}");
-
-        //        if (!Directory.Exists(directoryPath))
-        //        {
-        //            Console.WriteLine("Creating temp directory");
-        //            Directory.CreateDirectory(directoryPath);
-        //        }
-
-        //        string filePath = Path.Combine(directoryPath, fileName);
-        //        string exportedBy = Session["FullName"]?.ToString() ?? "System";
-
-        //        Console.WriteLine($"Full Path: {filePath}");
-        //        Console.WriteLine($"Exported By: {exportedBy}");
-
-        //        // Generate Excel file with multiple sheets
-        //        Console.WriteLine($"=== GENERATING JOURNAL EXCEL WITH MULTIPLE SHEETS ===");
-        //        var exportGenerator = new JournalDataTableExcelExportGenerator();
-        //        exportGenerator.GenerateJournalExcelFromTableData(journalData, filePath, exportedBy, request.ExportOptions);
-
-        //        // Verify file was created
-        //        if (!System.IO.File.Exists(filePath))
-        //        {
-        //            Console.WriteLine("ERROR: Excel file was not created");
-        //            return Json(new { success = false, message = "Failed to generate Excel file." });
-        //        }
-
-        //        Console.WriteLine($"Excel file generated successfully: {filePath}");
-        //        Console.WriteLine($"File size: {new FileInfo(filePath).Length} bytes");
-
-        //        // Read and send file to browser
-        //        Console.WriteLine($"=== READING FILE ===");
-        //        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-        //        Console.WriteLine($"File bytes read: {fileBytes.Length} bytes");
-
-        //        // Delete temp file after sending
-        //        Console.WriteLine($"=== CLEANUP ===");
-        //        System.IO.File.Delete(filePath);
-        //        Console.WriteLine("Temp file deleted");
-
-        //        Console.WriteLine($"=== JOURNAL EXPORT COMPLETE ===");
-        //        Console.WriteLine($"Returning file: {fileName} ({fileBytes.Length} bytes)");
-
-        //        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"=== JOURNAL EXPORT ERROR ===");
-        //        Console.WriteLine($"Error Type: {ex.GetType().Name}");
-        //        Console.WriteLine($"Error Message: {ex.Message}");
-        //        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-        //        if (ex.InnerException != null)
-        //        {
-        //            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-        //            Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
-        //        }
-
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            message = $"An error occurred while exporting journal data to Excel: {ex.Message}"
-        //        });
-        //    }
-        //}
 
 
         public async Task<ActionResult> ExportJournalData(ExportJournalRequest request)
@@ -569,7 +442,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     return Json(new { success = false, message = "No valid journal data could be processed for export." });
 
                 // Prepare file name and path
-                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+
                 string fileName = $"{request.ExportOptions?.FileName ?? "Journal_Report"}_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 

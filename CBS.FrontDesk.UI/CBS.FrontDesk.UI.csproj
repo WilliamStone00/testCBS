@@ -11084,6 +11084,7 @@
     <Content Include="Views\GLSystemReconciliation\_OperationDetail.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_StatisticsDataTable.cshtml" />
     <Content Include="Views\JournalHead\_ExportJournalHeadDataTable.cshtml" />
+    <Content Include="Views\CounterCheque\_ChequeBooks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

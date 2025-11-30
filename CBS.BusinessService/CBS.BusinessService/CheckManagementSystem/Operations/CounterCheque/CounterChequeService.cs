@@ -28,28 +28,30 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
 
 
 
-       
 
-        public async Task<CounterCheques> GetChequeDetails(string CustomerId)
+
+       public async Task<List<CounterCheques>> GetChequeDetails(string CustomerId, string BranchId)
         {
             try
             {
+                // Build the URL with query parameters
+                var url = $"{APICallHelper.GetCustormerchequebook}?customerId={CustomerId}&branchId={BranchId}";
 
-                var response = await _apiHelper.GetAsync<
-                    ResponseObject<CounterCheques>>(string.Format(APICallHelper.GetReconciliationById, CustomerId));
-                if (response.ApiResponseData != null)
-                {
-                    return response.ApiResponseData.Data;
-                }
-                return null;
+                // Call the API with only 1 argument
+                var response = await _apiHelper.GetAsync<ResponseObject<List<CounterCheques>>>(url);
 
+
+
+                return response.ApiResponseData?.Data ?? new List<CounterCheques>();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 throw;
             }
         }
+
+
+
         public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
         {
             try
