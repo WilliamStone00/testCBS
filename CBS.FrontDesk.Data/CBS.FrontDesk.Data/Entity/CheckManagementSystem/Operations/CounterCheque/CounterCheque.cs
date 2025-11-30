@@ -26,7 +26,9 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public DateTime? IssuedOn { get; set; }
         public string IssuedBy { get; set; }
         public string Status { get; set; }
-      
+        public string Name { get; set; }
+        public string Catergoryid { get; set; }
+
     }
 
     // DTO for the modal action form

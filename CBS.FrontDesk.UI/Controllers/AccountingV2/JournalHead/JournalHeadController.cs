@@ -566,7 +566,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     return Json(new { success = false, message = "No valid journal data could be processed for export." });
 
                 // Prepare file name and path
-                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+
                 string fileName = $"{request.ExportOptions?.FileName ?? "Journal_Report"}_{timestamp}.xlsx";
                 string directoryPath = Server.MapPath("~/TempFiles");
 
