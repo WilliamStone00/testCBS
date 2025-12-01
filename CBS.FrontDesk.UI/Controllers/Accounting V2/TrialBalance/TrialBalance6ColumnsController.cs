@@ -65,10 +65,18 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                         JsonRequestBehavior.AllowGet);
                 }
 
+                string fileName = $"TrialBalance_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                // Check if directory exists before creating it
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string fullPath = Path.Combine(directoryPath, fileName);
 
 
 
-               _repoExcel.ExportTb6(response, @"C:\Exports\TB65454.xlsx", _trialBalanceService.GetUserFullName());
+                _repoExcel.ExportTb6(response, fullPath, _trialBalanceService.GetUserFullName());
 
 
                
@@ -76,14 +84,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
              
-                    string fileName = $"TrialBalance_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
-                    string directoryPath = Server.MapPath("~/TempFiles");
-
-                    // Check if directory exists before creating it
-                    if (!Directory.Exists(directoryPath))
-                        Directory.CreateDirectory(directoryPath);
-
-                    string fullPath = Path.Combine(directoryPath, fileName);
+                   
 
                     _repoExcel.ExportTb6(response, fullPath, _trialBalanceService.GetUserFullName());
 
