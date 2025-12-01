@@ -1,5 +1,5 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
-//using CBS.BusinessService.Accounting_V2.ExportReports;
+using CBS.BusinessService.Accounting_V2.ExportReports;
 using CBS.BusinessService.Accounting_V2.TrialBalance;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
@@ -25,7 +25,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         private readonly TrialBalances6ColumnService _trialBalanceService;
         private readonly BranchAccountService _branchAccountService;
         private readonly BranchServices _branchServices;
-      //  private readonly TrialBalance6ColumnsExport _repoExcel;
+       private readonly TrialBalance6ColumnsExport _repoExcel;
 
         public TrialBalance6ColumnsController(
             TrialBalances6ColumnService trialBalanceService,
@@ -67,7 +67,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
 
+
+               _repoExcel.ExportTb6(data,@"C:\Exports\TB65454.xlsx", _trialBalanceService.GetUserFullName());
+
+
                
+
 
 
              
