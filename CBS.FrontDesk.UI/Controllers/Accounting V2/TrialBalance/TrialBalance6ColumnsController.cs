@@ -79,8 +79,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                
 
 
-               
-
 
              
                    
