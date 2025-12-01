@@ -184,14 +184,34 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
             int row = startRow;
 
             // ───────────────────────── LEFT SIDE HEADER BLOCK ─────────────────────────
+            // ───────────── BANK NAME (FIRST LINE) — Blue background
             ws.Cell(row, 1).Value = BankName;
-            ws.Cell(row, 1).Style.Font.SetBold().Font.SetFontSize(15);
 
-            ws.Cell(row, 1).Style.Font.FontColor = XLColor.White;
-            ws.Cell(row, 1).Style.Fill.BackgroundColor = XLColor.FromArgb(30, 60, 180);
+            // Merge from column 1 to column 6 on the same row
+            var line1 = ws.Range(row, 1, row, 6);
+            line1.Merge();
+
+            // Apply styling
+            line1.Style.Font.SetBold().Font.SetFontSize(18);
+            line1.Style.Font.FontColor = XLColor.White;
+            line1.Style.Fill.BackgroundColor = XLColor.FromArgb(30, 60, 180);
+            line1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            line1.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+
             row++;
 
-            ws.Cell(row, 1).Value = BranchName;
+            // ───────────── Branch Name — Light Blue background + border
+            ws.Cell(row, 1).Value = $"Branch Name: {BranchName}";
+            var line3 = ws.Range(row, 1, row, 6);
+            line3.Merge();
+            line3.Style.Font.SetFontSize(13).Font.SetBold();
+            line3.Style.Font.FontColor = XLColor.Black;
+            line3.Style.Fill.BackgroundColor = XLColor.FromArgb(210, 230, 255);
+            line3.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
+            line3.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            line3.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
             row++;
 
             ws.Cell(row, 1).Value = BranchAddress;
