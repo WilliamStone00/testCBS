@@ -46,27 +46,33 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         }
 
 
-
         [HttpGet]
-        public async Task<ActionResult> Search(string CustomerId)
+        public async Task<ActionResult> Search(string CustomerId, string BranchId)
         {
-            if (string.IsNullOrEmpty(CustomerId))
-                return new HttpStatusCodeResult(400, "Custormer ID is required");
+            if (string.IsNullOrEmpty(CustomerId) || string.IsNullOrEmpty(BranchId))
+                return new HttpStatusCodeResult(400, "CustomerId and BranchId are required");
 
-            Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques entry = null;
+            List<CounterCheques> entries;
 
             try
             {
-                entry = await _counterChequeService.GetChequeDetails(CustomerId);
+                entries = await _counterChequeService.GetChequeDetails(CustomerId, BranchId);
+
+                if (entries == null || !entries.Any())
+                    return new HttpStatusCodeResult(404, "No cheque books found");
+
+                // Return only id and name for dropdown
+                var result = entries.Select(x => new { id = x.Id, name = x.Name }).ToList();
+
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // You can log the exception here
                 return new HttpStatusCodeResult(404, ex.Message);
             }
-
-            return PartialView("_ReconciliationDetails", entry);
         }
+
+
 
         /// <summary>
 

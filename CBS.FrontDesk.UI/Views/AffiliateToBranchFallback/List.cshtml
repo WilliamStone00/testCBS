@@ -24,7 +24,7 @@
 </div>
 
 <!-- Filters Section -->
-<div class="card shadow p-3 mb-4" id="filtersSection">
+<div class="card shadow p-3 mb-1" id="filtersSection">
     <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" style="cursor: pointer;">
         <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i>Filters</h5>
         <i class="mdi mdi-chevron-down"></i>
@@ -33,8 +33,8 @@
     <div class="collapse show" id="filtersCollapse">
         <div class="card-body">
             <form id="fallbackFilterForm" autocomplete="off">
-                <div class="card p-3 mb-3 bg-light">
-                    <div class="row mb-3">
+                <div class="card p-3 mb-1 bg-light">
+                    <div class="row mb-1">
                         <div class="col-md-3">
                             <label class="form-label fw-bold">Branch ID</label>
                             <input type="text" id="branchId" name="BranchId" class="form-control" placeholder="Enter Branch ID" />
@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-1">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Supposed GL Contains</label>
                             <input type="text" id="supposedGlContains" name="SupposedGlContains" class="form-control" placeholder="Search in supposed GL" />
@@ -190,98 +190,29 @@
     </div>
 </div>
 
-<!-- Export Modal -->
+<!-- inside your current view -->
 <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="mdi mdi-export me-2"></i>Export Fallback Data
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card bg-light mb-2">
-                            <div class="card-body text-center">
-                                <h1 class="card-title text-primary">
-                                    <i class="mdi mdi-export me-2"></i>Export Fallback Data
-                                </h1>
-                                <p class="card-text">
-                                </p>
-                                <div class="alert alert-info mt-3 py-2">
-                                    <i class="mdi mdi-information-outline me-1"></i>
-                                    Export fallback reconciliation data with current filters applied
-                                </div>
-                                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Export Format</label>
-                        <select class="form-select" id="exportFormat">
-                            <option value="excel">Excel (.xlsx)</option>
-                            <option value="csv">CSV (.csv)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Report Type</label>
-                        <select class="form-select" id="reportType">
-                            <option value="detailed">Detailed Report</option>
-                            <option value="summary">Summary Report</option>
-                            <option value="both">Both Detailed & Summary</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">File Name</label>
-                        <input type="text" class="form-control" id="fileName" value="Fallback_Reconciliation_Report" placeholder="Enter file name">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check form-switch mt-4">
-                            <input class="form-check-input" type="checkbox" id="includeStatistics" checked>
-                            <label class="form-check-label fw-semibold" for="includeStatistics">Include Statistics Summary</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="alert alert-warning">
-                    <i class="mdi mdi-alert-outline me-2"></i>
-                    <strong>Export Information:</strong> This will export all data currently loaded in the table with applied filters.
-                    Make sure you've applied the desired filters before exporting.
-                </div>
-
-                <!-- Export Progress -->
-                <div id="exportProgress" class="mt-3 d-none">
-                    <div class="progress mb-2">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-                    </div>
-                    <small class="text-muted" id="progressText">Preparing export...</small>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Cancel
-                </button>
-                <button type="button" class="btn btn-success" id="btnConfirmExport">
-                    <i class="mdi mdi-export me-1"></i>Export
-                </button>
-            </div>
+            @Html.Partial("~/Views/CollectorCommission/_ExportCommission.cshtml")
+            @* or if in Shared folder: @Html.Partial("_ExportCommission", ModelForExport) *@
         </div>
     </div>
 </div>
 
+
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <div class="modal-body" id="detailsModalBody">
-            <!-- Content will be loaded here -->
+        <div class="modal-content">
+            <!-- Add this wrapper -->
+            <div class="modal-header">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Content will be loaded here -->
+            </div>
         </div>
     </div>
 </div>
@@ -348,492 +279,582 @@
 }
 
 @section Scripts {
-    <script>
-        var fallbackTable = null;
-        var currentFallbackData = [];
 
-        function emptyToNull(v) {
-            return (v === undefined || v === null || v === '') ? null : v;
-        }
+        <script>
+            var fallbackTable = null;
+            var currentFallbackData = [];
 
-        function collectFallbackFilters() {
-            return {
-                BranchId: emptyToNull($('#branchId').val()),
-                OperationCode: emptyToNull($('#operationCode').val()),
-                Reference: emptyToNull($('#reference').val()),
-                Status: emptyToNull($('#status').val()),
-                SupposedGlContains: emptyToNull($('#supposedGlContains').val()),
-                FallbackGlContains: emptyToNull($('#fallbackGlContains').val()),
-                From: emptyToNull($('#fromDate').val()),
-                To: emptyToNull($('#toDate').val()),
-                options: {}
-            };
-        }
-
-        function updateStatistics(stats) {
-            if (stats) {
-                $('#toBeReconciledCount').text(stats.toBeReconciled || 0);
-                $('#alreadyReconciledCount').text(stats.alreadyReconciled || 0);
-                $('#totalCount').text(stats.total || 0);
-            }
-        }
-
-        function initDataTableIfNeeded() {
-            if ($.fn.DataTable.isDataTable('#fallbackDataTable') && fallbackTable) {
-                return;
+            function emptyToNull(v) {
+                return (v === undefined || v === null || v === '') ? null : v;
             }
 
-            if (!$('#fallbackDataTable').length) {
-                appalert('Table element #fallbackDataTable not found on page', 0, 1);
-                return;
-            }
-
-            fallbackTable = $('#fallbackDataTable').DataTable({
-                serverSide: true,
-                searching: true,
-                responsive: true,
-                destroy: false,
-                order: [[0, 'desc']],
-                ajax: {
-                    url: '/AffiliateToBranchFallback/LoadFallbackData',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: function (d) {
-                        const filters = collectFallbackFilters();
-                        filters.DataTable = {
-                            draw: d.draw,
-                            start: d.start,
-                            length: d.length,
-                            skip: d.start,
-                            pageSize: d.length,
-                            searchValue: d.search?.value || '',
-                            sortColumnName: 'createdDate',
-                            sortColumnDirection: 'desc'
-                        };
-                        return JSON.stringify(filters);
-                    },
-                    dataSrc: function (json) {
-                        // Update statistics from server response
-                        if (json.statistics) {
-                            updateStatistics(json.statistics);
-                        }
-
-                        // Store current data for export
-                        currentFallbackData = json.data || [];
-                        console.log('Current fallback data stored for export:', currentFallbackData.length, 'records');
-
-                        return json.data;
-                    },
-                    error: function (jqXHR) {
-                        var msg = 'Failed to load data. Please try again.';
-                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
-                        appalert(msg, 0, 1);
-                    }
-                },
-                columns: [
-                    {
-                        data: 'createdDate',
-                        render: function (data) {
-                            return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
-                        }
-                    },
-                    { data: 'branchName', defaultContent: '-' },
-                    { data: 'operationCode', defaultContent: '-' },
-                    { data: 'reference', defaultContent: '-' },
-                    {
-                        data: 'supposedGlAccountNumber',
-                        render: function (data, type, row) {
-                            return data || row.supposedGlAccountName || '-';
-                        }
-                    },
-                    {
-                        data: 'fallbackBranchAccountNumber',
-                        render: function (data, type, row) {
-                            return data || row.fallbackBranchAccountName || '-';
-                        }
-                    },
-                    {
-                        data: 'amount',
-                        render: function (v) { return (v == null) ? '-' : parseFloat(v).toFixed(2); }
-                    },
-                    {
-                        data: 'isResolved',
-                        render: function (val) {
-                            return (val === true || val === 'true')
-                                ? '<span class="badge bg-success">Resolved</span>'
-                                : '<span class="badge bg-warning">Pending</span>';
-                        }
-                    },
-                    {
-                        data: 'id',
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row) {
-                            var rawId = String(row.id || data || '');
-                            var recordId = encodeURIComponent(rawId);
-                            var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
-                            var btnId = 'actionDropdown_' + safeId;
-
-                            var isResolved = row.isResolved === true || row.isResolved === 'true';
-
-                            var viewBtn = `<button type="button" class="dropdown-item btn-view" data-id="${recordId}">
-                                                        <i class="mdi mdi-eye me-1 text-primary"></i> View Details
-                                                      </button>`;
-
-                            var reconcileBtn = !isResolved ?
-                                `<button type="button" class="dropdown-item btn-reconcile" data-id="${recordId}">
-                                                <i class="mdi mdi-check-circle me-1 text-success"></i> Reconcile
-                                             </button>` : '';
-
-                            return `
-                                            <div class="dropdown text-center">
-                                                <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                        type="button" id="${btnId}"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="mdi mdi-cog-outline"></i> Actions
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                                    <li>${viewBtn}</li>
-                                                    ${!isResolved ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                                    ${!isResolved ? `<li>${reconcileBtn}</li>` : ''}
-                                                </ul>
-                                            </div>
-                                        `.trim();
-                        }
-                    }
-                ],
-                language: { emptyTable: 'No fallback records found' },
-                lengthMenu: [10, 25, 50],
-                pageLength: 10
-            });
-        }
-
-        function loadFallbackData() {
-            initDataTableIfNeeded();
-            if (fallbackTable) {
-                fallbackTable.ajax.reload(null, false);
-            }
-        }
-
-        function resetFallbackFilters() {
-            var form = document.getElementById('fallbackFilterForm');
-            if (form) form.reset();
-            if (fallbackTable) {
-                fallbackTable.ajax.reload(null, false);
-            } else {
-                initDataTableIfNeeded();
-            }
-        }
-
-        function loadDetailsInModal(id) {
-            $.get('/AffiliateToBranchFallback/InitializeData', {
-                KEY: id,
-                partialView: '_FallbackDetails',
-                path: 'details'
-            }, function (data) {
-                $('#detailsModalBody').html(data);
-                $('#detailsModal').modal('show');
-            }).fail(function () {
-                appalert('Failed to load details', 0, 1);
-            });
-        }
-
-        // ==================== EXPORT FUNCTIONS ====================
-        function buildFallbackExportData(records) {
-            console.log('=== BUILDING FALLBACK EXPORT DATA ===');
-            console.log('Raw records received:', records);
-
-            const exportData = records.map((record, index) => {
-                // Extract data using the entity property names
-                const getValue = (propNames, defaultValue = '') => {
-                    for (const prop of propNames) {
-                        if (record[prop] !== undefined && record[prop] !== null && record[prop] !== '') {
-                            return record[prop];
-                        }
-                    }
-                    return defaultValue;
+            function collectFallbackFilters() {
+                return {
+                    BranchId: emptyToNull($('#branchId').val()),
+                    OperationCode: emptyToNull($('#operationCode').val()),
+                    Reference: emptyToNull($('#reference').val()),
+                    Status: emptyToNull($('#status').val()),
+                    SupposedGlContains: emptyToNull($('#supposedGlContains').val()),
+                    FallbackGlContains: emptyToNull($('#fallbackGlContains').val()),
+                    From: emptyToNull($('#fromDate').val()),
+                    To: emptyToNull($('#toDate').val()),
+                    options: {}
                 };
-
-                // Handle date values properly
-                const parseDate = (dateValue) => {
-                    if (!dateValue) return null;
-                    try {
-                        if (dateValue instanceof Date) return dateValue;
-                        if (typeof dateValue === 'string') {
-                            const date = new Date(dateValue);
-                            return isNaN(date.getTime()) ? null : date;
-                        }
-                        return null;
-                    } catch {
-                        return null;
-                    }
-                };
-
-                // Handle numeric values
-                const parseNumber = (numValue, defaultValue = 0) => {
-                    if (numValue === undefined || numValue === null || numValue === '') return defaultValue;
-                    const num = parseFloat(numValue);
-                    return isNaN(num) ? defaultValue : num;
-                };
-
-                // Handle boolean values
-                const parseBoolean = (boolValue) => {
-                    if (boolValue === undefined || boolValue === null) return false;
-                    if (typeof boolValue === 'boolean') return boolValue;
-                    if (typeof boolValue === 'string') {
-                        return boolValue.toLowerCase() === 'true' || boolValue === '1';
-                    }
-                    if (typeof boolValue === 'number') return boolValue === 1;
-                    return false;
-                };
-
-                // Build the fallback record matching the C# entity
-                const builtRecord = {
-                    "Id": getValue(['id', 'Id'], ''),
-                    "BranchId": getValue(['branchId', 'BranchId'], ''),
-                    "BranchName": getValue(['branchName', 'BranchName'], ''),
-                    "OperationCode": getValue(['operationCode', 'OperationCode'], ''),
-                    "Reference": getValue(['reference', 'Reference'], ''),
-                    "SupposedGlAccountNumber": getValue(['supposedGlAccountNumber', 'SupposedGlAccountNumber'], ''),
-                    "SupposedGlAccountName": getValue(['supposedGlAccountName', 'SupposedGlAccountName'], ''),
-                    "FallbackBranchAccountNumber": getValue(['fallbackBranchAccountNumber', 'FallbackBranchAccountNumber'], ''),
-                    "FallbackBranchAccountName": getValue(['fallbackBranchAccountName', 'FallbackBranchAccountName'], ''),
-                    "Amount": parseNumber(getValue(['amount', 'Amount'])),
-                    "Status": parseBoolean(getValue(['isResolved', 'IsResolved'])) ? "Resolved" : "Pending",
-                    "ResolutionTips": getValue(['resolutionTips', 'ResolutionTips'], ''),
-                    "CreatedDate": parseDate(getValue(['createdDate', 'CreatedDate'])),
-                    "ResolvedOn": parseDate(getValue(['resolvedOn', 'ResolvedOn'])),
-                    "ResolvedBy": getValue(['resolvedBy', 'ResolvedBy'], ''),
-                    "IsBranchAccountAutoCreated": parseBoolean(getValue(['isBranchAccountAutoCreated', 'IsBranchAccountAutoCreated'])),
-                    "AutoCreatedStatus": parseBoolean(getValue(['isBranchAccountAutoCreated', 'IsBranchAccountAutoCreated'])) ? "Auto-Created" : "Manual",
-                    "RequestedAffiliateAccountIdOrBranchCode": getValue(['requestedAffiliateAccountIdOrBranchCode', 'RequestedAffiliateAccountIdOrBranchCode'], ''),
-                    "RequestedBranchAccountCode": getValue(['requestedBranchAccountCode', 'RequestedBranchAccountCode'], '')
-                };
-
-                return builtRecord;
-            });
-
-            console.log('=== FINAL FALLBACK EXPORT DATA BUILT ===');
-            console.log('Total records built:', exportData.length);
-            return exportData;
-        }
-
-        function setupExportModal() {
-            if (!fallbackTable || currentFallbackData.length === 0) {
-                appalert('Please load fallback data first by applying filters.', 3, 1);
-                $('#exportModal').modal('hide');
-                return;
             }
 
-            console.log('=== SETTING UP EXPORT MODAL ===');
-            console.log('Current data available for export:', currentFallbackData.length, 'records');
-
-            $('#btnConfirmExport').off('click').on('click', function () {
-                confirmExport();
-            });
-        }
-
-        function confirmExport() {
-            const exportFormat = $('#exportFormat').val();
-            const reportType = $('#reportType').val();
-            const includeStatistics = $('#includeStatistics').is(':checked');
-            const fileName = $('#fileName').val() || 'Fallback_Reconciliation_Report';
-
-            $('#exportProgress').removeClass('d-none');
-            updateExportProgress(0, 'Preparing export data...');
-
-            exportFallbackData({
-                format: exportFormat,
-                reportType: reportType,
-                includeStatistics: includeStatistics,
-                fileName: fileName
-            });
-        }
-
-        function exportFallbackData(exportOptions) {
-            console.log('=== EXPORTING FALLBACK DATA ===');
-            console.log('Number of records to export:', currentFallbackData.length);
-            console.log('Export options:', exportOptions);
-
-            updateExportProgress(25, 'Building export data structure...');
-
-            // Build the export data
-            const manuallyBuiltData = buildFallbackExportData(currentFallbackData);
-
-            // Build payload matching the C# entity
-            const exportPayload = {
-                Data: manuallyBuiltData,
-                TotalRecords: manuallyBuiltData.length,
-                ExportOptions: {
-                    Format: exportOptions.format || 'excel',
-                    ReportType: exportOptions.reportType || 'detailed',
-                    IncludeStatistics: exportOptions.includeStatistics !== false,
-                    FileName: exportOptions.fileName || 'Fallback_Reconciliation_Report'
-                },
-                Filters: collectFallbackFilters()
-            };
-
-            console.log('=== FALLBACK EXPORT PAYLOAD READY ===');
-            console.log('Data records count:', exportPayload.Data.length);
-
-            updateExportProgress(50, 'Sending data to server...');
-            performFallbackExport(exportPayload, exportOptions);
-        }
-
-        function performFallbackExport(exportPayload, exportOptions) {
-            console.log('=== SENDING FALLBACK DATA TO BACKEND ===');
-
-            updateExportProgress(75, 'Generating Excel file...');
-
-            $.ajax({
-                url: '/AffiliateToBranchFallback/ExportFallbackData',
-                type: 'POST',
-                data: JSON.stringify(exportPayload),
-                contentType: 'application/json',
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                beforeSend: function () {
-                    $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
-                },
-                success: function (data, status, xhr) {
-                    console.log('=== FALLBACK EXPORT SUCCESSFUL ===');
-
-                    updateExportProgress(100, 'Download ready!');
-
-                    // Get filename
-                    var filename = exportPayload.ExportOptions.FileName + '_' +
-                        new Date().toISOString().slice(0, 10) + '.xlsx';
-
-                    var disposition = xhr.getResponseHeader('Content-Disposition');
-                    if (disposition && disposition.indexOf('attachment') !== -1) {
-                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                        var matches = filenameRegex.exec(disposition);
-                        if (matches != null && matches[1]) {
-                            filename = matches[1].replace(/['"]/g, '');
-                        }
-                    }
-
-                    // Create blob and download
-                    var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
-                    appalert('Excel file downloaded successfully! ' +
-                        exportPayload.Data.length +
-                        ' fallback records exported.', 1, 1);
-
-                    setTimeout(function () {
-                        $('#exportModal').modal('hide');
-                        $('#exportProgress').addClass('d-none');
-                        $('.progress-bar').css('width', '0%');
-                        $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-                    }, 1000);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Fallback export error:', error);
-                    console.error('Response:', xhr.responseText);
-
-                    let errorMessage = 'Error exporting fallback data';
-                    try {
-                        const errorResponse = JSON.parse(xhr.responseText);
-                        errorMessage = errorResponse.message || errorMessage;
-                    } catch (e) {
-                        errorMessage = error || errorMessage;
-                    }
-
-                    appalert(errorMessage, 4, 1);
-                    $('#exportProgress').addClass('d-none');
-                    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+            function updateStatistics(stats) {
+                if (stats) {
+                    $('#toBeReconciledCount').text(stats.toBeReconciled || 0);
+                    $('#alreadyReconciledCount').text(stats.alreadyReconciled || 0);
+                    $('#totalCount').text(stats.total || 0);
                 }
-            });
-        }
+            }
 
-        function updateExportProgress(percent, message) {
-            $('#exportProgress .progress-bar').css('width', percent + '%');
-            $('#progressText').text(message);
-        }
+            function initDataTableIfNeeded() {
+                if ($.fn.DataTable.isDataTable('#fallbackDataTable') && fallbackTable) {
+                    return;
+                }
 
-        $(document).ready(function () {
-            $('#applyFilterBtn').off('click').on('click', function (e) {
-                e.preventDefault();
-                loadFallbackData();
-            });
+                if (!$('#fallbackDataTable').length) {
+                    appalert('Table element #fallbackDataTable not found on page', 0, 1);
+                    return;
+                }
 
-            $('#resetFilterBtn').off('click').on('click', function (e) {
-                e.preventDefault();
-                resetFallbackFilters();
-            });
+                fallbackTable = $('#fallbackDataTable').DataTable({
+                    serverSide: true,
+                    searching: true,
+                    responsive: true,
+                    destroy: false,
+                    order: [[0, 'desc']],
+                    ajax: {
+                        url: '/AffiliateToBranchFallback/LoadFallbackData',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: function (d) {
+                            const filters = collectFallbackFilters();
+                            filters.DataTable = {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: 'createdDate',
+                                sortColumnDirection: 'desc'
+                            };
+                            return JSON.stringify(filters);
+                        },
+                        dataSrc: function (json) {
+                            // Update statistics from server response
+                            if (json.statistics) {
+                                updateStatistics(json.statistics);
+                            }
 
-            $('#fallbackFilterForm input').off('keypress').on('keypress', function (e) {
-                if (e.which === 13) {
+                            // Store current data for export
+                            currentFallbackData = json.data || [];
+                            console.log('Current fallback data stored for export:', currentFallbackData.length, 'records');
+
+                            return json.data;
+                        },
+                        error: function (jqXHR) {
+                            var msg = 'Failed to load data. Please try again.';
+                            try { msg = jqXHR.responseJSON?.message || msg; } catch { }
+                            appalert(msg, 0, 1);
+                        }
+                    },
+                    columns: [
+                        {
+                            data: 'createdDate',
+                            render: function (data) {
+                                return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
+                            }
+                        },
+                        { data: 'branchName', defaultContent: '-' },
+                        { data: 'operationCode', defaultContent: '-' },
+                        { data: 'reference', defaultContent: '-' },
+                        {
+                            data: 'supposedGlAccountNumber',
+                            render: function (data, type, row) {
+                                return data || row.supposedGlAccountName || '-';
+                            }
+                        },
+                        {
+                            data: 'fallbackBranchAccountNumber',
+                            render: function (data, type, row) {
+                                return data || row.fallbackBranchAccountName || '-';
+                            }
+                        },
+                        {
+                            data: 'amount',
+                            render: function (v) { return (v == null) ? '-' : parseFloat(v).toFixed(2); }
+                        },
+                        {
+                            data: 'isResolved',
+                            render: function (val) {
+                                return (val === true || val === 'true')
+                                    ? '<span class="badge bg-success">Resolved</span>'
+                                    : '<span class="badge bg-warning">Pending</span>';
+                            }
+                        },
+                        {
+                            data: 'id',
+                            orderable: false,
+                            searchable: false,
+                            render: function (data, type, row) {
+                                var rawId = String(row.id || data || '');
+                                var recordId = encodeURIComponent(rawId);
+                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                                var btnId = 'actionDropdown_' + safeId;
+
+                                var isResolved = row.isResolved === true || row.isResolved === 'true';
+
+                                var viewBtn = `<button type="button" class="dropdown-item btn-view" data-id="${recordId}">
+                                                                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                                                                  </button>`;
+
+                                var reconcileBtn = !isResolved ?
+                                    `<button type="button" class="dropdown-item btn-reconcile" data-id="${recordId}">
+                                                            <i class="mdi mdi-check-circle me-1 text-success"></i> Reconcile
+                                                         </button>` : '';
+
+                                return `
+                                                        <div class="dropdown text-center">
+                                                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                                    type="button" id="${btnId}"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="mdi mdi-cog-outline"></i> Actions
+                                                            </button>
+                                                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                                <li>${viewBtn}</li>
+                                                                ${!isResolved ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                                ${!isResolved ? `<li>${reconcileBtn}</li>` : ''}
+                                                            </ul>
+                                                        </div>
+                                                    `.trim();
+                            }
+                        }
+                    ],
+                    language: { emptyTable: 'No fallback records found' },
+                    lengthMenu: [10, 25, 50],
+                    pageLength: 10
+                });
+            }
+
+            function loadFallbackData() {
+                initDataTableIfNeeded();
+                if (fallbackTable) {
+                    fallbackTable.ajax.reload(null, false);
+                }
+            }
+
+            function resetFallbackFilters() {
+                var form = document.getElementById('fallbackFilterForm');
+                if (form) form.reset();
+                if (fallbackTable) {
+                    fallbackTable.ajax.reload(null, false);
+                } else {
+                    initDataTableIfNeeded();
+                }
+            }
+
+            function loadDetailsInModal(id) {
+                $.get('/AffiliateToBranchFallback/InitializeData', {
+                    KEY: id,
+                    partialView: '_FallbackDetails',
+                    path: 'details'
+                }, function (data) {
+                    $('#detailsModalBody').html(data);
+                    initAccordionBehavior();
+                    $('#detailsModal').modal('show');
+                }).fail(function () {
+                    appalert('Failed to load details', 0, 1);
+                });
+            }
+
+            function initAccordionBehavior() {
+                $('.collapse').on('show.bs.collapse', function () {
+                    $(this).prev('.card-header').find('.accordion-icon').removeClass('mdi-chevron-down').addClass('mdi-chevron-up');
+                });
+
+                $('.collapse').on('hide.bs.collapse', function () {
+                    $(this).prev('.card-header').find('.accordion-icon').removeClass('mdi-chevron-up').addClass('mdi-chevron-down');
+                });
+            }
+
+            // ==================== EXPORT FUNCTIONS ====================
+            function buildFallbackExportData(records) {
+                console.log('=== BUILDING FALLBACK EXPORT DATA ===');
+                console.log('Raw records received:', records);
+
+                const exportData = records.map((record, index) => {
+                    const getValue = (propNames, defaultValue = '') => {
+                        for (const prop of propNames) {
+                            if (record[prop] !== undefined && record[prop] !== null && record[prop] !== '') {
+                                return record[prop];
+                            }
+                        }
+                        return defaultValue;
+                    };
+
+                    const parseDate = (dateValue) => {
+                        if (!dateValue) return null;
+                        try {
+                            if (dateValue instanceof Date) return dateValue;
+                            if (typeof dateValue === 'string') {
+                                const date = new Date(dateValue);
+                                return isNaN(date.getTime()) ? null : date;
+                            }
+                            return null;
+                        } catch {
+                            return null;
+                        }
+                    };
+
+                    const parseNumber = (numValue, defaultValue = 0) => {
+                        if (numValue === undefined || numValue === null || numValue === '') return defaultValue;
+                        const num = parseFloat(numValue);
+                        return isNaN(num) ? defaultValue : num;
+                    };
+
+                    const parseBoolean = (boolValue) => {
+                        if (boolValue === undefined || boolValue === null) return false;
+                        if (typeof boolValue === 'boolean') return boolValue;
+                        if (typeof boolValue === 'string') {
+                            return boolValue.toLowerCase() === 'true' || boolValue === '1';
+                        }
+                        if (typeof boolValue === 'number') return boolValue === 1;
+                        return false;
+                    };
+
+                    const builtRecord = {
+                        "Id": getValue(['id', 'Id'], ''),
+                        "BranchId": getValue(['branchId', 'BranchId'], ''),
+                        "BranchName": getValue(['branchName', 'BranchName'], ''),
+                        "OperationCode": getValue(['operationCode', 'OperationCode'], ''),
+                        "Reference": getValue(['reference', 'Reference'], ''),
+                        "SupposedGlAccountNumber": getValue(['supposedGlAccountNumber', 'SupposedGlAccountNumber'], ''),
+                        "SupposedGlAccountName": getValue(['supposedGlAccountName', 'SupposedGlAccountName'], ''),
+                        "FallbackBranchAccountNumber": getValue(['fallbackBranchAccountNumber', 'FallbackBranchAccountNumber'], ''),
+                        "FallbackBranchAccountName": getValue(['fallbackBranchAccountName', 'FallbackBranchAccountName'], ''),
+                        "Amount": parseNumber(getValue(['amount', 'Amount'])),
+                        "Status": parseBoolean(getValue(['isResolved', 'IsResolved'])) ? "Resolved" : "Pending",
+                        "ResolutionTips": getValue(['resolutionTips', 'ResolutionTips'], ''),
+                        "CreatedDate": parseDate(getValue(['createdDate', 'CreatedDate'])),
+                        "ResolvedOn": parseDate(getValue(['resolvedOn', 'ResolvedOn'])),
+                        "ResolvedBy": getValue(['resolvedBy', 'ResolvedBy'], ''),
+                        "IsBranchAccountAutoCreated": parseBoolean(getValue(['isBranchAccountAutoCreated', 'IsBranchAccountAutoCreated'])),
+                        "AutoCreatedStatus": parseBoolean(getValue(['isBranchAccountAutoCreated', 'IsBranchAccountAutoCreated'])) ? "Auto-Created" : "Manual",
+                        "RequestedAffiliateAccountIdOrBranchCode": getValue(['requestedAffiliateAccountIdOrBranchCode', 'RequestedAffiliateAccountIdOrBranchCode'], ''),
+                        "RequestedBranchAccountCode": getValue(['requestedBranchAccountCode', 'RequestedBranchAccountCode'], '')
+                    };
+
+                    return builtRecord;
+                });
+
+                console.log('=== FINAL FALLBACK EXPORT DATA BUILT ===');
+                console.log('Total records built:', exportData.length);
+                return exportData;
+            }
+
+            function setupExportModal() {
+                if (!fallbackTable || currentFallbackData.length === 0) {
+                    appalert('Please load fallback data first by applying filters.', 3, 1);
+                    $('#exportModal').modal('hide');
+                    return;
+                }
+
+                console.log('=== SETTING UP EXPORT MODAL ===');
+                console.log('Current data available for export:', currentFallbackData.length, 'records');
+
+                // Set default dates based on current filters
+                const currentFilters = collectFallbackFilters();
+                if (currentFilters.From) {
+                    $('#startDate').val(currentFilters.From);
+                }
+                if (currentFilters.To) {
+                    $('#endDate').val(currentFilters.To);
+                }
+
+                // Handle report type change
+                $('#reportType').off('change').on('change', function () {
+                    const isDateRange = $(this).val() === 'dateRange';
+                    $('#startDate, #endDate').prop('disabled', !isDateRange);
+                });
+
+                // Initialize state
+                $('#reportType').trigger('change');
+
+                $('#btnConfirmExport').off('click').on('click', function () {
+                    confirmExport();
+                });
+            }
+
+            function confirmExport() {
+                const exportFormat = $('#exportFormat').val();
+                const reportType = $('#reportType').val();
+                const includeSummary = $('#includeSummary').is(':checked');
+                const fileName = $('#fileName').val() || 'Fallback_Reconciliation_Report';
+
+                let startDate = null;
+                let endDate = null;
+
+                // Handle date range based on report type
+                if (reportType === 'dateRange') {
+                    startDate = $('#startDate').val();
+                    endDate = $('#endDate').val();
+
+                    if (startDate && endDate) {
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+
+                        if (start > end) {
+                            appalert('Start date cannot be after end date.', 3, 1);
+                            return;
+                        }
+                    } else if (startDate || endDate) {
+                        appalert('Please provide both start and end dates for date range export.', 3, 1);
+                        return;
+                    }
+                }
+
+                $('#exportProgress').removeClass('d-none');
+                updateExportProgress(0, 'Preparing export data...');
+
+                // Map the generic form values to our specific export options
+                const exportOptions = {
+                    format: exportFormat,
+                    reportType: mapReportType(reportType),
+                    includeStatistics: includeSummary, // Map includeSummary to includeStatistics
+                    fileName: fileName,
+                    startDate: startDate,
+                    endDate: endDate
+                };
+
+                exportFallbackData(exportOptions);
+            }
+
+            // Helper function to map generic report types to our specific ones
+            function mapReportType(genericReportType) {
+                const mapping = {
+                    'full': 'both', // Full report = both detailed and summary
+                    'dateRange': 'detailed' // Date range report = detailed only
+                };
+                return mapping[genericReportType] || 'both';
+            }
+
+            function exportFallbackData(exportOptions) {
+                console.log('=== EXPORTING FALLBACK DATA ===');
+                console.log('Number of records to export:', currentFallbackData.length);
+                console.log('Export options:', exportOptions);
+
+                updateExportProgress(25, 'Building export data structure...');
+
+                // Apply date filtering if date range is specified
+                let filteredData = currentFallbackData;
+
+                if (exportOptions.startDate && exportOptions.endDate) {
+                    console.log('Applying date filter:', exportOptions.startDate, 'to', exportOptions.endDate);
+
+                    const startDate = new Date(exportOptions.startDate);
+                    const endDate = new Date(exportOptions.endDate);
+                    endDate.setHours(23, 59, 59, 999); // Include entire end date
+
+                    filteredData = currentFallbackData.filter(record => {
+                        const recordDate = new Date(record.createdDate || record.createdOn);
+                        return recordDate >= startDate && recordDate <= endDate;
+                    });
+
+                    console.log('Data after date filtering:', filteredData.length, 'records');
+
+                    if (filteredData.length === 0) {
+                        appalert('No data found for the selected date range.', 3, 1);
+                        $('#exportProgress').addClass('d-none');
+                        return;
+                    }
+                }
+
+                // Build the export data
+                const manuallyBuiltData = buildFallbackExportData(filteredData);
+
+                // Build payload matching the C# entity
+                const exportPayload = {
+                    Data: manuallyBuiltData,
+                    TotalRecords: manuallyBuiltData.length,
+                    ExportOptions: {
+                        Format: exportOptions.format || 'excel',
+                        ReportType: exportOptions.reportType || 'both',
+                        IncludeStatistics: exportOptions.includeStatistics !== false,
+                        FileName: exportOptions.fileName || 'Fallback_Reconciliation_Report',
+                        StartDate: exportOptions.startDate,
+                        EndDate: exportOptions.endDate
+                    },
+                    Filters: collectFallbackFilters()
+                };
+
+                console.log('=== FALLBACK EXPORT PAYLOAD READY ===');
+                console.log('Data records count:', exportPayload.Data.length);
+
+                updateExportProgress(50, 'Sending data to server...');
+                performFallbackExport(exportPayload, exportOptions);
+            }
+
+            function performFallbackExport(exportPayload, exportOptions) {
+                console.log('=== SENDING FALLBACK DATA TO BACKEND ===');
+
+                updateExportProgress(75, 'Generating Excel file...');
+
+                $.ajax({
+                    url: '/AffiliateToBranchFallback/ExportFallbackData',
+                    type: 'POST',
+                    data: JSON.stringify(exportPayload),
+                    contentType: 'application/json',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    beforeSend: function () {
+                        $('#btnConfirmExport').prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Exporting...');
+                    },
+                    success: function (data, status, xhr) {
+                        console.log('=== FALLBACK EXPORT SUCCESSFUL ===');
+
+                        updateExportProgress(100, 'Download ready!');
+
+                        // Get filename
+                        var filename = exportPayload.ExportOptions.FileName + '_' +
+                            new Date().toISOString().slice(0, 10) + '.xlsx';
+
+                        var disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            var matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Create blob and download
+                        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        appalert('Excel file downloaded successfully! ' +
+                            exportPayload.Data.length +
+                            ' fallback records exported.', 1, 1);
+
+                        setTimeout(function () {
+                            $('#exportModal').modal('hide');
+                            $('#exportProgress').addClass('d-none');
+                            $('.progress-bar').css('width', '0%');
+                            $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                        }, 1000);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Fallback export error:', error);
+                        console.error('Response:', xhr.responseText);
+
+                        let errorMessage = 'Error exporting fallback data';
+                        try {
+                            const errorResponse = JSON.parse(xhr.responseText);
+                            errorMessage = errorResponse.message || errorMessage;
+                        } catch (e) {
+                            errorMessage = error || errorMessage;
+                        }
+
+                        appalert(errorMessage, 4, 1);
+                        $('#exportProgress').addClass('d-none');
+                        $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                    }
+                });
+            }
+
+            function updateExportProgress(percent, message) {
+                $('#exportProgress .progress-bar').css('width', percent + '%');
+                $('#progressText').text(message);
+            }
+
+            $(document).ready(function () {
+                $('#applyFilterBtn').off('click').on('click', function (e) {
                     e.preventDefault();
                     loadFallbackData();
-                }
+                });
+
+                $('#resetFilterBtn').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    resetFallbackFilters();
+                });
+
+                $('#fallbackFilterForm input').off('keypress').on('keypress', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        loadFallbackData();
+                    }
+                });
+
+                // View details in modal
+                $(document).off('click', '.btn-view').on('click', '.btn-view', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) { appalert('Missing id for details', 0, 1); return; }
+
+                    loadDetailsInModal(id);
+                });
+
+                // Reconcile
+                $(document).off('click', '.btn-reconcile').on('click', '.btn-reconcile', function (e) {
+                    e.preventDefault();
+                    var raw = $(this).data('id');
+                    var id = raw ? decodeURIComponent(raw) : null;
+                    if (!id) { appalert('Missing id for reconciliation', 0, 1); return; }
+
+                    AddORUpdateGen(id, 'datalistingview', '_ReconcileFallback', 'get', 'AffiliateToBranchFallback', 'reconcile');
+                });
+
+                // Back to list
+                $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
+                    e.preventDefault();
+                    AddORUpdateGen(null, 'datalistingview', '_FallbackDataTable', 'get', 'AffiliateToBranchFallback');
+                });
+
+                // Export button click
+                $('#btnExportFallback').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    console.log('Fallback export button clicked');
+
+                    if (!fallbackTable) {
+                        appalert('Please load fallback data first by applying filters.', 3, 1);
+                        return;
+                    }
+
+                    const recordCount = currentFallbackData.length;
+                    if (recordCount === 0) {
+                        appalert('No data available to export. Please apply filters to load data first.', 3, 1);
+                        return;
+                    }
+
+                    console.log(`Exporting ${recordCount} fallback records`);
+                    $('#exportModal').modal('show');
+                });
+
+                // Export modal events
+                $('#exportModal').on('show.bs.modal', function () {
+                    console.log('Export modal opening...');
+                    setupExportModal();
+                });
+
+                $('#exportModal').on('hidden.bs.modal', function () {
+                    console.log('Export modal closed');
+                    $('#exportProgress').addClass('d-none');
+                    $('.progress-bar').css('width', '0%');
+                    $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
+                });
+
+                initAccordionBehavior();
             });
-
-            // View details in modal
-            $(document).off('click', '.btn-view').on('click', '.btn-view', function (e) {
-                e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) { appalert('Missing id for details', 0, 1); return; }
-
-                loadDetailsInModal(id);
-            });
-
-            // Reconcile
-            $(document).off('click', '.btn-reconcile').on('click', '.btn-reconcile', function (e) {
-                e.preventDefault();
-                var raw = $(this).data('id');
-                var id = raw ? decodeURIComponent(raw) : null;
-                if (!id) { appalert('Missing id for reconciliation', 0, 1); return; }
-
-                AddORUpdateGen(id, 'datalistingview', '_ReconcileFallback', 'get', 'AffiliateToBranchFallback', 'reconcile');
-            });
-
-            // Back to list
-            $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
-                e.preventDefault();
-                AddORUpdateGen(null, 'datalistingview', '_FallbackDataTable', 'get', 'AffiliateToBranchFallback');
-            });
-
-            // Export button click
-            $('#btnExportFallback').off('click').on('click', function (e) {
-                e.preventDefault();
-                console.log('Fallback export button clicked');
-
-                if (!fallbackTable) {
-                    appalert('Please load fallback data first by applying filters.', 3, 1);
-                    return;
-                }
-
-                const recordCount = currentFallbackData.length;
-                if (recordCount === 0) {
-                    appalert('No data available to export. Please apply filters to load data first.', 3, 1);
-                    return;
-                }
-
-                console.log(`Exporting ${recordCount} fallback records`);
-                $('#exportModal').modal('show');
-            });
-
-            // Export modal events
-            $('#exportModal').on('show.bs.modal', function () {
-                console.log('Export modal opening...');
-                setupExportModal();
-            });
-
-            $('#exportModal').on('hidden.bs.modal', function () {
-                console.log('Export modal closed');
-                $('#exportProgress').addClass('d-none');
-                $('.progress-bar').css('width', '0%');
-                $('#btnConfirmExport').prop('disabled', false).html('<i class="mdi mdi-export me-1"></i> Export');
-            });
-        });
-    </script>
+        </script>
+    
 }

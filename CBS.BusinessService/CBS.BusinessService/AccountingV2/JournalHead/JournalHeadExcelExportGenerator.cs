@@ -1018,6 +1018,11 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             string headerEndColumn = GetColumnLetter(headerColumns);
             int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "JOURNAL ENTRIES DETAILED REPORT", headerEndColumn);
 
+            // ===== STAGE DISTRIBUTION SECTION (ABOVE DETAILED TABLE) =====
+            CreateStageDistributionSection(worksheet, journalData, ref currentRow, headerEndColumn);
+
+            currentRow += 2;
+
             // ===== DETAILED DATA TABLE =====
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "DETAILED JOURNAL ENTRIES";
@@ -1057,8 +1062,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 worksheet.Cells[dataRow, 1].Value = serialNumber++;
                 worksheet.Cells[dataRow, 2].Value = journal.Reference;
+
+                // NARRATIVE COLUMN WITHOUT WRAP TEXT
                 worksheet.Cells[dataRow, 3].Value = journal.Narrative ?? "N/A";
-                worksheet.Cells[dataRow, 4].Value = journal.AccountingDate.ToString("yyyy-MM-dd");
+                // Wrap text removed
+
+                worksheet.Cells[dataRow, 4].Value = journal.AccountingDate.ToString("dd-MM-yyyy");
                 worksheet.Cells[dataRow, 5].Value = journal.BranchName;
                 worksheet.Cells[dataRow, 6].Value = journal.Stage;
                 worksheet.Cells[dataRow, 7].Value = journal.State;
@@ -1070,7 +1079,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 worksheet.Cells[dataRow, 13].Value = journal.IsCashOperation ? "Yes" : "No";
                 worksheet.Cells[dataRow, 14].Value = journal.IsInterBranch ? "Yes" : "No";
                 worksheet.Cells[dataRow, 15].Value = journal.CreatedBy ?? "System";
-                worksheet.Cells[dataRow, 16].Value = journal.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                worksheet.Cells[dataRow, 16].Value = journal.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
 
                 // Apply borders
                 for (int col = 1; col <= headerColumns; col++)
@@ -1188,6 +1197,11 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
             currentRow += 2;
 
+            // ===== STAGE DISTRIBUTION SECTION (ABOVE DETAILED TABLE) =====
+            CreateStageDistributionSection(worksheet, branchData, ref currentRow, headerEndColumn);
+
+            currentRow += 2;
+
             // ===== DETAILED BRANCH DATA =====
             CreateDetailedJournalTable(worksheet, branchData, ref currentRow, $"Detailed Journal Entries - {branchName}", headerEndColumn);
 
@@ -1257,6 +1271,11 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
             currentRow += 2;
 
+            // ===== STAGE DISTRIBUTION SECTION (ABOVE DETAILED TABLE) =====
+            CreateStageDistributionSection(worksheet, cashData, ref currentRow, headerEndColumn);
+
+            currentRow += 2;
+
             // ===== DETAILED CASH OPERATIONS =====
             CreateDetailedJournalTable(worksheet, cashData, ref currentRow, "Detailed Cash Operations", headerEndColumn, true);
 
@@ -1317,12 +1336,16 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     worksheet.Cells[dataRow, 9].Value = journal.TotalCredit;
                     worksheet.Cells[dataRow, 10].Value = journal.Stage;
                     worksheet.Cells[dataRow, 11].Value = journal.State;
-                    worksheet.Cells[dataRow, 12].Value = journal.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                    worksheet.Cells[dataRow, 12].Value = journal.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 }
                 else
                 {
                     worksheet.Cells[dataRow, 2].Value = journal.Reference;
+
+                    // NARRATIVE COLUMN WITHOUT WRAP TEXT
                     worksheet.Cells[dataRow, 3].Value = journal.Narrative ?? "N/A";
+                    // Wrap text removed
+
                     worksheet.Cells[dataRow, 4].Value = journal.AccountingDate.ToString("yyyy-MM-dd");
                     worksheet.Cells[dataRow, 5].Value = journal.BranchName;
                     worksheet.Cells[dataRow, 6].Value = journal.Stage;
@@ -1331,7 +1354,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     worksheet.Cells[dataRow, 9].Value = journal.TotalCredit;
                     worksheet.Cells[dataRow, 10].Value = journal.IsBalanced ? "BALANCED" : "UNBALANCED";
                     worksheet.Cells[dataRow, 11].Value = journal.CreatedBy ?? "System";
-                    worksheet.Cells[dataRow, 12].Value = journal.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                    worksheet.Cells[dataRow, 12].Value = journal.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 }
 
                 // Apply borders to match header width
@@ -1357,6 +1380,57 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
 
             currentRow = dataRow + 2;
+        }
+
+        // New method to create Stage Distribution section for all sheets
+        private void CreateStageDistributionSection(ExcelWorksheet worksheet, List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> data, ref int currentRow, string headerEndColumn)
+        {
+            // ===== STAGE DISTRIBUTION SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "STAGE DISTRIBUTION";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            var totalJournals = data.Count;
+            var stageSummary = data.GroupBy(x => x.Stage)
+                                  .Select(g => new { Stage = g.Key, Count = g.Count() })
+                                  .OrderByDescending(x => x.Count)
+                                  .ToList();
+
+            var stageHeaders = new[] { "Stage", "Count", "Percentage" };
+            for (int i = 0; i < stageHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = stageHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            foreach (var stage in stageSummary)
+            {
+                decimal percentage = totalJournals > 0 ? (decimal)stage.Count / totalJournals : 0;
+                worksheet.Cells[currentRow, 1].Value = stage.Stage;
+                worksheet.Cells[currentRow, 2].Value = stage.Count;
+                worksheet.Cells[currentRow, 3].Value = percentage;
+
+                for (int col = 1; col <= 3; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format percentages
+            if (stageSummary.Any())
+            {
+                worksheet.Cells[$"C{currentRow - stageSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+            }
         }
 
         private int CreateHeaderSection(ExcelWorksheet worksheet, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions, string reportTitle, string headerEndColumn)
