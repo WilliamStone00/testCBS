@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -24,6 +25,32 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             var baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
+
+
+
+
+
+       public async Task<List<CounterCheques>> GetChequeDetails(string CustomerId, string BranchId)
+        {
+            try
+            {
+                // Build the URL with query parameters
+                var url = $"{APICallHelper.GetCustormerchequebook}?customerId={CustomerId}&branchId={BranchId}";
+
+                // Call the API with only 1 argument
+                var response = await _apiHelper.GetAsync<ResponseObject<List<CounterCheques>>>(url);
+
+
+
+                return response.ApiResponseData?.Data ?? new List<CounterCheques>();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
 
         public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
         {

@@ -26,8 +26,9 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public DateTime? IssuedOn { get; set; }
         public string IssuedBy { get; set; }
         public string Status { get; set; }
-        public string ClientName { get; set; } // For better display
-                                               //  public string BranchName { get; set; } // For better display
+        public string Name { get; set; }
+        public string Catergoryid { get; set; }
+
     }
 
     // DTO for the modal action form
@@ -55,12 +56,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheq
         public decimal Amount { get; set; }
         public string AccountNumber { get; set; }
         public string BranchId { get; set; }
-        //public string CheckLeafId { get; set; }
-        //public string CheckNumber { get; set; }
-        //public DateTime? IssuedOn { get; set; }
-        //public string IssuedBy { get; set; }
-        //public DateTime? StartDate { get; set; }
-        //public DateTime? EndDate { get; set; }
+        
     }
 
 

@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                 }
 
                 // STEP 2 — Retrieve branch + bank metadata
-                var BranchInformation = await _branchServices.GetBranch(_branchServices.GetBranchID());
+                var BranchInformation = await _branchServices.GetBranch(response.BranchId);
 
                 // Convert numeric amount to words
                 decimal amount = response.TotalDebit;
@@ -106,8 +106,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         BranchId = response.BranchId,
                         BranchCode = response.BranchCode,
                         BranchName = response.BranchName,
-
                         Reference = response.Reference,
+                        ReferenceNumber = response.Reference,
+                        DateTime = response.AccountingDate,
+                        DayTime = response.AccountingDate,
                         Number = response.Number,
                         Title = response.Title,
                         Memo = response.Memo,
@@ -119,12 +121,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         IssuedAtUtc = response.IssuedAtUtc,
                         IssuedAtLocal = response.IssuedAtLocal,
                         Payor = response.Payor,
-                        MemberNumber = response.MemberNumber,
-                        MemberName = response.MemberName,
+                        MemberNumber = response.MemberNumber ?? "N/A",
+                        MemberAccount = response.AccountNumber ?? "N/A",
+                        MemberName = response.MemberName ?? "N/A",
                         TellerName = response.TellerName,
                         TillName = response.TillName,
                         IssuedBy = response.IssuedBy,
                         Currency = response.Currency,
+                        AuxiliaryRef = response.IssuedBy.ToUpper(),
                         TotalDebit = response.TotalDebit,
                         TotalCredit = response.TotalCredit,
                         CashInAmount = response.CashInAmount  ?? 0,
@@ -137,13 +141,14 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         PrintedCount = response.PrintedCount,
                         IsReprint = response.IsReprint,
                         AmountInWords = words,
-                        Date = x.Date,
+                      
+                        EntryDate = response.IssuedAtLocal,
                         TCredit = tcredit,
                         TDebit = tdebit,
                         ReadableDate = entry,
                        
                         // Movement line
-                        AccountNumber = x.AccountNumber,
+                        AccountNumber = x.AccountNumber ?? "N/A",
                         AccountName = x.AccountName,
                         Dr = x.Dr,
                         Cr = x.Cr,

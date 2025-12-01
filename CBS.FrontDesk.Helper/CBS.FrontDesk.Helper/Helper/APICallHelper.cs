@@ -1292,6 +1292,8 @@ namespace CBS.FrontDesk.Helper
         //------------------- CounterCheque ----------------
         public static string CreateCounterCheque = "/api/v1/counter-checks";
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
+        public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
+
 
         //--------------------------------------TEST--------------------------------------//
         public static string GetAllChequeClearance = "/api/v1/counter-clearance";
@@ -1747,8 +1749,8 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
 
-       
+      
 
-       
+
     }
 }

@@ -2,7 +2,9 @@
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
@@ -20,14 +22,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         private readonly BranchServices _branchServices;
         private readonly JournalHeadService _journalHeadService;
         private readonly JournalHeadExcelExportGenerator _JournalHeadExcelExportGenerator;
+        private readonly JournalDataTableExcelExportGenerator _JournalDataTableExcelExportGenerator;
 
 
-        public JournalHeadController(BranchServices branchServices, JournalHeadService journalHeadService, JournalHeadExcelExportGenerator journalHeadExcelExportGenerator)
+        public JournalHeadController(BranchServices branchServices, JournalHeadService journalHeadService, JournalHeadExcelExportGenerator journalHeadExcelExportGenerator, JournalDataTableExcelExportGenerator journalDataTableExcelExportGenerator)
         {
 
             _branchServices = branchServices;
             _journalHeadService = journalHeadService;
             _JournalHeadExcelExportGenerator = journalHeadExcelExportGenerator;
+            _JournalDataTableExcelExportGenerator = journalDataTableExcelExportGenerator;
 
         }
         // GET: JournalHead
@@ -328,6 +332,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 // ✅ Generate Excel file
                 _JournalHeadExcelExportGenerator.GenerateJournalHeadExcelSheet(model, filePath, exportedBy);
 
+
+
+
                 // ✅ Read and send file to browser
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
@@ -387,6 +394,88 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 return Json(new { success = false, message = "An error occurred while exporting to Excel." }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+
+        [HttpPost]
+
+
+
+        public async Task<ActionResult> ExportJournalData(ExportJournalRequest request)
+        {
+            try
+            {
+                
+
+                // Build query from filters
+                var query = new JournalEntryQuery
+                {
+                   
+                    Options = new DataTableOptions
+                    {
+                        draw = "1",
+                        start = 0,
+                        length = int.MaxValue // get all filtered rows
+                    }
+                };
+
+                // Fetch data from service
+                var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
+
+                var journalList = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.JournalHead>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                if (!journalList.Any())
+                    return Json(new { success = false, message = "No journal data available for export." });
+
+                // Populate BranchName for each journal entry
+                foreach (var entry in journalList)
+                {
+                    var branch = await _branchServices.GetBranch(entry.BranchId);
+                    entry.BranchName = branch?.Name ?? "—";
+                }
+
+                // Convert data for Excel
+                var journalDataForExcel = JournalDataTableExcelExportGenerator.ConvertToJournalData(journalList);
+
+                if (!journalDataForExcel.Any())
+                    return Json(new { success = false, message = "No valid journal data could be processed for export." });
+
+                // Prepare file name and path
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+
+                string fileName = $"{request.ExportOptions?.FileName ?? "Journal_Report"}_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // Generate Excel
+                var exportGenerator = new JournalDataTableExcelExportGenerator();
+                exportGenerator.GenerateJournalExcelFromTableData(journalDataForExcel, filePath, exportedBy, request.ExportOptions);
+
+                if (!System.IO.File.Exists(filePath))
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+
+                // Send file to browser
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath); // cleanup
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting journal data to Excel: {ex.Message}"
+                });
+            }
+        }
+
 
     }
 }

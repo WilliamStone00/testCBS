@@ -1,4 +1,8 @@
-﻿<style>
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationData
+
+
+<style>
     /* Dashboard Title */
     .section-title {
         font-size: 1.1rem;
@@ -79,7 +83,7 @@
 </style>
 
 
-@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.ReconciliationData
+
 
 <div class="card shadow-sm mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
@@ -158,7 +162,7 @@
 
 
                         <!-- Detail button / eye -->
-                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 view-details"
+                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 view-detail"
                                 data-operation="@OperationCode"
                                 data-interbranch="@IsInterBranch"
                                 title="View Details">
@@ -434,24 +438,24 @@
                 </div>
 
                 @*<div class="col-sm-6 col-md-3">
-                    <div class="card card-border-shadow-primary h-100">
-                        <div class="card-body">
-                            <h6 class="text-uppercase text-muted mb-2">Max Loan Approval</h6>
-                            <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanApproval.Amount.ToString("N0")</h3>
-                            <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanApproval.PerformedBy.Name</p>
+                        <div class="card card-border-shadow-primary h-100">
+                            <div class="card-body">
+                                <h6 class="text-uppercase text-muted mb-2">Max Loan Approval</h6>
+                                <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanApproval.Amount.ToString("N0")</h3>
+                                <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanApproval.PerformedBy.Name</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-sm-6 col-md-3">
-                    <div class="card card-border-shadow-primary h-100">
-                        <div class="card-body">
-                            <h6 class="text-uppercase text-muted mb-2">Max Loan Disbursement</h6>
-                            <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanDisbursement.Amount.ToString("N0")</h3>
-                            <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanDisbursement.PerformedBy.Name</p>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card card-border-shadow-primary h-100">
+                            <div class="card-body">
+                                <h6 class="text-uppercase text-muted mb-2">Max Loan Disbursement</h6>
+                                <h3 class="dashboard-value">@Model.Statistics.LoanOperations.MaxLoanDisbursement.Amount.ToString("N0")</h3>
+                                <p class="dashboard-sub">@Model.Statistics.LoanOperations.MaxLoanDisbursement.PerformedBy.Name</p>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
 
             </div>
 
@@ -523,7 +527,7 @@
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-    <div  id="datatable"   class="collapse">
+    <div id="datatable" class="collapse">
 
         @Html.Partial("_DataTable")
     </div>

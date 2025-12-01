@@ -661,6 +661,7 @@
                 Reprint('JournalReceipts');
                 // Restore button AFTER success/error **before** showing the print
                 btn.prop("disabled", false).html(originalHtml);
+                return;
             },
             error: function (xhr) {
                 console.error("Error:", xhr);

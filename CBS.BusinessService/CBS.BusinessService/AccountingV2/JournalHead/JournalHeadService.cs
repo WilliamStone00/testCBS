@@ -32,10 +32,16 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
         }
 
+       
         public async Task<CustomDataTable2> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
         {
             try
             {
+                // If not head office and branchId is null, set it
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
 
                 query.Options.sortColumnName = "";
                 query.Options.sortColumnDirection = "";
@@ -65,7 +71,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw new Exception($"Journal header service unavailable: {ex.Message}", ex);
             }
         }
-
 
         // Fetch a single journal entry by ID using internal branchId
         public async Task<FrontDesk.Data.Entity.AccountingV2.JournalHead> GetJournalEntryByIdAsync(string id)
@@ -143,7 +148,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         // Non-HO + Source (or anything else): filter by BranchId only
                         query.BranchId = myBranchId;
                         query.CounterpartyBranchId = null; // ensure Counterparty is NOT set
-                        query.TicketType = "Source";
+                        //query.TicketType = "Source";
                     }
                 }
 

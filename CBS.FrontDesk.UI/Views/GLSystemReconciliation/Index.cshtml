@@ -100,23 +100,24 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-1">
                     @*<div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold">Start Accounting Date</label>
-                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
-                        </div>
-                        <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Start Accounting Date</label>
+                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+
+                    </div>*@
+                        @*<div class="col-md-6 mb-1">
                             <label class="form-label fw-bold">End Accounting Date</label>
                             <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                         </div>*@
 
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="startDate">Start Date</label>
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="startDate">Accounting Date</label>
                         <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
                     </div>
 
-                    <div class="col-md-6 mb-1">
+                    @*<div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="endDate">End Date</label>
                         <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>
+                    </div>*@
 
 
                 </div>
@@ -207,28 +208,33 @@
                 // ==============================
                 // Collect Summary Filters (API expected)
                 // ==============================
-                function getSummaryFilters() {
-                    return {
-                        branchId: $('#branchId').val(),
-                        StartDate: $('#startDate').val(),
-                        EndDate: $('#endDate').val()
-                    };
-                }
+                    function getSummaryFilters() {
+                        return {
+                            branchId: $('#branchId').val(),
+                            StartDate: $('#startDate').val(),
+                            EndDate: $('#endDate').val(),
+                            StartAccountingDate: $('#startaccountingDate').val()
+                             
+                        };
+                    }
+
 
                 // ==============================
                 // Collect DataTable Filters
                 // ==============================
-                function getDataTableFilters() {
-                    return {
-                        BranchId: $('#branchId').val(),
-                        OperationCode: $('#OperationCode').val(),
-                        Reference: $('#reference').val(),
-                        Status: $('#Status').val(),
-                        StartDate: $('#startDate').val(),
-                        EndDate: $('#endDate').val(),
-                        Options: {}
-                    };
-                }
+                    function getDataTableFilters() {
+                        return {
+                            BranchId: $('#branchId').val(),
+                            OperationCode: $('#OperationCode').val(),
+                            Reference: $('#reference').val(),
+                            Status: $('#Status').val(),
+                            StartDate: $('#startDate').val(),
+                            EndDate: $('#endDate').val(),
+                            StartAccountingDate: $('#startaccountingDate').val(),
+                            Options: {}
+                        };
+                    }
+
 
                 // ==============================
                 // Load Summary (Returns JSON → Insert into DIV)
@@ -550,23 +556,20 @@
     });
 
 
- $(document).on('click', '.view-details', function() {
-    const filter = {
-        branchId: $("#branchId").val(),
-        startDate: $("#startDate").val(),
-        endDate: $("#endDate").val(),
-        operationCode: $(this).data("operation"),
-        isInterBranch: $(this).data("interbranch")
-    };
+    
 
-    // Convert filter object to query string
-    const query = $.param(filter);
+    $(document).on('click', '.view-detail', function () {
+        const params = {
+            branchId: $("#branchId").val(),
+            startDate: $("#startDate").val(),
+            endDate: $("#endDate").val(),
+            operationCode: $(this).data("operation"),
+            isInterBranch: $(this).data("interbranch")
+        };
+        window.open('/GLSystemReconciliation/LoadOperationDetailsData?' + $.param(params), '_blank');
+    });
 
-    // Open new tab and call controller immediately
-    window.open('/GLSystemReconciliation/LoadOperationDetailsData?' + query, '_blank');
- });
-
-
+    
 
   
 
