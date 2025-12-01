@@ -313,13 +313,15 @@
             var isCentralizedMain = $('#isCentralized').is(':checked');
             var branchIdMain = isCentralizedMain ? null : $('#branchId').val();
             var feeTypeMain = $('#feeType').val();
+            var status = $('#AcceptStatus').val();
 
             $form.find('input[name="IsCentralized"]').val(isCentralizedMain);
             $form.find('input[name="BranchId"]').val(branchIdMain);
             $form.find('input[name="FeeType"]').val(feeTypeMain);
+            $form.find('input[name="AcceptStatus"]').val(status);
 
             // Validate at least one fee method selected
-            if (!$form.find('#AcceptPercentage').is(':checked') && !$form.find('#AcceptRange').is(':checked')) {
+            if (!$form.find('#AcceptPercentage').is(':checked') && !$form.find('#AcceptRange').is(':checked') && !$form.find('#AcceptStatus').is(':checked')) {
                 appalert('You must enable at least one fee method (Percentage or Range).', 2, 1);
                 return;
             }

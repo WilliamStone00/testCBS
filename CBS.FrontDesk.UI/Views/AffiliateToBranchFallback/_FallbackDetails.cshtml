@@ -109,8 +109,7 @@
                                     <div class="card-body">
                                         <table class="table table-sm table-bordered">
                                             <tr><td class="fw-bold">Created Date</td><td>@Model.createdDate.ToString()</td></tr>
-                                            <tr><td class="fw-bold">Created On</td><td>@Model.createdOn.ToString()</td></tr>
-                                            @if (Model.isResolved)
+                                           @if (Model.isResolved)
                                             {
                                                 <tr><td class="fw-bold">Resolved On</td><td>@Model.resolvedOn.ToString()</td></tr>
                                                 <tr><td class="fw-bold">Resolved By</td><td>@Model.resolvedBy</td></tr>

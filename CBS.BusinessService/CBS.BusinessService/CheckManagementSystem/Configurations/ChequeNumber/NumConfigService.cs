@@ -131,22 +131,23 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.ChequeNumber
 
             public async Task<ExecutionMessages> UpdateAsync(NumConfig model)
             {
-                try
-                {
-                     string id = model.Id;
-                    string formattedUrl = string.Format(APICallHelper.Update, id);
+            try
+            {
+                string id = model.Id;
+                model.BankCode = GetBankCode();
+                string formattedUrl = string.Format(APICallHelper.Update, id);
                     var response = await _apiCallerHelper.PutAsync<ServiceResponse<NumConfig>>(formattedUrl, model);
 
                     // CORRECTED: Pass the ServiceResponse object to GetExecutionMessages
                     if (response.IsSuccess)
                     {
                         GetExecutionMessages(response.ApiResponseData.Data, true, model.Name, MessagesResults.Success,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                            ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                     }
                     else
                     {
                         GetExecutionMessages(model, false, model.Name, MessagesResults.Failed,
-                            ExecutionProcessOption.UpdateUpject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                            ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                     }
                 }
                 catch (Exception ex)

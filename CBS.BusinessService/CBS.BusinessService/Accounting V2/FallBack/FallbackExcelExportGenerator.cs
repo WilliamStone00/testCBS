@@ -14,8 +14,6 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
     {
         public static List<FallbackExportRecord> ConvertToFallbackData(List<FallbackExportRecord> tableData)
         {
-            // Since we're now using strongly-typed entities, we can return the data directly
-            // This method is kept for consistency with the existing pattern
             var fallbackList = new List<FallbackExportRecord>();
 
             if (tableData == null || !tableData.Any())
@@ -26,16 +24,13 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             Console.WriteLine($"Processing {tableData.Count} fallback records for export");
 
-            // Add any additional processing or validation here if needed
             foreach (var record in tableData)
             {
-                // Ensure consistent status display
                 if (string.IsNullOrEmpty(record.Status))
                 {
                     record.Status = record.IsBranchAccountAutoCreated ? "Auto-Created" : "Manual";
                 }
 
-                // Ensure auto-created status is set
                 if (string.IsNullOrEmpty(record.AutoCreatedStatus))
                 {
                     record.AutoCreatedStatus = record.IsBranchAccountAutoCreated ? "Auto-Created" : "Manual";
@@ -252,10 +247,13 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             }
 
             // Format numbers
-            worksheet.Cells[$"F{currentRow - branchSummary.Count}:G{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            if (branchSummary.Any())
+            {
+                worksheet.Cells[$"F{currentRow - branchSummary.Count}:G{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+            }
 
             // Auto-fit columns
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            worksheet.Cells["A:G"].AutoFitColumns();
         }
 
         private void CreateBranchSheet(ExcelPackage package, List<FallbackExportRecord> branchData, string branchId, string branchName, string exportedBy, FallbackExportOptions exportOptions)
@@ -276,7 +274,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             int currentRow = 8; // Start after header
 
             // ===== BRANCH SUMMARY SECTION =====
-            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}:M{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH SUMMARY - {branchName} ({branchId})";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
@@ -332,7 +330,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             currentRow += 2;
 
             // ===== BRANCH RESOLUTION TIPS SECTION =====
-            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}:M{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = $"RESOLUTION GUIDELINES - {branchName}";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
@@ -360,7 +358,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
             foreach (var tip in branchResolutionTips)
             {
-                worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+                worksheet.Cells[$"A{currentRow}:M{currentRow}"].Merge = true;
                 worksheet.Cells[$"A{currentRow}"].Value = tip;
                 if (tip.StartsWith("For branch") || tip.StartsWith("Common resolution"))
                 {
@@ -376,7 +374,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             currentRow += 2;
 
             // ===== DETAILED DATA TABLE =====
-            worksheet.Cells[$"A{currentRow}:G{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}:M{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "DETAILED FALLBACK RECORDS";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
@@ -388,11 +386,11 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             // Detailed data headers
             var headers = new[]
             {
-                "SN", "Operation Code", "Reference",
+                "SN", "Created Date", "Operation Code", "Reference",
                 "Supposed GL Account", "Supposed GL Name",
                 "Fallback GL Account", "Fallback GL Name",
-                "Amount", "Status", "Created Date", "Resolved On", "Resolved By",
-                "Account Type", "Resolution Tips"
+                "Amount", "Status", "Resolved On", "Resolved By",
+                "Account Type"
             };
 
             int headerRow = currentRow;
@@ -409,24 +407,23 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             // Data rows
             int dataRow = headerRow + 1;
             int serialNumber = 1;
-            //decimal totalAmount = 0;
+            decimal branchTotalAmount = 0;
 
-            foreach (var record in branchData.OrderBy(x => x.OperationCode).ThenBy(x => x.CreatedDate))
+            foreach (var record in branchData.OrderBy(x => x.CreatedDate).ThenBy(x => x.OperationCode))
             {
                 worksheet.Cells[dataRow, 1].Value = serialNumber++;
-                worksheet.Cells[dataRow, 2].Value = record.OperationCode;
-                worksheet.Cells[dataRow, 3].Value = record.Reference;
-                worksheet.Cells[dataRow, 4].Value = record.SupposedGlAccountNumber;
-                worksheet.Cells[dataRow, 5].Value = record.SupposedGlAccountName;
-                worksheet.Cells[dataRow, 6].Value = record.FallbackBranchAccountNumber;
-                worksheet.Cells[dataRow, 7].Value = record.FallbackBranchAccountName;
-                worksheet.Cells[dataRow, 8].Value = record.Amount;
-                worksheet.Cells[dataRow, 9].Value = record.Status;
-                worksheet.Cells[dataRow, 10].Value = record.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-";
-                worksheet.Cells[dataRow, 11].Value = record.ResolvedOn?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-";
+                worksheet.Cells[dataRow, 2].Value = record.CreatedDate.ToString() ?? "-";
+                worksheet.Cells[dataRow, 3].Value = record.OperationCode;
+                worksheet.Cells[dataRow, 4].Value = record.Reference;
+                worksheet.Cells[dataRow, 5].Value = record.SupposedGlAccountNumber;
+                worksheet.Cells[dataRow, 6].Value = record.SupposedGlAccountName;
+                worksheet.Cells[dataRow, 7].Value = record.FallbackBranchAccountNumber;
+                worksheet.Cells[dataRow, 8].Value = record.FallbackBranchAccountName;
+                worksheet.Cells[dataRow, 9].Value = record.Amount;
+                worksheet.Cells[dataRow, 10].Value = record.Status;
+                worksheet.Cells[dataRow, 11].Value = record.ResolvedOn.ToString() ?? "-";
                 worksheet.Cells[dataRow, 12].Value = record.ResolvedBy ?? "-";
                 worksheet.Cells[dataRow, 13].Value = record.AutoCreatedStatus;
-                worksheet.Cells[dataRow, 14].Value = record.ResolutionTips;
 
                 // Apply borders
                 for (int col = 1; col <= headers.Length; col++)
@@ -437,16 +434,16 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
                 // Apply conditional formatting for status
                 if (record.Status == "Resolved")
                 {
-                    worksheet.Cells[dataRow, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[dataRow, 9].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                    worksheet.Cells[dataRow, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, 10].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
                 }
                 else
                 {
-                    worksheet.Cells[dataRow, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[dataRow, 9].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[dataRow, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, 10].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
                 }
 
-                totalAmount += record.Amount;
+                branchTotalAmount += record.Amount;
                 dataRow++;
             }
 
@@ -455,8 +452,8 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             {
                 worksheet.Cells[dataRow, 1].Value = "TOTALS:";
                 worksheet.Cells[dataRow, 1].Style.Font.Bold = true;
-                worksheet.Cells[dataRow, 8].Value = totalAmount;
-                worksheet.Cells[dataRow, 9].Value = $"Resolved: {resolvedCount}, Pending: {unresolvedCount}";
+                worksheet.Cells[dataRow, 9].Value = branchTotalAmount;
+                worksheet.Cells[dataRow, 10].Value = $"Resolved: {resolvedCount}, Pending: {unresolvedCount}";
 
                 for (int col = 1; col <= headers.Length; col++)
                 {
@@ -470,11 +467,11 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
             // Format numbers
             if (branchData.Any())
             {
-                worksheet.Cells[$"H{headerRow + 1}:H{dataRow}"].Style.Numberformat.Format = "#,##0.00";
+                worksheet.Cells[$"I{headerRow + 1}:I{dataRow}"].Style.Numberformat.Format = "#,##0.00";
             }
 
-            // Auto-fit columns
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            // Auto-fit columns up to M
+            worksheet.Cells["A:M"].AutoFitColumns();
 
             // Freeze panes for easy scrolling
             worksheet.View.FreezePanes(headerRow + 1, 1);
@@ -482,7 +479,7 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
         private void CreateHeaderSection(ExcelWorksheet worksheet, string bank, string branchcode, string Branchid, string branchname, string exportedBy, FallbackExportOptions exportOptions)
         {
-            const string lastColumnLetter = "AE";
+            const string lastColumnLetter = "M"; // Changed from AE to M
 
             // ===== Bank Information at the TOP =====
             worksheet.Cells[$"A1:{lastColumnLetter}1"].Merge = true;
@@ -549,16 +546,13 @@ namespace CBS.BusinessService.Accounting_V2.Affiliate
 
         private string CleanSheetName(string name)
         {
-            // Excel sheet name restrictions
             var invalidChars = new char[] { '\\', '/', '*', '?', ':', '[', ']' };
             foreach (var invalidChar in invalidChars)
             {
                 name = name.Replace(invalidChar, ' ');
             }
 
-            // Remove extra spaces and trim
             name = string.Join(" ", name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-
             return name.Trim();
         }
     }

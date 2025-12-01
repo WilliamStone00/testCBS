@@ -10871,7 +10871,6 @@
     <Content Include="Views\SalaryProcessed\_modal.cshtml" />
     <Content Include="Views\ChequeRequest\_ChequeRequestForm.cshtml" />
     <Content Include="Views\ChequeRequest\_RequestDataTable.cshtml" />
-    <Content Include="Views\ChequeRequest\_ActionModal.cshtml" />
     <Content Include="Views\NotificationHistory\Index.cshtml" />
     <Content Include="Views\CounterCheque\Index.cshtml" />
     <Content Include="Views\CounterCheque\_Create.cshtml" />

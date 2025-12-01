@@ -1286,6 +1286,7 @@ namespace CBS.FrontDesk.Helper
         public static string Updatenot = "/api/v1/update-notification-config/{0}";
         public static string Deletenot = "/api/v1/delete-notification-config/{0}";
         public static string notdata = "/api/v1/data-table";
+        public static string GetByTypeAsync = "/api/v1/verify-notification-config";
 
 
         //------------------- CounterCheque ----------------

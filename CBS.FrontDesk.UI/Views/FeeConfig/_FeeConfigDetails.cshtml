@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    @if (Model?.feeTypeRanges != null && Model.feeTypeRanges.Any())
+    @if (Model.feeTypeRanges != null && Model.feeTypeRanges.Any())
     {
         <div class="row mt-3">
             <div class="col-12">
@@ -94,7 +94,7 @@
                             @foreach (var r in Model.feeTypeRanges)
                             {
                                 <tr>
-                                    <td>@Html.Encode(r?.name ?? "Unnamed")</td>
+                                    <td>@Html.Encode(r.name ?? "Unnamed")</td>
                                     <td>@( r.amountFrom.ToString("N2", CultureInfo.InvariantCulture) )</td>
                                     <td>@( r.amountTo.ToString("N2", CultureInfo.InvariantCulture) )</td>
                                     <td>@( r.value.ToString("N2", CultureInfo.InvariantCulture) )</td>

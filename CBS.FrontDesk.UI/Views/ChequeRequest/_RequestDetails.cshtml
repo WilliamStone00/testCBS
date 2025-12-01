@@ -91,7 +91,7 @@
                             <tr><th>Number of Pages</th><td>@Model.NumberOfPages</td></tr>
                             <tr><th>Subscription Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
                             <tr><th>Recurring Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
-                            <tr><th>Recurring Amount</th><td>@Model.RecurringAmount?.ToString("C") ?? "-" </td></tr>
+                            <tr><th>Recurring Amount</th><td>@Model.RecurringAmount.ToString() ?? "-" </td></tr>
                         </tbody>
                     </table>
                 </div>

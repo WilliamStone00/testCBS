@@ -87,6 +87,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeReque
     {
         public string id { get; set; }
         public string approvalNote { get; set; }
+        public string action { get; set; }
+
     }
 
 }

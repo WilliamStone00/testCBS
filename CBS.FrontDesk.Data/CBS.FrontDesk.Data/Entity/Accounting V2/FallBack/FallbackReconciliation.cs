@@ -98,7 +98,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack
         public decimal Amount { get; set; }
         public string Status { get; set; }
         public string ResolutionTips { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime? ResolvedOn { get; set; }
         public string ResolvedBy { get; set; }
         public bool IsBranchAccountAutoCreated { get; set; }

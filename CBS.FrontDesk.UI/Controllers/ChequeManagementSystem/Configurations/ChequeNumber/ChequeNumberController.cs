@@ -9,6 +9,7 @@ using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.UserManagement;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -122,34 +123,48 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.ChequeNumber
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(NumConfig model)
         {
-            if (model.Id == null)
+            // Example: if Id is int and defaults to 0 for new items:
+            // bool isNew = model.Id == 0;
+            bool isNew = model.Id == null; // adjust to your Id type
+
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var data = await _NumConfigService.CreateAsync(model);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
-                }
+                // Return validation errors to client
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToArray();
+                return Json(new { success = false, status = false, message = "Validation failed", errors });
+            }
+
+            if (isNew)
+            {
+                var data = await _NumConfigService.CreateAsync(model);
+                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
             }
             else
             {
-                await Update(model);
+                // Await and return update result
+                return await Update(model);
             }
-
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
         }
+
         [HttpPost]
         public async Task<ActionResult> Update(NumConfig model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var data = await _NumConfigService.UpdateAsync(model);
-                return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToArray();
+                return Json(new { success = false, status = false, message = "Validation failed", errors });
             }
 
-            return Json(new { success = false, status = false, message = "Fill the required fields." });
+            var data = await _NumConfigService.UpdateAsync(model);
+            return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
         }
 
-         [HttpGet]
+
+        [HttpGet]
         public async Task<ActionResult> Delete(string KEY)
         {
             if (string.IsNullOrEmpty(KEY))
