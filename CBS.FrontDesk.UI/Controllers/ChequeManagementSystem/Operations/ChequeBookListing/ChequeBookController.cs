@@ -63,21 +63,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
-                // Fall back to mock service
-               /* try
-                {
-                    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
-                    return Json(new
-                    {
-                        draw = mockData.draw,
-                        recordsTotal = mockData.recordsTotal,
-                        recordsFiltered = mockData.recordsFiltered,
-                        data = mockData.data
-                    });
-                }
-                catch (Exception mockEx)
-                {*/
+               
                     return Json(new
                     {
                         draw = query.Options.draw,
@@ -86,7 +72,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                         data = new List<object>(),
                         error = "Failed to load cheque books data"
                     });
-                /*}*/
+               
             }
         }
 
