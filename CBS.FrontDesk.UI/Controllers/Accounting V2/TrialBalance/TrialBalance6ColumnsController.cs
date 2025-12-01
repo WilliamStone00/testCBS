@@ -55,141 +55,42 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 // ─────────────────────────────────────────────
                 // 1) Load trial balance (6 columns)
                 // ─────────────────────────────────────────────
-                var response = await _trialBalanceService.GetTrialBalancesAsync6columns(model);
+                var response = await _trialBalanceService.BuildTrialBalanceDataset(model);
+                
 
-                string jsonFilter = JsonConvert.SerializeObject(model, Formatting.Indented);
-
-                if (response?.Lines == null || !response.Lines.Any())
+                if (response == null || !response.Any())
                 {
                     return Json(
                         new { success = false, message = "No records found for the selected filters." },
                         JsonRequestBehavior.AllowGet);
                 }
 
-                // ─────────────────────────────────────────────
-                // 2) Resolve branch context (for header)
-                //    - Consolidated → current user's branch
-                //    - BranchId null → current user's branch
-                //    - Else → selected branch
-                // ─────────────────────────────────────────────
-                var currentBranchId = _branchServices.GetBranchID();
-                var branchIdToLoad = model.Consolidated || string.IsNullOrWhiteSpace(model.BranchId)
-                    ? currentBranchId
-                    : model.BranchId;
-
-                var branch = await _branchServices.GetBranch(branchIdToLoad);
-                if (branch == null)
-                {
-                    return Json(
-                        new { success = false, message = "Selected branch not found." },
-                        JsonRequestBehavior.AllowGet);
-                }
-
-                // ─────────────────────────────────────────────
-                // 3) Build static header metadata (bank + branch)
-                // ─────────────────────────────────────────────
-                var header = new BankHeaderInformation
-                {
-                    BankId = branch.Bank.Id,
-                    BankBankCode = branch.Bank.BankCode,
-                    BankName = branch.Bank.Name,
-                    BankTelephone = branch.Bank.Telephone,
-                    BankEmail = branch.Bank.Email,
-                    BankAddress = branch.Bank.Address,
-                    BankLogoUrl = branch.Bank.LogoUrl,
-                    BankMotto = branch.Bank.Motto,
-                    BankRegistrationNumber = branch.Bank.RegistrationNumber,
-                    BankImmatriculationNumber = branch.Bank.ImmatriculationNumber,
-                    BankPBox = branch.Bank.PBox,
-                    BranchId = branch.Id,
-                    BranchCode = branch.BranchCode,
-                    BranchName = branch.Name,
-                    BranchTelephone = branch.Telephone,
-                    BranchEmail = branch.Email,
-                    BranchAddress = branch.Address,
-                    BranchLogoUrl = branch.LogoUrl,
-                    BranchCapital = branch.Capital,
-                    BranchRegistrationNumber = branch.RegistrationNumber,
-                    BranchImmatriculationNumber = branch.ImmatriculationNumber,
-                    BranchPBox = branch.PBox
-                };
-
-                var now = DateTime.Now;
-                var username = _trialBalanceService.GetUserFullName();
-                var modeLabel = model.SourceMode == "Temp"
-                    ? "( TEMPORAL REPORT) "
-                    : $"( {model.SourceMode?.ToUpperInvariant()} REPORT )";
-
-                var consolidationLabel = model.Consolidated
-                    ? "CONSOLIDATED"
-                    : "BRANCH LEVEL";
-
-                // ─────────────────────────────────────────────
-                // 4) Map lines → Crystal dataset rows
-                //    - Attach header info to each row
-                // ─────────────────────────────────────────────
-                var data = response.Lines
-                    .Select(x =>
-                    {
-                        var item = new TrialBalanceReportItem
-                        {
-                            AccountNumber = x.AccountNumber,
-                            AccountName = x.AccountName,
-                            OpeningDebit = x.OpeningDR,
-                            OpeningCredit = x.OpeningCR,
-                            MovementDebit = x.PeriodDR,
-                            MovementCredit = x.PeriodCR,
-                            ClosingDebit = x.ClosingDR,
-                            ClosingCredit = x.ClosingCR,
-
-                            TotalOpeningDebit = x.TotalOpeningDR,
-                            TotalOpeningCredit = x.TotalOpeningCR,
-                            TotalMovementDebit = x.TotalMovementDR,
-                            TotalMovementCredit = x.TotalMovementCR,
-                            TotalClosingDebit = x.TotalClosingDR,
-                            TotalClosingCredit = x.TotalClosingCR,
-                            TotalOpeningDifference = x.TotalOpeningDifference,
-                            TotalMovementDifference = x.TotalMovementDifference,
-                            TotalClosingDifference = x.TotalClosingDifference,
-
-                            Phone = branch.Telephone,
-                            Address = branch.Address,
-                            Username = username,
-                            From = model.From,
-                            To = model.To,
-                            Mode = modeLabel,
-                            ConsolidationStatus = consolidationLabel,
-
-                            Date = now.Date,
-                            DayTime = now,
-                            Time = now.TimeOfDay,
-                            Year = now.Year.ToString(),
-                            BankAddress = header.BankAddress
-                        };
-
-                        // Crystal: header per-row
-                        ApplyHeader(item, header);
-                        return item;
-                    })
-                    .ToList();
 
 
-                _repoExcel.ExportTb6(data,@"C:\Exports\TB65454.xlsx", _trialBalanceService.GetUserFullName());
+               
 
 
+             
+                    string fileName = $"TrialBalance_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                    string directoryPath = Server.MapPath("~/TempFiles");
 
+                    // Check if directory exists before creating it
+                    if (!Directory.Exists(directoryPath))
+                        Directory.CreateDirectory(directoryPath);
 
+                    string fullPath = Path.Combine(directoryPath, fileName);
 
+                    _repoExcel.ExportTb6(response, fullPath, _trialBalanceService.GetUserFullName());
 
-
+               
 
                 // ─────────────────────────────────────────────
                 // 5) Push prepared dataset to session for Crystal
                 // ─────────────────────────────────────────────
-                HttpContext.Session["rptSource"] = data;
+                HttpContext.Session["rptSource"] = response;
 
                 return Json(
-                    new { success = true, message = "Trial balance report ready." },
+                    new { success = true, message = "Trial balance report ready.", downloadFile = fileName },
                     JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -200,6 +101,19 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public ActionResult Download(string file)
+        {
+            string fullPath = Path.Combine(Server.MapPath("~/TempFiles"), file);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(fullPath);
+            System.IO.File.Delete(fullPath);
+
+            return File(fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                file);
+        }
+
 
         [HttpPost]
         public ActionResult GetReport(string path)
