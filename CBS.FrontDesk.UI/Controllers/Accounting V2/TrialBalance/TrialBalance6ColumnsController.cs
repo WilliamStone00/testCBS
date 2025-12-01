@@ -76,11 +76,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
 
 
-                _repoExcel.ExportTb6(response, fullPath, _trialBalanceService.GetUserFullName());
+               
 
 
                
-
 
 
              
