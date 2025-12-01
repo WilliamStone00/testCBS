@@ -169,7 +169,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance
 
 
 
-
     //======================== trial balance columns  ==========================
 
 

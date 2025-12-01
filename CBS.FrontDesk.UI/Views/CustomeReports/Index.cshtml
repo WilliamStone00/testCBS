@@ -1,5 +1,69 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance.CustomeResportItemS
 
+<style>
+    .custom-report-table {
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 0.92rem;
+    }
+
+        .custom-report-table tbody tr:hover {
+            background: #f3f9ff !important;
+            cursor: pointer;
+        }
+
+        .custom-report-table td, .custom-report-table th {
+            vertical-align: middle !important;
+            padding: 10px 12px !important;
+        }
+
+    .btnExcel {
+        background: #1e8e28 !important;
+        border-color: #1e8e28 !important;
+        color: white !important;
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        white-space: nowrap; /* Prevent button text wrapping */
+    }
+
+    .btnPdf {
+        background: #c01a1a !important;
+        border-color: #c01a1a !important;
+        color: white !important;
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        white-space: nowrap; /* Prevent button text wrapping */
+    }
+
+    .btnExcel:hover {
+        background: #136b1b !important;
+    }
+
+    .btnPdf:hover {
+        background: #a21515 !important;
+    }
+
+    /* Prevent button wrapping in table cells */
+    .actions-cell {
+        min-width: 200px;
+    }
+
+    .actions-container {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    /* Report name column minimum width */
+    .report-name-column {
+        min-width: 200px !important;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+</style>
+
+
 <!-- ▬▬▬ HEADER ▬▬▬ -->
 <div class="row mb-2">
     <div class="col-12">
@@ -67,7 +131,7 @@
 <!-- ▬▬▬ FILTER UI ▬▬▬ -->
 <div class="card p-4 card-flat-gray shadow">
 
-    <!-- ROW 1: Dates + Accounting Year (top row, accounting year on the right) -->
+    <!-- ROW 1: Accounting Year toggle + dropdown -->
     <div class="row g-3 mb-3 align-items-end">
 
         <div class="col-md-6">
@@ -99,7 +163,7 @@
         </div>
     </div>
 
-    <!-- ROW 2: Branch (single full row) -->
+    <!-- ROW 2: Branch -->
     <div class="row g-3 mb-3">
         <div class="col-md-12">
             <label class="form-label fw-semibold" for="BranchId">🏢 Select Branch</label>
@@ -119,10 +183,9 @@
         </div>
     </div>
 
-
     @*==================== group controls one =======================*@
     <div>
-        <!-- ROW 3: Report Type + Source Mode (shown only when branch is selected) -->
+        <!-- ROW 3: Report Type + Source Mode (requires branch) -->
         <div class="row g-3 mb-3 requires-branch d-none">
             <div class="col-md-6">
                 @Html.Label("ReportType", "Report Type", new { @class = "form-label fw-semibold" })
@@ -162,16 +225,9 @@
             </div>
         </div>
 
-        <!-- ROW 4: Accounts + flags (shown only when branch is selected) -->
+        <!-- ROW 4: Flags (requires branch) -->
         <div class="row g-3 mb-3 requires-branch d-none">
-
-
             <div class="col-md-8 d-flex align-items-center gap-4">
-                @*<div class="form-check" >
-                        <input type="checkbox" hidden id="IsLiaison" class="form-check-input" />
-                        <label class="form-check-label" for="IsLiaison">Liaison</label>
-                    </div>*@
-
                 <div class="form-check" hidden>
                     <input type="checkbox" id="IsInterbranch" class="form-check-input" />
                     <label class="form-check-label" for="IsInterbranch">Laison</label>
@@ -179,7 +235,7 @@
 
                 <div class="form-check d-none include_zero_group">
                     <input type="checkbox" id="IncludingZero" class="form-check-input" />
-                    <label class="form-check-label" for="IncludingZero">  Include Zero Balance On TB</label>
+                    <label class="form-check-label" for="IncludingZero">Include Zero Balance On TB</label>
                 </div>
 
                 <div class="form-check">
@@ -189,7 +245,7 @@
             </div>
         </div>
 
-        <!-- ROW 5: Accounts + flags (shown only when branch is selected) -->
+        <!-- ROW 5: Accounts (optional) -->
         <div class="row">
             <div class="col-md-12 account account_group d-none">
                 <label class="form-label fw-semibold" for="AccountId">
@@ -210,8 +266,8 @@
                 </small>
             </div>
         </div>
-        <!-- ROW 6: Date Range -->
 
+        <!-- ROW 6: Date Range (requires branch) -->
         <div class="row date_range_group d-none">
             <div class="col-md-6">
                 <label class="form-label fw-semibold" for="StartDate">📆 Start Date</label>
@@ -225,15 +281,7 @@
         </div>
     </div>
 
-    @*==================== group controls two =======================*@
-
-
-    <div class="">
-
-    </div>
-
-
-    <!-- ROW 6: Filter + Reset Buttons (shown only when branch is selected) -->
+    <!-- ROW 7: Buttons (requires branch) -->
     <div class="row mt-3 requires-branch d-none">
         <div class="col-md-6">
             <button type="button"
@@ -252,7 +300,26 @@
 
 </div>
 
-<!-- ▬▬▬ JS ▬▬▬ -->
+<!-- ▬▬▬ REPORT RESULT LIST ▬▬▬ -->
+<div class="card p-3 shadow-sm mt-4" id="reportTableContainer">
+    <div class="table-responsive">
+        <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mb-0 custom-report-table">
+            <thead>
+                <tr>
+                    <th class="report-name-column">NAME</th>
+                    <th>REPORT TYPE</th>
+                    <th>SOURCE MODE</th>
+                    <th class="actions-cell text-center">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody id="reportTableBody">
+                <!-- Single row will be injected dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 @section Scripts {
     <script>
         function buildReportPayload() {
@@ -271,7 +338,7 @@
                 excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
                 sourceMode: $('#SourceMode').val(),
                 language: "en",
-                
+                downloadExcel: true,
                 includeZeroGlAccount: $('#IncludingZero').is(':checked'),
                 accountNumber: selectedAccounts.length === 1 ? selectedAccounts[0] : null,
                 accountNumbers: selectedAccounts,
@@ -284,8 +351,64 @@
             ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
         }
 
+        // 🔹 NEW: Show the single report row with Excel + PDF buttons
+        function loadReportToTable(response, reportTypeValue) {
+            const reportName = $('#ReportType option:selected').text();
+            const sourceMode = $('#SourceMode option:selected').text();
 
+            // Determine the controller based on report type
+            let controllerName = '';
+            switch (reportTypeValue.toLowerCase()) {
+                case 'trial balance 6 columns':
+                    controllerName = 'TrialBalance6Columns';
+                    break;
+                case 'trial balance 4 columns':
+                    controllerName = 'TrialBalance4Colmuns';
+                    break;
+                case 'account statement':
+                    controllerName = 'AccntStatement';
+                    break;
+                case 'bs':
+                    controllerName = 'BalanceSheet';
+                    break;
+                case 'je':
+                    controllerName = 'JournalEntries';
+                    break;
+                default:
+                    controllerName = 'TrialBalance6Columns'; // Default fallback
+            }
 
+            let row = `
+                                    <tr>
+                                        <td class="report-name-column">${reportName}</td>
+                                        <td class="text-center">${reportName}</td>
+                                        <td class="text-center">${sourceMode}</td>
+                                        <td class="actions-cell text-center">
+                                          <div class="actions-container">
+                                             <button class="btn btn-sm btnExcel">Excel</button>
+                                             <button class="btn btn-sm btnPdf" data-controller="${controllerName}">PDF</button>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                `;
+
+            $('#reportTableBody').html(row);
+
+            // Excel: download using file from response
+            $('.btnExcel').off().on('click', function () {
+                if (response && response.downloadFile) {
+                    window.location = "/TrialBalance6Columns/Download?file=" + response.downloadFile;
+                } else {
+                    alert("Download file not found in response.");
+                }
+            });
+
+            // PDF: call Reprint with dynamic controller from data attribute
+            $('.btnPdf').off().on('click', function () {
+                const controller = $(this).data('controller');
+                Reprint(controller);
+            });
+        }
 
         $(document).ready(function () {
 
@@ -296,13 +419,11 @@
             const $btn = $('#btnGetCommission');
             const $requiresBranch = $('.requires-branch');
 
-            // Toggle Accounting Year visibility (checkbox controls dropdown)
+            // Toggle Accounting Year visibility
             $('#ToggleAccountingYear').on('change', function () {
                 const show = this.checked;
                 $('.accounting-year-group').toggleClass('d-none', !show);
             });
-
-
 
             // Validate Filter button state
             function validateFilters() {
@@ -334,7 +455,7 @@
                     $('#IsLiaison').prop('checked', false);
                     $('#IsInterbranch').prop('checked', false);
 
-                    // Reset accounting year toggle + dropdown visibility (values are optional)
+                    // Reset accounting year toggle + dropdown visibility
                     $('#ToggleAccountingYear').prop('checked', false);
                     $('.accounting-year-group').addClass('d-none');
                 }
@@ -342,15 +463,13 @@
                 validateFilters();
             }
 
-            // Load accounts only when:
-            //  - at least one branch is selected
-            //  - report type is JE or Account Statement
+            // Load accounts when needed
             function loadAccountsIfNeeded() {
                 const branches = $branch.val();
                 let reportTypeVal = ($reportType.val() || "").trim().toLowerCase();
 
                 const hasBranch = branches && branches.length > 0;
-                const loadsAccounts = reportTypeVal === "account statement" || reportTypeVal === "general ledger" ;
+                const loadsAccounts = reportTypeVal === "account statement" || reportTypeVal === "general ledger";
 
                 if (!(hasBranch && loadsAccounts)) {
                     $account_group.addClass('d-none');
@@ -382,7 +501,6 @@
                 toggleBranchDependentFields();
                 loadAccountsIfNeeded();
 
-
                 if ($branch.val() && $branch.val().length > 1) {
                     $('#IsConsolidated').prop('checked', true);
                 } else {
@@ -393,30 +511,25 @@
             $reportType.on('change', function (ev) {
                 loadAccountsIfNeeded();
                 validateFilters();
-                const val = ev.target.value.trim().toLowerCase();
-                showIncludero(val);
+                const val = (ev.target.value || "").trim().toLowerCase();
+                showIncludeZero(val);
             });
 
-
-
-           function showIncludero(val){
-               if (val.includes('trial')) {
-                   $('.include_zero_group').removeClass('d-none');
-               } else {
-                   $('.include_zero_group').addClass('d-none');
-               }
-           }
-
-
-
+            function showIncludeZero(val) {
+                if (val.includes('trial')) {
+                    $('.include_zero_group').removeClass('d-none');
+                } else {
+                    $('.include_zero_group').addClass('d-none');
+                }
+            }
 
             $('#SourceMode, #StartDate, #EndDate').on('change', validateFilters);
             $('.required-field').on('change', validateFilters);
 
-            // Generic change hook for safety
+            // Generic change hook
             $('input, select').on('change', validateFilters);
 
-            // Initial state on page load
+            // Initial state
             toggleBranchDependentFields();
             validateFilters();
 
@@ -428,9 +541,10 @@
                     return;
                 }
 
-                const payload = buildReportPayload();
-               
+                // Clear previous row each time filter is applied
+                $('#reportTableBody').empty();
 
+                const payload = buildReportPayload();
                 let reportType = ($reportType.val() || "").trim().toLowerCase();
 
                 switch (reportType) {
@@ -448,7 +562,16 @@
                             url: '/TrialBalance6Columns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
-                            success: () => Reprint('TrialBalance6Columns')
+                            success: (response) => {
+                                if (response && response.success === true) {
+                                    // ✅ Show single row with Excel + PDF actions
+                                    loadReportToTable(response, reportType);
+                                } else {
+                                    $('#reportTableBody').html(
+                                        `<tr><td colspan="4" class="text-center text-danger">No data found.</td></tr>`
+                                    );
+                                }
+                            }
                         });
                         break;
 
@@ -457,9 +580,19 @@
                             url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
-                            success: () => Reprint('TrialBalance4Colmuns')
+                            success: (response) => {
+                                if (response && response.success === true) {
+                                    // ✅ Show single row with Excel + PDF actions
+                                    loadReportToTable(response, reportType);
+                                } else {
+                                    $('#reportTableBody').html(
+                                        `<tr><td colspan="4" class="text-center text-danger">No data found.</td></tr>`
+                                    );
+                                }
+                            }
                         });
                         break;
+
                     case "bs":
                         $.post({
                             url: '/BalanceSheet/GenerateBalanceSheet/',
@@ -480,7 +613,7 @@
                 }
             });
 
-            // Reset button – clear UI but keep structure/ids/classes
+            // Reset button
             $('#btnReset').on('click', function () {
                 $('#StartDate').val('');
                 $('#EndDate').val('');
@@ -497,6 +630,8 @@
                 $('.accounting-year-group').addClass('d-none');
                 $accountDropdown.empty();
                 $account_group.addClass('d-none');
+
+                $('#reportTableBody').empty();
 
                 toggleBranchDependentFields();
                 validateFilters();

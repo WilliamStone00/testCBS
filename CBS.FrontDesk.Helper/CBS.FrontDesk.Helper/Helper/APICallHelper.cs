@@ -1723,6 +1723,7 @@ namespace CBS.FrontDesk.Helper
 
         // ================ Accnts  Statements   =======================//
         public static string AccntsStatements = "/api/v1/Reports/account-statement";
+        public static string BalanceSheet = "/api/v1/Reports/financial/BALANCE_SHEET_CAT1MFI_V1";
 
 
 
