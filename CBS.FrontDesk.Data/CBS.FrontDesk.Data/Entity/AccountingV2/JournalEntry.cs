@@ -147,7 +147,17 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
        
     }
 
+    public class ExportWorkflowRequest
+    {
+        public List<WorkflowTicket> WorkflowData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+    }
 
+    //public class WorkflowTicketQuery
+    //{
+    //    public DataTableOptions Options { get; set; }
+    //    // Add other filter properties as needed
+    //}
 
 
     public class ExportJournalRequest

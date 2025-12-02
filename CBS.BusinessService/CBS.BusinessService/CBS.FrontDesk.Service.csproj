@@ -291,6 +291,8 @@
     <Compile Include="AccountingV2\BranchCashConfig\BranchCashConfigService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\GLAccountService.cs" />
     <Compile Include="AccountingV2\BranchCashConfig\MockBranchCashConfigService.cs" />
+    <Compile Include="AccountingV2\EndOfYearClosure\EndOfYearClosureService.cs" />
+    <Compile Include="AccountingV2\EndOfYearClosure\YearEndChecklistDefinitionService.cs" />
     <Compile Include="AccountingV2\GLSystemReconciliation\GLSystemReconciliationService.cs" />
     <Compile Include="AccountingV2\JournalHead\JournalHeadExcelExportGenerator.cs" />
     <Compile Include="AccountingV2\LiaisonMappingV2\LiaisonMappingServices.cs" />

@@ -1748,7 +1748,14 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
 
-      
+
+        //----------------------------  EndOfYearClosure -----------------------------
+        public static string InitiateClosure = "/api/v1/YearEndClosure/start";
+        public static string GetAllEndOfYearTask = "/api/v1/YearEndChecklistDefinition/all";
+        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{BranchId}";
+
+
+        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
 
 
     }

@@ -477,5 +477,80 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+
+        public async Task<ActionResult> ExportWorkflowData(ExportWorkflowRequest request)
+        {
+            try
+            {
+                // Build query from filters
+                var query = new JournalEntryQuery
+                {
+                    // Add your query parameters here
+                    Options = new DataTableOptions
+                    {
+                        draw = "1",
+                        start = 0,
+                        length = int.MaxValue // get all filtered rows
+                    }
+                };
+
+                // Fetch data from service
+                var data = await _journalHeadService.GetJournalSourceDataTableAsync(query);
+
+                var workflowList = JsonConvert.DeserializeObject<List<WorkflowTicket>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                if (!workflowList.Any())
+                    return Json(new { success = false, message = "No workflow data available for export." });
+
+                // Populate BranchName for each workflow ticket if needed
+                foreach (var ticket in workflowList.Where(x => string.IsNullOrEmpty(x.BranchName)))
+                {
+                    var branch = await _branchServices.GetBranch(ticket.BranchId);
+                    ticket.BranchName = branch?.Name ?? "—";
+                }
+
+                // Convert data for Excel
+                var workflowDataForExcel = WorkflowTicketExcelExportGenerator.ConvertToWorkflowData(workflowList);
+
+                if (!workflowDataForExcel.Any())
+                    return Json(new { success = false, message = "No valid workflow data could be processed for export." });
+
+                // Prepare file name and path
+                string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
+
+                string fileName = $"{request.ExportOptions?.FileName ?? "Workflow_Report"}_{timestamp}.xlsx";
+                string directoryPath = Server.MapPath("~/TempFiles");
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                string filePath = Path.Combine(directoryPath, fileName);
+                string exportedBy = Session["FullName"]?.ToString() ?? "System";
+
+                // Generate Excel
+                var exportGenerator = new WorkflowTicketExcelExportGenerator();
+                exportGenerator.GenerateWorkflowExcelFromTableData(workflowDataForExcel, filePath, exportedBy, request.ExportOptions);
+
+                if (!System.IO.File.Exists(filePath))
+                    return Json(new { success = false, message = "Failed to generate Excel file." });
+
+                // Send file to browser
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                System.IO.File.Delete(filePath); // cleanup
+
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"An error occurred while exporting workflow data to Excel: {ex.Message}"
+                });
+            }
+        }
+
+
     }
 }
