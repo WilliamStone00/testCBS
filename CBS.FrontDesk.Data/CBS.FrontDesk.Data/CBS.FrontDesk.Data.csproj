@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Accounting\ProductAccountingBook.cs" />
     <Compile Include="Entity\Accounting V2\AccountBlackList\AccountBlacklist.cs" />
+    <Compile Include="Entity\Accounting V2\AccountingReportsD\FinancialStatementResponse.cs" />
     <Compile Include="Entity\Accounting V2\AccountingReportsD\ReceiptResponseDto.cs" />
     <Compile Include="Entity\Accounting V2\AccountingYear\AccountingYear.cs" />
     <Compile Include="Entity\Accounting V2\CollectorDevice\CollectorDevice.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorCommission\clientComissions.cs" />
     <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilterDemo2.cs" />
+    <Compile Include="Entity\Accounting V2\Reporting\FlatBaseE\BalanceSheetFlatItems.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\FlatBaseE\BankHeaderInformation.cs" />
     <Compile Include="Entity\Accounting V2\Reporting\ReportData\ReportsFilte.cs" />
     <Compile Include="Entity\Accounting V2\Reconciliation\FileListing.cs" />

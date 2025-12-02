@@ -1,155 +1,194 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.FallbackLogResponse
 
 <fieldset class="fieldset-custom">
-    <!-- Header -->
-    <div class="modal-header bg-white text-black">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="card bg-light mb-4 shadow-sm">
+    <div class="card bg-light mb-2">
         <div class="card-body text-center">
-            <h1 class="card-title text-primary fw-bold mb-2">
+            <h1 class="card-title text-primary">
                 <i class="mdi mdi-sync-alert me-2"></i> Fallback Log Details
             </h1>
             <p class="card-text text-muted mb-1">
                 Detailed information about the fallback transaction
             </p>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
         </div>
     </div>
 
-    <!-- Basic Information Card -->
-    <div class="card mb-4">
-        <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#basicInfoCollapse" style="cursor: pointer;">
-            <h6 class="text-primary mb-0"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
-            <i class="mdi mdi-chevron-down"></i>
-        </div>
-        <div class="collapse show" id="basicInfoCollapse">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-sm table-bordered">
-                            <tr><td class="fw-bold">ID</td><td>@Model.id</td></tr>
-                            <tr><td class="fw-bold">Branch</td><td>@Model.branchName</td></tr>
-                            <tr><td class="fw-bold">Operation Code</td><td>@Model.operationCode</td></tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <table class="table table-sm table-bordered">
-                            <tr><td class="fw-bold">Reference</td><td>@Model.reference</td></tr>
-                            <tr><td class="fw-bold">Amount</td><td>@String.Format("{0:N2}", Model.amount)</td></tr>
-                            <tr>
-                                <td class="fw-bold">Status</td>
-                                <td>
-                                    @if (Model.isResolved)
-                                    {
-                                        <span class="badge bg-success">Resolved</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-warning">Pending Reconciliation</span>
-                                    }
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+     @*Accordion Parent Container*@ 
+    <div class="accordion" id="fallbackAccordion">
 
-    <!-- Account Information Card -->
-    <div class="card mb-4">
-        <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#accountInfoCollapse" style="cursor: pointer;">
-            <h6 class="text-primary mb-0"><i class="mdi mdi-bank me-2"></i> Account Information</h6>
-            <i class="mdi mdi-chevron-down"></i>
-        </div>
-        <div class="collapse show" id="accountInfoCollapse">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-top-right me-2"></i> Supposed GL Account</h6>
-                        <table class="table table-sm table-bordered">
-                            <tr><td class="fw-bold">Account ID</td><td>@Model.supposedGlAccountId</td></tr>
-                            <tr><td class="fw-bold">Account Number</td><td>@Model.supposedGlAccountNumber</td></tr>
-                            <tr><td class="fw-bold">Account Name</td><td>@Model.supposedGlAccountName</td></tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-bottom-left me-2"></i> Fallback GL Account</h6>
-                        <table class="table table-sm table-bordered">
-                            <tr><td class="fw-bold">Account ID</td><td>@Model.fallbackBranchAccountId</td></tr>
-                            <tr><td class="fw-bold">Account Number</td><td>@Model.fallbackBranchAccountNumber</td></tr>
-                            <tr><td class="fw-bold">Account Name</td><td>@Model.fallbackBranchAccountName</td></tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <table class="table table-sm table-bordered">
-                            <tr><td class="fw-bold">Requested Affiliate</td><td>@Model.requestedAffiliateAccountIdOrBranchCode</td></tr>
-                            <tr><td class="fw-bold">Requested Branch Code</td><td>@Model.requestedBranchAccountCode</td></tr>
-                            <tr><td class="fw-bold">Auto Created</td><td>@(Model.isBranchAccountAutoCreated ? "Yes" : "No")</td></tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Timeline Card -->
-    <div class="card mb-4">
-        <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#timelineCollapse" style="cursor: pointer;">
-            <h6 class="text-primary mb-0"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
-            <i class="mdi mdi-chevron-down"></i>
-        </div>
-        <div class="collapse show" id="timelineCollapse">
-            <div class="card-body">
-                <table class="table table-sm table-bordered">
-                    <tr><td class="fw-bold">Created Date</td><td>@Model.createdDate?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
-                    <tr><td class="fw-bold">Created On</td><td>@Model.createdOn?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
-                    @if (Model.isResolved)
-                    {
-                        <tr><td class="fw-bold">Resolved On</td><td>@Model.resolvedOn?.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
-                        <tr><td class="fw-bold">Resolved By</td><td>@Model.resolvedBy</td></tr>
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Resolution Tips Card -->
-    @if (!string.IsNullOrEmpty(Model.resolutionTips))
-    {
+         @*Basic Information Card - OPEN by default*@ 
         <div class="card mb-4">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#tipsCollapse" style="cursor: pointer;">
-                <h6 class="text-primary mb-0"><i class="mdi mdi-lightbulb-on-outline me-2"></i> Resolution Tips</h6>
-                <i class="mdi mdi-chevron-down"></i>
+            <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                 data-bs-toggle="collapse"
+                 data-bs-target="#basicInfoCollapse"
+                 style="cursor: pointer;">
+                <h6 class="text-primary mb-0"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                <i class="mdi mdi-chevron-down accordion-icon"></i>
             </div>
-            <div class="collapse show" id="tipsCollapse">
+            <div id="basicInfoCollapse" class="collapse show" data-bs-parent="#fallbackAccordion">
                 <div class="card-body">
-                    <div class="alert alert-info">
-                        @Html.Raw(Model.resolutionTips.Replace("\n", "<br/>"))
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-sm table-bordered">
+                                <tr><td class="fw-bold">ID</td><td>@Model.id</td></tr>
+                                <tr><td class="fw-bold">Branch</td><td>@Model.branchName</td></tr>
+                                <tr><td class="fw-bold">Operation Code</td><td>@Model.operationCode</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm table-bordered">
+                                <tr><td class="fw-bold">Reference</td><td>@Model.reference</td></tr>
+                                <tr><td class="fw-bold">Amount</td><td>@String.Format("{0:N2}", Model.amount)</td></tr>
+                                <tr>
+                                    <td class="fw-bold">Status</td>
+                                    <td>
+                                        @if (Model.isResolved)
+                                        {
+                                            <span class="badge bg-success">Resolved</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Pending Reconciliation</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
 
-    <!-- Reconciliation Section -->
-    @if (!Model.isResolved)
-    {
-        <div class="card">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#reconcileCollapse" style="cursor: pointer;">
-                <h6 class="text-primary mb-0"><i class="mdi mdi-check-circle me-2"></i> Reconciliation</h6>
-                <i class="mdi mdi-chevron-down"></i>
+         @*Account Information Card - CLOSED by default*@ 
+        <div class="card mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                 data-bs-toggle="collapse"
+                 data-bs-target="#accountInfoCollapse"
+                 style="cursor: pointer;">
+                <h6 class="text-primary mb-0"><i class="mdi mdi-bank me-2"></i> Account Information</h6>
+                <i class="mdi mdi-chevron-down accordion-icon"></i>
             </div>
-            <div class="collapse show" id="reconcileCollapse">
+            <div id="accountInfoCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
                 <div class="card-body">
-                    @Html.Partial("_ReconcileFallback", new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest { Id = Model.id })
+                     Your account information content here 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-top-right me-2"></i> Supposed GL Account</h6>
+                            <table class="table table-sm table-bordered">
+                                <tr><td class="fw-bold">Account ID</td><td>@Model.supposedGlAccountId</td></tr>
+                                <tr><td class="fw-bold">Account Number</td><td>@Model.supposedGlAccountNumber</td></tr>
+                                <tr><td class="fw-bold">Account Name</td><td>@Model.supposedGlAccountName</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3"><i class="mdi mdi-arrow-bottom-left me-2"></i> Fallback GL Account</h6>
+                            <table class="table table-sm table-bordered">
+                                <tr><td class="fw-bold">Account ID</td><td>@Model.fallbackBranchAccountId</td></tr>
+                                <tr><td class="fw-bold">Account Number</td><td>@Model.fallbackBranchAccountNumber</td></tr>
+                                <tr><td class="fw-bold">Account Name</td><td>@Model.fallbackBranchAccountName</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                     @*Timeline section inside Account Information*@ 
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <table class="table table-sm table-bordered">
+                                <tr><td class="fw-bold">Auto Created</td><td>@(Model.isBranchAccountAutoCreated ? "Yes" : "No")</td></tr>
+                            </table>
+
+                            <div class="card mt-3">
+                                <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                                     data-bs-toggle="collapse"
+                                     data-bs-target="#timelineCollapse"
+                                     style="cursor: pointer;">
+                                    <h6 class="text-primary mb-0"><i class="mdi mdi-timeline-clock-outline me-2"></i> Timeline</h6>
+                                    <i class="mdi mdi-chevron-down accordion-icon"></i>
+                                </div>
+                                <div id="timelineCollapse" class="collapse">
+                                    <div class="card-body">
+                                        <table class="table table-sm table-bordered">
+                                            <tr><td class="fw-bold">Created Date</td><td>@Model.createdDate.ToString()</td></tr>
+                                           @if (Model.isResolved)
+                                            {
+                                                <tr><td class="fw-bold">Resolved On</td><td>@Model.resolvedOn.ToString()</td></tr>
+                                                <tr><td class="fw-bold">Resolved By</td><td>@Model.resolvedBy</td></tr>
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    }
+
+         @*Resolution Tips Card - CLOSED by default*@ 
+        @if (!string.IsNullOrEmpty(Model.resolutionTips))
+        {
+            <div class="card mb-4">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                     data-bs-toggle="collapse"
+                     data-bs-target="#tipsCollapse"
+                     style="cursor: pointer;">
+                    <h6 class="text-primary mb-0"><i class="mdi mdi-lightbulb-on-outline me-2"></i> Resolution Tips</h6>
+                    <i class="mdi mdi-chevron-down accordion-icon"></i>
+                </div>
+                <div id="tipsCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            @Html.Raw(Model.resolutionTips.Replace("\n", "<br/>"))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+         @*Reconciliation Section - CLOSED by default*@ 
+        @if (!Model.isResolved)
+        {
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                     data-bs-toggle="collapse"
+                     data-bs-target="#reconcileCollapse"
+                     style="cursor: pointer;">
+                    <h6 class="text-primary mb-0"><i class="mdi mdi-check-circle me-2"></i> Reconciliation</h6>
+                    <i class="mdi mdi-chevron-down accordion-icon"></i>
+                </div>
+                <div id="reconcileCollapse" class="collapse" data-bs-parent="#fallbackAccordion">
+                    <div class="card-body">
+                        @{
+                            var reconcileModel = ViewData["ReconcileModel"] as CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest;
+                        }
+
+                        @if (reconcileModel != null)
+                        {
+                            @Html.Partial("_ReconcileFallback", reconcileModel)
+                        }
+                        else
+                        {
+                            // Fallback: build minimal reconcile model inline (defensive)
+                            @Html.Partial("_ReconcileFallback", new CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack.ReconcileFallbackRequest { Id = Model.id })
+                        }
+                      
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
 </fieldset>
+
+<style>
+    .accordion-icon {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .collapsed .accordion-icon {
+        transform: rotate(-90deg);
+    }
+</style>
 
 <script>
     $(document).ready(function () {

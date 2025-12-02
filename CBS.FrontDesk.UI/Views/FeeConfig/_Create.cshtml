@@ -18,7 +18,7 @@
             Manage Configuration for: <span class="text-dark">@Model.feeType</span>
         </h5>
 
-        <div class="form-floating mb-3">
+        <div class="form-floating mb-3 bg-light">
             @Html.TextBoxFor(m => m.description, new { @class = "form-control", placeholder = "Description" })
             @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
             <label>@ChequeManagements.Description</label>

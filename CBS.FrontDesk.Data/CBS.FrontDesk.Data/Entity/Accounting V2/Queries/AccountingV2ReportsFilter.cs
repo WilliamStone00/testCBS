@@ -20,6 +20,9 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
 
         public DateTime DateFrom { get; set; }
 
+        [JsonProperty("downloadExcel")]
+        public bool DownloadExcel { get; set; } = false;
+
         [JsonProperty("dateTo")]
         public DateTime DateTo { get; set; }
 

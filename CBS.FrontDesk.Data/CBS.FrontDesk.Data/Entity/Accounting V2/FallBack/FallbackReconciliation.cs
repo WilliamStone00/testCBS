@@ -1,4 +1,5 @@
-﻿using CBS.FrontDesk.Data.Entity.DataTable;
+﻿using CBS.FrontDesk.Data.Entity.Accounting_V2.BranchAccount;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -97,7 +98,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack
         public decimal Amount { get; set; }
         public string Status { get; set; }
         public string ResolutionTips { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime? ResolvedOn { get; set; }
         public string ResolvedBy { get; set; }
         public bool IsBranchAccountAutoCreated { get; set; }
@@ -131,6 +132,6 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.FallBack
         public string FileName { get; set; }
         public byte[] FileBytes { get; set; }
     }
-
+   
 }
 
