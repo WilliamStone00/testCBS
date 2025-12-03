@@ -1,48 +1,196 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTaskViewModel
 @using System.Linq
 
-<div class="container mt-4">
-    <h3>End of Year Tasks</h3>
-    <div class="list-group">
 
-        @for (int i = 0; i < Model.Tasks.Count; i++)
-        {
-            var item = Model.Tasks[i];
 
-            <div class="list-group-item">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox"
-                           name="Tasks[@i].IsSelected"
-                           value="true" />
+@using (Html.BeginForm("ReviewClosure", "EndOfYearClosure", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return ReviewClosureSubmitAjax(this);" }))
+{
+    @Html.AntiForgeryToken()
 
-                    <input type="hidden" name="Tasks[@i].Id" value="@item.Id" />
+    <div class="container mt-4">
 
-                    <label class="form-check-label fw-bold">
-                        @item.Title
-                    </label>
+        <div class="list-group">
+            @Html.HiddenFor(model => model.Tasks[0].AccountingYearId, new { id = "TaskAccountingYearId" })
+
+
+
+
+            @for (int i = 0; i < Model.Tasks.Count; i++)
+            {
+                var item = Model.Tasks[i];
+
+                <div class="list-group-item">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="Tasks[@i].IsSelected"
+                               value="true" />
+
+                        <input type="hidden" name="Tasks[@i].Id" value="@item.Id" />
+
+                        <label class="form-check-label fw-bold">
+                            @item.Title
+                        </label>
+                    </div>
+
+                    <small class="text-muted d-block mt-1">
+                        @item.Description
+                    </small>
+
+                    <!-- COMMENT PER TASK -->
+                    <div class="mt-2">
+                        <label class="form-label">Remark</label>
+                        <textarea class="form-control"
+                                  name="Tasks[@i].Comment"
+                                  rows="2"
+                                  placeholder="Add note for this task">@item.Comment</textarea>
+                    </div>
                 </div>
+            }
 
-                <small class="text-muted d-block mt-1">
-                    @item.Description
-                </small>
-
-                <!-- COMMENT PER TASK -->
-                <div class="mt-2">
-                    <label class="form-label">Comment</label>
-                    <textarea class="form-control"
-                              name="Tasks[@i].Comment"
-                              rows="2"
-                              placeholder="Add note for this task">@item.Comment</textarea>
+            <!-- SAVE -->
+            <div class="row mb-2 mt-3">
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-primary" onclick="return ReviewClosureSubmitAjax(this);">Validate</button>
                 </div>
             </div>
+
+        </div>
+    </div>
+}
+
+
+
+<script>
+
+    window.ReviewClosureSubmitAjax = function (form) {
+        if (!$(form).valid()) return false;
+
+        const $form = $(form);
+
+        // ===== Branch Validation =====
+        const branch = $form.find('#BranchId').select2('data')[0];
+        if (!branch || !branch.id) {
+            appalert("⚠️ Select a branch before proceeding.", 3, 1);
+            return false;
+        }
+        const branchId = branch.id;
+        const branchText = branch.text;
+
+        // ===== Accounting Year Validation =====
+        const accountingYearId = $("#TaskAccountingYearId").val();
+        if (!accountingYearId) {
+            appalert("⚠️ Accounting Year missing.", 3, 1);
+            return false;
         }
 
-        <!-- SAVE -->
-        <div class="row mb-2 mt-3">
-            <div class="col-md-12 text-end">
-                <button type="submit" class="btn btn-primary">Validate</button>
-            </div>
-        </div>
+        // ===== Build Checklist Model =====
+        const checklist = [];
+        let hasSelected = false;
 
-    </div>
-</div>
+        $form.find(".list-group-item").each(function () {
+            const $item = $(this);
+            const id = $item.find('input[name*="Id"]').val();
+            const isCompleted = $item.find('input[type="checkbox"]').is(":checked");
+            const comment = $item.find('textarea').val()?.trim() || "";
+
+            // Only validate/comment for selected tasks
+            if (isCompleted) {
+                hasSelected = true;
+                if (!comment) {
+                    appalert(`❗ Please add a comment for selected task.`, 3, 1);
+                    $item.find('textarea').focus();
+                    return false;
+                }
+            }
+
+            checklist.push({
+                yearEndChecklistDefinitionId: id,
+                isCompleted: isCompleted,
+                comment: comment
+            });
+        });
+
+        if (!hasSelected) {
+            appalert("⚠️ Please select at least one task before submitting.", 3, 1);
+            return false;
+        }
+
+        // ===== Confirmation Modal =====
+        const title = "Confirm Review Completion";
+        const message = `
+        <p>Please verify before submitting.</p>
+        <table class="table table-sm table-bordered">
+            <tr><th>Branch</th><td>${branchText}</td></tr>
+            <tr><th>Accounting Year</th><td>${accountingYearId}</td></tr>
+            <tr><th>Selected Tasks</th><td>${checklist.filter(c => c.isCompleted).length}</td></tr>
+        </table>
+
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+            <label class="form-check-label" for="alertifyConfirmCheckbox">
+                I confirm that all reviewed tasks are correct.
+            </label>
+        </div>
+    `;
+
+        alertify.confirm(
+            title,
+            message,
+            function () {
+                if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                    appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                    return false;
+                }
+
+                const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: $form.attr("action"),
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        accountingYearId: accountingYearId,
+                        branchId: branchId,
+                        checkListModel: checklist,
+                        completedByUserId: null
+                    }),
+                    headers: token ? { 'RequestVerificationToken': token } : {},
+                    beforeSend: function () {
+                        $('.alertify .ajs-ok')
+                            .prop('disabled', true)
+                            .html('<span class="spinner-border spinner-border-sm"></span> Validating...');
+                    },
+                    success: function (response) {
+                        if (response?.success) {
+                            appalert("✅ Review completed successfully!", 1, 1);
+                            alertify.dismissAll();
+                        } else {
+                            appalert(response?.message || "❌ Review failed.", 2, 1);
+                        }
+                    },
+                    error: function (xhr) {
+                        appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                    },
+                    complete: function () {
+                        $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
+                    }
+                });
+            },
+            function () {
+                appalert("🚫 Review cancelled.", 2, 1);
+            }
+        ).set({
+            labels: { ok: "Yes, Continue", cancel: "Cancel" },
+            onshow: function () {
+                const okBtn = $('.alertify .ajs-ok').prop('disabled', true);
+                $('#alertifyConfirmCheckbox').on('change', function () {
+                    okBtn.prop('disabled', !this.checked);
+                });
+            }
+        });
+
+        return false;
+    };
+
+</script>

@@ -14,26 +14,15 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
                     <i class="mdi mdi-book-plus-outline me-2"></i>
-                    @ManualEntry.ManualJournalEntry
+                   End Of Year Adjustment Entry
                 </h4>
 
-                accounting date
+                
 
-                <div class="col-md-4 text-end">
-                    <label class="form-label fw-bold me-2">@ManualEntry.AccountingDate</label>
-                    @Html.TextBoxFor(m => m.AccountingDate,
-                        new
-                        {
-                            @class = "form-control form-control-sm d-inline-block accounting-date",
-                            style = "width: 180px",
-                            type = "date",
-                            value = Model.AccountingDate.HasValue ? Model.AccountingDate.Value.ToString("yyyy-MM-dd") : "",
-                            data_date_default = "today",
-                            data_date_max = "today",
-                            id = "AccountingDateCopy"
-                        })
-                    @Html.ValidationMessageFor(m => m.AccountingDate, "", new { @class = "text-danger" })
-                </div>
+               <div class="col-md-6 mb-2">
+                   <label class="form-label fw-bold" for="startDate">Accounting Date</label>
+                   <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
+               </div>
             </div>
 
             <!-- ================= INTERBRANCH ================= -->

@@ -12,8 +12,8 @@
 
 
 
-        <div class="row mb-2 align-items-end">
-            <div class="col-md-12 mb-2">
+        <div class="row mb-1">
+            <div class="col-md-6 mb-2">
                 @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
                 @Html.DropDownList(
                     "BranchId",
@@ -22,28 +22,22 @@
                     new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
                 )
             </div>
-        </div>
 
 
-        <div class="row mb-1">
+
             <div class="col-md-6 mb-2">
                 @Html.LabelFor(model => model.AccountingYearId, "Accounting Year",
                     new { @class = "form-label fw-semibold" })
 
-                @Html.DropDownListFor(model => model.AccountingYearId,
-                new List<SelectListItem>(), // empty, we will fill with AJAX
-                "--- Select Accounting Year ---",
-                new { @class = "form-control select2 mb-2", id = "AccountingYearId", required = "required" })
-
+                @Html.TextBoxFor(model => model.AccountingYearId,
+                    new { @class = "form-control", id = "AccountingYearId", @readonly = "readonly" })
             </div>
 
+        </div>
 
 
-
-            <div class="col-md-6 mb-2">
-                <label class="form-label fw-bold" for="startDate">Accounting Date</label>
-                <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
-            </div>
+        <div class="row mb-1">
+           
 
 
             <!-- Note -->

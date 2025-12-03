@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
 
         public DateTime? AccountingDate { get; set; }
 
-        public string PostMode { get; set; } = "HOLD_FOR_APPROVAL";
+        public string PostMode { get; set; } 
         public string Narration { get; set; }
         //----------dtails------------------
         public string Reference { get; set; }
@@ -44,12 +44,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public string BranchName { get; set; }
         public string CorrelationId { get; set; }
         public string ExternalApplicationName { get; set; }
-        public string AuxiliaryReference { get; set; } = "AUX-IB-RECLASS-10";
+        public string AuxiliaryReference { get; set; } 
     }
 
     public class JournalPayloadEnd
     {
-        public string Memo { get; set; } = "Manual interbranch treatment (notify destination for completion";
+        public string Memo { get; set; } 
         public bool AllowUnbalanced { get; set; } = false;
         public List<JournalEntryLineEnd> Entries { get; set; } = new List<JournalEntryLineEnd>();
     }

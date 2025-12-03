@@ -29,29 +29,29 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
         {
             try
             {
-                // Call API
-                var apiResponse = await _apiCallerHelper.GetAsync<ResponseObject<accountingyear>>(APICallHelper.GetAccoutingYearByBranchId);
+                if (string.IsNullOrWhiteSpace(branchId))
+                    throw new ArgumentException("Branch ID cannot be null or empty.", nameof(branchId));
 
-                if (apiResponse == null || apiResponse.ApiResponseData == null || apiResponse.ApiResponseData.Data == null)
-                    return new List<accountingyear>();
 
-                var data = apiResponse.ApiResponseData.Data;
+                // ✅ Make API call
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<accountingyear>>(string.Format(APICallHelper.GetAccoutingYearByBranchId, branchId));
 
-                // Wrap single object into a list
-                var list = new List<accountingyear> { data };
+                // ✅ Validate response
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
 
-                // Filter by branch if branchId is provided
-                if (!string.IsNullOrEmpty(branchId))
-                {
-                    list = list.Where(x => x.BranchId == branchId).ToList();
-                }
+                var data = response.ApiResponseData?.Data;
 
-                return list;
+                if (data == null)
+                    throw new Exception("Accounting Year not found.");
+
+                // ✅ Wrap single object into a list
+                return new List<accountingyear> { data };
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching Accounting Year: {ex.Message}");
-                return new List<accountingyear>();
+                System.Diagnostics.Debug.WriteLine($"[GetAccountingYearByBranchIdAsync] Error: {ex.Message}");
+                throw;
             }
         }
 
@@ -79,6 +79,27 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
                 throw ex;
             }
         }
+
+        public async Task<EndOfYear> SaveReviewClosure(EndOfYear model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                var apiResponse = await _apiCallerHelper.PostAsync<ResponseObject<EndOfYear>>(
+                    APICallHelper.ReviewClosure,   // ✔ your correct endpoint
+                    model
+                );
+
+                return apiResponse?.ApiResponseData?.Data;
+            }
+            catch (Exception ex)
+            {
+                throw;  // don't throw ex (removes stack trace)
+            }
+        }
+
 
 
 

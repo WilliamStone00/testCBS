@@ -65,32 +65,33 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             return true;
         }
         [HttpGet]
-        //public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId)
-        //{
-        //    try
-        //    {
-        //        var years = await _endOfYearClosureService.GetAllAsync(branchId);
+        public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId)
+        {
+            try
+            {
+                var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId);
 
-        //        var result = years.Select(x => new
-        //        {
-        //            id = x.Id,
-        //            year = x.Year
-        //        });
+                var result = years.Select(x => new
+                {
+                    id = x.Id,
+                    year = x.Year
+                });
 
-        //        return Json(result, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new HttpStatusCodeResult(500, ex.Message);
-        //    }
-        //}
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
 
-        
+
 
 
         [HttpPost]
         public async Task<ActionResult> InitiateClosure(EndOfYear model)
         {
+          
 
             try
             {
@@ -114,6 +115,40 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ReviewClosure(EndOfYear model)
+        {
+            try
+            {
+                var result = await _endOfYearClosureService.SaveReviewClosure(model);
+
+                if (result == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No response from Review Closure service."
+                    });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Review of year closure failed: {ex.Message}"
+                });
+            }
+        }
+
 
 
 
