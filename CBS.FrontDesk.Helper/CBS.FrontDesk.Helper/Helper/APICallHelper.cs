@@ -1430,13 +1430,12 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllBranchCashConfigs = "/api/v1/BranchCashConfig";
         public static string GetBranchCashConfigById = "/api/v1/BranchCashConfig/{0}";
-        //public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
+        public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
         public static string CreateBranchCashConfig = "/api/v1/BranchCashConfig";
         public static string UpdateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
         public static string DeactivateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
         public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
         public static string ValidateBranchConfig = "api/branchcashconfig/validate";
-        public static string GetBranchCashConfigByBranchId = "/api/v1/BranchCashConfig/by-branch/{0}";
 
         //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
@@ -1646,7 +1645,7 @@ namespace CBS.FrontDesk.Helper
         public static string MemberAccountType = "/api/v1/GetAccountTypes";
 
         //--------------------------- Loan Reconciliation ------------------------------------------
-        public static string LoanAccountDROP = "/api/v1/EnumAggregates";
+        public static string LoanAccountDROP = "/api/v1/AccountingEnumAggregates?BranchId={0}";
         public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
         public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
         //*************************** End of Reconciliation **************************************
