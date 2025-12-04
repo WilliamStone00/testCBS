@@ -41,8 +41,8 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             var branches = await _branchService.GetBranches();
             ViewBag.Branches = branches;
 
-            var LoanAccounts = await _LoanReconciliationService.LoanAccountTypeAsync();
-            ViewBag.LoanAccounts = LoanAccounts;
+            //var LoanAccounts = await _LoanReconciliationService.LoanAccountTypeAsync();
+            //ViewBag.LoanAccounts = LoanAccounts;
 
             //var MemberReference = await _MemberReferenceService.MemberAccountTypesAsync();
             //ViewBag.MemberReference = MemberReference;
@@ -203,6 +203,23 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             {
                 // Get member account types filtered by branch
                 var data = await _MemberReferenceService.MemberAccountTypesAsync(branchId);
+
+
+                return Json(new { success = true,message="Success", data },JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {               
+                return Json(new { success = false, message = "Error loading account types" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetLoanAccountTypesByBranch(string branchId)
+        {
+            try
+            {
+                // Get member account types filtered by branch
+                var data = await _LoanReconciliationService.LoanAccountTypeAsync(branchId);
 
 
                 return Json(new { success = true,message="Success", data },JsonRequestBehavior.AllowGet);
