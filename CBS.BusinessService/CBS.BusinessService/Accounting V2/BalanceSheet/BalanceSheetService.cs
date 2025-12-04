@@ -117,13 +117,19 @@ namespace CBS.BusinessService.Accounting_V2.BalanceSheet
                 {
                     GroupName = "",
                     GroupReference = "",
+                    Referernce = x.RefCode,
                     Reference = x.RefCode,
                     Heading = x.Caption,
                     Gross = x.Gross,
+                    AccountingDate = response.Payload.AsAt,
                     NetN = x.NetCurrentYear,
                     NetN1 = x.NetLastYear,
                     PrintedBy = _branchServices.GetUserFullName(),
-                    TotalLiabEquityNetCurrentYear = response.Payload.TotalLiabEquityNetCurrentYear,
+                    TotalAmountGrossAsts = 0,
+                    TotalAmountProvAsts = 0,
+                    TotalNetLastYearAsts = response.Payload.TotalAssetsNetLastYear,
+                    TotalNetPresentAsts = response.Payload.TotalAssetsNetCurrentYear,
+                    ///*TotalLiabEquityNetCurrentYear*/ = response.Payload.TotalLiabEquityNetCurrentYear,
                     //TotalLiabEquityNetCurrentYear = response.Payload.TotalLiabEquityNetCurrentYear,
                     BankAddress = BranchInformation.Bank.Address
                 };

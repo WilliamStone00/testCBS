@@ -16,9 +16,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE
         public decimal AmountProv { get; set; }
         public decimal NetN { get; set; }
         public decimal NetN1 { get; set; }
-        public decimal TotalAssetsNetCurrentYear { get; set; }
-        public decimal TotalAssetsNetLastYear { get; set; }
-        public decimal TotalLiabEquityNetCurrentYear { get; set; }
+        public decimal TotalAmountGrossAsts { get; set; }
+        public DateTime AccountingDate { get; set; }
+        public decimal TotalAmountProvAsts { get; set; }
+        public decimal TotalNetLastYearAsts { get; set; }
+        public decimal TotalNetPresentAsts { get; set; }
         public decimal TotalLiabEquityNetLastYear { get; set; }
         public string PrintedBy { get; set; }
     }

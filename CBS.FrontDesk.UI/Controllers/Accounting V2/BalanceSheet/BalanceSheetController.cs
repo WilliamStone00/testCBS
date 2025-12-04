@@ -77,39 +77,6 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.BalanceSheet
         }
 
         /// <summary>
-        /// Attach bank and branch header into one statement row.
-        /// Crystal Reports requires header metadata available on each record.
-        /// </summary>
-        private void ApplyHeader(BalanceSheetFlatItems item, BankHeaderInformation header)
-        {
-            item.BankId = header.BankId;
-            item.BankBankCode = header.BankBankCode;
-            item.BankName = header.BankName;
-            item.BankTelephone = header.BankTelephone;
-            item.BankEmail = header.BankEmail;
-            item.BankAddress = header.BankAddress;
-            item.BankLogoUrl = header.BankLogoUrl;
-            item.BankMotto = header.BankMotto;
-            item.BankRegistrationNumber = header.BankRegistrationNumber;
-            item.BankImmatriculationNumber = header.BankImmatriculationNumber;
-            item.BankPBox = header.BankPBox;
-
-            item.BranchId = header.BranchId;
-            item.BranchCode = header.BranchCode;
-            item.BranchName = header.BranchName;
-            item.BranchTelephone = header.BranchTelephone;
-            item.BranchEmail = header.BranchEmail;
-            item.BranchAddress = header.BranchAddress;
-            item.BranchLogoUrl = header.BranchLogoUrl;
-            item.BranchCapital = header.BranchCapital;
-            item.BranchRegistrationNumber = header.BranchRegistrationNumber;
-            item.BranchImmatriculationNumber = header.BranchImmatriculationNumber;
-            item.BranchPBox = header.BranchPBox;
-        }
-
-
-
-        /// <summary>
         /// Setup Crystal Report parameters for the Journal Entries report.
         /// </summary>
         [HttpPost]
