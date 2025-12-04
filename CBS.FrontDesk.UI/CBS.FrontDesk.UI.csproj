@@ -8121,7 +8121,7 @@
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
