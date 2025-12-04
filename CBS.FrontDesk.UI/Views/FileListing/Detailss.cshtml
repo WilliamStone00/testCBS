@@ -551,29 +551,32 @@
             }
 
             // Prepare data for DataTables
+            // Prepare data for DataTables
             const trialBalanceData = [
                 @if (Model?.TrialBalanceRows != null)
                 {
+                    var first = true;
                     foreach (var row in Model.TrialBalanceRows)
                     {
-                        <text>
-                        {
-                            id: '@row.Id',
-                            sourceCode: '@row.SourceCode',
-                            sourceName: '@Html.Raw(row.SourceName)',
-                            openingDebit: @row.OpeningDebit,
-                            openingCredit: @row.OpeningCredit,
-                            movementDebit: @row.MovementDebit,
-                            movementCredit: @row.MovementCredit,
-                            endDebit: @row.EndDebit,
-                            endCredit: @row.EndCredit,
-                            branchAccountId: '@row.BranchAccountId',
-                            isReconciled: @row.IsReconciled.ToString().ToLower(),
-                            isActive: @row.IsCurrentlyActive.ToString().ToLower(),
-                            createdDate: '@row.CreatedDate.ToString()',
-                            modifiedDate: '@row.ModifiedDate.ToString()'
-                        },
-                        </text>
+                        if (!first) { @:,
+                        }
+                        first = false;
+                        <text>{
+                            "id": "@row.Id",
+                            "sourceCode": "@Html.Raw(row.SourceCode?.Replace("\"", "\\\"") ?? "")",
+                            "sourceName": "@Html.Raw(row.SourceName?.Replace("\"", "\\\"")?.Replace("\n", "\\n") ?? "")",
+                            "openingDebit": @row.OpeningDebit,
+                            "openingCredit": @row.OpeningCredit,
+                            "movementDebit": @row.MovementDebit,
+                            "movementCredit": @row.MovementCredit,
+                            "endDebit": @row.EndDebit,
+                            "endCredit": @row.EndCredit,
+                            "branchAccountId": "@row.BranchAccountId",
+                            "isReconciled": @row.IsReconciled.ToString().ToLower(),
+                            "isActive": @row.IsCurrentlyActive.ToString().ToLower(),
+                            "createdDate": "@row.CreatedDate.ToString()",
+                            "modifiedDate": "@row.ModifiedDate.ToString()"
+                        }</text>
                     }
                 }
             ];
@@ -581,23 +584,25 @@
             const memberBalanceData = [
                 @if (Model?.MemberBalanceRows != null)
                 {
+                    var first = true;
                     foreach (var row in Model.MemberBalanceRows)
                     {
-                        <text>
-                        {
-                            id: '@row.Id',
-                            memberId: '@row.MemberId',
-                            accountType: '@Html.Raw(row.AccountType)',
-                            accountNumber: '@Html.Raw(row.AccountNumber)',
-                            branchCode: '@Html.Raw(row.BranchCode)',
-                            branchName: '@Html.Raw(row.BranchName)',
-                            balance: @row.Balance,
-                            reconciliationStatus: '@Html.Raw(row.RecocilationStatus)',
-                            reconciledBy: '@Html.Raw(row.ReconciledBy ?? "")',
-                            createdDate: '@row.CreatedDate.ToString()',
-                            modifiedDate: '@row.ModifiedDate.ToString()'
-                        },
-                        </text>
+                        if (!first) { @:,
+                        }
+                        first = false;
+                        <text>{
+                            "id": "@row.Id",
+                            "memberId": "@row.MemberId",
+                            "accountType": "@Html.Raw(row.AccountType?.Replace("\"", "\\\"") ?? "")",
+                            "accountNumber": "@Html.Raw(row.AccountNumber?.Replace("\"", "\\\"") ?? "")",
+                            "branchCode": "@Html.Raw(row.BranchCode?.Replace("\"", "\\\"") ?? "")",
+                            "branchName": "@Html.Raw(row.BranchName?.Replace("\"", "\\\"") ?? "")",
+                            "balance": @row.Balance,
+                            "reconciliationStatus": "@Html.Raw(row.ReconcilationStatus.Replace("\"", "\\\"") ?? "")",
+                            "reconciledBy": "@Html.Raw(row.ReconciledBy?.Replace("\"", "\\\"") ?? "")",
+                            "createdDate": "@row.CreatedDate.ToString()",
+                            "modifiedDate": "@row.ModifiedDate.ToString()"
+                        }</text>
                     }
                 }
             ];

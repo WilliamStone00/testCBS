@@ -69,9 +69,9 @@
 
         <div class="col-12">
             <div class="form-floating">
-                @Html.TextAreaFor(m => m.TemplateBody, new { @class = "form-control", placeholder = "Template Body", style = "height:80px;", id = "templateBody" })
-                <label for="templateBody">Template Body</label>
-                @Html.ValidationMessageFor(m => m.TemplateBody, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(m => m.NotificationTemplate, new { @class = "form-control", placeholder = "Template Body", style = "height:80px;", id = "notificationTemplate" })
+                <label for="notificationTemplate">Template Body</label>
+                @Html.ValidationMessageFor(m => m.NotificationTemplate, "", new { @class = "text-danger" })
             </div>
         </div>
 

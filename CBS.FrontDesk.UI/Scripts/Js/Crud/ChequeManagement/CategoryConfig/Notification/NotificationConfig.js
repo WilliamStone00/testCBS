@@ -74,16 +74,19 @@
 
 
         container.load(URLS.init, {
+            path: 'byType',
             partialView: '_ConfigForm',
             isCentralized: isCentralized,
             branchId: branchId,
             notificationType: notificationType
+        
         });
     }
 
     function handleSave(form) {
         const $form = $(form);
         if ($.validator && $.validator.unobtrusive && !$form.valid()) {
+            console.log('Form validation failed');
             return;
         }
 
@@ -91,14 +94,33 @@
         const originalHtml = $submitBtn.html();
 
         alertify.confirm("Confirm Save", "Are you sure you want to save these changes?",
-            function () { 
+            function () {
                 $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+
+                // Debug: Log the form data before sending
+                const formData = $form.serialize();
+                console.log('Form data being sent:', formData);
+
+                // Debug: Log individual form fields
+                console.log('Individual form field values:');
+                console.log('NotificationTemplate:', $('#notificationTemplate').val());
+                console.log('Name:', $('#name').val());
+                console.log('TriggerEvent:', $('#triggerEvent').val());
+                console.log('IsCentralized:', $('#IsCentralized').val());
+                console.log('BranchId:', $('#BranchId').val());
+                console.log('NotificationType:', $('#NotificationType').val());
+                console.log('IsActive:', $('#IsActive').is(':checked'));
+                console.log('RequiresApproval:', $('#requiresApproval').is(':checked'));
+
+                // Debug: Log the complete form element
+                console.log('Complete form element:', $form[0]);
 
                 $.ajax({
                     url: $form.attr('action'),
                     type: 'POST',
-                    data: $form.serialize(), // Reliably collects all form data
+                    data: formData,
                     success: function (response) {
+                        console.log('Server response:', response);
                         if (response.success) {
                             appalert(response.message, ALERT_STATE.SUCCESS, ALERT_TYPE.TOASTR);
                             loadConfiguration(); // Reload the form on success
@@ -106,11 +128,21 @@
                             appalert(response.message, ALERT_STATE.DANGER, ALERT_TYPE.TOASTR);
                         }
                     },
-                    error: function () { appalert('An unexpected server error occurred.', ALERT_STATE.DANGER, ALERT_TYPE.TOASTR); },
-                    complete: function () { $submitBtn.prop('disabled', false).html(originalHtml); }
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        console.error('Status:', status);
+                        console.error('XHR response:', xhr.responseText);
+                        appalert('An unexpected server error occurred.', ALERT_STATE.DANGER, ALERT_TYPE.TOASTR);
+                    },
+                    complete: function () {
+                        $submitBtn.prop('disabled', false).html(originalHtml);
+                    }
                 });
             },
-            function () { appalert('Save cancelled.', ALERT_STATE.INFO, ALERT_TYPE.TOASTR); }
+            function () {
+                console.log('Save operation cancelled by user');
+                appalert('Save cancelled.', ALERT_STATE.INFO, ALERT_TYPE.TOASTR);
+            }
         );
     }
 
@@ -143,7 +175,7 @@
     }
 
     function insertPlaceholder() {
-        const textarea = document.getElementById('templateBody');
+        const textarea = document.getElementById('notificationTemplate');
         const placeholderText = $(this).text();
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;

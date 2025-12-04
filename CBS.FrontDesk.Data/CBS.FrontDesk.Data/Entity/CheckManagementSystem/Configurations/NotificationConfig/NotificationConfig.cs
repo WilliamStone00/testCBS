@@ -30,7 +30,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.Notific
         public string AvailablePlaceholders { get; set; } = null;
 
         [Required(ErrorMessage = "The template body cannot be empty.")]
-        public string TemplateBody { get; set; } = null;
+        public string NotificationTemplate { get; set; } = null;
 
         public bool IsActive { get; set; } = false;
 
@@ -45,6 +45,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.Notific
         public string Audience { get; set; } = null;
 
         public string Channel { get; set; } = null;
+
+        public string Language { get; set; } = null;
 
         public bool RequiresApproval { get; set; } = false;
     }

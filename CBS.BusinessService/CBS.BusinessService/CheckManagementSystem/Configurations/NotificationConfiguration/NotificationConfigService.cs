@@ -3,11 +3,14 @@
 using BusinessServices;
 using CBS.API.Helper; // For ApiCallerHelper
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using Microsoft.AspNet.SignalR.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -83,6 +86,10 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
         {
             try
             {
+                if (!IsHeadOffice())
+                {
+                    query.BranchId = GetBankID();
+                }
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.notdata, query);
 
@@ -196,6 +203,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
         {
             try
             {
+                model.Language = GetLanguage();
                 // Assumes APICallHelper.CreateNotificationConfig is "api/notifications/configurations"
                 var url = APICallHelper.Createnot;
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<NotificationConfig>>(url, model);
@@ -219,6 +227,28 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
             return ExecutionMessage;
         }
 
+        public async Task<NotificationConfig> GetByTypeAsync(string notificationType, bool isCentralized,string branchId)
+        {
+            var model = new NotificationConfig()
+            {
+                NotificationType = notificationType,
+                IsCentralized = isCentralized,
+                BranchId = branchId,
+            };
+
+            var response = await _apiCallerHelper.PostAsync<ServiceResponse<NotificationConfig>>(APICallHelper.GetByTypeAsync, model);
+
+            // check response for success / nulls
+            if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
+            {
+                // optionally throw or return null and let caller handle
+                return null;
+            }
+
+            return response.ApiResponseData.Data;
+        }
+            
+
         /// <summary>
         /// Updates an existing NotificationConfig via the backend API.
         /// </summary>
@@ -226,6 +256,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
         {
             try
             {
+                model.Language = GetLanguage();
                 if (model == null || string.IsNullOrWhiteSpace(model.Id))
                 {
                     GetExecutionMessages(model, false, "Notification Config", MessagesResults.Failed,

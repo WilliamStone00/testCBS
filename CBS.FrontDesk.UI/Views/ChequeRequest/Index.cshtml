@@ -15,7 +15,7 @@
         </p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            <strong>Process:</strong> Start by creating a new request. After submission, switch to the "View All Requests" tab to manage pending approvals.
+            <strong>Process:</strong> Start by searching for a customer. The request form will appear automatically below after successful search.
         </div>
         <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
     </div>
@@ -43,7 +43,7 @@
                         <div class="flex-grow-1">
                             <h6 class="text-primary mb-1">Customer Search & Selection</h6>
                             <p class="text-muted mb-0 small">
-                                Use the search function to find customers by ID. The system will display complete customer details and accounts in a popup for verification.
+                                Use the search function to find customers by ID. The system will automatically display the cheque request form with customer details.
                             </p>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                         <div class="flex-grow-1">
                             <h6 class="text-success mb-1">Request Creation</h6>
                             <p class="text-muted mb-0 small">
-                                After selecting a customer, the cheque request form opens in a popup. Choose the appropriate category and accounts for the cheque book and fee payment.
+                                After selecting a customer, the cheque request form appears automatically. Choose the appropriate category and accounts for the cheque book and fee payment.
                             </p>
                         </div>
                     </div>
@@ -116,17 +116,13 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
 
 <!-- Action Buttons Card -->
-
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
-        <!-- Use custom functions for better control -->
         <a type="button" onclick="loadDataTable()" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
@@ -150,7 +146,6 @@
     </div>
 </div>
 
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -158,16 +153,15 @@
         const getCustomerDetailsUrl = '@Url.Action("GetCustomerDetails", "ChequeRequest")';
         const getRequestFormUrl = '@Url.Action("GetRequestForm", "ChequeRequest")';
     </script>
+
     <!-- Corrected Script Paths -->
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/search-manager.js"></script>
     <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/form-manager.js"></script>
-    @* <script src="~/Scripts/Js/Crud/ChequeManagement/ChequeRequest/datatable-manager.js"></script>*@
 
     <script>
         // Global section management functions
         function showSearchSection() {
             $('#dataTableSection').hide();
-            $('#requestFormSection').hide();
             $('#searchSection').show();
 
             // Reset search form
@@ -176,12 +170,9 @@
             }
         }
 
-        function showrequestFormSection() {
+        function showDataTableSection() {
             $('#searchSection').hide();
-            $('#dataTableSection').hide();
-            $('#dataTablrequestFormSectioneSection').show();
-
-            
+            $('#dataTableSection').show();
 
             // Refresh data table if already initialized
             if (window.dataTableManager && window.dataTableManager.dataTable) {
@@ -189,52 +180,27 @@
             }
         }
 
-        function showRequestFormSection() {
-            $('#searchSection').hide();
-            $('#dataTableSection').hide();
-            $('#requestFormSection').show();
-        }
-
-       
-
-        function loadRequestForm() {
-            $.get('@Url.Action("InitializeData", "ChequeRequest")', {
-                partialView: '_ChequeRequestForm',
-                path: 'new'
-            }, function(html) {
-                $('#dataTableSection').html(html);
-
-                // Re-initialize form manager after content is loaded
-                if (window.formManager) {
-                    window.formManager.init();
-                }
-            });
-        }
-
-             function loadDataTable() {
+        function loadDataTable() {
             // Hide other sections
             $('#searchSection').hide();
-            $('#emptyState').hide();
 
             // Show and load data table section
-                 $('#dataTableSection').show();
+            $('#dataTableSection').show();
 
             // Load the DataTable partial view
             $.get('/ChequeRequest/InitializeData', {
                 partialView: '_RequestDataTable',
                 path: 'list'
-            }, function(html) {
+            }, function (html) {
                 $('#dataTableSection').html(html);
-
                 // Initialize DataTable after content is loaded
-               /* initializeDataTable();*/
+                // initializeDataTable();
             });
         }
 
         function loadSearchForm() {
             // Hide other sections
-            $('#requestFormSection').hide();
-            $('#emptyState').hide();
+            $('#dataTableSection').hide();
 
             // Show search section
             $('#searchSection').show();
@@ -245,122 +211,121 @@
             }
         }
 
-                
-
-
-            function submitChequeRequestForm(form) {
-                // Validate form first
-                if (!$(form).valid()) {
-                    return false;
-                }
-
-                const submitBtn = $(form).find('button[type="submit"]');
-                const originalText = submitBtn.html();
-                submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
-
-                // Build FormData manually
-                const formData = new FormData();
-
-                // Add non-checkbox fields
-                $(form).serializeArray().forEach(function (field) {
-                    if (!field.name.endsWith("_false")) {
-                        formData.append(field.name, field.value);
-                    }
-                });
-
-                // Add checkboxes explicitly
-                $(form).find('input[type="checkbox"]').each(function () {
-                    const checkbox = $(this);
-                    const isChecked = checkbox.is(':checked');
-                    const fieldName = checkbox.attr('name');
-                    formData.delete(fieldName);
-                    formData.append(fieldName, isChecked.toString());
-                });
-
-                // Build confirmation message
-                const idValue = formData.get('Id') || formData.get('id');
-                const customerName = formData.get('customerName') || 'Not specified';
-                const customerId = formData.get('customerId') || 'Not specified';
-                const operation = idValue ? 'Update' : 'Create';
-
-                const summaryParts = [];
-                summaryParts.push(`Action: ${operation}`);
-                if (idValue) summaryParts.push(`ID: ${idValue}`);
-                summaryParts.push(`Customer: ${customerName} (${customerId})`);
-
-                const summary = summaryParts.join('\n');
-                const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Cheque Book Request';
-                const confirmMessage = `Please confirm the following:\n\n${summary}\n\nProceed?`;
-
-                // Show confirmation using alertify
-                alertify.confirm(confirmTitle, confirmMessage,
-                    function () { // OK callback -> perform AJAX
-                        const ajaxConfig = {
-                            type: 'POST',
-                            url: form.action,
-                            data: formData,
-                            contentType: false,  // CRITICAL: Add this
-                            processData: false,  // CRITICAL: Add this
-                            success: function (response) {
-                                console.log("Response:", response);
-
-                                if (response && response.success) {
-                                    // Use the actual properties your controller returns
-                                    const messageType = response.status === "Exist" ? 3 :
-                                                      response.status === "Failed" ? 2 : 1;
-
-                                    appalert(response.message, messageType, 1);
-
-                                    // Simple success handling
-                                    $('#chequeRequestModal').modal('hide');
-
-                                    if (window.dataTableManager) {
-                                        window.dataTableManager.refresh();
-                                    }
-
-                                    form.reset();
-
-                                } else {
-                                    // Handle failure
-                                    const msg = response && response.message ? response.message : 'Operation failed';
-                                    const msgType = response && response.status === "Exist" ? 3 : 2;
-                                    appalert(msg, msgType, 1);
-                                }
-                            },
-                            error: function (err) {
-                                console.error('AJAX Error:', err);
-                                if (err && err.status === 401) {
-                                    window.location.href = '/Authentication/Login';
-                                } else {
-                                    const errorMsg = err.responseJSON && err.responseJSON.message ?
-                                                   err.responseJSON.message :
-                                                   (err.statusText || 'An error occurred');
-                                    appalert(errorMsg, 4, 1);
-                                }
-                            },
-                            complete: function () {
-                                submitBtn.prop('disabled', false).html(originalText);
-                            }
-                        };
-
-                        console.log('AJAX Config:', ajaxConfig);
-                        $.ajax(ajaxConfig);
-                    },
-                    function () { // Cancel callback
-                        submitBtn.prop('disabled', false).html(originalText);
-                        appalert('Transaction cancelled', 3, 1);
-                    }
-                ).set('labels', { ok: 'Yes', cancel: 'No' });
-
+        function submitChequeRequestForm(form) {
+            // Validate form first
+            if (!$(form).valid()) {
                 return false;
             }
 
-        $(document).ready(function() {
+            const submitBtn = $(form).find('button[type="submit"]');
+            const originalText = submitBtn.html();
+            submitBtn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin"></i> Submitting...');
+
+            // Build FormData manually
+            const formData = new FormData();
+
+            // Add non-checkbox fields
+            $(form).serializeArray().forEach(function (field) {
+                if (!field.name.endsWith("_false")) {
+                    formData.append(field.name, field.value);
+                }
+            });
+
+            // Add checkboxes explicitly
+            $(form).find('input[type="checkbox"]').each(function () {
+                const checkbox = $(this);
+                const isChecked = checkbox.is(':checked');
+                const fieldName = checkbox.attr('name');
+                formData.delete(fieldName);
+                formData.append(fieldName, isChecked.toString());
+            });
+
+            // Build confirmation message
+            const idValue = formData.get('Id') || formData.get('id');
+            const customerName = formData.get('customerName') || 'Not specified';
+            const customerId = formData.get('customerId') || 'Not specified';
+            const operation = idValue ? 'Update' : 'Create';
+
+            const summaryParts = [];
+            summaryParts.push(`Action: ${operation}`);
+            if (idValue) summaryParts.push(`ID: ${idValue}`);
+            summaryParts.push(`Customer: ${customerName} (${customerId})`);
+
+            const summary = summaryParts.join('\n');
+            const confirmTitle = (operation === 'Update') ? 'Confirm Update' : 'Confirm Cheque Book Request';
+            const confirmMessage = `Please confirm the the operation to Proceed?`;
+
+            // Show confirmation using alertify
+            alertify.confirm(confirmTitle, confirmMessage,
+                function () { // OK callback -> perform AJAX
+                    const ajaxConfig = {
+                        type: 'POST',
+                        url: form.action,
+                        data: formData,
+                        contentType: false,  // CRITICAL: Add this
+                        processData: false,  // CRITICAL: Add this
+                        success: function (response) {
+                            console.log("Response:", response);
+
+                            if (response && response.success) {
+                                // Use the actual properties your controller returns
+                                const messageType = response.status === "Exist" ? 3 :
+                                    response.status === "Failed" ? 2 : 1;
+
+                                appalert(response.message, messageType, 1);
+
+                                // Simple success handling
+                                if (window.searchManager) {
+                                    window.searchManager.hideForm();
+                                }
+
+                                if (window.dataTableManager) {
+                                    window.dataTableManager.refresh();
+                                }
+
+                                form.reset();
+
+                            } else {
+                                // Handle failure
+                                const msg = response && response.message ? response.message : 'Operation failed';
+                                const msgType = response && response.status === "Exist" ? 3 : 2;
+                                appalert(msg, msgType, 1);
+                            }
+                        },
+                        error: function (err) {
+                            console.error('AJAX Error:', err);
+                            if (err && err.status === 401) {
+                                window.location.href = '/Authentication/Login';
+                            } else {
+                                const errorMsg = err.responseJSON && err.responseJSON.message ?
+                                    err.responseJSON.message :
+                                    (err.statusText || 'An error occurred');
+                                appalert(errorMsg, 4, 1);
+                            }
+                        },
+                        complete: function () {
+                            submitBtn.prop('disabled', false).html(originalText);
+                        }
+                    };
+
+                    console.log('AJAX Config:', ajaxConfig);
+                    $.ajax(ajaxConfig);
+                },
+                function () { // Cancel callback
+                    submitBtn.prop('disabled', false).html(originalText);
+                    appalert('Transaction cancelled', 3, 1);
+                }
+            ).set('labels', { ok: 'Yes', cancel: 'No' });
+
+            return false;
+        }
+
+        $(document).ready(function () {
             // Initialize managers
-           window.searchManager = new SearchManager();
+            window.searchManager = new SearchManager();
             window.formManager = new FormManager();
             window.dataTableManager = new DataTableManager();
-            loadChequeRequests();
+
             // Show search section by default
             showSearchSection();
         });

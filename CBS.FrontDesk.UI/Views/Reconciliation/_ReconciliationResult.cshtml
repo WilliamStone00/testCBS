@@ -89,7 +89,7 @@
                                 <hr />
                                 <div class="text-center">
                                     <h4 class="@(Model.IsMemberBalanceGreater ? "text-success" : "text-danger")">
-                                        Difference: @Math.Abs(Model.MemberBalance - Model.TrialBalanceBalance).ToString("N2")
+                                        Difference: @(Math.Abs(Math.Abs(Model.MemberBalance) - Math.Abs(Model.TrialBalanceBalance)).ToString("N2"))
                                     </h4>
                                     <p class="mb-0">
                                         <i class="mdi @(Model.IsMemberBalanceGreater ? "mdi-arrow-up-bold text-success" : "mdi-arrow-down-bold text-warning") me-1"></i>

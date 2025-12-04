@@ -41,6 +41,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.JournalEntries
         {
             try
             {
+
                 // ==============================================================
                 // STEP 1 — Retrieve journal entries dataset based on filters
                 // ==============================================================                

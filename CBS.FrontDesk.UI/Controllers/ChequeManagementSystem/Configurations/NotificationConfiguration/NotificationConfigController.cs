@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.NotificationConfiguration
 {
-    [CheckSessionTimeOut]
+    //[CheckSessionTimeOut]
     public class NotificationConfigController : BaseController
     {
         private readonly NotificationConfigService _notificationConfigService;
@@ -86,13 +86,59 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
         ///  - path == "new"  => return empty/new model partial
         ///  - otherwise     => return model by KEY (details/edit)
         /// </summary>
-        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        //public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        //{
+        //    KEY = "CHEQUESUBSCRIPTION";
+        //    await Loader();
+
+        //    if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        var data = await _notificationConfigService.GetConfigsAsync(false, null, null); // default call - service returns enumerable
+        //        return PartialView(partialView ?? "_NotificationListPartial", data);
+        //    }
+
+        //    if (string.Equals(path, "new", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        return PartialView(partialView ?? "_Create", new NotificationConfig());
+        //    }
+
+        //    //// default: get by id
+        //    if (string.IsNullOrWhiteSpace(KEY))
+        //    {
+        //        return new HttpStatusCodeResult(400, "KEY is required to fetch a notification configuration.");
+        //    }
+
+        //    try
+        //    {
+        //        var model = await _notificationConfigService.GetByIdAsync(KEY);
+        //        //if (model == null)
+        //        //{
+        //        //    return HttpNotFound($"Notification configuration '{KEY}' not found.");
+        //        //}
+
+        //        return PartialView(partialView ?? "_NotificationConfigDetails", model);
+        //    }
+        //    catch
+        //    {
+        //        // simple, non-technical error message
+        //        return new HttpStatusCodeResult(500, "Failed to load configuration. Please try again later.");
+        //    }
+        //}
+
+        public async Task<ActionResult> InitializeData(
+    string KEY = null,
+    string partialView = null,
+    string path = null,
+    string serviceOption = null,
+    string branchId = null,
+    string notificationType = null,
+    bool isCentralized = true)
         {
             await Loader();
 
             if (string.Equals(path, "list", StringComparison.OrdinalIgnoreCase))
             {
-                var data = await _notificationConfigService.GetConfigsAsync(false, null, null); // default call - service returns enumerable
+                var data = await _notificationConfigService.GetConfigsAsync(false, null, null);
                 return PartialView(partialView ?? "_NotificationListPartial", data);
             }
 
@@ -101,40 +147,77 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Configurations.Not
                 return PartialView(partialView ?? "_Create", new NotificationConfig());
             }
 
-            // default: get by id
-            if (string.IsNullOrWhiteSpace(KEY))
+            path = "byType";
+            // New: find by (notificationType, branchId, isCentralized)
+            if (string.Equals(path, "byType", StringComparison.OrdinalIgnoreCase))
             {
-                return new HttpStatusCodeResult(400, "KEY is required to fetch a notification configuration.");
-            }
-
-            try
-            {
-                var model = await _notificationConfigService.GetByIdAsync(KEY);
-                if (model == null)
+                // Validate required inputs
+                if (string.IsNullOrWhiteSpace(notificationType))
                 {
-                    return HttpNotFound($"Notification configuration '{KEY}' not found.");
+                    return new HttpStatusCodeResult(400, "notificationType is required.");
                 }
 
-                return PartialView(partialView ?? "_NotificationConfigDetails", model);
+                try
+                {
+                    // Service should provide a lookup by these fields. Example:
+                    var existing = await _notificationConfigService
+                        .GetByTypeAsync(notificationType, isCentralized, branchId);
+
+                    if (existing != null)
+                    {
+                        return PartialView(partialView ?? "_ConfigForm", existing);
+                    }
+
+                    // Not found — return a new model pre-filled with the supplied values
+                    var newModel = new NotificationConfig
+                    {
+                        Id = null, // new
+                        IsCentralized = isCentralized,
+                        BranchId = branchId,
+                        NotificationType = notificationType
+                        // you can prefill other defaults here if desired
+                    };
+
+                    return PartialView(partialView ?? "_ConfigForm", newModel);
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(500, "Failed to load configuration. Please try again later.");
+                }
             }
-            catch
+
+            // Default: existing get-by-id behavior (if KEY present)
+            if (!string.IsNullOrWhiteSpace(KEY))
             {
-                // simple, non-technical error message
-                return new HttpStatusCodeResult(500, "Failed to load configuration. Please try again later.");
+                try
+                {
+                    var model = await _notificationConfigService.GetByIdAsync(KEY);
+                    if (model == null)
+                    {
+                        return HttpNotFound($"Notification configuration '{KEY}' not found.");
+                    }
+
+                    return PartialView(partialView ?? "_NotificationConfigDetails", model);
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(500, "Failed to load configuration. Please try again later.");
+                }
             }
+
+            // If no path and no KEY — return a 400 to indicate client error (or return a new empty form)
+            return new HttpStatusCodeResult(400, "Missing parameters.");
         }
+
 
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdate(NotificationConfig model)
         {
-            if (!ModelState.IsValid)
-            {
-                return Json(new { success = false, status = "Failed", message = "Please fill all required fields." });
-            }
+          
 
             try
             {
-                var tpl = model.TemplateBody ?? string.Empty;
+                var tpl = model.NotificationTemplate ?? string.Empty;
                 var matches = Regex.Matches(tpl, @"\$[A-Za-z_]\w*");
                 if (matches.Count > 0)
                 {

@@ -1,7 +1,9 @@
-﻿@* Cheque Book Filters - minimal fields to match ChequeBookQuery *@
+﻿@*Cheque Book Filters - minimal fields to match ChequeBookQuery*@
 @using Resources
 @{
-    ViewBag.Title = "Cheque Book Overview"; // or @GlobalCheque.Whatever
+    ViewBag.Title = "Cheque Book Overview";
+    // Set action type: admin, teller, view-only, edit, minimal
+    var actionType = ViewBag.ActionType ?? "admin";
 }
 
 <div class="card shadow p-3 mb-4">
@@ -9,7 +11,7 @@
 
     <form id="chequeFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
-            <!-- Toggle switches for optional filter groups -->
+            @* Toggle switches for optional filter groups *@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <div class="form-check">
@@ -33,7 +35,7 @@
                 </div>
             </div>
 
-            <!-- Default Filters (always visible) -->
+            @*Default Filters (always visible)*@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Customer Account / ID</label>
@@ -56,18 +58,17 @@
                 </div>
             </div>
 
-            <!-- Branch Filter (togglable) -->
+            @*Branch Filter (togglable)*@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Branch</label>
-                        @* Replace ViewBag.Branches with your actual branches collection *@
                         @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                     </div>
                 </div>
             </div>
 
-            <!-- Flags (togglable) -->
+            @*Flags (togglable)*@
             <div id="flagFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-4">
@@ -77,6 +78,9 @@
                             <option value="Active">Active</option>
                             <option value="Closed">Closed</option>
                             <option value="Pending">Pending</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Used">Used</option>
                         </select>
                     </div>
 
@@ -98,7 +102,7 @@
                 </div>
             </div>
 
-            <!-- Date Filters (togglable) -->
+            @*Date Filters (togglable)*@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -122,31 +126,87 @@
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
                     <i class="mdi mdi-refresh"></i> Reset
                 </button>
+
+                <button id="exportBtn" type="button" class="btn btn-success w-100">
+                    <i class="mdi mdi-file-export"></i> Export
+                </button>
             </div>
         </div>
     </form>
 </div>
 
-<!-- DataTable Partial -->
+@*DataTable Partial*@
 <div id="datalistingview">
     @Html.Partial("_CheckBookData")
 </div>
 
-
+@*Details Modal*@
+<div class="modal fade" id="chequeDetailsModal" tabindex="-1" aria-labelledby="chequeDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="chequeDetailsModalLabel">
+                    <i class="mdi mdi-file-document-outline me-2"></i>Cheque Book Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading details...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary btn-print-details">
+                    <i class="mdi mdi-printer me-1"></i>Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
-    <script>
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+         var chequeViewConfig = {
+     actionType: '@actionType'
+     };
+        // Global variables
         var chequeTable = null;
+        var currentChequeId = null;
+        var currentChequeName = null;
 
+        // Configuration - will be overridden by server-side value
+        var chequeViewConfig = {
+            actionType: '@actionType' // admin, teller, view-only, edit, minimal
+        };
+
+        // =============== UTILITY FUNCTIONS ===============
         function emptyToNull(v) {
             return (v === undefined || v === null || v === '') ? null : v;
         }
 
+        function escapeHtml(str) {
+            if (!str && str !== 0) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // =============== FILTER FUNCTIONS ===============
         function collectChequeExportParams() {
             const isLostEl = document.getElementById('isLost');
             const isBlockedEl = document.getElementById('isBlocked');
 
-            const ret= {
+            const ret = {
                 CustomerId: emptyToNull($('#customerId').val()),
                 CustomerName: emptyToNull($('#customerName').val()),
                 BranchId: emptyToNull($('#branchId').val()),
@@ -162,11 +222,322 @@
                 EndDate: emptyToNull($('#endDate').val()),
                 options: {}
             };
-            console.log("Request : "+ret);
             return ret;
         }
 
+        function formatIsPrintedBadge(value, type) {
+            const raw = value;
+            const label = (raw === null || raw === undefined) ? '' : String(raw);
+
+            let badgeClass = 'bg-secondary';
+            const low = label.toLowerCase();
+            if (low === 'true' || low === 'yes' || low === '1') {
+                badgeClass = 'bg-success';
+            } else if (low === 'false' || low === 'no' || low === '0') {
+                badgeClass = 'bg-danger';
+            } else if (low === 'blocked') {
+                badgeClass = 'bg-dark';
+            }
+
+            const esc = label
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+
+            if (type === 'display' || type === 'filter') {
+                return `<span class="badge ${badgeClass}">${esc}</span>`;
+            }
+
+            return label;
+        }
+
+        // =============== ACTION HANDLER FUNCTIONS ===============
+        function handleChequeView(id, name) {
+            currentChequeId = id;
+            currentChequeName = name;
+
+            const modalEl = document.getElementById('chequeDetailsModal');
+            if (!modalEl) {
+                appalert('Details modal not found', 0, 1);
+                return;
+            }
+
+            const bsModal = new bootstrap.Modal(modalEl);
+            $('#chequeDetailsModal .modal-body').html(`
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading details...</p>
+                </div>
+            `);
+
+            bsModal.show();
+
+            $.get('/Cheque/InitializeData', { KEY: id })
+                .done(function (html) {
+                    $('#chequeDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
+
+                    // Initialize tooltips in modal
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                })
+                .fail(function () {
+                    $('#chequeDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                    appalert('Failed to load details', 0, 1);
+                });
+        }
+
+        function handleChequeEdit(id, name) {
+            // Enter edit mode (hide filters and load edit partial)
+            enterEditMode();
+
+            // Load edit partial into datalistingview
+            AddORUpdateGen(id, 'datalistingview', '_EditChequeBook', 'get', 'Cheque');
+        }
+
+        function handleChequeDelete(id, name) {
+            if (confirm(`Are you sure you want to delete cheque book "${name}"?`)) {
+                DeleteRecordDataTable('Cheque', id, 'myDataTable', '_CheckBookData', 0, 'datalistingview', null, 'list');
+            }
+        }
+
+        function handleChequePrint(id, name) {
+            window.open(`/Cheque/Print?key=${encodeURIComponent(id)}`, '_blank');
+        }
+
+        function handleChequeBlock(id, name) {
+            if (confirm(`Are you sure you want to block cheque book "${name}"?`)) {
+                $.ajax({
+                    url: `/Cheque/Block/${encodeURIComponent(id)}`,
+                    type: 'POST',
+                    success: function(response) {
+                        appalert('Cheque book blocked successfully', 1, 1);
+                        if (chequeTable) {
+                            chequeTable.ajax.reload();
+                        }
+                    },
+                    error: function() {
+                        appalert('Failed to block cheque book', 0, 1);
+                    }
+                });
+            }
+        }
+
+        function handleChequeUnblock(id, name) {
+            if (confirm(`Are you sure you want to unblock cheque book "${name}"?`)) {
+                $.ajax({
+                    url: `/Cheque/Unblock/${encodeURIComponent(id)}`,
+                    type: 'POST',
+                    success: function(response) {
+                        appalert('Cheque book unblocked successfully', 1, 1);
+                        if (chequeTable) {
+                            chequeTable.ajax.reload();
+                        }
+                    },
+                    error: function() {
+                        appalert('Failed to unblock cheque book', 0, 1);
+                    }
+                });
+            }
+        }
+
+        function handleChequeMarkLost(id, name) {
+            if (confirm(`Are you sure you want to mark cheque book "${name}" as lost?`)) {
+                $.ajax({
+                    url: `/Cheque/MarkAsLost/${encodeURIComponent(id)}`,
+                    type: 'POST',
+                    success: function(response) {
+                        appalert('Cheque book marked as lost successfully', 1, 1);
+                        if (chequeTable) {
+                            chequeTable.ajax.reload();
+                        }
+                    },
+                    error: function() {
+                        appalert('Failed to mark cheque book as lost', 0, 1);
+                    }
+                });
+            }
+        }
+
+        // =============== ACTION BUTTON GENERATOR ===============
+        function getActionsHtml(id, rowData) {
+            const viewFor = chequeViewConfig.actionType || 'admin';
+            const safeId = encodeURIComponent(id);
+            const name = escapeHtml(rowData.customerName || rowData.CustomerName || '');
+            const isLost = rowData.isLost === true || rowData.isLost === 'true' || rowData.IsLost === true;
+            const isBlocked = rowData.isBlocked === true || rowData.isBlocked === 'true' || rowData.IsBlocked === true;
+            const status = rowData.status || rowData.Status || '';
+            const isPrinted = rowData.isPrinted === true || rowData.isPrinted === 'true' || rowData.IsPrinted === true;
+
+            // Create a safe DOM ID for dropdown
+            const safeDomId = String(id).replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+            const btnId = 'chequeDropdown_' + safeDomId;
+
+            // Define all possible action buttons
+            const detailsBtn = `
+                <button type="button" class="dropdown-item btn-cheque-view"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
+                </button>`;
+
+            const editBtn = (status === 'Active' || status === 'Pending') && !isLost ? `
+                <button type="button" class="dropdown-item btn-cheque-edit"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                </button>` : '';
+
+            const printBtn = !isLost && !isBlocked && (status === 'Active' || status === 'Pending') && !isPrinted ? `
+                <button type="button" class="dropdown-item btn-cheque-print"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-printer me-1 text-info"></i> Print Report
+                </button>` : '';
+
+            const blockBtn = !isBlocked && !isLost && (status === 'Active' || status === 'Pending') ? `
+                <button type="button" class="dropdown-item btn-cheque-block"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-block-helper me-1 text-warning"></i> Block
+                </button>` : '';
+
+            const unblockBtn = isBlocked && !isLost ? `
+                <button type="button" class="dropdown-item btn-cheque-unblock"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-lock-open me-1 text-success"></i> Unblock
+                </button>` : '';
+
+            const markLostBtn = !isLost && (status === 'Active' || status === 'Pending') ? `
+                <button type="button" class="dropdown-item btn-cheque-mark-lost"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-alert-circle me-1 text-danger"></i> Mark as Lost
+                </button>` : '';
+
+            const deleteBtn = (status === 'Closed' || status === 'Cancelled' || isLost) ? `
+                <button type="button" class="dropdown-item btn-cheque-delete text-danger"
+                        data-id="${safeId}" data-name="${name}">
+                    <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                </button>` : '';
+
+            // Determine which buttons to show based on viewFor
+            let buttons = [];
+
+            switch(viewFor.toLowerCase()) {
+                case 'admin':
+                    buttons.push(detailsBtn);
+                    if (editBtn) buttons.push(editBtn);
+                    if (printBtn) buttons.push(printBtn);
+                    if (blockBtn) buttons.push(blockBtn);
+                    if (unblockBtn) buttons.push(unblockBtn);
+                    if (markLostBtn) buttons.push(markLostBtn);
+                    if (deleteBtn) buttons.push(deleteBtn);
+                    break;
+
+                case 'teller':
+                    buttons.push(detailsBtn);
+                    if (printBtn) buttons.push(printBtn);
+                    if (blockBtn) buttons.push(blockBtn);
+                    if (unblockBtn) buttons.push(unblockBtn);
+                    if (markLostBtn) buttons.push(markLostBtn);
+                    break;
+
+                case 'view-only':
+                    buttons.push(detailsBtn);
+                    if (printBtn) buttons.push(printBtn);
+                    break;
+
+                case 'minimal':
+                    // Single view button (no dropdown)
+                    return `
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view"
+                                data-id="${safeId}" data-name="${name}">
+                            <i class="mdi mdi-file-document-outline"></i> View
+                        </button>`;
+
+                case 'edit':
+                default:
+                    buttons.push(detailsBtn);
+                    if (editBtn) buttons.push(editBtn);
+                    if (deleteBtn) buttons.push(deleteBtn);
+                    break;
+            }
+
+            // Filter out empty buttons
+            const filteredButtons = buttons.filter(b => b.trim() !== '');
+
+            // Only show dropdown if there's more than just the view button
+            if (filteredButtons.length <= 1) {
+                return `
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view"
+                            data-id="${safeId}" data-name="${name}">
+                        <i class="mdi mdi-file-document-outline"></i> View
+                    </button>`;
+            }
+
+            // Multiple buttons - use dropdown
+            return `
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                            type="button" id="${btnId}"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-cog-outline"></i> Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                        ${filteredButtons.map(btn => `<li>${btn}</li>`).join('')}
+                    </ul>
+                </div>`;
+        }
+
+        // =============== EDIT MODE FUNCTIONS ===============
+        function enterEditMode() {
+            // Hide filters section
+            $('#chequeFilterForm').closest('.card').addClass('d-none');
+
+            // Destroy DataTable if exists
+            if (chequeTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+                chequeTable.destroy(true);
+                chequeTable = null;
+            }
+
+            // Add edit-mode class for styling
+            $('body').addClass('edit-mode');
+        }
+
+        function exitEditMode() {
+            // Show filters section
+            $('#chequeFilterForm').closest('.card').removeClass('d-none');
+
+            // Remove edit-mode class
+            $('body').removeClass('edit-mode');
+
+            // Reload the datatable partial
+            AddORUpdateGen(null, 'datalistingview', '_CheckBookData', 'get', 'ChequeBook');
+
+            // Re-initialize DataTable after a short delay
+            setTimeout(function() {
+                try {
+                    if (typeof loadChequeData === 'function') {
+                        loadChequeData();
+                    }
+                } catch (e) {
+                    console.error('Failed to init datatable after exiting edit mode', e);
+                }
+            }, 300);
+        }
+
+        // =============== DATATABLE FUNCTIONS ===============
         function loadChequeData() {
+            // If already initialized, just reload
+            if (chequeTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+                chequeTable.ajax.reload();
+                return;
+            }
+
             chequeTable = $('#myDataTable').DataTable({
                 serverSide: true,
                 destroy: true,
@@ -174,7 +545,7 @@
                 responsive: true,
                 order: [[0, 'desc']],
                 ajax: {
-                    url: '/ChequeBook/LoadChequeBooksData',
+                    url: '/ChequeBook/GetChequeBooks',
                     type: 'POST',
                     contentType: 'application/json',
                     data: function (d) {
@@ -193,8 +564,9 @@
 
                         return JSON.stringify(filters);
                     },
-                    error: function () {
-                        alert('Failed to load data. Please try again.');
+                    error: function (xhr, error, thrown) {
+                        console.error('AJAX Error:', error, thrown);
+                        appalert('Failed to load data. Please try again.', 0, 1);
                     }
                 },
                 columns: [
@@ -207,12 +579,34 @@
                                 : (data || '');
                         }
                     },
-                    { data: 'customerName', name: 'MemberName' },
                     {
-                        data: 'CategoryName',  // Changed from 'Category' to 'CategoryName'
-                        name: 'Category'   // Changed from 'Category' to 'CategoryName'
+                        data: 'customerName',
+                        name: 'MemberName',
+                        render: function(data) {
+                            return escapeHtml(data || '');
+                        }
                     },
-                    { data: 'numberOfLeaves', name: 'Num. Of Leaves' },
+                    {
+                        data: 'CategoryName',
+                        name: 'Category',
+                        render: function(data) {
+                            const label = data || '';
+                            let badgeClass = 'bg-secondary';
+
+                            if (label === 'Personal') badgeClass = 'bg-info';
+                            else if (label === 'Corporate') badgeClass = 'bg-primary';
+                            else if (label === 'Other') badgeClass = 'bg-dark';
+
+                            return `<span class="badge ${badgeClass}">${escapeHtml(label)}</span>`;
+                        }
+                    },
+                    {
+                        data: 'numberOfLeaves',
+                        name: 'Num. Of Leaves',
+                        render: function(data) {
+                            return data || '0';
+                        }
+                    },
                     {
                         data: 'status',
                         name: 'Status',
@@ -230,37 +624,79 @@
                                 badgeClass = 'bg-danger';
                             } else if (label === 'Blocked') {
                                 badgeClass = 'bg-dark';
+                            } else if (label === 'Lost') {
+                                badgeClass = 'bg-danger';
                             }
 
-                            return `<span class="badge ${badgeClass}">${label}</span>`;
+                            return `<span class="badge ${badgeClass}">${escapeHtml(label)}</span>`;
                         }
                     },
-                    
-                    { data: 'customerId', name: 'Member Ref.' },
-                    {
 
+                    {
+                        data: 'customerId',
+                        name: 'Member Ref.',
+                        render: function(data) {
+                            return escapeHtml(data || '');
+                        }
+                    },
+                    {
+                        data: 'IsPrinted',
+                        name: 'IsPrinted',
+                        render: function (data, type, row, meta) {
+                            return formatIsPrintedBadge(data, type);
+                        }
+                    },
+                    {
                         data: 'id',
                         orderable: false,
                         searchable: false,
-                        render: function (id) {
-                            return `<a href="/Cheque/Details?key=${id}" class="btn btn-sm btn-outline-primary">
-                                        <i class="mdi mdi-file-document-outline"></i> View
-                                    </a>`;
+                        render: function (data, type, row) {
+                            return getActionsHtml(data, row);
                         }
                     }
                 ],
                 language: {
-                    emptyTable: 'No cheque books found'
+                    emptyTable: 'No cheque books found',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                    infoEmpty: 'Showing 0 to 0 of 0 entries',
+                    infoFiltered: '(filtered from _MAX_ total entries)',
+                    lengthMenu: 'Show _MENU_ entries',
+                    loadingRecords: 'Loading...',
+                    processing: 'Processing...',
+                    search: 'Search:',
+                    zeroRecords: 'No matching records found'
+                },
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                initComplete: function() {
+                    // Initialize tooltips
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
                 }
             });
         }
 
+        // =============== EXPORT FUNCTION ===============
         function exportChequeData() {
             const filters = collectChequeExportParams();
-            const params = new URLSearchParams(filters).toString();
-            window.location.href = `/Cheque/DownloadChequeBooks?${params}`;
+            const params = new URLSearchParams();
+
+            // Add filter parameters
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && key !== 'options') {
+                    params.append(key, filters[key]);
+                }
+            });
+
+            window.location.href = `/Cheque/DownloadChequeBooks?${params.toString()}`;
         }
 
+        // =============== RESET FILTERS ===============
         function resetChequeFilters() {
             $('#chequeFilterForm').trigger('reset');
 
@@ -269,48 +705,142 @@
             }
 
             $('#branchFilter, #dateFilters, #flagFilters').addClass('d-none');
+            $('#toggleBranch, #toggleDates, #toggleFlags').prop('checked', false);
             $('#isLost').prop('checked', false);
             $('#isBlocked').prop('checked', false);
 
-          //  loadChequeData();
+            if (chequeTable) {
+                chequeTable.ajax.reload();
+            }
+
+            appalert('Filters reset successfully', 1, 1);
         }
 
+        // =============== DOCUMENT READY ===============
         $(document).ready(function () {
-            $('#applyFilterBtn').on('click', function (e) {
+            // Apply filter button
+            $('#applyFilterBtn').off('click').on('click', function (e) {
                 e.preventDefault();
                 loadChequeData();
             });
 
-            $('#resetFilterBtn').on('click', function (e) {
+            // Reset filter button
+            $('#resetFilterBtn').off('click').on('click', function (e) {
                 e.preventDefault();
                 resetChequeFilters();
             });
 
-            $('#exportBtn').on('click', function (e) {
+            // Export button
+            $('#exportBtn').off('click').on('click', function (e) {
                 e.preventDefault();
                 exportChequeData();
             });
 
+            // Initialize Select2
             if ($.fn.select2) {
                 try {
-                    $('#branchId').select2({
-                        width: '100%',
-                        placeholder: 'Select Branch'
-                    });
+                    if ($('#branchId').length) {
+                        $('#branchId').select2({
+                            width: '100%',
+                            placeholder: 'Select Branch'
+                        });
+                    }
                 } catch (err) {
                     console.warn('select2 init failed', err);
                 }
             }
 
-           // loadChequeData();
-
-            $('#chequeFilterForm input').on('keypress', function (e) {
+            // Enter key in filter inputs
+            $('#chequeFilterForm input').off('keypress').on('keypress', function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
                     loadChequeData();
                 }
             });
-        });
-    </script>
-}
 
+            // =============== DELEGATED ACTION HANDLERS ===============
+            $(document).off('click', '.btn-cheque-view').on('click', '.btn-cheque-view', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeView(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-edit').on('click', '.btn-cheque-edit', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeEdit(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-delete').on('click', '.btn-cheque-delete', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeDelete(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-print').on('click', '.btn-cheque-print', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequePrint(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-block').on('click', '.btn-cheque-block', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeBlock(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-unblock').on('click', '.btn-cheque-unblock', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeUnblock(id, name);
+            });
+
+            $(document).off('click', '.btn-cheque-mark-lost').on('click', '.btn-cheque-mark-lost', function (e) {
+                e.preventDefault();
+                const id = decodeURIComponent($(this).data('id'));
+                const name = $(this).data('name') || '';
+                handleChequeMarkLost(id, name);
+            });
+
+            // Print button in details modal
+            $(document).off('click', '.btn-print-details').on('click', '.btn-print-details', function (e) {
+                e.preventDefault();
+                if (currentChequeId) {
+                    handleChequePrint(currentChequeId, currentChequeName);
+                }
+            });
+
+            // Back to list button in edit mode
+            $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
+                e.preventDefault();
+                exitEditMode();
+            });
+
+            // Cancel edit button
+            $(document).off('click', '.btn-cancel-edit').on('click', '.btn-cancel-edit', function (e) {
+                e.preventDefault();
+                exitEditMode();
+            });
+
+            // Save success handler (if your edit form has a success callback)
+            $(document).on('cheque:saveSuccess', function(e, data) {
+                appalert('Cheque book saved successfully', 1, 1);
+                exitEditMode();
+            });
+
+            // Load initial data
+            loadChequeData();
+
+            // Apply any server-side config
+            if (typeof chequeViewConfig !== 'undefined' && chequeViewConfig.actionType) {
+                console.log('Cheque view configured as:', chequeViewConfig.actionType);
+            }
+        });
+</script>
+}

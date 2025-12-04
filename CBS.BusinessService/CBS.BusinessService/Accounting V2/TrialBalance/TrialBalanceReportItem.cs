@@ -29,6 +29,7 @@ namespace CBS.FrontDesk.Service.Accounting_V2.TrialBalance
         /// <summary>Total credits (OpeningCredit + MovementCredit).</summary>
         public decimal Credit { get; set; }
 
+        // addtional service
         // 🔹 Per-line difference checks
         public decimal OpeningDifference { get; set; }      // OpeningDebit - OpeningCredit
         public decimal MovementDifference { get; set; }     // MovementDebit - MovementCredit
@@ -67,6 +68,8 @@ namespace CBS.FrontDesk.Service.Accounting_V2.TrialBalance
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss}", ApplyFormatInEditMode = true)]
         public TimeSpan Time { get; set; } = DateTime.Now.TimeOfDay;
+
+
 
         public string Username { get; set; }
         public string Phone { get; set; }

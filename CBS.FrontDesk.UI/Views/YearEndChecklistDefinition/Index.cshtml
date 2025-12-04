@@ -1,0 +1,211 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTask
+
+
+@{
+    ViewBag.Title = "End of Year Check list Definition";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> System Reconciliation
+        </h1>
+
+        @*<div class="alert alert-info mt-3 py-2">
+                <i class="mdi mdi-information-outline me-1"></i>
+                Use the filters below to search and review journal entries efficiently.
+            </div>*@
+    </div>
+</div>
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="YearEndChecklistDefinitionFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <div class="card p-3 mb-2 bg-light">
+
+            <!-- 🔹 Branch Filter -->
+            <div class="row mb-1">
+                <div class="col-md-12 mb-1">
+                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 mb-1", @id = "branchId" })
+                </div>
+            </div>
+
+            <!-- 🔹 Accounting Year Filter -->
+            <div class="col-md-6 mb-2">
+                @Html.LabelFor(model => model.AccountingYearId, "Accounting Year",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(model => model.AccountingYearId,
+                    new List<SelectListItem>(), // fill via AJAX if needed
+                    "--- Select Accounting Year ---",
+                    new { @class = "form-control select2 mb-2", id = "AccountingYearId", required = "required" })
+            </div>
+
+            <!-- 🔹 Apply / Reset Buttons -->
+            <div class="row g-2 mt-2">
+                <div class="col-12 col-md-6">
+                    <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                        <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+<!-- ============================== -->
+<!-- DataTable Load Script -->
+<!-- ============================== -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function loadYearEndChecklist() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                searching: false,
+                order: [[0, 'asc']],
+                ajax: {
+                    url: '/YearEndChecklistDefinition/LoadYearEndChecklistDefinition',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        // collect filters
+                        const filters = {
+                            BranchId: $('#branchId').val(),
+                            AccountingYearId: $('#AccountingYearId').val(),
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: d.columns[d.order[0].column].data,
+                                sortColumnDirection: d.order[0].dir
+                            }
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('❌ Error loading checklist:', status, err);
+                        appalert('❌ Failed to load checklist. Status: ' + xhr.status, 4, 1);
+                    }
+                },
+                columns: [
+                    { data: 'Category', name: 'Category' },
+                    { data: 'Title', name: 'Title' },
+                    { data: 'Description', name: 'Description' },
+                    {
+                        data: 'IsMandatory', name: 'IsMandatory',
+                        render: value => value
+                            ? '<span class="badge bg-success">Yes</span>'
+                            : '<span class="badge bg-secondary">No</span>'
+                    },
+                    {
+                        data: 'IsActive', name: 'IsActive',
+                        render: value => value
+                            ? '<span class="badge bg-primary">Active</span>'
+                            : '<span class="badge bg-danger">Disabled</span>'
+                    },
+                    {
+                        data: null, orderable: false,
+                        render: row => `
+                        <button class="btn btn-sm btn-warning edit-task" data-id="${row.Id}">
+                            <i class="mdi mdi-pencil-outline"></i>
+                        </button>
+                    `
+                    }
+                ],
+                initComplete: function () {
+                    appalert('✅ Year-end checklist loaded successfully!', 1, 1);
+                },
+                drawCallback: function () {
+                    const api = this.api();
+                    if (api.rows({ page: 'current' }).data().length === 0) {
+                        appalert('⚠️ No checklist items found on this page.', 2, 1);
+                    }
+                }
+            });
+        }
+
+        // ==============================
+        // Filter Buttons
+        // ==============================
+        $(document).ready(function () {
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadYearEndChecklist();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                // reset form fields
+                $('#YearEndChecklistDefinitionFilterForm').trigger('reset');
+                // reset any select2 dropdowns
+                $('.select2').val('').trigger('change');
+                // optional: hide any dynamic filters (if you have any)
+                $('#branchFilter, #dateFilters').addClass('d-none');
+
+                // ✅ Do NOT reload the table
+                appalert('🧹 Filters reset.', 1, 1);
+            });
+
+
+            // initial load
+            loadYearEndChecklist();
+        });
+    </script>
+    }

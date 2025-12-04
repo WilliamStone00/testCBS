@@ -26,12 +26,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
         private readonly BranchServices _branchServices;
         private readonly GLSystemReconciliationService _glSystemReconciliationService;
+        private readonly JournalHeadService _journalHeadService;
 
-        public GLSystemReconciliationController(BranchServices branchServices, GLSystemReconciliationService glSystemReconciliationService)
+        public GLSystemReconciliationController(BranchServices branchServices, GLSystemReconciliationService glSystemReconciliationService, JournalHeadService journalHeadService)
         {
 
             _branchServices = branchServices;
             _glSystemReconciliationService = glSystemReconciliationService;
+            _journalHeadService = journalHeadService;
 
 
         }
@@ -109,6 +111,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
             model.EndUtc = model.StartDate;
             model.StartUtc = model.StartDate;
+            model.EndDate = model.StartDate;
             
            
             try
@@ -299,6 +302,32 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         public async Task<ActionResult> LoadOperationDetailsData(OperationDetailsFilter query)
         {
             return View("_StatisticsDataTable",query);
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetStatisticsDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "Journal Entry ID is required");
+
+            Data.Entity.AccountingV2.JournalHead entry = null;
+
+            try
+            {
+                // 1️⃣ Get Journal Entry
+                entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
+
+                var counterpartyBranch = await _branchServices.GetBranch(entry.CounterpartyBranchId);
+                entry.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
+
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_StatisticsDetails", entry);
         }
 
 

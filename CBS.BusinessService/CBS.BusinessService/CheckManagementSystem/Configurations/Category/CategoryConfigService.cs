@@ -55,6 +55,11 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             try
             {
+                if (!IsHeadOffice())
+                {
+                    query.BranchId = GetBankID();
+                }
+
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.categorydatatable, query);
 
@@ -217,6 +222,7 @@ namespace CBS.BusinessService.CheckManagementSystem
         {
             try
             {
+
                 string formattedUrl = string.Format(APICallHelper.DeactivateChequeBookCategory, categoryId);
                 var response = await _apiCallerHelper.DeleteAsync<ServiceResponse<bool>>(formattedUrl);
 

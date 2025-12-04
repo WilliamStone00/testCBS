@@ -124,42 +124,56 @@
                     <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
                 </div>
 
-               <div class="col-md-6 mb-1">
+                <div class="col-md-6 mb-1">
                     <label class="form-label fw-bold">Ticket Source</label>
                     @Html.DropDownList("TicketSource",
                         new SelectList(ViewBag.TicketSource, "Value", "Text"),
                         "Select Ticket Source",
                         new { @class = "form-control select2 mb-1", @id = "TicketSource" })
-               </div>
+                </div>
             </div>
             @*<div class="row mb-1">
-                <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Reconciliation Status</label>
-                    @Html.DropDownList("OperationCode",
-                        new SelectList(ViewBag.OperationCode, "Value", "Text"),
-                        "Select Operation Code",
-                        new { @class = "form-control select2 mb-1", @id = "OperationCode" })
-                </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Reconciliation Status</label>
+                        @Html.DropDownList("OperationCode",
+                            new SelectList(ViewBag.OperationCode, "Value", "Text"),
+                            "Select Operation Code",
+                            new { @class = "form-control select2 mb-1", @id = "OperationCode" })
+                    </div>
 
-                <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Ticket Source</label>
-                    @Html.DropDownList("TicketSource",
-                        new SelectList(ViewBag.TicketSource, "Value", "Text"),
-                        "Select Ticket Source",
-                        new { @class = "form-control select2 mb-1", @id = "TicketSource" })
-                </div>
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Ticket Source</label>
+                        @Html.DropDownList("TicketSource",
+                            new SelectList(ViewBag.TicketSource, "Value", "Text"),
+                            "Select Ticket Source",
+                            new { @class = "form-control select2 mb-1", @id = "TicketSource" })
+                    </div>
 
-            </div>*@
+                </div>*@
 
         </div>     <!-- Action Buttons -->
-        <div class="row mt-2">
-            <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filters
+
+
+
+
+
+        <div class="row g-2 mt-2">
+            <div class="col-12 col-md-4">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
                 </button>
-                <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100"
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100"
                         onclick="document.getElementById('journalHeaderFilterForm').reset();">
-                    <i class="mdi mdi-refresh"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btntExport" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
         </div>
@@ -180,9 +194,25 @@
 
 
 
+<div class="modal fade" id="WorkflowExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Partial("_ExportJournalHeadDataTable")
+
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
 
     <script>
+
+        // =====================================
+        // Track if filters were applied
+        // =====================================
+        let filtersApplied = false;
+
         // ==============================
         // Load Journal Entries into DataTable
         // ==============================
@@ -192,7 +222,7 @@
                 destroy: true,
                 responsive: true,
                 searching: false,
-                order: [[0, 'desc']], // Most recent OpenedAtUtc on top
+                order: [[0, 'desc']],
                 ajax: {
                     url: '/JournalHead/LoadJournalSourceData',
                     type: 'POST',
@@ -207,7 +237,7 @@
                             skip: d.start,
                             pageSize: d.length,
                             searchValue: d.search?.value || '',
-                            sortColumnName: d.columns[d.order[0].column].data,  // ensures server gets the sort column
+                            sortColumnName: d.columns[d.order[0].column].data,
                             sortColumnDirection: d.order[0].dir
                         };
 
@@ -230,7 +260,6 @@
                         }
                     },
                     { data: 'Reference', name: 'Reference' },
-                   
                     { data: 'CreatedBy', name: 'CreatedBy' },
                     { data: 'State', name: 'State' },
                     {
@@ -238,11 +267,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-<div class="text-center">
-                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                            <i class="mdi mdi-eye-outline me-1"></i> Details
-                        </button>
-</div>`;
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> Details
+                                    </button>
+                                </div>`;
                         }
                     }
                 ]
@@ -275,31 +304,29 @@
             $('.select2').val('').trigger('change');
             $('#branchFilter, #dateFilters').addClass('d-none');
             loadJournalData();
+            filtersApplied = false;
         }
 
         // ==============================
-        // Init
+        // INIT – Apply & Reset Filters
         // ==============================
         $(document).ready(function () {
-            // Uncomment below to auto-load
-            // loadJournalData();
 
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 loadJournalData();
+                filtersApplied = true;   // <-- IMPORTANT
             });
 
             $('#resetFilterBtn').on('click', function (e) {
                 e.preventDefault();
                 resetJournalFilters();
             });
+
         });
 
         // ==============================
-        // Optional Edit Function
-        // ==============================
-        // ==============================
-        // Handle Details Button Click
+        // Handle Details Button
         // ==============================
         $(document).on('click', '.view-details', function () {
             const journalId = $(this).data('id');
@@ -310,10 +337,9 @@
                 url: `/JournalHead/Details?id=${journalId}`,
                 type: 'GET',
                 success: function (partialViewHtml) {
-                    // Inject the partial view into the modal container
+
                     $('#SourceDetailsModal .modal-content').html(partialViewHtml);
 
-                    // Show the modal
                     const modal = new bootstrap.Modal(document.getElementById('SourceDetailsModal'));
                     modal.show();
                 },
@@ -325,10 +351,89 @@
         });
 
 
+        // =====================================================
+        // 🔹 EXPORT BUTTON CLICK (Open Export Modal)
+        // =====================================================
+        $(document).on("click", "#btntExport", function () {
+
+            if (!filtersApplied) {
+                appalert("⚠️ Please apply filters before exporting.", 2, 1);
+                return;
+            }
+
+            // Open Export Modal
+            const modalEl = document.getElementById('WorkflowExportModal');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        });
 
 
+        // =====================================================
+        // 🔹 CONFIRM EXPORT REQUEST
+        // =====================================================
+        $(document).on("click", "#btnConfirmJournalExport", function () {
 
+            // Filters
+            let filters = collectJournalFilters();
 
+            // Export Params
+            let exportOptions = {
+                FileName: $("#jhFileName").val(),
+                Format: $("#jhExportFormat").val(),
+                ReportType: $("#jhReportType").val(),
+                StartDate: $("#jhStartDate").val(),
+                EndDate: $("#jhEndDate").val()
+            };
+
+            let request = {
+                Filters: filters,
+                ExportOptions: exportOptions
+            };
+
+            // Button loading state
+            $("#btnConfirmJournalExport")
+                .prop("disabled", true)
+                .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+            $.ajax({
+                url: '/JournalHead/ExportWorkflowData',
+                type: "POST",
+                data: JSON.stringify(request),
+                contentType: "application/json",
+                xhrFields: { responseType: 'blob' },
+                success: function (data, status, xhr) {
+
+                    let disposition = xhr.getResponseHeader("Content-Disposition");
+                    let filename = "JournalHeader.xlsx";
+
+                    if (disposition && disposition.indexOf("filename=") !== -1) {
+                        filename = disposition.split("filename=")[1].trim();
+                    }
+
+                    let blob = new Blob([data]);
+                    let link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    link.click();
+
+                    // Close modal
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById("WorkflowExportModal")
+                    ).hide();
+
+                    toastr.success("Export completed.");
+                },
+                error: function () {
+                    toastr.error("Export failed.");
+                },
+                complete: function () {
+                    $("#btnConfirmJournalExport")
+                        .prop("disabled", false)
+                        .html(`<i class="mdi mdi-export"></i> Export`);
+                }
+            });
+
+        });
 
     </script>
 
