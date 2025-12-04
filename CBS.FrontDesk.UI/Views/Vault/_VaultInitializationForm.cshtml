@@ -6,10 +6,28 @@
 
     <fieldset class="fieldset-custom">
         <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+            m => m.VaultInitializationCommand.BranchId,
+            new SelectList(ViewBag.Branches, "Id", "Name"),
+            "-- Select Branch --",
+            new
+            {
+                @class = "form-select select2",
+                id = "BranchId",
+                @search = "true",
+                data_mode = "create",
+                onchange = "fetchVaultBalances(this.value)"
+            }
+        )
+                    <label for="x">@GlobalVault.SelectBranch</label>
+                </div>
+            </div>
             <!-- Cash in Hand -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInHand, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInHand", @oninput = "calculateTotalAmount()" })
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInHand, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInHand", @oninput = "calculateTotalAmount()", @readonly = true })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInHand, "", new { @class = "text-danger" })
                     <label for="AmountInHand">@GlobalVault.CashInHand</label>
                 </div>
@@ -17,12 +35,11 @@
             <!-- Cash in Vault -->
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()" })
+                    @Html.TextBoxFor(m => m.VaultInitializationCommand.AmountInVault, new { @class = "form-control formatted-amount shadow-box", @id = "AmountInVault", @oninput = "calculateTotalAmount()", @readonly = true })
                     @Html.ValidationMessageFor(m => m.VaultInitializationCommand.AmountInVault, "", new { @class = "text-danger" })
                     <label for="AmountInVault">@GlobalVault.CashInVault</label>
                 </div>
             </div>
-
             <!-- Total Amount -->
             <div class="col-md-6" style="display:none">
                 <div class="form-floating form-floating-outline">
@@ -177,18 +194,20 @@
                 </div>
             </div>
             <!-- Checkbox for CanProceed -->
-            <div class="col-md-12 d-flex align-items-center">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.VaultInitializationCommand.CanProceed, new { @class = "form-check-input", @id = "canProceedCheckbox", @onchange = "toggleExecution()" })
-                    <label class="form-check-label" for="canProceedCheckbox">@GlobalVault.CanProceedToExecuteDeficitsOrSupplus</label>
-                </div>
-            </div>
+            @*<div class="col-md-12 d-flex align-items-center">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.VaultInitializationCommand.CanProceed, new { @class = "form-check-input", @id = "canProceedCheckbox", @onchange = "toggleExecution()" })
+                        <label class="form-check-label" for="canProceedCheckbox">@GlobalVault.CanProceedToExecuteDeficitsOrSupplus</label>
+                    </div>
+                </div>*@
         </div>
         <div class="mt-4">
             <button type="submit" id="btnSave" class="btn btn-primary me-2">@GlobalVault.InitializeVault</button>
         </div>
     </fieldset>
 }
+
+
 <script>
     // Function to calculate the total amount and update the relevant fields
     function calculateTotalAmount() {
@@ -212,4 +231,91 @@
         // Update the Total Amount field
         document.getElementById('TotalAmount').value = totalAmount.toFixed(2);
     }
+</script>
+<script type="text/javascript">
+    function formatXaf(amount) {
+        if (amount == null || isNaN(amount)) return "0";
+        return Number(amount).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
+    function fetchVaultBalances(branchId) {
+        if (!branchId) {
+            resetVaultFields();
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetVaultBalances", "Vault")',
+            type: 'GET',
+            data: { branchId: branchId },
+            success: function (res) {
+                console.log("Vault balances response:", res); // 👈 helps debug
+
+                if (!res || !res.success) {
+                    resetVaultFields();
+                    var msg = (res && res.message) ? res.message : "Unable to load vault balances.";
+                    if (typeof appalert === "function") {
+                        appalert(msg, 3, 1);
+                    } else {
+                        alert(msg);
+                    }
+                    return;
+                }
+
+                // ⚠️ Make sure these match your JSON exactly:
+                // e.g. if API returns AmountInHand, use res.amountInHand instead.
+                var cashInHand = Number(res.cashInHandBalance  || 0);
+                var cashInVault = Number(res.cashInVaultBalance || 0);
+
+                var total = cashInHand + cashInVault;
+
+                // --- 3) Red boxes ---
+                $('#AmountInHand').val(cashInHand);
+                $('#AmountInVault').val(cashInVault);
+                $('#TotalAmount').val(total); // raw number for posting
+
+                // --- 4) Circled labels ---
+                $('#balanceBroughtForward').text(
+                    '@GlobalVault.BalanceBroughtForward: ' + formatXaf(total) + ' XAF'
+                );
+
+                $('#lblBalance').text(
+                    '@GlobalVault.Balance: ' + formatXaf(total) + ' XAF'
+                );
+
+                // --- 5) Hidden block updates ---
+                $('#lblDepositRequest_amount').text(
+                    '@GlobalVault.TotalAmount: ' + formatXaf(total)
+                );
+
+                $('#totalNoteAmount').val(total);   // raw number
+                $('#totalProvision').val(total);    // raw number
+
+                $('#canProceedCheckbox')
+                    .prop('checked', false)
+                    .prop('disabled', true);
+            },
+            error: function () {
+                resetVaultFields();
+                if (typeof appalert === "function") {
+                    appalert("Technical error while loading vault balances.", 3, 1);
+                } else {
+                    alert("Technical error while loading vault balances.");
+                }
+            }
+        });
+    }
+
+    // Optional: auto-load on page load
+    $(function () {
+        var initialBranchId = $('#BranchId').val();
+        if (initialBranchId) {
+            fetchVaultBalances(initialBranchId);
+        } else {
+            resetVaultFields();
+        }
+    });
 </script>
