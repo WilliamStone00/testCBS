@@ -471,10 +471,10 @@
       <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.cs">
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IncomeStatament.rpt</DependentUpon>
+      <DependentUpon>IncomeStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
@@ -2105,6 +2105,7 @@
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
+    <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -8784,9 +8785,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.rpt">
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>IncomeStatament1.cs</LastGenOutput>
+      <LastGenOutput>IncomeStatement.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

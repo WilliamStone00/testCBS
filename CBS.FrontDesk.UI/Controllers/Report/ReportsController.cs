@@ -88,6 +88,8 @@ namespace CBS.FrontDesk.UI.Controllers
             }
         }
 
+
+
         public void IncomeStatementSubReports()
         {                // Create a new ReportDocument
             ReportDocument rd = new ReportDocument();

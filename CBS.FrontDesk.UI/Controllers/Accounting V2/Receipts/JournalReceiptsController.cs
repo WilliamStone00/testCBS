@@ -120,6 +120,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.Receipts
                         AccountingDate = response.AccountingDate,
                         IssuedAtUtc = response.IssuedAtUtc,
                         IssuedAtLocal = response.IssuedAtLocal,
+                        ApprovedBy = response.ApprovedBy ?? "N/A",
                         Payor = response.Payor,
                         MemberNumber = response.MemberNumber ?? "N/A",
                         MemberAccount = response.AccountNumber ?? "N/A",

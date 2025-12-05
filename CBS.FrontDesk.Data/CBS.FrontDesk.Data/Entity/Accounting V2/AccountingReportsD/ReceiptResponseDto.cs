@@ -31,6 +31,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public string TellerName { get; set; }
         public string TillName { get; set; }
         public string IssuedBy { get; set; }
+        public string ApprovedBy { get; set; }
         public string Currency { get; set; }
         public decimal TotalDebit { get; set; }
         public decimal TotalCredit { get; set; }

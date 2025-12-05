@@ -639,7 +639,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnMemberName;
             
-            private global::System.Data.DataColumn columnDataColumn1;
+            private global::System.Data.DataColumn columnApprovedBy;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -1556,9 +1556,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn DataColumn1Column {
+            public global::System.Data.DataColumn ApprovedByColumn {
                 get {
-                    return this.columnDataColumn1;
+                    return this.columnApprovedBy;
                 }
             }
             
@@ -1710,7 +1710,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         short TCredit, 
                         string MemberAccount, 
                         string MemberName, 
-                        string DataColumn1) {
+                        string ApprovedBy) {
                 ReconciledLedgerLineRptDSRow rowReconciledLedgerLineRptDSRow = ((ReconciledLedgerLineRptDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Logo,
@@ -1823,7 +1823,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         TCredit,
                         MemberAccount,
                         MemberName,
-                        DataColumn1};
+                        ApprovedBy};
                 rowReconciledLedgerLineRptDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowReconciledLedgerLineRptDSRow);
                 return rowReconciledLedgerLineRptDSRow;
@@ -1956,7 +1956,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnTCredit = base.Columns["TCredit"];
                 this.columnMemberAccount = base.Columns["MemberAccount"];
                 this.columnMemberName = base.Columns["MemberName"];
-                this.columnDataColumn1 = base.Columns["DataColumn1"];
+                this.columnApprovedBy = base.Columns["ApprovedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2182,8 +2182,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnMemberAccount);
                 this.columnMemberName = new global::System.Data.DataColumn("MemberName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMemberName);
-                this.columnDataColumn1 = new global::System.Data.DataColumn("DataColumn1", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDataColumn1);
+                this.columnApprovedBy = new global::System.Data.DataColumn("ApprovedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnApprovedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4729,6 +4729,20 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             private global::System.Data.DataColumn columnTotalNetPresentAsts;
             
+            private global::System.Data.DataColumn columnTitle;
+            
+            private global::System.Data.DataColumn columnCurrentYear;
+            
+            private global::System.Data.DataColumn columnPreviousYear;
+            
+            private global::System.Data.DataColumn columnTotalExpensesCurrentYear;
+            
+            private global::System.Data.DataColumn columnTotalExpensesLastYear;
+            
+            private global::System.Data.DataColumn columnTotalIncomeCurrentYear;
+            
+            private global::System.Data.DataColumn columnTotalIncomeLastYear;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public BalanceSheetDataTable() {
@@ -5100,6 +5114,62 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TitleColumn {
+                get {
+                    return this.columnTitle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn CurrentYearColumn {
+                get {
+                    return this.columnCurrentYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PreviousYearColumn {
+                get {
+                    return this.columnPreviousYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalExpensesCurrentYearColumn {
+                get {
+                    return this.columnTotalExpensesCurrentYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalExpensesLastYearColumn {
+                get {
+                    return this.columnTotalExpensesLastYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalIncomeCurrentYearColumn {
+                get {
+                    return this.columnTotalIncomeCurrentYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn TotalIncomeLastYearColumn {
+                get {
+                    return this.columnTotalIncomeLastYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5177,7 +5247,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         decimal TotalAmountGrossAsts, 
                         decimal TotalAmountProvAsts, 
                         decimal TotalNetLastYearAsts, 
-                        decimal TotalNetPresentAsts) {
+                        decimal TotalNetPresentAsts, 
+                        string Title, 
+                        long CurrentYear, 
+                        long PreviousYear, 
+                        decimal TotalExpensesCurrentYear, 
+                        decimal TotalExpensesLastYear, 
+                        decimal TotalIncomeCurrentYear, 
+                        decimal TotalIncomeLastYear) {
                 BalanceSheetRow rowBalanceSheetRow = ((BalanceSheetRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Referernce,
@@ -5221,7 +5298,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                         TotalAmountGrossAsts,
                         TotalAmountProvAsts,
                         TotalNetLastYearAsts,
-                        TotalNetPresentAsts};
+                        TotalNetPresentAsts,
+                        Title,
+                        CurrentYear,
+                        PreviousYear,
+                        TotalExpensesCurrentYear,
+                        TotalExpensesLastYear,
+                        TotalIncomeCurrentYear,
+                        TotalIncomeLastYear};
                 rowBalanceSheetRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowBalanceSheetRow);
                 return rowBalanceSheetRow;
@@ -5286,6 +5370,13 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 this.columnTotalAmountProvAsts = base.Columns["TotalAmountProvAsts"];
                 this.columnTotalNetLastYearAsts = base.Columns["TotalNetLastYearAsts"];
                 this.columnTotalNetPresentAsts = base.Columns["TotalNetPresentAsts"];
+                this.columnTitle = base.Columns["Title"];
+                this.columnCurrentYear = base.Columns["CurrentYear"];
+                this.columnPreviousYear = base.Columns["PreviousYear"];
+                this.columnTotalExpensesCurrentYear = base.Columns["TotalExpensesCurrentYear"];
+                this.columnTotalExpensesLastYear = base.Columns["TotalExpensesLastYear"];
+                this.columnTotalIncomeCurrentYear = base.Columns["TotalIncomeCurrentYear"];
+                this.columnTotalIncomeLastYear = base.Columns["TotalIncomeLastYear"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5377,6 +5468,20 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
                 base.Columns.Add(this.columnTotalNetLastYearAsts);
                 this.columnTotalNetPresentAsts = new global::System.Data.DataColumn("TotalNetPresentAsts", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalNetPresentAsts);
+                this.columnTitle = new global::System.Data.DataColumn("Title", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTitle);
+                this.columnCurrentYear = new global::System.Data.DataColumn("CurrentYear", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCurrentYear);
+                this.columnPreviousYear = new global::System.Data.DataColumn("PreviousYear", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPreviousYear);
+                this.columnTotalExpensesCurrentYear = new global::System.Data.DataColumn("TotalExpensesCurrentYear", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalExpensesCurrentYear);
+                this.columnTotalExpensesLastYear = new global::System.Data.DataColumn("TotalExpensesLastYear", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalExpensesLastYear);
+                this.columnTotalIncomeCurrentYear = new global::System.Data.DataColumn("TotalIncomeCurrentYear", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalIncomeCurrentYear);
+                this.columnTotalIncomeLastYear = new global::System.Data.DataColumn("TotalIncomeLastYear", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalIncomeLastYear);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7649,18 +7754,18 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DataColumn1 {
+            public string ApprovedBy {
                 get {
                     try {
-                        return ((string)(this[this.tableReconciledLedgerLineRptDS.DataColumn1Column]));
+                        return ((string)(this[this.tableReconciledLedgerLineRptDS.ApprovedByColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DataColumn1\' in table \'ReconciledLedgerLineRptDS\' is DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ApprovedBy\' in table \'ReconciledLedgerLineRptDS\' is DBNull." +
+                                "", e);
                     }
                 }
                 set {
-                    this[this.tableReconciledLedgerLineRptDS.DataColumn1Column] = value;
+                    this[this.tableReconciledLedgerLineRptDS.ApprovedByColumn] = value;
                 }
             }
             
@@ -8986,14 +9091,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsDataColumn1Null() {
-                return this.IsNull(this.tableReconciledLedgerLineRptDS.DataColumn1Column);
+            public bool IsApprovedByNull() {
+                return this.IsNull(this.tableReconciledLedgerLineRptDS.ApprovedByColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetDataColumn1Null() {
-                this[this.tableReconciledLedgerLineRptDS.DataColumn1Column] = global::System.Convert.DBNull;
+            public void SetApprovedByNull() {
+                this[this.tableReconciledLedgerLineRptDS.ApprovedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -13265,6 +13370,119 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Title {
+                get {
+                    try {
+                        return ((string)(this[this.tableBalanceSheet.TitleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Title\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.TitleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public long CurrentYear {
+                get {
+                    try {
+                        return ((long)(this[this.tableBalanceSheet.CurrentYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CurrentYear\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.CurrentYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public long PreviousYear {
+                get {
+                    try {
+                        return ((long)(this[this.tableBalanceSheet.PreviousYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PreviousYear\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.PreviousYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalExpensesCurrentYear {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBalanceSheet.TotalExpensesCurrentYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalExpensesCurrentYear\' in table \'BalanceSheet\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.TotalExpensesCurrentYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalExpensesLastYear {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBalanceSheet.TotalExpensesLastYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalExpensesLastYear\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.TotalExpensesLastYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalIncomeCurrentYear {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBalanceSheet.TotalIncomeCurrentYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalIncomeCurrentYear\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.TotalIncomeCurrentYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal TotalIncomeLastYear {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBalanceSheet.TotalIncomeLastYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalIncomeLastYear\' in table \'BalanceSheet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBalanceSheet.TotalIncomeLastYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsReferernceNull() {
                 return this.IsNull(this.tableBalanceSheet.ReferernceColumn);
             }
@@ -13765,6 +13983,90 @@ namespace CBS.FrontDesk.UI.AppFiles.Accountingv2Reporting.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetTotalNetPresentAstsNull() {
                 this[this.tableBalanceSheet.TotalNetPresentAstsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTitleNull() {
+                return this.IsNull(this.tableBalanceSheet.TitleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTitleNull() {
+                this[this.tableBalanceSheet.TitleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsCurrentYearNull() {
+                return this.IsNull(this.tableBalanceSheet.CurrentYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetCurrentYearNull() {
+                this[this.tableBalanceSheet.CurrentYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPreviousYearNull() {
+                return this.IsNull(this.tableBalanceSheet.PreviousYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPreviousYearNull() {
+                this[this.tableBalanceSheet.PreviousYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalExpensesCurrentYearNull() {
+                return this.IsNull(this.tableBalanceSheet.TotalExpensesCurrentYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalExpensesCurrentYearNull() {
+                this[this.tableBalanceSheet.TotalExpensesCurrentYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalExpensesLastYearNull() {
+                return this.IsNull(this.tableBalanceSheet.TotalExpensesLastYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalExpensesLastYearNull() {
+                this[this.tableBalanceSheet.TotalExpensesLastYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalIncomeCurrentYearNull() {
+                return this.IsNull(this.tableBalanceSheet.TotalIncomeCurrentYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalIncomeCurrentYearNull() {
+                this[this.tableBalanceSheet.TotalIncomeCurrentYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsTotalIncomeLastYearNull() {
+                return this.IsNull(this.tableBalanceSheet.TotalIncomeLastYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetTotalIncomeLastYearNull() {
+                this[this.tableBalanceSheet.TotalIncomeLastYearColumn] = global::System.Convert.DBNull;
             }
         }
         

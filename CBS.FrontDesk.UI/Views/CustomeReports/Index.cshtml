@@ -557,6 +557,15 @@
                         });
                         break;
 
+                    case "in":
+                        $.post({
+                            url: '/IncomeStatement/GenerateReport/',
+                            contentType: 'application/json',
+                            data: JSON.stringify(payload),
+                            success: () => Reprint('IncomeStatement')
+                        });
+                        break;
+
                     case "trial balance 6 columns":
                         $.post({
                             url: '/TrialBalance6Columns/GenerateTrialBalance/',
