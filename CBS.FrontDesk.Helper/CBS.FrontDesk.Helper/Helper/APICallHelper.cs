@@ -1645,7 +1645,7 @@ namespace CBS.FrontDesk.Helper
         public static string MemberAccountType = "/api/v1/GetAccountTypes";
 
         //--------------------------- Loan Reconciliation ------------------------------------------
-        public static string LoanAccountDROP = "/api/v1/EnumAggregates";
+        public static string LoanAccountDROP = "/api/v1/AccountingEnumAggregates?BranchId={0}";
         public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
         public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
         //*************************** End of Reconciliation **************************************

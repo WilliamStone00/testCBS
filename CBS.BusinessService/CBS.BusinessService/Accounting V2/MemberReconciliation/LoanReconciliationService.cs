@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
+using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -99,11 +100,11 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
         } 
                      
 
-        public async Task<List<StringValues>> LoanAccountTypeAsync()
+        public async Task<List<StringValues>> LoanAccountTypeAsync(string branchId)
         {
             try
             {
-               string formattedUrl = string.Format(APICallHelper.LoanAccountDROP);
+               string formattedUrl = string.Format(APICallHelper.LoanAccountDROP,branchId);
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<AccountingTypes>>(formattedUrl);
                 
                 return response?.ApiResponseData?.Data?.LoanTypes ?? new List<StringValues>();
