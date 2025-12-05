@@ -1,0 +1,58 @@
+﻿@using Resources
+<div class="modal-header bg-light">
+    <h5 class="modal-title fw-bold text-primary" id="confirmModalLabel">
+        <i class="mdi mdi-book-check-outline me-2"></i> @ManualEntry.ConfirmJournalPosting
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <div class="border rounded p-3 mb-3 bg-light small">
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <strong>@ManualEntry.AccountingDate:</strong> <span id="confirmAccountingDateCopy"></span>
+            </div>
+            <div class="col-md-4" id="confirmCounterpartyDivCopy" style="display:none;">
+                <strong>@ManualEntry.CounterpartyBranch:</strong> <span id="confirmCounterpartyBranchCopy"></span>
+            </div>
+            <div class="col-md-4">
+                <strong>Adjustment Type:</strong> <span id="confirmAdjustmentType"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle text-center" id="confirmTableCopy">
+            <thead class="table-light">
+                <tr>
+                    <th>@ManualEntry.Account</th>
+                    <th>@ManualEntry.Debit</th>
+                    <th>@ManualEntry.Credit</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot class="fw-bold text-end">
+                <tr>
+                    <td class="text-end">Total Debit:</td>
+                    <td id="confirmTotalDebitCopy" class="text-end text-success">0.00</td>
+                    <td id="confirmTotalCreditCopy" class="text-end text-success">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="alert alert-info mt-3 text-center mb-0">
+        <i class="mdi mdi-alert-circle-outline me-1"></i>
+        @ManualEntry.Areyousureyouwanttoposttheaboveentries
+    </div>
+</div>
+
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-success px-4" id="confirmPostBtnCopy">
+        <i class="mdi mdi-check-circle-outline me-1"></i> OK
+    </button>
+    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+        <i class="mdi mdi-cancel me-1"></i> Cancel
+    </button>
+</div>
+
