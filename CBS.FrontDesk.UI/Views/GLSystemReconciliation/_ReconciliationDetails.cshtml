@@ -35,53 +35,35 @@
         width: 100%;
     }
 
-    /* ===================== TABLE STYLING ===================== */
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
+    /* ===================== TABLE RESPONSIVE ===================== */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto; /* horizontal scroll inside modal */
+        -webkit-overflow-scrolling: touch;
     }
 
-    .table-striped tbody tr:nth-of-type(even) {
-        background-color: #ffffff;
+    .fixed-table {
+        width: 100% !important;
+        table-layout: fixed; /* restrict table width */
+        border-collapse: collapse;
     }
 
-    .table tbody tr td {
-        vertical-align: middle;
-        color: #555;
-    }
+        .fixed-table th,
+        .fixed-table td {
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            vertical-align: middle;
+        }
 
-    .table thead th {
-        background-color: #f1f1f1;
-        font-weight: 600;
-        color: #333;
-    }
+            .fixed-table td pre,
+            .fixed-table td .json {
+                white-space: pre-wrap;
+                word-break: break-word;
+                max-height: 40vh;
+                overflow: auto;
+            }
 
-    .table-sm th.bg-label {
-        background-color: #EDEDED;
-        width: 230px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .table-sm td, .table-sm th {
-        vertical-align: middle;
-    }
-
-    /* ===================== MODAL STYLING ===================== */
-    .modal-body {
-        padding: 1.25rem;
-        max-height: unset; /* auto-grow */
-        overflow-y: auto;
-    }
-
-    .modal-footer {
-        border-top: 1px solid #dee2e6;
-        padding: 1rem 1.25rem;
-    }
-
-    /* Optional: wider modal dialog */
-    .modal-dialog {
-        max-width: 950px;
-    }
 </style>
 
 @if (Model != null)
@@ -103,95 +85,97 @@
             </div>
 
             <!-- Details Table -->
-            <table class="table table-sm table-bordered table-striped mb-0">
-                <tbody>
-                    @if (!string.IsNullOrWhiteSpace(Model.Reference))
-                    {
-                        <tr><th class="bg-label">Reference</th><td>@Model.Reference</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
-                    {
-                        <tr><th class="bg-label">Operation Code</th><td>@Model.OperationCode</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.BranchId))
-                    {
-                        <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.BranchName))
-                    {
-                        <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
-                    {
-                        <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.AuxillaryReference))
-                    {
-                        <tr><th class="bg-label">Auxiliary Reference</th><td>@Model.AuxillaryReference</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.PostMode))
-                    {
-                        <tr><th class="bg-label">Post Mode</th><td>@Model.PostMode</td></tr>
-                    }
-                    @if (Model.AccountingDate != default(DateTime))
-                    {
-                        <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
-                    }
-                    @if (Model.CreatedAtUtc != default(DateTime))
-                    {
-                        <tr><th class="bg-label">Created At</th><td>@Model.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
-                    }
-                    @if (Model.UpdatedAtUtc != default(DateTime))
-                    {
-                        <tr><th class="bg-label">Updated At</th><td>@Model.UpdatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.CorrelationId))
-                    {
-                        <tr><th class="bg-label">Correlation Id</th><td>@Model.CorrelationId</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.DestinationUrl))
-                    {
-                        <tr><th class="bg-label">Destination URL</th><td>@Model.DestinationUrl</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.ExternalApplicationName))
-                    {
-                        <tr><th class="bg-label">External Application</th><td>@Model.ExternalApplicationName</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.ReceiptId))
-                    {
-                        <tr><th class="bg-label">Receipt ID</th><td>@Model.ReceiptId</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.ResponseJson))
-                    {
-                        <tr><th class="bg-label">Response Json</th><td>@Model.ResponseJson</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.RequestJson))
-                    {
-                        <tr><th class="bg-label">Request Json</th><td>@Model.RequestJson</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.TempJournalId))
-                    {
-                        <tr><th class="bg-label">Temp Journal ID</th><td>@Model.TempJournalId</td></tr>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.ReconciledJournalId))
-                    {
-                        <tr><th class="bg-label">Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
-                    }
-                    <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
-                    <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
-                    <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
-                    <tr><th class="bg-label">Operation By</th><td>@Model.OperationBy</td></tr>
-                    <tr><th class="bg-label">Attempts</th><td>@Model.Attempts</td></tr>
-                    @if (!string.IsNullOrWhiteSpace(Model.LastError))
-                    {
-                        <tr><th class="bg-label">Last Error</th><td>@Model.LastError</td></tr>
-                    }
-                    @if (Model.NextRetryAtUtc.HasValue)
-                    {
-                        <tr><th class="bg-label">Next Retry At</th><td>@Model.NextRetryAtUtc.Value.ToString("yyyy-MM-dd HH:mm")</td></tr>
-                    }
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-striped mb-0 fixed-table">
+                    <tbody>
+                        @if (!string.IsNullOrWhiteSpace(Model.Reference))
+                        {
+                            <tr><th class="bg-label">Reference</th><td>@Model.Reference</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.OperationCode))
+                        {
+                            <tr><th class="bg-label">Operation Code</th><td>@Model.OperationCode</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchId))
+                        {
+                            <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.BranchName))
+                        {
+                            <tr><th class="bg-label">Branch Name</th><td>@Model.BranchName</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.MemberReference))
+                        {
+                            <tr><th class="bg-label">Member Reference</th><td>@Model.MemberReference</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.AuxillaryReference))
+                        {
+                            <tr><th class="bg-label">Auxiliary Reference</th><td>@Model.AuxillaryReference</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.PostMode))
+                        {
+                            <tr><th class="bg-label">Post Mode</th><td>@Model.PostMode</td></tr>
+                        }
+                        @if (Model.AccountingDate != default(DateTime))
+                        {
+                            <tr><th class="bg-label">Accounting Date</th><td>@Model.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                        }
+                        @if (Model.CreatedAtUtc != default(DateTime))
+                        {
+                            <tr><th class="bg-label">Created At</th><td>@Model.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                        }
+                        @if (Model.UpdatedAtUtc != default(DateTime))
+                        {
+                            <tr><th class="bg-label">Updated At</th><td>@Model.UpdatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.CorrelationId))
+                        {
+                            <tr><th class="bg-label">Correlation Id</th><td>@Model.CorrelationId</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.DestinationUrl))
+                        {
+                            <tr><th class="bg-label">Destination URL</th><td>@Model.DestinationUrl</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.ExternalApplicationName))
+                        {
+                            <tr><th class="bg-label">External Application</th><td>@Model.ExternalApplicationName</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.ReceiptId))
+                        {
+                            <tr><th class="bg-label">Receipt ID</th><td>@Model.ReceiptId</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.ResponseJson))
+                        {
+                            <tr><th class="bg-label">Response Json</th><td>@Model.ResponseJson</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.RequestJson))
+                        {
+                            <tr><th class="bg-label">Request Json</th><td>@Model.RequestJson</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.TempJournalId))
+                        {
+                            <tr><th class="bg-label">Temp Journal ID</th><td>@Model.TempJournalId</td></tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.ReconciledJournalId))
+                        {
+                            <tr><th class="bg-label">Reconciled Journal ID</th><td>@Model.ReconciledJournalId</td></tr>
+                        }
+                        <tr><th class="bg-label">Total Debit</th><td>@Model.TotalDebit.ToString("N0")</td></tr>
+                        <tr><th class="bg-label">Total Credit</th><td>@Model.TotalCredit.ToString("N0")</td></tr>
+                        <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
+                        <tr><th class="bg-label">Operation By</th><td>@Model.OperationBy</td></tr>
+                        <tr><th class="bg-label">Attempts</th><td>@Model.Attempts</td></tr>
+                        @if (!string.IsNullOrWhiteSpace(Model.LastError))
+                        {
+                            <tr><th class="bg-label">Last Error</th><td>@Model.LastError</td></tr>
+                        }
+                        @if (Model.NextRetryAtUtc.HasValue)
+                        {
+                            <tr><th class="bg-label">Next Retry At</th><td>@Model.NextRetryAtUtc.Value.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Modal Footer -->

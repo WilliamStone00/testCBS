@@ -1645,7 +1645,7 @@ namespace CBS.FrontDesk.Helper
         public static string MemberAccountType = "/api/v1/GetAccountTypes";
 
         //--------------------------- Loan Reconciliation ------------------------------------------
-        public static string LoanAccountDROP = "/api/v1/EnumAggregates";
+        public static string LoanAccountDROP = "/api/v1/AccountingEnumAggregates?BranchId={0}";
         public static string GetAllLoans = "/api/v1/Loans/GetAllLoans";
         public static string GetLoadAccountBalance = "/api/v1/LoanBalance/SumByType";
         //*************************** End of Reconciliation **************************************
@@ -1751,7 +1751,18 @@ namespace CBS.FrontDesk.Helper
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
 
-      
+
+        //----------------------------  EndOfYearClosure -----------------------------
+        public static string InitiateClosure = "/api/v1/YearEndClosure/start";
+        public static string GetAllEndOfYearTask = "/api/v1/YearEndChecklistDefinition/all";
+        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{0}";
+        public static string ReviewClosure = "/api/v1/YearEndChecklistStatus/set";
+
+
+        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+        public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
+        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
 
 
     }

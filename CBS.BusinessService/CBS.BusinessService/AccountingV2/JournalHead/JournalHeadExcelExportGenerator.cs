@@ -1635,6 +1635,1120 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         }
     }
 
+
+
+    public class WorkflowTicketExcelExportGenerator : BaseService
+    {
+        private static readonly string[] WorkflowStates = new[] { "PENDING", "APPROVED", "REJECTED", "CANCELLED", "IN_PROGRESS" };
+        private static readonly string[] WorkflowOperations = new[] { "APPROVAL", "VERIFICATION", "AUTHORIZATION", "REVIEW" };
+
+        public static List<WorkflowTicket> ConvertToWorkflowData(List<WorkflowTicket> tableData)
+        {
+            var workflowList = new List<WorkflowTicket>();
+
+            if (tableData == null || !tableData.Any())
+            {
+                Console.WriteLine("No table data provided for conversion");
+                return workflowList;
+            }
+
+            Console.WriteLine($"Converting {tableData.Count} workflow ticket records");
+
+            foreach (var item in tableData)
+            {
+                try
+                {
+                    var workflow = new WorkflowTicket
+                    {
+                        Id = GetSafeString(item, "Id", "id") ?? Guid.NewGuid().ToString(),
+                        Reference = GetSafeString(item, "Reference", "reference") ?? "N/A",
+                        BranchId = GetSafeString(item, "BranchId", "branchId") ?? "N/A",
+                        BranchName = GetSafeString(item, "BranchName", "branchName") ?? "N/A",
+                        State = GetSafeString(item, "State", "state") ?? "PENDING",
+                        OperationCode = GetSafeString(item, "OperationCode", "operationCode") ?? "N/A",
+                        AccountingDate = ParseDateTime(GetPropertyValue(item, "AccountingDate", "accountingDate")) ?? DateTime.Now,
+                        Remarks = GetSafeString(item, "Remarks", "remarks"),
+                        JournalHeaderId = GetSafeString(item, "JournalHeaderId", "journalHeaderId"),
+                        Notes = GetSafeString(item, "Notes", "notes"),
+                        OpenedAtUtc = ParseDateTime(GetPropertyValue(item, "OpenedAtUtc", "openedAtUtc")) ?? DateTime.UtcNow,
+                        OperationType = GetSafeString(item, "OperationType", "operationType"),
+                        ClosedAtUtc = ParseDateTime(GetPropertyValue(item, "ClosedAtUtc", "closedAtUtc")),
+                        Approveby = GetSafeString(item, "Approveby", "approveby"),
+                        Rejectedby = GetSafeString(item, "Rejectedby", "rejectedby"),
+                        ApproveDate = ParseDateTime(GetPropertyValue(item, "ApproveDate", "approveDate")) ?? DateTime.MinValue,
+                        RejectedDate = ParseDateTime(GetPropertyValue(item, "RejectedDate", "rejectedDate")) ?? DateTime.MinValue,
+                        TotalCredit = GetSafeDecimal(item, "TotalCredit", "totalCredit") ?? 0m,
+                        TotalDebit = GetSafeDecimal(item, "TotalDebit", "totalDebit") ?? 0m,
+                        TicketType = GetSafeString(item, "TicketType", "ticketType") ?? "WORKFLOW",
+                        InitiatedAmount = GetSafeDecimal(item, "InitiatedAmount", "initiatedAmount") ?? 0m,
+                        IsInterBranch = GetSafeBool(item, "IsInterBranch", "isInterBranch") ?? false,
+                        JournalLines = GetJournalLines(item),
+                        TempJournalHeader = GetJournalHeader(item)
+                    };
+
+                    // Calculate balance status
+                    workflow.TempJournalHeader.IsBalanced = workflow.TotalDebit == workflow.TotalCredit;
+                    workflow.TempJournalHeader.TotalDebit = workflow.TotalDebit;
+                    workflow.TempJournalHeader.TotalCredit = workflow.TotalCredit;
+
+                    workflowList.Add(workflow);
+                    Console.WriteLine($"Successfully converted workflow ticket: {workflow.Reference} - {workflow.BranchName} - State: {workflow.State}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error converting workflow data: {ex.Message}");
+                    try
+                    {
+                        string itemJson = Newtonsoft.Json.JsonConvert.SerializeObject(item);
+                        Console.WriteLine($"Problematic item: {itemJson}");
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Could not serialize problematic item");
+                    }
+                }
+            }
+
+            Console.WriteLine($"Successfully converted {workflowList.Count} out of {tableData.Count} workflow records");
+            Console.WriteLine($"State statistics: {workflowList.Count(x => x.State == "APPROVED")} approved, {workflowList.Count(x => x.State == "REJECTED")} rejected, {workflowList.Count(x => x.State == "PENDING")} pending");
+            return workflowList;
+        }
+
+        public void GenerateWorkflowExcelFromTableData(List<WorkflowTicket> workflowData, string filePath, string exportedBy, ExportOptions exportOptions)
+        {
+            string bank = GetBankName();
+            string branchcode = GetBranchCode();
+            string branchid = GetBranchID();
+            string branchname = GetBranchName();
+
+            // Set EPPlus license context
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+            {
+                // ===== SHEET 1: SUMMARY & OVERVIEW =====
+                CreateSummarySheet(package, workflowData, bank, branchcode, branchid, branchname, exportedBy, exportOptions);
+
+                // ===== SHEET 2: WORKFLOW TICKETS DETAILS =====
+                CreateWorkflowDetailsSheet(package, workflowData, exportedBy, exportOptions);
+
+                // ===== SHEETS FOR EACH BRANCH: Create individual sheets for each branch =====
+                var branches = workflowData.GroupBy(x => new { x.BranchId, x.BranchName })
+                                         .Select(g => new { BranchId = g.Key.BranchId, BranchName = g.Key.BranchName })
+                                         .ToList();
+
+                foreach (var branch in branches)
+                {
+                    var branchData = workflowData.Where(x => x.BranchId == branch.BranchId && x.BranchName == branch.BranchName).ToList();
+                    CreateBranchSheet(package, branchData, branch.BranchId, branch.BranchName, exportedBy, exportOptions);
+                }
+
+                // ===== SHEET FOR PENDING APPROVALS =====
+                var pendingWorkflows = workflowData.Where(x => x.State == "PENDING").ToList();
+                if (pendingWorkflows.Any())
+                {
+                    CreatePendingApprovalsSheet(package, pendingWorkflows, exportedBy, exportOptions);
+                }
+
+                // ===== SHEET FOR INTER-BRANCH WORKFLOWS =====
+                var interBranchWorkflows = workflowData.Where(x => x.IsInterBranch).ToList();
+                if (interBranchWorkflows.Any())
+                {
+                    CreateInterBranchSheet(package, interBranchWorkflows, exportedBy, exportOptions);
+                }
+
+                // ===== SHEET FOR WORKFLOW PERFORMANCE =====
+                CreatePerformanceSheet(package, workflowData, exportedBy, exportOptions);
+
+                // Save the file
+                package.SaveAs(new FileInfo(filePath));
+
+                Console.WriteLine($"Excel file generated successfully with {workflowData.Count} workflow tickets across {branches.Count} branches");
+                Console.WriteLine($"File saved to: {filePath}");
+            }
+        }
+
+        private void CreateSummarySheet(ExcelPackage package, List<WorkflowTicket> workflowData, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Summary & Overview");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 3;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, bank, branchcode, branchid, branchname, exportedBy, exportOptions, "WORKFLOW TICKET SUMMARY REPORT", headerEndColumn);
+
+            // ===== GENERAL SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "WORKFLOW SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Calculate summary statistics
+            var totalTickets = workflowData.Count;
+            var totalBranches = workflowData.Select(x => new { x.BranchId, x.BranchName }).Distinct().Count();
+            var pendingTickets = workflowData.Count(x => x.State == "PENDING");
+            var approvedTickets = workflowData.Count(x => x.State == "APPROVED");
+            var rejectedTickets = workflowData.Count(x => x.State == "REJECTED");
+            var interBranchTickets = workflowData.Count(x => x.IsInterBranch);
+            var totalAmountInitiated = workflowData.Sum(x => x.InitiatedAmount);
+            var totalDebit = workflowData.Sum(x => x.TotalDebit);
+            var totalCredit = workflowData.Sum(x => x.TotalCredit);
+            var averageProcessingDays = CalculateAverageProcessingTime(workflowData);
+
+            // State distribution
+            var stateSummary = workflowData.GroupBy(x => x.State)
+                                         .Select(g => new { State = g.Key, Count = g.Count() })
+                                         .OrderByDescending(x => x.Count)
+                                         .ToList();
+
+            // Operation type distribution
+            var operationSummary = workflowData.GroupBy(x => x.OperationType)
+                                             .Select(g => new { Operation = g.Key ?? "UNKNOWN", Count = g.Count() })
+                                             .OrderByDescending(x => x.Count)
+                                             .ToList();
+
+            // Summary table headers
+            var summaryHeaders = new[] { "Metric", "Value", "Description" };
+            for (int i = 0; i < summaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = summaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Summary data
+            var summaryData = new[]
+            {
+            new { Metric = "Total Workflow Tickets", Value = totalTickets.ToString("N0"), Description = "Number of workflow tickets" },
+            new { Metric = "Total Branches", Value = totalBranches.ToString("N0"), Description = "Branches with workflow activity" },
+            new { Metric = "Pending Approvals", Value = pendingTickets.ToString("N0"), Description = "Tickets awaiting approval" },
+            new { Metric = "Approved Tickets", Value = approvedTickets.ToString("N0"), Description = "Tickets approved" },
+            new { Metric = "Rejected Tickets", Value = rejectedTickets.ToString("N0"), Description = "Tickets rejected" },
+            new { Metric = "Inter-Branch Tickets", Value = interBranchTickets.ToString("N0"), Description = "Cross-branch workflows" },
+            new { Metric = "Total Amount Initiated", Value = totalAmountInitiated.ToString("N2"), Description = "Sum of all initiated amounts" },
+            new { Metric = "Total Debit Amount", Value = totalDebit.ToString("N2"), Description = "Sum of all debit entries" },
+            new { Metric = "Total Credit Amount", Value = totalCredit.ToString("N2"), Description = "Sum of all credit entries" },
+            new { Metric = "Avg Processing Time (Days)", Value = averageProcessingDays.ToString("F1"), Description = "Average days to process tickets" }
+        };
+
+            foreach (var item in summaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+                worksheet.Cells[currentRow, 3].Value = item.Description;
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== STATE DISTRIBUTION SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "STATE DISTRIBUTION";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            var stateHeaders = new[] { "State", "Count", "Percentage" };
+            for (int i = 0; i < stateHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = stateHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            foreach (var state in stateSummary)
+            {
+                decimal percentage = totalTickets > 0 ? (decimal)state.Count / totalTickets : 0;
+                worksheet.Cells[currentRow, 1].Value = state.State;
+                worksheet.Cells[currentRow, 2].Value = state.Count;
+                worksheet.Cells[currentRow, 3].Value = percentage;
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format percentages
+            if (stateSummary.Any())
+            {
+                worksheet.Cells[$"C{currentRow - stateSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+            }
+
+            currentRow += 2;
+
+            // ===== OPERATION TYPE DISTRIBUTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "OPERATION TYPE DISTRIBUTION";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            currentRow += 2;
+
+            var operationHeaders = new[] { "Operation Type", "Count", "Percentage" };
+            for (int i = 0; i < operationHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = operationHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            foreach (var operation in operationSummary)
+            {
+                decimal percentage = totalTickets > 0 ? (decimal)operation.Count / totalTickets : 0;
+                worksheet.Cells[currentRow, 1].Value = operation.Operation;
+                worksheet.Cells[currentRow, 2].Value = operation.Count;
+                worksheet.Cells[currentRow, 3].Value = percentage;
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format percentages
+            if (operationSummary.Any())
+            {
+                worksheet.Cells[$"C{currentRow - operationSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+            }
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateWorkflowDetailsSheet(ExcelPackage package, List<WorkflowTicket> workflowData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Workflow Tickets");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 15;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "WORKFLOW TICKETS DETAILED REPORT", headerEndColumn);
+
+            // ===== STATE DISTRIBUTION SECTION (ABOVE DETAILED TABLE) =====
+            CreateStateDistributionSection(worksheet, workflowData, ref currentRow, headerEndColumn);
+
+            currentRow += 2;
+
+            // ===== DETAILED DATA TABLE =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "DETAILED WORKFLOW TICKETS";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            currentRow += 2;
+
+            // Detailed data headers
+            var headers = new[]
+            {
+            "SN", "Reference", "Branch", "State", "Operation Type", "Accounting Date",
+            "Total Debit", "Total Credit", "Initiated Amount", "Ticket Type", "Inter-Branch",
+            "Opened Date", "Closed Date", "Approved By", "Processing Days"
+        };
+
+            int headerRow = currentRow;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cells[headerRow, i + 1].Value = headers[i];
+                worksheet.Cells[headerRow, i + 1].Style.Font.Bold = true;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[headerRow, i + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+
+            // Data rows
+            int dataRow = headerRow + 1;
+            int serialNumber = 1;
+            decimal totalDebit = 0;
+            decimal totalCredit = 0;
+            decimal totalInitiated = 0;
+
+            foreach (var ticket in workflowData.OrderBy(x => x.AccountingDate).ThenBy(x => x.BranchName))
+            {
+                worksheet.Cells[dataRow, 1].Value = serialNumber++;
+                worksheet.Cells[dataRow, 2].Value = ticket.Reference;
+                worksheet.Cells[dataRow, 3].Value = ticket.BranchName;
+                worksheet.Cells[dataRow, 4].Value = ticket.State;
+                worksheet.Cells[dataRow, 5].Value = ticket.OperationType ?? "N/A";
+                worksheet.Cells[dataRow, 6].Value = ticket.AccountingDate.ToString("dd-MM-yyyy");
+                worksheet.Cells[dataRow, 7].Value = ticket.TotalDebit;
+                worksheet.Cells[dataRow, 8].Value = ticket.TotalCredit;
+                worksheet.Cells[dataRow, 9].Value = ticket.InitiatedAmount;
+                worksheet.Cells[dataRow, 10].Value = ticket.TicketType ?? "N/A";
+                worksheet.Cells[dataRow, 11].Value = ticket.IsInterBranch ? "Yes" : "No";
+                worksheet.Cells[dataRow, 12].Value = ticket.OpenedAtUtc?.ToString("dd-MM-yyyy HH:mm") ?? "N/A";
+                worksheet.Cells[dataRow, 13].Value = ticket.ClosedAtUtc?.ToString("dd-MM-yyyy HH:mm") ?? "Open";
+                worksheet.Cells[dataRow, 14].Value = ticket.Approveby ?? (ticket.Rejectedby ?? "N/A");
+
+                // Calculate processing days
+                if (ticket.ClosedAtUtc.HasValue && ticket.OpenedAtUtc.HasValue)
+                {
+                    var processingTime = ticket.ClosedAtUtc.Value - ticket.OpenedAtUtc.Value;
+                    worksheet.Cells[dataRow, 15].Value = processingTime.TotalDays.ToString("F1");
+                }
+                else
+                {
+                    worksheet.Cells[dataRow, 15].Value = "Ongoing";
+                }
+
+                // Apply borders
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+
+                totalDebit += ticket.TotalDebit;
+                totalCredit += ticket.TotalCredit;
+                totalInitiated += ticket.InitiatedAmount;
+                dataRow++;
+            }
+
+            // Totals row
+            if (workflowData.Any())
+            {
+                worksheet.Cells[dataRow, 1].Value = "TOTALS:";
+                worksheet.Cells[dataRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[dataRow, 7].Value = totalDebit;
+                worksheet.Cells[dataRow, 8].Value = totalCredit;
+                worksheet.Cells[dataRow, 9].Value = totalInitiated;
+
+                for (int col = 1; col <= headerColumns; col++)
+                {
+                    worksheet.Cells[dataRow, col].Style.Font.Bold = true;
+                    worksheet.Cells[dataRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+            }
+
+            // Format numbers
+            if (workflowData.Any())
+            {
+                worksheet.Cells[$"G{headerRow + 1}:I{dataRow}"].Style.Numberformat.Format = "#,##0.00";
+            }
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+            // Freeze panes for easy scrolling
+            worksheet.View.FreezePanes(headerRow + 1, 1);
+        }
+
+        private void CreateBranchSheet(ExcelPackage package, List<WorkflowTicket> branchData, string branchId, string branchName, string exportedBy, ExportOptions exportOptions)
+        {
+            // Clean sheet name
+            var cleanSheetName = CleanSheetName($"{branchId} - {branchName}");
+            if (cleanSheetName.Length > 31) cleanSheetName = cleanSheetName.Substring(0, 31);
+
+            var worksheet = package.Workbook.Worksheets.Add(cleanSheetName);
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 12;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), branchId, branchId, branchName, exportedBy, exportOptions, $"BRANCH WORKFLOW REPORT - {branchName}", headerEndColumn);
+
+            // ===== BRANCH SUMMARY SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"BRANCH WORKFLOW SUMMARY - {branchName}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+            currentRow += 2;
+
+            // Calculate branch statistics
+            var totalTickets = branchData.Count;
+            var pendingTickets = branchData.Count(x => x.State == "PENDING");
+            var approvedTickets = branchData.Count(x => x.State == "APPROVED");
+            var rejectedTickets = branchData.Count(x => x.State == "REJECTED");
+            var interBranchTickets = branchData.Count(x => x.IsInterBranch);
+            var totalAmountInitiated = branchData.Sum(x => x.InitiatedAmount);
+            var averageProcessingDays = CalculateAverageProcessingTime(branchData);
+
+            // Branch summary table
+            var branchSummaryHeaders = new[] { "Metric", "Value" };
+            for (int i = 0; i < branchSummaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = branchSummaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            var branchSummaryData = new[]
+            {
+            new { Metric = "Total Workflow Tickets", Value = totalTickets.ToString("N0") },
+            new { Metric = "Pending Approvals", Value = pendingTickets.ToString("N0") },
+            new { Metric = "Approved Tickets", Value = approvedTickets.ToString("N0") },
+            new { Metric = "Rejected Tickets", Value = rejectedTickets.ToString("N0") },
+            new { Metric = "Inter-Branch Tickets", Value = interBranchTickets.ToString("N0") },
+            new { Metric = "Total Amount Initiated", Value = totalAmountInitiated.ToString("N2") },
+            new { Metric = "Avg Processing Days", Value = averageProcessingDays.ToString("F1") }
+        };
+
+            foreach (var item in branchSummaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+
+                for (int col = 1; col <= 2; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== STATE DISTRIBUTION SECTION =====
+            CreateStateDistributionSection(worksheet, branchData, ref currentRow, headerEndColumn);
+
+            currentRow += 2;
+
+            // ===== DETAILED BRANCH DATA =====
+            CreateDetailedWorkflowTable(worksheet, branchData, ref currentRow, $"Detailed Workflow Tickets - {branchName}", headerEndColumn);
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreatePendingApprovalsSheet(ExcelPackage package, List<WorkflowTicket> pendingData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Pending Approvals");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 12;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "PENDING APPROVALS REPORT", headerEndColumn);
+
+            // ===== PENDING APPROVALS SUMMARY =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "PENDING APPROVALS SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            currentRow += 2;
+
+            // Pending approvals statistics
+            var totalPending = pendingData.Count;
+            var totalAmountPending = pendingData.Sum(x => x.InitiatedAmount);
+            var branchesWithPending = pendingData.Select(x => x.BranchName).Distinct().Count();
+            var oldestPendingDays = pendingData.Min(x => (DateTime.UtcNow - (x.OpenedAtUtc ?? DateTime.UtcNow)).TotalDays);
+
+            var pendingSummaryHeaders = new[] { "Metric", "Value" };
+            for (int i = 0; i < pendingSummaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = pendingSummaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            var pendingSummaryData = new[]
+            {
+            new { Metric = "Total Pending Approvals", Value = totalPending.ToString("N0") },
+            new { Metric = "Total Amount Pending", Value = totalAmountPending.ToString("N2") },
+            new { Metric = "Branches with Pending", Value = branchesWithPending.ToString("N0") },
+            new { Metric = "Oldest Pending (Days)", Value = Math.Round(oldestPendingDays, 1).ToString("F1") },
+            new { Metric = "Average Amount Pending", Value = (totalAmountPending / totalPending).ToString("N2") }
+        };
+
+            foreach (var item in pendingSummaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+
+                for (int col = 1; col <= 2; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== DETAILED PENDING APPROVALS =====
+            CreateDetailedWorkflowTable(worksheet, pendingData, ref currentRow, "Detailed Pending Approvals", headerEndColumn, true);
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateInterBranchSheet(ExcelPackage package, List<WorkflowTicket> interBranchData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Inter-Branch Workflows");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 12;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "INTER-BRANCH WORKFLOWS REPORT", headerEndColumn);
+
+            // ===== INTER-BRANCH SUMMARY =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "INTER-BRANCH WORKFLOWS SUMMARY";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.MediumPurple);
+            currentRow += 2;
+
+            // Inter-branch statistics
+            var totalInterBranch = interBranchData.Count;
+            var totalAmount = interBranchData.Sum(x => x.InitiatedAmount);
+            var branchesInvolved = interBranchData.Select(x => x.BranchName).Distinct().Count();
+            var pendingInterBranch = interBranchData.Count(x => x.State == "PENDING");
+
+            var interBranchSummaryHeaders = new[] { "Metric", "Value" };
+            for (int i = 0; i < interBranchSummaryHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = interBranchSummaryHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            var interBranchSummaryData = new[]
+            {
+            new { Metric = "Total Inter-Branch Tickets", Value = totalInterBranch.ToString("N0") },
+            new { Metric = "Total Amount", Value = totalAmount.ToString("N2") },
+            new { Metric = "Branches Involved", Value = branchesInvolved.ToString("N0") },
+            new { Metric = "Pending Inter-Branch", Value = pendingInterBranch.ToString("N0") },
+            new { Metric = "Average Amount", Value = (totalAmount / totalInterBranch).ToString("N2") }
+        };
+
+            foreach (var item in interBranchSummaryData)
+            {
+                worksheet.Cells[currentRow, 1].Value = item.Metric;
+                worksheet.Cells[currentRow, 2].Value = item.Value;
+
+                for (int col = 1; col <= 2; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            currentRow += 2;
+
+            // ===== DETAILED INTER-BRANCH WORKFLOWS =====
+            CreateDetailedWorkflowTable(worksheet, interBranchData, ref currentRow, "Detailed Inter-Branch Workflows", headerEndColumn, false, true);
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreatePerformanceSheet(ExcelPackage package, List<WorkflowTicket> workflowData, string exportedBy, ExportOptions exportOptions)
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Performance Metrics");
+
+            // Set font
+            var fontName = "Bahnschrift SemiCondensed";
+            worksheet.Cells.Style.Font.Name = fontName;
+
+            // ===== HEADER SECTION =====
+            int headerColumns = 5;
+            string headerEndColumn = GetColumnLetter(headerColumns);
+            int currentRow = CreateHeaderSection(worksheet, GetBankName(), GetBranchCode(), GetBranchID(), GetBranchName(), exportedBy, exportOptions, "WORKFLOW PERFORMANCE METRICS", headerEndColumn);
+
+            // ===== PERFORMANCE METRICS SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "PERFORMANCE METRICS";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.SeaGreen);
+            currentRow += 2;
+
+            // Calculate performance metrics by branch
+            var branchPerformance = workflowData.GroupBy(x => x.BranchName)
+                                              .Select(g => new
+                                              {
+                                                  BranchName = g.Key,
+                                                  TotalTickets = g.Count(),
+                                                  Approved = g.Count(x => x.State == "APPROVED"),
+                                                  Rejected = g.Count(x => x.State == "REJECTED"),
+                                                  Pending = g.Count(x => x.State == "PENDING"),
+                                                  AvgProcessingDays = CalculateAverageProcessingTime(g.ToList()),
+                                                  TotalAmount = g.Sum(x => x.InitiatedAmount)
+                                              })
+                                              .OrderByDescending(x => x.TotalTickets)
+                                              .ToList();
+
+            // Performance headers
+            var perfHeaders = new[] { "Branch", "Total Tickets", "Approved", "Rejected", "Pending", "Avg Days", "Total Amount" };
+            for (int i = 0; i < perfHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = perfHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            // Performance data
+            foreach (var branch in branchPerformance)
+            {
+                worksheet.Cells[currentRow, 1].Value = branch.BranchName;
+                worksheet.Cells[currentRow, 2].Value = branch.TotalTickets;
+                worksheet.Cells[currentRow, 3].Value = branch.Approved;
+                worksheet.Cells[currentRow, 4].Value = branch.Rejected;
+                worksheet.Cells[currentRow, 5].Value = branch.Pending;
+                worksheet.Cells[currentRow, 6].Value = branch.AvgProcessingDays;
+                worksheet.Cells[currentRow, 7].Value = branch.TotalAmount;
+
+                // Apply conditional formatting for performance
+                if (branch.Pending > 0)
+                {
+                    worksheet.Cells[currentRow, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[currentRow, 5].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                }
+
+                if (branch.AvgProcessingDays > 7)
+                {
+                    worksheet.Cells[currentRow, 6].Style.Font.Color.SetColor(Color.Red);
+                    worksheet.Cells[currentRow, 6].Style.Font.Bold = true;
+                }
+                else if (branch.AvgProcessingDays > 3)
+                {
+                    worksheet.Cells[currentRow, 6].Style.Font.Color.SetColor(Color.Orange);
+                }
+                else
+                {
+                    worksheet.Cells[currentRow, 6].Style.Font.Color.SetColor(Color.Green);
+                }
+
+                for (int col = 1; col <= perfHeaders.Length; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format numbers
+            if (branchPerformance.Any())
+            {
+                worksheet.Cells[$"G{currentRow - branchPerformance.Count}:G{currentRow - 1}"].Style.Numberformat.Format = "#,##0.00";
+                worksheet.Cells[$"F{currentRow - branchPerformance.Count}:F{currentRow - 1}"].Style.Numberformat.Format = "0.0";
+            }
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        private void CreateDetailedWorkflowTable(ExcelWorksheet worksheet, List<WorkflowTicket> data, ref int currentRow, string title, string headerEndColumn, bool isPending = false, bool isInterBranch = false)
+        {
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = title;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            currentRow += 2;
+
+            // Headers for detailed table
+            var headers = new[]
+            {
+            "SN", "Reference", "Branch", "State", "Operation Type", "Accounting Date",
+            "Total Debit", "Total Credit", "Initiated Amount", "Ticket Type", "Opened Date", "Days Open"
+        };
+
+            int headerRow = currentRow;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                worksheet.Cells[headerRow, i + 1].Value = headers[i];
+                worksheet.Cells[headerRow, i + 1].Style.Font.Bold = true;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[headerRow, i + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[headerRow, i + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[headerRow, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
+
+            // Data rows
+            int dataRow = headerRow + 1;
+            int serialNumber = 1;
+
+            foreach (var ticket in data.OrderBy(x => x.OpenedAtUtc).ThenBy(x => x.Reference))
+            {
+                worksheet.Cells[dataRow, 1].Value = serialNumber++;
+                worksheet.Cells[dataRow, 2].Value = ticket.Reference;
+                worksheet.Cells[dataRow, 3].Value = ticket.BranchName;
+                worksheet.Cells[dataRow, 4].Value = ticket.State;
+                worksheet.Cells[dataRow, 5].Value = ticket.OperationType ?? "N/A";
+                worksheet.Cells[dataRow, 6].Value = ticket.AccountingDate.ToString("yyyy-MM-dd");
+                worksheet.Cells[dataRow, 7].Value = ticket.TotalDebit;
+                worksheet.Cells[dataRow, 8].Value = ticket.TotalCredit;
+                worksheet.Cells[dataRow, 9].Value = ticket.InitiatedAmount;
+                worksheet.Cells[dataRow, 10].Value = ticket.TicketType ?? "N/A";
+                worksheet.Cells[dataRow, 11].Value = ticket.OpenedAtUtc?.ToString("dd-MM-yyyy HH:mm") ?? "N/A";
+
+                // Calculate days open
+                if (ticket.OpenedAtUtc.HasValue)
+                {
+                    var daysOpen = (DateTime.UtcNow - ticket.OpenedAtUtc.Value).TotalDays;
+                    worksheet.Cells[dataRow, 12].Value = Math.Round(daysOpen, 1);
+
+                    // Highlight tickets open for too long
+                    if (daysOpen > 7)
+                    {
+                        worksheet.Cells[dataRow, 12].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[dataRow, 12].Style.Font.Bold = true;
+                    }
+                }
+
+                // Apply borders to match header width
+                int columnCount = GetColumnNumber(headerEndColumn);
+                for (int col = 1; col <= columnCount; col++)
+                {
+                    worksheet.Cells[dataRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                dataRow++;
+            }
+
+            // Format numbers
+            if (data.Any())
+            {
+                worksheet.Cells[$"G{headerRow + 1}:I{dataRow}"].Style.Numberformat.Format = "#,##0.00";
+                worksheet.Cells[$"L{headerRow + 1}:L{dataRow - 1}"].Style.Numberformat.Format = "0.0";
+            }
+
+            currentRow = dataRow + 2;
+        }
+
+        private void CreateStateDistributionSection(ExcelWorksheet worksheet, List<WorkflowTicket> data, ref int currentRow, string headerEndColumn)
+        {
+            // ===== STATE DISTRIBUTION SECTION =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "STATE DISTRIBUTION";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+            currentRow += 2;
+
+            var totalTickets = data.Count;
+            var stateSummary = data.GroupBy(x => x.State)
+                                  .Select(g => new { State = g.Key, Count = g.Count() })
+                                  .OrderByDescending(x => x.Count)
+                                  .ToList();
+
+            var stateHeaders = new[] { "State", "Count", "Percentage" };
+            for (int i = 0; i < stateHeaders.Length; i++)
+            {
+                worksheet.Cells[currentRow, 1 + i].Value = stateHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells[currentRow, 1 + i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            currentRow++;
+
+            foreach (var state in stateSummary)
+            {
+                decimal percentage = totalTickets > 0 ? (decimal)state.Count / totalTickets : 0;
+                worksheet.Cells[currentRow, 1].Value = state.State;
+                worksheet.Cells[currentRow, 2].Value = state.Count;
+                worksheet.Cells[currentRow, 3].Value = percentage;
+
+                for (int col = 1; col <= 3; col++)
+                {
+                    worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                }
+                currentRow++;
+            }
+
+            // Format percentages
+            if (stateSummary.Any())
+            {
+                worksheet.Cells[$"C{currentRow - stateSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+            }
+        }
+
+        private int CreateHeaderSection(ExcelWorksheet worksheet, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions, string reportTitle, string headerEndColumn)
+        {
+            // ===== Bank Information at the TOP =====
+            worksheet.Cells[$"A1:{headerEndColumn}1"].Merge = true;
+            worksheet.Cells["A1"].Value = bank;
+            worksheet.Cells["A1"].Style.Font.Bold = true;
+            worksheet.Cells["A1"].Style.Font.Size = 18;
+            worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(1).Height = 30;
+            worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0));
+
+            // ===== Bank Code and Branch Information =====
+            worksheet.Cells[$"A2:{headerEndColumn}2"].Merge = true;
+            worksheet.Cells["A2"].Value = $"Branch Code: {branchcode} | Branch: {branchname} | Branch ID: {branchid}";
+            worksheet.Cells["A2"].Style.Font.Bold = true;
+            worksheet.Cells["A2"].Style.Font.Size = 12;
+            worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(2).Height = 22;
+            worksheet.Cells["A2"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Cells["A2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180));
+
+            // ===== Export meta =====
+            worksheet.Cells[$"A3:{headerEndColumn}3"].Merge = true;
+            worksheet.Cells["A3"].Value = $"Exported By: {exportedBy}";
+            worksheet.Cells["A3"].Style.Font.Bold = true;
+            worksheet.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(3).Height = 18;
+
+            worksheet.Cells[$"A4:{headerEndColumn}4"].Merge = true;
+            worksheet.Cells["A4"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+            worksheet.Cells["A4"].Style.Font.Bold = true;
+            worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(4).Height = 18;
+
+            // ===== Report Title =====
+            worksheet.Cells[$"A5:{headerEndColumn}5"].Merge = true;
+            worksheet.Cells["A5"].Value = reportTitle;
+            worksheet.Cells["A5"].Style.Font.Bold = true;
+            worksheet.Cells["A5"].Style.Font.Size = 14;
+            worksheet.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            worksheet.Row(5).Height = 25;
+            worksheet.Cells["A5"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Cells["A5"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A5"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0));
+
+            // Optional date range row
+            if (exportOptions != null && !string.IsNullOrEmpty(exportOptions.StartDate) && !string.IsNullOrEmpty(exportOptions.EndDate))
+            {
+                worksheet.Cells[$"A6:{headerEndColumn}6"].Merge = true;
+                worksheet.Cells["A6"].Value = $"Date Range: {exportOptions.StartDate} to {exportOptions.EndDate}";
+                worksheet.Cells["A6"].Style.Font.Bold = true;
+                worksheet.Cells["A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Row(6).Height = 18;
+                return 8; // Return the starting row for content
+            }
+
+            return 7; // Return the starting row for content
+        }
+
+        // ===================================================================
+        // HELPER METHODS
+        // ===================================================================
+
+        private string GetColumnLetter(int columnNumber)
+        {
+            string columnLetter = "";
+            while (columnNumber > 0)
+            {
+                int modulo = (columnNumber - 1) % 26;
+                columnLetter = Convert.ToChar('A' + modulo) + columnLetter;
+                columnNumber = (columnNumber - modulo) / 26;
+            }
+            return columnLetter;
+        }
+
+        private int GetColumnNumber(string columnLetter)
+        {
+            columnLetter = columnLetter.ToUpper();
+            int number = 0;
+            for (int i = 0; i < columnLetter.Length; i++)
+            {
+                number = number * 26 + (columnLetter[i] - 'A' + 1);
+            }
+            return number;
+        }
+
+        private double CalculateAverageProcessingTime(List<WorkflowTicket> tickets)
+        {
+            var closedTickets = tickets.Where(x => x.ClosedAtUtc.HasValue && x.OpenedAtUtc.HasValue).ToList();
+            if (!closedTickets.Any()) return 0;
+
+            var totalDays = closedTickets.Sum(x => (x.ClosedAtUtc.Value - x.OpenedAtUtc.Value).TotalDays);
+            return totalDays / closedTickets.Count;
+        }
+
+        private static CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead GetJournalHeader(dynamic item)
+        {
+            try
+            {
+                var header = GetPropertyValue(item, "TempJournalHeader", "tempJournalHeader");
+                if (header is CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead journalHeader)
+                    return journalHeader;
+                return new CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead();
+            }
+            catch
+            {
+                return new CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead();
+            }
+        }
+
+        private static List<JournalLine> GetJournalLines(dynamic item)
+        {
+            try
+            {
+                var lines = GetPropertyValue(item, "JournalLines", "journalLines");
+                if (lines is List<JournalLine> journalLines)
+                    return journalLines;
+                return new List<JournalLine>();
+            }
+            catch
+            {
+                return new List<JournalLine>();
+            }
+        }
+
+        private static string CleanSheetName(string name)
+        {
+            var invalidChars = new char[] { '\\', '/', '*', '?', ':', '[', ']' };
+            foreach (var invalidChar in invalidChars)
+            {
+                name = name.Replace(invalidChar, ' ');
+            }
+            name = string.Join(" ", name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+            return name.Trim();
+        }
+
+        // Helper methods for safe property access (same as in your sample)
+        private static object GetPropertyValue(dynamic obj, params string[] propertyNames)
+        {
+            foreach (var propName in propertyNames)
+            {
+                try
+                {
+                    if (obj != null)
+                    {
+                        var property = obj.GetType().GetProperty(propName);
+                        if (property != null)
+                        {
+                            var value = property.GetValue(obj, null);
+                            if (value != null)
+                                return value;
+                        }
+
+                        if (obj is IDictionary<string, object> dict && dict.ContainsKey(propName))
+                            return dict[propName];
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        private static string GetSafeString(dynamic obj, params string[] propertyNames)
+        {
+            var value = GetPropertyValue(obj, propertyNames);
+            return value?.ToString();
+        }
+
+        private static bool? GetSafeBool(dynamic obj, params string[] propertyNames)
+        {
+            var value = GetPropertyValue(obj, propertyNames);
+            if (value == null) return null;
+
+            if (bool.TryParse(value.ToString(), out bool result))
+                return result;
+            if (value.ToString().ToLower() == "true" || value.ToString() == "1")
+                return true;
+            if (value.ToString().ToLower() == "false" || value.ToString() == "0")
+                return false;
+
+            return null;
+        }
+
+        private static decimal? GetSafeDecimal(dynamic obj, params string[] propertyNames)
+        {
+            var value = GetPropertyValue(obj, propertyNames);
+            if (value == null) return null;
+
+            if (decimal.TryParse(value.ToString(), out decimal result))
+                return result;
+            return null;
+        }
+
+        private static DateTime? ParseDateTime(object dateValue)
+        {
+            if (dateValue == null) return null;
+
+            try
+            {
+                if (dateValue is DateTime dt) return dt;
+                if (dateValue is DateTimeOffset dto) return dto.DateTime;
+
+                string dateString = dateValue.ToString();
+                if (DateTime.TryParse(dateString, out DateTime result))
+                    return result;
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+
 }
 
 

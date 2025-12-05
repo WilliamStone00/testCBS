@@ -86,6 +86,10 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
         {
             try
             {
+                if (!IsHeadOffice())
+                {
+                    query.BranchId = GetBankID();
+                }
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.notdata, query);
 

@@ -1,0 +1,57 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTaskViewModel
+@using System.Linq
+
+@using (Html.BeginForm("ReviewClosure", "EndOfYearClosure", FormMethod.Post,
+    new { enctype = "multipart/form-data", onsubmit = "return ReviewClosureSubmitAjax(this);" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container mt-4">
+        <div class="list-group">
+            @{
+                var index = 0; // initialize index
+            }
+
+            @foreach (var item in Model.Tasks)
+            {
+                <div class="list-group-item">
+                    <div class="form-check">
+                        <!-- Checkbox with class for JS -->
+                        <input class="form-check-input task-checkbox" type="checkbox"
+                               name="Tasks[@index].IsSelected"
+                               value="true" />
+
+                        <!-- Hidden ID with class for JS -->
+                        <input type="hidden" class="task-id" name="Tasks[@index].Id" value="@item.Id" />
+
+                        <label class="form-check-label fw-bold">
+                            @item.Title
+                        </label>
+                    </div>
+
+                    <small class="text-muted d-block mt-1">
+                        @item.Description
+                    </small>
+
+                    <!-- COMMENT PER TASK -->
+                    <div class="mt-2">
+                        <label class="form-label">Remark</label>
+                        <textarea class="form-control task-comment"
+                                  name="Tasks[@index].Comment"
+                                  rows="2"
+                                  placeholder="Add note for this task">@item.Comment</textarea>
+                    </div>
+                </div>
+
+                index++; <!-- increment index -->
+            }
+
+            <!-- SAVE -->
+            <div class="row mb-2 mt-3">
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-primary">Validate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

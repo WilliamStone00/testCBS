@@ -36,10 +36,24 @@
                 <li><strong>Validations Required:</strong> Branch, Accounting Year, and Status must be selected before submitting.</li>
                 <li><strong>Confirmation Step:</strong> A confirmation popup shows selected values and requires a checkbox before saving.</li>
                 <li><strong>Form Submission:</strong> The form submits using FormData to support files and anti-forgery tokens.</li>
-               <li><strong>Auto UI Reset:</strong> After a successful save, the form resets and all Select2 dropdowns are cleared.</li>
+                <li><strong>Auto UI Reset:</strong> After a successful save, the form resets and all Select2 dropdowns are cleared.</li>
         </div>
     </div>
 </div>
+
+
+<div class="row mb-1">
+    <div class="col-12 text-end">
+        <button type="button" id="btnAddYear" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
+    </div>
+</div>
+
+
+
+
+
 
 
 
@@ -153,8 +167,8 @@ $(document).ready(function () {
                 <tr><th>Branch</th><td>${branchText}</td></tr>
                 <tr><th>Accounting Year</th><td>${yearText}</td></tr>
                 <tr><th>Status</th><td>${statusText}</td></tr>
-                <tr><th>Opening Date</th><td>${openingDateText}</td></tr>
-                <tr><th>Closing Date</th><td>${closingDateText}</td></tr>
+                <tr><th>StartDate Date</th><td>${openingDateText}</td></tr>
+                <tr><th>EndDate Date</th><td>${closingDateText}</td></tr>
             </tbody>
         </table>
         <div class="form-check mt-3">

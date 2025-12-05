@@ -144,6 +144,21 @@
                     @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "DailyCollection", new { id = "dailyCollection", @class = "form-check-input" })
                     <label class="form-check-label" for="dailyCollection">@Globals_ProductConfig.DailyCollection</label>
                 </div>
+                <!-- 🔹 NEW: TempDeposit -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "TempDeposit", new { id = "tempDeposit", @class = "form-check-input" })
+                    <label class="form-check-label" for="tempDeposit">
+                        Temp Deposit
+                    </label>
+                </div>
+
+                <!-- 🔹 NEW: Check Account -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "CurrentAccount", new { id = "CurrentAccount", @class = "form-check-input" })
+                    <label class="form-check-label" for="CurrentAccount">
+                        Current account(Check Account)
+                    </label>
+                </div>
             </div>
         </div>
     </fieldset>

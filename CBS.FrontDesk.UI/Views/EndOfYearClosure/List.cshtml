@@ -1,0 +1,267 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYear
+
+
+
+
+@using Resources
+@{
+    ViewBag.Title = "Closure Journal Request";
+}
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> Closure Journal Request
+        </h1>
+
+        @*<div class="alert alert-info mt-3 py-2">
+                <i class="mdi mdi-information-outline me-1"></i>
+                Use the filters below to search and review journal entries efficiently.
+            </div>*@
+    </div>
+</div>
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="journalHeaderFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Main Filters Card -->
+        <div class="card p-3 mb-2 bg-light">
+            @* --- inside your form: remove any duplicate HiddenFor that used id="AccountingYearId" --- *@
+
+            <div class="row mb-1">
+                <div class="col-md-12 mb-1">
+                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 mb-1", @id = "branchId" })
+                </div>
+            </div>
+
+            <div class="row mb-1">
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold" for="AdjustmentType">Adjustment Type</label>
+                    @Html.DropDownList("AdjustmentType",
+                        new SelectList(ViewBag.AdjustmentType ?? new List<object>(), "Value", "Text"),
+                        "--- Select Adjustment Type ---",
+                        new { @class = "form-control select2 mb-1", @id = "AdjustmentType" })
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    @Html.LabelFor(model => model.Year, "Accounting Year", new { @class = "form-label fw-semibold" })
+                    @Html.TextBoxFor(model => model.Year,
+                        new { @class = "form-control", id = "AccountingYearId", @readonly = "readonly" })
+                </div>
+
+                @* Hidden ID that will hold the AccountingYear DB Id returned by server *@
+                @Html.HiddenFor(model => model.Id, new { id = "TaskAccountingYearId" })
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row g-2 mt-2">
+            <div class="col-12 col-md-4">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+$(document).ready(function () {
+
+    // initialize select2 (if not already)
+    if ($.fn.select2) {
+        $('.select2').select2({ width: '100%' });
+    }
+
+    // Load DataTable with current filters
+    function loadYearEndChecklistStatus() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'desc']],
+            ajax: {
+                url: '/EndOfYearClosure/LoadYearEndChecklistStatus',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = collectYearEndFilters();
+                    filters.Options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr, status, err) {
+                    console.error('❌ Error loading checklist status:', status, err);
+                    appalert('❌ Failed to load checklist data. Status: ' + xhr.status, 4, 1);
+                }
+            },
+            columns: [
+                { data: 'CreatedDate', render: d => d ? moment(d).format('DD/MM/YYYY') : '' },
+                { data: 'BranchName' },
+                { data: 'AdjustmentType' },
+                { data: 'Year' },
+                { data: 'Status' },
+                {
+                    data: null,
+                    render: function (_, __, row) {
+                        return `<button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                  <i class="mdi mdi-eye-outline"></i> Details
+                                </button>`;
+                    }
+                }
+            ]
+        });
+    }
+
+    // collect filters (now includes TaskAccountingYearId)
+    function collectYearEndFilters() {
+        return {
+            BranchId: $('#branchId').val(),
+            AdjustmentType: $('#AdjustmentType').val(),
+            Year: $('#AccountingYearId').val(),
+            Id: $('#TaskAccountingYearId').val(),
+            Options: {}
+        };
+    }
+
+    // Reset filters: native reset + select2 + clear accounting fields
+    function resetYearEndFilters() {
+        document.getElementById('journalHeaderFilterForm').reset();
+        $('.select2').val(null).trigger('change');
+
+        // Clear accounting year UI + hidden DB id
+        $('#branchId').val('');
+        $('#AccountingYearId').val('');
+        $('#TaskAccountingYearId').val('');
+    }
+
+    // apply button
+    $('#applyFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        loadYearEndChecklistStatus();
+    });
+
+    // reset button
+    $('#resetFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        resetYearEndFilters();
+    });
+
+
+    /* ==========================================================
+       Load Accounting Year When Branch Changes
+       ========================================================== */
+    $('#branchId').on('change', function () {
+        const branchId = $(this).val();
+
+        if (!branchId) {
+            $('#AccountingYearId').val('');
+            $('#TaskAccountingYearId').val('');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("GetClosureOpenYearByBranchId", "EndOfYearClosure")',
+            type: "GET",
+            data: { branchId: branchId },
+            success: function (data) {
+                console.log("years returned:", data); // debug
+                if (data && data.length > 0) {
+                    const year = data[0].year;
+                    const id = data[0].id;
+
+                    // Fill UI and hidden DB id
+                    $('#AccountingYearId').val(year);
+                    $('#TaskAccountingYearId').val(id);
+
+                    appalert("Accounting Year loaded successfully", 1, 1);
+                } else {
+                    $('#AccountingYearId').val('');
+                    $('#TaskAccountingYearId').val('');
+                    appalert("No Accounting Year found for this branch", 2, 1);
+                }
+            },
+            error: function () {
+                $('#AccountingYearId').val('');
+                $('#TaskAccountingYearId').val('');
+                appalert("Failed to load Accounting Year", 2, 1);
+            }
+        });
+    });
+
+    // Optionally load initial table on page load
+    //loadYearEndChecklistStatus();
+});
+    </script>
+}

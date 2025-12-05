@@ -1,55 +1,54 @@
-﻿
-<style>
-    #myDataTable th, #myDataTable td {
-        vertical-align: middle !important;
-        text-align: center !important;
-    }
-
-        #myDataTable th:not(:last-child), #myDataTable td:not(:last-child) {
-            width: calc((100% - 120px) / 4); /* 4 equal columns, Actions gets 120px */
-        }
-
-</style>
-
-
-
-@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.accountingyear>
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.accountingyear>
 
 <fieldset class="fieldset-custom">
     <h6 class="d-flex justify-content-between align-items-center text-primary mb-3">
         <span><i class="mdi mdi-calendar-clock-outline me-2"></i> Accounting Year Configuration</span>
-
-        <button type="button" id="btnAddYear" class="btn btn-sm btn-success px-3">
-            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
-        </button>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary bg-opacity-25 px-3 py-2">
+                <i class="mdi mdi-database me-1"></i>
+                <span id="recordCount">@(Model?.Count() ?? 0)</span> records
+            </span>
+            <button id="refreshBtn" class="btn btn-sm btn-outline-primary">
+                <i class="mdi mdi-refresh me-1"></i> Refresh
+            </button>
+        </div>
     </h6>
+    
     @if (Model == null || !Model.Any())
     {
-        <div class="text-center my-3">
-            <p>No accounting years have been defined yet.</p>
+        <div class="text-center my-5 py-5" id="noDataMessage">
+            <i class="mdi mdi-database-off-outline fs-1 text-muted mb-3"></i>
+            <p class="text-muted">No accounting years have been defined yet.</p>
+            <button id="retryBtn" class="btn btn-sm btn-primary mt-2">
+                <i class="mdi mdi-refresh me-1"></i> Retry
+            </button>
         </div>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table table-sm table-hover align-middle border text-center" id="myDataTable" style="table-layout: fixed; width: 100%;">
+            <table id="accountingYearTable" class="table table-sm table-hover align-middle border text-center" style="width:100%">
                 <thead class="bg-light fw-semibold text-uppercase small text-center align-middle">
                     <tr>
                         <th style="display:none;">Id</th>
-                        <th class="py-2">Branch</th>
-                        <th class="py-2">Year</th>
-                        <th class="py-2">Status</th>
-                        <th class="py-2" style="width: 120px;">Actions</th>
+                        <th>Start Accounting Date</th>
+                        <th>End Accounting Date</th>
+                        <th>Branch</th>
+                        <th>Year</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var d in Model)
                     {
-                        <tr data-id="@d.Id" class="text-center align-middle">
+                        <tr>
                             <td style="display:none;">@d.Id</td>
-                            <td class="text-nowrap">@d.BranchName</td>
+                            <td data-order="@(d.StartDate?.Ticks ?? 0)">@(d.StartDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                            <td data-order="@(d.EndDate?.Ticks ?? 0)">@(d.EndDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                            <td>@d.BranchName</td>
                             <td>@d.Year</td>
-                            <td>
+                            <td data-order="@d.Status">
                                 @if (d.Status?.ToUpper() == "OPEN")
                                 {
                                     <span class="badge bg-success bg-opacity-75 px-3">Open</span>
@@ -63,10 +62,35 @@
                                     <span class="badge bg-warning bg-opacity-75 px-3">Lock</span>
                                 }
                             </td>
-                            <td style="width: 120px;">
+                            <td>
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-sm px-3 btn-update-year" data-id="@d.Id">
+                                    <button type="button"
+                                            class="btn btn-outline-primary btn-sm px-3 btn-update-year"
+                                            data-id="@d.Id"
+                                            data-branch-id="@d.BranchId"
+                                            data-branch-name="@d.BranchName"
+                                            data-year="@d.Year"
+                                            data-status="@d.Status"
+                                            data-start-date="@(d.StartDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-end-date="@(d.EndDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-opening-date="@(d.OpeningDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-closing-date="@(d.ClosingDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-accounting-year-id="@d.AccountingYearId">
                                         <i class="mdi mdi-content-save-outline me-1"></i> Update
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-outline-info btn-sm px-3 btn-view-details"
+                                            data-id="@d.Id"
+                                            data-branch-id="@d.BranchId"
+                                            data-branch-name="@d.BranchName"
+                                            data-year="@d.Year"
+                                            data-status="@d.Status"
+                                            data-start-date="@(d.StartDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-end-date="@(d.EndDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-opening-date="@(d.OpeningDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-closing-date="@(d.ClosingDate?.ToString("yyyy-MM-ddTHH:mm:ss") ?? "")"
+                                            data-accounting-year-id="@d.AccountingYearId">
+                                        <i class="mdi mdi-eye-outline"></i>
                                     </button>
                                 </div>
                             </td>
@@ -75,7 +99,312 @@
                 </tbody>
             </table>
         </div>
-
-
     }
 </fieldset>
+
+<!-- Details Modal -->
+<div class="modal fade" id="accountingYearDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bg-light mb-2 p-2">
+                        <div class="card-body text-center py-2">
+                            <h1 class="card-title text-primary mb-1">
+                                <i class="mdi mdi-calendar-clock-outline me-2"></i>Accounting Year Details
+                                <button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </h1>
+                            <hr style="border: 1px solid rgba(128, 128, 128, 0.35);" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" id="accountingYearDetailsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let accountingYearTable = null;
+        
+        $(document).ready(function () {
+            // Initialize DataTable if data exists
+            if ($('#accountingYearTable').length > 0) {
+                initializeDataTable();
+            }
+            
+            // Refresh button click - reloads the entire partial view
+            $('#refreshBtn').click(function() {
+                refreshData();
+            });
+            
+            // Retry button click
+            $('#retryBtn').click(function() {
+                refreshData();
+            });
+            
+            // Attach event handlers
+            attachEventHandlers();
+            
+            function initializeDataTable() {
+                accountingYearTable = $('#accountingYearTable').DataTable({
+                    responsive: true,
+                    pageLength: 10,
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    order: [[1, 'desc']], // Sort by start date descending
+                    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search accounting years...",
+                        lengthMenu: "_MENU_ records per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        infoEmpty: "Showing 0 to 0 of 0 entries",
+                        infoFiltered: "(filtered from _MAX_ total entries)",
+                        zeroRecords: "No matching records found"
+                    },
+                    initComplete: function() {
+                        // Apply custom styling to Branch column
+                        applyBranchColumnStyling();
+                    },
+                    drawCallback: function() {
+                        // Reapply custom styling
+                        applyBranchColumnStyling();
+                        
+                        // Reattach event handlers after table redraw
+                        attachEventHandlers();
+                    }
+                });
+                
+                // Update record count
+                const recordCount = accountingYearTable.rows().count();
+                $('#recordCount').text(recordCount);
+            }
+            
+            function refreshData() {
+                // Show loading on button
+                const $btn = $('#refreshBtn');
+                const originalHtml = $btn.html();
+                $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-1"></i> Refreshing...');
+                
+                $.ajax({
+                    url: '@Url.Action("GetAll", "AccountingYear")',
+                    type: 'GET',
+                    success: function(html) {
+                        // Replace the entire fieldset content
+                        $('.fieldset-custom').html($(html).filter('.fieldset-custom').html());
+                        
+                        // Reinitialize DataTable if it exists
+                        if ($('#accountingYearTable').length > 0) {
+                            // Destroy existing DataTable
+                            if (accountingYearTable !== null) {
+                                accountingYearTable.destroy();
+                                accountingYearTable = null;
+                            }
+                            
+                            // Initialize new DataTable
+                            initializeDataTable();
+                            
+                            // Update record count
+                            const recordCount = $('#accountingYearTable tbody tr').length;
+                            $('#recordCount').text(recordCount);
+                        }
+                        
+                        // Show success message
+                        if (typeof appalert === 'function') {
+                            appalert('Data refreshed successfully!', 1, 1);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error refreshing data:', error);
+                        
+                        if (typeof appalert === 'function') {
+                            appalert('Error refreshing data. Please try again.', 3, 1);
+                        } else {
+                            alert('Error refreshing data. Please try again.');
+                        }
+                    },
+                    complete: function() {
+                        // Restore button state
+                        $btn.prop('disabled', false).html(originalHtml);
+                    }
+                });
+            }
+            
+            function applyBranchColumnStyling() {
+                // Apply specific styling to Branch column (4th column in display)
+                $('#accountingYearTable td:nth-child(4)').each(function() {
+                    $(this).css({
+                        'min-width': '220px',
+                        'max-width': '260px',
+                        'white-space': 'normal',
+                        'word-wrap': 'break-word'
+                    });
+                });
+            }
+            
+            // Format date function for modal
+            function formatDate(dateString) {
+                if (!dateString || dateString === '0001-01-01T00:00:00') {
+                    return '<span class="text-muted">—</span>';
+                }
+                
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
+            
+            function formatDateTime(dateString) {
+                if (!dateString || dateString === '0001-01-01T00:00:00') {
+                    return '<span class="text-muted">—</span>';
+                }
+                
+                const date = new Date(dateString);
+                return date.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            function attachEventHandlers() {
+                // View Details button
+                $(document).on('click', '.btn-view-details', function() {
+                    const $btn = $(this);
+                    const status = $btn.data('status')?.toUpperCase();
+                    let statusBadgeClass = 'bg-warning';
+                    let statusText = 'Lock';
+                    
+                    if (status === 'OPEN') {
+                        statusBadgeClass = 'bg-success';
+                        statusText = 'Open';
+                    } else if (status === 'CLOSE') {
+                        statusBadgeClass = 'bg-secondary';
+                        statusText = 'Close';
+                    }
+
+                    const detailsHtml = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary mb-3"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
+                                        <table class="table table-sm table-borderless">
+                                            <tr><td class="fw-bold text-muted small">ID:</td><td class="font-monospace small">${$btn.data('id')}</td></tr>
+                                            <tr><td class="fw-bold text-muted small">Branch ID:</td><td class="font-monospace small">${$btn.data('branch-id')}</td></tr>
+                                            <tr><td class="fw-bold text-muted small">Accounting Year ID:</td><td>${$btn.data('accounting-year-id') || '<span class="text-muted">—</span>'}</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary mb-3"><i class="mdi mdi-calendar-check-outline me-2"></i>Status & Year</h6>
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <td class="fw-bold text-muted small">Status:</td>
+                                                <td><span class="badge ${statusBadgeClass}">${statusText}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold text-muted small">Year:</td>
+                                                <td><span class="fw-bold text-primary">${$btn.data('year')}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold text-muted small">Branch:</td>
+                                                <td>${$btn.data('branch-name') || '<span class="text-muted">—</span>'}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card border-0">
+                                    <div class="card-header bg-white">
+                                        <h6 class="card-title mb-0 text-primary"><i class="mdi mdi-calendar-range-outline me-2"></i>Date Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-md-6">
+                                                <div class="border rounded p-3 mb-3">
+                                                    <div class="text-muted small">Start Date</div>
+                                                    <div class="h5 text-primary fw-bold">${formatDate($btn.data('start-date'))}</div>
+                                                    <small class="text-muted">${formatDateTime($btn.data('start-date'))}</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="border rounded p-3 mb-3">
+                                                    <div class="text-muted small">End Date</div>
+                                                    <div class="h5 text-success fw-bold">${formatDate($btn.data('end-date'))}</div>
+                                                    <small class="text-muted">${formatDateTime($btn.data('end-date'))}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center mt-3">
+                                            <div class="col-md-6">
+                                                <div class="border rounded p-3">
+                                                    <div class="text-muted small">Opening Date</div>
+                                                    <div class="h6 text-info fw-bold">${formatDate($btn.data('opening-date'))}</div>
+                                                    <small class="text-muted">${formatDateTime($btn.data('opening-date'))}</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="border rounded p-3">
+                                                    <div class="text-muted small">Closing Date</div>
+                                                    <div class="h6 text-secondary fw-bold">${formatDate($btn.data('closing-date'))}</div>
+                                                    <small class="text-muted">${formatDateTime($btn.data('closing-date'))}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="alert alert-light border">
+                                    <h6 class="text-dark mb-2"><i class="mdi mdi-information-outline text-primary me-2"></i>Notes</h6>
+                                    <p class="mb-0 small text-muted">
+                                        This accounting year configuration controls the financial period for the branch. 
+                                        Make sure dates are properly configured before changing the status.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $('#accountingYearDetailsContent').html(detailsHtml);
+                    const modal = new bootstrap.Modal(document.getElementById('accountingYearDetailsModal'));
+                    modal.show();
+                });
+
+                // Update Year button
+                $(document).on('click', '.btn-update-year', function() {
+                    const $btn = $(this);
+                    const id = $btn.data('id');
+                    const branchName = $btn.data('branch-name') || 'Unknown Branch';
+                    const year = $btn.data('year');
+                    
+                    // You can implement your update logic here
+                    console.log('Update year clicked:', { id, branchName, year });
+                    
+                    // Example: Show confirmation or open edit modal
+                    if (typeof appalert === 'function') {
+                        appalert(`Would update ${branchName} - ${year} (ID: ${id})`, 1, 1);
+                    } else {
+                        alert(`Would update ${branchName} - ${year} (ID: ${id})`);
+                    }
+                });
+            }
+        });
+    </script>
+}
