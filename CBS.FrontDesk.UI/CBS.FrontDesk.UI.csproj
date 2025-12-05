@@ -11094,6 +11094,10 @@
     <Content Include="Views\EndOfYearClosure\_Review.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\Index.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\_DataTable.cshtml" />
+    <Content Include="Views\EndOfYearClosure\List.cshtml" />
+    <Content Include="Views\EndOfYearClosure\_DataTable.cshtml" />
+    <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
+    <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

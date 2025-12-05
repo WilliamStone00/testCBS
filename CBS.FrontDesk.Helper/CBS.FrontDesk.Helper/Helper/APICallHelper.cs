@@ -1759,6 +1759,9 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+        public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
+        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
 
 
     }

@@ -45,14 +45,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoadYearEndChecklistDefinition(YearEndChecklistDefinitionQuery query)
+        public async Task<JsonResult> LoadYearEndChecklistDefinition(YearEndChecklistStatusQuery query)
         {
             try
             {
                 var data = await _YearEndChecklistDefinitionService.GetYearEndChecklistDefinitionDataTableAsync(query);
 
                 // Deserialize DataTable payload into strongly-typed list
-                var journalHeaders = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTask>>(
+                var EndChecklist = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTask>>(
                     JsonConvert.SerializeObject(data.data));
 
                 return Json(new
@@ -61,7 +61,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                     //draw = data.Options.draw ?? "1",
                     //recordsTotal = data.Options.recordsTotal,
                     //recordsFiltered = data.Options.recordsFiltered,
-                    data = journalHeaders,
+                    data = EndChecklist,
                     success = true,
                     message = "Display DataTable for End of Year check Definition status   successfully"
                 }, JsonRequestBehavior.AllowGet);

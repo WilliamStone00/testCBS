@@ -1,4 +1,5 @@
 ﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
@@ -7,30 +8,36 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using System.Web;
+
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
 {
     public class EndOfYearClosureController : Controller
     {
-
+        private static readonly Random _random = new Random();
 
         private readonly BranchServices _branchServices;
         private readonly EndOfYearClosureService _endOfYearClosureService;
-        
+        private readonly BranchAccountService _branchAccountService;
 
 
-        public EndOfYearClosureController(BranchServices branchServices, EndOfYearClosureService endOfYearClosureService)
+
+        public EndOfYearClosureController(BranchServices branchServices, EndOfYearClosureService endOfYearClosureService, BranchAccountService branchAccountService)
         {
 
             _branchServices = branchServices;
             _endOfYearClosureService = endOfYearClosureService;
-            
+            _branchAccountService = branchAccountService;
+
 
         }
         // GET: EndOfYearClosure
@@ -39,7 +46,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             await loader();
             return View(new EndOfYear());
         }
-
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View(new EndOfYear());
+        }
 
         public async Task<bool> loader()
         {
@@ -71,6 +82,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             {
                 var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId);
 
+                var firstYear = years.FirstOrDefault();
+                if (firstYear != null)
+                {
+                    Session["SelectedAccountingYearId"] = firstYear.Id;
+                }
+
                 var result = years.Select(x => new
                 {
                     id = x.Id,
@@ -84,14 +101,28 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return new HttpStatusCodeResult(500, ex.Message);
             }
         }
-
+       
 
 
 
         [HttpPost]
-        public async Task<ActionResult> InitiateClosure(EndOfYear model)
+        public async Task<ActionResult> InitiateClosure(CloseYearInitiate model)
         {
-          
+
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                model.AccountingYearId = Session["SelectedAccountingYearId"]?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Accounting Year is missing. Please select a branch and try again."
+                });
+            }
+
 
             try
             {
@@ -115,10 +146,23 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 });
             }
         }
-
         [HttpPost]
-        public async Task<ActionResult> ReviewClosure(EndOfYear model)
+        public async Task<ActionResult> ReviewClosure( ReviewClosureRequest model)
         {
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                model.AccountingYearId = Session["SelectedAccountingYearId"]?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Accounting Year is missing. Please select a branch and try again."
+                });
+            }
+
             try
             {
                 var result = await _endOfYearClosureService.SaveReviewClosure(model);
@@ -173,6 +217,205 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             catch (Exception ex)
             {
                 return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadYearEndChecklistStatus(YearEndChecklistStatusQuery query)
+        {
+            try
+            {
+                var data = await _endOfYearClosureService.AdjustmentEntriesDataTableAsync(query);
+
+                // Deserialize DataTable payload into strongly-typed list
+                var EndChecklist = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.EndOfYearClosure.EndOfYear>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    //draw = data.Options.draw ?? "1",
+                    //recordsTotal = data.Options.recordsTotal,
+                    //recordsFiltered = data.Options.recordsFiltered,
+                    data = EndChecklist,
+                    success = true,
+                    message = "Display DataTable for End of Year check  status   successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Return DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+
+
+
+        }
+
+        public string GenerateReference()
+        {
+            // Use _random instance to prevent duplicate numbers
+            return $"REF-{DateTime.Now:yyyyMMddHHmmss}-{_random.Next(100, 999)}";
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> PostAdjustment(EndOfYear model)
+        {
+
+
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                model.AccountingYearId = Session["SelectedAccountingYearId"]?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(model.AccountingYearId))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Accounting Year is missing. Please select a branch and try again."
+                });
+            }
+            try
+            {
+            
+
+                // ✅ Validate payload
+                if (model == null)
+                    return Json(new { success = false, message = "Invalid payload received." });
+
+                if (model.Payload == null || model.Payload.Entries == null || !model.Payload.Entries.Any())
+                    return Json(new { success = false, message = "No journal lines provided." });
+
+                // ✅ Ensure Debit = Credit
+                var totalDr = model.Payload.Entries.Where(e => e.Dr).Sum(e => e.Amount);
+                var totalCr = model.Payload.Entries.Where(e => e.Cr).Sum(e => e.Amount);
+                if (totalDr != totalCr)
+                    return Json(new { success = false, message = "Debit and Credit totals must balance." });
+
+                // ✅ Add metadata
+                model.PostMode = "HOLD_FOR_APPROVAL";
+                
+                model.CreatedDate = DateTime.Now;
+                model.State = "INITIATED";
+                model.Reference = GenerateReference();
+
+
+
+                // ✅ Call service
+                var execMessage = await _endOfYearClosureService.PostAdjustmentAsync(model);
+
+                // ✅ Handle response (pattern same as CreateOrUpdate)
+                if (execMessage == null)
+                    return Json(new { success = false, message = "No response from service." });
+
+                if (!execMessage.Result)
+                    return Json(new
+                    {
+                        success = false,
+                        message = execMessage.MessageString ?? "Failed to post journal entry.",
+                        data = execMessage.Data
+                    });
+
+                return Json(new
+                {
+                    success = true,
+                    message = execMessage.MessageString ?? "Journal entry posted successfully.",
+                    data = execMessage.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+
+
+        public async Task<ActionResult> GetAccounts(string branchId)
+        {
+            try
+            {
+                branchId = _branchAccountService.GetBranchID();
+                if (string.IsNullOrWhiteSpace(branchId))
+                    return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
+
+                var branchAccounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                var result = _branchAccountService.DropDownGen(branchAccounts.ToList());
+
+
+                // var result = await _manualJournalEntryService.GetAccountsByBranchAsync(branchId);
+
+                if (result == null || !result.Any())
+                    return Json(new { success = false, message = "⚠️ No accounts found for this branch." }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
+            }
+            catch (TaskCanceledException)
+            {
+                return Json(new { success = false, message = "⚠️ Timeout while fetching accounts — backend service not responding." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> CloseYear(CloseOfYear model)
+        {
+            if (string.IsNullOrEmpty(model.AccountingYear))
+            {
+                model.AccountingYear = Session["SelectedAccountingYearId"]?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(model.AccountingYear))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Accounting Year is missing. Please select a branch and try again."
+                });
+            }
+
+            try
+            {
+                var result = await _endOfYearClosureService.SaveClosure(model);
+
+                if (result == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "No response from Review Closure service."
+                    });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Review of year closure failed: {ex.Message}"
+                });
             }
         }
 

@@ -22,5 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear
 
         public DateTime? OpeningDate { get; set; }
         public DateTime? ClosingDate { get; set; }
+
+        public  string AccountingYearId { get; set; }
     }
 }
