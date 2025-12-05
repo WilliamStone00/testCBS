@@ -162,6 +162,60 @@
             </div>
         </div>
     </fieldset>
+
+    <fieldset class="fieldset-custom">
+        <legend>Members None Operational Account</legend>
+        <div class="row">
+            <div class="col-12">
+                <!-- Intérêt Crédit Radiés -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Interet_Credit_Radies", new { id = "interetCreditRadies", @class = "form-check-input" })
+                    <label class="form-check-label" for="interetCreditRadies">
+                        Interet Crédit Radiés
+                    </label>
+                </div>
+
+                <!-- Crédit Ordinaire Radiés -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Credit_Ordinaire_Radies", new { id = "creditOrdinaireRadies", @class = "form-check-input" })
+                    <label class="form-check-label" for="creditOrdinaireRadies">
+                        Crédit Ordinaire Radiés
+                    </label>
+                </div>
+
+                <!-- Crédit Express -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Credit_Express", new { id = "creditExpress", @class = "form-check-input" })
+                    <label class="form-check-label" for="creditExpress">
+                        Crédit Express
+                    </label>
+                </div>
+
+                <!-- Acompte -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Acompte", new { id = "acompte", @class = "form-check-input" })
+                    <label class="form-check-label" for="acompte">
+                        Acompte
+                    </label>
+                </div>
+
+                <!-- Découvert -->
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.SavingProduct.AccountType, "Decouvert", new { id = "decouvert", @class = "form-check-input" })
+                    <label class="form-check-label" for="decouvert">
+                        Découvert
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validation Message -->
+        <div class="text-danger">
+            @Html.ValidationMessageFor(m => m.SavingProduct.AccountType)
+        </div>
+    </fieldset>
+
+
     <fieldset class="fieldset-custom">
         <legend>@Globals_ProductConfig.DefaultAccountOpeningConditions</legend>
         <div class="row gy-3">
