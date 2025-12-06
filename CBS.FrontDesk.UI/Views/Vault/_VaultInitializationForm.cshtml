@@ -240,7 +240,19 @@
             maximumFractionDigits: 0
         });
     }
+    // ✅ Define this so calls to resetVaultFields() work
+    function resetVaultFields() {
+        $('#AmountInHand').val(0);
+        $('#AmountInVault').val(0);
+        $('#TotalAmount').val(0);
 
+        $('#balanceBroughtForward').text('@GlobalVault.BalanceBroughtForward: 0 XAF');
+        $('#lblBalance').text('@GlobalVault.Balance: 0 XAF');
+
+        $('#canProceedCheckbox')
+            .prop('checked', false)
+            .prop('disabled', true); // keep greyed out
+    }
     function fetchVaultBalances(branchId) {
         if (!branchId) {
             resetVaultFields();
