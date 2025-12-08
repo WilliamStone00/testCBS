@@ -79,7 +79,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
             line3.Merge();
             line3.Style.Font.SetFontSize(12).Font.SetBold();
             line3.Style.Font.FontColor = XLColor.White;
-            line3.Style.Fill.BackgroundColor = XLColor.FromArgb(210, 230, 255);
+            line3.Style.Fill.BackgroundColor = XLColor.FromArgb(73, 160, 232);
             line3.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
             line3.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
             line3.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
