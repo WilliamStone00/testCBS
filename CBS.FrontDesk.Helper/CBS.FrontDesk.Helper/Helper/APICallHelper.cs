@@ -520,7 +520,9 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
         public static string GetAllSavingProducts = "/api/v1/SavingProduct";
         public static string CreateSavingProduct = "/api/v1/SavingProduct";
-
+        public static string GetAllAccountTypeGroups = "/api/v1/AccountTypeGroup";
+        public static string GetAccountTypeDefinitionGroupId = "/api/v1/AccountTypeDefinition/group/{0}";
+        //
         //DepositLimit
         public static string Get_Update_Delete_DepositLimit = "/api/v1/DepositLimits/{0}";
         public static string GetAllDepositLimits = "/api/v1/DepositLimits";

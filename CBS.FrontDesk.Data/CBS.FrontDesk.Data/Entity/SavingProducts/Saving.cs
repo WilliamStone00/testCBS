@@ -560,8 +560,10 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [Required]
         public string EventCodeAdvanceOfSalaryFormFee { get; set; }
 
-        [Required]
+        //[Required]
         public string AccountType { get; set; }
+        [Required]
+        public string AccountTypeDefinitionId { get; set; }
         [Required]
         public List<CloseFeeParameter> CloseFeeParameters { get; set; }
         public List<EntryFeeParameter> EntryFeeParameters { get; set; }
