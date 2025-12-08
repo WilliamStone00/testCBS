@@ -234,6 +234,12 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
 
                 ws.Range(row, 4, row, 9).Style.NumberFormat.Format = "#,##0";
 
+               
+
+
+
+
+
                 var totalsRange = ws.Range(row, 1, row, 9);
                 totalsRange.Style.Font.SetBold();
                 totalsRange.Style.Fill.SetBackgroundColor(XLColor.FromArgb(230, 230, 230));
@@ -242,6 +248,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
 
                 row++;
 
+
                 // 5️⃣ AUTO-SIZE COLUMNS
                 ws.Columns().AdjustToContents();
                 foreach (var column in ws.ColumnsUsed())
@@ -249,6 +256,30 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
                     if (column.Width < 12) column.Width = 12;
                     if (column.Width > 45) column.Width = 45;
                 }
+                ws.Column(1).Width = 5;
+
+                // adding extra footer calculations
+                ws.Cell(row,4).Value = totals.TotalOpeningDifference;
+                ws.Cell(row, 6).Value = totals.TotalMovementDifference;
+                ws.Cell(row, 8).Value = totals.TotalClosingDifference;
+
+
+                ws.Range(row, 4, row, 5).Merge();
+                ws.Range(row, 6, row, 7).Merge();
+                ws.Range(row, 8, row, 9).Merge();
+                ws.Range(row, 4, row, 9).Style.Border.SetOutsideBorder(XLBorderStyleValues.Medium);
+                ws.Range(row, 4, row, 9).Style.Border.SetInsideBorder(XLBorderStyleValues.Thin);
+
+                //styles
+                //----------- group 1 -----------------------------
+                ws.Range(row, 4, row, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                ws.Range(row, 4, row, 5).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                //----------- group 2 -----------------------------
+                ws.Range(row, 6, row, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                ws.Range(row, 6, row, 7).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                //----------- group 3 -----------------------------
+                ws.Range(row, 8, row, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                ws.Range(row, 8, row, 9).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
 
                 workbook.SaveAs(filePath);
             }
