@@ -12,6 +12,11 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
 
     public class TrialBalance6ColumnsExport
     {
+        private readonly BaseExcelHead baseExcelHead;
+        public TrialBalance6ColumnsExport(BaseExcelHead baseExcelHead)
+        {
+            this.baseExcelHead = baseExcelHead;
+        }
         public string SafeGet(dynamic obj, string propertyName)
         {
             try
@@ -143,6 +148,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
         }
 
 
+
         public void ExportTb6(dynamic tb, string filePath, string exportedBy)
         {
             var data = tb;
@@ -153,7 +159,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
                 var ws = workbook.Worksheets.Add("Trial Balance");
 
                 // 1️⃣ HEADER (BANK / BRANCH / PERIOD etc.)
-                int row = WriteExcelHeader(ws, data[0], exportedBy, 1);
+                int row = baseExcelHead.WriteExcelHeader(ws, data[0], exportedBy, 1);
 
                 // 2️⃣ TABLE MAIN HEADERS (ROW row)
                 ws.Cell(row, 1).Value = "SN";
@@ -234,7 +240,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
 
                 ws.Range(row, 4, row, 9).Style.NumberFormat.Format = "#,##0";
 
-               
+
 
 
 
@@ -259,7 +265,7 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
                 ws.Column(1).Width = 5;
 
                 // adding extra footer calculations
-                ws.Cell(row,4).Value = totals.TotalOpeningDifference;
+                ws.Cell(row, 4).Value = totals.TotalOpeningDifference;
                 ws.Cell(row, 6).Value = totals.TotalMovementDifference;
                 ws.Cell(row, 8).Value = totals.TotalClosingDifference;
 
@@ -285,8 +291,6 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
             }
         }
 
-
-      
 
     }
 }
