@@ -1,33 +1,15 @@
-﻿@{
-    ViewBag.Title = "Collector Devices - List";
-}
-
-@*<div class="card mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0 text-primary">
-                    <i class="mdi mdi-devices me-2"></i>
-                </h5>
-                <a href="@Url.Action("Index", "CollectorDevice")"
-                   class="btn btn-label-primary btn-sm"
-                   data-bs-toggle="tooltip"
-                   title="Go to Create Form">
-                    <i class="mdi mdi-plus mdi-18px"></i> Add New Device
-                </a>
-            </div>
-        </div>
-    </div>*@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup.AccountTypeGroupResponse>
 
 <div class="card">
     <div class="card-body">
         <fieldset class="fieldset-custom">
             <div class="card-header d-flex align-items-center">
                 <h4 class="card-title mb-0 text-primary">
-                    <i class="mdi mdi-view-list me-2"></i> Collector Devices List
+                    <i class="mdi mdi-view-list me-2"></i> Account Type Groups List
                 </h4>
                 <button type="button"
                         class="btn btn-sm btn-outline-primary ms-auto"
-                        onclick="deviceManager.refreshDataTable()"
+                        onclick="groupManager.refreshDataTable()"
                         data-bs-toggle="tooltip"
                         title="Refresh Table">
                     <i class="mdi mdi-refresh"></i> Refresh
@@ -35,15 +17,15 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover" id="collectorDevicesTable" style="width:100%">
+                <table class="table table-hover" id="accountTypeGroupsTable" style="width:100%">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center col-created">Created On</th>
-                            <th class="text-center col-name">Device Name</th>
-                            <th class="text-center col-serial">Serial Number</th>
-                            <th class="text-center col-version">Version</th>
+                            <th class="text-center col-name">Name</th>
+                            <th class="text-center col-code">Code</th>
+                            <th class="text-center col-description">Description</th>
+                            <th class="text-center col-order">Order</th>
                             <th class="text-center col-status">Status</th>
-                            <th class="text-center col-assigned">Assigned Collector</th>
+                            <th class="text-center col-count">Account Types</th>
                             <th class="text-center col-actions">Actions</th>
                         </tr>
                     </thead>
@@ -57,51 +39,51 @@
 </div>
 
 <style>
-    #collectorDevicesTable {
+    #accountTypeGroupsTable {
         table-layout: fixed;
         width: 100%;
     }
 
-        #collectorDevicesTable th, #collectorDevicesTable td {
+        #accountTypeGroupsTable th, #accountTypeGroupsTable td {
             vertical-align: middle;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-    .col-created {
-        width: 15%;
-        min-width: 140px;
-    }
-
     .col-name {
-        width: 20%;
+        width: 18%;
         min-width: 160px;
     }
 
-    .col-serial {
-        width: 16%;
-        min-width: 140px;
+    .col-code {
+        width: 12%;
+        min-width: 120px;
     }
 
-    .col-version {
+    .col-description {
+        width: 25%;
+        min-width: 200px;
+    }
+
+    .col-order {
         width: 8%;
         min-width: 80px;
     }
 
     .col-status {
-        width: 9%;
-        min-width: 90px;
+        width: 10%;
+        min-width: 100px;
     }
 
-    .col-assigned {
-        width: 20%;
-        min-width: 160px;
+    .col-count {
+        width: 10%;
+        min-width: 100px;
     }
 
     .col-actions {
-        width: 12%;
-        min-width: 110px;
+        width: 17%;
+        min-width: 140px;
     }
 
     .dataTables_wrapper .dataTables_filter input {

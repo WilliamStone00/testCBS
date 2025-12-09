@@ -108,17 +108,19 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
     public class ChequeLeaf
     {
         public string Id { get; set; }
-        public string ChequeBookId { get; set; }
-        public int LeafNumber { get; set; }
-        public string ChequeNumber { get; set; }
-        public string Status { get; set; } // Available, Used, Cancelled, Blocked
-        public DateTime? UsedDate { get; set; }
-        public decimal? Amount { get; set; }
-        public string Beneficiary { get; set; }
-        public string Remarks { get; set; }
+        public string CheckBookId { get; set; }
+        public int SerialNumber { get; set; }
+        public string Status { get; set; }
+        public DateTime? IssuedDate { get; set; }
+        public string IssuedTo { get; set; }
+        public string TransactionId { get; set; }
+        public DateTime? ClearedDate { get; set; }
+        public DateTime? CancelledDate { get; set; }
+        public string CancelledReason { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime IssueDate { get; set; }
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public string Transaction { get; set; }  
     }
 
 

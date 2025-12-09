@@ -1,0 +1,534 @@
+﻿@{
+    ViewBag.Title = "Account Type Definitions - List";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-switch me-2"></i>Account Type Definitions
+                </h4>
+                <p class="card-text small text-muted mb-0">
+                    Manage all account type definitions in the system
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Action
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmAction">
+                    <i class="mdi mdi-check me-1"></i>Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Account Type Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit/Create Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="editModalTitle">Create Account Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary me-2"
+                        onclick="accountTypeList.refreshDataTable()"
+                        data-bs-toggle="tooltip"
+                        title="Refresh Table">
+                    <i class="mdi mdi-refresh me-1"></i> Refresh
+                </button>
+                <button type="button"
+                        class="btn btn-sm btn-primary"
+                        onclick="accountTypeList.showCreateForm()"
+                        data-bs-toggle="tooltip"
+                        title="Add New Account Type">
+                    <i class="mdi mdi-plus me-1"></i> Add Account Type
+                </button>
+            </div>
+            <div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="showInactive"
+                           onchange="accountTypeList.toggleInactive()">
+                    <label class="form-check-label small" for="showInactive">Show Inactive</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DataTable Container -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover" id="myDataTable" style="width:100%">
+                <thead class="table-light">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Group</th>
+                        <th>Parent</th>
+                        <th class="text-center">Order</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        #myDataTable {
+            font-size: 0.9rem;
+        }
+
+            #myDataTable th {
+                font-weight: 600;
+                background-color: #f8f9fa;
+            }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px 8px;
+            margin-left: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        const accountTypeList = {
+            dataTable: null,
+            showInactive: false,
+
+            init: function() {
+                this.initializeDataTable();
+                this.bindEvents();
+                this.enableTooltips();
+            },
+
+     initializeDataTable: function() {
+    if (this.dataTable) return;
+
+    this.dataTable = $('#myDataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '@Url.Action("InitializeData", "AccountTypeDefinition")', // single url
+            type: 'GET',
+            data: function(d) {
+                // DataTables server-side params (draw, start, length, search, order...) are sent automatically by DataTables.
+                // Add custom params your controller expects:
+                d.path = 'list';       // tell InitializeData to return JSON list
+                d.ajax = true;         // hint for JSON response
+                d.includeInactive = accountTypeList.showInactive;
+            },
+            dataSrc: 'data' // our controller returns { draw, recordsTotal, recordsFiltered, data }
+        },
+        columns: [
+            {
+                data: 'code',
+                className: 'fw-semibold',
+                render: function(data, type, row) {
+                    return data ? `<code>${data}</code>` : '';
+                }
+            },
+            {
+                data: 'name',
+                render: function(data, type, row) {
+                    const shortName = row.shortName ? `<br><small class="text-muted">${row.shortName}</small>` : '';
+                    return `<strong>${data}</strong>${shortName}`;
+                }
+            },
+            {
+                data: 'accountTypeGroup',
+                render: function(data, type, row) {
+                    // if nested object returned, use name; otherwise fallback to id
+                    return data ? data.name : row.accountTypeGroupId;
+                }
+            },
+            {
+                data: 'parent',
+                render: function(data, type, row) {
+                    return data ? data.name : row.parentId || '-';
+                }
+            },
+            {
+                data: 'displayOrder',
+                className: 'text-center',
+                render: function(data) {
+                    return `<span class="badge bg-info">${data}</span>`;
+                }
+            },
+            {
+                data: 'isActive',
+                className: 'text-center',
+                render: function(data) {
+                    return data ?
+                        '<span class="badge bg-success">Active</span>' :
+                        '<span class="badge bg-danger">Inactive</span>';
+                }
+            },
+            {
+                data: 'id',
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-primary"
+                                    onclick="accountTypeList.viewDetails('${data}')"
+                                    data-bs-toggle="tooltip" title="View Details">
+                                <i class="mdi mdi-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary"
+                                    onclick="accountTypeList.editItem('${data}')"
+                                    data-bs-toggle="tooltip" title="Edit">
+                                <i class="mdi mdi-pencil"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger"
+                                    onclick="accountTypeList.deleteItem('${data}', '${row.name}')"
+                                    data-bs-toggle="tooltip" title="Delete">
+                                <i class="mdi mdi-delete"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        ],
+        order: [[0, 'asc']],
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        language: {
+            emptyTable: "No account types found",
+            zeroRecords: "No matching account types found",
+            info: "Showing _START_ to _END_ of _TOTAL_ account types",
+            infoEmpty: "Showing 0 to 0 of 0 account types",
+            infoFiltered: "(filtered from _MAX_ total account types)",
+            search: "Search:",
+            paginate: {
+                first: '<i class="mdi mdi-chevron-double-left"></i>',
+                last: '<i class="mdi mdi-chevron-double-right"></i>',
+                next: '<i class="mdi mdi-chevron-right"></i>',
+                previous: '<i class="mdi mdi-chevron-left"></i>'
+            },
+            processing: '<div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div> Loading...'
+        },
+        initComplete: function() {
+            accountTypeList.enableTooltips();
+        },
+        drawCallback: function() {
+            accountTypeList.enableTooltips();
+        }
+    });
+},
+
+
+            bindEvents: function() {
+                // Confirmation modal cleanup
+                $('#confirmationModal').on('hidden.bs.modal', function() {
+                    $('#confirmationModal .modal-body').empty();
+                });
+
+                // Edit form submission
+                $(document).on('submit', '#accountTypeForm', function(e) {
+                    e.preventDefault();
+                    accountTypeList.saveForm(this);
+                    return false;
+                });
+            },
+
+            enableTooltips: function(scope) {
+                const root = scope || document;
+                const triggers = [].slice.call(root.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                triggers.forEach(el => {
+                    try { new bootstrap.Tooltip(el); } catch (e) { /* ignore */ }
+                });
+            },
+
+            refreshDataTable: function() {
+                if (this.dataTable) {
+                    this.dataTable.ajax.reload(null, false);
+                    this.showAlert('Table refreshed', 'success');
+                }
+            },
+
+            toggleInactive: function() {
+                this.showInactive = $('#showInactive').is(':checked');
+                this.refreshDataTable();
+            },
+
+            viewDetails: function(id) {
+                $.ajax({
+                    url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                    type: 'GET',
+                    data: {
+                        KEY: id,
+                        partialView: '_AccountTypeDetails',
+                        path: 'details'
+                    },
+                    beforeSend: function() {
+                        $('#detailsModalBody').html(`
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading details...</p>
+                            </div>
+                        `);
+                    },
+                    success: function(response) {
+                        $('#detailsModalBody').html(response);
+                        const modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                        modal.show();
+                    },
+                    error: function(error) {
+                        console.error('Error loading details:', error);
+                        accountTypeList.showAlert('Error loading details', 'error');
+                    }
+                });
+            },
+
+            editItem: function(id) {
+                const isEdit = !!id;
+                const title = isEdit ? 'Edit Account Type' : 'Create Account Type';
+                $('#editModalTitle').text(title);
+
+                $.ajax({
+                    url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                    type: 'GET',
+                    data: {
+                        KEY: id || null,
+                        partialView: '_AccountTypeForm',
+                        path: isEdit ? 'edit' : 'new'
+                    },
+                    beforeSend: function() {
+                        $('#editModalBody').html(`
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading form...</p>
+                            </div>
+                        `);
+                    },
+                    success: function(response) {
+                        $('#editModalBody').html(response);
+                        accountTypeList.loadParentDropdown(id);
+                        const modal = new bootstrap.Modal(document.getElementById('editModal'));
+                        modal.show();
+                    },
+                    error: function(error) {
+                        console.error('Error loading form:', error);
+                        accountTypeList.showAlert('Error loading form', 'error');
+                    }
+                });
+            },
+
+            showCreateForm: function() {
+                this.editItem(null);
+            },
+
+            loadParentDropdown: function(excludeId = null) {
+                $.ajax({
+                    url: '@Url.Action("GetAccountTypesForDropdown", "AccountTypeDefinition")',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success && response.data) {
+                            let options = '<option value="">-- Select Parent --</option>';
+                            response.data.forEach(function(item) {
+                                if (item.id !== excludeId) {
+                                    options += `<option value="${item.id}">${item.text}</option>`;
+                                }
+                            });
+
+                            const parentSelect = $('#ParentId');
+                            if (parentSelect.length) {
+                                parentSelect.html(options);
+                            }
+                        }
+                    }
+                });
+            },
+
+            saveForm: function(form) {
+                const formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        // Show loading state on submit button
+                        const submitBtn = $(form).find('button[type="submit"]');
+                        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Saving...');
+                    },
+                    success: function(response) {
+                        const submitBtn = $(form).find('button[type="submit"]');
+                        submitBtn.prop('disabled', false).html('Save');
+
+                        if (response.success) {
+                            $('#editModal').modal('hide');
+                            accountTypeList.showAlert(response.message, 'success');
+                            accountTypeList.refreshDataTable();
+                        } else {
+                            accountTypeList.showAlert(response.message || 'Error saving account type', 'error');
+                            // Show validation errors if any
+                            if (response.errors) {
+                                response.errors.forEach(error => {
+                                    accountTypeList.showAlert(error, 'error');
+                                });
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        const submitBtn = $(form).find('button[type="submit"]');
+                        submitBtn.prop('disabled', false).html('Save');
+                        accountTypeList.showAlert('Error saving account type: ' + error, 'error');
+                    }
+                });
+            },
+
+            deleteItem: function(id, name) {
+                const confirmed = confirm(`Are you sure you want to delete "${name}"?\n\nThis action cannot be undone.`);
+                if (!confirmed) return;
+
+                $.ajax({
+                    url: '@Url.Action("Delete", "AccountTypeDefinition")',
+                    type: 'POST',
+                    data: { id: id },
+                    beforeSend: function() {
+                        // Optional: Show loading indicator
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            accountTypeList.showAlert(response.message, 'success');
+                            accountTypeList.refreshDataTable();
+                        } else {
+                            accountTypeList.showAlert(response.message || 'Error deleting account type', 'error');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        accountTypeList.showAlert('Error deleting account type: ' + error, 'error');
+                    }
+                });
+            },
+
+            showAlert: function(message, type = 'info') {
+                const alertType = type === 'success' ? 1 :
+                                type === 'warning' ? 2 :
+                                type === 'info' ? 3 : 4;
+
+                appalert(message, alertType, 1);
+
+                // Also show in the custom alert container
+                const alertClass = type === 'success' ? 'alert-success' :
+                                 type === 'error' ? 'alert-danger' :
+                                 type === 'warning' ? 'alert-warning' : 'alert-info';
+
+                const alertHtml = `
+                    <div class="alert ${alertClass} alert-dismissible fade show shadow-sm" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="mdi mdi-${type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : type === 'warning' ? 'alert' : 'information'} me-2"></i>
+                            <div class="flex-grow-1">${message}</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+                `;
+
+                $('#alertContainer').html(alertHtml);
+
+                // Auto-remove after 5 seconds
+                setTimeout(function() {
+                    $('#alertContainer .alert').alert('close');
+                }, 5000);
+            },
+
+            // Simplified confirmation using built-in confirm
+            confirmAction: function(message) {
+                return confirm(message);
+            }
+        };
+
+        $(document).ready(function() {
+            accountTypeList.init();
+
+            // Initialize tooltips globally
+            accountTypeList.enableTooltips();
+
+            // Handle browser back/forward buttons
+            $(window).on('popstate', function() {
+                accountTypeList.refreshDataTable();
+            });
+        });
+    </script>
+}
