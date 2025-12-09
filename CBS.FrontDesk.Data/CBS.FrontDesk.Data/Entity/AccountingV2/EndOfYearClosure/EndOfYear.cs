@@ -9,6 +9,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
 {
     public class EndOfYear
     {
+       
 
         public string AccountingYearId { get; set; }
         public string BranchId { get; set; }
@@ -16,11 +17,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public string StartedBy { get; set; }
         public string Remarks { get; set; }
 
-        public string AdjustmentType { get; set; }
+      
 
         public string OperationCode { get; set; }
+        public string Year { get; set; }
+        public string AdjustmentType { get; set; }
 
-  
 
         public string CounterpartyBranchId { get; set; } = null;
 
@@ -33,18 +35,23 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public string State { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public string Id { get; set; }
 
+        public string CorrelationId { get; set; }
+        public string ExternalApplicationName { get; set; }
+        public string AuxiliaryReference { get; set; }
 
         public JournalPayloadEnd Payload { get; set; } = new JournalPayloadEnd();
 
         // Optional (not in JSON but kept for possible internal use)
-        public string OperationType { get; set; }
-        public string WorkTicket { get; set; }
-        public string Id { get; set; }
-        public string BranchName { get; set; }
-        public string CorrelationId { get; set; }
-        public string ExternalApplicationName { get; set; }
-        public string AuxiliaryReference { get; set; } 
+
+     
+        public string HOBranchId { get; set; }
+        public string BranchLiaisonGlId { get; set; }
+        public string HoLiaisonGlId { get; set; }
+        public string HoResultGlId { get; set; }
+        public string AccountingYear { get; set; }
+   
     }
 
     public class JournalPayloadEnd
@@ -63,6 +70,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         public bool Dr { get; set; }
         public bool Cr { get; set; }
         public decimal Amount { get; set; }
+
+        public string AdjustmentType { get; set; }
+
     }
 
 
@@ -93,13 +103,32 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
     }
 
 
-    public class YearEndChecklistDefinitionQuery
+    public class ReviewClosureRequest
+    {
+        public string AccountingYearId { get; set; }
+        public string BranchId { get; set; }
+        public List<ChecklistItem> CheckListModel { get; set; } = new List<ChecklistItem>();
+        public string CompletedByUserId { get; set; } // optional
+    }
+
+    public class ChecklistItem
+    {
+        public string YearEndChecklistDefinitionId { get; set; }
+        public bool IsCompleted { get; set; }
+        public string Comment { get; set; }
+    }
+
+
+
+    public class YearEndChecklistStatusQuery
     {
         public DataTableOptions Options { get; set; }
-        public YearEndChecklistDefinitionQuery() { Options = new DataTableOptions(); }
+        public YearEndChecklistStatusQuery() { Options = new DataTableOptions(); }
 
         public string BranchId { get; set; } = null;
         public string AccountingYearId { get; set; }
+        public string AdjustmentType { get; set; }
+        public string Id { get; set; }
 
         //public string OperationCode { get; set; }
         //public string Reference { get; set; } = null;
@@ -108,6 +137,32 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
         //public DateTime? StartDate { get; set; }    // For filtering creation date range
         //public DateTime? EndDate { get; set; }
         //public string TicketSource { get; set; }
+    }
+
+
+    public class CloseOfYear
+    {
+        public string BranchId { get; set; }
+        public string HOBranchId { get; set; }
+        public string BranchLiaisonGlId { get; set; }
+        public string HoLiaisonGlId { get; set; }
+        public string HoResultGlId { get; set ; }
+        public string AccountingYear { get; set; }
+        public DateTime AccountingDate { get; set; }
+
+    }
+
+
+    public class CloseYearInitiate
+    {
+        public string AccountingYearId { get; set; } 
+
+        public string BranchId { get; set; }
+
+        public string StartedByUserId { get; set; }
+        public string StartedBy { get; set; }
+
+        public string Remarks { get; set; }
     }
 
 

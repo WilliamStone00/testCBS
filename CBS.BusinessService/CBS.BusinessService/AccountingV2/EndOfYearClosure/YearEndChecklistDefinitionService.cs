@@ -26,7 +26,7 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
             _apiCallerHelper = new ApiCallerHelper(ConfigurationManager.AppSettings["AccountingV2BaseUrl"].ToString());
 
         }
-        public async Task<CustomDataTable2> GetYearEndChecklistDefinitionDataTableAsync(YearEndChecklistDefinitionQuery query)
+        public async Task<CustomDataTable2> GetYearEndChecklistDefinitionDataTableAsync(YearEndChecklistStatusQuery query)
         {
             try
             {

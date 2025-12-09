@@ -347,9 +347,61 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public LoanTerm LoanTerm { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
         public bool IsPaidFeeBeforeProcessing { get; set; }
+        public string AccountTypeDefinitionId { get; set; } 
+        public virtual AccountTypeDefinition AccountTypeDefinition { get; set; }
 
     }
+    public class AccountTypeGroup
+    {
+        public string Id { get; set; }                 // GUID/string key
+        public string Name { get; set; }               // e.g. Members Ordinary Account types
+        public string Code { get; set; }               // e.g. MEMBER_ORDINARY
+        public string Description { get; set; }
+        public int DisplayOrder { get; set; } = 0;
+        public bool IsActive { get; set; } = true;
 
+        public virtual ICollection<AccountTypeDefinition> AccountTypes { get; set; }
+            = new List<AccountTypeDefinition>();
+        public bool IsSystemStandard { get; set; }
+    }
+    public class AccountTypeDefinition
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }                // e.g. Saving account
+        public string Code { get; set; }                // e.g. SAVING
+        public string ShortName { get; set; }                      // optional
+        public string Description { get; set; }
+
+        // Group (blue header) it belongs to
+        public string AccountTypeGroupId { get; set; }
+        public virtual AccountTypeGroup AccountTypeGroup { get; set; }
+
+        // Parent / child for sub-accounts
+        public string ParentId { get; set; }
+        public virtual AccountTypeDefinition Parent { get; set; }
+        public virtual ICollection<AccountTypeDefinition> Children { get; set; }
+            = new List<AccountTypeDefinition>();
+
+        public int DisplayOrder { get; set; } = 0;
+        public bool IsActive { get; set; } = true;
+
+        /// <summary>
+        /// True for original shipped standard account types (from your enum).
+        /// These cannot be deleted.
+        /// </summary>
+        public bool IsSystemStandard { get; set; } = false;
+
+        /// <summary>
+        /// True for user-created top-level standard account types
+        /// (ParentId == null).
+        /// </summary>
+        public bool IsUserStandard { get; set; } = false;
+
+        /// <summary>
+        /// Soft delete flag (used only for non-system standard).
+        /// </summary>
+        public bool IsDeleted { get; set; } = false;
+    }
     public class LoanProductObject
     {
         public AddLoanProductCommand AddLoanProductCommand { get; set; }

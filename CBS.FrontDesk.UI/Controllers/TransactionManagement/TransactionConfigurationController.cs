@@ -829,8 +829,8 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         var conf = await _savingProductServices.GetSavingConfigurationAggregates();
                         ViewBag.Frequences = conf.freeQuencies.ToList();
                         ViewBag.Currencies = conf.currencies.ToList();
+                        ViewBag.AccountTypeGroups = await _savingProductServices.GetAllAccountTypeGroups();
                         return PartialView(partialView, new SavingConfiguration { SavingProduct = new SavingProduct() });
-
                     };
                 }
                 else
@@ -840,6 +840,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                         var conf = await _savingProductServices.GetSavingConfigurationAggregates();
                         ViewBag.Frequences = conf.freeQuencies.ToList();
                         ViewBag.Currencies = conf.currencies.ToList();
+                        ViewBag.AccountTypeGroups = await _savingProductServices.GetAllAccountTypeGroups();
                         return PartialView(partialView, new SavingConfiguration { SavingProduct = await _savingProductServices.GetSavingProduct(key) });
 
                     };
@@ -1024,6 +1025,40 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             ViewBag.operationAccounts = conf.operationAccounts.ToList();
             return true;
         }
+        /// <summary>
+        /// Returns all active, non-deleted account type definitions for the given group.
+        /// Used by the UI to dynamically load account definitions when a group is selected.
+        /// </summary>
+        /// <param name="groupId">The Id of the AccountTypeGroup.</param>
+        [HttpGet]
+        public async Task<ActionResult> GetAccountTypeDefinitionsByGroup(string groupId)
+        {
+            if (string.IsNullOrWhiteSpace(groupId))
+            {
+                // Empty group: just return an empty array
+                return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
+            }
+
+            // TODO: implement this in SavingProductServices (repository query on AccountTypeDefinition)
+            // e.g. Task<IEnumerable<AccountTypeDefinition>> GetAccountTypeDefinitionsAsync();
+            var allDefinitions = await _savingProductServices.GetAccountTypeDefinitionByGroupId(groupId);
+
+            var defsForGroup = allDefinitions.OrderBy(d => d.DisplayOrder)
+                .ThenBy(d => d.Name)
+                .Select(d => new
+                {
+                    d.Id,
+                    d.Name,
+                    d.Code,
+                    d.ShortName,
+                    d.Description
+                })
+                .ToList();
+
+            return Json(defsForGroup, JsonRequestBehavior.AllowGet);
+        }
+
+
         public async Task<bool> GetChartOfAccounts()
         {
             var chartOfAccounts = await _affiliateAccountService.GetAllAffiliateAccounts();

@@ -520,7 +520,9 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_SavingProduct = "/api/v1/SavingProduct/{0}";
         public static string GetAllSavingProducts = "/api/v1/SavingProduct";
         public static string CreateSavingProduct = "/api/v1/SavingProduct";
-
+        public static string GetAllAccountTypeGroups = "/api/v1/AccountTypeGroup";
+        public static string GetAccountTypeDefinitionGroupId = "/api/v1/AccountTypeDefinition/group/{0}";
+        //
         //DepositLimit
         public static string Get_Update_Delete_DepositLimit = "/api/v1/DepositLimits/{0}";
         public static string GetAllDepositLimits = "/api/v1/DepositLimits";
@@ -1430,13 +1432,13 @@ namespace CBS.FrontDesk.Helper
 
         public static string GetAllBranchCashConfigs = "/api/v1/BranchCashConfig";
         public static string GetBranchCashConfigById = "/api/v1/BranchCashConfig/{0}";
-        public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
+        //public static string GetBranchCashConfigByBranchId = "/api/v1/Branch/{0}";
         public static string CreateBranchCashConfig = "/api/v1/BranchCashConfig";
         public static string UpdateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
         public static string DeactivateBranchCashConfig = "/api/v1/BranchCashConfig/{0}";
         public static string LoadDataTablePagginationForBranchCashConfigs = "/api/v1/BranchCashConfig/datatable";
         public static string ValidateBranchConfig = "api/branchcashconfig/validate";
-
+        public static string GetBranchCashConfigByBranchId = "/api/v1/BranchCashConfig/by-branch/{0}";
         //****************** Liaison Mapping **********************************//
         public static string GetAllLiaisonMappings = "/api/v1/LiaisonMapping";
         public static string GetLiaisonMapping = "/api/v1/LiaisonMapping/{0}";
@@ -1743,6 +1745,7 @@ namespace CBS.FrontDesk.Helper
         // ================ Accnts  Statements   =======================//
         public static string AccntsStatements = "/api/v1/Reports/account-statement";
         public static string BalanceSheet = "/api/v1/Reports/financial/BALANCE_SHEET_CAT1MFI_V1";
+        public static string incomeStatement = "/api/v1/Reports/financial/INCOME_EXPENDITURE_CAT1MFI_V1";
 
 
 
@@ -1778,6 +1781,9 @@ namespace CBS.FrontDesk.Helper
 
 
         public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+        public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
+        public static string PostJournalAdjustment = "/api/v1/ops/generic";
+        public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
 
 
     }

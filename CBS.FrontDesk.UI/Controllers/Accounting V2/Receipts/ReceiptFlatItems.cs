@@ -13,6 +13,7 @@ public class ReceiptFlatItems:BankHeaderInformation
     public string Number { get; set; }
     public string TitlesDestribution { get; set; }
     public string AuxiliaryRef { get; set; }
+    public string ApprovedBy { get; set; }
     public string MemberAccount { get; set; }
    
     public string Title { get; set; }
