@@ -31,7 +31,7 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeGroup
         {
             try
             {
-                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<AccountTypeGroupResponse>>>(APICallHelper.GetAllAccountTypeGroups);
+                var response = await _apiCallerHelper.GetAsync<ServiceResponse<List<AccountTypeGroupResponse>>>(APICallHelper.GetAllAccountTypeGroups2);
 
                 if (response.IsSuccess && response.ApiResponseData?.Data != null)
                 {
@@ -153,11 +153,11 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeGroup
             return ExecutionMessage;
         }
 
-        public async Task<IEnumerable<AccountTypeGroupResponse>> GetAffiliatesAsync()
+        public async Task<IEnumerable<AccountTypeGroupResponse>> GetAllAccountTypeGroupsAsync()
         {
             try
             {
-               string formattedUrl = string.Format(APICallHelper.GetAllAccountTypeGroups);
+               string formattedUrl = string.Format(APICallHelper.GetAllAccountTypeGroups2);
 
                 var response = await _apiCallerHelper.GetAsync<ResponseObject<List<AccountTypeGroupResponse>>>(formattedUrl);
                 var affiliates = response?.ApiResponseData?.Data ?? new List<AccountTypeGroupResponse>();

@@ -1693,7 +1693,7 @@ namespace CBS.FrontDesk.Helper
         public const string ResolveFallbackLog = "/api/v1/AffiliateToBranchFallbackLog/{0}/resolve";
 
         //------------------------ Account TypeGroup back ----------------------------------------
-        public const string GetAllAccountTypeGroups = "/api/v1/AccountTypeGroup";
+        public const string GetAllAccountTypeGroups2 = "/api/v1/AccountTypeGroup";
         public const string GetAccountTypeGroupById = "/api/v1/AccountTypeGroup/{0}";
         public const string CreateAccountTypeGroup = "/api/v1/AccountTypeGroup";
         public const string UpdateAccountTypeGroup = "/api/v1/AccountTypeGroup";

@@ -1,5 +1,9 @@
 ﻿using CBS.BusinessService.Accounting_V2.AccountTypeDefinition;
+using CBS.BusinessService.Accounting_V2.AccountTypeGroup;
+using CBS.BusinessService.Accounting_V2.Affiliate;
+using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup;
 using CBS.FrontDesk.Data.Message;
 using Newtonsoft.Json;
 using System;
@@ -14,14 +18,29 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
     public class AccountTypeDefinitionController : Controller
     {
         private readonly AccountTypeDefinitionService _accountTypeDefinitionService;
+        private readonly AccountTypeGroupService _AccountTypeGroupService;
 
-        public AccountTypeDefinitionController(AccountTypeDefinitionService accountTypeDefinitionService)
+        public AccountTypeDefinitionController(AccountTypeDefinitionService accountTypeDefinitionService, AccountTypeGroupService accountTypeGroupService)
         {
             _accountTypeDefinitionService = accountTypeDefinitionService;
+            _AccountTypeGroupService = accountTypeGroupService;
         }
 
-        public ActionResult Index()
+        public async Task<bool> loader()
         {
+            var AccountTypeGroups = await _AccountTypeGroupService.GetAllAccountTypeGroupsAsync();
+            ViewBag.AccountTypeGroups = AccountTypeGroups;
+
+            var ParentAccountTypes = await _accountTypeDefinitionService.GetAccountTypeDefinitionAsync();
+            ViewBag.ParentAccountTypes = ParentAccountTypes;
+            
+            return true;
+
+        }
+
+        public async Task< ActionResult> Index()
+        {
+            await loader();
             return View();
         }
 
