@@ -49,10 +49,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
             return View();
         }
 
-         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
+        public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null, string serviceOption = null)
         {
+            await loader();
             if (path == "list")
             {
+                partialView = "List";
                 var data = await _accountTypeDefinitionService.GetAllAsync();
                 return PartialView(partialView, data);
             }
@@ -69,24 +71,26 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
             else
             {
                 var data = await _accountTypeDefinitionService.GetByIdAsync(KEY);
-                var model = new AccountTypeDefinitionCommand
-                {
-                    Id = data.Id,
-                    Name = data.Name,
-                    Code = data.Code,
-                    ShortName = data.ShortName,
-                    Description = data.Description,
-                    AccountTypeGroupId = data.AccountTypeGroupId,
-                    ParentId = data.ParentId,
-                    IsUserStandard = data.IsUserStandard,
-                    DisplayOrder = data.DisplayOrder,
-                    IsActive = data.IsActive
-                };
-                return PartialView(partialView, model);
+               
+                return PartialView(partialView, data);
             }
         }
 
-        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetAccountTypeDEF()
+        {
+            try
+            {
+                var groups = await _accountTypeDefinitionService.GetAllAsync();
+
+                return Json(new { data = groups }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = "Error loading data" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrUpdate(AccountTypeDefinitionCommand model)
         {
@@ -116,28 +120,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetAccountTypesForDropdown(bool activeOnly = true)
-        {
-            try
-            {
-                var accountTypes = await _accountTypeDefinitionService.GetDropdownDataAsync(activeOnly);
-                var dropdownData = accountTypes.Select(at => new
-                {
-                    id = at.Id,
-                    text = $"[{at.Code}] - {at.Name}",
-                    code = at.Code,
-                    name = at.Name,
-                    isActive = at.IsActive
-                }).ToList();
+        //[HttpGet]
+        //public async Task<JsonResult> GetAccountTypesForDropdown(bool activeOnly = true)
+        //{
+        //    try
+        //    {
+        //        var accountTypes = await _accountTypeDefinitionService.GetDropdownDataAsync(activeOnly);
+        //        var dropdownData = accountTypes.Select(at => new
+        //        {
+        //            id = at.Id,
+        //            text = $"[{at.Code}] - {at.Name}",
+        //            code = at.Code,
+        //            name = at.Name,
+        //            isActive = at.IsActive
+        //        }).ToList();
 
-                return Json(new { success = true, data = dropdownData }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //        return Json(new { success = true, data = dropdownData }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
         [HttpGet]
         public async Task<JsonResult> GetByGroup(string groupId)
