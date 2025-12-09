@@ -1,0 +1,248 @@
+﻿@{
+    ViewBag.Title = "Account Type Definition";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-switch me-2"></i>Account Type Definition
+                </h1>
+                <p class="card-text">
+                    Define and manage different types of accounts in the system.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Account types define the classification and behavior of accounts in the system.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div class="card mb-3">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips & Guidelines</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><strong>Code:</strong> Must be unique and contain only letters, numbers, and underscores.</li>
+                <li><strong>Name:</strong> Descriptive name that will be displayed to users.</li>
+                <li><strong>Account Type Group:</strong> Select the group this account type belongs to.</li>
+                <li><strong>Parent:</strong> Optional - select a parent account type to create hierarchy.</li>
+                <li><strong>Display Order:</strong> Controls the sorting order in lists and dropdowns.</li>
+                <li><strong>Is User Standard:</strong> Check if this account type is standard for user accounts.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-end">
+            <a href="@Url.Action("List", "AccountTypeDefinition")"
+               class="btn btn-label-primary btn-sm me-2"
+               data-bs-toggle="tooltip"
+               title="View All Account Types">
+                <i class="mdi mdi-view-list mdi-18px"></i> View List
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Form Container -->
+<div class="card shadow p-3">
+    <div class="card-body">
+        <div id="formContainer">
+            <!-- Create form will be loaded here -->
+            @Html.Partial("_AccountTypeForm", new CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition.AccountTypeDefinitionCommand())
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal (for editing existing records) -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Edit Account Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Edit form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+@section Scripts {
+    <script>
+        const formManager = {
+            init: function() {
+                this.bindEvents();
+                this.enableTooltips();
+                this.initializeSelect2();
+            },
+
+            bindEvents: function() {
+                // Handle form submission
+                $(document).on('submit', '#accountTypeForm', this.handleFormSubmit.bind(this));
+
+                // Handle edit form submission (in modal)
+                $(document).on('submit', '#editAccountTypeForm', this.handleEditFormSubmit.bind(this));
+            },
+
+            enableTooltips: function() {
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            },
+
+            initializeSelect2: function() {
+                // Initialize Select2 for dropdowns if they exist
+                if ($.fn.select2) {
+                    $('.select2').select2({
+                        theme: 'bootstrap-5',
+                        width: '100%'
+                    });
+                }
+            },
+
+            handleFormSubmit: function(e) {
+                e.preventDefault();
+                const form = e.target;
+                this.saveForm(form, '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")', false);
+            },
+
+            handleEditFormSubmit: function(e) {
+                e.preventDefault();
+                const form = e.target;
+                this.saveForm(form, '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")', true);
+            },
+
+            saveForm: function(form, url, isEdit) {
+                const formData = new FormData(form);
+                const submitBtn = $(form).find('button[type="submit"]');
+
+                // Show loading state
+                submitBtn.prop('disabled', true);
+                const originalText = submitBtn.html();
+                submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Saving...');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        submitBtn.prop('disabled', false).html(originalText);
+
+                        if (response.success) {
+                            // Show success message
+                            appalert(response.message, 1, 1);
+
+                            // Reset form if it was a create operation
+                            if (!isEdit) {
+                                form.reset();
+                                if ($.fn.select2) {
+                                    $('.select2').val(null).trigger('change');
+                                }
+                            }
+
+                            // Close modal if it was an edit
+                            if (isEdit) {
+                                $('#editModal').modal('hide');
+                            }
+                        } else {
+                            // Show error message
+                            appalert(response.message || 'Error saving account type', 4, 1);
+
+                            // Show validation errors if any
+                            if (response.errors) {
+                                response.errors.forEach(error => {
+                                    appalert(error, 4, 1);
+                                });
+                            }
+                        }
+                    },
+                    error: (xhr, status, error) => {
+                        submitBtn.prop('disabled', false).html(originalText);
+                        appalert('Error saving account type: ' + error, 4, 1);
+                    }
+                });
+            },
+
+            // Method to edit an account type (called from List page)
+            editAccountType: function(id) {
+                $.ajax({
+                    url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                    type: 'GET',
+                    data: {
+                        KEY: id,
+                        partialView: '_AccountTypeForm',
+                        path: 'edit'
+                    },
+                    beforeSend: function() {
+                        $('#editModalBody').html(`
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading form...</p>
+                            </div>
+                        `);
+                    },
+                    success: (response) => {
+                        $('#editModalBody').html(response);
+                        this.initializeSelect2();
+                        this.loadParentDropdown(id);
+
+                        const modal = new bootstrap.Modal(document.getElementById('editModal'));
+                        modal.show();
+                    }.bind(this),
+                    error: (error) => {
+                        console.error('Error loading form:', error);
+                        appalert('Error loading form', 4, 1);
+                    }
+                });
+            },
+
+            loadParentDropdown: function(excludeId = null) {
+                $.ajax({
+                    url: '@Url.Action("GetAccountTypesForDropdown", "AccountTypeDefinition")',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success && response.data) {
+                            let options = '<option value="">-- Select Parent --</option>';
+                            response.data.forEach(function(item) {
+                                if (item.id !== excludeId) {
+                                    options += `<option value="${item.id}">${item.text}</option>`;
+                                }
+                            });
+
+                            const parentSelect = $('#ParentId');
+                            if (parentSelect.length) {
+                                parentSelect.html(options);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function() {
+            formManager.init();
+        });
+    </script>
+}

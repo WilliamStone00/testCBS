@@ -1,0 +1,239 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup.AccountTypeGroupResponse
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Action
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmAction">
+                    <i class="mdi mdi-check me-1"></i>Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading form...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Action Buttons Card -->
+<div class="card mb-4">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <label class="card-title mb-0 text-primary">
+                <i class="mdi mdi-cog-outline me-2"></i>
+            </label>
+            <div>
+
+                <button type="button"
+                        onclick="window.location.href='@Url.Action("List", "AccountTypeGroup")'"
+                        class="btn btn-label-primary btn-sm me-2"
+                        data-bs-toggle="tooltip"
+                        title="View All Groups">
+                    <i class="mdi mdi-view-list mdi-18px"></i> View Groups List
+                </button>
+
+                <button type="button"
+                        onclick="formManager.showCreateForm()"
+                        class="btn btn-label-secondary btn-sm"
+                        data-bs-toggle="tooltip"
+                        title="Add New Group">
+                    <i class="mdi mdi-plus mdi-18px"></i> Add New Group
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Area -->
+<div id="datalistingview">
+    <!-- Create form will be loaded here by default -->
+    @Html.Partial("_AccountTypeGroupForm", Model)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        class FormManager {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.enableTooltips();
+            }
+
+            bindEvents() {
+                $('#confirmationModal').on('hidden.bs.modal', () => {
+                    $('#confirmationModal .modal-body').empty();
+                });
+
+                // Handle form submission in the main content area
+                $(document).on('submit', '#accountTypeGroupForm', this.handleFormSubmit.bind(this));
+
+                // Handle form submission in edit modal
+                $(document).on('submit', '#editGroupForm', this.handleEditFormSubmit.bind(this));
+            }
+
+            enableTooltips() {
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            }
+
+           
+            showCreateForm() {
+                $.ajax({
+                    url: '/AccountTypeGroup/InitializeData',
+                    type: 'GET',
+                    data: {
+                        partialView: '_AccountTypeGroupForm',
+                        path: 'new'
+                    },
+                    success: (response) => {
+                        $('#editModalBody').html(response);
+                        $('#editModal').modal('show');
+                        this.enableTooltips();
+                    },
+                    error: (error) => {
+                        console.error('Error loading create form:', error);
+                        appalert('Error loading create form. Please try again.', 4, 1);
+                    }
+                });
+            }
+                      
+            async handleFormSubmit(event) {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+
+                try {
+                    const response = await $.ajax({
+                        url: '/AccountTypeGroup/CreateOrUpdate',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    });
+
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        // Reload the form with fresh data
+                        this.loadFreshForm();
+                    } else {
+                        appalert(response.message, 4, 1);
+                    }
+                } catch (error) {
+                    console.error('Error saving group:', error);
+                    appalert('Error saving group. Please try again.', 4, 1);
+                }
+            }
+
+            async handleEditFormSubmit(event) {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+
+                try {
+                    const response = await $.ajax({
+                        url: '/AccountTypeGroup/CreateOrUpdate',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    });
+
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        $('#editModal').modal('hide');
+                        // If we were editing an existing group, reload the main form
+                        if (form.querySelector('input[name="Id"]') && form.querySelector('input[name="Id"]').value) {
+                            this.loadFreshForm();
+                        }
+                    } else {
+                        appalert(response.message, 4, 1);
+                    }
+                } catch (error) {
+                    console.error('Error saving group:', error);
+                    appalert('Error saving group. Please try again.', 4, 1);
+                }
+            }
+
+            loadFreshForm() {
+                // Load a fresh form in the main content area
+                $.ajax({
+                    url: '/AccountTypeGroup/InitializeData',
+                    type: 'GET',
+                    data: {
+                        partialView: '_AccountTypeGroupForm',
+                        path: 'new'
+                    },
+                    success: (response) => {
+                        $('#datalistingview').html(response);
+                        this.enableTooltips();
+                    },
+                    error: (error) => {
+                        console.error('Error refreshing form:', error);
+                        appalert('Error refreshing form. Please try again.', 4, 1);
+                    }
+                });
+            }
+
+            async confirmAction(message) {
+                return new Promise((resolve) => {
+                    $('#confirmationModal .modal-body').text(message);
+                    $('#confirmationModal').modal('show');
+                    $('#confirmAction').off('click').on('click', () => {
+                        $('#confirmationModal').modal('hide');
+                        resolve(true);
+                    });
+                    $('#cancelAction').off('click').on('click', () => {
+                        $('#confirmationModal').modal('hide');
+                        resolve(false);
+                    });
+                });
+            }
+        }
+
+        const formManager = new FormManager();
+
+        $(document).ready(function () {
+            // Optional initialization
+        });
+    </script>
+}

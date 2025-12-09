@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reporting.FlatBaseE;
@@ -7,6 +8,7 @@ using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Data.MockData;
 using CBS.FrontDesk.Helper;
+using CBS.FrontDesk.Service.Accounting_V2.TrialBalance;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,13 +22,15 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
     {
         private readonly ApiCallerHelper _apiCallerHelper;
         private readonly TrialBalance6ColumnsMock _trialBalance6ColumnsMock;
+        private readonly BranchServices _branchServices;
 
-        public TrialBalances4ColumnService()
+        public TrialBalances4ColumnService(BranchServices branchServices)
         {
             // Hardcoded base URL (intentionally allowed)
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
             _trialBalance6ColumnsMock = new TrialBalance6ColumnsMock();
+            _branchServices = branchServices;
         }
 
         /// <summary>
@@ -98,7 +102,142 @@ namespace CBS.BusinessService.Accounting_V2.TrialBalance
             };
         }
 
-        
+
+
+        public async Task<List<TrialBalanceFourColumnsFlatItems>>
+          BuildTrialBalanceDataset(AccountingV2ReportsFilter model)
+        {
+            // 1) Load trial balance
+            var response = await GetTrialBalancesAsync4columns(model);
+            if (response == null || !response.Any())
+                return new List<TrialBalanceFourColumnsFlatItems>();
+
+            // 2) Resolve branch
+            var currentBranchId = GetBranchID();
+            var branchIdToLoad = model.Consolidated || string.IsNullOrWhiteSpace(model.BranchId)
+                ? currentBranchId
+                : model.BranchId;
+
+            var branch = await _branchServices.GetBranch(branchIdToLoad);
+            if (branch == null)
+                return new List<TrialBalanceFourColumnsFlatItems>();
+
+            // 3) Metadata
+            var now = DateTime.Now;
+            var username = GetUserFullName();
+
+            var modeLabel = model.SourceMode == "Temp"
+                ? "( TEMPORAL REPORT )"
+                : $"( {model.SourceMode?.ToUpperInvariant()} REPORT )";
+
+            var consolidationLabel = model.Consolidated
+                ? "CONSOLIDATED"
+                : "BRANCH LEVEL";
+
+            var header = new BankHeaderInformation
+            {
+                BankId = branch.Bank?.Id,
+                BankBankCode = branch.Bank?.BankCode,
+                BankName = branch.Bank?.Name,
+                BankTelephone = branch.Bank?.Telephone,
+                BankEmail = branch.Bank?.Email,
+                BankAddress = branch.Bank?.Address,
+                BankLogoUrl = branch.Bank?.LogoUrl,
+                BankMotto = branch.Bank?.Motto,
+                BankRegistrationNumber = branch.Bank?.RegistrationNumber,
+                BankImmatriculationNumber = branch.Bank?.ImmatriculationNumber,
+                BankPBox = branch.Bank?.PBox ?? "",
+
+                BranchId = branch.Id,
+                BranchCode = branch.BranchCode,
+                BranchName = branch.Name,
+                BranchTelephone = branch.Telephone,
+                BranchEmail = branch.Email,
+                BranchAddress = branch.Address,
+                BranchLogoUrl = branch.LogoUrl,
+                BranchCapital = branch.Capital,
+                BranchRegistrationNumber = branch.RegistrationNumber,
+                BranchImmatriculationNumber = branch.ImmatriculationNumber,
+                BranchPBox = branch.PBox ?? ""
+            };
+
+            // 4) Map dataset
+            var result = response.Select(x =>
+            {
+                var item = new TrialBalanceFourColumnsFlatItems
+                {
+                    AccountNumber = x.AccountNumber,
+                    AccountName = x.AccountName,
+                    Debit = x.Debit,
+                    Credit = x.Credit,
+
+                    BeginningBalance = x.BeginningBalance,
+                    EndingBalance = x.EndingBalance,
+                    OpeningDebit = x.BeginningBalance,
+
+                    TotalBeginningNet = x.TotalBeginningNet,
+                    TotalEndingNet = x.TotalEndingNet,
+                    TotalCredit = x.TotalCredit,
+                    TotalDebit = x.TotalDebit,
+                    TotalMovementNet = x.TotalMovementNet,
+                    TotalBeginningSide = x.TotalBeginningSide,
+                    TotalEndingSide = x.TotalEndingSide,
+
+                    BeginningBookingDirection = x.BeginningSide,
+                    EndingBookingDirection = x.EndingSide,
+
+                    Username = username,
+                    From = model.From,
+                    To = model.To,
+                    Mode = modeLabel,
+                    ConsolidationStatus = consolidationLabel,
+
+                    Date = now.Date,
+                    DayTime = now,
+                    Time = now.TimeOfDay,
+                    Year = now.Year.ToString(),
+                    BankAddress = branch.Bank?.Address
+                };
+
+                ApplyHeader(item, header);
+                return item;
+            }).ToList();
+
+            return result;
+        }
+
+
+
+
+
+        private void ApplyHeader(TrialBalanceFourColumnsFlatItems item,
+             BankHeaderInformation header)
+        {
+            item.BankId = header.BankId;
+            item.BankBankCode = header.BankBankCode;
+            item.BankName = header.BankName;
+            item.BankTelephone = header.BankTelephone;
+            item.BankEmail = header.BankEmail;
+            item.BankAddress = header.BankAddress;
+            item.BankLogoUrl = header.BankLogoUrl;
+            item.BankMotto = header.BankMotto;
+            item.BankRegistrationNumber = header.BankRegistrationNumber;
+            item.BankImmatriculationNumber = header.BankImmatriculationNumber;
+            item.BankPBox = header.BankPBox;
+
+            item.BranchId = header.BranchId;
+            item.BranchCode = header.BranchCode;
+            item.BranchName = header.BranchName;
+            item.BranchTelephone = header.BranchTelephone;
+            item.BranchEmail = header.BranchEmail;
+            item.BranchAddress = header.BranchAddress;
+            item.BranchLogoUrl = header.BranchLogoUrl;
+            item.BranchCapital = header.BranchCapital;
+            item.BranchRegistrationNumber = header.BranchRegistrationNumber;
+            item.BranchImmatriculationNumber = header.BranchImmatriculationNumber;
+            item.BranchPBox = header.BranchPBox;
+        }
+
 
 
 

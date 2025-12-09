@@ -1336,7 +1336,7 @@ namespace CBS.FrontDesk.Helper
         //----------------------- Cheque Book -------------------------
         public const string GetChequeBooksDataTable = "/api/v1/checkbook/data-table";
         public const string GetChequeBooksDataTableloss = "/api/v1/checkbook/data-table";
-        public const string GetChequeBookById = "/api/v1/Cheque-Book/{0}";
+        public const string GetChequeBookById = "/api/v1/checkbook/{0}";
         public const string CancelChequeBook = "/api/v1/Cheque-Book/{0}";
         public const string MarkLeafAsUsed = "/api/v1/Cheque-Book";
         public const string RejectCounBlockChequeLeafterCheque = "/api/v1/Cheque-Book";
@@ -1609,6 +1609,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetReconciliationtById = "/api/v1/FileUploads/{0}";
         public static string GetGLHById = "/api/v1/FileUploads/{0}";
         public static string ReconciliationConfirmation = "/api/v1/TrialBalance/initialization/final/broadforward/push";
+        public static string DownloadFile = "/api/v1/FileUploads/{0}/download";
 
         //-------------------------- FileUpload ------------------------------------------
         public static string Deactivateawaitingcorrespondance = "/api/v1/AccountAwaitingCorrespondence/{0}";
@@ -1690,6 +1691,24 @@ namespace CBS.FrontDesk.Helper
         public const string GetFallbackLogDataTable = "/api/v1/AffiliateToBranchFallbackLog/datatable";
         public const string GetFallbackLogById = "/api/v1/AffiliateToBranchFallbackLog/{0}";
         public const string ResolveFallbackLog = "/api/v1/AffiliateToBranchFallbackLog/{0}/resolve";
+
+        //------------------------ Account TypeGroup back ----------------------------------------
+        public const string GetAllAccountTypeGroups2 = "/api/v1/AccountTypeGroup";
+        public const string GetAccountTypeGroupById = "/api/v1/AccountTypeGroup/{0}";
+        public const string CreateAccountTypeGroup = "/api/v1/AccountTypeGroup";
+        public const string UpdateAccountTypeGroup = "/api/v1/AccountTypeGroup";
+        public const string DeleteAccountTypeGroup = "/api/v1/AccountTypeGroup/{0}";
+
+        //------------------------ Account Account Type Definition back ----------------------------------------
+        // AccountTypeDefinition Endpoints
+        public const string GetAllAccountTypeDefinition = "/api/v1/AccountTypeDefinition";
+        public const string GetAccountTypeDefinitionById = "/api/v1/AccountTypeDefinition/{0}";
+        public const string CreateAccountTypeDefinition = "/api/v1/AccountTypeDefinition";
+        public const string UpdateAccountTypeDefinition = "/api/v1/AccountTypeDefinition";
+        public const string DeleteAccountTypeDefinition = "/api/v1/AccountTypeDefinition/{0}";
+        public const string GetByGroupId = "/api/v1/AccountTypeDefinition/group/{0}";
+        public const string GetTreeByGroupId = "/api/v1/AccountTypeDefinition/tree/{0}";
+        public const string GetChildrenByParentId = "/api/v1/AccountTypeDefinition/children/{0}";
 
         //----------------------------- Dailly Collector License Management ---------------------------
         public const string GenerateLicense = "/api/v1/DailyCollectorLicense/generate";

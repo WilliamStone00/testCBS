@@ -363,7 +363,7 @@
                     controllerName = 'TrialBalance6Columns';
                     break;
                 case 'trial balance 4 columns':
-                    controllerName = 'TrialBalance4Colmuns';
+                    controllerName = 'TrialBalance4Columns';
                     break;
                 case 'account statement':
                     controllerName = 'AccntStatement';
@@ -396,8 +396,16 @@
 
             // Excel: download using file from response
             $('.btnExcel').off().on('click', function () {
+                
                 if (response && response.downloadFile) {
-                    window.location = "/TrialBalance6Columns/Download?file=" + response.downloadFile;
+
+                    if (controllerName == "TrialBalance4Columns") {
+                     window.location = "/TrialBalance4Columns/Download?file=" + response.downloadFile;
+                    }
+                    if (controllerName == "TrialBalance6Columns") {
+                     window.location = "/TrialBalance6Columns/Download?file=" + response.downloadFile;
+                    }
+                    //if()
                 } else {
                     alert("Download file not found in response.");
                 }
@@ -586,7 +594,7 @@
 
                     case "trial balance 4 columns":
                         $.post({
-                            url: '/TrialBalance4Colmuns/GenerateTrialBalance/',
+                            url: '/TrialBalance4Columns/GenerateTrialBalance/',
                             contentType: 'application/json',
                             data: JSON.stringify(payload),
                             success: (response) => {

@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
+﻿using CBS.BusinessService.Accounting_V2.MemberReconciliation;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -101,7 +102,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
                 var chequeBook = await _chequeBookService.GetChequeBookByIdAsync(id);
 
 
-                return PartialView("_ChequeBookDetails", chequeBook);
+                return View("_ChequeBookDetails", chequeBook);
             }
             catch (Exception ex)
             {
@@ -111,6 +112,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             }
         }
 
+      
         public async Task<ActionResult> GetLeafDetails(string leafId)
         {
             try
