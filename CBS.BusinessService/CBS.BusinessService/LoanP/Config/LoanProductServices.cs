@@ -550,6 +550,8 @@ namespace CBS.BusinessService.Config
                     ChartOfAccountIdForProvisionMoreThanTwoYear = product.ChartOfAccountIdForProvisionMoreThanTwoYear,
                     ChartOfAccountIdForProvisionMoreThanThreeYear = product.ChartOfAccountIdForProvisionMoreThanThreeYear,
                     ChartOfAccountIdForProvisionMoreThanFourYear = product.ChartOfAccountIdForProvisionMoreThanFourYear,
+                    ChartOfAccountIdForTaxiblePrincipalAmount = product.ChartOfAccountIdForTaxiblePrincipalAmount,
+                    ChartOfAccountIdForTaxibleInterestReceived = product.ChartOfAccountIdForTaxibleInterestReceived,
                     RepaymentCycles = product.RepaymentCycles,
                     ServiceOption = ServiceOption,
                     UpdateOption = UpdateOption,
@@ -722,8 +724,13 @@ namespace CBS.BusinessService.Config
                         LoanProduct.ChartOfAccountIdForProvisionMoreThanTwoYear = model.ChartOfAccountIdForProvisionMoreThanTwoYear;
                         LoanProduct.ChartOfAccountIdForProvisionMoreThanThreeYear = model.ChartOfAccountIdForProvisionMoreThanThreeYear;
                         LoanProduct.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
+                        LoanProduct.ChartOfAccountIdForTaxiblePrincipalAmount = model.ChartOfAccountIdForTaxiblePrincipalAmount;
+                        LoanProduct.ChartOfAccountIdForTaxibleInterestReceived = model.ChartOfAccountIdForTaxibleInterestReceived;
 
-                        LoanProduct.UpdateOption = "assign_account_chart";
+                             
+
+
+        LoanProduct.UpdateOption = "assign_account_chart";
 
                     }
 

@@ -176,6 +176,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
+        public string ChartOfAccountIdForTaxPayable { get; set; }
 
         public Penalty Penalty { get; set; }
         public string LoanTermId { get; set; }
@@ -325,6 +326,8 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
+        public string ChartOfAccountIdForTaxiblePrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxibleInterestReceived { get; set; }
         public LoanProductCategory LoanProductCategory { get; set; }
         public List<string> RepaymentCycles { get; set; }
         public List<Penalty> Penalties { get; set; }
@@ -499,7 +502,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool ShorteeMustHaveFundToGuranteeLoan { get; set; }
         public bool Co_obligorMustHaveFundToGuranteeLoan { get; set; }
         public decimal MinimumPercentageCoverageOfShortee { get; set; }
-
+        public string ChartOfAccountIdForTaxPayable { get; set; }
         public decimal MinimumCollateralPercentage { get; set; }
         public bool IsRequiredShareAccount { get; set; }
         public bool IsProductWithSavingFacilities { get; set; }
@@ -523,10 +526,10 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool EnablePhasedDisbursement { get; set; }
         public decimal MinCollateralCoveragePercent { get; set; }
         public bool AllowThirdPartyOwnership { get; set; }
-
+        public string ChartOfAccountIdForFee { get; set; }
         public string ChartOfAccountIdForPrincipalAmount { get; set; }
         public string ChartOfAccountIdForPenalty { get; set; }
-        public string ChartOfAccountIdForTax { get; set; }
+       
         public string ChartOfAccountIdForLoanTransition { get; set; }
         public string ChartOfAccountIdForWriteOffPrincipal { get; set; }
         public string ChartOfAccountIdForInterestReceived { get; set; }
@@ -534,6 +537,14 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public string ChartOfAccountIdForProvisionMoreThanTwoYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanThreeYear { get; set; }
         public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
+
+
+
+        //  TAXIBLE LOAN GLs (Your new section)
+        //
+        public string ChartOfAccountIdForTaxiblePrincipalAmount { get; set; }
+        public string ChartOfAccountIdForTaxibleInterestReceived { get; set; }
+        public string ChartOfAccountIdForTax { get; set; }
         public List<string> RepaymentCycles { get; set; }
         public string ServiceOption { get; set; }
         public string UpdateOption { get; set; }

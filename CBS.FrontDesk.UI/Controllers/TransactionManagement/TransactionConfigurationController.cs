@@ -1,4 +1,4 @@
-using CBS.BusinessService.Accounting;
+﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
 using CBS.BusinessService.Accounts;
 using CBS.FrontDesk.Data;
@@ -1039,11 +1039,12 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                 return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
             }
 
-            // TODO: implement this in SavingProductServices (repository query on AccountTypeDefinition)
-            // e.g. Task<IEnumerable<AccountTypeDefinition>> GetAccountTypeDefinitionsAsync();
             var allDefinitions = await _savingProductServices.GetAccountTypeDefinitionByGroupId(groupId);
 
-            var defsForGroup = allDefinitions.OrderBy(d => d.DisplayOrder)
+            // Only active, non-deleted
+            var defsForGroup = allDefinitions
+                .Where(d => !d.IsDeleted && d.IsActive)
+                .OrderBy(d => d.DisplayOrder)
                 .ThenBy(d => d.Name)
                 .Select(d => new
                 {
@@ -1051,7 +1052,10 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
                     d.Name,
                     d.Code,
                     d.ShortName,
-                    d.Description
+                    d.Description,
+                    d.ParentId,          // ✅ needed for tree
+                    d.IsSystemStandard,  // optional, if you want to style them differently
+                    d.IsUserStandard
                 })
                 .ToList();
 

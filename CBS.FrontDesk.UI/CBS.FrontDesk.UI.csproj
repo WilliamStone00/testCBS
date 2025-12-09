@@ -8125,6 +8125,7 @@
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
@@ -11099,6 +11100,7 @@
     <Content Include="Views\EndOfYearClosure\_DataTable.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
+    <Content Include="Views\LoanProduct\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
