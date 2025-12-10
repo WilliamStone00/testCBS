@@ -61,7 +61,7 @@
 
             <!-- 🔹 Branch & Date Toggles -->
             <div class="row mb-2 align-items-center">
-                <div class="col-md-3 mb-1">
+                <div class="col-md-4 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-1">
+                <div class="col-md-4 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('AccoutingdateFilters').classList.toggle('d-none')" />
@@ -80,7 +80,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-3 mb-1">
+                <div class="col-md-4 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
@@ -90,12 +90,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
-                    <div class="form-check">
-                        @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
-                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- 🔹 Hidden Branch Dropdown -->
@@ -149,17 +144,23 @@
             <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
             <!-- 🔹 Mode, Daily Operation & Is Interbranch -->
             <div class="row mb-1">
+                <div class="col-md-4 mb-1 d-flex align-items-center mt-4">
+                    <div class="form-check">
+                        @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
+                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                    </div>
+                </div>
 
-                <div class="col-md-6 mb-1">
+                <div class="col-md-4 mb-1">
                    
                     <label class="form-label fw-bold">Source Mode</label>
                     @Html.DropDownList("Mode",
                         new SelectList(ViewBag.SourceMode, "Value", "Text"),
-                        "Select Operation Code",
+                        "Select Source Mode",
                         new { @class = "form-control select2 mb-1", @id = "Mode" })
                 </div>
 
-                <div class="col-md-6 mb-1">
+                <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Daily Operator</label>
                     @Html.DropDownList("DailyOperator",
                         new List<SelectListItem>(), // backend will populate
@@ -175,7 +176,7 @@
 
 
             <div class="row mb-1">
-                <div class="col-md-6 mb-1">
+                <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Reference</label>
                     <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
                 </div>
@@ -186,17 +187,19 @@
                         new SelectList(ViewBag.OperationTypes, "Value", "Text"),
                         "Select Operation Type",
                         new { @class = "form-control select2 mb-1", @id = "OperationType" })
-                </div>
-
-                <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Operation Code</label>
-                    @Html.DropDownList("OperationCode",
-                        new SelectList(ViewBag.OperationCode, "Value", "Text"),
-                        "Select Operation Code",
-                        new { @class = "form-control select2 mb-1", @id = "OperationCode" })
                 </div>*@
 
-                <div class="col-md-6 mb-1">
+               <div class="col-md-4 mb-1">
+   
+                    <label class="form-label fw-bold">Source Type</label>
+                    @Html.DropDownList("Source",
+                        new SelectList(ViewBag.Source, "Value", "Text"),
+                        "Select Source ",
+                        new { @class = "form-control select2 mb-1", @id = "Source" })
+                </div>
+
+
+                <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Operation Code</label>
                     @Html.DropDownList("OperationCode",
                         new List<SelectListItem>(), // backend will populate
@@ -365,6 +368,7 @@
                 Mode: $('#Mode').val(),
                 DailyOperator: $('#DailyOperator').val(),
                 IsInterbranch: $('#IsInterbranch').prop('checked'),
+                Source: $('#Source').val(),
                 Options: {}
             };
         }
@@ -455,7 +459,7 @@
 
 
                            // ======================
-                        $(document).on("click", "#btnConfirmJournalExport", function () {
+            $(document).on("click", "#btnConfirmJournalExport", function () {
 
                 // ✅ Get filters from your function
                 let filters = collectJournalHeaderFilters();
@@ -518,6 +522,65 @@
 
 
         });
+
+
+
+                        $(document).ready(function () {
+
+                            $("#branchId, #Mode, #Source").on("change", function () {
+
+                                let request = {
+                                    BranchId: $("#branchId").val(),
+                                    Mode: $("#Mode").val(),
+                                    Source: $("#Source").val()
+                                };
+
+                                // Only call backend when BranchId AND Mode are selected
+                                if (!request.BranchId || !request.Mode)
+                                    return;
+
+                                $.ajax({
+                                    url: '/JournalHead/LoadFilterDependencies',
+                                    method: 'POST',
+                                    data: request,
+                                    success: function (res) {
+
+                                        if (!res.success) return;
+
+                                        // ------- Operation Codes -------
+                                        let opDropdown = $("#OperationCode");
+                                        opDropdown.empty();
+                                        opDropdown.append(`<option value="">--- Select Operation Code ---</option>`);
+
+                                        $.each(res.operationCodes, function (i, code) {
+                                            opDropdown.append(`<option value="${code}">${code}</option>`);
+                                        });
+
+                                        // ------- Daily Operator -------
+                                        let operatorDropdown = $("#DailyOperator");
+                                        operatorDropdown.empty();
+                                        operatorDropdown.append(`<option value="">--- Select Operator ---</option>`);
+
+                                        $.each(res.initiatedBy, function (i, name) {
+                                            operatorDropdown.append(`<option value="${name}">${name}</option>`);
+                                        });
+
+                                        // Safely refresh select2 WITHOUT triggering change again
+                                        $("#OperationCode").select2();
+                                        $("#DailyOperator").select2();
+                                    }
+                                });
+
+                            });
+
+                        });
+
+
+
+
+
+
+            
     </script>
 
 }

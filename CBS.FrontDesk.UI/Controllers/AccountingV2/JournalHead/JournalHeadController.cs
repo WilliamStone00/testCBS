@@ -1,7 +1,9 @@
 ﻿using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -60,13 +62,19 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             // Reconciliation Status (WorkTicket) dropdown
             ViewBag.SourceMode = new List<SelectListItem>
 {
-    new SelectListItem { Value = "Temp", Text = "Temp " },
-    new SelectListItem { Value = "Reconciled", Text = "Reconciliated" }
+    new SelectListItem { Value = "temp", Text = "Temporal Data " },
+    new SelectListItem { Value = "reconciled", Text = "Reconciliated Data" }
 };
             ViewBag.TicketSource = new List<SelectListItem>
 {
     new SelectListItem { Value = "Source", Text = "Source " },
     new SelectListItem { Value = "Destination", Text = "Destination" }
+};
+
+            ViewBag.Source = new List<SelectListItem>
+{
+    new SelectListItem { Value = "real", Text = "Real Time Data " },
+    new SelectListItem { Value = "temp", Text = "Temporary Data" }
 };
             return true;
         }
@@ -277,6 +285,31 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+        [HttpPost]
+        public async Task<ActionResult> LoadFilterDependencies(GetFirlterData model)
+        {
+            try
+            {
+                var response = await _journalHeadService.GetFilters(model);
+
+                if (response == null)
+                    return Json(new { success = false });
+
+                return Json(new
+                {
+                    success = true,
+                    operationCodes = response.Data.OperationCodes.Select(x => x.Code).ToList(),
+                    initiatedBy = response.Data.InitiatedBy.Select(x => x.Name).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
 
 
 
@@ -412,20 +445,32 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
-                
 
-                // Build query from filters
+
+
+                // ✅ Build JournalEntryQuery from Filters
                 var query = new JournalEntryQuery
                 {
-                   
                     Options = new DataTableOptions
                     {
                         draw = "1",
                         start = 0,
-                        length = int.MaxValue // get all filtered rows
-                    }
-                };
+                        length = int.MaxValue // fetch all filtered rows
+                    },
+                    BranchId = request.Filters?.BranchId,
+                    OperationCode = request.Filters?.OperationCode,
+                    Reference = request.Filters?.Reference,
+                    StartAccountingDate = request.Filters?.StartAccountingDate,
+                    EndAccountingDate = request.Filters?.EndAccountingDate,
+                    StartDate = request.Filters?.StartDate,
+                    EndDate = request.Filters?.EndDate,
+                    TicketSource = request.Filters?.TicketSource,
+                    Mode = request.Filters?.Mode,
+                    DailyOperator = request.Filters?.DailyOperator,
+                    IsInterbranch = request.Filters?.IsInterbranch ?? false,
 
+                    Source = request.Filters?.Source
+                };
                 // Fetch data from service
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
 

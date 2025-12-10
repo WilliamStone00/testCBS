@@ -1478,6 +1478,7 @@ namespace CBS.FrontDesk.Helper
         public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
         public static string ApproveMemberReconciliation = "/api/v1/TrialBalance/reconciliation/finalize";
         public static string ApproveCashReconciliation = "/api/v1/CashAndVaultInit/approve";
+        public static string GetFilter = "/api/v1/tempjournalheader/memberandcode";
 
 
 

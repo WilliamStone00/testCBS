@@ -4,6 +4,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.AndriodApp;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -313,6 +314,15 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw ex;
             }
         }
+
+        public async Task<ResponseObject<FilterResponse>> GetFilters(GetFirlterData model)
+        {
+            var response = await _JournalheadapiCallerHelper
+                .PostAsync<ResponseObject<FilterResponse>>(APICallHelper.GetFilter, model);
+
+            return response.ApiResponseData;
+        }
+
 
     }
 }
