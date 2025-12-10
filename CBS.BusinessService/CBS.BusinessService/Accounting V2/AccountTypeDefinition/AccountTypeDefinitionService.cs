@@ -19,15 +19,15 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeDefinition
 
         public AccountTypeDefinitionService()
         {
-            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+            string baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'TransactionBaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
 
-        public async Task<IEnumerable<AccountTypeDefinitionDto>> GetAllAsync(bool includeInactive = false)
+        public async Task<IEnumerable<AccountTypeDefinitionDto>> GetAllAsync(bool includeInactive = true)
         {
             try
             {

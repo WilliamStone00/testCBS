@@ -28,6 +28,12 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
             }
         }
 
+        public void CenterColumn(IXLWorksheet ws, int columnNumber)
+        {
+            ws.Column(columnNumber).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            ws.Column(columnNumber).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        }
+
         public int WriteExcelHeader(IXLWorksheet ws, dynamic firstRow, string exportedBy, int startRow, string PRTittle = "TRIAL BALANCE 6 COLUMNS")
         {
             string BankName = SafeGet(firstRow, "BankName");
@@ -110,20 +116,25 @@ namespace CBS.BusinessService.Accounting_V2.ExportReports
 
             ws.Cell(row, 1).Value = $"Address: {BranchAddress} | Tel: {BranchTelephone}";
             var line6 = ws.Range(row, 1, row, 3);
+            line6.Merge();
             line6.Style.Font.FontColor = XLColor.Black;
             row++;
             ws.Cell(row, 1).Value = $"Accounting Date: {AccountingDate}";
             var line7 = ws.Range(row, 1, row, 3);
+            line7.Merge();
             line7.Style.Font.FontColor = XLColor.Black;
             row++;
 
             ws.Cell(row, 1).Value = $"Status: {Mode}";
             var line8 = ws.Range(row, 1, row, 3);
+            line8.Merge();
             line8.Style.Font.FontColor = XLColor.Black;
+
             row++;
 
             ws.Cell(row, 1).Value = $"Report Period: {PeriodFrom}  To: {PeriodTo}";
             var line9 = ws.Range(row, 1, row, 3);
+            line7.Merge();
             line9.Style.Font.FontColor = XLColor.Black;
             row++;
 

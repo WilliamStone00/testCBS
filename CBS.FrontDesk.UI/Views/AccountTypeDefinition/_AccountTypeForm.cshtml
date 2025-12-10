@@ -1,82 +1,141 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition.AccountTypeDefinitionCommand
 
-@using (Html.BeginForm("CreateOrUpdate", "AccountTypeDefinition", FormMethod.Post,
-       new { id = "accountTypeForm", @class = "needs-validation", novalidate = "novalidate" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id)
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="Name" class="form-label">Name *</label>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", required = "required", maxlength = "100" })
-            <div class="invalid-feedback">Please provide a name.</div>
-        </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="Code" class="form-label">Code *</label>
-            @Html.TextBoxFor(m => m.Code, new
-            {
-                @class = "form-control",
-                required = "required",
-                maxlength = "50",
-                   pattern = "^[a-zA-Z0-9_]+$",
-                title = "Only letters, numbers, and underscores allowed"
-            })
-            <div class="invalid-feedback">Please provide a valid code.</div>
-        </div>
-    </div>
+        @using (Html.BeginForm("CreateOrUpdate", "AccountTypeDefinition", FormMethod.Post, new
+        {
+            enctype = "multipart/form-data",
+            id = "accountTypeForm",
+            onsubmit = "return false;" // keep if you submit via AJAX. Remove or change if regular post
+        }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="ShortName" class="form-label">Short Name</label>
-            @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", maxlength = "20" })
-        </div>
+            <div class="row gy-3">
+                <!-- Header -->
+                <div class="col-12">
+                    <h6 class="text-primary border-bottom pt-2 pb-1">
+                        <i class="mdi mdi-file-document-outline text-success me-1"></i>
+                        Account Type Definition
+                    </h6>
+                </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="DisplayOrder" class="form-label">Display Order</label>
-            @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", type = "number", min = "0" })
-        </div>
-    </div>
+                <!-- Name -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", required = "required", maxlength = "100" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        <label>Name </label>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-md-12 mb-3">
-            <label for="Description" class="form-label">Description</label>
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "3", maxlength = "500" })
-        </div>
-    </div>
+                <!-- Code -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.Code, new
+                        {
+                            @class = "form-control",
+                            placeholder = "Code",
+                            required = "required",
+                            maxlength = "50",
+                            pattern = "^[a-zA-Z0-9_]+$",
+                            title = "Only letters, numbers, and underscores allowed"
+                        })
+                        @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        <label>Code </label>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <label for="BranchId" class="form-label fw-bold">Branch</label>
-            @Html.DropDownListFor(m => m.AccountTypeGroupId, new SelectList(ViewBag.AccountTypeGroups, "Id", "Name"), "--- Select Account Type Group ---", new { @class = "form-control select2", required = "required", id = "AccountTypeGroupId" })
-            @Html.ValidationMessageFor(m => m.AccountTypeGroupId, "", new { @class = "text-danger" })
-            <div class="invalid-feedback">Please select an account type group.</div>
-        </div>
-        <div class="col-md-12">
-            <label for="BranchId" class="form-label fw-bold">Branch</label>
-            @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.ParentAccountTypes, "Id", "Name"), "--- Select Parent Account Types ---", new { @class = "form-control select2", required = "required", id = "ParentId" })
-            @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })           
-        </div>
-    </div>
+                <!-- ShortName -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", placeholder = "Short Name", maxlength = "20" })
+                        @Html.ValidationMessageFor(m => m.ShortName, "", new { @class = "text-danger" })
+                        <label>Short Name</label>
+                    </div>
+                </div>
 
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-check form-switch">
-                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
-                <label class="form-check-label" for="IsActive">Active</label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-check form-switch">
-                @Html.CheckBoxFor(m => m.IsUserStandard, new { @class = "form-check-input", id = "IsUserStandard" })
-                <label class="form-check-label" for="IsUserStandard">User Standard</label>
-            </div>
-        </div>
-    </div>
+                <!-- Display Order -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", placeholder = "Display Order", type = "number", min = "0" })
+                        @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger" })
+                        <label>Display Order</label>
+                    </div>
+                </div>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-}
+                <!-- Account Type Group (select) -->
+                <div class="col-md-6">
+                    <div class="shadow-sm p-2 rounded">
+                        <label for="AccountTypeGroupId" class="form-label fw-bold mb-1">Account Type Group </label>
+                        @Html.DropDownListFor(m => m.AccountTypeGroupId, new SelectList(ViewBag.AccountTypeGroups, "Id", "Name"), "--- Select Account Type Group ---", new { @class = "form-control select2", required = "required", id = "AccountTypeGroupId" })
+                        @Html.ValidationMessageFor(m => m.AccountTypeGroupId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Parent Id (select) -->
+                <div class="col-md-6">
+                    <div class="shadow-sm p-2 rounded">
+                        <label for="ParentId" class="form-label fw-bold mb-1">Parent Account Type</label>
+                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.ParentAccountTypes, "Id", "Name"), "--- Select Parent Account Type ---", new { @class = "form-control select2", id = "ParentId" })
+                        @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <div class="form-floating shadow-sm">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description", rows = "3", maxlength = "500" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                        <label>Description</label>
+                    </div>
+                </div>
+
+                <!-- Switches -->
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        <div class="form-check form-switch mt-3 ms-2">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActiveSwitch" })
+                            <label class="form-check-label" for="IsActiveSwitch">Active</label>
+                        </div>
+                        <small class="text-muted ms-2">Toggle to activate/deactivate this account type</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating shadow-sm">
+                        <div class="form-check form-switch mt-3 ms-2">
+                            @Html.CheckBoxFor(m => m.IsUserStandard, new { @class = "form-check-input", id = "IsUserStandardSwitch" })
+                            <label class="form-check-label" for="IsUserStandardSwitch">User Standard</label>
+                        </div>
+                        <small class="text-muted ms-2">Mark as a user standard account type</small>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-12 text-end mt-4">
+                    @if (string.IsNullOrEmpty(Model?.Id))
+                    {
+                        <button type="submit" class="btn btn-primary shadow-sm px-4">
+                            <i class="mdi mdi-content-save me-1"></i> Create
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary shadow-sm px-4" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="mdi mdi-content-save me-1"></i> Update
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    }
+                </div>
+            </div> <!-- /.row gy-3 -->
+        } <!-- End form -->
+    
+
+

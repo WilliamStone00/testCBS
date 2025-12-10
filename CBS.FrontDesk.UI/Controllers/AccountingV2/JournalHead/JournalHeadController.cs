@@ -1,7 +1,9 @@
 ﻿using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -58,15 +60,21 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 };
 
             // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.OperationCode = new List<SelectListItem>
+            ViewBag.SourceMode = new List<SelectListItem>
 {
-    new SelectListItem { Value = "Temp", Text = "Temp " },
-    new SelectListItem { Value = "Reconciled", Text = "Reconciliated" }
+    new SelectListItem { Value = "temp", Text = "Temporal Data " },
+    new SelectListItem { Value = "reconciled", Text = "Reconciliated Data" }
 };
             ViewBag.TicketSource = new List<SelectListItem>
 {
     new SelectListItem { Value = "Source", Text = "Source " },
     new SelectListItem { Value = "Destination", Text = "Destination" }
+};
+
+            ViewBag.Source = new List<SelectListItem>
+{
+    new SelectListItem { Value = "real", Text = "Real Time Data " },
+    new SelectListItem { Value = "temp", Text = "Temporary Data" }
 };
             return true;
         }
@@ -142,32 +150,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             return PartialView("_JournalHeadDetails", entry);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetDetails(string id)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(id))
-        //            return Json(new { success = false, message = "⚠️ Journal Entry ID is required." }, JsonRequestBehavior.AllowGet);
-
-        //        // ✅ Call the service which internally handles branchId
-        //        var result = await _journalHeadService.GetJournalEntryByIdAsync(id);
-
-        //        if (result == null)
-        //            return Json(new { success = false, message = "⚠️ Journal Entry not found." }, JsonRequestBehavior.AllowGet);
-
-        //        return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (TaskCanceledException)
-        //    {
-        //        return Json(new { success = false, message = "⚠️ Timeout while fetching journal entry — backend service not responding." }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
+       
 
         [HttpPost]
         public async Task<JsonResult> LoadJournalSourceData(JournalEntryQuery query)
@@ -267,13 +250,70 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+        [HttpPost]
+        public async Task<ActionResult> Reject(JournalApproval model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.Reference))
+                return Json(new { success = false, message = "Journal id is required" });
+
+            model.SourceBranchId = model.BranchId;
+            try
+            {
+                    var result = await _journalHeadService.RejectAsync(model);
+               
+                if (result == null)
+                    return Json(new { success = false, message = "No response from approval service." });
+
+                // ✅ Return structured JSON based on result
+                return Json(new
+                {
+                    success = true,
+                    statusCode = 200,
+                    message = (result as dynamic)?.Message ?? "Reject successfully",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Approval failed: {ex.Message}"
+                });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> LoadFilterDependencies(GetFirlterData model)
+        {
+            try
+            {
+                var response = await _journalHeadService.GetFilters(model);
+
+                if (response == null)
+                    return Json(new { success = false });
+
+                return Json(new
+                {
+                    success = true,
+                    operationCodes = response.Data.OperationCodes.Select(x => x.Code).ToList(),
+                    initiatedBy = response.Data.InitiatedBy.Select(x => x.Name).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
 
 
 
 
 
-        
+
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {
@@ -405,20 +445,32 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
-                
 
-                // Build query from filters
+
+
+                // ✅ Build JournalEntryQuery from Filters
                 var query = new JournalEntryQuery
                 {
-                   
                     Options = new DataTableOptions
                     {
                         draw = "1",
                         start = 0,
-                        length = int.MaxValue // get all filtered rows
-                    }
-                };
+                        length = int.MaxValue // fetch all filtered rows
+                    },
+                    BranchId = request.Filters?.BranchId,
+                    OperationCode = request.Filters?.OperationCode,
+                    Reference = request.Filters?.Reference,
+                    StartAccountingDate = request.Filters?.StartAccountingDate,
+                    EndAccountingDate = request.Filters?.EndAccountingDate,
+                    StartDate = request.Filters?.StartDate,
+                    EndDate = request.Filters?.EndDate,
+                    TicketSource = request.Filters?.TicketSource,
+                    Mode = request.Filters?.Mode,
+                    DailyOperator = request.Filters?.DailyOperator,
+                    IsInterbranch = request.Filters?.IsInterbranch ?? false,
 
+                    Source = request.Filters?.Source
+                };
                 // Fetch data from service
                 var data = await _journalHeadService.GetJournalHeaderDataTableAsync(query);
 
