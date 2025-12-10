@@ -41,6 +41,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public int CurrentYear { get; set; }
         public int PreviousYear { get; set; }
         public string Currency { get; set; }
+        
         public List<BalanceItem> Assets { get; set; }
         public List<BalanceItem> LiabilitiesAndEquity { get; set; }
         public decimal TotalAssetsNetCurrentYear { get; set; }
@@ -49,6 +50,20 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public decimal TotalLiabEquityNetLastYear { get; set; }
         public decimal? ResultPendingApprovalCurrentYear { get; set; }
         public decimal? ResultPendingApprovalLastYear { get; set; }
+
+
+        /// <summary>
+        // income and expense statement
+        /// </summary>
+        /// 
+
+        public List<BalanceItem> rows { get; set; }
+        public decimal? TotalExpensesCurrentYear { get; set; }
+        public decimal? TotalExpensesLastYear { get; set; }
+        public decimal? TotalIncomeLastYear { get; set; }
+        public decimal? TotalIncomeCurrentYear { get; set; }
+
+      
     }
 
     public class BalanceItem
@@ -57,6 +72,10 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountingReportsD
         public string Caption { get; set; }
         public string Section { get; set; }
         public string Side { get; set; }
+        public decimal CurrentYearAmount { get; set; } = 0;
+        public decimal LastYearAmount { get; set; } = 0;
+
+        
         public int SortOrder { get; set; }
         public decimal Gross { get; set; }
         public decimal AmortizationProvision { get; set; }

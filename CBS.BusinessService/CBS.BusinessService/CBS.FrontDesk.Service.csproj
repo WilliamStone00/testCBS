@@ -210,6 +210,10 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CBS.FrontDesk.UI\Bin\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
       <Private>True</Private>
@@ -260,6 +264,8 @@
   <ItemGroup>
     <Compile Include="Accounting V2\AccntStatements\AccntStatementService.cs" />
     <Compile Include="Accounting V2\AccountBlacklisting\AccountBlacklistService.cs" />
+    <Compile Include="Accounting V2\AccountTypeDefinition\AccountTypeDefinitionService.cs" />
+    <Compile Include="Accounting V2\AccountTypeGroup\AccountTypeGroupService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountMockService.cs" />
     <Compile Include="Accounting V2\AffiliateAccounts\AffiliateAccountService.cs" />
     <Compile Include="Accounting V2\Affiliate\AffiliateService.cs" />
@@ -272,10 +278,13 @@
     <Compile Include="Accounting V2\DaillyCollectorCommission\CollectorCommissionService.cs" />
     <Compile Include="Accounting V2\DaillyCollectorCommission\CommissionExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\DaillyCollectorLicenseService\DaillyCollectorLicenseService.cs" />
+    <Compile Include="Accounting V2\ExportReports\BaseExcelHead.cs" />
+    <Compile Include="Accounting V2\ExportReports\TrialBalance4ColumnsExport.cs" />
     <Compile Include="Accounting V2\FallBack\FallbackExcelExportGenerator.cs" />
     <Compile Include="Accounting V2\ExportReports\TrialBalance6ColumnsExport.cs" />
     <Compile Include="Accounting V2\FallBack\fallbackservice.cs" />
     <Compile Include="Accounting V2\FilesUpload\FileUploadService.cs" />
+    <Compile Include="Accounting V2\IncomeStatement\IncomeStatementService.cs" />
     <Compile Include="Accounting V2\JournalEntries\JournalEntriesService.cs" />
     <Compile Include="Accounting V2\JournalReceiptsReports\JournalReceiptsService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\AccountManagementPositionCalculator.cs" />
@@ -283,6 +292,7 @@
     <Compile Include="Accounting V2\MemberReconciliation\LoanReconciliationService.cs" />
     <Compile Include="Accounting V2\MemberReconciliation\MemberReconciliationService.cs" />
     <Compile Include="Accounting V2\Pendingaccounts\PendingAccountsService.cs" />
+    <Compile Include="Accounting V2\TrialBalance\TrialBalanceFourColumnsFlatItems.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalanceReportItem.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalances4ColumsService.cs" />
     <Compile Include="Accounting V2\TrialBalance\TrialBalances6ColumnService.cs" />

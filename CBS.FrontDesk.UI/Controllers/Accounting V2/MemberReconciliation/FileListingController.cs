@@ -1,18 +1,24 @@
 ﻿using CBS.BusinessService.Accounting_V2.Affiliate;
 using CBS.BusinessService.Accounting_V2.AffiliateAccounts;
+using CBS.BusinessService.Accounting_V2.API;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounting_V2.MemberReconciliation;
+using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.API;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.UI.Controllers.Accounting_V2.Affiliate;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -83,6 +89,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
                 });
             }
         }
+
+
+
         [HttpGet]
         public async Task<ActionResult> GLhistory()
         {
@@ -108,7 +117,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             }
             catch (Exception ex)
             {
-               return Json(new
+                return Json(new
                 {
                     draw = query?.Options?.draw ?? "1",
                     recordsTotal = 0,
@@ -131,9 +140,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
             var data = await _fileListingService.GetByIdAsync(id);
             if (string.IsNullOrEmpty(partialView))
             {
-               return View("Detailss", data); 
+                return View("Detailss", data);
             }
-           return PartialView(partialView, data);
+            return PartialView(partialView, data);
         }
 
         public async Task<ActionResult> DetailsGLH(string id, string partialView = null)
@@ -158,12 +167,25 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.MemberReconciliation
         {
             var data = new ConfirmReconciliation
             {
-               Id = id,
-               BranchId = branch
+                Id = id,
+                BranchId = branch
             };
             return PartialView("_Validation", data);
 
         }
+
+        public async Task<ActionResult> Download(string id)
+        {
+            var file = await _fileListingService.DownloadFile(id);
+
+            if (file == null || !string.IsNullOrEmpty(file.ErrorMessage))
+                return View("Error", new HandleErrorInfo(new Exception("File not found"), "Fileupload", "DownloadFile"));
+
+            var bytes = file.GetBytes(); // convert base64 → byte[]
+
+            return File(bytes, file.ContentType, file.FileName);
+        }
+
 
     }
 }

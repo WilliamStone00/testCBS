@@ -1,0 +1,305 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup.AccountTypeGroupResponse
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Action
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmAction">
+                    <i class="mdi mdi-check me-1"></i>Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading form...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Action Buttons Card -->
+<!--<div class="card mb-4">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <label class="card-title mb-0 text-primary">
+                <i class="mdi mdi-cog-outline me-2"></i>
+            </label>
+            <div>
+
+                <button type="button"
+                        onclick="window.location.href='@Url.Action("List", "AccountTypeGroup")'"
+                        class="btn btn-label-primary btn-sm me-2"
+                        data-bs-toggle="tooltip"
+                        title="View All Groups">
+                    <i class="mdi mdi-view-list mdi-18px"></i> View Groups List
+                </button>
+
+                <button type="button"
+                        onclick="formManager.showCreateForm()"
+                        class="btn btn-label-secondary btn-sm"
+                        data-bs-toggle="tooltip"
+                        title="Add New Group">
+                    <i class="mdi mdi-plus mdi-18px"></i> Add New Group
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!-- Content Area -->
+<div id="datalistingview">
+    <!-- Create form will be loaded here by default -->
+    @Html.Partial("_AccountTypeGroupForm", Model)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function() {
+            // Enable tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+            
+            // Clear modal content when hidden
+            $('#confirmationModal').on('hidden.bs.modal', function() {
+                $('#confirmationModal .modal-body').empty();
+            });
+            
+            // Handle form submission in main content
+            $(document).on('submit', '#accountTypeGroupForm', handleFormSubmit);
+            
+            // Handle form submission in edit modal
+            $(document).on('submit', '#editGroupForm', handleEditFormSubmit);
+        });
+        
+        function showCreateForm() {
+            $.ajax({
+                url: '/AccountTypeGroup/InitializeData',
+                type: 'GET',
+                data: {
+                    partialView: '_AccountTypeGroupForm',
+                    path: 'new'
+                },
+                success: function(response) {
+                    $('#editModalBody').html(response);
+                    $('#editModal').modal('show');
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                },
+                error: function(error) {
+                    console.error('Error loading create form:', error);
+                    appalert('Error loading create form. Please try again.', 4, 1);
+                }
+            });
+        }
+        
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            var form = event.target;
+            submitWithConfirmation(form);
+        }
+        
+        function handleEditFormSubmit(event) {
+            event.preventDefault();
+            var form = event.target;
+            submitWithConfirmation(form);
+        }
+        
+        function submitWithConfirmation(form) {
+            try { $.validator.unobtrusive.parse(form); } catch (e) {}
+            var $form = $(form);
+            if ($form.length && !$form.valid()) return false;
+
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = getAntiForgeryToken();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.data('orig-html') || $submit.html();
+            $submit.data('orig-html', origHtml);
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+            var doAjax = function () {
+                var ajaxOptions = {
+                    url: '/AccountTypeGroup/CreateOrUpdate',
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            var lvl = 1;
+                            if (response.status === 'Exist') lvl = 3;
+                            if (response.status === 'Failed') lvl = 2;
+                            showMsg(response.message || 'Operation successful', lvl);
+
+                            if (response.reloadDataView === "Yes" || response.reload === true) {
+                                // Reload the form with fresh data
+                                loadFreshForm();
+                            }
+                            
+                            // If form is in modal and successful, hide modal
+                            if ($form.attr('id') === 'editGroupForm') {
+                                $('#editModal').modal('hide');
+                            }
+                        } else {
+                            var lvl = (response && response.status === 'Exist') ? 3 : 2;
+                            showMsg((response && response.message) ? response.message : 'Operation failed', lvl);
+                        }
+                    },
+                    error: function (xhr) {
+                        var parsed = normalizeResponse(xhr.responseText);
+                        if (parsed && parsed.message) {
+                            showMsg(parsed.message, parsed.success ? 1 : 2);
+                        } else if (xhr.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                        } else {
+                            showMsg(xhr.statusText || 'Network error', 4);
+                            console.error('Form submission error', xhr.status, xhr.responseText);
+                        }
+                    },
+                    complete: function () {
+                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                    }
+                };
+
+                if (isMultipart) {
+                    ajaxOptions.data = new FormData(form);
+                    ajaxOptions.processData = false;
+                    ajaxOptions.contentType = false;
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                } else {
+                    ajaxOptions.data = $form.serialize();
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                }
+
+                $.ajax(ajaxOptions);
+            };
+
+            // confirmation with alertify
+            if (window.alertify && typeof alertify.confirm === 'function') {
+                try {
+                    alertify.confirm(
+                        "Confirmation", 
+                        "Are you sure you want to perform this action?", 
+                        function () { 
+                            doAjax(); 
+                        }, 
+                        function () { 
+                            showMsg('Transaction cancelled', 3);
+                            $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                        }
+                    ).set('labels', { ok: 'Yes', cancel: 'No' });
+                } catch (e) { 
+                    if (confirm('Are you sure?')) {
+                        doAjax(); 
+                    } else {
+                        showMsg('Cancelled', 3);
+                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                    }
+                }
+            } else {
+                if (confirm('Are you sure you want to perform this action?')) {
+                    doAjax(); 
+                } else {
+                    showMsg('Transaction cancelled', 3);
+                    $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                }
+            }
+
+            return false;
+        }
+        
+        function loadFreshForm() {
+            $.ajax({
+                url: '/AccountTypeGroup/InitializeData',
+                type: 'GET',
+                data: {
+                    partialView: '_AccountTypeGroupForm',
+                    path: 'new'
+                },
+                success: function(response) {
+                    $('#datalistingview').html(response);
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                },
+                error: function(error) {
+                    console.error('Error refreshing form:', error);
+                    appalert('Error refreshing form. Please try again.', 4, 1);
+                }
+            });
+        }
+        
+        function confirmAction(message) {
+            return new Promise(function(resolve) {
+                $('#confirmationModal .modal-body').text(message);
+                $('#confirmationModal').modal('show');
+                
+                $('#confirmAction').off('click').on('click', function() {
+                    $('#confirmationModal').modal('hide');
+                    resolve(true);
+                });
+                
+                $('#cancelAction').off('click').on('click', function() {
+                    $('#confirmationModal').modal('hide');
+                    resolve(false);
+                });
+            });
+        }
+        
+        // Helper functions (if not already defined)
+        function getAntiForgeryToken() {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            if (!token) {
+                token = $('input[name="X-XSRF-TOKEN"]').val();
+            }
+            return token;
+        }
+        
+        function normalizeResponse(raw) {
+            if (!raw) return null;
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                // If it's already an object, return it
+                if (typeof raw === 'object') return raw;
+                return { message: raw, success: false };
+            }
+        }
+        
+        function showMsg(message, level) {
+            // Use existing appalert function if available, otherwise fallback
+            if (typeof appalert === 'function') {
+                appalert(message, level, 1);
+            } else {
+                alert(message);
+            }
+        }
+    </script>
+}

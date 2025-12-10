@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup.AccountTypeGroupResponse>
+
+<div class="card">
+    <div class="card-body">
+        <fieldset class="fieldset-custom">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="card-title mb-0 text-primary">
+                    <i class="mdi mdi-view-list me-2"></i> Account Type Groups List
+                </h4>
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary ms-auto"
+                        onclick="groupManager.refreshDataTable()"
+                        data-bs-toggle="tooltip"
+                        title="Refresh Table">
+                    <i class="mdi mdi-refresh"></i> Refresh
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover" id="accountTypeGroupsTable" style="width:100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center col-name">Name</th>
+                            <th class="text-center col-code">Code</th>
+                            <th class="text-center col-description">Description</th>
+                            <th class="text-center col-order">Order</th>
+                            <th class="text-center col-status">Status</th>
+                            <th class="text-center col-count">Account Types</th>
+                            <th class="text-center col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<style>
+    #accountTypeGroupsTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+        #accountTypeGroupsTable th, #accountTypeGroupsTable td {
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .col-name {
+        width: 18%;
+        min-width: 160px;
+    }
+
+    .col-code {
+        width: 12%;
+        min-width: 120px;
+    }
+
+    .col-description {
+        width: 25%;
+        min-width: 200px;
+    }
+
+    .col-order {
+        width: 8%;
+        min-width: 80px;
+    }
+
+    .col-status {
+        width: 10%;
+        min-width: 100px;
+    }
+
+    .col-count {
+        width: 10%;
+        min-width: 100px;
+    }
+
+    .col-actions {
+        width: 17%;
+        min-width: 140px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 4px 8px;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_processing {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>

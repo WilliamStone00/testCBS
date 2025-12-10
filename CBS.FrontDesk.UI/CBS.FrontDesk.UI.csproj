@@ -471,10 +471,10 @@
       <DependentUpon>CrystalReport1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.cs">
+    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IncomeStatament.rpt</DependentUpon>
+      <DependentUpon>IncomeStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.cs">
@@ -2093,6 +2093,8 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\Accounting V2\AccntStatement\AccountStatementFlatItems.cs" />
     <Compile Include="Controllers\Accounting V2\AccountBlackListing\AccountBlancklistController.cs" />
+    <Compile Include="Controllers\Accounting V2\AccountTypeDefinition\AccountTypeDefinition.cs" />
+    <Compile Include="Controllers\Accounting V2\AccountTypeGroup\AccountTypeGroupController.cs" />
     <Compile Include="Controllers\Accounting V2\AffiliateAccounts\AffiliateAccountController.cs" />
     <Compile Include="Controllers\Accounting V2\Affiliate\AffiliateController.cs" />
     <Compile Include="Controllers\Accounting V2\API\APIKeyController.cs" />
@@ -2105,6 +2107,7 @@
     <Compile Include="Controllers\Accounting V2\DaillyCollectorCommission\CollectorCommissionController.cs" />
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
+    <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -8124,6 +8127,8 @@
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PB.pubxml" />
     <None Include="Properties\PublishProfiles\PROD.pubxml" />
@@ -8786,9 +8791,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatament.rpt">
+    <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\IncomeStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>IncomeStatament1.cs</LastGenOutput>
+      <LastGenOutput>IncomeStatement.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Accountingv2Reporting\ReportRPT\JER.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -10889,9 +10894,7 @@
     <Content Include="Views\CounterCheque\_DataTable.cshtml" />
     <Content Include="Views\CounterCheque\_ActionForm.cshtml" />
     <Content Include="Views\FeeConfig\_FeeConfigList.cshtml" />
-    <Content Include="Views\ChequeBook\Index.cshtml" />
     <Content Include="Views\ChequeBook\_ChequeBookDetails.cshtml" />
-    <Content Include="Views\ChequeBook\_ChequeBookList.cshtml" />
     <Content Include="Views\ChequeCancellation\Index.cshtml" />
     <Content Include="Views\ChequeCancellation\_CreateCancellationRequestForm.cshtml" />
     <Content Include="Views\ChequeCancellation\_CancellationDataTable.cshtml" />
@@ -11099,6 +11102,17 @@
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
     <Content Include="Views\CounterCheque\_Detailscountercheque.cshtml" />
+    <Content Include="Views\LoanProduct\_Create.cshtml" />
+    <Content Include="Views\AccountTypeGroup\Index.cshtml" />
+    <Content Include="Views\AccountTypeGroup\_AccountTypeGroupForm.cshtml" />
+    <Content Include="Views\AccountTypeGroup\_AccountTypeGroupTable.cshtml" />
+    <Content Include="Views\AccountTypeGroup\_AccountTypeGroupDetails.cshtml" />
+    <Content Include="Views\AccountTypeGroup\List.cshtml" />
+    <Content Include="Views\AccountTypeDefinition\Index.cshtml" />
+    <Content Include="Views\AccountTypeDefinition\_AccountTypeForm.cshtml" />
+    <Content Include="Views\AccountTypeDefinition\_AccountTypeList.cshtml" />
+    <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
+    <Content Include="Views\AccountTypeDefinition\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11122,7 +11136,6 @@
     <Folder Include="bin\tr-TR\" />
     <Folder Include="bin\zh-TW\" />
     <Folder Include="bin\zh\" />
-    <Folder Include="Controllers\Accounting V2\NewFolder1\" />
     <Folder Include="Controllers\DailyCollectionManagement\" />
     <Folder Include="Hub\" />
     <Folder Include="Views\AccountingV2\" />

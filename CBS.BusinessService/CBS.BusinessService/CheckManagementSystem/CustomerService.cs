@@ -59,7 +59,7 @@ namespace CBS.BusinessService.CheckManagementSystem
                     AccountSelectList = accounts
                         .Select(a => new SelectListItem
                         {
-                            Value = a.Id ?? string.Empty, // sent back to backend when selected
+                            Value = a.AccountNumber ?? string.Empty, // sent back to backend when selected
                             Text = string.IsNullOrWhiteSpace(a.AccountName)
                                 ? $"{a.AccountNumber} ({a.Balance:N2})"
                                 : $"{a.AccountNumber} - {a.AccountName} ({a.Balance:N2})"

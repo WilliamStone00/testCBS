@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.LoanConf;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -67,6 +68,43 @@ namespace CBS.BusinessService.Accounts
                 throw;
             }
         }
+
+        public async Task<IEnumerable<AccountTypeGroup>> GetAllAccountTypeGroups()
+        {
+            try
+            {
+                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<AccountTypeGroup>>>(APICallHelper.GetAllAccountTypeGroups);
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountTypeGroup>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+        public async Task<IEnumerable<AccountTypeDefinition>> GetAccountTypeDefinitionByGroupId(string groupid)
+        {
+            try
+            {
+                var couApiResponse = await _savingConfigApiHelper.GetAsync<ResponseObject<List<AccountTypeDefinition>>>(string.Format(APICallHelper.GetAccountTypeDefinitionGroupId, groupid));
+                if (couApiResponse.IsSuccess)
+                {
+                    return couApiResponse.ApiResponseData.Data;
+                }
+                return new List<AccountTypeDefinition>();
+            }
+            catch (Exception ex)
+            {
+                // Log and handle exception
+                throw;
+            }
+        }
+
+        //GetAllAccountTypeGroups
         public async Task<List<SelectListItem>> GetSavingProductsDropdownAsync()
         {
             try

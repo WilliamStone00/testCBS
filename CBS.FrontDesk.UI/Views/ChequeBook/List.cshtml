@@ -1,8 +1,7 @@
-﻿@*Cheque Book Filters - minimal fields to match ChequeBookQuery*@
+﻿
 @using Resources
 @{
     ViewBag.Title = "Cheque Book Overview";
-    // Set action type: admin, teller, view-only, edit, minimal
     var actionType = ViewBag.ActionType ?? "admin";
 }
 
@@ -172,19 +171,17 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-         var chequeViewConfig = {
-     actionType: '@actionType'
-     };
+    <script>
+        (function ($) {
+        // single config object (use server value)
+        var chequeViewConfig = {
+            actionType: '@actionType' || 'admin' // admin, teller, view-only, edit, minimal
+        };
+
         // Global variables
         var chequeTable = null;
         var currentChequeId = null;
         var currentChequeName = null;
-
-        // Configuration - will be overridden by server-side value
-        var chequeViewConfig = {
-            actionType: '@actionType' // admin, teller, view-only, edit, minimal
-        };
 
         // =============== UTILITY FUNCTIONS ===============
         function emptyToNull(v) {
@@ -203,19 +200,19 @@
 
         // =============== FILTER FUNCTIONS ===============
         function collectChequeExportParams() {
-            const isLostEl = document.getElementById('isLost');
-            const isBlockedEl = document.getElementById('isBlocked');
+            var isLostEl = $('#isLost')[0];
+            var isBlockedEl = $('#isBlocked')[0];
 
-            const ret = {
+            var val = $('#numberOfLeaves').val();
+            var numberOfLeaves = val ? Number(val) : 0;
+
+            var ret = {
                 CustomerId: emptyToNull($('#customerId').val()),
                 CustomerName: emptyToNull($('#customerName').val()),
                 BranchId: emptyToNull($('#branchId').val()),
                 Category: emptyToNull($('#category').val()),
                 Status: emptyToNull($('#status').val()),
-                NumberOfLeaves: (function () {
-                    const val = $('#numberOfLeaves').val();
-                    return val ? Number(val) : 0;
-                })(),
+                NumberOfLeaves: numberOfLeaves,
                 IsLost: isLostEl ? isLostEl.checked : false,
                 IsBlocked: isBlockedEl ? isBlockedEl.checked : false,
                 StartDate: emptyToNull($('#startDate').val()),
@@ -226,11 +223,11 @@
         }
 
         function formatIsPrintedBadge(value, type) {
-            const raw = value;
-            const label = (raw === null || raw === undefined) ? '' : String(raw);
+            var raw = value;
+            var label = (raw === null || raw === undefined) ? '' : String(raw);
 
-            let badgeClass = 'bg-secondary';
-            const low = label.toLowerCase();
+            var badgeClass = 'bg-secondary';
+            var low = label.toLowerCase();
             if (low === 'true' || low === 'yes' || low === '1') {
                 badgeClass = 'bg-success';
             } else if (low === 'false' || low === 'no' || low === '0') {
@@ -239,7 +236,7 @@
                 badgeClass = 'bg-dark';
             }
 
-            const esc = label
+            var esc = label
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
@@ -247,7 +244,7 @@
                 .replace(/'/g, '&#39;');
 
             if (type === 'display' || type === 'filter') {
-                return `<span class="badge ${badgeClass}">${esc}</span>`;
+                return '<span class="badge ' + badgeClass + '">' + esc + '</span>';
             }
 
             return label;
@@ -258,176 +255,126 @@
             currentChequeId = id;
             currentChequeName = name;
 
-            const modalEl = document.getElementById('chequeDetailsModal');
-            if (!modalEl) {
-                appalert('Details modal not found', 0, 1);
-                return;
-            }
-
-            const bsModal = new bootstrap.Modal(modalEl);
-            $('#chequeDetailsModal .modal-body').html(`
-                <div class="text-center py-4">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2">Loading details...</p>
-                </div>
-            `);
-
-            bsModal.show();
-
-            $.get('/Cheque/InitializeData', { KEY: id })
-                .done(function (html) {
-                    $('#chequeDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
-
-                    // Initialize tooltips in modal
-                    try {
-                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                new bootstrap.Tooltip(el);
-                            });
-                        }
-                    } catch (e) { /* ignore */ }
-                })
-                .fail(function () {
-                    $('#chequeDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
-                    appalert('Failed to load details', 0, 1);
-                });
+            // open new window (shared view handled server-side)
+            var url = '/ChequeBook/GetChequeBookDetails?id=' + encodeURIComponent(id);
+            window.open(url, '_blank');
         }
 
         function handleChequeEdit(id, name) {
-            // Enter edit mode (hide filters and load edit partial)
             enterEditMode();
-
-            // Load edit partial into datalistingview
+            // load edit partial with your existing helper
             AddORUpdateGen(id, 'datalistingview', '_EditChequeBook', 'get', 'Cheque');
         }
 
         function handleChequeDelete(id, name) {
-            if (confirm(`Are you sure you want to delete cheque book "${name}"?`)) {
+            if (confirm('Are you sure you want to delete cheque book "' + name + '"?')) {
                 DeleteRecordDataTable('Cheque', id, 'myDataTable', '_CheckBookData', 0, 'datalistingview', null, 'list');
             }
         }
 
         function handleChequePrint(id, name) {
-            window.open(`/Cheque/Print?key=${encodeURIComponent(id)}`, '_blank');
+            window.open('/ChequeBook/Print?key=' + encodeURIComponent(id), '_blank');
         }
 
         function handleChequeBlock(id, name) {
-            if (confirm(`Are you sure you want to block cheque book "${name}"?`)) {
-                $.ajax({
-                    url: `/Cheque/Block/${encodeURIComponent(id)}`,
-                    type: 'POST',
-                    success: function(response) {
-                        appalert('Cheque book blocked successfully', 1, 1);
-                        if (chequeTable) {
-                            chequeTable.ajax.reload();
-                        }
-                    },
-                    error: function() {
-                        appalert('Failed to block cheque book', 0, 1);
-                    }
-                });
-            }
+            if (!confirm('Are you sure you want to block cheque book "' + name + '"?')) return;
+            $.ajax({
+                url: '/ChequeBook/Block/' + encodeURIComponent(id),
+                type: 'POST'
+            }).done(function(response) {
+                appalert('Cheque book blocked successfully', 1, 1);
+                if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                    chequeTable.ajax.reload();
+                }
+            }).fail(function() {
+                appalert('Failed to block cheque book', 0, 1);
+            });
         }
 
         function handleChequeUnblock(id, name) {
-            if (confirm(`Are you sure you want to unblock cheque book "${name}"?`)) {
-                $.ajax({
-                    url: `/Cheque/Unblock/${encodeURIComponent(id)}`,
-                    type: 'POST',
-                    success: function(response) {
-                        appalert('Cheque book unblocked successfully', 1, 1);
-                        if (chequeTable) {
-                            chequeTable.ajax.reload();
-                        }
-                    },
-                    error: function() {
-                        appalert('Failed to unblock cheque book', 0, 1);
-                    }
-                });
-            }
+            if (!confirm('Are you sure you want to unblock cheque book "' + name + '"?')) return;
+            $.ajax({
+                url: '/ChequeBook/Unblock/' + encodeURIComponent(id),
+                type: 'POST'
+            }).done(function(response) {
+                appalert('Cheque book unblocked successfully', 1, 1);
+                if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                    chequeTable.ajax.reload();
+                }
+            }).fail(function() {
+                appalert('Failed to unblock cheque book', 0, 1);
+            });
         }
 
         function handleChequeMarkLost(id, name) {
-            if (confirm(`Are you sure you want to mark cheque book "${name}" as lost?`)) {
-                $.ajax({
-                    url: `/Cheque/MarkAsLost/${encodeURIComponent(id)}`,
-                    type: 'POST',
-                    success: function(response) {
-                        appalert('Cheque book marked as lost successfully', 1, 1);
-                        if (chequeTable) {
-                            chequeTable.ajax.reload();
-                        }
-                    },
-                    error: function() {
-                        appalert('Failed to mark cheque book as lost', 0, 1);
-                    }
-                });
-            }
+            if (!confirm('Are you sure you want to mark cheque book "' + name + '" as lost?')) return;
+            $.ajax({
+                url: '/ChequeBook/MarkAsLost/' + encodeURIComponent(id),
+                type: 'POST'
+            }).done(function(response) {
+                appalert('Cheque book marked as lost successfully', 1, 1);
+                if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
+                    chequeTable.ajax.reload();
+                }
+            }).fail(function() {
+                appalert('Failed to mark cheque book as lost', 0, 1);
+            });
         }
 
         // =============== ACTION BUTTON GENERATOR ===============
         function getActionsHtml(id, rowData) {
-            const viewFor = chequeViewConfig.actionType || 'admin';
-            const safeId = encodeURIComponent(id);
-            const name = escapeHtml(rowData.customerName || rowData.CustomerName || '');
-            const isLost = rowData.isLost === true || rowData.isLost === 'true' || rowData.IsLost === true;
-            const isBlocked = rowData.isBlocked === true || rowData.isBlocked === 'true' || rowData.IsBlocked === true;
-            const status = rowData.status || rowData.Status || '';
-            const isPrinted = rowData.isPrinted === true || rowData.isPrinted === 'true' || rowData.IsPrinted === true;
+            var viewFor = (chequeViewConfig.actionType || 'admin').toLowerCase();
+            var safeId = encodeURIComponent(id);
+            var name = escapeHtml(rowData.customerName || rowData.CustomerName || '');
+            var isLost = (rowData.isLost === true || rowData.isLost === 'true' || rowData.IsLost === true);
+            var isBlocked = (rowData.isBlocked === true || rowData.isBlocked === 'true' || rowData.IsBlocked === true);
+            var status = rowData.status || rowData.Status || '';
+            var isPrinted = (rowData.isPrinted === true || rowData.isPrinted === 'true' || rowData.IsPrinted === true);
 
-            // Create a safe DOM ID for dropdown
-            const safeDomId = String(id).replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
-            const btnId = 'chequeDropdown_' + safeDomId;
+            var safeDomId = String(id).replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+            var btnId = 'chequeDropdown_' + safeDomId;
 
-            // Define all possible action buttons
-            const detailsBtn = `
-                <button type="button" class="dropdown-item btn-cheque-view"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-eye me-1 text-primary"></i> View Details
-                </button>`;
+            var detailsBtn = '<button type="button" class="dropdown-item btn-cheque-view" data-id="' + safeId + '" data-name="' + name + '">' +
+                '<i class="mdi mdi-eye me-1 text-primary"></i> View Details</button>';
 
-            const editBtn = (status === 'Active' || status === 'Pending') && !isLost ? `
-                <button type="button" class="dropdown-item btn-cheque-edit"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                </button>` : '';
+            var editBtn = '';
+            if ((status === 'Active' || status === 'Pending') && !isLost) {
+                editBtn = '<button type="button" class="dropdown-item btn-cheque-edit" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit</button>';
+            }
 
-            const printBtn = !isLost && !isBlocked && (status === 'Active' || status === 'Pending') && !isPrinted ? `
-                <button type="button" class="dropdown-item btn-cheque-print"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-printer me-1 text-info"></i> Print Report
-                </button>` : '';
+            var printBtn = '';
+            if (!isLost && !isBlocked && (status === 'Active' || status === 'Pending') && !isPrinted) {
+                printBtn = '<button type="button" class="dropdown-item btn-cheque-print" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-printer me-1 text-info"></i> Print Report</button>';
+            }
 
-            const blockBtn = !isBlocked && !isLost && (status === 'Active' || status === 'Pending') ? `
-                <button type="button" class="dropdown-item btn-cheque-block"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-block-helper me-1 text-warning"></i> Block
-                </button>` : '';
+            var blockBtn = '';
+            if (!isBlocked && !isLost && (status === 'Active' || status === 'Pending')) {
+                blockBtn = '<button type="button" class="dropdown-item btn-cheque-block" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-block-helper me-1 text-warning"></i> Block</button>';
+            }
 
-            const unblockBtn = isBlocked && !isLost ? `
-                <button type="button" class="dropdown-item btn-cheque-unblock"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-lock-open me-1 text-success"></i> Unblock
-                </button>` : '';
+            var unblockBtn = '';
+            if (isBlocked && !isLost) {
+                unblockBtn = '<button type="button" class="dropdown-item btn-cheque-unblock" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-lock-open me-1 text-success"></i> Unblock</button>';
+            }
 
-            const markLostBtn = !isLost && (status === 'Active' || status === 'Pending') ? `
-                <button type="button" class="dropdown-item btn-cheque-mark-lost"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-alert-circle me-1 text-danger"></i> Mark as Lost
-                </button>` : '';
+            var markLostBtn = '';
+            if (!isLost && (status === 'Active' || status === 'Pending')) {
+                markLostBtn = '<button type="button" class="dropdown-item btn-cheque-mark-lost" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-alert-circle me-1 text-danger"></i> Mark as Lost</button>';
+            }
 
-            const deleteBtn = (status === 'Closed' || status === 'Cancelled' || isLost) ? `
-                <button type="button" class="dropdown-item btn-cheque-delete text-danger"
-                        data-id="${safeId}" data-name="${name}">
-                    <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                </button>` : '';
+            var deleteBtn = '';
+            if (status === 'Closed' || status === 'Cancelled' || isLost) {
+                deleteBtn = '<button type="button" class="dropdown-item btn-cheque-delete text-danger" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete</button>';
+            }
 
-            // Determine which buttons to show based on viewFor
-            let buttons = [];
-
-            switch(viewFor.toLowerCase()) {
+            var buttons = [];
+            switch(viewFor) {
                 case 'admin':
                     buttons.push(detailsBtn);
                     if (editBtn) buttons.push(editBtn);
@@ -437,7 +384,6 @@
                     if (markLostBtn) buttons.push(markLostBtn);
                     if (deleteBtn) buttons.push(deleteBtn);
                     break;
-
                 case 'teller':
                     buttons.push(detailsBtn);
                     if (printBtn) buttons.push(printBtn);
@@ -445,21 +391,13 @@
                     if (unblockBtn) buttons.push(unblockBtn);
                     if (markLostBtn) buttons.push(markLostBtn);
                     break;
-
                 case 'view-only':
                     buttons.push(detailsBtn);
                     if (printBtn) buttons.push(printBtn);
                     break;
-
                 case 'minimal':
-                    // Single view button (no dropdown)
-                    return `
-                        <button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view"
-                                data-id="${safeId}" data-name="${name}">
-                            <i class="mdi mdi-file-document-outline"></i> View
-                        </button>`;
-
-                case 'edit':
+                    return '<button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view" data-id="' + safeId + '" data-name="' + name + '">' +
+                        '<i class="mdi mdi-file-document-outline"></i> View</button>';
                 default:
                     buttons.push(detailsBtn);
                     if (editBtn) buttons.push(editBtn);
@@ -467,58 +405,39 @@
                     break;
             }
 
-            // Filter out empty buttons
-            const filteredButtons = buttons.filter(b => b.trim() !== '');
+            var filteredButtons = $.grep(buttons, function(b) { return $.trim(b) !== ''; });
 
-            // Only show dropdown if there's more than just the view button
             if (filteredButtons.length <= 1) {
-                return `
-                    <button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view"
-                            data-id="${safeId}" data-name="${name}">
-                        <i class="mdi mdi-file-document-outline"></i> View
-                    </button>`;
+                return '<button type="button" class="btn btn-sm btn-outline-primary btn-cheque-view" data-id="' + safeId + '" data-name="' + name + '">' +
+                    '<i class="mdi mdi-file-document-outline"></i> View</button>';
             }
 
-            // Multiple buttons - use dropdown
-            return `
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-primary dropdown-toggle"
-                            type="button" id="${btnId}"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-cog-outline"></i> Actions
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                        ${filteredButtons.map(btn => `<li>${btn}</li>`).join('')}
-                    </ul>
-                </div>`;
+            return '<div class="dropdown">' +
+                '<button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="' + btnId + '" data-bs-toggle="dropdown" aria-expanded="false">' +
+                '<i class="mdi mdi-cog-outline"></i> Actions</button>' +
+                '<ul class="dropdown-menu" aria-labelledby="' + btnId + '">' +
+                $.map(filteredButtons, function(btn) { return '<li>' + btn + '</li>'; }).join('') +
+                '</ul></div>';
         }
 
         // =============== EDIT MODE FUNCTIONS ===============
         function enterEditMode() {
-            // Hide filters section
             $('#chequeFilterForm').closest('.card').addClass('d-none');
 
-            // Destroy DataTable if exists
-            if (chequeTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+            if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
                 chequeTable.destroy(true);
                 chequeTable = null;
             }
 
-            // Add edit-mode class for styling
             $('body').addClass('edit-mode');
         }
 
         function exitEditMode() {
-            // Show filters section
             $('#chequeFilterForm').closest('.card').removeClass('d-none');
-
-            // Remove edit-mode class
             $('body').removeClass('edit-mode');
 
-            // Reload the datatable partial
             AddORUpdateGen(null, 'datalistingview', '_CheckBookData', 'get', 'ChequeBook');
 
-            // Re-initialize DataTable after a short delay
             setTimeout(function() {
                 try {
                     if (typeof loadChequeData === 'function') {
@@ -532,8 +451,7 @@
 
         // =============== DATATABLE FUNCTIONS ===============
         function loadChequeData() {
-            // If already initialized, just reload
-            if (chequeTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+            if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
                 chequeTable.ajax.reload();
                 return;
             }
@@ -549,8 +467,7 @@
                     type: 'POST',
                     contentType: 'application/json',
                     data: function (d) {
-                        const filters = collectChequeExportParams();
-
+                        var filters = collectChequeExportParams();
                         filters.options = {
                             draw: d.draw,
                             start: d.start,
@@ -561,7 +478,6 @@
                             sortColumnName: d.columns[d.order[0].column].data,
                             sortColumnDirection: d.order[0].dir
                         };
-
                         return JSON.stringify(filters);
                     },
                     error: function (xhr, error, thrown) {
@@ -574,9 +490,7 @@
                         data: 'createdDate',
                         name: 'CreatedDate',
                         render: function (data) {
-                            return data && window.moment
-                                ? moment(data).format('DD/MM/YYYY HH:mm:ss')
-                                : (data || '');
+                            return data && window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : (data || '');
                         }
                     },
                     {
@@ -590,69 +504,49 @@
                         data: 'CategoryName',
                         name: 'Category',
                         render: function(data) {
-                            const label = data || '';
-                            let badgeClass = 'bg-secondary';
-
+                            var label = data || '';
+                            var badgeClass = 'bg-secondary';
                             if (label === 'Personal') badgeClass = 'bg-info';
                             else if (label === 'Corporate') badgeClass = 'bg-primary';
                             else if (label === 'Other') badgeClass = 'bg-dark';
-
-                            return `<span class="badge ${badgeClass}">${escapeHtml(label)}</span>`;
+                            return '<span class="badge ' + badgeClass + '">' + escapeHtml(label) + '</span>';
                         }
                     },
                     {
                         data: 'numberOfLeaves',
                         name: 'Num. Of Leaves',
-                        render: function(data) {
-                            return data || '0';
-                        }
+                        render: function(data) { return data || '0'; }
                     },
                     {
                         data: 'status',
                         name: 'Status',
                         render: function (data) {
-                            const label = data || '';
-                            let badgeClass = 'bg-secondary';
-
-                            if (label === 'Active') {
-                                badgeClass = 'bg-success';
-                            } else if (label === 'Pending') {
-                                badgeClass = 'bg-warning text-dark';
-                            } else if (label === 'Used') {
-                                badgeClass = 'bg-info';
-                            } else if (label === 'Cancelled') {
-                                badgeClass = 'bg-danger';
-                            } else if (label === 'Blocked') {
-                                badgeClass = 'bg-dark';
-                            } else if (label === 'Lost') {
-                                badgeClass = 'bg-danger';
-                            }
-
-                            return `<span class="badge ${badgeClass}">${escapeHtml(label)}</span>`;
+                            var label = data || '';
+                            var badgeClass = 'bg-secondary';
+                            if (label === 'Active') badgeClass = 'bg-success';
+                            else if (label === 'Pending') badgeClass = 'bg-warning text-dark';
+                            else if (label === 'Used') badgeClass = 'bg-info';
+                            else if (label === 'Cancelled') badgeClass = 'bg-danger';
+                            else if (label === 'Blocked') badgeClass = 'bg-dark';
+                            else if (label === 'Lost') badgeClass = 'bg-danger';
+                            return '<span class="badge ' + badgeClass + '">' + escapeHtml(label) + '</span>';
                         }
                     },
-
                     {
                         data: 'customerId',
                         name: 'Member Ref.',
-                        render: function(data) {
-                            return escapeHtml(data || '');
-                        }
+                        render: function(data) { return escapeHtml(data || ''); }
                     },
                     {
                         data: 'IsPrinted',
                         name: 'IsPrinted',
-                        render: function (data, type, row, meta) {
-                            return formatIsPrintedBadge(data, type);
-                        }
+                        render: function (data, type, row, meta) { return formatIsPrintedBadge(data, type); }
                     },
                     {
                         data: 'id',
                         orderable: false,
                         searchable: false,
-                        render: function (data, type, row) {
-                            return getActionsHtml(data, row);
-                        }
+                        render: function (data, type, row) { return getActionsHtml(data, row); }
                     }
                 ],
                 language: {
@@ -669,11 +563,10 @@
                 lengthMenu: [10, 25, 50],
                 pageLength: 10,
                 initComplete: function() {
-                    // Initialize tooltips
                     try {
                         if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                new bootstrap.Tooltip(el);
+                            $('[data-bs-toggle=\"tooltip\"]').each(function() {
+                                new bootstrap.Tooltip(this);
                             });
                         }
                     } catch (e) { /* ignore */ }
@@ -683,22 +576,23 @@
 
         // =============== EXPORT FUNCTION ===============
         function exportChequeData() {
-            const filters = collectChequeExportParams();
-            const params = new URLSearchParams();
-
-            // Add filter parameters
-            Object.keys(filters).forEach(key => {
-                if (filters[key] !== null && key !== 'options') {
-                    params.append(key, filters[key]);
+            var filters = collectChequeExportParams();
+            var params = $.param($.extend({}, filters, {}), true);
+            // Build query manually to avoid serializing options object
+            var queryParts = [];
+            for (var k in filters) {
+                if (!filters.hasOwnProperty(k) || k === 'options') continue;
+                if (filters[k] !== null && filters[k] !== undefined) {
+                    queryParts.push(encodeURIComponent(k) + '=' + encodeURIComponent(filters[k]));
                 }
-            });
-
-            window.location.href = `/Cheque/DownloadChequeBooks?${params.toString()}`;
+            }
+            var query = queryParts.join('&');
+            window.location.href = '/Cheque/DownloadChequeBooks?' + query;
         }
 
         // =============== RESET FILTERS ===============
         function resetChequeFilters() {
-            $('#chequeFilterForm').trigger('reset');
+            $('#chequeFilterForm')[0].reset();
 
             if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
                 $('#branchId').val(null).trigger('change');
@@ -709,7 +603,7 @@
             $('#isLost').prop('checked', false);
             $('#isBlocked').prop('checked', false);
 
-            if (chequeTable) {
+            if (chequeTable && $.fn.dataTable.isDataTable('#myDataTable')) {
                 chequeTable.ajax.reload();
             }
 
@@ -717,7 +611,7 @@
         }
 
         // =============== DOCUMENT READY ===============
-        $(document).ready(function () {
+        $(function () {
             // Apply filter button
             $('#applyFilterBtn').off('click').on('click', function (e) {
                 e.preventDefault();
@@ -737,21 +631,16 @@
             });
 
             // Initialize Select2
-            if ($.fn.select2) {
+            if ($.fn.select2 && $('#branchId').length) {
                 try {
-                    if ($('#branchId').length) {
-                        $('#branchId').select2({
-                            width: '100%',
-                            placeholder: 'Select Branch'
-                        });
-                    }
+                    $('#branchId').select2({ width: '100%', placeholder: 'Select Branch' });
                 } catch (err) {
                     console.warn('select2 init failed', err);
                 }
             }
 
             // Enter key in filter inputs
-            $('#chequeFilterForm input').off('keypress').on('keypress', function (e) {
+            $('#chequeFilterForm').on('keypress', 'input', function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
                     loadChequeData();
@@ -761,50 +650,50 @@
             // =============== DELEGATED ACTION HANDLERS ===============
             $(document).off('click', '.btn-cheque-view').on('click', '.btn-cheque-view', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeView(id, name);
             });
 
             $(document).off('click', '.btn-cheque-edit').on('click', '.btn-cheque-edit', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeEdit(id, name);
             });
 
             $(document).off('click', '.btn-cheque-delete').on('click', '.btn-cheque-delete', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeDelete(id, name);
             });
 
             $(document).off('click', '.btn-cheque-print').on('click', '.btn-cheque-print', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequePrint(id, name);
             });
 
             $(document).off('click', '.btn-cheque-block').on('click', '.btn-cheque-block', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeBlock(id, name);
             });
 
             $(document).off('click', '.btn-cheque-unblock').on('click', '.btn-cheque-unblock', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeUnblock(id, name);
             });
 
             $(document).off('click', '.btn-cheque-mark-lost').on('click', '.btn-cheque-mark-lost', function (e) {
                 e.preventDefault();
-                const id = decodeURIComponent($(this).data('id'));
-                const name = $(this).data('name') || '';
+                var id = decodeURIComponent($(this).data('id'));
+                var name = $(this).data('name') || '';
                 handleChequeMarkLost(id, name);
             });
 
@@ -838,9 +727,11 @@
             loadChequeData();
 
             // Apply any server-side config
-            if (typeof chequeViewConfig !== 'undefined' && chequeViewConfig.actionType) {
+            if (chequeViewConfig && chequeViewConfig.actionType) {
                 console.log('Cheque view configured as:', chequeViewConfig.actionType);
             }
         });
-</script>
+        })(jQuery);
+
+    </script>
 }
