@@ -61,7 +61,7 @@
 
             <!-- 🔹 Branch & Date Toggles -->
             <div class="row mb-2 align-items-center">
-                <div class="col-md-4 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('AccoutingdateFilters').classList.toggle('d-none')" />
@@ -80,7 +80,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-4 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
@@ -89,6 +89,12 @@
                         </label>
                     </div>
                 </div>
+                  <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
+                      <div class="form-check">
+                          @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
+                          <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                      </div>
+                  </div>
 
                 
             </div>
@@ -106,52 +112,16 @@
                 </div>
             </div>
 
-            <div id="AccoutingdateFilters" class="d-none">
-                <div class="row mb-1">
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Accounting Date</label>
-                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
-                    </div>
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">End Accounting Date</label>
-                        <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
-                    </div>
-
-
-                </div>
-            </div>
-
-            <!-- 🔹 Hidden Date Filters -->
-            <div id="dateFilters" class="d-none">
-                <div class="row mb-1">
-
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
-                        <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
-                    </div>
-
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="endDate">End Entry Date</label>
-                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>
-
-
-                </div>
-            </div>
+            
 
             @*<hr class="my-3" />*@
 
             <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
             <!-- 🔹 Mode, Daily Operation & Is Interbranch -->
             <div class="row mb-1">
-                <div class="col-md-4 mb-1 d-flex align-items-center mt-4">
-                    <div class="form-check">
-                        @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
-                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
-                    </div>
-                </div>
+              
 
-                <div class="col-md-4 mb-1">
+                <div class="col-md-6 mb-1">
                    
                     <label class="form-label fw-bold">Source Mode</label>
                     @Html.DropDownList("Mode",
@@ -160,7 +130,7 @@
                         new { @class = "form-control select2 mb-1", @id = "Mode" })
                 </div>
 
-                <div class="col-md-4 mb-1">
+                <div class="col-md-6 mb-1">
                     <label class="form-label fw-bold">Daily Operator</label>
                     @Html.DropDownList("DailyOperator",
                         new List<SelectListItem>(), // backend will populate
@@ -208,6 +178,42 @@
                 </div>
             </div>
         </div>
+
+
+
+
+                <div id="AccoutingdateFilters" class="d-none">
+                    <div class="row mb-1">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold">Start Accounting Date</label>
+                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                        </div>
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold">End Accounting Date</label>
+                            <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- 🔹 Hidden Date Filters -->
+                <div id="dateFilters" class="d-none">
+                    <div class="row mb-1">
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
+                            <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold" for="endDate">End Entry Date</label>
+                            <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                        </div>
+
+
+                    </div>
+                </div>
 
         <div class="row g-2 mt-2">
             <div class="col-12 col-md-4">
