@@ -73,4 +73,385 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
+   
+        <script>
+        // Global DataTable variable
+        var savingProductsTable = null;
+
+        // Function to initialize or reinitialize DataTable
+        function initializeDataTable(tableData) {
+            console.log('Initializing DataTable with', tableData.length, 'records');
+
+            // Check if DataTable is already initialized
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                console.log('Destroying existing DataTable');
+                savingProductsTable.destroy();
+            }
+
+            // Initialize new DataTable
+            savingProductsTable = $('#myDataTable').DataTable({
+                data: tableData,
+                serverSide: false, // Client-side processing
+                responsive: true,
+                paging: true,
+                searching: true,
+                ordering: true,
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 10,
+                order: [[0, 'asc']], // Sort by Code column
+
+                // Column definitions - using your model properties
+                columns: [
+                    {
+                        data: 'Code',
+                        name: 'Code',
+                        width: '10%'
+                    },
+                    {
+                        data: 'Name',
+                        name: 'Name',
+                        width: '30%'
+                    },
+                    {
+                        data: 'AccountType',
+                        name: 'AccountType',
+                        width: '13%'
+                    },
+                    {
+                        data: null,
+                        name: 'Range',
+                        width: '20%',
+                        render: function(data, type, row) {
+                            // Check if MinAmount and MaxAmount exist
+                            var minAmount = row.MinAmount || 0;
+                            var maxAmount = row.MaxAmount || 0;
+
+                            // Format numbers with thousands separator and 1 decimal place
+                            var formatNumber = function(num) {
+                                return parseFloat(num).toLocaleString('en-US', {
+                                    minimumFractionDigits: 1,
+                                    maximumFractionDigits: 1
+                                });
+                            };
+
+                            return formatNumber(minAmount) + ' - ' + formatNumber(maxAmount);
+                        }
+                    },
+                    {
+                        data: 'ActiveStatus',
+                        name: 'Status',
+                        width: '7%',
+                        render: function(data) {
+                            // Check if active (handle both boolean and string)
+                            var isActive = data === true || data === 'true' || data === 'True';
+
+                            if (isActive) {
+                                return '<span class="badge bg-info">Active</span>';
+                            } else {
+                                return '<span class="badge bg-warning">Inactive</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        name: 'Action',
+                        width: '20%',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            // Check if product is used for teller provisioning
+                            var isUsedForTeller = row.IsUsedForTellerProvisioning === true ||
+                                row.IsUsedForTellerProvisioning === 'true';
+
+                            if (isUsedForTeller) {
+                                return '<span class="badge bg-light text-muted">No Actions</span>';
+                            }
+
+                            // Safe ids & names
+                            var rawId = String(row.Id || row.id || data || '');
+                            var recordId = encodeURIComponent(rawId);
+                            var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+                            var btnId = 'actionDropdown_' + safeId;
+
+                            // Name for tooltips/labels
+                            var productName = escapeHtml(row.Name || row.name || 'Product');
+
+                            // Hrefs
+                            var policiesHref = '/TransactionConfiguration/PolicyandSharing?Key=' + recordId;
+                            var mappingHref = '/TransactionConfiguration/AccountMapping?Key=' + recordId;
+                            var mappingV2Href = '/TransactionConfiguration/AccountMappingvII?Key=' + recordId;
+                            var simulationHref = '/TransactionConfiguration/AccountMappingInfo?Key=' + recordId;
+
+                            // Dropdown markup (Bootstrap 5). Buttons inside are stacked vertically.
+                            var dropdown = `
+        <div class="dropdown text-center">
+            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                    type="button"
+                    id="${btnId}"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    aria-label="Actions for ${productName}">
+                <i class="mdi mdi-cog-outline me-1"></i> Actions
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-end p-2 shadow-sm" aria-labelledby="${btnId}">
+                <div class="btn-group-vertical w-100" role="group" aria-label="Actions group">
+                    <a class="btn btn-sm btn-outline-primary text-start mb-1" href="${policiesHref}" target="_blank"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Policies for ${productName}">
+                        <i class="mdi mdi-file-document-outline me-1"></i> Policies
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-success text-start mb-1" href="${mappingHref}" target="_blank"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Mappings for ${productName}">
+                        <i class="mdi mdi-map-outline me-1"></i> Mappings
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-info text-start mb-1" href="${mappingV2Href}" target="_blank"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Mappings V2 for ${productName}">
+                        <i class="mdi mdi-map-plus-outline me-1"></i> Mappings V2
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-warning text-start" href="${simulationHref}" target="_blank"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Simulation for ${productName}">
+                        <i class="mdi mdi-play-circle-outline me-1"></i> Simulation
+                    </a>
+                </div>
+            </div>
+        </div>
+    `.trim();
+
+                            return dropdown;
+                        }
+
+
+                    }
+                ],
+
+                // Language configuration
+                language: {
+                    emptyTable: "No saving products available",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    lengthMenu: "Show _MENU_ entries",
+                    loadingRecords: "Loading...",
+                    processing: "Processing...",
+                    search: "Search:",
+                    zeroRecords: "No matching records found",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+
+                // Callback when table is initialized
+                initComplete: function() {
+                    console.log('DataTable initialized successfully');
+
+                    // Initialize Bootstrap tooltips for action links
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                        $('[data-bs-toggle="tooltip"]').each(function() {
+                            new bootstrap.Tooltip(this);
+                        });
+                    }
+                },
+
+                // Callback when table is redrawn
+                drawCallback: function() {
+                    // Reinitialize tooltips after table redraw
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                        $('[data-bs-toggle="tooltip"]').each(function() {
+                            var tooltip = bootstrap.Tooltip.getInstance(this);
+                            if (tooltip) {
+                                tooltip.dispose();
+                            }
+                            new bootstrap.Tooltip(this);
+                        });
+                    }
+                }
+            });
+        }
+
+        // Function to refresh table data
+        function refreshTableData() {
+            console.log('Refreshing table data...');
+
+            // Show loading state on button
+            var refreshBtn = $('#refreshTableBtn');
+            var originalHtml = refreshBtn.html();
+            refreshBtn.html('<span class="tf-icons mdi mdi-loading mdi-spin mdi-18px"></span>');
+            refreshBtn.prop('disabled', true);
+
+            // Show loading overlay on table
+            showTableLoading(true);
+
+            // Call the same controller action that loads the page
+            $.ajax({
+                url: '@Url.Action("OrdinaryAccounts", "TransactionConfiguration")',
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    console.log('Successfully received response from server');
+
+                    // Create a temporary div to parse the HTML response
+                    var tempDiv = $('<div>').html(response);
+
+                    // Find the hidden field with updated data
+                    var newJsonData = tempDiv.find('#savingProductsData').val();
+
+                    if (newJsonData) {
+                        try {
+                            // Parse the JSON data
+                            var newData = JSON.parse(newJsonData);
+                            console.log('Parsed', newData.length, 'records from response');
+
+                            // Update the hidden field in current page
+                            $('#savingProductsData').val(newJsonData);
+
+                            // Reinitialize the DataTable with new data
+                            initializeDataTable(newData);
+
+                            // Show success message
+                            showMessage('Table data refreshed successfully!', 'success');
+                        } catch (e) {
+                            console.error('Error parsing JSON data:', e);
+                            showMessage('Error refreshing data: Invalid data format', 'error');
+                        }
+                    } else {
+                        console.warn('No data found in response');
+                        showMessage('No data found in response', 'warning');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error refreshing table:', error);
+                    showMessage('Error refreshing table data: ' + error, 'error');
+                },
+                complete: function() {
+                    // Restore button to original state
+                    refreshBtn.html(originalHtml);
+                    refreshBtn.prop('disabled', false);
+
+                    // Hide loading overlay
+                    showTableLoading(false);
+                }
+            });
+        }
+
+        // Helper function to show/hide loading overlay
+        function showTableLoading(show) {
+            var tableContainer = $('.table-responsive');
+
+            if (show) {
+                // Add loading overlay
+                tableContainer.css('position', 'relative');
+                tableContainer.append(`
+                    <div id="tableLoadingOverlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); z-index: 999; display: flex; align-items: center; justify-content: center;">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="mt-2">Loading data...</div>
+                        </div>
+                    </div>
+                `);
+            } else {
+                // Remove loading overlay
+                $('#tableLoadingOverlay').remove();
+                tableContainer.css('position', '');
+            }
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Function to show user messages
+        function showMessage(message, type) {
+            // Remove any existing messages
+            $('.alert-message').remove();
+
+            var alertClass = 'alert-success';
+            var icon = 'mdi-check';
+
+            if (type === 'error') {
+                alertClass = 'alert-danger';
+                icon = 'mdi-alert-circle';
+            } else if (type === 'warning') {
+                alertClass = 'alert-warning';
+                icon = 'mdi-alert';
+            } else if (type === 'info') {
+                alertClass = 'alert-info';
+                icon = 'mdi-information';
+            }
+
+            // Create message element
+            var messageHtml = `
+                <div class="alert ${alertClass} alert-dismissible fade show alert-message" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1060; min-width: 300px;">
+                    <div class="d-flex align-items-center">
+                        <span class="tf-icons mdi ${icon} me-2"></span>
+                        <div>${escapeHtml(message)}</div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+
+            // Add to page
+            $('body').append(messageHtml);
+
+            // Auto-remove after 5 seconds
+            setTimeout(function() {
+                $('.alert-message').alert('close');
+            }, 5000);
+        }
+
+        // Initialize on page load
+        $(document).ready(function() {
+            console.log('Page loaded, initializing DataTable...');
+
+            // Get initial data from hidden field
+            var initialDataJson = $('#savingProductsData').val();
+            var initialData = [];
+
+            if (initialDataJson) {
+                try {
+                    initialData = JSON.parse(initialDataJson);
+                    console.log('Loaded', initialData.length, 'records from initial data');
+                } catch (e) {
+                    console.error('Error parsing initial data:', e);
+                    showMessage('Error loading table data', 'error');
+                    return;
+                }
+            }
+
+            // Initialize DataTable with initial data
+            if (initialData.length > 0) {
+                initializeDataTable(initialData);
+            } else {
+                console.warn('No initial data found');
+                $('#myDataTable tbody').html('<tr><td colspan="6" class="text-center">No data available</td></tr>');
+            }
+
+            // Set up click handler for refresh button
+            $('#refreshTableBtn').on('click', function(e) {
+                e.preventDefault();
+                refreshTableData();
+            });
+
+            console.log('Page initialization complete');
+        });
+
+        </script>
+    
 }

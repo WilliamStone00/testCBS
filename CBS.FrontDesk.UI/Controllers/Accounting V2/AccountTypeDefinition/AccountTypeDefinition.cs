@@ -60,7 +60,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
             }
             else if (path == "new")
             {
-                var model = new AccountTypeDefinitionCommand
+                var model = new AccountTypeDefinitionDto
                 {
                     DisplayOrder = 1,
                     IsActive = true,
