@@ -14,149 +14,169 @@
     <!-- Add hidden field for IsUserStandard to ensure it's posted -->
     @Html.HiddenFor(m => m.IsUserStandard)
 
-    <div class="row gy-3">
-        <!-- Header -->
-        <div class="col-12">
-            <h6 class="text-primary border-bottom pt-2 pb-1">
-                <i class="mdi mdi-file-document-outline text-success me-1"></i>
-                Account Type Definition
-            </h6>
+<div class="row gy-3">
+    <!-- Header -->
+    <div class="col-12">
+        <h6 class="text-primary border-bottom pt-2 pb-1">
+            <i class="mdi mdi-file-document-outline text-success me-1"></i>
+            Account Type Definition
+        </h6>
+    </div>
+
+    <!-- Name -->
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", required = "required", maxlength = "100" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            <label>Name </label>
         </div>
+    </div>
 
-        <!-- Name -->
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", required = "required", maxlength = "100" })
-                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                <label>Name </label>
-            </div>
-        </div>
-
-        <!-- Code - Conditional Read-Only -->
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @if (Model.IsUserStandard == false)
-                {
-                    // Read-only Code field for User Standard during edit
-                    @Html.HiddenFor(m => m.Code) <!-- Hidden field to post the value -->
-                    <input class="form-control"
-                           type="text"
-                           value="@Model.Code"
-                           readonly="readonly"
-                           placeholder="Code"
-                           aria-readonly="true" />
-                    <label>Code <span class="text-muted">(Read-only)</span></label>
-                    <small class="text-muted ms-2">User Standard - Code cannot be changed</small>
-                }
-                else
-                {
-                    // Editable Code field for new records or non-User Standard edits
-                    @Html.TextBoxFor(m => m.Code, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Code",
-                        required = "required",
-                        maxlength = "50",
-                        pattern = "^[a-zA-Z0-9_]+$",
-                        title = "Only letters, numbers, and underscores allowed"
-                    })
-                    <label>Code</label>
-                    <small class="text-muted ms-2">Only letters, numbers, and underscores allowed</small>
-                }
-                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <!-- ShortName -->
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", placeholder = "Short Name", maxlength = "20" })
-                @Html.ValidationMessageFor(m => m.ShortName, "", new { @class = "text-danger" })
-                <label>Short Name</label>
-            </div>
-        </div>
-
-        <!-- Display Order -->
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", placeholder = "Display Order", type = "number", min = "0" })
-                @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger" })
-                <label>Display Order</label>
-            </div>
-        </div>
-
-        <!-- Account Type Group (select) -->
-        <div class="col-md-6">
-            <div class="shadow-sm p-2 rounded">
-                <label for="AccountTypeGroupId" class="form-label fw-bold mb-1">Account Type Group </label>
-                @Html.DropDownListFor(m => m.AccountTypeGroupId, new SelectList(ViewBag.AccountTypeGroups, "Id", "Name"), "--- Select Account Type Group ---", new { @class = "form-control select2", required = "required", id = "AccountTypeGroupId" })
-                @Html.ValidationMessageFor(m => m.AccountTypeGroupId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <!-- Parent Id (select) -->
-        <div class="col-md-6">
-            <div class="shadow-sm p-2 rounded">
-                <label for="ParentId" class="form-label fw-bold mb-1">Parent Account Type</label>
-                @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.ParentAccountTypes, "Id", "Name"), "--- Select Parent Account Type ---", new { @class = "form-control select2", id = "ParentId" })
-                @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <!-- Description -->
-        <div class="col-12">
-            <div class="form-floating shadow-sm">
-                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description", rows = "3", maxlength = "500" })
-                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                <label>Description</label>
-            </div>
-        </div>
-
-        <!-- Switches -->
-        <div class="col-md-6">
-            <div class="form-floating shadow-sm">
-                <div class="form-check form-switch mt-3 ms-2">
-                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActiveSwitch" })
-                    <label class="form-check-label" for="IsActiveSwitch">Active</label>
-                </div>
-                <small class="text-muted ms-2">Toggle to activate/deactivate this account type</small>
-            </div>
-        </div>
-
-   
-       
-            <div class="col-md-6">
-                <div class="form-floating shadow-sm">
-                    <!-- Disabled, checked switch for the user (visual only) -->
-                    <div class="form-check form-switch mt-3 ms-2">
-                        <input class="form-check-input" type="checkbox" id="IsUserStandardSwitch" checked="checked" disabled="disabled" aria-checked="true" />
-                        <label class="form-check-label" for="IsUserStandardSwitch">User Standard</label>
-                    </div>
-                    <small class="text-muted ms-2">This account type is set as user standard</small>
-                </div>
-            </div>
-        
-
-        <!-- Buttons -->
-        <div class="col-12 text-end mt-4">
-            @if (string.IsNullOrEmpty(Model?.Id))
+    <!-- Code - Conditional Read-Only -->
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @if (Model.IsUserStandard == false)
             {
-                <button type="submit" class="btn btn-primary shadow-sm px-4">
-                    <i class="mdi mdi-content-save me-1"></i> Create
-                </button>
-                <button type="button" class="btn btn-outline-secondary shadow-sm px-4" data-bs-dismiss="modal">
-                    Cancel
-                </button>
+                // Read-only Code field for User Standard during edit
+                @Html.HiddenFor(m => m.Code) <!-- Hidden field to post the value -->
+                <input class="form-control"
+                       type="text"
+                       value="@Model.Code"
+                       readonly="readonly"
+                       placeholder="Code"
+                       aria-readonly="true" />
+                <label>Code <span class="text-muted">(Read-only)</span></label>
+                <small class="text-muted ms-2">User Standard - Code cannot be changed</small>
             }
             else
             {
-                <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-content-save me-1"></i> Update
-                </button>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Cancel
-                </button>
+                // Editable Code field for new records or non-User Standard edits
+                @Html.TextBoxFor(m => m.Code, new
+                {
+                    @class = "form-control",
+                    placeholder = "Code",
+                    required = "required",
+                    maxlength = "50",
+                    pattern = "^[a-zA-Z0-9_]+$",
+                    title = "Only letters, numbers, and underscores allowed"
+                })
+                <label>Code</label>
+                <small class="text-muted ms-2">Only letters, numbers, and underscores allowed</small>
             }
+            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
         </div>
-    </div> <!-- /.row gy-3 -->
+    </div>
+
+    <!-- ShortName -->
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", placeholder = "Short Name", maxlength = "20" })
+            @Html.ValidationMessageFor(m => m.ShortName, "", new { @class = "text-danger" })
+            <label>Short Name</label>
+        </div>
+    </div>
+
+    <!-- Display Order -->
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", placeholder = "Display Order", type = "number", min = "0" })
+            @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger" })
+            <label>Display Order</label>
+        </div>
+    </div>
+
+    <!-- Account Type Group (select) -->
+    <div class="col-md-6">
+        <div class="shadow-sm p-2 rounded">
+            <label for="AccountTypeGroupId" class="form-label fw-bold mb-1">Account Type Group </label>
+            @Html.DropDownListFor(m => m.AccountTypeGroupId, new SelectList(ViewBag.AccountTypeGroups, "Id", "Name"), "--- Select Account Type Group ---", new { @class = "form-control select2", required = "required", id = "AccountTypeGroupId" })
+            @Html.ValidationMessageFor(m => m.AccountTypeGroupId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Parent Id (select) -->
+    <div class="col-md-6">
+        <div class="shadow-sm p-2 rounded">
+            <label for="ParentId" class="form-label fw-bold mb-1">Parent Account Type</label>
+            @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.ParentAccountTypes, "Id", "Name"), "--- Select Parent Account Type ---", new { @class = "form-control select2", id = "ParentId" })
+            @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="col-12">
+        <div class="form-floating shadow-sm">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description", rows = "3", maxlength = "500" })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            <label>Description</label>
+        </div>
+    </div>
+
+    <!-- Switches -->
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            <div class="form-check form-switch mt-3 ms-2">
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActiveSwitch" })
+                <label class="form-check-label" for="IsActiveSwitch">Active</label>
+            </div>
+            <small class="text-muted ms-2">Toggle to activate/deactivate this account type</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating shadow-sm">
+            <div class="form-check form-switch mt-3 ms-2">
+
+                @* If model.Id exists → use backend value *@
+                @if (Model?.Id != null)
+                {
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="IsUserStandardSwitch"
+                           @(Model.IsUserStandard ? "checked" : "")
+                           disabled />
+                }
+                else
+                {
+                    @* If creating new → default checked *@
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="IsUserStandardSwitch"
+                           checked
+                           disabled />
+                }
+
+                <label class="form-check-label" for="IsUserStandardSwitch">User Standard</label>
+            </div>
+
+            <small class="text-muted ms-2">
+                This account type is set as user standard
+            </small>
+        </div>
+    </div>
+
+
+
+    <!-- Buttons -->
+    <div class="col-12 text-end mt-4">
+        @if (string.IsNullOrEmpty(Model?.Id))
+        {
+            <button type="submit" class="btn btn-primary shadow-sm px-4">
+                <i class="mdi mdi-content-save me-1"></i> Create
+            </button>
+            <button type="button" class="btn btn-outline-secondary shadow-sm px-4" data-bs-dismiss="modal">
+                Cancel
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="mdi mdi-content-save me-1"></i> Update
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Cancel
+            </button>
+        }
+    </div>
+</div> <!-- /.row gy-3 -->
 }
