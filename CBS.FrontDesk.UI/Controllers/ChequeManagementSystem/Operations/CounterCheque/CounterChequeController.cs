@@ -1,6 +1,8 @@
 ﻿using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config; // Assuming BranchServices is here
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Message;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +64,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
                     return new HttpStatusCodeResult(404, "No cheque books found");
 
                 // Return only id and name for dropdown
-                var result = entries.Select(x => new { id = x.Id, name = x.Name }).ToList();
+                var result = entries.Select(x => new { chequebookid = x.ChequeBookId, name = x.Name }).ToList();
 
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -200,5 +202,52 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             var result = await _counterChequeService.TakeActionAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+
+        //public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
+        //{
+        //    if (string.IsNullOrEmpty(chequeBookId))
+        //        return Json(new { success = false, message = "Invalid parameters." }, JsonRequestBehavior.AllowGet);
+
+        //    try
+        //    {
+        //        var result = await _counterChequeService.GetfullChequeDetails(chequeBookId);
+
+        //        if (result == null)
+        //            return Json(new { success = false, message = "ChequeBook not found." }, JsonRequestBehavior.AllowGet);
+
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            data = result
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
+        {
+            if (string.IsNullOrEmpty(chequeBookId))
+                return new HttpStatusCodeResult(400, "ChequeBookId is required");
+
+            try
+            {
+                var entry = await _counterChequeService.GetfullChequeDetails(chequeBookId);
+                if (entry == null)
+                    return HttpNotFound("Cheque book details not found");
+
+                return PartialView("_Detailscountercheque", entry);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
+
+
+
     }
 }

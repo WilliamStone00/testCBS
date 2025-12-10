@@ -61,7 +61,7 @@
 
             <!-- 🔹 Branch & Date Toggles -->
             <div class="row mb-2 align-items-center">
-                <div class="col-md-6 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
@@ -70,15 +70,33 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-6 mb-1">
+
+                <div class="col-md-3 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('AccoutingdateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDateFilters">
+                            Show Accounting Date
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Accounting / Created Date Filters
+                            Show Entry Date Filters
                         </label>
                     </div>
                 </div>
+                  <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
+                      <div class="form-check">
+                          @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
+                          <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                      </div>
+                  </div>
+
+                
             </div>
 
             <!-- 🔹 Hidden Branch Dropdown -->
@@ -94,58 +112,108 @@
                 </div>
             </div>
 
-            <!-- 🔹 Hidden Date Filters -->
-            <div id="dateFilters" class="d-none">
-                <div class="row mb-1">
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Accounting Date</label>
-                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
-                    </div>
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">End Accounting Date</label>
-                        <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
-                    </div>
-
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="startDate">Start Date</label>
-                        <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
-                    </div>
-
-                    <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="endDate">End Date</label>
-                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>
-
-
-                </div>
-            </div>
+            
 
             @*<hr class="my-3" />*@
 
             <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
+            <!-- 🔹 Mode, Daily Operation & Is Interbranch -->
+            <div class="row mb-1">
+              
+
+                <div class="col-md-6 mb-1">
+                   
+                    <label class="form-label fw-bold">Source Mode</label>
+                    @Html.DropDownList("Mode",
+                        new SelectList(ViewBag.SourceMode, "Value", "Text"),
+                        "Select Source Mode",
+                        new { @class = "form-control select2 mb-1", @id = "Mode" })
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold">Daily Operator</label>
+                    @Html.DropDownList("DailyOperator",
+                        new List<SelectListItem>(), // backend will populate
+                        "--- Select Operator ---",
+                        new { @class = "form-control select2 mb-1", id = "DailyOperator" })
+                </div>
+
+               
+
+            </div>
+
+
+
+
             <div class="row mb-1">
                 <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Reference</label>
                     <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
                 </div>
 
-                <div class="col-md-4 mb-1">
+                @*<div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Operation Type</label>
                     @Html.DropDownList("OperationType",
                         new SelectList(ViewBag.OperationTypes, "Value", "Text"),
                         "Select Operation Type",
                         new { @class = "form-control select2 mb-1", @id = "OperationType" })
+                </div>*@
+
+               <div class="col-md-4 mb-1">
+   
+                    <label class="form-label fw-bold">Source Type</label>
+                    @Html.DropDownList("Source",
+                        new SelectList(ViewBag.Source, "Value", "Text"),
+                        "Select Source ",
+                        new { @class = "form-control select2 mb-1", @id = "Source" })
                 </div>
+
 
                 <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Operation Code</label>
                     @Html.DropDownList("OperationCode",
-                        new SelectList(ViewBag.OperationCode, "Value", "Text"),
-                        "Select Operation Code",
-                        new { @class = "form-control select2 mb-1", @id = "OperationCode" })
+                        new List<SelectListItem>(), // backend will populate
+                        "--- Select Operation Code ---",
+                        new { @class = "form-control select2 mb-1", id = "OperationCode" })
                 </div>
             </div>
         </div>
+
+
+
+
+                <div id="AccoutingdateFilters" class="d-none">
+                    <div class="row mb-1">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold">Start Accounting Date</label>
+                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                        </div>
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold">End Accounting Date</label>
+                            <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- 🔹 Hidden Date Filters -->
+                <div id="dateFilters" class="d-none">
+                    <div class="row mb-1">
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
+                            <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label fw-bold" for="endDate">End Entry Date</label>
+                            <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                        </div>
+
+
+                    </div>
+                </div>
 
         <div class="row g-2 mt-2">
             <div class="col-12 col-md-4">
@@ -209,7 +277,6 @@
 
 
 @section Scripts {
-
 
 
 
@@ -304,6 +371,10 @@
                 EndDate: $('#endDate').val(),
                 StartAccountingDate: $('#startaccountingDate').val(),
                 EndAccountingDate: $('#endaccountingDate').val(),
+                Mode: $('#Mode').val(),
+                DailyOperator: $('#DailyOperator').val(),
+                IsInterbranch: $('#IsInterbranch').prop('checked'),
+                Source: $('#Source').val(),
                 Options: {}
             };
         }
@@ -315,7 +386,7 @@
             $('#journalHeaderFilterForm').trigger('reset');
             $('.select2').val('').trigger('change');
             $('#branchFilter, #dateFilters').addClass('d-none');
-            loadJournalHeaderData();
+            //loadJournalHeaderData();
             appalert('🧹 Filters reset and table reloaded.', 1, 1);
         }
 
@@ -394,7 +465,7 @@
 
 
                            // ======================
-                        $(document).on("click", "#btnConfirmJournalExport", function () {
+            $(document).on("click", "#btnConfirmJournalExport", function () {
 
                 // ✅ Get filters from your function
                 let filters = collectJournalHeaderFilters();
@@ -457,6 +528,65 @@
 
 
         });
+
+
+
+                        $(document).ready(function () {
+
+                            $("#branchId, #Mode, #Source").on("change", function () {
+
+                                let request = {
+                                    BranchId: $("#branchId").val(),
+                                    Mode: $("#Mode").val(),
+                                    Source: $("#Source").val()
+                                };
+
+                                // Only call backend when BranchId AND Mode are selected
+                                if (!request.BranchId || !request.Mode)
+                                    return;
+
+                                $.ajax({
+                                    url: '/JournalHead/LoadFilterDependencies',
+                                    method: 'POST',
+                                    data: request,
+                                    success: function (res) {
+
+                                        if (!res.success) return;
+
+                                        // ------- Operation Codes -------
+                                        let opDropdown = $("#OperationCode");
+                                        opDropdown.empty();
+                                        opDropdown.append(`<option value="">--- Select Operation Code ---</option>`);
+
+                                        $.each(res.operationCodes, function (i, code) {
+                                            opDropdown.append(`<option value="${code}">${code}</option>`);
+                                        });
+
+                                        // ------- Daily Operator -------
+                                        let operatorDropdown = $("#DailyOperator");
+                                        operatorDropdown.empty();
+                                        operatorDropdown.append(`<option value="">--- Select Operator ---</option>`);
+
+                                        $.each(res.initiatedBy, function (i, name) {
+                                            operatorDropdown.append(`<option value="${name}">${name}</option>`);
+                                        });
+
+                                        // Safely refresh select2 WITHOUT triggering change again
+                                        $("#OperationCode").select2();
+                                        $("#DailyOperator").select2();
+                                    }
+                                });
+
+                            });
+
+                        });
+
+
+
+
+
+
+            
     </script>
 
 }
