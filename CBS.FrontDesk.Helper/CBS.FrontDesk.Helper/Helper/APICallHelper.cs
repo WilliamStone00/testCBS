@@ -1293,6 +1293,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateCounterCheque = "/api/v1/counter-checks";
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
+        public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
 
 
         //--------------------------------------TEST--------------------------------------//
@@ -1738,6 +1739,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
         public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
         public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
+        public static string GetAccoutingYearDataTable = "/api/v1/AccountingYear/datatable";
 
         //-------------------------  System Reconciliation ----------------------
 

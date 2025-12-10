@@ -337,7 +337,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? EndAccountingDate { get; set; }
         public DateTime? StartDate { get; set; }    // For filtering creation date range
         public DateTime? EndDate { get; set; }
-        public string TicketSource { get; set; } 
+        public string TicketSource { get; set; }
+        public string Mode { get; set; }
+        public string DailyOperator { get; set; }
+        public bool IsInterbranch { get; set; }
     }
 
     public class GetallWorkFlowTicketsQuery

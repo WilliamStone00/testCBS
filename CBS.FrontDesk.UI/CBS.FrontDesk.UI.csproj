@@ -11098,6 +11098,7 @@
     <Content Include="Views\EndOfYearClosure\_DataTable.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
+    <Content Include="Views\CounterCheque\_Detailscountercheque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

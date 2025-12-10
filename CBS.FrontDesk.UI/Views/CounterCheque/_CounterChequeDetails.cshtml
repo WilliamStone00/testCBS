@@ -1,13 +1,42 @@
 ﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque.CounterCheques
+@*<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-file-document-outline me-2"></i>Counter Cheque Details
 
-<div class="modal-header bg-primary text-white">
-    <h5 class="modal-title">
-        <i class="mdi mdi-file-document-outline me-2"></i> Counter Cheque Details
-    </h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
+                </h1>
+                <p class="card-text">
+                    Use this page to quickly check the Details of the cheque leaf you Request.
+
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
 
 <div class="modal-body">
+
+
+
+    <!-- Header Card -->
+    <div class="card bg-light mb-3">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary">
+                <i class="mdi mdi-file-document-outline me-2"></i>COUNTER CHEQUE DETAILS
+            </h1>
+            <p class="card-text">
+                Use this page to quickly check the Details of the cheque leaf you Request.
+
+            </p>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+        </div>
+    </div>
+
     <div class="card mb-4 border-0 shadow-sm">
         <div class="card-header bg-light">
             <h6 class="mb-0 text-primary"><i class="mdi mdi-information-outline me-2"></i>Cheque Information Summary</h6>
@@ -16,8 +45,8 @@
             <div class="row">
                 <div class="col-md-6 mb-2"><strong>Cheque Number:</strong> @(Model.CheckNumber ?? "N/A")</div>
                 <div class="col-md-6 mb-2"><strong>Amount:</strong> <span class="text-success fw-bold">@Model.Amount.ToString("N2")</span></div>
-                <div class="col-md-6 mb-2"><strong>Status:</strong> <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status ?? "Unknown"</span></div>
-                <div class="col-md-6 mb-2"><strong>Issued On:</strong> @Model.IssuedOn?.ToString("dd MMM yyyy HH:mm")</div>
+                <div class="col-md-6 mb-2"><strong>Status:</strong> <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></div>
+                <div class="col-md-6 mb-2"><strong>Issued On:</strong> @Model.IssuedOn</div>
             </div>
         </div>
     </div>
@@ -28,7 +57,7 @@
                 <tr><th colspan="2" class="text-center bg-primary text-white"><i class="mdi mdi-card-bulleted-outline me-2"></i>Detailed Information</th></tr>
             </thead>
             <tbody>
-                <tr><td class="fw-bold" style="width:40%;">Cheque ID</td><td style="width:60%;">@Model.Id</td></tr>
+                <tr><td class="fw-bold" style="width:40%;">Counter Cheque Id</td><td style="width:60%;">@Model.Id</td></tr>
                 <tr><td class="fw-bold">Customer ID</td><td>@(string.IsNullOrEmpty(Model.CustomerId) ? "N/A" : Model.CustomerId)</td></tr>
                 <tr><td class="fw-bold">Client Name</td><td>@(string.IsNullOrEmpty(Model.ClientName) ? "N/A" : Model.ClientName)</td></tr>
                 <tr><td class="fw-bold">Account Number</td><td>@(string.IsNullOrEmpty(Model.AccountNumber) ? "N/A" : Model.AccountNumber)</td></tr>
@@ -36,9 +65,9 @@
                 <tr><td class="fw-bold">Check Leaf ID</td><td>@(string.IsNullOrEmpty(Model.CheckLeafId) ? "N/A" : Model.CheckLeafId)</td></tr>
                 <tr><td class="fw-bold">Check Number</td><td>@(string.IsNullOrEmpty(Model.CheckNumber) ? "N/A" : Model.CheckNumber)</td></tr>
                 <tr><td class="fw-bold">Amount</td><td class="text-success fw-bold">@Model.Amount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Issued On</td><td>@Model.IssuedOn?.ToString("dd MMM yyyy 'at' HH:mm:ss")</td></tr>
+                <tr><td class="fw-bold">Issued On</td><td>@Model.IssuedOn</td></tr>
                 <tr><td class="fw-bold">Issued By</td><td>@(string.IsNullOrEmpty(Model.IssuedBy) ? "N/A" : Model.IssuedBy)</td></tr>
-                <tr><td class="fw-bold">Status</td><td><span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status ?? "Unknown"</span></td></tr>
+                <tr><td class="fw-bold">Status</td><td><span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span></td></tr>
             </tbody>
         </table>
     </div>
@@ -54,13 +83,16 @@
     {
         if (string.IsNullOrEmpty(status)) return "bg-secondary";
         var s = status.ToLower();
-        return s switch
+        switch (s)
         {
-            "pending" => "bg-warning text-dark",
-            "reviewed" => "bg-info",
-            "validated" => "bg-success",
-            "rejected" => "bg-danger",
-            _ => "bg-secondary"
-        };
+            case "pending":
+                return "bg-warning text-dark";
+            case "approved":
+                return "bg-success text-white";
+            case "rejected":
+                return "bg-danger text-white";
+            default:
+                return "bg-secondary";
+        }
     }
 }

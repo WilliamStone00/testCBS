@@ -58,7 +58,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 };
 
             // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.OperationCode = new List<SelectListItem>
+            ViewBag.SourceMode = new List<SelectListItem>
 {
     new SelectListItem { Value = "Temp", Text = "Temp " },
     new SelectListItem { Value = "Reconciled", Text = "Reconciliated" }
@@ -142,32 +142,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             return PartialView("_JournalHeadDetails", entry);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetDetails(string id)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(id))
-        //            return Json(new { success = false, message = "⚠️ Journal Entry ID is required." }, JsonRequestBehavior.AllowGet);
-
-        //        // ✅ Call the service which internally handles branchId
-        //        var result = await _journalHeadService.GetJournalEntryByIdAsync(id);
-
-        //        if (result == null)
-        //            return Json(new { success = false, message = "⚠️ Journal Entry not found." }, JsonRequestBehavior.AllowGet);
-
-        //        return Json(new { success = true, data = result }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (TaskCanceledException)
-        //    {
-        //        return Json(new { success = false, message = "⚠️ Timeout while fetching journal entry — backend service not responding." }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
+       
 
         [HttpPost]
         public async Task<JsonResult> LoadJournalSourceData(JournalEntryQuery query)
@@ -267,13 +242,45 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+        [HttpPost]
+        public async Task<ActionResult> Reject(JournalApproval model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.Reference))
+                return Json(new { success = false, message = "Journal id is required" });
+
+            model.SourceBranchId = model.BranchId;
+            try
+            {
+                    var result = await _journalHeadService.RejectAsync(model);
+               
+                if (result == null)
+                    return Json(new { success = false, message = "No response from approval service." });
+
+                // ✅ Return structured JSON based on result
+                return Json(new
+                {
+                    success = true,
+                    statusCode = 200,
+                    message = (result as dynamic)?.Message ?? "Reject successfully",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Approval failed: {ex.Message}"
+                });
+            }
+        }
 
 
 
 
 
 
-        
         [HttpGet]
         public async Task<ActionResult> Details(string id)
         {

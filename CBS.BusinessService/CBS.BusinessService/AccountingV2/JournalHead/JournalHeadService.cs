@@ -295,5 +295,24 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
+
+        public async Task<JournalApprovalResponse> RejectAsync(JournalApproval model)
+        {
+            
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
+                    APICallHelper.ApproveSourceJournalEntry, model); // now sending full model
+                return apiResponse.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
