@@ -50,7 +50,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="detailsModalBody">
                 <!-- Details will be loaded here -->
@@ -245,6 +245,16 @@
             // Confirmation modal cleanup
             $('#confirmationModal').on('hidden.bs.modal', function() {
                 $('#confirmationModal .modal-body').empty();
+            });
+
+            // Initialize Select2 when edit modal is shown
+            $('#editModal').on('shown.bs.modal', function() {
+                initializeSelect2();
+            });
+
+            // Cleanup Select2 when modal is hidden
+            $('#editModal').on('hidden.bs.modal', function() {
+                destroySelect2();
             });
 
             // Bind form submission when modal is shown (delegated approach)
@@ -490,10 +500,51 @@
                         const parentSelect = $('#ParentId');
                         if (parentSelect.length) {
                             parentSelect.html(options);
+
+                            // Initialize Select2 after options are loaded
+                            if ($.fn.select2 && parentSelect.hasClass('select2')) {
+                                parentSelect.select2({
+                                    theme: 'bootstrap-5',
+                                    placeholder: '-- Select Parent --',
+                                    allowClear: true,
+                                    width: '100%',
+                                    dropdownParent: $('#editModal')
+                                });
+                            }
                         }
                     }
                 }
             });
+        }
+
+        function initializeSelect2() {
+            // Initialize all select2 elements within the modal
+            if ($.fn.select2) {
+                $('.select2', $('#editModal')).each(function() {
+                    const select = $(this);
+                    if (!select.hasClass('select2-hidden-accessible')) {
+                        select.select2({
+                            theme: 'bootstrap-5',
+                            placeholder: select.attr('placeholder') || '--- Select an option ---',
+                            allowClear: true,
+                            width: '100%',
+                            dropdownParent: $('#editModal')
+                        });
+                    }
+                });
+            }
+        }
+
+        function destroySelect2() {
+            // Destroy all select2 instances within the modal
+            if ($.fn.select2) {
+                $('.select2', $('#editModal')).each(function() {
+                    const select = $(this);
+                    if (select.hasClass('select2-hidden-accessible')) {
+                        select.select2('destroy');
+                    }
+                });
+            }
         }
 
         function deleteItem(id, name) {
@@ -580,8 +631,9 @@
                             // Reset form if it was a create operation
                             if (!isEdit) {
                                 form.reset();
+                                // Clear Select2 values
                                 if ($.fn.select2) {
-                                    $('.select2').val(null).trigger('change');
+                                    $('.select2', $form).val(null).trigger('change');
                                 }
                             }
 
