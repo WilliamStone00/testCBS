@@ -538,55 +538,79 @@
 
 
 
-                        $(document).ready(function () {
+        $(document).ready(function () {
 
-                            $("#branchId, #Mode, #Source").on("change", function () {
+            $("#branchId, #Mode, #Source").on("change", function () {
 
-                                let request = {
-                                    BranchId: $("#branchId").val(),
-                                    Mode: $("#Mode").val(),
-                                    Source: $("#Source").val()
-                                };
+                let request = {
+                    BranchId: $("#branchId").val(),
+                    Mode: $("#Mode").val(),
+                    Source: $("#Source").val()
+                };
 
-                                // Only call backend when BranchId AND Mode are selected
-                                if (!request.BranchId || !request.Mode)
-                                    return;
+                // CASE 1: Branch + Mode
+                if (request.BranchId && request.Mode) {
+                    loadDependencies(request);
+                    return;
+                }
 
-                                $.ajax({
-                                    url: '/JournalHead/LoadFilterDependencies',
-                                    method: 'POST',
-                                    data: request,
-                                    success: function (res) {
+                // CASE 2: Only Branch
+                if (request.BranchId && !request.Mode) {
+                    loadDependencies({ BranchId: request.BranchId });
+                    return;
+                }
 
-                                        if (!res.success) return;
+            });
 
-                                        // ------- Operation Codes -------
-                                        let opDropdown = $("#OperationCode");
-                                        opDropdown.empty();
-                                        opDropdown.append(`<option value="">--- Select Operation Code ---</option>`);
+            function loadDependencies(request) {
 
-                                        $.each(res.operationCodes, function (i, code) {
-                                            opDropdown.append(`<option value="${code}">${code}</option>`);
-                                        });
+                $.ajax({
+                    url: '/JournalHead/LoadFilterDependencies',
+                    method: 'POST',
+                    data: request,
 
-                                        // ------- Daily Operator -------
-                                        let operatorDropdown = $("#DailyOperator");
-                                        operatorDropdown.empty();
-                                        operatorDropdown.append(`<option value="">--- Select Operator ---</option>`);
+                    success: function (res) {
 
-                                        $.each(res.initiatedBy, function (i, name) {
-                                            operatorDropdown.append(`<option value="${name}">${name}</option>`);
-                                        });
+                        if (!res.success) {
+                            appalert("Failed to load data. Please try again.", 2, 1);
+                            return;
+                        }
 
-                                        // Safely refresh select2 WITHOUT triggering change again
-                                        $("#OperationCode").select2();
-                                        $("#DailyOperator").select2();
-                                    }
-                                });
+                        // ------- Operation Codes -------
+                        let opDropdown = $("#OperationCode");
+                        opDropdown.empty();
+                        opDropdown.append(`<option value="">--- Select Operation Code ---</option>`);
 
-                            });
-
+                        $.each(res.operationCodes, function (i, code) {
+                            opDropdown.append(`<option value="${code}">${code}</option>`);
                         });
+
+                        // ------- Daily Operator -------
+                        let operatorDropdown = $("#DailyOperator");
+                        operatorDropdown.empty();
+                        operatorDropdown.append(`<option value="">--- Select Operator ---</option>`);
+
+                        $.each(res.initiatedBy, function (i, name) {
+                            operatorDropdown.append(`<option value="${name}">${name}</option>`);
+                        });
+
+                        // Refresh
+                        $("#OperationCode").select2();
+                        $("#DailyOperator").select2();
+
+                        // SUCCESS MESSAGE
+                        appalert("Data loaded successfully.", 1, 1);
+                    },
+
+                    error: function () {
+                        // AJAX failed (network/server error)
+                        appalert("Unable to connect to server. Please check your network.", 3, 3);
+                    }
+                });
+
+            }
+
+        });
 
 
 
