@@ -726,11 +726,7 @@ namespace CBS.BusinessService.Config
                         LoanProduct.ChartOfAccountIdForProvisionMoreThanFourYear = model.ChartOfAccountIdForProvisionMoreThanFourYear;
                         LoanProduct.ChartOfAccountIdForTaxiblePrincipalAmount = model.ChartOfAccountIdForTaxiblePrincipalAmount;
                         LoanProduct.ChartOfAccountIdForTaxibleInterestReceived = model.ChartOfAccountIdForTaxibleInterestReceived;
-
-                             
-
-
-        LoanProduct.UpdateOption = "assign_account_chart";
+                        LoanProduct.UpdateOption = "assign_account_chart";
 
                     }
 
