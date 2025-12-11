@@ -378,7 +378,7 @@ namespace CBS.BusinessService.Accounts
                     Credit = tellerOperationGL.Credit,
                     Balance = tellerOperationGL.Balance,
                     BranchName = branch.Name ?? "N/A",
-                    LogoUrl = branch.Bank?.LogoUrl ?? "",
+                    LogoUrl = PaymentReceiptMapping.GenerateAndSaveBankLogoImage(branch.Bank.LogoUrl, branch.Name),
                     TellerName = tellerOperationGL.TellerName ?? "N/A",
                     AccountNumber = tellerOperationGL.AccountNumber ?? "N/A",
                     TransactionType = tellerOperationGL.TransactionType ?? "N/A",
