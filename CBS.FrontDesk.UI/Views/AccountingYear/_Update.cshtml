@@ -72,7 +72,7 @@
                     m => m.YearB,
                     new SelectList(ViewBag.Year ?? new List<SelectListItem>(), "Value", "Text", Model.YearB),
                     "--- Select Accounting Year ---",
-                    new { @class = "form-control select2", required = "required", id = "Year" }
+                    new { @class = "form-control select2", required = "required", id = "YearB" }
                 )
             </div>
 
@@ -83,7 +83,7 @@
                     m => m.StatusB,
                     new SelectList(ViewBag.Status ?? new List<SelectListItem>(), "Value", "Text", Model.StatusB),
                     "--- Select Status ---",
-                    new { @class = "form-control select2", required = "required", id = "Status" }
+                    new { @class = "form-control select2", required = "required", id = "StatusB" }
                 )
             </div>
 

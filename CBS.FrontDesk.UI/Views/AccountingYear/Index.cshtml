@@ -112,7 +112,7 @@
                     <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
                 </div>
             </div>
-
+            
 
 
 
@@ -458,12 +458,18 @@
             if (!$(form).valid()) return false;
 
             const branchText = $('#BranchId option:selected').text();
-            const yearText = $('#Year option:selected').text();
-            const statusText = $('#Status').val();
+            const yearText = $('#YearB option:selected').text();
+            const statusText = $('#StatusB').val();
             const openingDateText = $('#openingDate').val() ? new Date($('#openingDate').val()).toLocaleString() : '';
             const closingDateText = $('#closingDate').val() ? new Date($('#closingDate').val()).toLocaleString() : '';
 
-            if (!$('#BranchId').val() || !$('#Year').val() || !$('#Status').val()) {
+            if (
+                !$('#BranchId').val() ||
+                !$('#YearB').val() ||
+                !$('#StatusB').val() ||
+                !$('#openingDate').val() ||
+                !$('#closingDate').val()
+            ) {
                 appalert("All fields are required.", 3, 1);
                 return false;
             }

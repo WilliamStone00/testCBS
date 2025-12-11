@@ -11113,6 +11113,7 @@
     <Content Include="Views\AccountTypeDefinition\_AccountTypeList.cshtml" />
     <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
     <Content Include="Views\AccountTypeDefinition\List.cshtml" />
+    <Content Include="Views\YearEndChecklistDefinition\_EndofYearConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

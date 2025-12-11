@@ -345,7 +345,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
         {
             try
             {
-                branchId = _branchAccountService.GetBranchID();
+                //branchId = _branchAccountService.GetBranchID();
+                branchId = _branchAccountService.GetHeadOfficeBranchID();
                 if (string.IsNullOrWhiteSpace(branchId))
                     return Json(new { success = false, message = "⚠️ Please select a branch." }, JsonRequestBehavior.AllowGet);
 
