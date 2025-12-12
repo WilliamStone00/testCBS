@@ -60,10 +60,20 @@
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
                     <b>All core cash-control GLs are mandatory:</b><br />
-                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense.
-                    Operations such as Cash-In, Cash-Out, Teller Closure, and Vault Transfers
+                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense, <b>Cash Reversal Account</b>.
+                    Operations such as Cash-In, Cash-Out, Teller Closure, Vault Transfers and delayed cash reversals
                     will <b>fail immediately</b> if these are missing.
                 </li>
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>Cash Reversal Account</b> is used for <b>delayed cash reversals</b> when the
+                    <b>accounting day of the incident has already passed</b> (e.g., reversal after 24h).
+                    This ensures reversing historical cash movements does <b>not impact the current Till/Vault cash position</b>.
+                    <br />
+                    <b>Note:</b> Same-day reversals are posted directly to the original Till/Vault accounts
+                    and do <em>not</em> use this reversal GL.
+                </li>
+
 
                 <!-- MoMoCash + Commissions Mandatory -->
                 <li>
@@ -275,6 +285,8 @@ function fetchBranchDetails(branchId) {
             fillSelect($('#VaultAccountId'), accounts, '-- Select Vault Account --', res.data?.vaultAccountId);
             fillSelect($('#SurplusIncomeAccountId'), accounts, '-- Select Surplus Income Account --', res.data?.surplusIncomeAccountId);
             fillSelect($('#ShortageExpenseAccountId'), accounts, '-- Select Shortage Expense Account --', res.data?.shortageExpenseAccountId);
+            // ✅ NEW: Cash Reversal Account
+            fillSelect($('#CashReversalAccountId'), accounts, '-- Select Cash Reversal Account --', res.data?.cashReversalAccountId);
 
             // Revenue & partner mappings
             fillSelect($('#RevenueAccountId'), accounts, '-- Select Revenue Account (Optional) --', res.data?.revenueAccountId);

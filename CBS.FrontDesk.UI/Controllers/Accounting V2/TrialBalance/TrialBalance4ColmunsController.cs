@@ -341,7 +341,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                 }
 
                 // Prepare file info
-                string fileName = $"TrialBalance4_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                string fileName = $"TrialBalance4_{DateTime.Now:yyyyMMddHHmmss}_{_trialBalanceService.GetUserFullName()}.xlsx";
                 string directoryPath = Server.MapPath("~/TempReportFiles");
 
                 // Ensure directory exists & clean old files
@@ -407,6 +407,13 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
 
             if (!Directory.Exists(directoryPath))
                 return;
+
+
+
+
+
+
+
 
             foreach (string file in Directory.GetFiles(directoryPath))
             {

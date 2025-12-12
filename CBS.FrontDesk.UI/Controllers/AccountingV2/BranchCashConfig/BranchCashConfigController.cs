@@ -285,6 +285,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                             surplusIncomeAccountId = config.SurplusIncomeAccountId,
                             shortageExpenseAccountId = config.ShortageExpenseAccountId,
 
+                            // ✅ NEW: Cash reversal account
+                            cashReversalAccountId = config.CashReversalAccountId,
+
                             // Generic / fallback revenue & partners
                             revenueAccountId = config.RevenueAccountId,
                             partnerAccountId = config.PartnerAccountId,
@@ -322,7 +325,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 {
                     success = true,
                     exists = false,
-                    data = new { id = (string)null, branchId, realTimeCashPosting = true },
+                    data = new
+                    {
+                        id = (string)null,
+                        branchId,
+
+                        // ✅ NEW: default value for cash reversal account
+                        cashReversalAccountId = (string)null,
+
+                        realTimeCashPosting = true
+                    },
                     accounts = accounts
                 });
             }
@@ -356,6 +368,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 var (vaultName, vaultNo) = NameNo(c.VaultAccountId);
                 var (lioName, lioNo) = NameNo(c.HeadOfficeLiaisonAccountId);
 
+                // ✅ NEW: Cash reversal GL
+                var (revName, revNo) = NameNo(c.CashReversalAccountId);
+
                 return new BranchCashConfigRowDto
                 {
                     Id = c.Id,
@@ -373,6 +388,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
 
                     ShortageExpenseAccountName = NameNo(c.ShortageExpenseAccountId).name,
                     ShortageExpenseAccountNumber = NameNo(c.ShortageExpenseAccountId).number,
+
+                    // ✅ NEW: expose reversal account
+                    CashReversalAccountName = revName,
+                    CashReversalAccountNumber = revNo,
 
                     RevenueAccountName = NameNo(c.RevenueAccountId).name,
                     RevenueAccountNumber = NameNo(c.RevenueAccountId).number,
@@ -439,14 +458,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 return Content("<div class='text-warning p-2'>Configuration not found.</div>");
 
             var branches = await _branchServices.GetBranches();
-            //var accounts = await _branchAccountService.GetBranchAccountsByBranchIdAsync("");
 
             var accounts = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(c.BranchId);
-
-            // Convert to SelectListItem for UI
-            //var accounts = _branchAccountService.DropDownGen(listing.ToList());
-
-
 
             string BranchNameOf(string bid) =>
                 string.IsNullOrWhiteSpace(bid) ? "" : (branches.FirstOrDefault(b => b.Id == bid)?.Name ?? "");
@@ -469,6 +482,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 Vault = PairOf(c.VaultAccountId),
                 SurplusIncome = PairOf(c.SurplusIncomeAccountId),
                 ShortageExpense = PairOf(c.ShortageExpenseAccountId),
+
+                // ✅ NEW: Cash reversal account
+                CashReversal = PairOf(c.CashReversalAccountId),
 
                 // Revenue & partner accounts
                 Revenue = PairOf(c.RevenueAccountId),
@@ -498,7 +514,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingManagement
                 // 🔹 Global Fallback Suspense GL
                 FallbackSuspense = PairOf(c.FallbackSuspenseAccountId)
             };
-
 
             var vm = new BranchCashConfigManagement { BranchCashConfigDetailsVm = details };
             return PartialView("_Details", vm);
