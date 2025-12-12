@@ -36,9 +36,8 @@
     <div class="col-md-6">
         <div class="form-floating shadow-sm">
             @if (Model.IsUserStandard == false)
-            {
-                // Read-only Code field for User Standard during edit
-                @Html.HiddenFor(m => m.Code) <!-- Hidden field to post the value -->
+            {                
+                @Html.HiddenFor(m => m.Code) 
                 <input class="form-control"
                        type="text"
                        value="@Model.Code"
@@ -49,8 +48,7 @@
                 <small class="text-muted ms-2">User Standard - Code cannot be changed</small>
             }
             else
-            {
-                // Editable Code field for new records or non-User Standard edits
+            {               
                 @Html.TextBoxFor(m => m.Code, new
                 {
                     @class = "form-control",

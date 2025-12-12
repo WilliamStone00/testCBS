@@ -22,7 +22,7 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition
         public int DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public bool IsSystemStandard { get; set; }
-        public bool IsUserStandard { get; set; }
+        public bool IsUserStandard { get; set; } = true;
         public bool IsDeleted { get; set; }
     }
 

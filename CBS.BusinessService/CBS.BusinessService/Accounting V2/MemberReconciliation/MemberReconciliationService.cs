@@ -139,12 +139,19 @@ namespace CBS.BusinessService.Accounting_V2.MemberReconciliation
             var response = await _apiCallerHelper2.PostAsync<ServiceResponse<TrialBalanceReconciliationData>>(APICallHelper.Reconciliation, model);
 
             // check response for success / nulls
-            if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
+            if (response.IsSuccess)
+            {
+                if (response == null || response.ApiResponseData == null || response.ApiResponseData.Data == null)
             {
                 // optionally throw or return null and let caller handle
                 return null;
             }
-
+            }
+            else
+            {
+                GetExecutionMessages(model, false, model.BranchId, MessagesResults.Failed,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+            }
             return response.ApiResponseData.Data;
         }
 

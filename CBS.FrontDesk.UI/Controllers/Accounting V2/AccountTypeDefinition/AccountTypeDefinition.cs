@@ -59,12 +59,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.AccountTypeDefinition
                 return PartialView(partialView, data);
             }
             else if (path == "new")
-            {
+           {
                 var model = new AccountTypeDefinitionDto
                 {
                     DisplayOrder = 1,
                     IsActive = true,
-                    IsUserStandard = false
+                    IsUserStandard = true
                 };
                 return PartialView(partialView, model);
             }
