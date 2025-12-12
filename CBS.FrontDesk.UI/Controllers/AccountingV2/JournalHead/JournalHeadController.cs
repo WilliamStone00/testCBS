@@ -60,11 +60,18 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 };
 
             // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.SourceMode = new List<SelectListItem>
+            ViewBag.JournalStatus = new List<SelectListItem>
 {
-    new SelectListItem { Value = "temp", Text = "Temporal Data " },
-    new SelectListItem { Value = "reconciled", Text = "Reconciliated Data" }
+    new SelectListItem { Value = "RECEIVED", Text = "RECEIVED" },
+    new SelectListItem { Value = "TEMP_CREATED", Text = "TEMP_CREATED" },
+    new SelectListItem { Value = "TEMP_UPDATED", Text = "TEMP_UPDATED" },
+    new SelectListItem { Value = "WORKFLOW_PENDING", Text = "WORKFLOW_PENDING" },
+    new SelectListItem { Value = "RECONCILED", Text = "RECONCILED" },
+    new SelectListItem { Value = "FAILED", Text = "FAILED" },
+    new SelectListItem { Value = "VALIDATED", Text = "VALIDATED" },
+    new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
 };
+
             ViewBag.TicketSource = new List<SelectListItem>
 {
     new SelectListItem { Value = "Source", Text = "Source " },
@@ -73,8 +80,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
             ViewBag.Source = new List<SelectListItem>
 {
-    new SelectListItem { Value = "real", Text = "Real Time Data " },
-    new SelectListItem { Value = "temp", Text = "Temporary Data" }
+    new SelectListItem { Value = "real", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
+    new SelectListItem { Value = "temp", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
 };
             return true;
         }
@@ -290,6 +297,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         {
             try
             {
+
+                
                 var response = await _journalHeadService.GetFilters(model);
 
                 if (response == null)
@@ -465,7 +474,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     StartDate = request.Filters?.StartDate,
                     EndDate = request.Filters?.EndDate,
                     TicketSource = request.Filters?.TicketSource,
-                    Mode = request.Filters?.Mode,
+                    JournalStatus = request.Filters?.JournalStatus,
                     DailyOperator = request.Filters?.DailyOperator,
                     IsInterbranch = request.Filters?.IsInterbranch ?? false,
 

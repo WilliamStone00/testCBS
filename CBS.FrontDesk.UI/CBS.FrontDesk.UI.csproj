@@ -2133,6 +2133,7 @@
     <Compile Include="Controllers\AccountingV2\EndOfYearClosure\EndOfYearClosureController.cs" />
     <Compile Include="Controllers\AccountingV2\EndOfYearClosure\YearEndChecklistDefinitionController.cs" />
     <Compile Include="Controllers\AccountingV2\GLSystemReconciliation\GLSystemReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\InterestProductConfig\InterestProductConfigController.cs" />
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
@@ -11155,6 +11156,7 @@
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\InterestProductConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

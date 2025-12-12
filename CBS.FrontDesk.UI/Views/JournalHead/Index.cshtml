@@ -89,14 +89,14 @@
                         </label>
                     </div>
                 </div>
-                  <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
-                      <div class="form-check">
-                          @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
-                          <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
-                      </div>
-                  </div>
+                <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
+                    <div class="form-check">
+                        @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
+                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                    </div>
+                </div>
 
-                
+
             </div>
 
             <!-- 🔹 Hidden Branch Dropdown -->
@@ -112,22 +112,22 @@
                 </div>
             </div>
 
-            
+
 
             @*<hr class="my-3" />*@
 
             <!-- 🔹 Reference, Operation Type & Work Ticket (always visible) -->
             <!-- 🔹 Mode, Daily Operation & Is Interbranch -->
             <div class="row mb-1">
-              
+
 
                 <div class="col-md-6 mb-1">
-                   
-                    <label class="form-label fw-bold">Source Mode</label>
-                    @Html.DropDownList("Mode",
-                        new SelectList(ViewBag.SourceMode, "Value", "Text"),
-                        "Select Source Mode",
-                        new { @class = "form-control select2 mb-1", @id = "Mode" })
+
+                    <label class="form-label fw-bold">Journal Status</label>
+                    @Html.DropDownList("JournalStatus",
+                        new SelectList(ViewBag.JournalStatus, "Value", "Text"),
+                        "Select Journal Status",
+                        new { @class = "form-control select2 mb-1", @id = "JournalStatus" })
                 </div>
 
                 <div class="col-md-6 mb-1">
@@ -138,7 +138,7 @@
                         new { @class = "form-control select2 mb-1", id = "DailyOperator" })
                 </div>
 
-               
+
 
             </div>
 
@@ -152,16 +152,16 @@
                 </div>
 
                 @*<div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Operation Type</label>
-                    @Html.DropDownList("OperationType",
-                        new SelectList(ViewBag.OperationTypes, "Value", "Text"),
-                        "Select Operation Type",
-                        new { @class = "form-control select2 mb-1", @id = "OperationType" })
-                </div>*@
+                        <label class="form-label fw-bold">Operation Type</label>
+                        @Html.DropDownList("OperationType",
+                            new SelectList(ViewBag.OperationTypes, "Value", "Text"),
+                            "Select Operation Type",
+                            new { @class = "form-control select2 mb-1", @id = "OperationType" })
+                    </div>*@
 
-               <div class="col-md-4 mb-1">
-   
-                    <label class="form-label fw-bold">Source Type</label>
+                <div class="col-md-4 mb-1">
+
+                    <label class="form-label fw-bold">Data Source</label>
                     @Html.DropDownList("Source",
                         new SelectList(ViewBag.Source, "Value", "Text"),
                         "Select Source ",
@@ -181,39 +181,39 @@
 
 
 
-            
-                <div id="AccoutingdateFilters" class="d-none">
-                    <div class="row mb-1">
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold">Start Accounting Date</label>
-                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
-                        </div>
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold">End Accounting Date</label>
-                            <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
-                        </div>
 
-
+            <div id="AccoutingdateFilters" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Start Accounting Date</label>
+                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
                     </div>
-                </div>
-
-                <!-- 🔹 Hidden Date Filters -->
-                <div id="dateFilters" class="d-none">
-                    <div class="row mb-1">
-
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
-                            <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
-                        </div>
-
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label fw-bold" for="endDate">End Entry Date</label>
-                            <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                        </div>
-
-
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">End Accounting Date</label>
+                        <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                     </div>
+
+
                 </div>
+            </div>
+
+            <!-- 🔹 Hidden Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-1">
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
+                        <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="endDate">End Entry Date</label>
+                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                    </div>
+
+
+                </div>
+            </div>
 
 
         </div>
@@ -286,338 +286,318 @@
 @section Scripts {
 
 
-
+    @Scripts.Render("~/bundles/jqueryval")
 
 
     <script>
+$(document).ready(function () {
 
-        let filtersApplied = false;
+    let filtersApplied = false;
+    let isResetting = false;
 
-        // ==============================
-        // Load Journal Header Data
-        // ==============================
-        function loadJournalHeaderData() {
-            $('#myDataTable').DataTable({
-                serverSide: true,
-                destroy: true,
-                responsive: true,
-                searching: false,
-                order: [[0, 'desc']], // ✅ Sort by CreatedAt (most recent first)
-                ajax: {
-                    url: '/JournalHead/LoadJournalHeaderData',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: function (d) {
-                        const filters = collectJournalHeaderFilters();
-
-                        filters.Options = {
-                            draw: d.draw,
-                            start: d.start,
-                            length: d.length,
-                            skip: d.start,
-                            pageSize: d.length,
-                            searchValue: d.search?.value || '',
-                            sortColumnName: d.columns[d.order[0].column].data,
-                            sortColumnDirection: d.order[0].dir
-                        };
-
-                        return JSON.stringify(filters);
-                    },
-                    error: function (xhr, status, err) {
-                        console.error('❌ Error loading journal headers:', status, err);
-                        appalert('❌ Failed to load journal headers. Status: ' + xhr.status, 4, 1);
+    // ==============================
+    // 🔹 Load Journal Header Data
+    // ==============================
+    function loadJournalHeaderData() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'desc']], // Sort by CreatedAt descending
+            ajax: {
+                url: '/JournalHead/LoadJournalHeaderData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    const filters = collectJournalHeaderFilters();
+                    filters.Options = {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        skip: d.start,
+                        pageSize: d.length,
+                        searchValue: d.search?.value || '',
+                        sortColumnName: d.columns[d.order[0].column].data,
+                        sortColumnDirection: d.order[0].dir
+                    };
+                    return JSON.stringify(filters);
+                },
+                error: function (xhr, status, err) {
+                    console.error('❌ Error loading journal headers:', status, err);
+                    appalert('❌ Failed to load journal headers. Status: ' + xhr.status, 4, 1);
+                }
+            },
+            columns: [
+                {
+                    data: 'CreatedAt',
+                    name: 'CreatedAt',
+                    render: function (data) {
+                        return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                     }
                 },
-                columns: [
-                    {
-                        data: 'CreatedAt',
-                        name: 'CreatedAt',
-                        render: function (data) {
-                            return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
-                        }
-                    },
-                    { data: 'Reference', name: 'Reference' },
-                    { data: 'Memo', name: 'Memo' },
-                    { data: 'OperationCode', name: 'OperationCode' },
-                    { data: 'Status', name: 'Status' },
-                    {
-                        data: null,
-                        orderable: false,
-                        render: function (_, __, row) {
-                            return `
-                                <div class="text-center">
-                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                        <i class="mdi mdi-eye-outline me-1"></i> Details
-                                    </button>
-                                </div>`;
-                        }
-                    }
-                ],
-                initComplete: function () {
-                    appalert('✅ Journal headers table loaded successfully!', 1, 1);
-                },
-                drawCallback: function () {
-                    const api = this.api();
-                    if (api.rows({ page: 'current' }).data().length === 0) {
-                        appalert('⚠️ No journal headers found on this page.', 2, 1);
+                { data: 'Memo', name: 'Memo' },
+                { data: 'InitiatedBy', name: 'InitiatedBy' },
+                { data: 'ApprovedBy', name: 'ApprovedBy' },
+                { data: 'OperationCode', name: 'OperationCode' },
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (_, __, row) {
+                        return `
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                    <i class="mdi mdi-eye-outline me-1"></i> Details
+                                </button>
+                            </div>`;
                     }
                 }
-            });
-        }
+            ],
+            initComplete: function () {
+                appalert('✅ Journal headers table loaded successfully!', 1, 1);
+            },
+            drawCallback: function () {
+                const api = this.api();
+                if (api.rows({ page: 'current' }).data().length === 0) {
+                    appalert('⚠️ No journal headers found on this page.', 2, 1);
+                }
+            }
+        });
+    }
 
-        // ==============================
-        // Collect Filter Values
-        // ==============================
-        function collectJournalHeaderFilters() {
-            return {
-                BranchId: $('#branchId').val(),
-                OperationType: $('#OperationType').val(),
-                OperationCode: $('#OperationCode').val(),
-                Reference: $('#reference').val(),
-                StartDate: $('#startDate').val(),
-                EndDate: $('#endDate').val(),
-                StartAccountingDate: $('#startaccountingDate').val(),
-                EndAccountingDate: $('#endaccountingDate').val(),
-                Mode: $('#Mode').val(),
-                DailyOperator: $('#DailyOperator').val(),
-                IsInterbranch: $('#IsInterbranch').prop('checked'),
-                Source: $('#Source').val(),
-                Options: {}
-            };
-        }
+    // ==============================
+    // 🔹 Collect Filter Values
+    // ==============================
+    function collectJournalHeaderFilters() {
+        return {
+            BranchId: $('#branchId').val(),
+            OperationType: $('#OperationType').val(),
+            OperationCode: $('#OperationCode').val(),
+            Reference: $('#reference').val(),
+            StartDate: $('#startDate').val(),
+            EndDate: $('#endDate').val(),
+            StartAccountingDate: $('#startaccountingDate').val(),
+            EndAccountingDate: $('#endaccountingDate').val(),
+            JournalStatus: $('#JournalStatus').val(),
+            DailyOperator: $('#DailyOperator').val(),
+            IsInterbranch: $('#IsInterbranch').prop('checked'),
+            Source: $('#Source').val(),
+            Options: {}
+        };
+    }
 
-        // ==============================
-        // Reset Filters
-        // ==============================
-        function resetJournalHeaderFilters() {
-            $('#journalHeaderFilterForm').trigger('reset');
-            $('.select2').val('').trigger('change');
-            $('#branchFilter, #dateFilters').addClass('d-none');
-            //loadJournalHeaderData();
-            appalert('🧹 Filters reset and table reloaded.', 1, 1);
-        }
+    // ==============================
+    // 🔹 Reset Filters
+    // ==============================
+    function resetJournalHeaderFilters() {
+        isResetting = true; // prevent change handler during reset
+        $('#journalHeaderFilterForm').trigger('reset');
+        $('.select2').val('').trigger('change'); // triggers change, but blocked by isResetting
+        $('#branchFilter, #dateFilters').addClass('d-none');
+        appalert('🧹 Filters reset successful', 1, 1);
+        isResetting = false;
+    }
 
-        // ==============================
-        // Init
-        // ==============================
-        $(document).ready(function () {
-            // 🔹 Apply filters
-            $('#applyFilterBtn').on('click', function (e) {
-                e.preventDefault();
-                loadJournalHeaderData();
-                filtersApplied = true; // ✅ Allow Export
-            });
-
-            // 🔹 Reset filters
-            $('#resetFilterBtn').on('click', function (e) {
-                e.preventDefault();
-                resetJournalHeaderFilters();
-            });
-
-            // ==========================
-            // 🔹 VIEW DETAILS (Dynamic Modal)
-            // ==========================
-            $(document).on("click", ".view-details", function () {
-                const journalId = $(this).data("id");
-                if (!journalId) return;
-
-                $.ajax({
-                    url: `/JournalHead/GetDetails?id=${encodeURIComponent(journalId)}`,
-                    type: "GET",
-                    dataType: "html",
-                    success: function (html) {
-                        // Inject HTML from partial view
-                        $("#journalDetailsModal .modal-content").html(html);
-
-
-                        // Show modal
-                        const modalEl = document.getElementById('journalDetailsModal');
-                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                        bsModal.show();
-                    },
-                    error: function (xhr, status, err) {
-                        console.error("❌ Error loading details:", status, err);
-                        $("#journalDetailsModal .modal-content").html(`
-                                    <div class="modal-body">
-                                        <div class="alert alert-danger">
-                                            Failed to load journal details. Status: ${xhr.status}
-                                        </div>
-                                    </div>
-                                `);
-
-                        const modalEl = document.getElementById('journalDetailsModal');
-                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                        bsModal.show();
-                    }
-                });
-            });
-
-
-            // ==========================
-            // 🔹 EXPORT JOURNAL HEADER
-            // ==========================
-            $('#btnExport').on('click', function () {
-
-                if (!filtersApplied) {
-                    appalert("⚠️ Please apply filters before exporting.", 2, 1);
+    // ==============================
+    // 🔹 Load Filter Dependencies
+    // ==============================
+    function loadDependencies(request) {
+        $.ajax({
+            url: '/JournalHead/LoadFilterDependencies',
+            method: 'POST',
+            data: request,
+            success: function (res) {
+                if (!res.success) {
+                    appalert("Failed to load data. Please try again.", 2, 1);
                     return;
                 }
 
-                // Show Export Modal
-                const modalEl = document.getElementById('journalExportModal');
+                // Operation Codes
+                let opDropdown = $("#OperationCode");
+                opDropdown.empty().append(`<option value="">--- Select Operation Code ---</option>`);
+                $.each(res.operationCodes, function (i, code) {
+                    opDropdown.append(`<option value="${code}">${code}</option>`);
+                });
+
+                // Daily Operator
+                let operatorDropdown = $("#DailyOperator");
+                operatorDropdown.empty().append(`<option value="">--- Select Operator ---</option>`);
+                $.each(res.initiatedBy, function (i, name) {
+                    operatorDropdown.append(`<option value="${name}">${name}</option>`);
+                });
+
+                $("#OperationCode").select2();
+                $("#DailyOperator").select2();
+
+                appalert("Data loaded successfully.", 1, 1);
+            },
+            error: function () {
+                appalert("Unable to connect to server. Please check your network.", 3, 3);
+            }
+        });
+    }
+
+    // ==============================
+    // 🔹 Filter Change Handling
+    // ==============================
+    $("#branchId, #JournalStatus, #Source").on("change", function () {
+        if (isResetting) return; // skip during reset
+
+        let request = {
+            BranchId: $("#branchId").val() || " ", // <-- normalize empty to ""
+            JournalStatus: $("#JournalStatus").val(),
+            Source: $("#Source").val()
+        };
+
+        const hasBranch = request.BranchId !== " ";
+        const hasStatus = !!request.JournalStatus;
+        const hasSource = !!request.Source;
+
+        if (!hasBranch && !hasStatus && !hasSource) {
+            loadDependencies({ BranchId: " " });
+            return;
+        }
+        if (hasBranch && !hasStatus && !hasSource) {
+            loadDependencies({ BranchId: request.BranchId });
+            return;
+        }
+        if (hasBranch && hasStatus && !hasSource) {
+            loadDependencies({ BranchId: request.BranchId, JournalStatus: request.JournalStatus });
+            return;
+        }
+        if (hasBranch && hasStatus && hasSource) {
+            loadDependencies(request);
+            return;
+        }
+        if (hasBranch && !hasStatus && hasSource) {
+            loadDependencies({ BranchId: request.BranchId, Source: request.Source });
+            return;
+        }
+        if (!hasBranch && hasStatus && hasSource) {
+            loadDependencies({ BranchId: " ", JournalStatus: request.JournalStatus, Source: request.Source });
+            return;
+        }
+        if (!hasBranch && hasStatus && !hasSource) {
+            loadDependencies({ BranchId: " ", JournalStatus: request.JournalStatus });
+            return;
+        }
+        if (!hasBranch && !hasStatus && hasSource) {
+            loadDependencies({ BranchId: " ", Source: request.Source });
+            return;
+        }
+    });
+
+    // ==============================
+    // 🔹 Page Load Auto-Call
+    // ==============================
+    loadDependencies({ BranchId: " ", JournalStatus: null, Source: null });
+
+    // ==============================
+    // 🔹 Reset Button
+    // ==============================
+    $('#resetFilterBtn').on('click', function(e) {
+        e.preventDefault();
+        resetJournalHeaderFilters();
+    });
+
+    // ==============================
+    // 🔹 Apply Filters
+    // ==============================
+    $('#applyFilterBtn').on('click', function(e) {
+        e.preventDefault();
+        loadJournalHeaderData();
+        filtersApplied = true;
+    });
+
+    // ==============================
+    // 🔹 View Details Modal
+    // ==============================
+    $(document).on("click", ".view-details", function () {
+        const journalId = $(this).data("id");
+        if (!journalId) return;
+
+        $.ajax({
+            url: `/JournalHead/GetDetails?id=${encodeURIComponent(journalId)}`,
+            type: "GET",
+            dataType: "html",
+            success: function (html) {
+                $("#journalDetailsModal .modal-content").html(html);
+                const modalEl = document.getElementById('journalDetailsModal');
                 const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
                 bsModal.show();
-            });
-
-
-
-                           // ======================
-            $(document).on("click", "#btnConfirmJournalExport", function () {
-
-                // ✅ Get filters from your function
-                let filters = collectJournalHeaderFilters();
-
-                let exportOptions = {
-                    FileName: $("#jhFileName").val(),
-                    Format: $("#jhExportFormat").val(),
-                    ReportType: $("#jhReportType").val(),
-                    StartDate: $("#jhStartDate").val(),
-                    EndDate: $("#jhEndDate").val()
-                };
-
-                let request = {
-                    Filters: filters,
-                    ExportOptions: exportOptions
-                };
-
-                // Disable button and show spinner
-                $("#btnConfirmJournalExport")
-                    .prop("disabled", true)
-                    .html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
-
-                $.ajax({
-                    url: '@Url.Action("ExportJournalData", "JournalHead")',
-                    type: "POST",
-                    data: JSON.stringify(request),
-                    contentType: "application/json",
-                    xhrFields: { responseType: 'blob' },
-                    success: function (data, status, xhr) {
-
-                        // Extract filename from header
-                        let disposition = xhr.getResponseHeader("Content-Disposition");
-                        let filename = "JournalHeader.xlsx";
-
-                        if (disposition && disposition.indexOf("filename=") !== -1) {
-                            filename = disposition.split("filename=")[1].trim();
-                        }
-
-                        // Download file
-                        let blob = new Blob([data]);
-                        let link = document.createElement("a");
-                        link.href = URL.createObjectURL(blob);
-                        link.download = filename;
-                        link.click();
-
-                        $("#journalExportModal").modal("hide");
-                        toastr.success("Export completed.");
-                    },
-                    error: function () {
-                        toastr.error("Export failed.");
-                    },
-                    complete: function () {
-                        $("#btnConfirmJournalExport")
-                            .prop("disabled", false)
-                            .html(`<i class="mdi mdi-export"></i> Export`);
-                    }
-                });
-
-            });
-
-
-        });
-
-
-
-        $(document).ready(function () {
-
-            $("#branchId, #Mode, #Source").on("change", function () {
-
-                let request = {
-                    BranchId: $("#branchId").val(),
-                    Mode: $("#Mode").val(),
-                    Source: $("#Source").val()
-                };
-
-                // CASE 1: Branch + Mode
-                if (request.BranchId && request.Mode) {
-                    loadDependencies(request);
-                    return;
-                }
-
-                // CASE 2: Only Branch
-                if (request.BranchId && !request.Mode) {
-                    loadDependencies({ BranchId: request.BranchId });
-                    return;
-                }
-
-            });
-
-            function loadDependencies(request) {
-
-                $.ajax({
-                    url: '/JournalHead/LoadFilterDependencies',
-                    method: 'POST',
-                    data: request,
-
-                    success: function (res) {
-
-                        if (!res.success) {
-                            appalert("Failed to load data. Please try again.", 2, 1);
-                            return;
-                        }
-
-                        // ------- Operation Codes -------
-                        let opDropdown = $("#OperationCode");
-                        opDropdown.empty();
-                        opDropdown.append(`<option value="">--- Select Operation Code ---</option>`);
-
-                        $.each(res.operationCodes, function (i, code) {
-                            opDropdown.append(`<option value="${code}">${code}</option>`);
-                        });
-
-                        // ------- Daily Operator -------
-                        let operatorDropdown = $("#DailyOperator");
-                        operatorDropdown.empty();
-                        operatorDropdown.append(`<option value="">--- Select Operator ---</option>`);
-
-                        $.each(res.initiatedBy, function (i, name) {
-                            operatorDropdown.append(`<option value="${name}">${name}</option>`);
-                        });
-
-                        // Refresh
-                        $("#OperationCode").select2();
-                        $("#DailyOperator").select2();
-
-                        // SUCCESS MESSAGE
-                        appalert("Data loaded successfully.", 1, 1);
-                    },
-
-                    error: function () {
-                        // AJAX failed (network/server error)
-                        appalert("Unable to connect to server. Please check your network.", 3, 3);
-                    }
-                });
-
+            },
+            error: function (xhr) {
+                $("#journalDetailsModal .modal-content").html(`
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            Failed to load journal details. Status: ${xhr.status}
+                        </div>
+                    </div>
+                `);
+                const modalEl = document.getElementById('journalDetailsModal');
+                const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                bsModal.show();
             }
-
         });
+    });
 
+    // ==============================
+    // 🔹 Export Journal Header
+    // ==============================
+    $('#btnExport').on('click', function () {
+        if (!filtersApplied) {
+            appalert("⚠️ Please apply filters before exporting.", 2, 1);
+            return;
+        }
+        const modalEl = document.getElementById('journalExportModal');
+        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        bsModal.show();
+    });
 
+    $('#btnConfirmJournalExport').on('click', function () {
+        let filters = collectJournalHeaderFilters();
+        let exportOptions = {
+            FileName: $("#jhFileName").val(),
+            Format: $("#jhExportFormat").val(),
+            ReportType: $("#jhReportType").val(),
+            StartDate: $("#jhStartDate").val(),
+            EndDate: $("#jhEndDate").val()
+        };
 
+        let request = { Filters: filters, ExportOptions: exportOptions };
 
+        $("#btnConfirmJournalExport").prop("disabled", true).html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
 
+        $.ajax({
+            url: '@Url.Action("ExportJournalData", "JournalHead")',
+            type: "POST",
+            data: JSON.stringify(request),
+            contentType: "application/json",
+            xhrFields: { responseType: 'blob' },
+            success: function (data, status, xhr) {
+                let disposition = xhr.getResponseHeader("Content-Disposition");
+                let filename = "JournalHeader.xlsx";
+                if (disposition && disposition.indexOf("filename=") !== -1) {
+                    filename = disposition.split("filename=")[1].trim();
+                }
+                let blob = new Blob([data]);
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.click();
+                $("#journalExportModal").modal("hide");
+                toastr.success("Export completed.");
+            },
+            error: function () {
+                toastr.error("Export failed.");
+            },
+            complete: function () {
+                $("#btnConfirmJournalExport").prop("disabled", false).html(`<i class="mdi mdi-export"></i> Export`);
+            }
+        });
+    });
 
-            
+});
     </script>
 
 }
