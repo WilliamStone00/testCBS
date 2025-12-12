@@ -192,6 +192,31 @@
                                 Used when actual cash is below book balance after reconciliation (shortage).
                             </div>
                         </div>
+                        <!-- Cash Reversal Account -->
+                        <div class="col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                @Html.DropDownListFor(
+                                    m => m.BranchCashConfig.CashReversalAccountId,
+                                    new SelectList(ViewBag.BranchAccounts ?? new List<object>(), "Value", "Text"),
+                                    "-- Select Cash Reversal Account --",
+                                    new { @class = "form-select select2", id = "CashReversalAccountId" }
+                                )
+                                @Html.ValidationMessageFor(m => m.BranchCashConfig.CashReversalAccountId, "", new { @class = "text-danger" })
+                                <label>Cash Reversal Account</label>
+                            </div>
+                            <div class="form-text text-muted">
+                                Dedicated GL used to post <strong>delayed cash reversals</strong> for cash operations
+                                whose <strong>original accounting day has already passed</strong>,
+                                ensuring that reversing historical cash movements does <strong>not impact the current cash position</strong>
+                                (till or vault) of the branch.
+                                <br />
+                                <strong>Note:</strong> This GL is <em>not used</em> for same-day reversals.
+                                When a reversal is performed within the <strong>same accounting day as the original transaction</strong>,
+                                postings are made directly against the original cash accounts.
+                            </div>
+
+
+                        </div>
                     </div>
 
                     <hr class="my-4" />
@@ -457,7 +482,7 @@
                         <i class="mdi mdi-alert-outline me-1"></i>Global Fallback Suspense GL
                     </h6>
                     <div class="row gy-3">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.DropDownListFor(
                                     m => m.BranchCashConfig.FallbackSuspenseAccountId,
