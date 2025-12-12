@@ -127,7 +127,7 @@
     <value>Utilisez cette section pour mapper les configurations de plan comptable au produit d'épargne. Cela garantit un suivi précis des transactions liées au produit.</value>
   </data>
   <data name="AccountMappingFor" xml:space="preserve">
-    <value>Mappage de compte pour</value>
+    <value>C Money et cartographie des frais Harmonisés Pour</value>
   </data>
   <data name="AccountMappings" xml:space="preserve">
     <value>Mappages de compte</value>

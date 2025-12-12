@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return View(new SavingConfiguration { SavingProducts = savingProduct.ToList() });
         }
         public async Task<ActionResult> OrdinaryAccounts()
-        {
+         {
             var savingProduct = await _savingProductServices.GetSavingProducts();
             return View(new SavingConfiguration { SavingProducts = savingProduct.ToList() });
         }

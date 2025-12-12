@@ -146,6 +146,7 @@
     <Compile Include="Entity\AccountingV2\EndOfYearClosure\EndOfYearConfig.cs" />
     <Compile Include="Entity\AccountingV2\GLSystemReconciliation\CloseOfDayModel.cs" />
     <Compile Include="Entity\AccountingV2\GLSystemReconciliation\Reconciliation.cs" />
+    <Compile Include="Entity\AccountingV2\InterestProductConfig\ProductCalculationConfig.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMappingV2\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />

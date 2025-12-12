@@ -112,7 +112,7 @@
                     <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
                 </div>
             </div>
-            
+
 
 
 
@@ -132,7 +132,7 @@
 
         </div>
 
-      
+
 
     </form>
 </div>
@@ -178,16 +178,12 @@
                     url: '/AccountingYear/LoadAccountingYearData',
                     type: 'POST',
                     data: function (d) {
-
                         return {
-                            // ✔ Only send BranchId if filter is visible
                             BranchId: $('#branchFilter').hasClass('d-none') ? null : $('#branchId').val(),
-
                             StartDate: $('#startDate').val(),
                             EndDate: $('#endDate').val(),
                             Status: $('#Status').val(),
                             Year: $('#year').val(),
-
                             Options: {
                                 draw: d.draw,
                                 start: d.start,
@@ -230,156 +226,193 @@
                             const btnId = `actionDropdown${row.Id}`;
                             const disableStyle = "pointer-events:none; opacity:0.5;";
 
-                            // Format dates for data-* attributes
                             const startStr = row.StartDate ? moment(row.StartDate).format('YYYY-MM-DD') : '';
                             const endStr = row.EndDate ? moment(row.EndDate).format('YYYY-MM-DD') : '';
 
-                            const updateBtn = `
-                <a class="dropdown-item btn-update-year"
-                   href="#" data-id="${row.Id}"
-                   style="color:#6f42c1; font-weight:500;">
-                    <i class="mdi mdi-pencil-outline me-1" style="color:#6f42c1;"></i>
-                    Update
-                </a>`;
+                            const buttons = [
+                                {
+                                    class: 'btn-update-year',
+                                    text: 'Update',
+                                    icon: 'mdi-pencil-outline',
+                                    color: '#6f42c1',
+                                    style: ''
+                                },
+                                {
+                                    class: 'btn-lock-year',
+                                    text: 'Lock',
+                                    icon: 'mdi-lock-outline',
+                                    color: '#fd7e14',
+                                    style: status === 'lock' ? disableStyle : ''
+                                },
+                                {
+                                    class: 'btn-open-year',
+                                    text: 'Open',
+                                    icon: 'mdi-lock-open-outline',
+                                    color: '#198754',
+                                    style: status === 'open' ? disableStyle : ''
+                                },
+                                {
+                                    class: 'btn-close-year',
+                                    text: 'Close',
+                                    icon: 'mdi-close-circle-outline',
+                                    color: '#dc3545',
+                                    style: status === 'close' ? disableStyle : ''
+                                }
+                            ];
 
-                            const lockBtn = `
-                <a class="dropdown-item btn-lock-year"
-                   href="#" data-id="${row.Id}"
-                   data-branch="${row.BranchId}"
-                   data-year="${row.Year}"
-                   data-status="LOCK"
-                   data-start="${startStr}"
-                   data-end="${endStr}"
-                   style="color:#fd7e14; font-weight:500; ${status === 'lock' ? disableStyle : ''}">
-                    <i class="mdi mdi-lock-outline me-1" style="color:#fd7e14;"></i>
-                    Lock
-                </a>`;
-
-                            const openBtn = `
-                <a class="dropdown-item btn-open-year"
-                   href="#" data-id="${row.Id}"
-                   data-branch="${row.BranchId}"
-                   data-year="${row.Year}"
-                   data-status="OPEN"
-                   data-start="${startStr}"
-                   data-end="${endStr}"
-                   style="color:#198754; font-weight:500; ${status === 'open' ? disableStyle : ''}">
-                    <i class="mdi mdi-lock-open-outline me-1" style="color:#198754;"></i>
-                    Open
-                </a>`;
-
-                            const closeBtn = `
-                <a class="dropdown-item btn-close-year"
-                   href="#" data-id="${row.Id}"
-                   data-branch="${row.BranchId}"
-                   data-year="${row.Year}"
-                   data-status="CLOSE"
-                   data-start="${startStr}"
-                   data-end="${endStr}"
-                   style="color:#dc3545; font-weight:500; ${status === 'close' ? disableStyle : ''}">
-                    <i class="mdi mdi-close-circle-outline me-1" style="color:#dc3545;"></i>
-                    Close
-                </a>`;
+                            const dropdownItems = buttons.map(b => `
+                                <li>
+                                    <a class="dropdown-item ${b.class}"
+                                       href="#"
+                                       data-id="${row.Id}"
+                                       data-branch="${row.BranchId}"
+                                       data-branchname="${row.BranchName}"
+                                       data-year="${row.Year}"
+                                       data-status="${b.text.toUpperCase()}"
+                                       data-start="${startStr}"
+                                       data-end="${endStr}"
+                                       style="color:${b.color}; font-weight:500; ${b.style}">
+                                        <i class="mdi ${b.icon} me-1" style="color:${b.color};"></i>
+                                        ${b.text}
+                                    </a>
+                                </li>
+                            `).join('');
 
                             return `
-                <div class="dropdown text-center">
-                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                            type="button" id="${btnId}"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-cog-outline"></i> Actions
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                        <li>${updateBtn}</li>
-                        <li>${lockBtn}</li>
-                        <li>${openBtn}</li>
-                        <li>${closeBtn}</li>
-                    </ul>
-                </div>
-            `.trim();
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                        ${dropdownItems}
+                                    </ul>
+                                </div>
+                            `;
                         }
                     }
                 ]
             });
         }
 
-
-
-
         // ==========================
-        // Button Click Handlers with Alertify + AJAX
+        // Generic post function
         // ==========================
-
         function postAccountingYear(payload, $btn) {
             const $icon = $btn.find('i');
             const $text = $btn.find('.btn-text');
 
             $btn.prop('disabled', true);
             $icon.removeClass().addClass('mdi mdi-loading mdi-spin');
-            $text.text(payload.status + 'ing...');
 
             $.ajax({
-                url: '/AccountingYear/Action', // Correct controller/action
+                url: '/AccountingYear/Action',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(payload),
                 success: function (response) {
                     if (response.success) {
                         toastr.success(response.message || payload.status + ' successful!');
-                        $icon.removeClass().addClass('mdi mdi-check-circle');
-                        $text.text(payload.status);
                         loadAccountingYearData();
                     } else {
                         toastr.error(response.message || payload.status + ' failed!');
                         $btn.prop('disabled', false);
                         $icon.removeClass().addClass('mdi mdi-cog-outline');
-                        $text.text(payload.status);
                     }
                 },
                 error: function (xhr, status, error) {
                     toastr.error("An error occurred: " + error);
                     $btn.prop('disabled', false);
                     $icon.removeClass().addClass('mdi mdi-cog-outline');
-                    $text.text(payload.status);
                 }
             });
         }
 
-        function handleButtonClick(selector, statusText) {
-            $(document).on("click", selector, function (e) {
-                e.preventDefault();
-                const $btn = $(this);
+        // ==========================
+        // Handle LOCK / OPEN / CLOSE / UPDATE
+        // ==========================
+       function handleButtonClick(selector, statusText) {
+    $(document).on("click", selector, function (e) {
+        e.preventDefault();
+        const $btn = $(this);
+
+        const itemId     = $btn.data('id');
+        const branchId   = $btn.data('branch');
+        const branchText = $btn.data('branchname') || "";
+        const year       = $btn.data('year');
+        const status     = statusText;
+        const startDate  = $btn.data('start');
+        const endDate    = $btn.data('end');
+
+        const openingDateText = startDate ? moment(startDate).format("DD/MM/YYYY") : "";
+        const closingDateText = endDate ? moment(endDate).format("DD/MM/YYYY") : "";
+
+        // Determine if this is a dangerous action
+        const isDanger = status === "CLOSE"; // You can add 'LOCK' if needed
+
+        const message = `
+            <div style="${isDanger ? 'border:2px solid red; padding:10px; border-radius:5px;' : ''}">
+                <p>Confirm details before continuing:</p>
+                <table class="table table-sm table-bordered">
+                    <tr><th>Branch</th><td>${branchText || branchId}</td></tr>
+                    <tr><th>Year</th><td>${year}</td></tr>
+                    <tr><th>Action</th><td>${status}</td></tr>
+                    <tr><th>Start Date</th><td>${openingDateText}</td></tr>
+                    <tr><th>End Date</th><td>${closingDateText}</td></tr>
+                </table>
+                <div class="form-check mt-3">
+                    <input type="checkbox" id="alertifyConfirmCheckbox" class="form-check-input">
+                    <label for="alertifyConfirmCheckbox" class="form-check-label">
+                        I confirm the above details.
+                    </label>
+                </div>
+            </div>
+        `;
+
+        alertify.confirm(
+            isDanger ? "⚠️ DANGER: Confirm Accounting Year Action" : "Confirm Accounting Year",
+            message,
+            function () {
+                if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                    appalert("Check the box to confirm.", 3, 1);
+                    return false;
+                }
+
                 const payload = {
-                    id: $btn.data('id'),
-                    branchId: $btn.data('branch'),
-                    year: $btn.data('year'),
-                    status: statusText,
-                    startDate: $btn.data('start'),
-                    endDate: $btn.data('end')
+                    id: itemId,
+                    branchId: branchId,
+                    year: year,
+                    status: status,
+                    startDate: startDate,
+                    endDate: endDate
                 };
 
-                console.log(`${statusText} PAYLOAD:`, payload); // Debug
+                postAccountingYear(payload, $btn);
+            },
+            function () {
+                appalert("🚫 Operation cancelled.", 2, 1);
+            }
+        ).set({
+            labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+            onshow: function () {
+                const okBtn = $('.alertify .ajs-ok');
+                okBtn.prop('disabled', true);
+                $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                    okBtn.prop('disabled', !this.checked);
+                });
+            }
+        });
+    });
+}
 
-                alertify.confirm(
-                    "Confirmation",
-                    `Are you sure you want to ${statusText.toLowerCase()} this accounting year?`,
-                    function () { postAccountingYear(payload, $btn); },
-                    function () { /* Cancel */ }
-                ).set('labels', { ok: 'Yes', cancel: 'No' });
-            });
-        }
-
-        // Initialize handlers
+        // Initialize action buttons
         handleButtonClick(".btn-lock-year", "LOCK");
         handleButtonClick(".btn-open-year", "OPEN");
         handleButtonClick(".btn-close-year", "CLOSE");
 
-
-
-
-
-
         // ==========================
-        // Filter handlers
+        // Filter buttons
         // ==========================
         $('#applyFilterBtn').on('click', function (e) {
             e.preventDefault();
@@ -390,17 +423,13 @@
             e.preventDefault();
             $('#journalHeaderFilterForm').trigger('reset');
             $('.select2').val('').trigger('change');
-
-            // ✔ Reset branch visibility too (optional)
             $('#branchFilter').addClass('d-none');
             $('#toggleBranch').prop('checked', false);
-
-            //loadAccountingYearData();
             appalert('🧹 Filters reset.', 1, 1);
         });
 
         // ==========================
-        // Add Modal
+        // Add / Update Modals
         // ==========================
         $('#btnAddYear').on('click', function () {
             $.ajax({
@@ -423,9 +452,6 @@
             });
         });
 
-        // ==========================
-        // Update Modal
-        // ==========================
         $(document).on('click', '.btn-update-year', function () {
             const id = $(this).data('id');
             if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
@@ -451,92 +477,9 @@
             });
         });
 
-        // ==========================
-        // Generic Save function
-        // ==========================
-        window.CreatAccountingYearSaveAjax = function (form) {
-            if (!$(form).valid()) return false;
-
-            const branchText = $('#BranchId option:selected').text();
-            const yearText = $('#YearB option:selected').text();
-            const statusText = $('#StatusB').val();
-            const openingDateText = $('#openingDate').val() ? new Date($('#openingDate').val()).toLocaleString() : '';
-            const closingDateText = $('#closingDate').val() ? new Date($('#closingDate').val()).toLocaleString() : '';
-
-            if (
-                !$('#BranchId').val() ||
-                !$('#YearB').val() ||
-                !$('#StatusB').val() ||
-                !$('#openingDate').val() ||
-                !$('#closingDate').val()
-            ) {
-                appalert("All fields are required.", 3, 1);
-                return false;
-            }
-
-            const message = `
-                <p>Confirm details before saving:</p>
-                <table class="table table-sm table-bordered">
-                    <tr><th>Branch</th><td>${branchText}</td></tr>
-                    <tr><th>Year</th><td>${yearText}</td></tr>
-                    <tr><th>Status</th><td>${statusText}</td></tr>
-                    <tr><th>StartDate</th><td>${openingDateText}</td></tr>
-                    <tr><th>EndDate</th><td>${closingDateText}</td></tr>
-                </table>
-                <div class="form-check mt-3">
-                    <input type="checkbox" id="alertifyConfirmCheckbox" class="form-check-input">
-                    <label for="alertifyConfirmCheckbox" class="form-check-label">
-                        I confirm the above details.
-                    </label>
-                </div>`;
-
-            alertify.confirm("Confirm Accounting Year", message, function () {
-                if (!$('#alertifyConfirmCheckbox').is(':checked')) {
-                    appalert("Check the box to confirm.", 3, 1);
-                    return false;
-                }
-
-                const token = $('input[name="__RequestVerificationToken"]').val();
-                $.ajax({
-                    type: 'POST',
-                    url: form.action,
-                    data: new FormData(form),
-                    processData: false,
-                    contentType: false,
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    success: function (response) {
-                        if (response?.success) {
-                            appalert(response.message || "✅ Saved successfully!", 1, 1);
-                            alertify.dismissAll();
-                            form.reset();
-                            $('.select2').val(null).trigger('change');
-                            loadAccountingYearData();
-                        } else {
-                            appalert(response?.message || "❌ Save failed.", 2, 1);
-                        }
-                    },
-                    error: function (xhr) {
-                        appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
-                    }
-                });
-            }, function () {
-                appalert("🚫 Operation cancelled.", 2, 1);
-            }).set({
-                labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
-                onshow: function () {
-                    const okBtn = $('.alertify .ajs-ok');
-                    okBtn.prop('disabled', true);
-                    $('#alertifyConfirmCheckbox').off('change').on('change', function () {
-                        okBtn.prop('disabled', !this.checked);
-                    });
-                }
-            });
-
-            return false;
-        };
-
-        // Initial Load
-        // loadAccountingYearData();
+        // Initial load
+        //loadAccountingYearData();
     });
     </script>
 }
+
