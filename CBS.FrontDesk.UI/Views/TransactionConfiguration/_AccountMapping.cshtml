@@ -1,355 +1,30 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.SavingConfiguration
 @using Resources
 <div class="col">
-
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
+            <!-- C Money Sharing GL Mapping Card -->
             <div class="card accordion-item mb-3">
-                <h2 class="accordion-header" id="headingDeliveryAddress">
+                <h2 class="accordion-header" id="headingCMoney">
                     <button type="button"
                             class="accordion-button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapseDeliveryAddress"
+                            data-bs-target="#collapseCMoney"
                             aria-expanded="true"
-                            aria-controls="collapseDeliveryAddress">
-                        @GlobalsAccountMapping.MappingOrdinaryAccountsToTheAccountChart.
+                            aria-controls="collapseCMoney">
+                        @GlobalsAccountMapping.CMoneySharingGLMapping
                     </button>
                 </h2>
-                <div id="collapseDeliveryAddress"
+                <div id="collapseCMoney"
                      class="accordion-collapse collapse show"
+                     aria-labelledby="headingCMoney"
                      data-bs-parent="#collapsibleSection">
                     <div class="accordion-body">
                         <div class="row g-4">
                             @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalsAccountMapping.AccountMappings</legend>
-                                    <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
-                                    <div class="row mt-2 gy-4">
-                                        <div class="col-md-3">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.SavingProduct.Code, new { @class = "form-control", @readonly = true })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.Code, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.ProductCode</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TheUniqueCodeAssignedTo @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.Name, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.ProductName</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheProduct.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.Description</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.ABriefDescription @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdPricipalAccount,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.PrincipalAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.AccountUsedToHoldThePrincipalAmountFor @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdInterestAccount,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.InterestAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TracksInterestIncomeGeneratedFrom @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.InterestExpenseAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TracksInterestExpensesPaidTo @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCashInCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashInCommission, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CashInCommissionAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionsFromCashInOperationsFor @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCashOutCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashOutCommission, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CashOutCommissionAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionsFromCashOutOperationsFor @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdLiassonAccount,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.LiaisonAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.UsedAsATransitAccountForInterBranchTransactionsFor @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdTransferFee,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.TransferCommissionAccount</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionGeneratedFromTransferOperationsFor @Model.SavingProduct.Name.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.TransitChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    "Select an account",
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.TransitChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>Transit Account (Local Use)</label>
-                                                <small class="form-text text-muted">
-                                                    This account is used to temporarily hold internal funds during local processing steps such as teller handovers, internal settlements, or pending adjustments within the same branch.
-                                                </small>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.SuspenseChartOfAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    "Select an account",
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
-                                                <label>Suspense Account (Local Use)</label>
-                                                <small class="form-text text-muted">
-                                                    This account is used to hold unidentified or unbalanced amounts arising from local operations—such as data entry errors, pending approvals, or system mismatches—until they are properly resolved.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.MemberDeficitChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    "Select an account",
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.MemberDeficitChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>Member Deficit Account</label>
-                                                <small class="form-text text-muted">
-                                                    This account tracks any temporary or unresolved negative balances linked to member activity, usually pending reimbursement or correction.
-                                                </small>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </fieldset>
-
-                                <fieldset class="fieldset-custom">
-                                    <legend>@GlobalsAccountMapping.PartnerSharingGLMapping @Model.SavingProduct.Name.</legend>
-                                    <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
-                                    <div class="row mt-2 gy-4">
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.HeadOfficeShareCashInCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.HeadOfficeShareCashOutCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.HeadOfficeShareTransferCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.FluxAndPTMShareCashInCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.FluxAndPTMShareCashOutCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.FluxAndPTMShareTransferCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.CamCCULShareCashInCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsForCamCCULShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.CamCCULShareCashOutCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" }
-                                                )
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission, "",
-                                                    new { @class = "text-danger" }
-                                                )
-                                                <label>@GlobalsAccountMapping.CamCCULShareTransferCommission</label>
-                                                <small class="form-text text-muted">
-                                                    @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsForCamCCULShare @Model.SavingProduct.Name.
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-
-                                </fieldset>
-
-                                <fieldset class="fieldset-custom">
-                                    <legend>@GlobalsAccountMapping.CMoneySharingGLMapping @Model.SavingProduct.Name.</legend>
+                                    <h5 class="text-primary">@GlobalsAccountMapping.CMoneySharingGLMapping @Model.SavingProduct.Name</h5>
                                     <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
                                     <div class="row mt-2 gy-4">
                                         <div class="col-md-12">
@@ -423,427 +98,812 @@
                                     }
                                 </div>
                             }
-
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
-            @if (Model.SavingProduct.AccountType.Contains("Salary"))
-            {
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingPaymentMethod4x">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod4x"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod4x">
-                            @GlobalsAccountMapping.MappingCivilServantAndPrivateInstitutionForOrdinaryAccount @Model.SavingProduct.Name @GlobalsAccountMapping.ToTheMainChartOfAccounts
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod4x"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod4x"
-                         data-bs-parent="#collapsibleSection">
+            <!-- Harmonize Charges Mapping Card -->
+            <div class="card accordion-item mb-3">
+                <h2 class="accordion-header" id="headingHarmonizeCharges">
+                    <button type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseHarmonizeCharges"
+                            aria-expanded="false"
+                            aria-controls="collapseHarmonizeCharges">
+                        @GlobalsAccountMapping.HarmonizeChargesMappingTo @Model.SavingProduct.Name
+                    </button>
+                </h2>
+                <div id="collapseHarmonizeCharges"
+                     class="accordion-collapse collapse"
+                     aria-labelledby="headingHarmonizeCharges"
+                     data-bs-parent="#collapsibleSection">
+                    <div class="accordion-body">
+                        @using (Html.BeginForm("Create", "SavingProductFee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSavingProductFeeMapping(this);" }))
+                        {
+                            <fieldset class="fieldset-custom mb-4">
+                                <legend>@GlobalsAccountMapping.ChargesMapping</legend>
+                                <div class="row g-4">
+                                    @Html.HiddenFor(model => model.SavingProductFee.SavingProductId)
+                                    <input type="hidden" name="option" value="addaccount" id="option" />
 
-                        <div class="accordion-body">
-                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                            {
-                                <fieldset class="fieldset-custom">
-                                    <legend>@GlobalsAccountMapping.AccountMappings</legend>
-                                    <input type="hidden" name="ServiceOption" value="salaryMapping" id="ServiceOption" />
-                                    <div class="row mt-2 gy-4">
-
-                                        <!-- Step 1: Receiving Money from UBC (Civil Servants) -->
-                                        <div class="col-md-12">
-                                            <h5>@GlobalsAccountMapping.Step1ReceivingMoneyFromUBCCivilServants</h5>
-                                            <p>@GlobalsAccountMapping.ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount.</p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CivilServantsSalarySourceAccount</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CivilServantsSalaryDestinationPayableAccount</label>
-                                            </div>
-                                        </div>
-
-                                        <!-- Step 4: Disbursement of Funds (Civil Servants) -->
-                                        <div class="col-md-12">
-                                            <h5>@GlobalsAccountMapping.Step4DisbursementOfFundsIntoSalaryAccountsCivilServants</h5>
-                                            <p>@GlobalsAccountMapping.InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.</p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CivilServantsSalarySourceSalaryAccount</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.CivilServantsSalaryDestinationSalaryProductAccount</label>
-                                            </div>
-                                        </div>
-
-                                        <!-- Step 1: Receiving Money from UBC (Private Institutions) -->
-                                        <div class="col-md-12">
-                                            <h5>@GlobalsAccountMapping.Step1ReceivingMoneyFromUBCPrivateInstitutions</h5>
-                                            <p>@GlobalsAccountMapping.ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount.</p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.PrivateInstitutionsSalarySourceAccount</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.PrivateInstitutionsSalaryDestinationPayableAccount</label>
-                                            </div>
-                                        </div>
-
-                                        <!-- Step 4: Disbursement of Funds (Private Institutions) -->
-                                        <div class="col-md-12">
-                                            <h5>@GlobalsAccountMapping.Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions</h5>
-                                            <p>@GlobalsAccountMapping.InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.</p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.PrivateInstitutionsSalarySourceSalaryAccount</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.PrivateInstitutionsSalaryDestinationSalaryProductAccount</label>
-                                            </div>
-                                        </div>
-
-                                        <!-- Shared Suspense Account -->
-                                        <div class="col-md-12">
-                                            <h5>@GlobalsAccountMapping.SuspenseAccountForSalaryProcessing</h5>
-                                            <p class="text-muted">
-                                                @GlobalsAccountMapping.TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions.
-                                            </p>
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.SuspenseChartOfAccountId,
-                                                    new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectSuspenseAccount,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.SuspenseAccount</label>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                            <label>@GlobalsAccountMapping.AccountName</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductBeingMapped.</small>
                                         </div>
                                     </div>
-                                </fieldset>
-                                <div class="mt-4">
-                                    @if (Model.SavingProduct.Id == null)
-                                    {
-                                        <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.Save</button>
-                                        <input type="hidden" name="Action" value="insert" id="Action" />
-                                    }
-                                    else
-                                    {
-                                        <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.MapAccounts</button>
-                                        @Html.HiddenFor(m => m.SavingProduct.Id)
-                                        <input type="hidden" name="Action" value="update" id="Action" />
-                                    }
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeType,
+                                                new SelectList(ViewBag.FeeType, "Value", "Text"), @GlobalsAccountMapping.SelectFeeType,
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeType, "", new { @class = "text-danger" })
+                                            <label>@GlobalsAccountMapping.OperationType</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ChooseTheTypeOfOperationForThisChargeMapping</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(m => m.SavingProductFee.FeeId,
+                                                new SelectList(ViewBag.Fees, "Id", "Name"), @GlobalsAccountMapping.SelectFees,
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.SavingProductFee.FeeId, "", new { @class = "text-danger" })
+                                            <label>@GlobalsAccountMapping.SelectFeeType</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheFeeTypeToMapToThisProduct</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="mb-2">@GlobalsAccountMapping.FeePolicyType</label>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Local", new { @class = "form-check-input", id = "localOption" })
+                                            <label class="form-check-label" for="localOption">@GlobalsAccountMapping.Local</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ApplicableForChargesWithinTheSameBranch</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Inter_Branch", new { @class = "form-check-input", id = "interBranchOption" })
+                                            <label class="form-check-label" for="interBranchOption">@GlobalsAccountMapping.InterBranch</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ApplicableForInterBranchTransactions</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Self", new { @class = "form-check-input", id = "self" })
+                                            <label class="form-check-label" for="self">@GlobalsAccountMapping.SelfTransfer</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ForSelfToSelfTransfers</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Incoming_International", new { @class = "form-check-input", id = "incoming_International" })
+                                            <label class="form-check-label" for="incoming_International">@GlobalsAccountMapping.IncomingInternational</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ForChargesOnIncomingInternationalTransfers</small>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Outgoing_International", new { @class = "form-check-input", id = "outgoing_International" })
+                                            <label class="form-check-label" for="outgoing_International">@GlobalsAccountMapping.OutgoingInternational</label>
+                                            <small class="form-text text-muted">@GlobalsAccountMapping.ForChargesOnOutgoingInternationalTransfers</small>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
                                 </div>
-                            }
-                        </div>
+
+                                <div class="mt-4">
+                                    @Html.HiddenFor(m => m.SavingProductFee.Id)
+                                    <input type="hidden" name="Action" value="insert" id="Action" />
+                                    <input type="hidden" name="ServiceOption" value="fee_mapping" id="ServiceOption" />
+                                    <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapSelectedChargeType</button>
+                                </div>
+                            </fieldset>
+                        }
+
+                        <fieldset class="fieldset-custom">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <legend class="mb-0">@GlobalsAccountMapping.ChargesMapping</legend>
+                                <div class="demo-inline-spacing">
+                                    <a type="button" onclick="LoadProductFeeMapping('@Model.SavingProduct.Id')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalsAccountMapping.ViewList">
+                                        <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="datalistingview_feeMapping"></div>
+                        </fieldset>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            }
+@* ====================================================
+    COMMENTED OUT SECTIONS BELOW (FOR REFERENCE ONLY)
+    ==================================================== *@
 
-           
-            @if (Model.SavingProduct.AccountType=="Saving")
-            {
-               <div class="card accordion-item mb-3">
-                   <h2 class="accordion-header" id="headingPaymentMethod4">
-                       <button type="button"
-                               class="accordion-button collapsed"
-                               data-bs-toggle="collapse"
-                               data-bs-target="#collapsePaymentMethod4"
-                               aria-expanded="false"
-                               aria-controls="collapsePaymentMethod4">
-                           @GlobalsAccountMapping.MappingWithdrawalFormChargesOf @Model.SavingProduct.Name @GlobalsAccountMapping.ToChartOfAccountEvents
-                       </button>
-                   </h2>
-                   <div id="collapsePaymentMethod4"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingPaymentMethod4"
-                        data-bs-parent="#collapsibleSection">
+@*
+    Commented out: Original accordion header for mapping ordinary accounts
+    <div class="card accordion-item mb-3">
+        <h2 class="accordion-header" id="headingDeliveryAddress">
+            <button type="button"
+                    class="accordion-button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseDeliveryAddress"
+                    aria-expanded="true"
+                    aria-controls="collapseDeliveryAddress">
+                @GlobalsAccountMapping.MappingOrdinaryAccountsToTheAccountChart.
+            </button>
+        </h2>
+*@
 
-                       <div class="accordion-body">
-                           @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                           {
-                               <fieldset class="fieldset-custom">
-                                   <legend>@GlobalsAccountMapping.FormChargesMapping</legend>
-                                   <div class="row g-4">
-                                       @Html.HiddenFor(model => model.SavingProduct.Id)
-                                       <input type="hidden" name="option" value="mapformeventcharges" id="option" />
+@*
+    Commented out: Entire ordinary accounts mapping section including form fields
+    <div id="collapseDeliveryAddress"
+         class="accordion-collapse collapse show"
+         data-bs-parent="#collapsibleSection">
+        <div class="accordion-body">
+            <div class="row g-4">
+                @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                {
+                    <fieldset class="fieldset-custom">
+                        <legend>@GlobalsAccountMapping.AccountMappings</legend>
+                        <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+                        <div class="row mt-2 gy-4">
+                            <div class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SavingProduct.Code, new { @class = "form-control", @readonly = true })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.Code, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.ProductCode</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TheUniqueCodeAssignedTo @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.Name, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.ProductName</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheProduct.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.TextAreaFor(m => m.SavingProduct.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.Description, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.Description</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.ABriefDescription @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdPricipalAccount,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdPricipalAccount, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.PrincipalAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.AccountUsedToHoldThePrincipalAmountFor @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdInterestAccount,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestAccount, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.InterestAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TracksInterestIncomeGeneratedFrom @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdInterestExpenseAccount, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.InterestExpenseAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TracksInterestExpensesPaidTo @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCashInCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashInCommission, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.CashInCommissionAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionsFromCashInOperationsFor @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCashOutCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdCashOutCommission, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.CashOutCommissionAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionsFromCashOutOperationsFor @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdLiassonAccount,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdLiassonAccount, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.LiaisonAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.UsedAsATransitAccountForInterBranchTransactionsFor @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdTransferFee,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" })
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.ChartOfAccountIdTransferFee, "", new { @class = "text-danger" })
+                                    <label>@GlobalsAccountMapping.TransferCommissionAccount</label>
+                                    <small class="form-text text-muted">@GlobalsAccountMapping.TracksCommissionGeneratedFromTransferOperationsFor @Model.SavingProduct.Name.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.TransitChartofAccountId,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        "Select an account",
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.TransitChartofAccountId, "", new { @class = "text-danger" })
+                                    <label>Transit Account (Local Use)</label>
+                                    <small class="form-text text-muted">
+                                        This account is used to temporarily hold internal funds during local processing steps such as teller handovers, internal settlements, or pending adjustments within the same branch.
+                                    </small>
+                                </div>
+                            </div>
 
-                                       <div class="col-md-12">
-                                           <div class="form-floating form-floating-outline">
-                                               @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                               <label>@GlobalsAccountMapping.AccountName</label>
-                                               <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductForWhichChargesAreBeingMapped.</small>
-                                           </div>
-                                       </div>
-
-                                       <div class="col-md-12">
-                                           <div class="form-floating form-floating-outline">
-                                               @Html.DropDownListFor(
-                                                   m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee,
-                                                   new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                   @GlobalsAccountMapping.SelectEventCode,
-                                                   new { @class = "form-control select2", @search = "true" })
-                                               @Html.ValidationMessageFor(
-                                                   m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "",
-                                                   new { @class = "text-danger" })
-                                               <label>@GlobalsAccountMapping.FormFeeForMoralPerson</label>
-                                               <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForMoralPersons.</small>
-                                           </div>
-                                       </div>
-
-                                       <div class="col-md-12">
-                                           <div class="form-floating form-floating-outline">
-                                               @Html.DropDownListFor(
-                                                   m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee,
-                                                   new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                   @GlobalsAccountMapping.SelectEventCode,
-                                                   new { @class = "form-control select2", @search = "true" })
-                                               @Html.ValidationMessageFor(
-                                                   m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "",
-                                                   new { @class = "text-danger" })
-                                               <label>@GlobalsAccountMapping.FormFeeForPhysicalPerson</label>
-                                               <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForPhysicalPersons.</small>
-                                           </div>
-                                       </div>
-
-                                       <div class="col-md-12">
-                                           <div class="form-floating form-floating-outline">
-                                               @Html.DropDownListFor(
-                                                   m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP,
-                                                   new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                   @GlobalsAccountMapping.SelectEventCode,
-                                                   new { @class = "form-control select2", @search = "true" })
-                                               @Html.ValidationMessageFor(
-                                                   m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP, "",
-                                                   new { @class = "text-danger" })
-                                               <label>@GlobalsAccountMapping.FormFeeForCMoney</label>
-                                               <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForThirdPartyApplication.</small>
-                                           </div>
-                                       </div>
-
-                                       <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
-                                   </div>
-
-                                   <div class="mt-4">
-                                       @Html.HiddenFor(m => m.SavingProductFee.Id)
-                                       <input type="hidden" name="Action" value="update" id="Action" />
-                                       <input type="hidden" name="ServiceOption" value="mapformeventcharges" id="ServiceOption" />
-                                       <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapEvents</button>
-                                   </div>
-                               </fieldset>
-                           }
-                       </div>
-                   </div>
-               </div>
-
-            }
-
-            @if (Model.SavingProduct.AccountType.Contains("Salary"))
-            {
-                <div class="card accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingPaymentMethod4">
-                        <button type="button"
-                                class="accordion-button collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapsePaymentMethod4"
-                                aria-expanded="false"
-                                aria-controls="collapsePaymentMethod4">
-                            @GlobalsAccountMapping.MappingWithdrawalFormChargesOf @Model.SavingProduct.Name @GlobalsAccountMapping.ToChartOfAccountEvents
-                        </button>
-                    </h2>
-                    <div id="collapsePaymentMethod4"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingPaymentMethod4"
-                         data-bs-parent="#collapsibleSection">
-
-                        <div class="accordion-body">
-                            @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
-                            {
-                                <fieldset class="fieldset-custom">
-                                    <legend>@GlobalsAccountMapping.FormChargesMappingForSalaries</legend>
-                                    <div class="row g-4">
-                                        @Html.HiddenFor(model => model.SavingProduct.Id)
-                                        <input type="hidden" name="option" value="mapformeventcharges" id="option" />
-
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalsAccountMapping.AccountName</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductForWhichChargesAreBeingMapped.</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-floating form-floating-outline">
-                                                @Html.DropDownListFor(
-                                                    m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee,
-                                                    new SelectList(ViewBag.EventCodes, "Value", "Text"),
-                                                    @GlobalsAccountMapping.SelectEventCode,
-                                                    new { @class = "form-control select2", @search = "true" })
-                                                @Html.ValidationMessageFor(
-                                                    m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee, "",
-                                                    new { @class = "text-danger" })
-                                                <label>@GlobalsAccountMapping.FormFeeForMoralPerson</label>
-                                                <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForSalary.</small>
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
-                                    </div>
-
-                                    <div class="mt-4">
-                                        @Html.HiddenFor(m => m.SavingProductFee.Id)
-                                        <input type="hidden" name="Action" value="update" id="Action" />
-                                        <input type="hidden" name="ServiceOption" value="mapformeventchargessalaries" id="ServiceOption" />
-                                        <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapEvents</button>
-                                    </div>
-                                </fieldset>
-                            }
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.SuspenseChartOfAccountId,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        "Select an account",
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
+                                    <label>Suspense Account (Local Use)</label>
+                                    <small class="form-text text-muted">
+                                        This account is used to hold unidentified or unbalanced amounts arising from local operations—such as data entry errors, pending approvals, or system mismatches—until they are properly resolved.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.MemberDeficitChartofAccountId,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        "Select an account",
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(m => m.SavingProduct.MemberDeficitChartofAccountId, "", new { @class = "text-danger" })
+                                    <label>Member Deficit Account</label>
+                                    <small class="form-text text-muted">
+                                        This account tracks any temporary or unresolved negative balances linked to member activity, usually pending reimbursement or correction.
+                                    </small>
+                                </div>
+                            </div>
                         </div>
+                    </fieldset>
+
+                    <fieldset class="fieldset-custom">
+                        <legend>@GlobalsAccountMapping.PartnerSharingGLMapping @Model.SavingProduct.Name.</legend>
+                        <input type="hidden" name="ServiceOption" value="accountmapping" id="ServiceOption" />
+                        <div class="row mt-2 gy-4">
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashInCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.HeadOfficeShareCashInCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareCashOutCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.HeadOfficeShareCashOutCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdHeadOfficeShareTransferCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.HeadOfficeShareTransferCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsAtTheHeadOffice @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashInCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.FluxAndPTMShareCashInCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareCashOutCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.FluxAndPTMShareCashOutCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdFluxAndPTMShareTransferCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.FluxAndPTMShareTransferCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsForFluxAndPTMShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashInCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.CamCCULShareCashInCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashInCommissionsForCamCCULShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareCashOutCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.CamCCULShareCashOutCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingCashOutCommissionsForCamCCULShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    @Html.DropDownListFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission,
+                                        new SelectList(ViewBag.chartOfAccounts, "Value", "Text"),
+                                        @GlobalsAccountMapping.SelectAnAccount,
+                                        new { @class = "form-control select2", @search = "true" }
+                                    )
+                                    @Html.ValidationMessageFor(
+                                        m => m.SavingProduct.ChartOfAccountIdCamCCULShareTransferCommission, "",
+                                        new { @class = "text-danger" }
+                                    )
+                                    <label>@GlobalsAccountMapping.CamCCULShareTransferCommission</label>
+                                    <small class="form-text text-muted">
+                                        @GlobalsAccountMapping.SelectTheAccountForTrackingTransferCommissionsForCamCCULShare @Model.SavingProduct.Name.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="mt-4">
+                        @if (Model.SavingProduct.Id == null)
+                        {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.Save</button>
+                            <input type="hidden" name="Action" value="insert" id="Action" />
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.MapAccounts</button>
+                            @Html.HiddenFor(m => m.SavingProduct.Id)
+                            <input type="hidden" name="Action" value="update" id="Action" />
+                        }
                     </div>
-                </div>
+                }
+            </div>
+        </div>
+    </div>
+*@
 
-            }
-
+@*
+    Commented out: Salary account mapping section (both civil servants and private institutions)
+    @if (Model.SavingProduct.AccountType.Contains("Salary"))
+    {
         <div class="card accordion-item mb-3">
-            <h2 class="accordion-header" id="headingPaymentMethod3">
+            <h2 class="accordion-header" id="headingPaymentMethod4x">
                 <button type="button"
                         class="accordion-button collapsed"
                         data-bs-toggle="collapse"
-                        data-bs-target="#collapsePaymentMethod3"
+                        data-bs-target="#collapsePaymentMethod4x"
                         aria-expanded="false"
-                        aria-controls="collapsePaymentMethod3">
-                    @GlobalsAccountMapping.HarmonizeChargesMappingTo @Model.SavingProduct.Name
+                        aria-controls="collapsePaymentMethod4x">
+                    @GlobalsAccountMapping.MappingCivilServantAndPrivateInstitutionForOrdinaryAccount @Model.SavingProduct.Name @GlobalsAccountMapping.ToTheMainChartOfAccounts
                 </button>
             </h2>
-            <div id="collapsePaymentMethod3"
+            <div id="collapsePaymentMethod4x"
                  class="accordion-collapse collapse"
-                 aria-labelledby="headingPaymentMethod3"
+                 aria-labelledby="headingPaymentMethod4x"
                  data-bs-parent="#collapsibleSection">
 
                 <div class="accordion-body">
-                    @using (Html.BeginForm("Create", "SavingProductFee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostSavingProductFeeMapping(this);" }))
+                    @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
                     {
                         <fieldset class="fieldset-custom">
-                            <legend>@GlobalsAccountMapping.ChargesMapping</legend>
+                            <legend>@GlobalsAccountMapping.AccountMappings</legend>
+                            <input type="hidden" name="ServiceOption" value="salaryMapping" id="ServiceOption" />
+                            <div class="row mt-2 gy-4">
+
+                                <!-- Step 1: Receiving Money from UBC (Civil Servants) -->
+                                <div class="col-md-12">
+                                    <h5>@GlobalsAccountMapping.Step1ReceivingMoneyFromUBCCivilServants</h5>
+                                    <p>@GlobalsAccountMapping.ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingTheCivilServantsSalaryPayableAccount.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.CivilServantsSalarySourceAccount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.CivilServantsSalaryDestinationPayableAccount</label>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4: Disbursement of Funds (Civil Servants) -->
+                                <div class="col-md-12">
+                                    <h5>@GlobalsAccountMapping.Step4DisbursementOfFundsIntoSalaryAccountsCivilServants</h5>
+                                    <p>@GlobalsAccountMapping.InThisStepTheCivilServantsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalarySourceSalaryChartofaccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.CivilServantsSalarySourceSalaryAccount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.CivilServantsSalaryDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.CivilServantsSalaryDestinationSalaryProductAccount</label>
+                                    </div>
+                                </div>
+
+                                <!-- Step 1: Receiving Money from UBC (Private Institutions) -->
+                                <div class="col-md-12">
+                                    <h5>@GlobalsAccountMapping.Step1ReceivingMoneyFromUBCPrivateInstitutions</h5>
+                                    <p>@GlobalsAccountMapping.ThisStepInvolvesDebitingTheUBCCurrentAccountAndCreditingThePrivateInstitutionsSalaryPayableAccount.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.PrivateInstitutionsSalarySourceAccount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalaryDestinationPayableChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.PrivateInstitutionsSalaryDestinationPayableAccount</label>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4: Disbursement of Funds (Private Institutions) -->
+                                <div class="col-md-12">
+                                    <h5>@GlobalsAccountMapping.Step4DisbursementOfFundsIntoSalaryAccountsPrivateInstitutions</h5>
+                                    <p>@GlobalsAccountMapping.InThisStepThePrivateInstitutionsSalaryPayableAccountIsDebitedAndTheMembersSalaryAccountsAreCredited.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionSalarySourceSalaryChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.PrivateInstitutionsSalarySourceSalaryAccount</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectAnAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.PrivateInstitutionDestinationSalaryProductChartofAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.PrivateInstitutionsSalaryDestinationSalaryProductAccount</label>
+                                    </div>
+                                </div>
+
+                                <!-- Shared Suspense Account -->
+                                <div class="col-md-12">
+                                    <h5>@GlobalsAccountMapping.SuspenseAccountForSalaryProcessing</h5>
+                                    <p class="text-muted">
+                                        @GlobalsAccountMapping.TheSuspenseAccountIsUsedToTemporarilyHoldSalariesForUnidentifiedSalaryEarnersFromTheListOfSalaryDisbursementsProvidedByTheStateOrPrivateInstitutions.
+                                    </p>
+                                    <div class="form-floating form-floating-outline">
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.SuspenseChartOfAccountId,
+                                            new SelectList(ViewBag.chartOfAccounts, "Value", "Text"), @GlobalsAccountMapping.SelectSuspenseAccount,
+                                            new { @class = "form-control select2", @search = "true" })
+                                        @Html.ValidationMessageFor(m => m.SavingProduct.SuspenseChartOfAccountId, "", new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.SuspenseAccount</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="mt-4">
+                            @if (Model.SavingProduct.Id == null)
+                            {
+                                <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.Save</button>
+                                <input type="hidden" name="Action" value="insert" id="Action" />
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary me-2">@GlobalsAccountMapping.MapAccounts</button>
+                                @Html.HiddenFor(m => m.SavingProduct.Id)
+                                <input type="hidden" name="Action" value="update" id="Action" />
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+*@
+
+@*
+    Commented out: Withdrawal Form Charges Mapping for Saving accounts
+    @if (Model.SavingProduct.AccountType=="Saving")
+    {
+       <div class="card accordion-item mb-3">
+           <h2 class="accordion-header" id="headingPaymentMethod4">
+               <button type="button"
+                       class="accordion-button collapsed"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#collapsePaymentMethod4"
+                       aria-expanded="false"
+                       aria-controls="collapsePaymentMethod4">
+                   @GlobalsAccountMapping.MappingWithdrawalFormChargesOf @Model.SavingProduct.Name @GlobalsAccountMapping.ToChartOfAccountEvents
+               </button>
+           </h2>
+           <div id="collapsePaymentMethod4"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingPaymentMethod4"
+                data-bs-parent="#collapsibleSection">
+
+               <div class="accordion-body">
+                   @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                   {
+                       <fieldset class="fieldset-custom">
+                           <legend>@GlobalsAccountMapping.FormChargesMapping</legend>
+                           <div class="row g-4">
+                               @Html.HiddenFor(model => model.SavingProduct.Id)
+                               <input type="hidden" name="option" value="mapformeventcharges" id="option" />
+
+                               <div class="col-md-12">
+                                   <div class="form-floating form-floating-outline">
+                                       @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
+                                       <label>@GlobalsAccountMapping.AccountName</label>
+                                       <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductForWhichChargesAreBeingMapped.</small>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-12">
+                                   <div class="form-floating form-floating-outline">
+                                       @Html.DropDownListFor(
+                                           m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee,
+                                           new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                           @GlobalsAccountMapping.SelectEventCode,
+                                           new { @class = "form-control select2", @search = "true" })
+                                       @Html.ValidationMessageFor(
+                                           m => m.SavingProduct.EventCodeMoralPersonWithdrawalFormFee, "",
+                                           new { @class = "text-danger" })
+                                       <label>@GlobalsAccountMapping.FormFeeForMoralPerson</label>
+                                       <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForMoralPersons.</small>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-12">
+                                   <div class="form-floating form-floating-outline">
+                                       @Html.DropDownListFor(
+                                           m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee,
+                                           new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                           @GlobalsAccountMapping.SelectEventCode,
+                                           new { @class = "form-control select2", @search = "true" })
+                                       @Html.ValidationMessageFor(
+                                           m => m.SavingProduct.EventCodePhysicalPersonWithdrawalFormFee, "",
+                                           new { @class = "text-danger" })
+                                       <label>@GlobalsAccountMapping.FormFeeForPhysicalPerson</label>
+                                       <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForPhysicalPersons.</small>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-12">
+                                   <div class="form-floating form-floating-outline">
+                                       @Html.DropDownListFor(
+                                           m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP,
+                                           new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                           @GlobalsAccountMapping.SelectEventCode,
+                                           new { @class = "form-control select2", @search = "true" })
+                                       @Html.ValidationMessageFor(
+                                           m => m.SavingProduct.EventCodeWithdrawalFormSavingFormFeeFor3PP, "",
+                                           new { @class = "text-danger" })
+                                       <label>@GlobalsAccountMapping.FormFeeForCMoney</label>
+                                       <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForThirdPartyApplication.</small>
+                                   </div>
+                               </div>
+
+                               <input type="hidden" value="@Model.SavingProduct.Id" id="savingproductid" />
+                           </div>
+
+                           <div class="mt-4">
+                               @Html.HiddenFor(m => m.SavingProductFee.Id)
+                               <input type="hidden" name="Action" value="update" id="Action" />
+                               <input type="hidden" name="ServiceOption" value="mapformeventcharges" id="ServiceOption" />
+                               <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapEvents</button>
+                           </div>
+                       </fieldset>
+                   }
+               </div>
+           </div>
+       </div>
+    }
+*@
+
+@*
+    Commented out: Withdrawal Form Charges Mapping for Salary accounts
+    @if (Model.SavingProduct.AccountType.Contains("Salary"))
+    {
+        <div class="card accordion-item mb-3">
+            <h2 class="accordion-header" id="headingPaymentMethod4">
+                <button type="button"
+                        class="accordion-button collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapsePaymentMethod4"
+                        aria-expanded="false"
+                        aria-controls="collapsePaymentMethod4">
+                    @GlobalsAccountMapping.MappingWithdrawalFormChargesOf @Model.SavingProduct.Name @GlobalsAccountMapping.ToChartOfAccountEvents
+                </button>
+            </h2>
+            <div id="collapsePaymentMethod4"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="headingPaymentMethod4"
+                 data-bs-parent="#collapsibleSection">
+
+                <div class="accordion-body">
+                    @using (Html.BeginForm("AddOrUpdate", "TransactionConfiguration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                    {
+                        <fieldset class="fieldset-custom">
+                            <legend>@GlobalsAccountMapping.FormChargesMappingForSalaries</legend>
                             <div class="row g-4">
-                                @Html.HiddenFor(model => model.SavingProductFee.SavingProductId)
-                                <input type="hidden" name="option" value="addaccount" id="option" />
+                                @Html.HiddenFor(model => model.SavingProduct.Id)
+                                <input type="hidden" name="option" value="mapformeventcharges" id="option" />
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.SavingProduct.Name, new { @class = "form-control", @readonly = true })
                                         <label>@GlobalsAccountMapping.AccountName</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductBeingMapped.</small>
+                                        <small class="form-text text-muted">@GlobalsAccountMapping.TheNameOfTheSavingProductForWhichChargesAreBeingMapped.</small>
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SavingProductFee.FeeType,
-                                            new SelectList(ViewBag.FeeType, "Value", "Text"), @GlobalsAccountMapping.SelectFeeType,
+                                        @Html.DropDownListFor(
+                                            m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee,
+                                            new SelectList(ViewBag.EventCodes, "Value", "Text"),
+                                            @GlobalsAccountMapping.SelectEventCode,
                                             new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.SavingProductFee.FeeType, "", new { @class = "text-danger" })
-                                        <label>@GlobalsAccountMapping.OperationType</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ChooseTheTypeOfOperationForThisChargeMapping</small>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.SavingProductFee.FeeId,
-                                            new SelectList(ViewBag.Fees, "Id", "Name"), @GlobalsAccountMapping.SelectFees,
-                                            new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.SavingProductFee.FeeId, "", new { @class = "text-danger" })
-                                        <label>@GlobalsAccountMapping.SelectFeeType</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheFeeTypeToMapToThisProduct</small>
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="mb-2">@GlobalsAccountMapping.FeePolicyType</label>
-                                    <div class="form-check">
-                                        @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Local", new { @class = "form-check-input", id = "localOption" })
-                                        <label class="form-check-label" for="localOption">@GlobalsAccountMapping.Local</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ApplicableForChargesWithinTheSameBranch</small>
-                                    </div>
-                                    <div class="form-check">
-                                        @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Inter_Branch", new { @class = "form-check-input", id = "interBranchOption" })
-                                        <label class="form-check-label" for="interBranchOption">@GlobalsAccountMapping.InterBranch</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ApplicableForInterBranchTransactions</small>
-                                    </div>
-                                    <div class="form-check">
-                                        @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Self", new { @class = "form-check-input", id = "self" })
-                                        <label class="form-check-label" for="self">@GlobalsAccountMapping.SelfTransfer</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ForSelfToSelfTransfers</small>
-                                    </div>
-                                    <div class="form-check">
-                                        @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Incoming_International", new { @class = "form-check-input", id = "incoming_International" })
-                                        <label class="form-check-label" for="incoming_International">@GlobalsAccountMapping.IncomingInternational</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ForChargesOnIncomingInternationalTransfers</small>
-                                    </div>
-                                    <div class="form-check">
-                                        @Html.RadioButtonFor(m => m.SavingProductFee.FeePolicyType, "Outgoing_International", new { @class = "form-check-input", id = "outgoing_International" })
-                                        <label class="form-check-label" for="outgoing_International">@GlobalsAccountMapping.OutgoingInternational</label>
-                                        <small class="form-text text-muted">@GlobalsAccountMapping.ForChargesOnOutgoingInternationalTransfers</small>
+                                        @Html.ValidationMessageFor(
+                                            m => m.SavingProduct.EventCodeAdvanceOfSalaryFormFee, "",
+                                            new { @class = "text-danger" })
+                                        <label>@GlobalsAccountMapping.FormFeeForMoralPerson</label>
+                                        <small class="form-text text-muted">@GlobalsAccountMapping.SelectTheEventCodeAssociatedWithTheWithdrawalFormFeeForSalary.</small>
                                     </div>
                                 </div>
 
@@ -852,29 +912,14 @@
 
                             <div class="mt-4">
                                 @Html.HiddenFor(m => m.SavingProductFee.Id)
-                                <input type="hidden" name="Action" value="insert" id="Action" />
-                                <input type="hidden" name="ServiceOption" value="fee_mapping" id="ServiceOption" />
-                                <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapSelectedChargeType</button>
+                                <input type="hidden" name="Action" value="update" id="Action" />
+                                <input type="hidden" name="ServiceOption" value="mapformeventchargessalaries" id="ServiceOption" />
+                                <button type="submit" class="btn btn-primary">@GlobalsAccountMapping.MapEvents</button>
                             </div>
                         </fieldset>
                     }
                 </div>
-
-                <div class="accordion-body">
-                    <div class="demo-inline-spacing text-end mb-3">
-                        <a type="button" onclick="LoadProductFeeMapping('@Model.SavingProduct.Id')" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalsAccountMapping.ViewList">
-                            <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
-                        </a>
-                    </div>
-                    <fieldset class="fieldset-custom">
-                        <legend>@GlobalsAccountMapping.ChargesMapping</legend>
-                        <div id="datalistingview_feeMapping"></div>
-                    </fieldset>
-                </div>
             </div>
         </div>
-
-        </div>
-    </div>
-</div>
-
+    }
+*@

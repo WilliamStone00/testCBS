@@ -3,82 +3,410 @@
     ViewBag.Title = GlobalOrdinaryAccounts.OrdinaryAccountsManagement;
 }
 @using CBS.FrontDesk.UI.Helper
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12">
-        <div class="card">
-            <!-- Card Header -->
-            <div class="card-header text-center">
-                <h4 class="card-title text-primary">@GlobalOrdinaryAccounts.OrdinaryAccountManagement</h4>
-                <p class="card-text text-muted">
-                    @GlobalOrdinaryAccounts.OrdinaryAccountManagementDescription
-                </p>
-            </div>
 
-            <!-- Accordion -->
-            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
-                <div class="accordion-item active">
-                    <h2 class="accordion-header text-body d-flex justify-content-between align-items-center"
-                        id="accordionPopoutIconThree">
-                        <button type="button"
-                                class="accordion-button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordionPopoutIcon-3"
-                                aria-expanded="true"
-                                aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cog me-2"></i>
-                            @GlobalOrdinaryAccounts.OrdinaryAccountsManagement
-                        </button>
-                    </h2>
-                    <div id="accordionPopoutIcon-3"
-                         class="accordion-collapse collapse show"
-                         data-bs-parent="#accordionPopoutIcon">
-                        <div class="accordion-body">
-                            <!-- Main View Change -->
-                            <div id="mainviewChange">
-                                <div class="change-group">
-                                    <!-- Actions Section -->
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h5 class="text-success">Actions</h5>
-                                                <div class="btn-group">
-                                                    <!-- View List Button -->
-                                                    <a type="button"
-                                                       onclick="LoadDataGen('TransactionConfiguration', 'myDataTable_product', '_ProductData', 0, 'datalistingview', null, 'savingproduct', 'list')"
-                                                       class="btn btn-default btn-sm"
-                                                       data-bs-toggle="tooltip"
-                                                       title=" @GlobalOrdinaryAccounts.ViewListDescription">
-                                                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalOrdinaryAccounts.ViewList
-                                                    </a>
-                                                    <!-- Add New Button -->
-                                                    <a type="button"
-                                                       onclick="AddORUpdateGen(null, 'datalistingview', '_ProductConfig', 'new', 'TransactionConfiguration', 'savingproduct')"
-                                                       class="btn btn-default btn-sm"
-                                                       data-bs-toggle="tooltip"
-                                                       title="@GlobalOrdinaryAccounts.AddNewDescription">
-                                                        <i class="mdi mdi-plus mdi-18px"></i> @GlobalOrdinaryAccounts.AddNew
-                                                    </a>
-                                                </div>
-                                            </div>
+<div class="container">
+    <!-- or container-fluid to span full width -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h4 class="card-title text-primary">@GlobalOrdinaryAccounts.OrdinaryAccountManagement</h4>
+                    <p class="card-text text-muted">@GlobalOrdinaryAccounts.OrdinaryAccountManagementDescription</p>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <!-- Keep the accordion inside the same col-12 so widths match exactly -->
+            <div id="accordionPopoutIcon-3" class="accordion-collapse collapse show" data-bs-parent="#accordionPopoutIcon">
+                <div class="accordion-body p-0">
+                    <!-- optional: remove accordion body padding if present -->
+                    <div id="mainviewChange">
+                        <div class="change-group">
+                            <div class="card mb-2">
+
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="text-success"></h5>
+                                        <div class="btn-group">
+                                            <!-- View List Button -->
+
+                                            <a type="button"
+                                               href="@Url.Action("Index", "TransactionConfiguration")"
+                                               class="btn btn-default btn-sm text-info"
+                                               data-bs-toggle="tooltip"
+                                               title=" @GlobalOrdinaryAccounts.ViewListDescription">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalOrdinaryAccounts.ViewList
+                                            </a>
+                                            @*<a type="button"
+                       onclick="LoadDataGen('TransactionConfiguration', 'myDataTable_product', '_ProductData', 0, 'datalistingview', null, 'savingproduct', 'list')"
+                       class="btn btn-default btn-sm"
+                       data-bs-toggle="tooltip"
+                       title=" @GlobalOrdinaryAccounts.ViewListDescription">
+                        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalOrdinaryAccounts.ViewList
+                    </a>*@
+
+                                            <!-- Add New Button -->
+                                            <a type="button"
+                                               onclick="AddORUpdateGen(null, 'datalistingview', '_ProductConfig', 'new', 'TransactionConfiguration', 'savingproduct')"
+                                               class="btn btn-default btn-sm text-primary"
+                                               data-bs-toggle="tooltip"
+                                               title="@GlobalOrdinaryAccounts.AddNewDescription">
+                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalOrdinaryAccounts.AddNew
+                                            </a>
                                         </div>
                                     </div>
-                                    <!-- Data Listing View -->
-                                    <div id="datalistingview">
-                                        @Html.Partial("_ProductData")
-                                    </div>
+
                                 </div>
                             </div>
-                        </div>
+                            <div id="datalistingview">
+                                @Html.Partial("_ProductData")
+                            </div>
+                       
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/Js/Crud/DropDownLoader.js"></script>
 
+    <script>
+    // Global DataTable variable
+    var savingProductsTable = null;
+
+    // Function to initialize or reinitialize DataTable
+    function initializeDataTable(tableData) {
+        console.log('Initializing DataTable with', tableData.length, 'records');
+
+        // Check if DataTable is already initialized
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            console.log('Destroying existing DataTable');
+            savingProductsTable.destroy();
+        }
+
+        // Initialize new DataTable
+        savingProductsTable = $('#myDataTable').DataTable({
+            data: tableData,
+            serverSide: false, // Client-side processing
+            responsive: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            lengthMenu: [10, 25, 50, 100],
+            pageLength: 10,
+            order: [[0, 'asc']], // Sort by Code column
+
+            // Column definitions - using your model properties
+            columns: [
+                {
+                    data: 'Code',
+                    name: 'Code',
+                    width: '10%'
+                },
+                {
+                    data: 'Name',
+                    name: 'Name',
+                    width: '35%'
+                },
+                {
+                    data: 'AccountType',
+                    name: 'AccountType',
+                    width: '13%'
+                },
+                {
+                    data: null,
+                    name: 'Range',
+                    width: '20%',
+                    render: function(data, type, row) {
+                        // Check if MinAmount and MaxAmount exist
+                        var minAmount = row.MinAmount || 0;
+                        var maxAmount = row.MaxAmount || 0;
+
+                        // Format numbers with thousands separator and 1 decimal place
+                        var formatNumber = function(num) {
+                            return parseFloat(num).toLocaleString('en-US', {
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1
+                            });
+                        };
+
+                        return formatNumber(minAmount) + ' - ' + formatNumber(maxAmount);
+                    }
+                },
+                {
+                    data: 'ActiveStatus',
+                    name: 'Status',
+                    width: '7%',
+                    render: function(data) {
+                        // Check if active (handle both boolean and string)
+                        var isActive = data === true || data === 'true' || data === 'True';
+
+                        if (isActive) {
+                            return '<span class="badge bg-info">@Globals_ProductData.Active</span>';
+                        } else {
+                            return '<span class="badge bg-warning">@Globals_ProductData.Inactive</span>';
+                        }
+                    }
+                },
+                {
+                    data: null,
+                    name: 'Action',
+                    width: '15%',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        // Check if product is used for teller provisioning
+                        var isUsedForTeller = row.IsUsedForTellerProvisioning === true ||
+                            row.IsUsedForTellerProvisioning === 'true';
+
+                        var productName = escapeHtml(row.Name || row.name || 'Product');
+                        var recordId = encodeURIComponent(row.Id || row.id || '');
+                        var safeId = (row.Id || '').toString().replace(/[^a-zA-Z0-9_-]/g, '') || 'x';
+
+                        if (isUsedForTeller) {
+                            // Only Edit link when used for teller provisioning
+                            return '<a href="#" onclick="AddORUpdateGen(\'' + recordId + '\',\'datalistingview\',\'_ProductConfig\',\'get\',\'TransactionConfiguration\',\'savingproduct\')" class="mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="@Globals_ProductData.SelectToEdit ' + productName + '">@Globals_ProductData.Edit</a>';
+                        } else {
+                            // Both Edit and Delete links
+                            return '<a href="#" onclick="AddORUpdateGen(\'' + recordId + '\',\'datalistingview\',\'_ProductConfig\',\'get\',\'TransactionConfiguration\',\'savingproduct\')" class="mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="@Globals_ProductData.SelectToEdit ' + productName + '">@Globals_ProductData.Edit</a> | ' +
+                                   '<a href="#" class="mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="@Globals_ProductData.Delete ' + productName + '" onclick="DeleteRecordDataTable(\'TransactionConfiguration\',\'' + recordId + '\',\'myDataTable_product\',\'_ProductData\',0,\'myDataTable\')">@Globals_ProductData.Delete</a>';
+                        }
+                    }
+                }
+            ],
+
+            // Language configuration
+            language: {
+                emptyTable: "No saving products available",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                infoFiltered: "(filtered from _MAX_ total entries)",
+                lengthMenu: "Show _MENU_ entries",
+                loadingRecords: "Loading...",
+                processing: "Processing...",
+                search: "Search:",
+                zeroRecords: "No matching records found",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
+                }
+            },
+
+            // Callback when table is initialized
+            initComplete: function() {
+                console.log('DataTable initialized successfully');
+
+                // Initialize Bootstrap tooltips for action links
+                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                    $('[data-bs-toggle="tooltip"]').each(function() {
+                        new bootstrap.Tooltip(this);
+                    });
+                }
+            },
+
+            // Callback when table is redrawn
+            drawCallback: function() {
+                // Reinitialize tooltips after table redraw
+                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                    $('[data-bs-toggle="tooltip"]').each(function() {
+                        var tooltip = bootstrap.Tooltip.getInstance(this);
+                        if (tooltip) {
+                            tooltip.dispose();
+                        }
+                        new bootstrap.Tooltip(this);
+                    });
+                }
+            }
+        });
+    }
+
+    // Function to refresh table data
+    function refreshTableData() {
+        console.log('Refreshing table data...');
+
+        // Show loading state on button
+        var refreshBtn = $('#refreshTableBtn');
+        var originalHtml = refreshBtn.html();
+        refreshBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Refreshing...');
+        refreshBtn.prop('disabled', true);
+
+        // Show loading overlay on table
+        showTableLoading(true);
+
+        // Call the same controller action that loads the page
+        $.ajax({
+            url: window.location.href, // Refresh current page data
+            type: 'GET',
+            dataType: 'html',
+            success: function(response) {
+                console.log('Successfully received response from server');
+
+                // Create a temporary div to parse the HTML response
+                var tempDiv = $('<div>').html(response);
+
+                // Find the hidden field with updated data
+                var newJsonData = tempDiv.find('#savingProductsData').val();
+
+                if (newJsonData) {
+                    try {
+                        // Parse the JSON data
+                        var newData = JSON.parse(newJsonData);
+                        console.log('Parsed', newData.length, 'records from response');
+
+                        // Update the hidden field in current page
+                        $('#savingProductsData').val(newJsonData);
+
+                        // Reinitialize the DataTable with new data
+                        initializeDataTable(newData);
+
+                        // Show success message
+                        showMessage('Table data refreshed successfully!', 'success');
+                    } catch (e) {
+                        console.error('Error parsing JSON data:', e);
+                        showMessage('Error refreshing data: Invalid data format', 'error');
+                    }
+                } else {
+                    console.warn('No data found in response');
+                    showMessage('No data found in response', 'warning');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error refreshing table:', error);
+                showMessage('Error refreshing table data: ' + error, 'error');
+            },
+            complete: function() {
+                // Restore button to original state
+                refreshBtn.html(originalHtml);
+                refreshBtn.prop('disabled', false);
+
+                // Hide loading overlay
+                showTableLoading(false);
+            }
+        });
+    }
+
+    // Helper function to show/hide loading overlay
+    function showTableLoading(show) {
+        var tableContainer = $('.table-responsive');
+
+        if (show) {
+            // Add loading overlay
+            tableContainer.css('position', 'relative');
+            tableContainer.append(`
+                <div id="tableLoadingOverlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); z-index: 999; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-2">Loading data...</div>
+                    </div>
+                </div>
+            `);
+        } else {
+            // Remove loading overlay
+            $('#tableLoadingOverlay').remove();
+            tableContainer.css('position', '');
+        }
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        if (!text) return '';
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Function to show user messages
+    function showMessage(message, type) {
+        // Remove any existing messages
+        $('.alert-message').remove();
+
+        var alertClass = 'alert-success';
+        var icon = 'mdi-check';
+
+        if (type === 'error') {
+            alertClass = 'alert-danger';
+            icon = 'mdi-alert-circle';
+        } else if (type === 'warning') {
+            alertClass = 'alert-warning';
+            icon = 'mdi-alert';
+        } else if (type === 'info') {
+            alertClass = 'alert-info';
+            icon = 'mdi-information';
+        }
+
+        // Create message element
+        var messageHtml = `
+            <div class="alert ${alertClass} alert-dismissible fade show alert-message" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1060; min-width: 300px;">
+                <div class="d-flex align-items-center">
+                    <span class="tf-icons mdi ${icon} me-2"></span>
+                    <div>${escapeHtml(message)}</div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+        // Add to page
+        $('body').append(messageHtml);
+
+        // Auto-remove after 5 seconds
+        setTimeout(function() {
+            $('.alert-message').alert('close');
+        }, 5000);
+    }
+
+    // Initialize on page load
+    $(document).ready(function() {
+        console.log('Page loaded, initializing DataTable...');
+
+        // Get initial data from hidden field
+        var initialDataJson = $('#savingProductsData').val();
+        var initialData = [];
+
+        if (initialDataJson) {
+            try {
+                initialData = JSON.parse(initialDataJson);
+                console.log('Loaded', initialData.length, 'records from initial data');
+            } catch (e) {
+                console.error('Error parsing initial data:', e);
+                showMessage('Error loading table data', 'error');
+                return;
+            }
+        }
+
+        // Initialize DataTable with initial data
+        if (initialData.length > 0) {
+            initializeDataTable(initialData);
+        } else {
+            console.warn('No initial data found');
+            $('#myDataTable tbody').html('<tr><td colspan="6" class="text-center">No data available</td></tr>');
+        }
+
+        // Set up click handler for refresh button
+        $('#refreshTableBtn').on('click', function(e) {
+            e.preventDefault();
+            refreshTableData();
+        });
+
+        console.log('Page initialization complete');
+    });
+    </script>
 
 }
