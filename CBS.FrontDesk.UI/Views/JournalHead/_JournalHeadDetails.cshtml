@@ -212,17 +212,17 @@
                 {
                     <tr><th class="bg-label">Initiated By</th><td>@Model.InitiatedBy</td></tr>
                 }
-                @if (Model.InitiatedDate != default(DateTime))
+                @if (Model.InitiationDate != default(DateTime))
                 {
-                    <tr><th class="bg-label">Initiated Date</th><td>@Model.InitiatedDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    <tr><th class="bg-label">Initiated Date</th><td>@Model.InitiationDate.ToString()</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.ApprovedBy))
                 {
                     <tr><th class="bg-label">Approved By</th><td>@Model.ApprovedBy</td></tr>
                 }
-                @if (Model.ApprovedDate != default(DateTime))
+                @if (Model.ApprovalDate != default(DateTime))
                 {
-                    <tr><th class="bg-label">Approved Date</th><td>@Model.ApprovedDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    <tr><th class="bg-label">Approved Date</th><td>@Model.ApprovalDate.ToString()</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.RejectedBy))
                 {
@@ -230,7 +230,7 @@
                 }
                 @if (Model.RejectedDate != default(DateTime))
                 {
-                    <tr><th class="bg-label">Rejected Date</th><td>@Model.RejectedDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                    <tr><th class="bg-label">Rejected Date</th><td>@Model.RejectedDate.ToString()</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))
                 {
