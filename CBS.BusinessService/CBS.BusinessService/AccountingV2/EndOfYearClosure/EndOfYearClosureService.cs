@@ -109,21 +109,21 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
 
 
 
-        public async Task<List<EndOfYearTask>> GetAllEndTaskAsync()
+        public async Task<List<EndOfYearConfig>> GetAllEndTaskAsync()
         {
             try
             {
-                var apiResponse = await _apiCallerHelper.GetAsync<ResponseObject<List<EndOfYearTask>>>(APICallHelper.GetAllEndOfYearTask);
+                var apiResponse = await _apiCallerHelper.GetAsync<ResponseObject<List<EndOfYearConfig>>>(APICallHelper.GetAllEndOfYearTask);
 
                 if (apiResponse == null || apiResponse.ApiResponseData == null)
-                    return new List<EndOfYearTask>();
+                    return new List<EndOfYearConfig>();
 
-                return apiResponse.ApiResponseData.Data ?? new List<EndOfYearTask>();
+                return apiResponse.ApiResponseData.Data ?? new List<EndOfYearConfig>();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[GetAllAsync] Error fetching all Accounting Year: {ex.Message}");
-                return new List<EndOfYearTask>();
+                return new List<EndOfYearConfig>();
             }
         }
 

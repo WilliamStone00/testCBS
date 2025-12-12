@@ -18,7 +18,7 @@
                     End Of Year Adjustment Entry
                 </h4>
 
-                <div class="col-md-6 mb-2">
+                <div class="col-md-6 mb-2 text-end">
                     @Html.TextBoxFor(m => m.AccountingDate,
                         new
                             {
@@ -37,22 +37,31 @@
 
             <!-- ================= INTERBRANCH ================= -->
             <div class="mb-2">
-                <div class="form-check form-switch mb-1">
+                @*<div class="form-check form-switch mb-1">
                     <input class="form-check-input" type="checkbox" id="enableInterbranchCopy">
+                    <label class="form-check-label fw-bold" for="enableInterbranchCopy">
+                        @ManualEntry.EnableInterbranchTransaction
+                    </label>
+                </div>*@
+
+                <div class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="enableInterbranchCopy" disabled="disabled">
                     <label class="form-check-label fw-bold" for="enableInterbranchCopy">
                         @ManualEntry.EnableInterbranchTransaction
                     </label>
                 </div>
 
+
                 <div class="row g-2 align-items-end">
-                    <div class="col-md-4">
+                  <div class="col-md-8">
                         <label for="BranchIdCopy" class="form-label fw-bold">Branch</label>
-                        @Html.DropDownList("BranchIdCopy",
+                        @Html.DropDownList(
+                            "BranchIdCopy",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                             "--- Select Branch ---",
-                            new { @class = "form-control select2 mb-1", id = "BranchIdCopy" })
-                    </div>
-
+                            new { @class = "form-control select2 mb-1", id = "BranchIdCopy", disabled = "disabled" }
+                        )
+                  </div>  
                     <div class="col-md-4" id="counterpartyBranchDivCopy" style="display:none;">
                         <label for="CounterpartyBranchIdCopy" class="form-label fw-bold">@ManualEntry.CounterpartyBranch</label>
                         @Html.DropDownList(

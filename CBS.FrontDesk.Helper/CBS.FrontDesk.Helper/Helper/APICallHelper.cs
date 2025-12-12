@@ -1783,11 +1783,18 @@ namespace CBS.FrontDesk.Helper
         public static string ReviewClosure = "/api/v1/YearEndChecklistStatus/set";
 
 
-        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+      
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
         public static string PostJournalAdjustment = "/api/v1/ops/generic";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
 
+
+
+        //----------------------------End of year config ---------------------------------------
+        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+        public static string GetEndofYearConfigById = "/api/v1/YearEndChecklistDefinition/{0}";
+        public static string SaveEndofYearConfig = "/api/v1/YearEndChecklistDefinition/add";
+        public static string UpdateEndofYearConfig = "/api/v1/YearEndChecklistDefinition/update";
 
     }
 }

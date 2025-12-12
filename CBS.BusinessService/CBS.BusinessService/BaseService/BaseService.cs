@@ -1926,6 +1926,12 @@ namespace BusinessServices
             return string.IsNullOrWhiteSpace(data) ? string.Empty : data;
         }
 
+        public string GetHeadOfficeBranchID()
+        {
+            return "1"; // Hard-coded Head Office Branch ID
+        }
+
+
         public bool IsMainBranch()
         {
             var value = HttpContext.Current?.Session?["IsHavingBank"];

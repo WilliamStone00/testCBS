@@ -77,30 +77,10 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
 
 
 
-    public class EndOfYearTask
-    {
-        public string Id { get; set; }
-        public string Code { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int DisplayOrder { get; set; }
-        public bool IsMandatory { get; set; }
-        public bool IsActive { get; set; }
-        public string Category { get; set; }
-
-        public string Comment { get; set; }
-        public string AccountingYearId { get; set; }
-      
+  
 
 
-    }
-
-
-    public class EndOfYearTaskViewModel
-    {
-        public List<EndOfYearTask> Tasks { get; set; } = new List<EndOfYearTask>();
-       
-    }
+    
 
 
     public class ReviewClosureRequest
@@ -120,25 +100,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure
 
 
 
-    public class YearEndChecklistStatusQuery
-    {
-        public DataTableOptions Options { get; set; }
-        public YearEndChecklistStatusQuery() { Options = new DataTableOptions(); }
-
-        public string BranchId { get; set; } = null;
-        public string AccountingYearId { get; set; }
-        public string AdjustmentType { get; set; }
-        public string Id { get; set; }
-
-        //public string OperationCode { get; set; }
-        //public string Reference { get; set; } = null;
-        //public DateTime? StartAccountingDate { get; set; }
-        //public DateTime? EndAccountingDate { get; set; }
-        //public DateTime? StartDate { get; set; }    // For filtering creation date range
-        //public DateTime? EndDate { get; set; }
-        //public string TicketSource { get; set; }
-    }
-
+   
 
     public class CloseOfYear
     {
