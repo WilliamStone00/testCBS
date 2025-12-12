@@ -128,6 +128,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                 entry.StatusB = entry.Status.ToLower();
 
                 entry.YearB = entry.Year.ToString();
+
+                ViewBag.StartDate = entry.StartDate?.ToString("yyyy-MM-dd") ?? "";
+                ViewBag.EndDate = entry.EndDate?.ToString("yyyy-MM-dd") ?? "";
+
                 // Return the partial view that will be injected into the modal
                 return PartialView("_Update", entry);
             }
@@ -136,7 +140,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                 return new HttpStatusCodeResult(500, ex.Message);
             }
         }
-
+        
+        
         [HttpPost]
 
         public async Task<ActionResult> CreateOrUpdate(accountingyear model)
