@@ -127,7 +127,7 @@
     <value>Use this section to map chart of account configurations to the saving product. This ensures accurate tracking of transactions related to the product.</value>
   </data>
   <data name="AccountMappingFor" xml:space="preserve">
-    <value>Account Mapping for</value>
+    <value>C Money And Harmonized Charges Mapping For</value>
   </data>
   <data name="AccountMappings" xml:space="preserve">
     <value>Account Mappings</value>

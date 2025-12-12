@@ -67,6 +67,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
 
         [Required(ErrorMessage = "Fallback suspense account is required.")]
         public string FallbackSuspenseAccountId { get; set; }
+        [Required(ErrorMessage = "Cash reversal account is required.")]
+        public string CashReversalAccountId { get; set; }
+
     }
 
 
@@ -123,7 +126,8 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public string MomocashAccountName { get; set; }
         public string FallbackSuspenseAccountName { get; set; }
         public string FallbackSuspenseAccountNumber { get; set; }
-
+        public string CashReversalAccountName { get; set; }
+        public string CashReversalAccountNumber { get; set; }
     }
 
     // DTO used only by the Details partial
@@ -165,8 +169,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.BranchCashConfigV
         public AccountPair Momocash { get; set; }
         public AccountPair MomocashCommission { get; set; }
         public AccountPair FallbackSuspense { get; set; }
-
-        
+        public AccountPair CashReversal { get; set; }
     }
 
 

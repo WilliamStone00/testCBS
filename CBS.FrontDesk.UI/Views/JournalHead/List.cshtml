@@ -204,6 +204,10 @@
 </div>
 
 
+
+
+
+
 @section Scripts {
 
     <script>
@@ -267,11 +271,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                                <div class="text-center">
-                                    <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                        <i class="mdi mdi-eye-outline me-1"></i> Details
-                                    </button>
-                                </div>`;
+                                    <div class="text-center">
+                                        <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                            <i class="mdi mdi-eye-outline me-1"></i> Details
+                                        </button>
+                                    </div>`;
                         }
                     }
                 ]
@@ -303,7 +307,7 @@
             $('#journalHeaderFilterForm').trigger('reset');
             $('.select2').val('').trigger('change');
             $('#branchFilter, #dateFilters').addClass('d-none');
-            loadJournalData();
+            //loadJournalData();
             filtersApplied = false;
         }
 
@@ -434,6 +438,13 @@
             });
 
         });
+
+
+
+
+
+
+
 
     </script>
 

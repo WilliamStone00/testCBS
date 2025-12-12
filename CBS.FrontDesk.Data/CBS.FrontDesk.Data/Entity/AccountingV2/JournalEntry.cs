@@ -144,7 +144,18 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string ModifiedBy { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
         public string CreatedBy { get; set; }
-       
+
+        public string JournalStatus { get; set; }
+        public string DailyOperator { get; set; }
+        public string Source { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTime InitiatedDate { get; set; }
+        public string InitiatedBy { get; set; }
+        public DateTime RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
+
+
     }
 
     public class ExportWorkflowRequest
@@ -164,6 +175,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     {
         public List<JournalHead> JournalData { get; set; }
         public ExportOptions ExportOptions { get; set; }
+        public JournalEntryQuery Filters { get; set; }
     }
 
     public class ExportOptions
@@ -337,9 +349,41 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? EndAccountingDate { get; set; }
         public DateTime? StartDate { get; set; }    // For filtering creation date range
         public DateTime? EndDate { get; set; }
-        public string TicketSource { get; set; } 
+        public string TicketSource { get; set; }
+        public string JournalStatus { get; set; }
+        public string DailyOperator { get; set; }
+        public bool IsInterbranch { get; set; }
+        public string Source { get; set; }
     }
 
+
+    public class GetFirlterData
+    {
+        public string BranchId { get; set; }
+        public string JournalStatus { get; set; }
+        public string Source { get; set; }
+    }
+
+    public class FilterResponse
+    {
+        public List<OperationCodeDto> OperationCodes { get; set; }
+        public List<InitiatedByDto> InitiatedBy { get; set; }
+        public List<ApprovedByDto> ApprovedBy { get; set; }
+    }
+
+    public class OperationCodeDto
+    {
+        public string Code { get; set; }
+    }
+
+    public class InitiatedByDto
+    {
+        public string Name { get; set; }
+    }
+    public class ApprovedByDto
+    {
+        public string Name { get; set; }
+    }
     public class GetallWorkFlowTicketsQuery
     {
 

@@ -40,6 +40,40 @@
     </div>
 </div>
 
+      @if (string.IsNullOrEmpty(Model?.Id))
+      {
+                <div class="card mb-4">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="card-title mb-0 text-primary">
+                                <i class="mdi mdi-cog-outline me-2"></i>
+                            </label>
+                            <div>
+
+                                <button type="button"
+                                        onclick="window.location.href='@Url.Action("List", "AccountTypeGroup")'"
+                                        class="btn btn-label-primary btn-sm me-2"
+                                        data-bs-toggle="tooltip"
+                                        title="View All Groups">
+                                    <i class="mdi mdi-view-list mdi-18px"></i> View Groups List
+                                </button>
+
+                                <button type="button"
+                                        onclick="formManager.showCreateForm()"
+                                        class="btn btn-label-secondary btn-sm"
+                                        data-bs-toggle="tooltip"
+                                        title="Add New Group">
+                                    <i class="mdi mdi-plus mdi-18px"></i> Add New Group
+                                </button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+       }
+
+
 <div class="card">
     <div class="modal-body">
         @using (Html.BeginForm("CreateOrUpdate", "AccountTypeGroup", FormMethod.Post,

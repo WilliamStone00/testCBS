@@ -1,102 +1,112 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition.AccountTypeDefinitionDto
 
 <div class="row">
-    <div class="col-md-6">
-        <h6 class="text-primary mb-3">Basic Information</h6>
-        <table class="table table-sm table-bordered">
-            <tr><td class="fw-bold">Code:</td><td>@Model.Code</td></tr>
-            <tr><td class="fw-bold">Name:</td><td>@Model.Name</td></tr>
-            <tr><td class="fw-bold">Short Name:</td><td>@Model.ShortName</td></tr>
-            <tr><td class="fw-bold">Description:</td><td>@Model.Description</td></tr>
-        </table>
-    </div>
+    <div class="col-12">
+        <div class="card bg-light mb-3 shadow-sm">
+            <div class="card-body text-center">
+                <h3 class="text-primary fw-bold mb-2">
+                    <i class="mdi mdi-account-cog-outline me-2"></i> Account Type Definition Details
+                </h3>
 
-    <div class="col-md-6">
-        <h6 class="text-primary mb-3">Classification</h6>
-        <table class="table table-sm table-bordered">
-            <tr><td class="fw-bold">Group:</td><td>@(Model.AccountTypeGroup?.Name ?? "N/A")</td></tr>
-            <tr><td class="fw-bold">Parent:</td><td>@(Model.Parent?.Name ?? "None")</td></tr>
-            <tr><td class="fw-bold">Display Order:</td><td>@Model.DisplayOrder</td></tr>
-        </table>
-    </div>
-</div>
+                <p class="text-muted mb-3" style="font-size:0.95rem;">
+                    Define and manage different types of accounts within the system for better classification and control.
+                </p>
 
-<div class="row mt-3">
-    <div class="col-md-6">
-        <h6 class="text-primary mb-3">Status</h6>
-        <table class="table table-sm table-bordered">
-            <tr>
-                <td class="fw-bold">Active:</td>
-                <td>
-                    @if (Model.IsActive)
-                    {
-                        <span class="badge bg-success">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">No</span>
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td class="fw-bold">System Standard:</td>
-                <td>
-                    @if (Model.IsSystemStandard)
-                    {
-                        <span class="badge bg-info">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No</span>
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td class="fw-bold">User Standard:</td>
-                <td>
-                    @if (Model.IsUserStandard)
-                    {
-                        <span class="badge bg-warning">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No</span>
-                    }
-                </td>
-            </tr>
-        </table>
-    </div>
+                <div class="alert alert-info py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Account types define the behavior and hierarchy of accounts within the financial system.
+                </div>
 
-    <div class="col-md-6">
-        <h6 class="text-primary mb-3">Hierarchy</h6>
-        <table class="table table-sm table-bordered">
-            <tr>
-                <td class="fw-bold">Children Count:</td>
-                <td>@(Model.Children?.Count ?? 0)</td>
-            </tr>
-            <tr>
-                <td class="fw-bold">Is Deleted:</td>
-                <td>
-                    @if (Model.IsDeleted)
-                    {
-                        <span class="badge bg-danger">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-success">No</span>
-                    }
-                </td>
-            </tr>
-        </table>
+                <hr class="mt-3" style="border-width:2px; border-color:rgba(128,128,128,0.5);" />
+            </div>
+        </div>
     </div>
 </div>
 
-@if (Model.Children?.Any() == true)
-{
-    <div class="row mt-3">
-        <div class="col-12">
-            <h6 class="text-primary mb-3">Child Account Types</h6>
-            <div class="list-group">
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+
+        <div class="row g-4">
+            <!-- BASIC INFORMATION -->
+            <div class="col-md-6">
+                <h6 class="text-primary mb-2 fw-bold">Basic Information</h6>
+                <table class="table table-sm table-striped border rounded">
+                    <tr><td class="fw-bold">Code</td><td>@Model.Code</td></tr>
+                    <tr><td class="fw-bold">Name</td><td>@Model.Name</td></tr>
+                    <tr><td class="fw-bold">Short Name</td><td>@Model.ShortName</td></tr>
+                    <tr><td class="fw-bold">Description</td><td>@Model.Description</td></tr>
+                </table>
+            </div>
+
+            <!-- CLASSIFICATION -->
+            <div class="col-md-6">
+                <h6 class="text-primary mb-2 fw-bold">Classification</h6>
+                <table class="table table-sm table-striped border rounded">
+                    <tr><td class="fw-bold">Group</td><td>@(Model.AccountTypeGroup?.Name ?? "N/A")</td></tr>
+                    <tr><td class="fw-bold">Parent</td><td>@(Model.Parent?.Name ?? "None")</td></tr>
+                    <tr><td class="fw-bold">Display Order</td><td>@Model.DisplayOrder</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row g-4">
+            <!-- STATUS -->
+            <div class="col-md-6">
+                <h6 class="text-primary mb-2 fw-bold">Status</h6>
+                <table class="table table-sm table-striped border rounded">
+                    <tr>
+                        <td class="fw-bold">Active</td>
+                        <td>
+                            <span class="badge bg-@(Model.IsActive ? "success" : "danger")">
+                                @(Model.IsActive ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">System Standard</td>
+                        <td>
+                            <span class="badge bg-@(Model.IsSystemStandard ? "info" : "secondary")">
+                                @(Model.IsSystemStandard ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">User Standard</td>
+                        <td>
+                            <span class="badge bg-@(Model.IsUserStandard ? "warning text-dark" : "secondary")">
+                                @(Model.IsUserStandard ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- HIERARCHY -->
+            <div class="col-md-6">
+                <h6 class="text-primary mb-2 fw-bold">Hierarchy</h6>
+                <table class="table table-sm table-striped border rounded">
+                    <tr><td class="fw-bold">Children Count</td><td>@(Model.Children?.Count ?? 0)</td></tr>
+                    <tr>
+                        <td class="fw-bold">Is Deleted</td>
+                        <td>
+                            <span class="badge bg-@(Model.IsDeleted ? "danger" : "success")">
+                                @(Model.IsDeleted ? "Yes" : "No")
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        @if (Model.Children?.Any() == true)
+        {
+            <hr />
+
+            <h6 class="text-primary mb-2 fw-bold">Child Account Types</h6>
+            <div class="list-group mb-3">
                 @foreach (var child in Model.Children)
                 {
                     <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -116,15 +126,15 @@
                     </div>
                 }
             </div>
+        }
+
+        <div class="text-end mt-4">
+            @*<button type="button" class="btn btn-primary" onclick="accountTypeManager.editAccountType('@Model.Id')">
+                <i class="mdi mdi-pencil me-1"></i> Edit
+            </button>*@
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <i class="mdi mdi-close me-1"></i> Close
+            </button>
         </div>
     </div>
-}
-
-<div class="modal-footer mt-4">
-    <button type="button" class="btn btn-primary" onclick="accountTypeManager.editAccountType('@Model.Id')">
-        <i class="mdi mdi-pencil me-1"></i> Edit
-    </button>
-    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close me-1"></i> Close
-    </button>
 </div>

@@ -172,7 +172,7 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeGroup
                     var defaultAffiliate = new AccountTypeGroupResponse
                     {
                         Id = "All",
-                        Name = "All Affiliates",
+                        Name = "All Account Type Group",
                         Code = "ALL",
                         IsActive = true
                     };

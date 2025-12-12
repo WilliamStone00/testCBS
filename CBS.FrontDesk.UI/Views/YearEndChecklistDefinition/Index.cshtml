@@ -1,5 +1,5 @@
 ﻿
-@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearTask
+@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearConfig
 
 
 @{
@@ -40,6 +40,14 @@
                 <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
             </ul>
         </div>
+    </div>
+</div>
+<!-- Add Year Button -->
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btnAddofYearConfig" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
     </div>
 </div>
 
@@ -105,6 +113,18 @@
     @Html.Partial("_DataTable")
 </div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="endOfYearConfigModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="endOfYearConfigModalContent" class="p-3"></div>
+        </div>
+    </div>
+</div>
+
+
 <!-- ============================== -->
 <!-- DataTable Load Script -->
 <!-- ============================== -->
@@ -112,6 +132,15 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+
+
+
+     $(function () {
+         const addConfigUrl = '@Url.Action("New", "YearEndChecklistDefinition")';
+
+     
+        const updateConfigUrl = '@Url.Action("GetDetails", "YearEndChecklistDefinition")';
+
         function loadYearEndChecklist() {
             $('#myDataTable').DataTable({
                 serverSide: true,
@@ -161,13 +190,52 @@
                             : '<span class="badge bg-danger">Disabled</span>'
                     },
                     {
-                        data: null, orderable: false,
-                        render: row => `
-                        <button class="btn btn-sm btn-warning edit-task" data-id="${row.Id}">
-                            <i class="mdi mdi-pencil-outline"></i>
-                        </button>
-                    `
+                        data: null,
+                        orderable: false,
+                        render: row => {
+                            const btnId = `actionDropdown${row.Id}`;
+
+                            return `
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline me-1"></i> Actions
+                                    </button>
+
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+
+                                        <li>
+                                            <a class="dropdown-item edit-task"
+                                               href="#"
+                                               data-id="${row.Id}"
+                                               style="color:#6f42c1; font-weight:500;">
+                                                <i class="mdi mdi-pencil-outline me-1" style="color:#6f42c1;"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item delete-task"
+                                               href="#"
+                                               data-id="${row.Id}"
+                                               style="color:#dc3545; font-weight:500;">
+                                                <i class="mdi mdi-delete-outline me-1" style="color:#dc3545;"></i>
+                                                Delete
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            `.trim();
+                        }
                     }
+
+
+
+
+
+
                 ],
                 initComplete: function () {
                     appalert('✅ Year-end checklist loaded successfully!', 1, 1);
@@ -205,7 +273,182 @@
 
 
             // initial load
-            loadYearEndChecklist();
+            //loadYearEndChecklist();
         });
+
+
+        $(document).on('click', '.edit-task', function () {
+            const id = $(this).data('id');
+
+            if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
+
+            $.ajax({
+                url: updateConfigUrl,
+                type: 'GET',
+                data: { id: id },
+
+                beforeSend: function () {
+                    $("#endOfYearConfigModalContent").html(`
+                        <div class="text-center my-4">
+                            <div class="spinner-border text-primary"></div>
+                            <p>Loading form...</p>
+                        </div>
+                    `);
+                },
+
+                success: function (html) {
+                    $("#endOfYearConfigModal .modal-content").html(html);
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('endOfYearConfigModal')
+                    ).show();
+                },
+
+                error: function (xhr, status, error) {
+                    appalert("Failed to load Update view: " + error, 1, 4);
+                }
+            });
+        });
+
+
+            $(document).ready(function () {
+
+                $("#btnAddofYearConfig").click(function () {
+
+                    $("#endOfYearConfigModalContent").html(`
+                        <div class="text-center p-5">
+                            <div class="spinner-border text-primary"></div>
+                            <p class="mt-3">Loading...</p>
+                        </div>`);
+
+                    $("#endOfYearConfigModal").modal("show");
+
+                    $.get(addConfigUrl, function (html) {
+                        $("#endOfYearConfigModalContent").html(html);
+                    }).fail(function () {
+                        $("#endOfYearConfigModalContent").html(`
+                            <div class="alert alert-danger text-center">
+                                <i class="mdi mdi-alert-circle-outline"></i>
+                                Failed to load form.
+                            </div>`);
+                    });
+
+                });
+
+            });
+
+
+
+
+        // ==========================
+        // Save EndOfYearConfig (same style as AccountingYear)
+        // ==========================
+            window.SaveEndOfYearConfigAjax = function (form) {
+
+                if (!$(form).valid()) return false;
+
+                // Collect display values
+                const code = $('#Code').val();
+                const title = $('#Title').val();
+                const description = $('#Description').val();
+                const displayOrder = $('#DisplayOrder').val();
+                const category = $('#Category').val();
+                const isMandatory = $('#IsMandatory').is(':checked') ? "Yes" : "No";
+                const isActive = $('#IsActive').is(':checked') ? "Yes" : "No";
+                const comment = $('#Comment').val();
+
+                // Validation check (simple)
+                if (!code || !title || !category || !displayOrder) {
+                    appalert("All required fields must be filled.", 3, 1);
+                    return false;
+                }
+
+                // Confirmation message with table preview
+                const message = `
+                    <p>Confirm details before saving:</p>
+
+                    <table class="table table-sm table-bordered">
+                        <tr><th>Code</th><td>${code}</td></tr>
+                        <tr><th>Title</th><td>${title}</td></tr>
+                        <tr><th>Description</th><td>${description}</td></tr>
+                        <tr><th>Display Order</th><td>${displayOrder}</td></tr>
+                        <tr><th>Category</th><td>${category}</td></tr>
+                        <tr><th>Mandatory</th><td>${isMandatory}</td></tr>
+                        <tr><th>Active</th><td>${isActive}</td></tr>
+                        <tr><th>Comment</th><td>${comment}</td></tr>
+                    </table>
+
+                    <div class="form-check mt-3">
+                        <input type="checkbox" id="alertifyConfirmCheckbox" class="form-check-input">
+                        <label for="alertifyConfirmCheckbox" class="form-check-label">
+                            I confirm the above details.
+                        </label>
+                    </div>
+                `;
+
+                alertify.confirm("Confirm End of Year Config", message,
+                    function () {
+
+                        if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                            appalert("Check the confirmation box before continuing.", 3, 1);
+                            return false;
+                        }
+
+                        const token = $('input[name="__RequestVerificationToken"]').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: new FormData(form),
+                            processData: false,
+                            contentType: false,
+                            headers: token ? { 'RequestVerificationToken': token } : {},
+
+                            success: function (response) {
+                                if (response?.success) {
+                                    appalert(response.message || "Saved successfully!", 1, 1);
+                                    alertify.dismissAll();
+
+                                    form.reset();
+                                    $('.select2').val(null).trigger('change');
+
+                                    // RELOAD your datatable (must exist in your code)
+                                    if (typeof loadEndOfYearConfigData === 'function') {
+                                        loadEndOfYearConfigData();
+                                    }
+
+                                } else {
+                                    appalert(response?.message || "Save failed.", 2, 1);
+                                }
+                            },
+
+                            error: function (xhr) {
+                                appalert("Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                            }
+                        });
+
+                    },
+
+                    function () {
+                        appalert("Operation cancelled.", 2, 1);
+                    }
+                ).set({
+                    labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                    onshow: function () {
+                        const okBtn = $('.alertify .ajs-ok');
+                        okBtn.prop('disabled', true);
+
+                        $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
+                    }
+                });
+
+                return false;
+            };
+
+
+
+     });
+
     </script>
     }

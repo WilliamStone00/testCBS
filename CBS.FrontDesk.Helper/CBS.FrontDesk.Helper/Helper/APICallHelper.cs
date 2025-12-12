@@ -1295,6 +1295,7 @@ namespace CBS.FrontDesk.Helper
         public static string CreateCounterCheque = "/api/v1/counter-checks";
         public static string GetAllCounterChequeByBranch = "/api/v1/counter-checks/by-branch/{branchId}";
         public static string GetCustormerchequebook = "/api/v1/checkbook/categories";
+        public static string GetCustomerChequeBook = "/api/v1/checkbook/{0}";
 
 
         //--------------------------------------TEST--------------------------------------//
@@ -1477,6 +1478,7 @@ namespace CBS.FrontDesk.Helper
         public static string ApproveDestinationJournalEntry = "/api/v1/ops/manual-entry/approve/destination";
         public static string ApproveMemberReconciliation = "/api/v1/TrialBalance/reconciliation/finalize";
         public static string ApproveCashReconciliation = "/api/v1/CashAndVaultInit/approve";
+        public static string GetFilter = "/api/v1/tempjournalheader/memberandcode";
 
 
 
@@ -1760,6 +1762,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllAccoutingYear = "/api/v1/AccountingYear";
         public static string GetAccountyearById = "/api/v1/AccountingYear/{0}";
         public static string UpdateAccountingYear = "/api/v1/AccountingYear/{0}";
+        public static string GetAccoutingYearDataTable = "/api/v1/AccountingYear/datatable";
 
         //-------------------------  System Reconciliation ----------------------
 
@@ -1780,11 +1783,22 @@ namespace CBS.FrontDesk.Helper
         public static string ReviewClosure = "/api/v1/YearEndChecklistStatus/set";
 
 
-        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+      
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
         public static string PostJournalAdjustment = "/api/v1/ops/generic";
         public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
 
+
+
+        //----------------------------End of year config ---------------------------------------
+        public static string GetCheckListDefinitionDataTable = "/api/v1/YearEndChecklistDefinition/datatable";
+        public static string GetEndofYearConfigById = "/api/v1/YearEndChecklistDefinition/{0}";
+        public static string SaveEndofYearConfig = "/api/v1/YearEndChecklistDefinition/add";
+        public static string UpdateEndofYearConfig = "/api/v1/YearEndChecklistDefinition/update";
+
+        //----------------------------  Interest Product  Config ---------------------------------
+
+        public static string GetInterestProductConfigDataTable = "/api/InterestProductConfig/GetInterestProductConfigDataTable";
 
     }
 }

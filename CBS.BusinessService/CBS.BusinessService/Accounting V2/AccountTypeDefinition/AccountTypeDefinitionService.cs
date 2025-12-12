@@ -3,6 +3,7 @@ using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -19,15 +20,15 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeDefinition
 
         public AccountTypeDefinitionService()
         {
-            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
+            string baseUrl = ConfigurationManager.AppSettings["TransactionBaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'AccountingV2BaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'TransactionBaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
 
-        public async Task<IEnumerable<AccountTypeDefinitionDto>> GetAllAsync(bool includeInactive = false)
+        public async Task<IEnumerable<AccountTypeDefinitionDto>> GetAllAsync(bool includeInactive = true)
         {
             try
             {
@@ -115,10 +116,10 @@ namespace CBS.BusinessService.Accounting_V2.AccountTypeDefinition
                 throw;
             }
         }
-
+        
         public async Task<IEnumerable<AccountTypeDefinitionDto>> GetTreeByGroupIdAsync(string groupId)
         {
-            try
+                  try
             {
                 if (string.IsNullOrWhiteSpace(groupId))
                     throw new ArgumentException("groupId is required", nameof(groupId));

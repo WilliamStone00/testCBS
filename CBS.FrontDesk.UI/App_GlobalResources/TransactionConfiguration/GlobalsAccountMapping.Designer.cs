@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Mapping for.
+        ///   Looks up a localized string similar to C Money And Harmonized Charges Mapping For.
         /// </summary>
         internal static string AccountMappingFor {
             get {

@@ -4,6 +4,7 @@ using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
+using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
 using System;
@@ -143,7 +144,57 @@ namespace CBS.BusinessService.AccountingV2.AccountingYear
 
             return ExecutionMessage; // Return accumulated execution result
         }
+        public async Task<CustomDataTable2> GetAccountingYearDaTableAsync(AccoutingyearQuery query)
+        {
+            try
+            {
 
+
+                //// Apply branch filters per rules
+                //if (IsHeadOffice())
+                //{
+                //    // Head Office: get ALL — leave BranchId & CounterpartyBranchId as null
+                //}
+                //else
+                //{
+                //    var myBranchId = GetBranchID();
+                //    var isDestination = string.Equals(journalEntry.TicketSource, "Destination", StringComparison.OrdinalIgnoreCase);
+
+                //    if (isDestination)
+                //    {
+                //        // Non-HO + Destination: filter by CounterpartyBranchId only
+                //        query.CounterpartyBranchId = myBranchId;
+                //        query.BranchId = null; // ensure BranchId is NOT set
+                //    }
+                //    else
+                //    {
+                //        // Non-HO + Source (or anything else): filter by BranchId only
+                //        query.BranchId = myBranchId;
+                //        query.CounterpartyBranchId = null; // ensure Counterparty is NOT set
+                //                                           //query.TicketType = "Source";
+                //    }
+                //}
+
+                query.Options.sortColumnName = "";
+                query.Options.sortColumnDirection = "";
+
+                var response = await _accountingYearapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetAccoutingYearDataTable, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (Accounting Year): {ex.Message}");
+                throw new Exception($"Accounting Year service unavailable: {ex.Message}", ex);
+            }
+        }
 
 
 
