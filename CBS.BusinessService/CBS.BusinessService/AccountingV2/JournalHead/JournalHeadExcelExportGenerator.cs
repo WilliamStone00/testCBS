@@ -697,7 +697,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
     public class JournalDataTableExcelExportGenerator : BaseService
     {
         private static readonly string[] JournalStages = new[] { "RECEIVED", "VALIDATED", "APPROVED", "POSTED", "RECONCILED" };
-        private static readonly string[] JournalStates = new[] { "PENDING", "COMPLETED", "REJECTED", "CANCELLED" };
+        private static readonly string[] JournalStatus = new[] { "PENDING", "COMPLETED", "REJECTED", "CANCELLED", "RECONCILED" };
 
         public static List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> ConvertToJournalData(List<CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead> tableData)
         {
@@ -737,7 +737,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         BranchName = GetSafeString(item, "BranchName", "branchName") ?? "N/A",
                         Memo = GetSafeString(item, "Memo", "memo"),
                         Stage = GetSafeString(item, "Stage", "stage") ?? "RECEIVED",
-                        State = GetSafeString(item, "State", "state") ?? "PENDING",
+                        Status = GetSafeString(item, "Status", "Status") ?? "PENDING",
                         RequiresWorkflow = GetSafeBool(item, "RequiresWorkflow", "requiresWorkflow") ?? false,
                         RequiresDestinationApproval = GetSafeBool(item, "RequiresDestinationApproval", "requiresDestinationApproval") ?? false,
                         IsCashOperation = GetSafeBool(item, "IsCashOperation", "isCashOperation") ?? false,
@@ -750,7 +750,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         ClosedAtUtc = ParseDateTime(GetPropertyValue(item, "ClosedAtUtc", "closedAtUtc")),
                         TicketType = GetSafeString(item, "TicketType", "ticketType"),
                         Lines = GetJournalLines(item),
-                        Status = GetSafeString(item, "Status", "status") ?? "RECEIVED",
+                        //Status = GetSafeString(item, "Status", "status") ?? "RECEIVED",
                         TotalDebit = totalDebit,
                         TotalCredit = totalCredit,
                         CorrelationId = GetSafeString(item, "CorrelationId", "correlationId"),
@@ -874,9 +874,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                                         .OrderByDescending(x => x.Count)
                                         .ToList();
 
-            // State distribution
-            var stateSummary = journalData.GroupBy(x => x.State)
-                                        .Select(g => new { State = g.Key, Count = g.Count() })
+            // Status distribution
+            var StatusSummary = journalData.GroupBy(x => x.Status)
+                                        .Select(g => new { Status = g.Key, Count = g.Count() })
                                         .OrderByDescending(x => x.Count)
                                         .ToList();
 
@@ -962,9 +962,9 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
             currentRow += 2;
 
-            // ===== STATE DISTRIBUTION SECTION =====
+            // ===== Status DISTRIBUTION SECTION =====
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
-            worksheet.Cells[$"A{currentRow}"].Value = "STATE DISTRIBUTION";
+            worksheet.Cells[$"A{currentRow}"].Value = "Status DISTRIBUTION";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
             worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -972,10 +972,10 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
             currentRow += 2;
 
-            var stateHeaders = new[] { "State", "Count", "Percentage" };
-            for (int i = 0; i < stateHeaders.Length; i++)
+            var StatusHeaders = new[] { "Status", "Count", "Percentage" };
+            for (int i = 0; i < StatusHeaders.Length; i++)
             {
-                worksheet.Cells[currentRow, 1 + i].Value = stateHeaders[i];
+                worksheet.Cells[currentRow, 1 + i].Value = StatusHeaders[i];
                 worksheet.Cells[currentRow, 1 + i].Style.Font.Bold = true;
                 worksheet.Cells[currentRow, 1 + i].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[currentRow, 1 + i].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
@@ -983,11 +983,11 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
             currentRow++;
 
-            foreach (var state in stateSummary)
+            foreach (var Status in StatusSummary)
             {
-                decimal percentage = totalJournals > 0 ? (decimal)state.Count / totalJournals : 0;
-                worksheet.Cells[currentRow, 1].Value = state.State;
-                worksheet.Cells[currentRow, 2].Value = state.Count;
+                decimal percentage = totalJournals > 0 ? (decimal)Status.Count / totalJournals : 0;
+                worksheet.Cells[currentRow, 1].Value = Status.Status;
+                worksheet.Cells[currentRow, 2].Value = Status.Count;
                 worksheet.Cells[currentRow, 3].Value = percentage;
 
                 for (int col = 1; col <= headerColumns; col++)
@@ -998,7 +998,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
 
             // Format percentages
-            worksheet.Cells[$"C{currentRow - stateSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
+            worksheet.Cells[$"C{currentRow - StatusSummary.Count}:C{currentRow - 1}"].Style.Numberformat.Format = "0.0%";
 
             // Auto-fit columns
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
@@ -1036,7 +1036,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             // Detailed data headers
             var headers = new[]
             {
-        "SN", "Reference", "Narrative", "Accounting Date", "Branch", "Stage", "State",
+        "SN", "Reference", "Narrative", "Accounting Date", "Branch", "Stage", "Status",
         "Total Debit", "Total Credit", "Balance Status", "Operation Type", "Post Mode",
         "Cash Operation", "Inter-Branch", "Created By", "Created Date"
     };
@@ -1070,7 +1070,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 worksheet.Cells[dataRow, 4].Value = journal.AccountingDate.ToString("dd-MM-yyyy");
                 worksheet.Cells[dataRow, 5].Value = journal.BranchName;
                 worksheet.Cells[dataRow, 6].Value = journal.Stage;
-                worksheet.Cells[dataRow, 7].Value = journal.State;
+                worksheet.Cells[dataRow, 7].Value = journal.Status;
                 worksheet.Cells[dataRow, 8].Value = journal.TotalDebit;
                 worksheet.Cells[dataRow, 9].Value = journal.TotalCredit;
                 worksheet.Cells[dataRow, 10].Value = journal.IsBalanced ? "BALANCED" : "UNBALANCED";
@@ -1298,10 +1298,10 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             var headers = isCashSheet ? new[]
             {
         "SN", "Reference", "Accounting Date", "Branch", "Cashier", "Till", "Cash Amount",
-        "Total Debit", "Total Credit", "Stage", "State", "Created Date"
+        "Total Debit", "Total Credit", "Stage", "Status", "Created Date"
     } : new[]
             {
-        "SN", "Reference", "Narrative", "Accounting Date", "Branch", "Stage", "State",
+        "SN", "Reference", "Narrative", "Accounting Date", "Branch", "Stage", "Status",
         "Total Debit", "Total Credit", "Balance Status", "Created By", "Created Date"
     };
 
@@ -1335,7 +1335,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     worksheet.Cells[dataRow, 8].Value = journal.TotalDebit;
                     worksheet.Cells[dataRow, 9].Value = journal.TotalCredit;
                     worksheet.Cells[dataRow, 10].Value = journal.Stage;
-                    worksheet.Cells[dataRow, 11].Value = journal.State;
+                    worksheet.Cells[dataRow, 11].Value = journal.Status;
                     worksheet.Cells[dataRow, 12].Value = journal.CreatedAt.ToString("dd-MM-yyyy HH:mm:ss");
                 }
                 else
@@ -1349,7 +1349,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     worksheet.Cells[dataRow, 4].Value = journal.AccountingDate.ToString("yyyy-MM-dd");
                     worksheet.Cells[dataRow, 5].Value = journal.BranchName;
                     worksheet.Cells[dataRow, 6].Value = journal.Stage;
-                    worksheet.Cells[dataRow, 7].Value = journal.State;
+                    worksheet.Cells[dataRow, 7].Value = journal.Status;
                     worksheet.Cells[dataRow, 8].Value = journal.TotalDebit;
                     worksheet.Cells[dataRow, 9].Value = journal.TotalCredit;
                     worksheet.Cells[dataRow, 10].Value = journal.IsBalanced ? "BALANCED" : "UNBALANCED";
