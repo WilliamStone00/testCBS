@@ -148,11 +148,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string JournalStatus { get; set; }
         public string DailyOperator { get; set; }
         public string Source { get; set; }
-        public DateTime ApprovedDate { get; set; }
+        public DateTime? ApprovalDate { get; set; }
         public string ApprovedBy { get; set; }
-        public DateTime InitiatedDate { get; set; }
+        public DateTime? InitiationDate { get; set; }
         public string InitiatedBy { get; set; }
-        public DateTime RejectedDate { get; set; }
+        public DateTime? RejectedDate { get; set; }
         public string RejectedBy { get; set; }
 
 

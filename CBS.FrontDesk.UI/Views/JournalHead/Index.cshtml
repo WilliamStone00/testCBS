@@ -130,12 +130,21 @@
                         new { @class = "form-control select2 mb-1", @id = "JournalStatus" })
                 </div>
 
+                @*<div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Daily Operator</label>
+                        @Html.DropDownList("DailyOperator",
+                            new List<SelectListItem>(), // backend will populate
+                            "--- Select Operator ---",
+                            new { @class = "form-control select2 mb-1", id = "DailyOperator" })
+                    </div>*@
                 <div class="col-md-6 mb-1">
                     <label class="form-label fw-bold">Daily Operator</label>
-                    @Html.DropDownList("DailyOperator",
-                        new List<SelectListItem>(), // backend will populate
+                    @Html.DropDownList(
+                        "DailyOperator",
+                        ViewBag.DailyOperators as List<SelectListItem>,
                         "--- Select Operator ---",
-                        new { @class = "form-control select2 mb-1", id = "DailyOperator" })
+                        new { @class = "form-control select2 mb-1", id = "DailyOperator" }
+                    )
                 </div>
 
 
@@ -169,13 +178,24 @@
                 </div>
 
 
+                @*<div class="col-md-4 mb-1">
+                        <label class="form-label fw-bold">Operation Code</label>
+                        @Html.DropDownList("OperationCode",
+                            new List<SelectListItem>(), // backend will populate
+                            "--- Select Operation Code ---",
+                            new { @class = "form-control select2 mb-1", id = "OperationCode" })
+                    </div>*@
+
                 <div class="col-md-4 mb-1">
                     <label class="form-label fw-bold">Operation Code</label>
-                    @Html.DropDownList("OperationCode",
-                        new List<SelectListItem>(), // backend will populate
+                    @Html.DropDownList(
+                        "OperationCode",
+                        ViewBag.OperationCodes as List<SelectListItem>,
                         "--- Select Operation Code ---",
-                        new { @class = "form-control select2 mb-1", id = "OperationCode" })
+                        new { @class = "form-control select2 mb-1", id = "OperationCode" }
+                    )
                 </div>
+
             </div>
 
 
@@ -292,8 +312,17 @@
     <script>
 $(document).ready(function () {
 
+    // ==============================
+    // 🔹 Flags
+    // ==============================
     let filtersApplied = false;
     let isResetting = false;
+
+    // ==============================
+    // 🔹 Initialize Select2 (ONCE)
+    // ==============================
+    $("#OperationCode").select2();
+    $("#DailyOperator").select2();
 
     // ==============================
     // 🔹 Load Journal Header Data
@@ -304,7 +333,7 @@ $(document).ready(function () {
             destroy: true,
             responsive: true,
             searching: false,
-            order: [[0, 'desc']], // Sort by CreatedAt descending
+            order: [[0, 'desc']],
             ajax: {
                 url: '/JournalHead/LoadJournalHeaderData',
                 type: 'POST',
@@ -390,7 +419,7 @@ $(document).ready(function () {
     // 🔹 Reset Filters
     // ==============================
     function resetJournalHeaderFilters() {
-        isResetting = true; // prevent change handler during reset
+        isResetting = true;
         $('#journalHeaderFilterForm').trigger('reset');
         $('.select2').val('').trigger('change'); // triggers change, but blocked by isResetting
         $('#branchFilter, #dateFilters').addClass('d-none');
@@ -404,32 +433,32 @@ $(document).ready(function () {
     function loadDependencies(request) {
         $.ajax({
             url: '/JournalHead/LoadFilterDependencies',
-            method: 'POST',
+            type: 'POST',
             data: request,
             success: function (res) {
-                if (!res.success) {
+
+                if (!res || !res.success) {
                     appalert("Failed to load data. Please try again.", 2, 1);
                     return;
                 }
 
-                // Operation Codes
-                let opDropdown = $("#OperationCode");
-                opDropdown.empty().append(`<option value="">--- Select Operation Code ---</option>`);
-                $.each(res.operationCodes, function (i, code) {
-                    opDropdown.append(`<option value="${code}">${code}</option>`);
+                // Update Operation Codes
+                const opDropdown = $("#OperationCode");
+                opDropdown.empty().append('<option value="">--- Select Operation Code ---</option>');
+                $.each(res.operationCodes || [], function (_, code) {
+                    opDropdown.append(new Option(code, code));
                 });
 
-                // Daily Operator
-                let operatorDropdown = $("#DailyOperator");
-                operatorDropdown.empty().append(`<option value="">--- Select Operator ---</option>`);
-                $.each(res.initiatedBy, function (i, name) {
-                    operatorDropdown.append(`<option value="${name}">${name}</option>`);
+                // Update Daily Operators
+                const operatorDropdown = $("#DailyOperator");
+                operatorDropdown.empty().append('<option value="">--- Select Operator ---</option>');
+                $.each(res.initiatedBy || [], function (_, name) {
+                    operatorDropdown.append(new Option(name, name));
                 });
 
-                $("#OperationCode").select2();
-                $("#DailyOperator").select2();
-
-                appalert("Data loaded successfully.", 1, 1);
+                // Refresh Select2 without reinitializing
+                opDropdown.trigger('change.select2');
+                operatorDropdown.trigger('change.select2');
             },
             error: function () {
                 appalert("Unable to connect to server. Please check your network.", 3, 3);
@@ -438,59 +467,24 @@ $(document).ready(function () {
     }
 
     // ==============================
+    // 🔹 Build Filter Request
+    // ==============================
+    function buildFilterRequest() {
+        return {
+            BranchId: $("#branchId").val() || " ",
+            JournalStatus: $("#JournalStatus").val() || null,
+            Source: $("#Source").val() || null
+        };
+    }
+
+    // ==============================
     // 🔹 Filter Change Handling
     // ==============================
     $("#branchId, #JournalStatus, #Source").on("change", function () {
-        if (isResetting) return; // skip during reset
-
-        let request = {
-            BranchId: $("#branchId").val() || " ", // <-- normalize empty to ""
-            JournalStatus: $("#JournalStatus").val(),
-            Source: $("#Source").val()
-        };
-
-        const hasBranch = request.BranchId !== " ";
-        const hasStatus = !!request.JournalStatus;
-        const hasSource = !!request.Source;
-
-        if (!hasBranch && !hasStatus && !hasSource) {
-            loadDependencies({ BranchId: " " });
-            return;
-        }
-        if (hasBranch && !hasStatus && !hasSource) {
-            loadDependencies({ BranchId: request.BranchId });
-            return;
-        }
-        if (hasBranch && hasStatus && !hasSource) {
-            loadDependencies({ BranchId: request.BranchId, JournalStatus: request.JournalStatus });
-            return;
-        }
-        if (hasBranch && hasStatus && hasSource) {
-            loadDependencies(request);
-            return;
-        }
-        if (hasBranch && !hasStatus && hasSource) {
-            loadDependencies({ BranchId: request.BranchId, Source: request.Source });
-            return;
-        }
-        if (!hasBranch && hasStatus && hasSource) {
-            loadDependencies({ BranchId: " ", JournalStatus: request.JournalStatus, Source: request.Source });
-            return;
-        }
-        if (!hasBranch && hasStatus && !hasSource) {
-            loadDependencies({ BranchId: " ", JournalStatus: request.JournalStatus });
-            return;
-        }
-        if (!hasBranch && !hasStatus && hasSource) {
-            loadDependencies({ BranchId: " ", Source: request.Source });
-            return;
-        }
+        if (isResetting) return;
+        const request = buildFilterRequest();
+        loadDependencies(request);
     });
-
-    // ==============================
-    // 🔹 Page Load Auto-Call
-    // ==============================
-    loadDependencies({ BranchId: " ", JournalStatus: null, Source: null });
 
     // ==============================
     // 🔹 Reset Button
