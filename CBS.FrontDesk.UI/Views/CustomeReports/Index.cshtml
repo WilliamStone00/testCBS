@@ -242,6 +242,11 @@
                     <input type="checkbox" id="IsConsolidated" class="form-check-input" />
                     <label class="form-check-label" for="IsConsolidated">Consolidated</label>
                 </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="IncludeAllAccountsInTB" class="form-check-input" checked />
+                    <label class="form-check-label" for="IncludeAllAccountsInTB">Include All Accounts InTB</label>
+                </div>
             </div>
         </div>
 
@@ -334,6 +339,7 @@
                 branchId: selectedBranches.length === 1 ? selectedBranches[0] : null,
                 selectedBranchIds: selectedBranches,
                 consolidated: $('#IsConsolidated').is(':checked'),
+                IncludeAllAccountsInTB: $('#IncludeAllAccountsInTB').is(':checked'),
                 accountingYear: $('#ToggleAccountingYear').is(':checked') ? $('#AccountingYear').val() : null,
                 excludeLiaisonInternal: $('#IsLiaison').is(':checked'),
                 sourceMode: $('#SourceMode').val(),
