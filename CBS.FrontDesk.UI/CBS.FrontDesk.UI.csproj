@@ -2114,6 +2114,7 @@
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\IPS\IPSConfigController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -11157,6 +11158,7 @@
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\InterestProductConfig\" />
+    <Folder Include="Views\IPSConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
