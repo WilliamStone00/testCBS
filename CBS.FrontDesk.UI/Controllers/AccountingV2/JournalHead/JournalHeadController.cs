@@ -54,35 +54,73 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             ViewBag.Branches = branches;
 
             ViewBag.OperationTypes = new List<SelectListItem>
-{
-    new SelectListItem { Value = "Cashin", Text = "CASH IN" },
-    new SelectListItem { Value = "Cashout", Text = "CASH OUT" }
-};
+                    {
+                        new SelectListItem { Value = "Cashin", Text = "CASH IN" },
+                        new SelectListItem { Value = "Cashout", Text = "CASH OUT" }
+                    };
 
-            // Reconciliation Status (WorkTicket) dropdown
-            ViewBag.JournalStatus = new List<SelectListItem>
-{
-    new SelectListItem { Value = "RECEIVED", Text = "RECEIVED" },
-    new SelectListItem { Value = "TEMP_CREATED", Text = "TEMP_CREATED" },
-    new SelectListItem { Value = "TEMP_UPDATED", Text = "TEMP_UPDATED" },
-    new SelectListItem { Value = "WORKFLOW_PENDING", Text = "WORKFLOW_PENDING" },
-    new SelectListItem { Value = "RECONCILED", Text = "RECONCILED" },
-    new SelectListItem { Value = "FAILED", Text = "FAILED" },
-    new SelectListItem { Value = "VALIDATED", Text = "VALIDATED" },
-    new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
-};
+                                // Reconciliation Status (WorkTicket) dropdown
+                                ViewBag.JournalStatus = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "RECEIVED", Text = "RECEIVED" },
+                        new SelectListItem { Value = "TEMP_CREATED", Text = "TEMP_CREATED" },
+                        new SelectListItem { Value = "TEMP_UPDATED", Text = "TEMP_UPDATED" },
+                        new SelectListItem { Value = "WORKFLOW_PENDING", Text = "WORKFLOW_PENDING" },
+                        new SelectListItem { Value = "RECONCILED", Text = "RECONCILED" },
+                        new SelectListItem { Value = "FAILED", Text = "FAILED" },
+                        new SelectListItem { Value = "VALIDATED", Text = "VALIDATED" },
+                        new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
+                    };
 
-            ViewBag.TicketSource = new List<SelectListItem>
-{
-    new SelectListItem { Value = "Source", Text = "Source " },
-    new SelectListItem { Value = "Destination", Text = "Destination" }
-};
+                                ViewBag.TicketSource = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "Source", Text = "Source " },
+                        new SelectListItem { Value = "Destination", Text = "Destination" }
+                    };
 
-            ViewBag.Source = new List<SelectListItem>
-{
-    new SelectListItem { Value = "real", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
-    new SelectListItem { Value = "temp", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
-};
+                                ViewBag.Source = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "real", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
+                        new SelectListItem { Value = "temp", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
+                    };
+
+
+
+
+            var filterRequest = new GetFirlterData
+            {
+                BranchId = "",          // as you said
+                JournalStatus = null,
+                Source = null
+            };
+
+            var response = await _journalHeadService.GetFilters(filterRequest);
+
+            // SAFETY CHECK
+            var data = response?.Data;
+
+            // OPERATION CODES
+            ViewBag.OperationCodes = data?.OperationCodes?
+                .Select(o => new SelectListItem
+                {
+                    Value = o.Code,
+                    Text = o.Code
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
+            // DAILY OPERATORS (Initiated By)
+            ViewBag.DailyOperators = data?.InitiatedBy?
+                .Select(u => new SelectListItem
+                {
+                    Value = u.Name,
+                    Text = u.Name
+                })
+                .OrderBy(x => x.Text)
+                .ToList()
+                ?? new List<SelectListItem>();
+
             return true;
         }
     
