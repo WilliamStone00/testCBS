@@ -1729,7 +1729,7 @@ namespace CBS.FrontDesk.Helper
         public const string CreateIPSConfig = "/api/v1/IPSConfig";
         public const string UpdateIPSConfig = "/api/v1/IPSConfig/{0}";
         public const string DeleteIPSConfig = "/api/v1/IPSConfig/{0}";
-        public const string GetIPSConfigByActiveYear = "/api/v1/IPSConfig/active/{year}?branchId={branchId}";
+        public const string GetIPSConfigByActiveYear ="/api/v1/IPSConfig/active/{0}?branchId={1}";
         public const string GetIPSConfigsByYear = "/api/v1/IPSConfig/year/{0}";
         public const string IPSConfigDataTable = "/api/v1/IPSConfig/datatable";
 
