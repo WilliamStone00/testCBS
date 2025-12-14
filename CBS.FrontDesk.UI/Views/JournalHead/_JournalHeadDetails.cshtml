@@ -113,17 +113,17 @@
                     <tr><th class="bg-label">Status</th><td>@Model.Status</td></tr>
                 }
                 @*@if (!string.IsNullOrWhiteSpace(Model.BranchId))
-                    {
-                        <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
-                    }*@
+        {
+            <tr><th class="bg-label">Branch</th><td>@Model.BranchId</td></tr>
+        }*@
                 @if (!string.IsNullOrWhiteSpace(Model.BranchName))
                 {
                     <tr><th class="bg-label"> Source Branch Name</th><td>@Model.BranchName</td></tr>
                 }
                 @*@if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchId))
-                    {
-                        <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
-                    }*@
+        {
+            <tr><th class="bg-label">Counterparty Branch</th><td>@Model.CounterpartyBranchId</td></tr>
+        }*@
                 @if (!string.IsNullOrWhiteSpace(Model.CounterpartyBranchName))
                 {
                     <tr><th class="bg-label">Destinaion Branch Name</th><td>@Model.CounterpartyBranchName</td></tr>
@@ -207,6 +207,30 @@
                 @if (!string.IsNullOrWhiteSpace(Model.CreatedBy))
                 {
                     <tr><th class="bg-label">Created By</th><td>@Html.Raw(Model.CreatedBy)</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.InitiatedBy))
+                {
+                    <tr><th class="bg-label">Initiated By</th><td>@Model.InitiatedBy</td></tr>
+                }
+                @if (Model.InitiationDate != default(DateTime))
+                {
+                    <tr><th class="bg-label">Initiated Date</th><td>@Model.InitiationDate.ToString()</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.ApprovedBy))
+                {
+                    <tr><th class="bg-label">Approved By</th><td>@Model.ApprovedBy</td></tr>
+                }
+                @if (Model.ApprovalDate != default(DateTime))
+                {
+                    <tr><th class="bg-label">Approved Date</th><td>@Model.ApprovalDate.ToString()</td></tr>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.RejectedBy))
+                {
+                    <tr><th class="bg-label">Rejected By</th><td>@Model.RejectedBy</td></tr>
+                }
+                @if (Model.RejectedDate != default(DateTime))
+                {
+                    <tr><th class="bg-label">Rejected Date</th><td>@Model.RejectedDate.ToString()</td></tr>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Memo))
                 {
@@ -294,7 +318,7 @@
 
         <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
             <i class="mdi mdi-home-city-outline me-1"></i>
-            Reconciled Entries
+            Posted Entries
         </h6>
 
         foreach (var branchGroup in groupedByBranchAndCounterparty)
@@ -431,7 +455,7 @@
 
         <h6 class="fw-bold text-primary border-bottom pb-1 mb-3">
             <i class="mdi mdi-home-city-outline me-1"></i>
-            Journal Line Entries
+            Unposted Entries
         </h6>
 
         foreach (var branchGroup in groupedByBranchAndCounterparty)

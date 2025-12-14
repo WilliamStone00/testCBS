@@ -85,26 +85,7 @@
 else
 {
     <fieldset class="fieldset-custom">
-        <legend>@Globals_OrdinaryAccountData.OrdinaryAccountListings</legend>
-        <div class="demo-inline-spacing text-end">
-            <!-- Refresh Button -->
-            <button type="button"
-                    id="refreshTableBtn"
-                    class="btn btn-icon btn-label-success btn-sm btn-fab demo me-2"
-                    data-bs-toggle="tooltip"
-                    title="Refresh Table">
-                <span class="tf-icons mdi mdi-refresh mdi-18px"></span>
-            </button>
-
-            <!-- Download Button -->
-            <a type="button"
-               href="/TransactionConfiguration/GetSavingProductAccountMapping"
-               class="btn btn-icon btn-label-primary btn-sm btn-fab demo"
-               data-bs-toggle="tooltip"
-               title="@Globals_OrdinaryAccountData.DownloadAllSavingProductAccountConfigurationsTooltip">
-                <span class="tf-icons mdi mdi-download-circle-outline mdi-18px"></span>
-            </a>
-        </div>
+        <h5 class="text-primary">@Globals_OrdinaryAccountData.OrdinaryAccountListings</h5>       
 
         <!-- Hidden JSON store for initial data -->
         @{
