@@ -1,0 +1,85 @@
+﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSConfig>
+@using Resources
+
+<fieldset class="fieldset-custom">
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary fw-bold mb-2">
+                <i class="mdi mdi-calendar-multiple me-2"></i> IPS Configurations by Year
+            </h1>
+            <p class="card-text text-muted mb-1">
+                Multiple configurations found for the selected year
+            </p>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var config in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                        <i class="mdi mdi-shield-check me-2"></i>
+                        Configuration @config.BranchName (@config.BranchCode) -
+                        <span class="@(config.IsActive ? "text-success" : "text-secondary")">
+                            @(config.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-sm">
+                                <tr><td class="fw-bold">Age Limit:</td><td>@config.AgeLimit</td></tr>
+                                <tr><td class="fw-bold">Loan Coverage:</td><td>@String.Format("{0:N2}", config.LoanCoverageLimit)</td></tr>
+                                <tr><td class="fw-bold">Savings Coverage:</td><td>@String.Format("{0:N2}", config.SavingsCoverageLimit)</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm">
+                                <tr><td class="fw-bold">Premium Loan:</td><td>@String.Format("{0:N4}", config.PremiumRateLoan)</td></tr>
+                                <tr><td class="fw-bold">Premium Savings:</td><td>@String.Format("{0:N4}", config.PremiumRateSavings)</td></tr>
+                                <tr><td class="fw-bold">Max Delinquency:</td><td>@config.MaxDelinquencyDays days</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-sm btn-info"
+                                onclick="showIPSConfigDetails('@config.Id')">
+                            <i class="mdi mdi-eye me-1"></i> View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="mdi mdi-information-outline me-2"></i>
+            No IPS configurations found for the selected year.
+        </div>
+    }
+
+    <div class="row mt-3">
+        <div class="col-12 text-end">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="mdi mdi-close me-1"></i> Close
+            </button>
+        </div>
+    </div>
+</fieldset>
+
+<script>
+    function showIPSConfigDetails(id) {
+        $.get('/IPSConfig/InitializeData', { KEY: id, partialView: '_IPSConfigDetailsPartial' })
+            .done(function(html) {
+                $('#detailsModal .modal-body').html(html);
+                $('#detailsModal').modal('show');
+            })
+            .fail(function() {
+                appalert('Failed to load details', 0, 1);
+            });
+    }
+</script>

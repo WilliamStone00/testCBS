@@ -1,11 +1,12 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,10 +21,10 @@ namespace CBS.BusinessService.Accounting_V2.IPS
 
         public IPSConfigService()
         {
-            string baseUrl = ConfigurationManager.AppSettings["ConfigServiceBaseUrl"];
+            string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             if (string.IsNullOrEmpty(baseUrl))
             {
-                throw new ConfigurationErrorsException("The 'ConfigServiceBaseUrl' appSetting is missing or empty in Web.config.");
+                throw new ConfigurationErrorsException("The 'AccountingBaseUrl' appSetting is missing or empty in Web.config.");
             }
             _apiCallerHelper = new ApiCallerHelper(baseUrl);
         }
@@ -42,7 +43,9 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to fetch IPS configurations", ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                throw;
             }
         }
 
@@ -66,15 +69,17 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to fetch IPS configuration with id {id}", ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                throw;
             }
         }
 
-        public async Task<IPSConfig> GetActiveIPSConfigByYearAsync(int year)
+        public async Task<IPSConfig> GetActiveIPSConfigByYearAsync(int year,string branchid)
         {
             try
             {
-                string formattedUrl = string.Format(APICallHelper.GetIPSConfigByActiveYear, year);
+                string formattedUrl = string.Format(APICallHelper.GetIPSConfigByActiveYear, year,branchid);
                 var response = await _apiCallerHelper.GetAsync<ServiceResponse<IPSConfig>>(formattedUrl);
 
                 if (response.IsSuccess)
@@ -85,7 +90,9 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to fetch active IPS configuration for year {year}", ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                throw;
             }
         }
 
@@ -104,7 +111,9 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to fetch IPS configurations for year {year}", ex);
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                   ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                throw;
             }
         }
 
@@ -118,49 +127,55 @@ namespace CBS.BusinessService.Accounting_V2.IPS
                 }
 
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
-                    APICallHelper.IPSConfigDataTable, query);
+                    APICallHelper.IPSConfigDataTable, query);              
 
-                if (!response.IsSuccess)
+                if (response.IsSuccess)
                 {
-                    throw new Exception($"API call failed: {response.Message}");
+                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                }
+                else
+                {
+                    GetExecutionMessages(null, false, null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
 
-                if (response.ApiResponseData == null)
-                {
-                    throw new Exception("API returned null data");
-                }
 
                 return response.ApiResponseData.Data;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"API Error: {ex.Message}");
-                throw new Exception($"IPS Config service unavailable: {ex.Message}", ex);
+
+                GetExecutionMessages(null, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                throw;
             }
+
         }
 
         public async Task<ExecutionMessages> CreateIPSConfigAsync(IPSConfig model)
         {
             try
             {
-                model.CreatedBy = GetCurrentUserId();
+                model.CreatedBy = GetUserId();
+                model.BranchCode = GetBankCode();
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<IPSConfig>>(APICallHelper.CreateIPSConfig, model);
 
                 if (response.IsSuccess)
                 {
-                    GetExecutionMessages(response.ApiResponseData.Data, true, $"IPS Config for {model.Year}", MessagesResults.Success,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
+                    GetExecutionMessages(response.ApiResponseData.Data, true, null, MessagesResults.Success,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null, response.ApiResponseData.Message);
                 }
                 else
                 {
-                    GetExecutionMessages(model, false, $"IPS Config for {model.Year}", MessagesResults.Failed,
-                        ExecutionProcessOption.InsertObject, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
+                    GetExecutionMessages(model, false,null, MessagesResults.Failed,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null, response.ApiResponseData?.Message ?? response.Message);
                 }
             }
             catch (Exception ex)
             {
-                GetExecutionMessages(model, false, $"IPS Config for {model.Year}", MessagesResults.Error,
-                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                GetExecutionMessages(model, false, null, MessagesResults.Error,
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
         }
@@ -170,7 +185,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             try
             {
                 var configId = model.Id;
-                model.ModifiedBy = GetCurrentUserId();
+                model.ModifiedBy = GetUserId();
                 string formattedUrl = string.Format(APICallHelper.UpdateIPSConfig, configId);
                 var response = await _apiCallerHelper.PutAsync<ServiceResponse<IPSConfig>>(formattedUrl, model);
 
@@ -188,7 +203,7 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             catch (Exception ex)
             {
                 GetExecutionMessages(model, false, $"IPS Config for {model.Year}", MessagesResults.Error,
-                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
             return ExecutionMessage;
         }
@@ -203,29 +218,23 @@ namespace CBS.BusinessService.Accounting_V2.IPS
                 if (response.IsSuccess)
                 {
                     GetExecutionMessages(null, true, $"IPS Config ID: {configId}", MessagesResults.Success,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Success.ToString(), null,
+                        ExecutionProcessOption.DefaultSuccessdMessages, SystemMessageStatus.Success.ToString(), null,
                         response.ApiResponseData?.Message ?? "IPS Config deleted successfully.");
                 }
                 else
                 {
                     GetExecutionMessages(null, false, $"IPS Config ID: {configId}", MessagesResults.Failed,
-                        ExecutionProcessOption.DeleteObject, SystemMessageStatus.Failed.ToString(), null,
+                        ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Failed.ToString(), null,
                         response.ApiResponseData?.Message ?? response.Message ?? "Failed to delete IPS Config.");
                 }
             }
             catch (Exception ex)
             {
                 GetExecutionMessages(null, false, $"IPS Config ID: {configId}", MessagesResults.Error,
-                    ExecutionProcessOption.TryCatch, SystemMessageStatus.Error.ToString(), ex, ex.Message);
+                    ExecutionProcessOption.DefaultFailedMessages, SystemMessageStatus.Error.ToString(), ex, ex.Message);
             }
 
             return ExecutionMessage;
-        }
-
-        private string GetCurrentUserId()
-        {
-            // Implement based on your authentication system
-            return System.Threading.Thread.CurrentPrincipal?.Identity?.Name ?? "System";
-        }
+        }       
     }
 }

@@ -11127,6 +11127,12 @@
     <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
     <Content Include="Views\AccountTypeDefinition\List.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\_EndofYearConfiguration.cshtml" />
+    <Content Include="Views\IPSConfig\Index.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigForm.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigDetailsPartial.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigYearPartial.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigDataTable.cshtml" />
+    <Content Include="Views\IPSConfig\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11159,7 +11165,6 @@
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\InterestProductConfig\" />
-    <Folder Include="Views\IPSConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

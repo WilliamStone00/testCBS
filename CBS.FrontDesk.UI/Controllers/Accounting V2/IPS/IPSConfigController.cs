@@ -1,6 +1,7 @@
-﻿using CBS.BusinessService.Accounting_V2.IPS;
+﻿using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.IPS;
 using CBS.BusinessService.Config;
-using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.CBS.FrontDesk.Data.Entity.Config;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.IPS;
 using CBS.FrontDesk.Data.Entity.Config;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -9,21 +10,24 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
 {
-    [CheckSessionTimeOut]
+   // [CheckSessionTimeOut]
     public class IPSConfigController : BaseController
     {
         private readonly IPSConfigService _ipsConfigService;
         private readonly BranchServices _branchServices;
+        private readonly BranchAccountService _BranchAccountService;
 
-        public IPSConfigController(IPSConfigService ipsConfigService, BranchServices branchServices)
+        public IPSConfigController(IPSConfigService ipsConfigService, BranchServices branchServices, BranchAccountService branchAccountService)
         {
             _ipsConfigService = ipsConfigService;
             _branchServices = branchServices;
+            _BranchAccountService = branchAccountService;
         }
 
         public async Task<ActionResult> Index()
@@ -36,16 +40,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         {
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
-
-            // Prepare years dropdown (current year and next 5 years)
-            var currentYear = DateTime.Now.Year;
-            var years = new List<int>();
-            for (int i = currentYear; i <= currentYear + 5; i++)
-            {
-                years.Add(i);
-            }
-            ViewBag.Years = new SelectList(years);
-
+                      
             return true;
         }
 
@@ -102,7 +97,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
             {
                 if (int.TryParse(KEY, out int year))
                 {
-                    var data = await _ipsConfigService.GetActiveIPSConfigByYearAsync(year);
+                    var data = await _ipsConfigService.GetActiveIPSConfigByYearAsync(year, serviceOption);
                     return PartialView(partialView ?? "_IPSConfigDetailsPartial", data);
                 }
                 return PartialView(partialView, null);
@@ -165,9 +160,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetByActiveYear(int year)
+        public async Task<ActionResult> GetByActiveYear(int year,string branchid)
         {
-            var data = await _ipsConfigService.GetActiveIPSConfigByYearAsync(year);
+            var data = await _ipsConfigService.GetActiveIPSConfigByYearAsync(year,branchid);
             return PartialView("_IPSConfigDetailsPartial", data);
         }
 
@@ -176,6 +171,28 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         {
             var data = await _ipsConfigService.GetIPSConfigsByYearAsync(year);
             return PartialView("_IPSConfigYearPartial", data);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var branchAccounts = await _BranchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+
+                var resultList = branchAccounts.Select(a => new
+                {
+                    Id = a.Id,
+                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
+                });
+
+                return Json(resultList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { success = false, message = "Failed to load branch accounts" }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
