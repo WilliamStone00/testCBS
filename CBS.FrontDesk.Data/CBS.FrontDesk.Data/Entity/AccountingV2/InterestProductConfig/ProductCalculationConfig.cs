@@ -12,36 +12,42 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig
         public string Id { get; set; }
         public string AccountingYearId { get; set; }
         public string ProductId { get; set; }
+        
+        public string ProductName { get; set; }
+        public string ProductType { get; set; } = "Savings";
         public string BranchId { get; set; }
+        public string BranchCode { get; set; }
+        public string BranchName { get; set; }
         public bool IsEnabled { get; set; }
         public string Frequency { get; set; }
-        public int CalculationDayOfMonth { get; set; }
+        public int? CalculationDayOfMonth { get; set; }
         public string CalculationDayOfWeek { get; set; }
-        public int FirstCalculationMonth { get; set; }
+        public int? FirstCalculationMonth { get; set; }
         public string ComputationMode { get; set; }
-        public string AverageDaysCsv { get; set; }
-        public decimal ShareMonthFactor { get; set; }
-        public decimal CustomDenominator { get; set; }
+        public  int? Day1 { get; set; }
+        public int? Day2 { get; set; }
+        public decimal? ShareMonthFactor { get; set; }
+        public decimal? CustomDenominator { get; set; }
         public bool IsShareMonthProduct { get; set; }
         public string ShareMonthMode { get; set; }
         public string ShareMonthAverageDaysCsv { get; set; }
-        public decimal ShareMonthFactorOverride { get; set; }
+        public decimal? ShareMonthFactorOverride { get; set; }
         public string RateSource { get; set; }
-        public decimal FixedRate { get; set; }
+        public decimal? FixedRate { get; set; }
         public string RateProfileCode { get; set; }
         public bool ApplyRti { get; set; }
-        public decimal RtiRateOverride { get; set; }
+        public decimal? RtiRateOverride { get; set; }
         public bool ApplyTprcm { get; set; }
-        public decimal TprcmRateOverride { get; set; }
-        public decimal TaxableThresholdOverride { get; set; }
-        public string PostingScope { get; set; }
-        public string ExpenseGlId { get; set; }
-        public string MemberCreditGlGroup { get; set; }
+        public decimal? TprcmRateOverride { get; set; }
+        public decimal? TaxableThresholdOverride { get; set; }
+        //public string PostingScope { get; set; }
+        //public string ExpenseGlId { get; set; }
+        //public string MemberCreditGlGroup { get; set; }
         public string TaxGlId { get; set; }
-        public string LiaisonHoGlId { get; set; }
-        public string LiaisonBranchGlId { get; set; }
-        public decimal MinBalanceForInterest { get; set; }
-        public decimal MaxBalanceForInterest { get; set; }
+        //public string LiaisonHoGlId { get; set; }
+        //public string LiaisonBranchGlId { get; set; }
+        public decimal? MinBalanceForInterest { get; set; }
+        public decimal? MaxBalanceForInterest { get; set; }
     }
 
 
@@ -57,4 +63,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig
         public bool IsEnabled { get; set; }
 
     }
+
+    public class ProductInfo
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+    }
+
 }
