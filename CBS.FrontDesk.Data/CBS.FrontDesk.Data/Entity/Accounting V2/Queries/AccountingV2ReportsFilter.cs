@@ -29,8 +29,11 @@ namespace CBS.FrontDesk.Data.Entity.Accounting_V2.Queries
         [JsonProperty("branchId")]
         public string BranchId { get; set; }
 
-        [JsonProperty("consolidated")]
+        [JsonProperty("consolidated")]  
         public bool Consolidated { get; set; }
+
+        [JsonProperty("includeAllAccountsInTB")]
+        public bool IncludeAllAccountsInTB { get; set; }
 
         [JsonProperty("selectedBranchIds")]
         public List<string> SelectedBranchIds { get; set; }
