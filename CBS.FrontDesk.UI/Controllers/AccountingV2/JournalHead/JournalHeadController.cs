@@ -53,14 +53,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            ViewBag.OperationTypes = new List<SelectListItem>
+                    ViewBag.OperationTypes = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "Cashin", Text = "CASH IN" },
                         new SelectListItem { Value = "Cashout", Text = "CASH OUT" }
                     };
 
                                 // Reconciliation Status (WorkTicket) dropdown
-                                ViewBag.JournalStatus = new List<SelectListItem>
+                    ViewBag.JournalStatus = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "RECEIVED", Text = "RECEIVED" },
                         new SelectListItem { Value = "TEMP_CREATED", Text = "TEMP_CREATED" },
@@ -72,16 +72,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                         new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
                     };
 
-                                ViewBag.TicketSource = new List<SelectListItem>
+                    ViewBag.TicketSource = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "Source", Text = "Source " },
                         new SelectListItem { Value = "Destination", Text = "Destination" }
                     };
 
-                                ViewBag.Source = new List<SelectListItem>
+                    ViewBag.Source = new List<SelectListItem>
                     {
-                        new SelectListItem { Value = "real", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
-                        new SelectListItem { Value = "temp", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
+                        new SelectListItem { Value = "temp", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
+                        new SelectListItem { Value = "real", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
                     };
 
 
@@ -143,8 +143,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     recordsTotal = data.Options.recordsTotal,
                     recordsFiltered = data.Options.recordsFiltered,
                     data = journalHeaders,
-                    success = true,
-                    message = "Display DataTable for Journal Head  successfully"
+                    success = true
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

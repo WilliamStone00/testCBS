@@ -1796,9 +1796,17 @@ namespace CBS.FrontDesk.Helper
         public static string SaveEndofYearConfig = "/api/v1/YearEndChecklistDefinition/add";
         public static string UpdateEndofYearConfig = "/api/v1/YearEndChecklistDefinition/update";
 
+        // ------------------- product --
+        public static string GetAllProducts = "/api/v1/SavingProduct";
+
         //----------------------------  Interest Product  Config ---------------------------------
 
-        public static string GetInterestProductConfigDataTable = "/api/InterestProductConfig/GetInterestProductConfigDataTable";
+        public static string GetInterestProductConfigDataTable = "/api/v1/InterestProductConfig/GetInterestProductConfigDataTable";
+        public static string SaveInterestProductConfig = "/api/InterestProductConfig/Create";
+        public static string UpdateInterestProductConfig = "/api/InterestProductConfig/Update";
+        public static string GetByIdInterestProductConfig = "/api/v1/InterestProductConfig/GetById";
+
+
 
     }
 }

@@ -8133,7 +8133,6 @@
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
@@ -11126,6 +11125,9 @@
     <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
     <Content Include="Views\AccountTypeDefinition\List.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\_EndofYearConfiguration.cshtml" />
+    <Content Include="Views\InterestProductConfig\Index.cshtml" />
+    <Content Include="Views\InterestProductConfig\_Update.cshtml" />
+    <Content Include="Views\InterestProductConfig\_DataTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11157,7 +11159,6 @@
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
-    <Folder Include="Views\InterestProductConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />
