@@ -577,7 +577,7 @@ namespace CBS.BusinessService
                 LoanTarget = loan.LoanTarget,
                 LoanPurpose = loan.LoanApplication?.LoanPurpose?.purposeName,
                 RepaymentPeriod = loan.LoanApplication?.RepaymentCircle,
-                NumberOfInstallments = loan.NumberOfInstallments,
+                NumberOfInstallments = loan.LoanApplication.NumberOfRepayment,
                 RepaymentFrequency = loan.RepaymentCycle,
 
                 // 📅 Dates

@@ -1,12 +1,24 @@
 ﻿$(document).ready(function () {
-    // Bind the event to trigger when the radio buttons are clicked
+
+    // Run once on page load
+    toggleInputFields();
+
+    // When Application Type changes (if not already handled)
+    $("#LoanApplicationType").on("change", function () {
+        toggleInputFields();
+    });
+
+    // Bind radio change
     $("input[name='AddLoanApplicationCommand.LoanCategory']").on('change', function () {
 
         var loanTermId = $("#LoanTermId").val();
-        GetConfiuredTargets(loanTermId,'TargetId');
-        GetProductByTargetLoandingMainLoan();  // Call the function when the radio button is checked
+        if (!loanTermId) return;
+
+        GetConfiuredTargets(loanTermId, 'TargetId');
+        GetProductByTargetLoandingMainLoan();
     });
 });
+
 
 
 $(document).ready(function () {
@@ -150,9 +162,10 @@ function populateLoanModal(data) {
     $('#rl_loanTerm').text(data.LoanTermName || '');
     $('#rl_targetPopulation').text(data.LoanTarget || '');
     $('#rl_loanPurpose').text(data.LoanPurpose || '');
-    $('#rl_repaymentPeriod').text(data.RepaymentPeriod || '');
+    $('#rl_repaymentPeriod').text(data.RepaymentCycle || '');
     $('#rl_repaymentMode').text(data.RepaymentMode || '');
     $('#rl_installments').text(data.NumberOfInstallments || '');
+    $('#rl_duration').text(data.LoanDurarion || '');
     $('#rl_interestCalculationMethod').text(data.InterestCalculationMethod || '');
 
     // 💰 Financials
@@ -284,102 +297,160 @@ function LoadRefinancing(KEY, path, affectedID) {
     toggleInputFields();
 }
 function toggleInputFields() {
-    var loanApplicationType = document.getElementById('LoanApplicationType').value;
+    var typeEl = document.getElementById('LoanApplicationType');
+    var loanApplicationType = typeEl ? typeEl.value : "";
+
     var isReschedule = loanApplicationType === "Reschedule";
     var isRefinancing = loanApplicationType === "Refinancing";
+    var isRestructure = loanApplicationType === "Restructure";
 
-    // Toggle readonly on specific inputs for Reschedule only
-    var inputFields = ["NewBalance"];
-    inputFields.forEach(function (fieldId) {
+    // ---------------------------
+    // 1) Toggle readonly fields (Reschedule only)
+    // ---------------------------
+    ["NewBalance"].forEach(function (fieldId) {
         var field = document.getElementById(fieldId);
-        if (isReschedule) {
-            field.setAttribute('readonly', 'readonly');
-        } else {
-            field.removeAttribute('readonly');
-        }
+        if (!field) return;
+
+        if (isReschedule) field.setAttribute('readonly', 'readonly');
+        else field.removeAttribute('readonly');
     });
 
-    // Update panel title
+    // ---------------------------
+    // 2) Update panel title
+    // ---------------------------
     var panelTitle = document.getElementById('panelTitle');
-    switch (loanApplicationType) {
-        case "Reschedule":
-            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM";
-            break;
-        case "Refinancing":
-            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM";
-            break;
-        case "Restructure":
-            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM";
-            break;
-        default:
-            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM";
-            break;
+    if (panelTitle) {
+        switch (loanApplicationType) {
+            case "Reschedule":
+                panelTitle.innerHTML = "RESCHEDULING LOAN APPLICATION FORM";
+                break;
+            case "Refinancing":
+                panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM";
+                break;
+            case "Restructure":
+                panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM";
+                break;
+            default:
+                panelTitle.innerHTML = "NEW LOAN APPLICATION FORM";
+                break;
+        }
     }
 
-    // Update icon
+    // ---------------------------
+    // 3) Update icon
+    // ---------------------------
     var iconElement = document.querySelector('#accordionPopoutIconThree i');
-    switch (loanApplicationType) {
-        case "Reschedule":
-            iconElement.className = "mdi mdi-calendar-refresh me-2";
-            break;
-        case "Refinancing":
-            iconElement.className = "mdi mdi-cash-refund me-2";
-            break;
-        case "Restructure":
-            iconElement.className = "mdi mdi-account-cog me-2";
-            break;
-        default:
-            iconElement.className = "mdi mdi-file me-2";
-            break;
+    if (iconElement) {
+        switch (loanApplicationType) {
+            case "Reschedule":
+                iconElement.className = "mdi mdi-calendar-refresh me-2";
+                break;
+            case "Refinancing":
+                iconElement.className = "mdi mdi-cash-refund me-2";
+                break;
+            case "Restructure":
+                iconElement.className = "mdi mdi-account-cog me-2";
+                break;
+            default:
+                iconElement.className = "mdi mdi-file me-2";
+                break;
+        }
     }
 
-    // Common divs to toggle (already present)
-    var divsToToggle = [
-        "RiskMitigationDiv",
-        "RAmountDiv",
-        "loanTypeDiv",
-        "loanProductDiv",
-        "TargetPopulationDiv",
+    // ---------------------------
+    // 4) Reschedule hides these UI blocks
+    // ---------------------------
+    var rescheduleHide = [
+        "LoanCategorySelect",
+        "LoanTermSelect",
         "LoanCategoryDive",
+        "TargetPopulationDiv",
+        "loanProductDiv",
+        "loanTypeDiv",
+        "RAmountDiv",
+        "RiskMitigationDiv",
         "RepaymentDiv",
         "purposeAndActivitiesDiv"
     ];
 
-    divsToToggle.forEach(function (divId) {
-        var divElement = document.getElementById(divId);
-        if (isReschedule) {
-            divElement.style.display = "none";
-        } else {
-            divElement.style.display = "block";
-        }
+    rescheduleHide.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.style.display = isReschedule ? "none" : "block";
     });
 
-    // ✅ Additional logic for Refinancing: hide product selection-related fields
-    var refinancingFields = [
-        //"LoanCategorySelect",       // dropdown for Loan Product Category
-        //"LoanTermSelect",           // dropdown for Loan Term
-        "LoanCategoryDive",     // radio buttons
-        //"TargetPopulationDiv",  // dropdown for target
-        //"loanProductDiv",       // dropdown for loan product
-        "loanTypeDiv"           // dropdown for loan type
+    // ---------------------------
+    // 4b) Hide Interest section (Reschedule only)
+    // ---------------------------
+    var interestDiv = document.getElementById("InterestDiv");
+    if (interestDiv) {
+        interestDiv.style.display = isReschedule ? "none" : "block";
+    }
+
+    // ---------------------------
+    // 5) Refinancing hides some product-selection fields
+    // ---------------------------
+    var refinancingHide = [
+        "LoanCategoryDive",
+        "loanTypeDiv"
     ];
 
-    refinancingFields.forEach(function (id) {
-        var element = document.getElementById(id);
-        if (element) {
-            element.style.display = isRefinancing ? "none" : "block";
-        }
+    refinancingHide.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (isReschedule) return;
+        el.style.display = isRefinancing ? "none" : "block";
     });
+
+    // ---------------------------
+    // 6) Loan selection block
+    // ---------------------------
+    var loanDiv = document.getElementById("loandiv");
+    if (loanDiv) {
+        var showLoanDiv =
+            loanApplicationType === "Refinancing" ||
+            loanApplicationType === "Reschedule" ||
+            loanApplicationType === "Restructure";
+
+        loanDiv.style.display = showLoanDiv ? "block" : "none";
+    }
+
+    // ---------------------------
+    // 7) Update loan selection header text (SAFE ADD)
+    // ---------------------------
+    var repaymentHeader = document.getElementById("repaymentHeader");
+    if (repaymentHeader) {
+        if (isRefinancing) {
+            repaymentHeader.innerText = "SELECT LOAN TO REFINANCE";
+        } else if (isReschedule) {
+            repaymentHeader.innerText = "SELECT LOAN TO RESCHEDULE";
+        } else if (isRestructure) {
+            repaymentHeader.innerText = "SELECT LOAN TO RESTRUCTURE";
+        }
+    }
+
+    // ---------------------------
+    // 8) Toggle guideline sections (SAFE ADD)
+    // ---------------------------
+    var refinancingGuidelines = document.getElementById("refinancingGuidelines");
+    var reschedulingGuidelines = document.getElementById("reschedulingGuidelines");
+
+    if (refinancingGuidelines) {
+        refinancingGuidelines.style.display = isRefinancing ? "block" : "none";
+    }
+
+    if (reschedulingGuidelines) {
+        reschedulingGuidelines.style.display = isReschedule ? "block" : "none";
+    }
 }
 
 //function toggleInputFields() {
 //    var loanApplicationType = document.getElementById('LoanApplicationType').value;
 //    var isReschedule = loanApplicationType === "Reschedule";
+//    var isRefinancing = loanApplicationType === "Refinancing";
 
-//    // List of input fields to toggle
-//    var inputFields = ["NewBalance", /*"NewInterest", "NewVAT", "NewPenalty"*/];
-
-//    // Toggle readonly attribute based on loan application type
+//    // Toggle readonly on specific inputs for Reschedule only
+//    var inputFields = ["NewBalance"];
 //    inputFields.forEach(function (fieldId) {
 //        var field = document.getElementById(fieldId);
 //        if (isReschedule) {
@@ -389,24 +460,24 @@ function toggleInputFields() {
 //        }
 //    });
 
-//    // Update the panel title and convert to uppercase
+//    // Update panel title
 //    var panelTitle = document.getElementById('panelTitle');
 //    switch (loanApplicationType) {
 //        case "Reschedule":
-//            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM".toUpperCase();
+//            panelTitle.innerHTML = "RESCHEDULELING LOAN APPLICATION FORM";
 //            break;
 //        case "Refinancing":
-//            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM".toUpperCase();
+//            panelTitle.innerHTML = "REFINANCING LOAN APPLICATION FORM";
 //            break;
 //        case "Restructure":
-//            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM".toUpperCase();
+//            panelTitle.innerHTML = "RESTRUCTURING LOAN APPLICATION FORM";
 //            break;
 //        default:
-//            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM".toUpperCase();
+//            panelTitle.innerHTML = "NEW LOAN APPLICATION FORM";
 //            break;
 //    }
 
-//    // Update the icon based on the loan application type
+//    // Update icon
 //    var iconElement = document.querySelector('#accordionPopoutIconThree i');
 //    switch (loanApplicationType) {
 //        case "Reschedule":
@@ -418,37 +489,50 @@ function toggleInputFields() {
 //        case "Restructure":
 //            iconElement.className = "mdi mdi-account-cog me-2";
 //            break;
-//        default: // New Loan Application
-//            iconElement.className = "mdi mdi-file me-2"; // Update this line with the new icon class
+//        default:
+//            iconElement.className = "mdi mdi-file me-2";
 //            break;
 //    }
 
-//    // List of div IDs to hide/show based on "Reschedule"
+//    // Common divs to toggle (already present)
 //    var divsToToggle = [
 //        "RiskMitigationDiv",
 //        "RAmountDiv",
 //        "loanTypeDiv",
 //        "loanProductDiv",
-//    /*    "WaiverDiv",*/
 //        "TargetPopulationDiv",
 //        "LoanCategoryDive",
 //        "RepaymentDiv",
-//        //"ApplyInterestWaiverDiv",
 //        "purposeAndActivitiesDiv"
 //    ];
 
-//    // Hide or show divs based on "Reschedule" status
 //    divsToToggle.forEach(function (divId) {
 //        var divElement = document.getElementById(divId);
-//        console.log(divId);
-//        console.log(divElement);
 //        if (isReschedule) {
 //            divElement.style.display = "none";
 //        } else {
 //            divElement.style.display = "block";
 //        }
 //    });
+
+//    // ✅ Additional logic for Refinancing: hide product selection-related fields
+//    var refinancingFields = [
+//        //"LoanCategorySelect",       // dropdown for Loan Product Category
+//        //"LoanTermSelect",           // dropdown for Loan Term
+//        "LoanCategoryDive",     // radio buttons
+//        //"TargetPopulationDiv",  // dropdown for target
+//        //"loanProductDiv",       // dropdown for loan product
+//        "loanTypeDiv"           // dropdown for loan type
+//    ];
+
+//    refinancingFields.forEach(function (id) {
+//        var element = document.getElementById(id);
+//        if (element) {
+//            element.style.display = isRefinancing ? "none" : "block";
+//        }
+//    });
 //}
+
 
 
 function LoadProductDetails(KEY) {

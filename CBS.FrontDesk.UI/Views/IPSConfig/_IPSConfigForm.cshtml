@@ -1,0 +1,296 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSConfig
+@using Resources
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a href="@Url.Action("List", "IPSConfig")"
+           class="btn btn-label-primary btn-sm me-2"
+           id="btnViewList"
+           data-bs-toggle="tooltip"
+           title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_IPSConfigList','new','IPSConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
+            <i class="mdi mdi-plus mdi-18px"></i> Add New
+        </a>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="modal-body">
+        @using (Html.BeginForm("CreateOrUpdate", "IPSConfig", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+
+        <div class="row gy-3">
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-cog-outline me-1"></i> IPS Configuration Details</h6>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2", required = "required", id = "BranchId", onchange = "loadBranchAccounts()" })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                    <label>@GlobalUserManagement.Branch</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.Year, new
+                    {
+                        @class = "form-control",
+                        type = "number",
+                        min = "2015",
+                        max = DateTime.Now.Year,
+                        value = DateTime.Now.Year,
+                        required = "required"
+                    })
+                    @Html.ValidationMessageFor(m => m.Year, "", new { @class = "text-danger" })
+                    <label>Year</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.AgeLimit, new { @class = "form-control", type = "number", min = "40", required = "required", placeholder = "Age Limit" })
+                    @Html.ValidationMessageFor(m => m.AgeLimit, "", new { @class = "text-danger" })
+                    <label>Age Limit</label>
+                </div>
+            </div>
+
+            <!-- Account Configuration Section -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-bank me-1"></i> Account Configuration</h6>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.LifeSavingsClaimDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Debit Account ---", new { @class = "form-control select2-account", id = "LifeSavingsClaimDebitAccountId" })
+                    @Html.ValidationMessageFor(m => m.LifeSavingsClaimDebitAccountId, "", new { @class = "text-danger" })
+                    <label>Life Savings Claim Debit Account</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.LifeSavingsClaimCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Credit Account ---", new { @class = "form-control select2-account", id = "LifeSavingsClaimCreditAccountId" })
+                    @Html.ValidationMessageFor(m => m.LifeSavingsClaimCreditAccountId, "", new { @class = "text-danger" })
+                    <label>Life Savings Claim Credit Account</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.LoanProtectionDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Debit Account ---", new { @class = "form-control select2-account", id = "LoanProtectionDebitAccountId" })
+                    @Html.ValidationMessageFor(m => m.LoanProtectionDebitAccountId, "", new { @class = "text-danger" })
+                    <label>Loan Protection Debit Account</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.DropDownListFor(m => m.LoanProtectionCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Credit Account ---", new { @class = "form-control select2-account", id = "LoanProtectionCreditAccountId" })
+                    @Html.ValidationMessageFor(m => m.LoanProtectionCreditAccountId, "", new { @class = "text-danger" })
+                    <label>Loan Protection Credit Account</label>
+                </div>
+            </div>
+
+            <!-- Coverage Limits Section -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-currency-usd me-1"></i> Coverage Limits</h6>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.LoanCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Loan Coverage Limit" })
+                    @Html.ValidationMessageFor(m => m.LoanCoverageLimit, "", new { @class = "text-danger" })
+                    <label>Loan Coverage Limit</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.SavingsCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Savings Coverage Limit" })
+                    @Html.ValidationMessageFor(m => m.SavingsCoverageLimit, "", new { @class = "text-danger" })
+                    <label>Savings Coverage Limit</label>
+                </div>
+            </div>
+
+            <!-- Premium Rates Section -->
+            <div class="col-12">
+                <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-percent me-1"></i> Premium Rates</h6>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.PremiumRateLoan, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Premium Rate Loan" })
+                    @Html.ValidationMessageFor(m => m.PremiumRateLoan, "", new { @class = "text-danger" })
+                    <label>Premium Rate Loan</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.PremiumRateSavings, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Premium Rate Savings" })
+                    @Html.ValidationMessageFor(m => m.PremiumRateSavings, "", new { @class = "text-danger" })
+                    <label>Premium Rate Savings</label>
+                </div>
+            </div>
+
+            <!-- Additional Settings -->
+            <div class="col-md-6">
+                <div class="form-floating shadow-sm">
+                    @Html.TextBoxFor(m => m.MaxDelinquencyDays, new { @class = "form-control", type = "number", min = "0", required = "required", placeholder = "Max Delinquency Days" })
+                    @Html.ValidationMessageFor(m => m.MaxDelinquencyDays, "", new { @class = "text-danger" })
+                    <label>Max Delinquency Days</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group ps-2 pt-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.ExcludeGroups, new { @class = "form-check-input", id = "ExcludeGroups" })
+                        <label class="form-check-label" for="ExcludeGroups">Exclude Groups</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group ps-2 pt-3">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
+                        <label class="form-check-label" for="IsActive">Is Active</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 text-end mt-3">
+                @if (string.IsNullOrEmpty(Model.Id))
+                {
+                    <button type="submit" class="btn btn-primary shadow-sm px-4">
+                        <i class="fas fa-save me-1"></i>Create Configuration
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
+                        @GlobalShared.Reset
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary me-2">@GlobalBank.Update</button>
+                    <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_IPSConfigList','list','IPSConfig')" class="btn btn-outline-secondary">
+                        @GlobalShared.Cancel
+                    </button>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+<script>
+    // Initialize Select2 for account dropdowns
+    $(document).ready(function () {
+        // Initialize Select2 for branch dropdown
+        if ($.fn.select2) {
+            $('#BranchId').select2({
+                width: '100%',
+                placeholder: '--- Select Branch ---'
+            });
+
+            // Initialize Select2 for account dropdowns
+            $('.select2-account').select2({
+                width: '100%',
+                placeholder: '--- Select Account ---'
+            });
+        }
+
+        // If editing an existing config with a branch selected, load accounts
+        if ($('#BranchId').val()) {
+            loadBranchAccounts();
+        }
+    });
+
+    // Function to load branch accounts
+    function loadBranchAccounts() {
+        var branchId = $('#BranchId').val();
+
+        if (!branchId) {
+            // Clear all account dropdowns if no branch selected
+            clearAccountDropdowns();
+            return;
+        }
+
+        // Show loading indicators
+        showLoadingAccounts();
+
+        $.ajax({
+            url: '@Url.Action("GetBranchAccountsByBranch", "IPSConfig")',
+            type: 'GET',
+            data: { branchId: branchId },
+            success: function (accounts) {
+                if (accounts && accounts.length > 0) {
+                    // Update all account dropdowns with the same account list
+                    updateAccountDropdowns(accounts);
+                } else {
+                    clearAccountDropdowns();
+                    appalert('No accounts found for the selected branch', 3, 1);
+                }
+            },
+            error: function (xhr) {
+                clearAccountDropdowns();
+                console.error('Error loading branch accounts:', xhr);
+                appalert('Failed to load branch accounts', 0, 1);
+            }
+        });
+    }
+
+    // Function to update all account dropdowns
+    function updateAccountDropdowns(accounts) {
+        var accountOptions = '<option value="">--- Select Account ---</option>';
+
+        // Add each account to options
+        $.each(accounts, function (index, account) {
+            accountOptions += '<option value="' + account.Id + '">' + account.Name + '</option>';
+        });
+
+        // Update all account dropdowns
+        $('#LifeSavingsClaimDebitAccountId').html(accountOptions);
+        $('#LifeSavingsClaimCreditAccountId').html(accountOptions);
+        $('#LoanProtectionDebitAccountId').html(accountOptions);
+        $('#LoanProtectionCreditAccountId').html(accountOptions);
+
+        // Refresh Select2 if initialized
+        if ($.fn.select2) {
+            $('.select2-account').trigger('change.select2');
+        }
+    }
+
+    // Function to clear all account dropdowns
+    function clearAccountDropdowns() {
+        var emptyOption = '<option value="">--- Select Account ---</option>';
+
+        $('#LifeSavingsClaimDebitAccountId').html(emptyOption);
+        $('#LifeSavingsClaimCreditAccountId').html(emptyOption);
+        $('#LoanProtectionDebitAccountId').html(emptyOption);
+        $('#LoanProtectionCreditAccountId').html(emptyOption);
+
+        if ($.fn.select2) {
+            $('.select2-account').trigger('change.select2');
+        }
+    }
+
+    // Function to show loading state in account dropdowns
+    function showLoadingAccounts() {
+        var loadingOption = '<option value="" disabled>Loading accounts...</option>';
+
+        $('#LifeSavingsClaimDebitAccountId').html(loadingOption);
+        $('#LifeSavingsClaimCreditAccountId').html(loadingOption);
+        $('#LoanProtectionDebitAccountId').html(loadingOption);
+        $('#LoanProtectionCreditAccountId').html(loadingOption);
+
+        if ($.fn.select2) {
+            $('.select2-account').trigger('change.select2');
+        }
+    }
+</script>
