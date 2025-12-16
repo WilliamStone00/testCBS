@@ -138,8 +138,9 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                     var model = new ChequeBookRequest
                     {
                         CustomerId = customerId,
-                        CustomerName = $"{customerData.CustomerDto.FirstName} {customerData.CustomerDto.LastName}"
-                    };
+                        CustomerName = $"{customerData.CustomerDto.FirstName} {customerData.CustomerDto.LastName}",
+						BranchId = customerData.BranchId
+					};
 
                     return PartialView("_ChequeRequestForm", model);
                 }
@@ -174,7 +175,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                 case "review":
                     // For review action - you might need to create a ReviewRequestAsync method
                     // For now, using RejectRequestAsync as placeholder
-                    result = await _chequeRequestService1.RejectRequestAsync(approval);
+                    result = await _chequeRequestService1.ReviewRequestAsync(approval);
                     break;
                 case "delivered":
                     // For delivered action - you might need to create a MarkAsDeliveredAsync method  
@@ -304,6 +305,27 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             });
         }
 
-       
-    }
+		[HttpGet]
+		public async Task<ActionResult> GetChequeBookCategoryDetails(string categoryId)
+		{
+			if (string.IsNullOrWhiteSpace(categoryId))
+				return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+			var categories = await _categoryServices.GetCategories();
+
+			var category = categories.FirstOrDefault(c => c.id == categoryId);
+
+			if (category == null)
+				return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+			return Json(new
+			{
+				success = true,
+				numberOfPages = category.numberOfPages ?? 0,
+				basePrice = category.basePrice ?? 0,
+				subscriptionDuration = category.validityPeriodInMonths
+			}, JsonRequestBehavior.AllowGet);
+		}
+
+	}
 }

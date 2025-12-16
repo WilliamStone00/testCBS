@@ -1319,8 +1319,8 @@ namespace CBS.FrontDesk.Helper
         public const string GetChequeRequestById = "/api/v1/CheckRequest/{0}";
         public const string GetAllChequeRequests = "not yet provided by backend";
         public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
-        public const string RejectChequeRequest = "not yet provided by backend";
-        public const string ReviewChequeRequest = "not yet provided by backend";
+        public const string RejectChequeRequest = "/api/v1/CheckRequest/Reject";
+        public const string ReviewChequeRequest = "/api/v1/CheckRequest/Review";
         public const string datatableforrequest = "/api/v1/CheckRequest/DataTable";
 
         //------------------------ Counter Cheque ------------------------
@@ -1357,13 +1357,21 @@ namespace CBS.FrontDesk.Helper
         public const string ChequebookDetail = "/api/v1/checkbook/{0}";
 
 
-        //************************** END CHEQUE BOOK *******************************
+		//---------------------- Global Configuration ----------------------------
+		public const string GetAllGlobalConfig = "/api/v1/GlobalConfigs";
+		public const string GetGlobalConfigById = "/api/v1/GlobalConfig/{0}";
+		public const string CreateGlobalConfig = "/api/v1/GlobalConfig/branch";
+		public const string UpdateGlobalConfig = "/api/v1/GlobalConfig/branch{0}";
+		public const string DeleteGlobalConfig = "/api/v1/GlobalConfig/{0}";
 
-        //*************************** MANUAL DAILLY COLLECTIONS ************************ 
 
-        // ---------------- MANUAL ENTRY & FILES ----------------
-        //uploadfile
-        public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
+		//************************** END CHEQUE BOOK *******************************
+
+		//*************************** MANUAL DAILLY COLLECTIONS ************************ 
+
+		// ---------------- MANUAL ENTRY & FILES ----------------
+		//uploadfile
+		public static string ManualEntryUpload = "/api/v1/ManualEntryCollectorUpload";
         //getfile
         public static string GetFileById = "/api/v1/ManualEntryCollector/ViewFileByFileUploadId/{FileUploadId}";
         //getallfiles
