@@ -340,6 +340,7 @@
     <Compile Include="CheckManagementSystem\Configurations\ChequeNumber\NumConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\MockFeeConfigService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\FeeConfiguration\FeeConfigService.cs" />
+    <Compile Include="CheckManagementSystem\Configurations\GlobalConfiguration\GlobalConfigServices.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigmockService.cs" />
     <Compile Include="CheckManagementSystem\Configurations\NotificationConfiguration\NotificationConfigService.cs" />
     <Compile Include="CheckManagementSystem\LossManagementServices\DataTableResult.cs" />

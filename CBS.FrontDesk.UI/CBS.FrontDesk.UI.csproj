@@ -2171,6 +2171,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\Category\CategoryconficController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Configurations\GlobalConfiguration\GlobalConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\LossManagementSys\LossManagementController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
@@ -11129,6 +11130,10 @@
     <Content Include="Views\IPSConfig\_IPSConfigYearPartial.cshtml" />
     <Content Include="Views\IPSConfig\_IPSConfigDataTable.cshtml" />
     <Content Include="Views\IPSConfig\List.cshtml" />
+    <Content Include="Views\GlobalConfig\_Create.cshtml" />
+    <Content Include="Views\GlobalConfig\_Data.cshtml" />
+    <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />
+    <Content Include="Views\GlobalConfig\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

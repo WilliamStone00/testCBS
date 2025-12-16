@@ -1,0 +1,80 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.GlobalConfig.GlobalConfig
+
+@*<style>
+    .detail-card {
+        border: 1px solid #e5e7eb;
+        border-radius: .5rem;
+    }
+
+    .detail-header {
+        background: #f8fafc;
+        border-bottom: 1px solid #e5e7eb;
+        padding: .75rem 1rem;
+    }
+
+    .pill {
+        display: inline-block;
+        padding: .15rem .5rem;
+        border-radius: 999px;
+        font-size: .75rem;
+    }
+
+    .pill-success {
+        background: #ecfdf5;
+        color: #065f46;
+    }
+
+    .pair-label {
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .pair-name {
+        display: block;
+    }
+
+    .pair-no {
+        display: block;
+        color: #6b7280;
+        font-size: .85rem;
+    }
+
+    .grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem 1rem;
+    }
+
+    @@media (max-width: 768px) {
+        .grid-2col {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>*@
+
+
+
+<div class="detail-card p-3">
+    <h5 class="text-primary mb-3">
+        Global Configuration Details
+    </h5>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <strong>Minimum Cheque Leave:</strong> @Model.MinimumOfChequeLeave
+        </li>
+        <li class="list-group-item">
+            <strong>Maximum Cheque Leave:</strong> @Model.MaximumOfChequeLeave
+        </li>
+        <li class="list-group-item">
+            <strong>Cheque Validity (Days):</strong> @Model.ChequeValidityDays
+        </li>
+        <li class="list-group-item">
+            <strong>Centralised:</strong>
+            @(Model.IsCentralised ? "Yes" : "No")
+        </li>
+    </ul>
+</div>
+
+
+
