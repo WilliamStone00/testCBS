@@ -863,6 +863,8 @@ namespace CBS.BusinessService.Accounts
         {
             try
             {
+                string logoImagePath = PaymentReceiptMapping.GenerateAndSaveBankLogoImage(b.Bank.LogoUrl, b.Bank.Name);
+
                 t.currencyNote = CurrencyMapper.MapToCurrencyNotesRequest(t.currencyNotes);
 
                 var rpt = new TransactionReportDS
@@ -926,7 +928,7 @@ namespace CBS.BusinessService.Accounts
                     IsDepositDoneByAccountOwner = t.IsDepositDoneByAccountOwner,
                     IsInterBrachOperation = t.IsInterBrachOperation,
                     InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
-                    Logo = b.Bank.LogoUrl,
+                    Logo = logoImagePath,
                     Operation = t.Operation,
                     ProductName = t.Account.Product?.Name ?? "N/A",
                     RecieverName = "",
@@ -956,6 +958,9 @@ namespace CBS.BusinessService.Accounts
 
                 decimal openingBalance = transactions.FirstOrDefault()?.PreviousBalance ?? 0;
                 List<TransactionReportDS> reports = new List<TransactionReportDS>();
+		   // --- Logo & WaterMark (LOCAL CACHED PATHS) ---
+                string logoImagePath = PaymentReceiptMapping.GenerateAndSaveBankLogoImage(b.Bank.LogoUrl, b.Bank.Name);
+                //string waterMarkImagePath = GenerateAndSaveBankWaterMarkImage(branch.Bank.WaterMarkUrl, branch.Name);
 
                 foreach (TransactionHistory t in transactions)
                 {
@@ -1023,7 +1028,7 @@ namespace CBS.BusinessService.Accounts
                         IsDepositDoneByAccountOwner = t.IsDepositDoneByAccountOwner,
                         IsInterBrachOperation = t.IsInterBrachOperation,
                         InterBrachOperation = t.IsInterBrachOperation ? "YES" : "NO",
-                        Logo = b.Bank.LogoUrl,
+                        Logo = logoImagePath,
                         Operation = t.Operation,
                         ProductName = t.Account.Product.Name,
                         RecieverName = "",
