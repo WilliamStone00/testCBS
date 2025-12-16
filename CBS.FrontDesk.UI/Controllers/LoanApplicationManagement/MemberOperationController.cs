@@ -476,11 +476,11 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
                     model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
                     model.AddLoanApplicationCommand.LoanId = loan.Id;
-                    model.AddLoanApplicationCommand.Amount = loan.LoanAmount;
+                    model.AddLoanApplicationCommand.Amount = loan.Balance;
                     model.AddLoanApplicationCommand.OldLoanPayment = model.AddLoanApplicationCommand.OldLoanPayment = new OldLoanPayment
                     {
                         LoanId = loan.Id,
-                        Amount = loan.DueAmount,
+                        Amount = loan.Balance,
                         Capital = loan.Balance,
                         Interest = loan.AccrualInterest,
                         Penalty = loan.Penalty,
@@ -488,7 +488,7 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     };
                     //model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.NewBalance + model.AddLoanApplicationCommand.NewVAT + model.AddLoanApplicationCommand.NewInterest + model.AddLoanApplicationCommand.NewPenalty;
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                   return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
                 else if (model.AddLoanApplicationCommand.LoanApplicationType == "Refinancing")
                 {

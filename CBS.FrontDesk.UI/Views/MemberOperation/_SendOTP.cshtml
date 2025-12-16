@@ -1,6 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 @using Resources
 
+@{
+    var isReschedule =
+        Model?.LoanApplication?.LoanApplicationType != null
+        && Model.LoanApplication.LoanApplicationType.Equals("Reschedule", StringComparison.OrdinalIgnoreCase);
+}
+
 <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
     <legend class="float-none w-auto px-2 text-primary fw-bold">
         🔐 @Global_SendOTP.SendOTPCode
@@ -15,19 +21,38 @@
                 <h5 class="card-title fw-bold">@Global_SendOTP.SendOTPCode</h5>
                 <p class="text-muted mb-4">@Global_SendOTP.SendOTPCodeDescription</p>
 
-                @using (Html.BeginForm(
-                    "GenerateOTP",
-                    "MemberOperation",
-                    FormMethod.Post,
-                    new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                @if (isReschedule)
                 {
-                    @Html.HiddenFor(m => m.AddOTPNotificationCommand.LoanApplicationId)
-                    @Html.HiddenFor(m => m.AddOTPNotificationCommand.CustomerId)
+                    <!-- ✅ Beautiful notification (same design language) -->
+                    <div class="alert alert-info d-flex align-items-start text-start shadow-sm border-0 rounded-3 p-3 mb-0">
+                        <i class="mdi mdi-shield-check-outline fs-3 me-3"></i>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold mb-1">OTP not required</div>
+                            <div class="small">
+                                This is a <b>rescheduling</b> process. OTP verification is disabled for this operation.
+                            </div>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg px-4">
-                        <i class="fas fa-paper-plane me-2"></i>
-                        @Global_SendOTP.SendOTPTo @Model.Customer.name
-                    </button>
+                        <!-- Default OTP payload (so backend validation does not fail) -->
+                        <input type="hidden" name="UpdateLoanApplicationStatus.OTPCode" value="0000" />
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm(
+                        "GenerateOTP",
+                        "MemberOperation",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
+                    {
+                        @Html.HiddenFor(m => m.AddOTPNotificationCommand.LoanApplicationId)
+                        @Html.HiddenFor(m => m.AddOTPNotificationCommand.CustomerId)
+
+                        <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            @Global_SendOTP.SendOTPTo @Model.Customer.name
+                        </button>
+                    }
                 }
             </div>
         </div>
