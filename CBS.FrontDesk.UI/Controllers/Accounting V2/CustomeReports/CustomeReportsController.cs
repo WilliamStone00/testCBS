@@ -67,7 +67,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2
                 //new SelectListItem { Value = "BS", Text = "Balance Sheet" },
                 new SelectListItem { Value = "JE", Text = "General Accounting Journal" },
                 new SelectListItem { Value = "Account Statement", Text = "General Ledger" },
-                new SelectListItem { Value = "IN", Text = "Income Statement" },
+                //new SelectListItem { Value = "IN", Text = "Income Statement" },
             };
         }
     }
