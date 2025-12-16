@@ -218,36 +218,285 @@
                                     </div>
                                 </div>
                                 <!-- Adjusted row -->
+                                
                                 <div id="loandiv" style="display:none;">
-                                    <h4 id="repaymentHeader">@Member_Global_LoanApplication.SelectLoanToRefinance.ToUpper()</h4>
-                                    <div class="card mb-4">
+                                    <!-- Dynamic Header -->
+                                    <h4 id="repaymentHeader" class="mb-3"></h4>
+
+                                    <!-- ===================== -->
+                                    <!-- 🟦 REFINANCING GUIDELINES -->
+                                    <!-- ===================== -->
+                                    <div class="card mb-4" id="refinancingGuidelines" style="display:none;">
                                         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                                            <span><i class="mdi mdi-information-outline me-2"></i> @Member_Global_LoanApplication.Tips</span>
-                                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
+                                            <span>
+                                                <i class="mdi mdi-information-outline me-2"></i>
+                                                Loan Refinancing – Important Guidelines (TSC)
+                                            </span>
+                                            <button class="btn btn-light btn-sm" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseRefinancingTips"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseRefinancingTips">
                                                 <i class="mdi mdi-chevron-down"></i>
                                             </button>
                                         </h6>
-                                        <div id="collapseHelpTips" class="collapse">
+
+                                        <div id="collapseRefinancingTips" class="collapse">
                                             <div class="card-body">
-                                                <p class="text-muted mb-2">@Member_Global_LoanApplication.FollowTheseTips</p>
+
+                                                <p class="text-muted mb-2">
+                                                    In TSC, loan refinancing is treated as a <strong>normal loan application</strong> where a new loan is created
+                                                    to settle an existing loan and provide the member with an additional <strong>requested (top-up) amount</strong>.
+                                                </p>
+
                                                 <ul>
-                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Member_Global_LoanApplication.SelectLoanToRefinanceFromDropdown</li>
-                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Member_Global_LoanApplication.UseOverrideBalanceSection2</li>
-                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Member_Global_LoanApplication.EnableStopFurtherInterestCalculations</li>
-                                                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @Member_Global_LoanApplication.FillOutRepaymentDetailsAccurately</li>
-                                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @Member_Global_LoanApplication.AnyChangesToLoanBalances</li>
+                                                    <li>
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Refinancing follows the <strong>standard loan workflow</strong>:
+                                                        <ul class="mt-1">
+                                                            <li>✔ Loan application</li>
+                                                            <li>✔ Fee payment (if applicable)</li>
+                                                            <li>✔ Validation and appraisal</li>
+                                                            <li>✔ Approval</li>
+                                                            <li>✔ Disbursement</li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Select the <strong>loan to be refinanced</strong> from the dropdown list.
+                                                        This loan will be settled automatically during disbursement.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Enter the <strong>new amount requested by the member</strong> (top-up).
+                                                        The system computes the refinancing base by combining:
+                                                        <ul class="mt-1">
+                                                            <li>✔ Outstanding loan balance (capital)</li>
+                                                            <li>✔ Accrued interest</li>
+                                                            <li>✔ VAT</li>
+                                                            <li>✔ Penalties (if any)</li>
+                                                            <li>✔ Plus the new requested/top-up amount</li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        At disbursement, TSC will <strong>automatically repay the old loan in full</strong>
+                                                        from the refinancing proceeds (no manual repayment required).
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        The member receives only the <strong>net requested/top-up amount</strong>
+                                                        (excluding old-loan settlement). This net amount is credited to the member’s
+                                                        <strong>deposit account</strong>. Any applicable fees are deducted from the deposit account.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        Use <strong>"Override Balance"</strong> and <strong>"Stop further interest calculations"</strong>
+                                                        only when explicitly authorized and properly documented.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        Any changes to balance, interest, VAT, penalty, or fees must be <strong>justified and approved</strong>.
+                                                    </li>
                                                 </ul>
-                                                <p class="text-muted">@Member_Global_LoanApplication.AdditionalNotes</p>
+
+                                                <p class="text-muted mt-3">Additional Notes:</p>
+
                                                 <ul>
-                                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @Member_Global_LoanApplication.EnsureAllRepaymentDetails</li>
-                                                    <li><i class="mdi mdi-information-outline text-primary me-2"></i> @Member_Global_LoanApplication.VerifyLoanReference</li>
-                                                    <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @Member_Global_LoanApplication.ConsultLoanManager</li>
+                                                    <li>
+                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                        The refinanced loan is a <strong>new loan</strong> with a new reference, new schedule,
+                                                        and a complete accounting lifecycle.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                        The old loan is <strong>closed/settled</strong> as part of the refinancing process.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                        Refinancing is used when the member needs <strong>additional funding</strong>
+                                                        while keeping the process under full credit workflow control.
+                                                    </li>
+
+                                                    <li>
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        If the goal is only to change repayment dates/installments (without new money),
+                                                        use <strong>loan rescheduling</strong> instead.
+                                                    </li>
                                                 </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ===================== -->
+                                    <!-- 🟣 RESCHEDULING GUIDELINES -->
+                                    <!-- ===================== -->
+                                    <div class="card mb-4" id="reschedulingGuidelines" style="display:none;">
+                                        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+                                            <span>
+                                                <i class="mdi mdi-information-outline me-2"></i>
+                                                Loan Rescheduling – Important Guidelines (TSC)
+                                            </span>
+                                            <button class="btn btn-light btn-sm" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseReschedulingTips"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseReschedulingTips">
+                                                <i class="mdi mdi-chevron-down"></i>
+                                            </button>
+                                        </h6>
+
+                                        <div id="collapseReschedulingTips" class="collapse">
+                                            <div class="card-body">
+
+                                                <p class="text-muted mb-2">
+                                                    In TSC, <strong>loan rescheduling</strong> is a controlled loan re-creation process.
+                                                    The system creates a <strong>new loan</strong> primarily from the
+                                                    <strong>remaining balance</strong> of an existing active loan,
+                                                    while preserving the original loan product rules, tax behavior, and accounting configuration.
+                                                </p>
+
+                                                <!-- ✅ Key Alert -->
+                                                <div class="alert alert-warning d-flex align-items-start mb-3" role="alert">
+                                                    <i class="mdi mdi-alert-outline me-2 mt-1"></i>
+                                                    <div>
+                                                        <div class="fw-semibold">Important advisory before rescheduling</div>
+                                                        <div class="small">
+                                                            It is strongly recommended to <strong>clear accrued interest, VAT, and penalties</strong>
+                                                            before rescheduling. If not cleared, these amounts will be
+                                                            <strong>carried forward</strong> and included in the rescheduled loan computation.
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <ul class="mb-3">
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Select the <strong>existing active loan</strong> to be rescheduled.
+                                                        This loan becomes the reference for policy and behavior inheritance.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        The new loan is created from the <strong>remaining balance (capital)</strong>
+                                                        of the old loan and follows the standard workflow:
+                                                        <ul class="mt-1">
+                                                            <li>✔ Loan application</li>
+                                                            <li>✔ Fees (only those marked <strong>Before Processing</strong>, if applicable)</li>
+                                                            <li>✔ Validation and approval</li>
+                                                            <li>✖ <strong>No disbursement is performed</strong> (rescheduling does not release new cash)</li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        The rescheduled loan <strong>inherits the original loan’s behavior</strong>,
+                                                        including interest rules, VAT treatment (taxable or non-taxable),
+                                                        penalty rules, repayment logic, and accounting configuration.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Rescheduling may transition a loan from
+                                                        <strong>short-term</strong> to <strong>medium-term</strong> or <strong>long-term</strong>,
+                                                        by increasing the number of installments and extending the maturity period
+                                                        (subject to approval).
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        If not cleared before rescheduling, the following are <strong>carried forward</strong>:
+                                                        <ul class="mt-1">
+                                                            <li>⚠️ <strong>Accrued interest</strong> — existing accrued interest remains, and new daily interest is added to it</li>
+                                                            <li>⚠️ <strong>VAT</strong> — remains applicable if the loan is taxable</li>
+                                                            <li>⚠️ <strong>Penalty</strong> — remains attached if unpaid</li>
+                                                        </ul>
+                                                        <div class="text-muted small mt-1">
+                                                            Best practice: clear interest, VAT, and penalties before rescheduling
+                                                            to keep the new repayment schedule clean and predictable.
+                                                        </div>
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Only <strong>approved rescheduling parameters</strong> may be modified:
+                                                        <ul class="mt-1">
+                                                            <li>✔ Repayment dates</li>
+                                                            <li>✔ Number of installments (must be greater than the original schedule)</li>
+                                                            <li>✔ Installment amounts</li>
+                                                            <li>✔ Loan duration / maturity date</li>
+                                                            <li>✔ Grace period (if approved)</li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        The following elements are <strong>not negotiable</strong> during rescheduling:
+                                                        <ul class="mt-1">
+                                                            <li>✖ Loan product core behavior</li>
+                                                            <li>✖ Interest, VAT, and penalty policy inherited from the original loan</li>
+                                                            <li>✖ Risk configuration and accounting rules</li>
+                                                            <li>✖ Product-linked accounting mappings</li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                                                        Use <strong>"Override Balance"</strong> and
+                                                        <strong>"Stop further interest calculations"</strong>
+                                                        only when explicitly approved and fully documented.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        Any change affecting balances, accrued interest, VAT, penalties, or delinquency status
+                                                        must be <strong>clearly justified and formally authorized</strong>.
+                                                    </li>
+                                                </ul>
+
+                                                <p class="text-muted mt-3 mb-2 fw-semibold">Additional Notes</p>
+                                                <ul class="mb-0">
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                        The original loan is closed or frozen for audit and history,
+                                                        while the rescheduled loan becomes the active repayment instrument.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-information-outline text-primary me-2"></i>
+                                                        All historical repayments and accounting postings on the original loan
+                                                        remain intact, traceable, and auditable.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        Rescheduling is intended for <strong>temporary repayment difficulty</strong>.
+                                                        If loan exposure or product structure must change fundamentally,
+                                                        consider <strong>loan restructuring</strong> or <strong>refinancing</strong>.
+                                                    </li>
+
+                                                    <li class="mb-2">
+                                                        <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                                                        When in doubt, consult the Loan Manager or Credit Committee before submission.
+                                                    </li>
+                                                </ul>
+
                                             </div>
                                         </div>
                                     </div>
 
 
+                                    <!-- 🔽 Loan Dropdown + Loan Details -->
+                                    <!-- (UNCHANGED – your existing code continues here) -->
                                     <!-- 🔽 Loan Dropdown -->
                                     <!-- 🔽 Loan Dropdown -->
                                     <div class="col-md-12 mb-2">
@@ -319,6 +568,7 @@
                                                                         <tr><td>Repayment Period</td><td id="rl_repaymentPeriod"></td></tr>
                                                                         <tr><td>Repayment Mode</td><td><span id="rl_repaymentMode" class="badge bg-primary px-3 py-1"></span></td></tr>
                                                                         <tr><td>No. of Installments</td><td id="rl_installments"></td></tr>
+                                                                        <tr><td>Durations</td><td id="rl_duration"></td></tr>
                                                                         <tr><td>Interest Calculation</td><td><span id="rl_interestCalculationMethod" class="badge bg-info text-dark px-3 py-1"></span></td></tr>
                                                                     </tbody>
                                                                 </table>
@@ -420,7 +670,7 @@
 
                                         <div class="col-md-12 mb-4">
                                             <div class="form-check">
-                                                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation", disabled = "disabled" })
+                                                @Html.CheckBoxFor(m => m.AddLoanApplicationCommand.StopInterestCalculation, new { @class = "form-check-input", @id = "StopInterestCalculation" })
                                                 <label class="form-check-label" for="StopInterestCalculation">@Member_Global_LoanApplication.StopFurtherInterestCalculations</label>
                                             </div>
                                         </div>
@@ -485,6 +735,7 @@
 
 
                                 </div>
+                                
                                 <div class="col-md-12" id="loanProductDiv">
                                     <div class="form-floating form-floating-outline">
                                         @Html.DropDownListFor(m => m.AddLoanApplicationCommand.LoanProductId, new SelectList(ViewBag.LoanProducts, "Value", "Text"), @Member_Global_LoanApplication.SelectLoanProduct, new { @class = "form-control select2", @search = "true", @onchange = "LoanProductsProperties(this.value,'loanrepayment_cycles','RepaymentCircle')", @id = "loan_productid" })
@@ -713,7 +964,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card accordion-item mb-3">
+            <div class="card accordion-item mb-3" id="InterestDiv">
                 <h2 class="accordion-header" id="headingDeliveryOptions">
                     <button type="button"
                             class="accordion-button collapsed"

@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TellerStatement : ReportClass {
+    public class TellerStatement33 : ReportClass {
         
-        public TellerStatement() {
+        public TellerStatement33() {
         }
         
         public override string ResourceName {
             get {
-                return "TellerStatement.rpt";
+                return "TellerStatement33.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement33.rpt";
             }
             set {
                 // Do nothing
@@ -138,9 +138,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTellerStatement : Component, ICachedReport {
+    public class CachedTellerStatement33 : Component, ICachedReport {
         
-        public CachedTellerStatement() {
+        public CachedTellerStatement33() {
         }
         
         [Browsable(false)]
@@ -177,7 +177,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TellerStatement rpt = new TellerStatement();
+            TellerStatement33 rpt = new TellerStatement33();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -1723,6 +1723,16 @@ namespace CBS.FrontDesk.Helper
         public const string CheckLicenseStatus = "/api/v1/DailyCollectorLicense/status";
         public const string LicenseDataTable = "/api/v1/DailyCollectorLicense/datatable";
 
+        //----------------------------- IPS CONFIG ---------------------------
+        public const string GetAllIPSConfigs = "/api/v1/IPSConfig";
+        public const string GetIPSConfigById = "/api/v1/IPSConfig/{0}";
+        public const string CreateIPSConfig = "/api/v1/IPSConfig";
+        public const string UpdateIPSConfig = "/api/v1/IPSConfig/{0}";
+        public const string DeleteIPSConfig = "/api/v1/IPSConfig/{0}";
+        public const string GetIPSConfigByActiveYear ="/api/v1/IPSConfig/active/{0}?branchId={1}";
+        public const string GetIPSConfigsByYear = "/api/v1/IPSConfig/year/{0}";
+        public const string IPSConfigDataTable = "/api/v1/IPSConfig/datatable";
+
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------
@@ -1796,9 +1806,17 @@ namespace CBS.FrontDesk.Helper
         public static string SaveEndofYearConfig = "/api/v1/YearEndChecklistDefinition/add";
         public static string UpdateEndofYearConfig = "/api/v1/YearEndChecklistDefinition/update";
 
+        // ------------------- product --
+        public static string GetAllProducts = "/api/v1/SavingProduct";
+
         //----------------------------  Interest Product  Config ---------------------------------
 
-        public static string GetInterestProductConfigDataTable = "/api/InterestProductConfig/GetInterestProductConfigDataTable";
+        public static string GetInterestProductConfigDataTable = "/api/v1/InterestProductConfig/GetInterestProductConfigDataTable";
+        public static string SaveInterestProductConfig = "/api/InterestProductConfig/Create";
+        public static string UpdateInterestProductConfig = "/api/InterestProductConfig/Update";
+        public static string GetByIdInterestProductConfig = "/api/v1/InterestProductConfig/GetById";
+
+
 
     }
 }

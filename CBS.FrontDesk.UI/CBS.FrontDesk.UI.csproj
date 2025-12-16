@@ -2120,6 +2120,7 @@
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\IPS\IPSConfigController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\MemberReconciliationController.cs" />
@@ -8139,7 +8140,6 @@
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
@@ -11136,6 +11136,15 @@
     <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
     <Content Include="Views\AccountTypeDefinition\List.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\_EndofYearConfiguration.cshtml" />
+    <Content Include="Views\InterestProductConfig\Index.cshtml" />
+    <Content Include="Views\InterestProductConfig\_Update.cshtml" />
+    <Content Include="Views\InterestProductConfig\_DataTable.cshtml" />
+    <Content Include="Views\IPSConfig\Index.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigForm.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigDetailsPartial.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigYearPartial.cshtml" />
+    <Content Include="Views\IPSConfig\_IPSConfigDataTable.cshtml" />
+    <Content Include="Views\IPSConfig\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11167,7 +11176,6 @@
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
-    <Folder Include="Views\InterestProductConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

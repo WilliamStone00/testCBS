@@ -5,6 +5,7 @@
         border-radius: 8px;
         overflow: hidden;
         font-size: 0.92rem;
+        table-layout: fixed; /* ✅ FIX */
     }
 
         .custom-report-table tbody tr:hover {
@@ -12,55 +13,118 @@
             cursor: pointer;
         }
 
-        .custom-report-table td, .custom-report-table th {
+        .custom-report-table td,
+        .custom-report-table th {
             vertical-align: middle !important;
             padding: 10px 12px !important;
         }
 
-    .btnExcel {
-        background: #1e8e28 !important;
-        border-color: #1e8e28 !important;
-        color: white !important;
-        font-size: 0.8rem;
-        padding: 4px 10px;
-        white-space: nowrap; /* Prevent button text wrapping */
+            /* ✅ FIXED COLUMN WIDTHS */
+            .custom-report-table th:nth-child(1),
+            .custom-report-table td:nth-child(1) {
+                width: 30%;
+            }
+
+            .custom-report-table th:nth-child(2),
+            .custom-report-table td:nth-child(2) {
+                width: 25%;
+            }
+
+            .custom-report-table th:nth-child(3),
+            .custom-report-table td:nth-child(3) {
+                width: 25%;
+            }
+
+            .custom-report-table th:nth-child(4),
+            .custom-report-table td:nth-child(4) {
+                width: 20%;
+            }
+
+    .btnExcel,
+    .btnPdf {
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 70px;
+        transition: all 0.15s ease-in-out;
     }
+
+    .btnExcel {
+        color: #1e8e28 !important;
+    }
+
+        .btnExcel:hover {
+            background-color: rgba(30, 142, 40, 0.08);
+        }
 
     .btnPdf {
-        background: #c01a1a !important;
-        border-color: #c01a1a !important;
-        color: white !important;
-        font-size: 0.8rem;
-        padding: 4px 10px;
-        white-space: nowrap; /* Prevent button text wrapping */
+        color: #c01a1a !important;
     }
 
-    .btnExcel:hover {
-        background: #136b1b !important;
-    }
+        .btnPdf:hover {
+            background-color: rgba(192, 26, 26, 0.08);
+        }
 
-    .btnPdf:hover {
-        background: #a21515 !important;
-    }
-
-    /* Prevent button wrapping in table cells */
     .actions-cell {
-        min-width: 200px;
+        width: 140px;
+        max-width: 140px;
+        text-align: center;
     }
 
     .actions-container {
         display: flex;
-        flex-wrap: nowrap;
-        gap: 8px;
+        align-items: center;
         justify-content: center;
+        gap: 6px;
     }
 
-    /* Report name column minimum width */
+    .action-separator {
+        width: 1px;
+        height: 18px;
+        background-color: #e0e0e0;
+    }
+
     .report-name-column {
-        min-width: 200px !important;
         white-space: normal;
         word-wrap: break-word;
     }
+
+    /*=================== line =========================*/
+
+    /* Fixed column widths for ALL rows */
+    .custom-report-table th:nth-child(1),
+    .custom-report-table td:nth-child(1) {
+        width: 30%;
+    }
+
+    .custom-report-table th:nth-child(2),
+    .custom-report-table td:nth-child(2) {
+        width: 25%;
+    }
+
+    .custom-report-table th:nth-child(3),
+    .custom-report-table td:nth-child(3) {
+        width: 25%;
+    }
+
+    .custom-report-table th:nth-child(4),
+    .custom-report-table td:nth-child(4) {
+        width: 20%;
+    }
+
+    .custom-report-table {
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 0.92rem;
+        table-layout: fixed; /* ✅ forces fixed column widths */
+    }
+
 </style>
 
 
@@ -307,13 +371,15 @@
 
 <!-- ▬▬▬ REPORT RESULT LIST ▬▬▬ -->
 <div class="card p-3 shadow-sm mt-4" id="reportTableContainer">
+
     <div class="table-responsive">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Donwload Reports In Excel / PDF</h5>
         <table style="width: 100%" id="myDataTable" class="table table-hover table-bordered mb-0 custom-report-table">
             <thead>
                 <tr>
                     <th class="report-name-column">NAME</th>
-                    <th>REPORT TYPE</th>
-                    <th>SOURCE MODE</th>
+                    <th class="report-name-column">REPORT TYPE</th>
+                    <th class="report-name-column">SOURCE MODE</th>
                     <th class="actions-cell text-center">ACTIONS</th>
                 </tr>
             </thead>
@@ -357,67 +423,155 @@
             ReportView(controller, null, "GetReport", null, null, "receipts", "ReportParameterLess");
         }
 
-        // 🔹 NEW: Show the single report row with Excel + PDF buttons
+        //// 🔹 NEW: Show the single report row with Excel + PDF buttons
+        //function loadReportToTable(response, reportTypeValue) {
+        //    const reportName = $('#ReportType option:selected').text();
+        //    const sourceMode = $('#SourceMode option:selected').text();
+
+        //    // Determine the controller based on report type
+        //    let controllerName = '';
+        //    switch (reportTypeValue.toLowerCase()) {
+        //        case 'trial balance 6 columns':
+        //            controllerName = 'TrialBalance6Columns';
+        //            break;
+        //        case 'trial balance 4 columns':
+        //            controllerName = 'TrialBalance4Columns';
+        //            break;
+        //        case 'account statement':
+        //            controllerName = 'AccntStatement';
+        //            break;
+        //        case 'bs':
+        //            controllerName = 'BalanceSheet';
+        //            break;
+        //        case 'je':
+        //            controllerName = 'JournalEntries';
+        //            break;
+        //        default:
+        //            controllerName = 'TrialBalance6Columns'; // Default fallback
+        //    }
+
+        //    let row = `
+        //                            <tr>
+        //                                <td class="report-name-column">${reportName}</td>
+        //                                <td class="text-center">${reportName}</td>
+        //                                <td class="text-center">${sourceMode}</td>
+        //                                <td class="actions-cell text-center">
+        //                                  <div class="actions-container">
+        //                                     <button class="btn btn-sm btnExcel">Excel</button>
+        //                                     <button class="btn btn-sm btnPdf" data-controller="${controllerName}">PDF</button>
+        //                                  </div>
+        //                                </td>
+        //                            </tr>
+        //                        `;
+
+        //    $('#reportTableBody').html(row);
+
+        //    // Excel: download using file from response
+        //    $('.btnExcel').off().on('click', function () {
+                
+        //        if (response && response.downloadFile) {
+
+        //            if (controllerName == "TrialBalance4Columns") {
+        //             window.location = "/TrialBalance4Columns/Download?file=" + response.downloadFile;
+        //            }
+        //            if (controllerName == "TrialBalance6Columns") {
+        //             window.location = "/TrialBalance6Columns/Download?file=" + response.downloadFile;
+        //            }
+        //            //if()
+        //        } else {
+        //            alert("Download file not found in response.");
+        //        }
+        //    });
+
+        //    // PDF: call Reprint with dynamic controller from data attribute
+        //    $('.btnPdf').off().on('click', function () {
+        //        const controller = $(this).data('controller');
+        //        Reprint(controller);
+        //    });
+        //}
+
+
+        // 🔹 UPDATED: Supports MULTIPLE rows + buttons changed to LINKS
         function loadReportToTable(response, reportTypeValue) {
             const reportName = $('#ReportType option:selected').text();
             const sourceMode = $('#SourceMode option:selected').text();
 
-            // Determine the controller based on report type
-            let controllerName = '';
-            switch (reportTypeValue.toLowerCase()) {
-                case 'trial balance 6 columns':
-                    controllerName = 'TrialBalance6Columns';
-                    break;
-                case 'trial balance 4 columns':
-                    controllerName = 'TrialBalance4Columns';
-                    break;
-                case 'account statement':
-                    controllerName = 'AccntStatement';
-                    break;
-                case 'bs':
-                    controllerName = 'BalanceSheet';
-                    break;
-                case 'je':
-                    controllerName = 'JournalEntries';
-                    break;
-                default:
-                    controllerName = 'TrialBalance6Columns'; // Default fallback
-            }
+            // Normalize backend response to a list
+            const reports = Array.isArray(response?.data)
+                ? response.data
+                : response?.data
+                    ? [response.data]
+                    : [response];
 
-            let row = `
-                                    <tr>
-                                        <td class="report-name-column">${reportName}</td>
-                                        <td class="text-center">${reportName}</td>
-                                        <td class="text-center">${sourceMode}</td>
-                                        <td class="actions-cell text-center">
-                                          <div class="actions-container">
-                                             <button class="btn btn-sm btnExcel">Excel</button>
-                                             <button class="btn btn-sm btnPdf" data-controller="${controllerName}">PDF</button>
-                                          </div>
-                                        </td>
-                                    </tr>
-                                `;
+            let rowsHtml = '';
 
-            $('#reportTableBody').html(row);
+            reports.forEach((item) => {
 
-            // Excel: download using file from response
-            $('.btnExcel').off().on('click', function () {
-                
-                if (response && response.downloadFile) {
-
-                    if (controllerName == "TrialBalance4Columns") {
-                     window.location = "/TrialBalance4Columns/Download?file=" + response.downloadFile;
-                    }
-                    if (controllerName == "TrialBalance6Columns") {
-                     window.location = "/TrialBalance6Columns/Download?file=" + response.downloadFile;
-                    }
-                    //if()
-                } else {
-                    alert("Download file not found in response.");
+                // Determine the controller based on report type
+                let controllerName = '';
+                switch (reportTypeValue.toLowerCase()) {
+                    case 'trial balance 6 columns':
+                        controllerName = 'TrialBalance6Columns';
+                        break;
+                    case 'trial balance 4 columns':
+                        controllerName = 'TrialBalance4Columns';
+                        break;
+                    case 'account statement':
+                        controllerName = 'AccntStatement';
+                        break;
+                    case 'bs':
+                        controllerName = 'BalanceSheet';
+                        break;
+                    case 'je':
+                        controllerName = 'JournalEntries';
+                        break;
+                    default:
+                        controllerName = 'TrialBalance6Columns';
                 }
+
+                rowsHtml += `
+            <tr>
+                <td class="report-name-column">${reportName}</td>
+                <td >${reportName}</td>
+                <td >${sourceMode}</td>
+                <td class="actions-cell text-center">
+                   <div class="actions-container">
+                    <a href="javascript:void(0)"
+                       class="report-action-link btnExcel"
+                       data-controller="${controllerName}"
+                       data-file="${item?.downloadFile || ''}">
+                        <i class="mdi mdi-file-excel-outline"></i> Excel
+                    </a>
+
+                    <span class="action-separator"></span>
+
+                    <a href="javascript:void(0)"
+                       class="report-action-link btnPdf"
+                       data-controller="${controllerName}">
+                        <i class="mdi mdi-file-pdf-box"></i> PDF
+                    </a>
+                </div>
+                </td>
+            </tr>
+        `;
             });
 
-            // PDF: call Reprint with dynamic controller from data attribute
+            $('#reportTableBody').html(rowsHtml);
+
+            // Excel download
+            $('.btnExcel').off().on('click', function () {
+                const controller = $(this).data('controller');
+                const file = $(this).data('file');
+
+                if (!file) {
+                    alert("Download file not found in response.");
+                    return;
+                }
+
+                window.location = `/${controller}/Download?file=${file}`;
+            });
+
+            // PDF print
             $('.btnPdf').off().on('click', function () {
                 const controller = $(this).data('controller');
                 Reprint(controller);
