@@ -1,7 +1,11 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
+﻿using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
+using CBS.BusinessService.CheckManagementSystem;
+using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config; // Assuming BranchServices is here
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Message;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,10 +47,37 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
            // ViewBag.Customers = await _customerService.GetActiveCustomersForDropdown();
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult> Search(string CustomerId, string BranchId)
+        {
+            if (string.IsNullOrEmpty(CustomerId) || string.IsNullOrEmpty(BranchId))
+                return new HttpStatusCodeResult(400, "CustomerId and BranchId are required");
+
+            List<CounterCheques> entries;
+
+            try
+            {
+                entries = await _counterChequeService.GetChequeDetails(CustomerId, BranchId);
+
+                if (entries == null || !entries.Any())
+                    return new HttpStatusCodeResult(404, "No cheque books found");
+
+                // Return only id and name for dropdown
+                var result = entries.Select(x => new { chequebookid = x.ChequeBookId, name = x.Name }).ToList();
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+        }
+
+
+
         /// <summary>
-        /// The central router action that loads different partial views based on the path.
-        /// Works with your generic 'LoadDataGen' and 'AddORUpdateGen' scripts.
-        /// </summary>
+
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
             await Loader();
@@ -73,7 +104,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
         /// Handles the submission of a new counter cheque. Called by 'AjaxPostAndUpdate'.
         /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> Create(CounterCheques model)
         {
             if (!ModelState.IsValid)
@@ -97,34 +128,6 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             });
         }
 
-        ///// <summary>
-        ///// The dedicated AJAX endpoint for the server-side DataTable.
-        ///// </summary>
-        //[HttpPost]
-        //public async Task<ActionResult> LoadCounterCheques(CounterChequeQuery query)
-        //{
-        //    try
-        //    {
-        //        var dataTable = await _counterChequeService.GetCounterChequesForDataTableAsync(query);
-
-        //        // Deserialize the generic 'data' into our strongly-typed object
-        //        var dataList = JsonConvert.DeserializeObject<List<CounterCheques>>(JsonConvert.SerializeObject(dataTable.data));
-
-        //        // Return the data in the exact format the DataTable expects
-        //        return Json(new
-        //        {
-        //            draw = dataTable.draw,
-        //            recordsTotal = dataTable.recordsTotal,
-        //            recordsFiltered = dataTable.recordsFiltered,
-        //            data = dataList
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception
-        //        return new HttpStatusCodeResult(500, "An error occurred while loading data.");
-        //    }
-        //}
         [HttpGet]
         public async Task<ActionResult> GetCounterChequeDetails(string id)
         {
@@ -199,5 +202,52 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.Counter
             var result = await _counterChequeService.TakeActionAsync(model);
             return Json(new { success = result.Result, message = Messaging.MessageResult(result) });
         }
+
+        //public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
+        //{
+        //    if (string.IsNullOrEmpty(chequeBookId))
+        //        return Json(new { success = false, message = "Invalid parameters." }, JsonRequestBehavior.AllowGet);
+
+        //    try
+        //    {
+        //        var result = await _counterChequeService.GetfullChequeDetails(chequeBookId);
+
+        //        if (result == null)
+        //            return Json(new { success = false, message = "ChequeBook not found." }, JsonRequestBehavior.AllowGet);
+
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            data = result
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult> GetChequeFullDetails(string chequeBookId)
+        {
+            if (string.IsNullOrEmpty(chequeBookId))
+                return new HttpStatusCodeResult(400, "ChequeBookId is required");
+
+            try
+            {
+                var entry = await _counterChequeService.GetfullChequeDetails(chequeBookId);
+                if (entry == null)
+                    return HttpNotFound("Cheque book details not found");
+
+                return PartialView("_Detailscountercheque", entry);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
+        }
+
+
+
     }
 }

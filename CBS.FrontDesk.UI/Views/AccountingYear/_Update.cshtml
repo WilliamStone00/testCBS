@@ -38,7 +38,8 @@
 @using (Html.BeginForm("CreateOrUpdate", "AccountingYear", FormMethod.Post, new { id = "accountingyear", enctype = "multipart/form-data", onsubmit = "return CreatAccountingYearSaveAjax(this);" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id, new { id = "Id" }) <!-- keep only this hidden -->
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
+
     <div class="container mt-2">
         <div class="header-viewer">
             <h6>
@@ -71,28 +72,49 @@
                     m => m.YearB,
                     new SelectList(ViewBag.Year ?? new List<SelectListItem>(), "Value", "Text", Model.YearB),
                     "--- Select Accounting Year ---",
-                    new { @class = "form-control select2", required = "required", id = "Year" }
+                    new { @class = "form-control select2", required = "required", id = "YearB" }
                 )
             </div>
 
-            <!-- Status (✅ corrected binding) -->
+            <!-- Status -->
             <div class="mb-3">
                 @Html.LabelFor(m => m.StatusB, "Status", new { @class = "form-label" })
                 @Html.DropDownListFor(
                     m => m.StatusB,
                     new SelectList(ViewBag.Status ?? new List<SelectListItem>(), "Value", "Text", Model.StatusB),
                     "--- Select Status ---",
-                    new { @class = "form-control select2", required = "required", id = "Status" }
+                    new { @class = "form-control select2", required = "required", id = "StatusB" }
                 )
             </div>
 
-            <!-- Save/Update -->
-            <div class="text-end">
-                <button type="button" class="btn btn-primary btn-save" onclick="CreatAccountingYearSaveAjax(this.form)">
-                    <i class="mdi mdi-content-save-outline me-1"></i>
-                    @(Model.Id == null ? "Save" : "Update")
-                </button>
+            <!-- Dates Row -->
+            <div class="row mb-3">
+                <!-- Opening Date -->
+                <!-- Opening Date -->
+                <div class="col-md-6 mb-3">
+                    @Html.LabelFor(m => m.StartDate, "Opening Date", new { @class = "form-label fw-bold" })
+                    <input type="date" id="openingDate" name="StartDate"
+                           class="form-control"
+                           value="@ViewBag.StartDate" />
+                </div>
+
+                <!-- Closing Date -->
+                <div class="col-md-6 mb-3">
+                    @Html.LabelFor(m => m.EndDate, "Closing Date", new { @class = "form-label fw-bold" })
+                    <input type="date" id="closingDate" name="EndDate"
+                           class="form-control"
+                           value="@ViewBag.EndDate" />
+                </div>
+
+
+                <!-- Save/Update -->
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary btn-save" onclick="CreatAccountingYearSaveAjax(this.form)">
+                        <i class="mdi mdi-content-save-outline me-1"></i>
+                        @(Model.Id == null ? "Save" : "Update")
+                    </button>
+                </div>
             </div>
-        </div>
     </div>
+        </div>
 }

@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService;
 using CBS.BusinessService.Accounting;
+using CBS.BusinessService.Accounting_V2.BranchAccountService;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data;
@@ -31,12 +32,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         private readonly AccountToAccountTransferService _transferService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
         private readonly BranchServices _branchServices;
-        private readonly ChartOfAccountServicesAnnex chartOfAccountServices;
+        private readonly BranchAccountService _branchAccountService;
 
-        public AccountToAccountTransferController(AccountToAccountTransferService cashDeskService = null, ChartOfAccountServicesAnnex chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null, BranchServices branchServices = null)
+        public AccountToAccountTransferController(AccountToAccountTransferService cashDeskService = null, BranchAccountService chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null, BranchServices branchServices = null)
         {
             _transferService = cashDeskService;
-            this.chartOfAccountServices=chartOfAccountServices;
+            this._branchAccountService = chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
             _branchServices=branchServices;
         }
@@ -340,8 +341,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetChartOfAccounts(true);
-            ViewBag.chartOfAccounts = chartOfAccounts.ToList();
+            var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var accountsDto = _branchAccountService.DropDownGen(listing.ToList());
+            ViewBag.chartOfAccounts = accountsDto.ToList();
             return true;
         }
     }

@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace CBS.BusinessService.Accounting_V2.AccntStatements
 {
-    public class AccntStatementService : BaseService
+    public class JournalReceiptsService : BaseService
     {
         private readonly ApiCallerHelper _apiCallerHelper;
         private readonly TrialBalance6ColumnsMock _trialBalance6ColumnsMock;
 
-        public AccntStatementService()
+        public JournalReceiptsService()
         {
             string baseUrl = ConfigurationManager.AppSettings["AccountingV2BaseUrl"];
             _apiCallerHelper = new ApiCallerHelper(baseUrl);

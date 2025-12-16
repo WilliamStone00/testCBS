@@ -1,5 +1,6 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Affiliate;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.CollectorDevice;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
@@ -76,9 +77,10 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
 
         public async Task<ExecutionMessages> CreateAsync(CollectorDeviceresponse model)
         {
+
             try
             {
-              
+
                 // Change from ServiceResponse<string> to ServiceResponse<CollectorDeviceresponse>
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<CollectorDeviceresponse>>(APICallHelper.CreateCollectorDevice, model);
 
@@ -155,8 +157,50 @@ namespace CBS.BusinessService.Accounting_V2.CollectorDevice
             }
 
             return ExecutionMessage;
-        }      
+        }
 
+        public async Task<IEnumerable<CollectorDeviceresponse>> GetDevicedropAsync()
+        {
+            try
+            {
+                string formattedUrl = string.Format(APICallHelper.GetAllCollectorDevice);
+
+                var response = await _apiCallerHelper.GetAsync<ResponseObject<List<CollectorDeviceresponse>>>(formattedUrl);
+                var affiliates = response?.ApiResponseData?.Data ?? new List<CollectorDeviceresponse>();
+
+                // Filter devices where assignedCollectorUserId is null
+                affiliates = affiliates.Where(a => a.AssignedCollectorUserId == null).ToList();
+
+                if (!IsHeadOffice())
+                {
+                    string currentBranchId = GetBranchID();
+                    affiliates = affiliates.Where(a => a.Id == currentBranchId).ToList();
+                }
+                else
+                {
+                    var defaultAffiliate = new CollectorDeviceresponse
+                    {
+                        Id = "All",
+                        DeviceName = "All devices",
+                    };
+                    affiliates.Insert(0, defaultAffiliate);
+                }
+
+                // Optional: format name for display and order by Code
+                return affiliates
+                    .Select(a =>
+                    {
+                        a.Name = $"[{a.DeviceSerialNumber}] - {a.DeviceName}";
+                        return a;
+                    })
+                    .OrderBy(a => a.Id)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
 

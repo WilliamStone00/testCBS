@@ -1346,6 +1346,11 @@ function submitChequeRequestForm(form) {
         }
     });
 
+    const branchIdValue = $('#BranchId').val();
+    if (branchIdValue) {
+        formData.set('BranchId', branchIdValue);
+    }
+
     // Optional debug logging (comment out in production)
     console.log('Form Data (preview):');
     for (let [key, value] of formData.entries()) {

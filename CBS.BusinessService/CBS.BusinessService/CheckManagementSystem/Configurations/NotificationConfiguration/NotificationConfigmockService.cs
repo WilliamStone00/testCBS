@@ -30,7 +30,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
                 BranchId = null,
                 NotificationType = "ChequeCashed",
                 Description = "Central template for when a cheque is paid.",
-                TemplateBody = "Dear {ClientName}, your cheque #{ChequeNumber} for the amount of {Amount} has been successfully paid on {TransactionDate}. Thank you for banking with us.",
+                NotificationTemplate = "Dear {ClientName}, your cheque #{ChequeNumber} for the amount of {Amount} has been successfully paid on {TransactionDate}. Thank you for banking with us.",
                 IsActive = true
             },
             new NotificationConfig
@@ -40,7 +40,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
                 BranchId = "BR123",
                 NotificationType = "ChequeCashed",
                 Description = "Main Branch's custom template for cashed cheques.",
-                TemplateBody = "GREETINGS from Main Branch! Your cheque #{ChequeNumber} for {Amount} was paid. Your new balance is {NewBalance}.",
+                NotificationTemplate = "GREETINGS from Main Branch! Your cheque #{ChequeNumber} for {Amount} was paid. Your new balance is {NewBalance}.",
                 IsActive = true
             }
         };
@@ -135,7 +135,7 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.NotificationC
             {
                 // Simulate updating the properties in our "database".
                 existing.Description = model.Description;
-                existing.TemplateBody = model.TemplateBody;
+                existing.NotificationTemplate = model.NotificationTemplate;
                 existing.IsActive = model.IsActive;
 
                 GetExecutionMessages(existing, true, "Notification Config", MessagesResults.Success, ExecutionProcessOption.UpdateUpject, "Success");

@@ -1,0 +1,299 @@
+﻿@{
+    ViewBag.Title = "Account Type Definition";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-switch me-2"></i>Account Type Definition
+                </h1>
+                <p class="card-text">
+                    Define and manage different types of accounts in the system.
+                </p>
+                <div class="alert alert-info mt-3 py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    Account types define the classification and behavior of accounts in the system.
+                </div>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseTips" class="collapse">
+        <div class="card-body">
+            <ul>
+                <li><strong>Code:</strong> Must be unique and contain only letters, numbers, and underscores.</li>
+                <li><strong>Name:</strong> Descriptive name that will be displayed to users.</li>
+                <li><strong>Account Type Group:</strong> Select the group this account type belongs to.</li>
+                <li><strong>Parent:</strong> Optional - select a parent account type to create hierarchy.</li>
+                <li><strong>Display Order:</strong> Controls the sorting order in lists and dropdowns.</li>
+                <li><strong>Is User Standard:</strong> Check if this account type is standard for user accounts.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-2">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-end">
+            <a href="@Url.Action("List", "AccountTypeDefinition")"
+               class="btn btn-label-primary btn-sm me-2"
+               data-bs-toggle="tooltip"
+               title="View All Account Types">
+                <i class="mdi mdi-view-list mdi-18px"></i> View List
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Form Container -->
+<div class="card shadow p-3">
+    <div class="card-body">
+        <div id="formContainer">
+            <!-- Create form will be loaded here -->
+            @Html.Partial("_AccountTypeForm", new CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeDefinition.AccountTypeDefinitionDto())
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal (for editing existing records) -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Edit Account Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Edit form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+                    
+
+            // Handle Create Form Submission
+            $('#accountTypeForm').on('submit', function(e) {
+                e.preventDefault();
+                const form = this;
+
+                if (!$(form).valid()) {
+                    appalert("Please fix validation errors before submitting.", 4, 1);
+                    return false;
+                }
+
+                alertify.confirm(
+                    "Confirm Save",
+                    "Are you sure you want to save this account type?",
+                    function() {
+                        submitForm(form, '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")', false);
+                    },
+                    function() {
+                        appalert("Save cancelled", 2, 1);
+                    }
+                ).set('labels', {ok: 'Yes', cancel: 'No'});
+            });
+
+            // Handle Edit Form Submission (in modal)
+            $(document).on('submit', '#editAccountTypeForm', function(e) {
+                e.preventDefault();
+                const form = this;
+
+                alertify.confirm(
+                    "Confirm Update",
+                    "Are you sure you want to update this account type?",
+                    function() {
+                        submitForm(form, '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")', true);
+                    },
+                    function() {
+                        appalert("Update cancelled", 2, 1);
+                    }
+                ).set('labels', {ok: 'Yes', cancel: 'No'});
+            });
+
+            // Edit button handler
+            $(document).on('click', '.edit-btn', function() {
+                const id = $(this).data('id');
+                editAccountType(id);
+            });
+
+            // Delete button handler
+            $(document).on('click', '.delete-btn', function() {
+                const id = $(this).data('id');
+                const name = $(this).data('name');
+                deleteAccountType(id, name);
+            });
+        });
+
+        // Submit form function
+        function submitForm(form, url, isEdit) {
+            const formData = new FormData(form);
+            const submitBtn = $(form).find('button[type="submit"]');
+            const originalText = submitBtn.html();
+
+            // Show loading
+            submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Saving...');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    submitBtn.prop('disabled', false).html(originalText);
+
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+
+                        if (isEdit) {
+                            $('#editModal').modal('hide');
+                        }
+
+                        // Refresh page after successful save
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        appalert(response.message || 'Error saving data', 4, 1);
+                        if (response.errors) {
+                            response.errors.forEach(error => {
+                                appalert(error, 4, 1);
+                            });
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    submitBtn.prop('disabled', false).html(originalText);
+                    appalert('Error: ' + error, 4, 1);
+                }
+            });
+        }
+
+        // Edit account type function
+        function editAccountType(id) {
+            $.ajax({
+                url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                type: 'GET',
+                data: {
+                    KEY: id,
+                    partialView: '_AccountTypeForm',
+                    path: 'edit'
+                },
+                beforeSend: function() {
+                    $('#editModalBody').html(`
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading form...</p>
+                        </div>
+                    `);
+                },
+                success: function(response) {
+                    $('#editModalBody').html(response);
+
+                    // Reinitialize Select2 in modal
+                    if ($.fn.select2) {
+                        $('#editModal .select2').select2({
+                            theme: 'bootstrap-5',
+                            width: '100%'
+                        });
+                    }
+
+                    // Load parent dropdown options
+                    loadParentDropdown(id);
+
+                    // Show modal
+                    $('#editModal').modal('show');
+                },
+                error: function() {
+                    appalert('Error loading form', 4, 1);
+                }
+            });
+        }
+
+        // Delete account type function
+        function deleteAccountType(id, name) {
+            alertify.confirm(
+                "Confirm Delete",
+                `Are you sure you want to delete "${name}"?`,
+                function() {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "AccountTypeDefinition")',
+                        type: 'POST',
+                        data: { id: id },
+                        beforeSend: function() {
+                            appalert("Deleting...", 3, 1);
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                // Refresh page
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                appalert(response.message || 'Error deleting', 4, 1);
+                            }
+                        },
+                        error: function() {
+                            appalert('Error deleting', 4, 1);
+                        }
+                    });
+                },
+                function() {
+                    appalert("Delete cancelled", 2, 1);
+                }
+            ).set('labels', {ok: 'Delete', cancel: 'Cancel'});
+        }
+
+        // Load parent dropdown options
+        function loadParentDropdown(excludeId) {
+            $.ajax({
+                url: '@Url.Action("GetAccountTypesForDropdown", "AccountTypeDefinition")',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success && response.data) {
+                        let options = '<option value="">-- Select Parent --</option>';
+                        response.data.forEach(function(item) {
+                            if (item.id !== excludeId) {
+                                options += `<option value="${item.id}">${item.text}</option>`;
+                            }
+                        });
+
+                        const parentSelect = $('#ParentId');
+                        if (parentSelect.length) {
+                            parentSelect.html(options);
+                        }
+                    }
+                },
+                error: function() {
+                    console.error('Error loading parent dropdown');
+                }
+            });
+        }
+    </script>
+}

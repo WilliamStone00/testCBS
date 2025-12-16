@@ -31,14 +31,7 @@
 
         <div class="row">
 
-            <!-- Branch ID -->
-            @*<div class="col-md-6 mb-3">
-            <div class="form-floating shadow-sm">
-                @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", id = "BranchId" })
-                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                <label for="BranchId">Branch ID</label>
-            </div>
-        </div>*@
+            
 
             <div class="row mb-1">
                 <div class="col-md-12 mb-1">
@@ -50,14 +43,7 @@
                 </div>
             </div>
 
-            <!-- Reference -->
-            @*<div class="col-md-12 mb-3">
-                <div class="form-floating shadow-sm">
-                    @Html.TextBoxFor(m => m.Reference, new { @class = "form-control", id = "Reference" })
-                    @Html.ValidationMessageFor(m => m.Reference, "", new { @class = "text-danger" })
-                    <label for="Reference">Reference</label>
-                </div>
-            </div>*@
+           
 
             <div class="col-md-12 mb-3">
                 <div class="form-floating shadow-sm">
@@ -67,12 +53,17 @@
                 </div>
             </div>
 
+            <p class="text-danger fw-bold">
+                Read and then check the following boxes carefully:
+            </p>
+
+
             <!-- All Transactions Reconciled -->
             <div class="col-md-6 mb-3">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AllTransactionsReconciled, new { @class = "form-check-input", id = "AllTransactionsReconciled" })
                     <label class="form-check-label" for="AllTransactionsReconciled">
-                        All Transactions Reconciled
+                        Have  All Transactions be Reconciled ?
                     </label>
                 </div>
             </div>
@@ -82,7 +73,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.CashVaultVerified, new { @class = "form-check-input", id = "CashVaultVerified" })
                     <label class="form-check-label" for="CashVaultVerified">
-                        Cash Vault Verified
+                        Cash Vault Verified ?
                     </label>
                 </div>
             </div>
@@ -92,7 +83,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.InterBranchConfirmed, new { @class = "form-check-input", id = "InterBranchConfirmed" })
                     <label class="form-check-label" for="InterBranchConfirmed">
-                        Inter-Branch Confirmed
+                        Inter-Branch Confirmed ?
                     </label>
                 </div>
             </div>
@@ -102,7 +93,7 @@
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AnyIssueToBeRaised, new { @class = "form-check-input", id = "AnyIssueToBeRaised" })
                     <label class="form-check-label" for="AnyIssueToBeRaised">
-                        Any Issue to be Raised?
+                        Any Issue to be Raised ?
                     </label>
                 </div>
             </div>

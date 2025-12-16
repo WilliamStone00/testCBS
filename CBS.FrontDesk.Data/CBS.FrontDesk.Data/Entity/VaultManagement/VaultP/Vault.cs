@@ -135,6 +135,8 @@ public class VaultInitializationCommand
         [Required(ErrorMessage = "Note is required.")]
         public string Note { get; set; }
         public bool CanProceed { get; set; }
+        [Required(ErrorMessage = "Branch is required.")]
+        public string BranchId { get; set; }
 
         public VaultInitializationCommand()
         {

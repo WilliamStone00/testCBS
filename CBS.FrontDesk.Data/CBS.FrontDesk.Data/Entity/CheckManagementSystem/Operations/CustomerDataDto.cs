@@ -11,7 +11,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations
         public CustomerDto CustomerDto { get; set; }
         public List<AccountDto> AccountDtos { get; set; } = new List<AccountDto>();
         public List<SelectListItem> AccountSelectList { get; set; } = new List<SelectListItem>();
-    }
+		public string BranchId { get; set; }
+	}
 
     public class CustomerDto
     {

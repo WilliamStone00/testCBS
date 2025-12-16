@@ -138,8 +138,9 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                     var model = new ChequeBookRequest
                     {
                         CustomerId = customerId,
-                        CustomerName = $"{customerData.CustomerDto.FirstName} {customerData.CustomerDto.LastName}"
-                    };
+                        CustomerName = $"{customerData.CustomerDto.FirstName} {customerData.CustomerDto.LastName}",
+						BranchId = customerData.BranchId
+					};
 
                     return PartialView("_ChequeRequestForm", model);
                 }
@@ -156,13 +157,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         [HttpPost]
         public async Task<ActionResult> TakeAction(Approval approval, string action)
         {
-            if (approval.approvalNote == null)
-                return Json(new { success = false, message = "Please Enter a value ." });
+            if (string.IsNullOrWhiteSpace(approval.approvalNote))
+                return Json(new { success = false, message = "Please enter a note/comment." });
 
+            if (string.IsNullOrWhiteSpace(approval.id))
+                return Json(new { success = false, message = "Invalid request identifier." });
 
-            // Your existing logic
             ExecutionMessages result;
-            switch (action?.ToLower())
+            switch (approval.action?.ToLower())
             {
                 case "approve":
                     result = await _chequeRequestService1.ApproveRequestAsync(approval);
@@ -170,12 +172,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                 case "reject":
                     result = await _chequeRequestService1.RejectRequestAsync(approval);
                     break;
-                //case "review":
-                //    // Add review logic to your service
-                //    result = await _chequeRequestService1.ReviewRequestAsync(requestId, note);
-                //    break;
+                case "review":
+                    // For review action - you might need to create a ReviewRequestAsync method
+                    // For now, using RejectRequestAsync as placeholder
+                    result = await _chequeRequestService1.ReviewRequestAsync(approval);
+                    break;
                 case "delivered":
-                    // change to correct method when endpoint provided
+                    // For delivered action - you might need to create a MarkAsDeliveredAsync method  
+                    // For now, using RejectRequestAsync as placeholder
                     result = await _chequeRequestService1.RejectRequestAsync(approval);
                     break;
                 default:
@@ -183,9 +187,14 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
                     break;
             }
 
-            return Json(new { success = result.Result, message = result.MessageString });
+            return Json(new
+            {
+                success = result.Result,
+                message = result.MessageString,
+                status = result.MessageStatus
+            });
         }
-       
+
         [HttpPost]
         public async Task<JsonResult> LoadChequeBooksData(ChequeRequestQuery query)
         {
@@ -296,6 +305,27 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             });
         }
 
-       
-    }
+		[HttpGet]
+		public async Task<ActionResult> GetChequeBookCategoryDetails(string categoryId)
+		{
+			if (string.IsNullOrWhiteSpace(categoryId))
+				return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+			var categories = await _categoryServices.GetCategories();
+
+			var category = categories.FirstOrDefault(c => c.id == categoryId);
+
+			if (category == null)
+				return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+			return Json(new
+			{
+				success = true,
+				numberOfPages = category.numberOfPages ?? 0,
+				basePrice = category.basePrice ?? 0,
+				subscriptionDuration = category.validityPeriodInMonths
+			}, JsonRequestBehavior.AllowGet);
+		}
+
+	}
 }

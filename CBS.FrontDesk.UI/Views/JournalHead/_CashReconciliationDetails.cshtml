@@ -106,11 +106,15 @@
             <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
             <tr><th class="bg-label">State</th><td>@(Model?.State ?? "")</td></tr>
             <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
-            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchId ?? "")</td></tr>
+            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
             <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
+            <tr>
+                <th class="bg-label">IsInterBranch</th>
+                <td>@(Model?.IsInterBranch.ToString() ?? "")</td>
+            </tr>
             @*<tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>
-                <tr><th class="bg-label">Ticket Type</th><td>@(Model?.SourceGLId ?? "")</td></tr>
-                <tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>*@
+        <tr><th class="bg-label">Ticket Type</th><td>@(Model?.SourceGLId ?? "")</td></tr>
+        <tr><th class="bg-label">Ticket Type</th><td>@(Model?.CashInHand ?? "")</td></tr>*@
             <tr>
                 <th class="bg-label">Accounting Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
@@ -193,7 +197,7 @@
             </table>
         </div>
     </div>
-     ===================== TEMP JOURNAL LINES ===================== 
+     
     @if (Model.TempJournalHeader != null && Model.TempJournalHeader.Lines != null && Model.TempJournalHeader.Lines.Any())
         {
         <h6 class="fw-bold text-success border-bottom pb-1 mb-2">
@@ -251,85 +255,174 @@
         <i class="mdi mdi-close"></i> Close
     </button>
     <div>
+
+        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> Export Excel
+        </button>
+
+
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i>
             <span class="btn-text">Approve</span>
+        </button>
+
+        <button type="button" id="btnReject" class="btn btn-danger">
+            <i class="mdi mdi-check-circle-outline"></i>
+            <span class="btn-text">Reject</span>
         </button>
     </div>
 </div>
 
 
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        const state = '@(Model?.State ?? "")';
+    const state = '@(Model?.State ?? "")'.toUpperCase();
 
-        // Disable Approve button if state is APPROVED or RECONCILED
-        if (["APPROVED", "RECONCILED"].includes(state.toUpperCase())) {
-            $('#btnApprove')
-                .prop('disabled', true)
-                .addClass('btn-secondary')
-                .removeClass('btn-success');
-        }
+    // ============================================
+    // 1. Disable buttons based on the journal state
+    // ============================================
+    if (["APPROVED", "REJECTED", "RECONCILED"].includes(state)) {
 
-        $('#btnApprove').click(function (e) {
-            e.preventDefault();
+        // Disable Approve
+        $('#btnApprove')
+            .prop('disabled', true)
+            .addClass('btn-secondary')
+            .removeClass('btn-success');
 
-            // Confirmation dialog before approval
-            alertify.confirm(
-                "Confirmation",
-                "Are you sure you want to approve this journal entry?",
-                function () {
-                    // User clicked OK, perform AJAX POST
-                    const $btn = $('#btnApprove');
-                    const $icon = $btn.find('i');
-                    const $text = $btn.find('.btn-text');
+        // Disable Reject
+        $('#btnReject')
+            .prop('disabled', true)
+            .addClass('btn-secondary')
+            .removeClass('btn-danger');
+    }
 
-                    $btn.prop('disabled', true);
-                    $icon.removeClass('mdi-check-circle-outline')
-                         .addClass('mdi-loading mdi-spin');
-                    $text.text('Approving...');
 
-                    const payload = {
-                        Reference: '@Model.Reference',
-                        BranchId: '@Model.BranchId',
-                        ApprovalName: '@User.Identity.Name',
-                        TicketType: '@Model.TicketType'
-                    };
+    // ============================================
+    // Approve Button Click Handler
+    // ============================================
+    $('#btnApprove').click(function (e) {
+        e.preventDefault();
 
-                    $.ajax({
-                        url: '@Url.Action("Approve", "JournalHead")',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(payload),
-                        success: function (response) {
-                            if (response.success) {
-                                toastr.success(response.message);
-                                $btn.prop('disabled', true);
-                                $icon.removeClass('mdi-loading mdi-spin')
-                                     .addClass('mdi-check-circle');
-                                $text.text('Approved');
-                            } else {
-                                toastr.error(response.message);
-                                $btn.prop('disabled', false);
-                                $icon.removeClass('mdi-loading mdi-spin')
-                                     .addClass('mdi-check-circle-outline');
-                                $text.text('Approve');
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            toastr.error("An error occurred: " + error);
+        alertify.confirm(
+            "Confirmation",
+            "Are you sure you want to approve this journal entry?",
+            function () {
+
+                const $btn = $('#btnApprove');
+                const $icon = $btn.find('i');
+                const $text = $btn.find('.btn-text');
+
+                $btn.prop('disabled', true);
+                $icon.removeClass('mdi-check-circle-outline')
+                     .addClass('mdi-loading mdi-spin');
+                $text.text('Approving...');
+
+                const payload = {
+                    Reference: '@Model.Reference',
+                    BranchId: '@Model.BranchId',
+                    Approver: '@User.Identity.Name',
+                    TicketType: '@Model.TicketType'
+                };
+
+                $.ajax({
+                    url: '@Url.Action("Approve", "JournalHead")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+
+                            // FINAL – permanently disable both buttons
+                            $('#btnApprove, #btnReject').prop('disabled', true);
+
+                            $icon.removeClass('mdi-loading mdi-spin')
+                                 .addClass('mdi-check-circle');
+                            $text.text('Approved');
+                        } else {
+                            toastr.error(response.message);
                             $btn.prop('disabled', false);
                             $icon.removeClass('mdi-loading mdi-spin')
                                  .addClass('mdi-check-circle-outline');
                             $text.text('Approve');
                         }
-                    });
-                },
-                function () {
-                    // User clicked Cancel, do nothing
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error("An error occurred: " + error);
+                        $btn.prop('disabled', false);
+                        $icon.removeClass('mdi-loading mdi-spin')
+                             .addClass('mdi-check-circle-outline');
+                        $text.text('Approve');
+                    }
+                });
+            },
+            function () { }
+        ).set('labels', {ok:'Yes', cancel:'No'});
+    });
+
+
+    // ============================================
+    // Export Excel Button
+    // ============================================
+    $('#btnExportExcel').click(function () {
+        const id = '@Model.Id';
+        if (!id) {
+            alert("Invalid journal ID!");
+            return;
+        }
+
+        window.location.href =
+            '@Url.Action("DownloadJournalHeadExcel", "JournalHead")' + '?id=' + id;
+    });
+
+
+    // ============================================
+    // Reject Modal Open
+    // ============================================
+    $('#btnReject').on('click', function () {
+        $('#rejectModal').modal('show');
+    });
+
+
+    // ============================================
+    // Submit Reject
+    // ============================================
+    $('#btnSubmitReject').on('click', function () {
+
+        const id = $('#RejectId').val();
+        const comment = $('#RejectComment').val().trim();
+
+        if (comment === "") {
+            appalert("⚠️ Please enter a rejection comment.", 3, 1);
+            return;
+        }
+
+        $.ajax({
+            url: '/JournalHead/Reject',
+            type: 'POST',
+            data: {
+                Id: id,
+                Comment: comment
+            },
+            success: function (response) {
+                if (response.success) {
+                    appalert("Journal entry rejected successfully.", 1, 1);
+                    $('#rejectModal').modal('hide');
+
+                    // Disable both buttons
+                    $('#btnReject, #btnApprove').prop('disabled', true);
+
+                    location.reload();
+                } else {
+                    appalert(response.message || "Rejection failed.", 2, 1);
                 }
-            ).set('labels', {ok:'Yes', cancel:'No'}); // Optional: customize button labels
+            },
+            error: function () {
+                appalert("An error occurred during rejection.", 2, 1);
+            }
         });
     });
+
+});
 </script>

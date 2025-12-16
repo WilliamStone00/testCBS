@@ -1,5 +1,4 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.accountingyear
-
 @using Resources
 @{
     ViewBag.Title = "Accounting Year";
@@ -10,16 +9,10 @@
         <h1 class="card-title text-primary">
             <i class="mdi mdi-cog-outline me-2"></i> Accounting Year
         </h1>
-
-        @*<div class="alert alert-info mt-3 py-2">
-                <i class="mdi mdi-information-outline me-1 "></i>
-                Configure Posting rules for <strong>Accounting year .</strong>
-
-            </div>*@
     </div>
 </div>
 
-
+<!-- Tips Card -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span><i class="mdi mdi-information-outline me-2"></i> TIPS</span>
@@ -27,179 +20,375 @@
             <i class="mdi mdi-chevron-down"></i>
         </button>
     </h6>
-
     <div id="collapseJournalTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>Use the Add Year button:</strong> Opens a clean modal form with a loading spinner before content loads.</li>
-                <li><strong>Updating a Year:</strong> Click the update button to fetch year details via AJAX and display the form in the modal.</li>
-                <li><strong>Validations Required:</strong> Branch, Accounting Year, and Status must be selected before submitting.</li>
-                <li><strong>Confirmation Step:</strong> A confirmation popup shows selected values and requires a checkbox before saving.</li>
-                <li><strong>Form Submission:</strong> The form submits using FormData to support files and anti-forgery tokens.</li>
-               <li><strong>Auto UI Reset:</strong> After a successful save, the form resets and all Select2 dropdowns are cleared.</li>
+                <li><strong>Add Year:</strong> Opens modal with spinner before loading form.</li>
+                <li><strong>Update Year:</strong> Click Update button in table row to open modal.</li>
+                <li><strong>Validations:</strong> Branch, Year, and Status required.</li>
+                <li><strong>Confirmation:</strong> Checkbox required before saving.</li>
+                <li><strong>Form Submission:</strong> Uses FormData + anti-forgery token.</li>
+                <li><strong>Auto Reset:</strong> Form and Select2 cleared after save.</li>
+            </ul>
         </div>
     </div>
 </div>
 
+<!-- Add Year Button -->
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btnAddYear" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
+    </div>
+</div>
+
+<!-- Advance Filters -->
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="journalHeaderFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="card p-3 mb-2 bg-light">
+
+            <!-- ✔️ TOGGLE BRANCH FILTER -->
+            <div class="row mb-1">
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✔️ HIDDEN BRANCH FILTER -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                    </div>
+                </div>
+            </div>
 
 
-<!-- Modal for Create Accounting Year -->
+            <!-- STATUS & YEAR -->
+            <div class="row mb-1">
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold">Status</label>
+                    @Html.DropDownList("Status",
+                        new SelectList(ViewBag.Status, "Value", "Text"),
+                        "Select Status",
+                        new { @class = "form-control select2 mb-1", @id = "Status" })
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold">Accounting Year</label>
+                    @Html.DropDownList("Year",
+                        new SelectList(ViewBag.Year, "Value", "Text"),
+                        "Select Year",
+                        new { @class = "form-control select2 mb-1", @id = "year" })
+                </div>
+            </div>
+
+
+            <!-- DATE RANGE -->
+            <div class="row mb-1">
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold" for="startDate">Start Date</label>
+                    <input type="datetime-local" id="startDate" name="StartDate" class="form-control mb-1" />
+                </div>
+                <div class="col-md-6 mb-1">
+                    <label class="form-label fw-bold" for="endDate">End Date</label>
+                    <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                </div>
+            </div>
+
+
+
+
+            <!-- ACTION BUTTONS -->
+            <div class="row g-2 mt-2">
+                <div class="col-12 col-md-6">
+                    <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                        <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </form>
+</div>
+
+
+<!-- Modal -->
 <div class="modal fade" id="accountingYearModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content shadow-lg border-0">
-            <div id="accountingYearModalContent" class="p-3">
-                @* Partial view (_Update) will be loaded here *@
-            </div>
+            <div id="accountingYearModalContent" class="p-3"></div>
         </div>
     </div>
 </div>
 
+
 <div id="datalistingview">
-
+    @Html.Partial("_Datatable")
 </div>
-
-
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-$(document).ready(function () {
+    $(function () {
+        const addUrl = '@Url.Action("New", "AccountingYear")';
+        const updateUrl = '@Url.Action("GetDetails", "AccountingYear")';
 
-    // ✅ Load all years
-    $.ajax({
-        url: '@Url.Action("GetAll", "AccountingYear")',
-        type: 'GET',
-        success: function (partialViewResult) {
-            $("#datalistingview").html(partialViewResult);
+        // ==========================
+        // Load DataTable
+        // ==========================
+        function loadAccountingYearData() {
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                $('#myDataTable').DataTable().clear().destroy();
+            }
 
-            // ✅ Add Year button
-            $("#btnAddYear").on("click", function () {
-                $.ajax({
-                    url: '@Url.Action("New", "AccountingYear")',
-                    type: 'GET',
-                    beforeSend: function () {
-                        $("#accountingYearModalContent").html(`
-                            <div class="text-center my-4">
-                                <div class="spinner-border text-success" role="status"></div>
-                                <p class="mt-2">Loading form...</p>
-                            </div>
-                        `);
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                searching: false,
+                order: [[0, 'desc']],
+                ajax: {
+                    url: '/AccountingYear/LoadAccountingYearData',
+                    type: 'POST',
+                    data: function (d) {
+                        return {
+                            BranchId: $('#branchFilter').hasClass('d-none') ? null : $('#branchId').val(),
+                            StartDate: $('#startDate').val(),
+                            EndDate: $('#endDate').val(),
+                            Status: $('#Status').val(),
+                            Year: $('#year').val(),
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                skip: d.start,
+                                pageSize: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: d.columns[d.order[0].column].data,
+                                sortColumnDirection: d.order[0].dir
+                            }
+                        };
                     },
-                    success: function (html) {
-                        $("#accountingYearModal .modal-content").html(html);
-                        const modalEl = document.getElementById('accountingYearModal');
-                        const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                        bsModal.show();
-                    },
-                    error: function (xhr, status, error) {
-                        appalert("Failed to load Add Accounting Year view: " + error, 1, 4);
+                    error: function (xhr) {
+                        console.error('❌ Load error:', xhr);
+                        appalert('❌ Failed to load accounting year data. Status: ' + xhr.status, 4, 1);
                     }
-                });
-            });
-
-            // ✅ Update Year button
-           // ✅ Update Year button (clean version, same style as Add button)
-                $(".btn-update-year").on("click", function () {
-                    const id = $(this).data("id");
-                    if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
-
-                    $.ajax({
-                        url: '@Url.Action("GetDetails", "AccountingYear")',
-                        type: 'GET',
-                        data: { id: id },
-                        beforeSend: function () {
-                            $("#accountingYearModalContent").html(`
-                                <div class="text-center my-4">
-                                    <div class="spinner-border text-success" role="status"></div>
-                                    <p class="mt-2">Loading form...</p>
-                                </div>
-                            `);
-                        },
-                        success: function (html) {
-                            $("#accountingYearModal .modal-content").html(html);
-                            const modalEl = document.getElementById('accountingYearModal');
-                            const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                            bsModal.show();
-                        },
-                        error: function (xhr, status, error) {
-                            appalert("Failed to load update view: " + error, 1, 4);
+                },
+                columns: [
+                    { data: 'StartDate', render: d => d ? moment(d).format('DD/MM/YYYY') : '' },
+                    { data: 'EndDate', render: d => d ? moment(d).format('DD/MM/YYYY') : '' },
+                    { data: 'BranchName' },
+                    { data: 'Year' },
+                    {
+                        data: 'Status',
+                        render: function (status) {
+                            let badgeClass = 'badge bg-secondary';
+                            switch ((status || '').toLowerCase()) {
+                                case 'open': badgeClass = 'badge bg-success'; break;
+                                case 'lock': badgeClass = 'badge bg-warning text-dark'; break;
+                                case 'close': badgeClass = 'badge bg-danger'; break;
+                            }
+                            return `<span class="${badgeClass}">${status || ''}</span>`;
                         }
-                    });
-                });
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: (_, __, row) => {
+                            const status = (row.Status || "").toLowerCase();
+                            const btnId = `actionDropdown${row.Id}`;
+                            const disableStyle = "pointer-events:none; opacity:0.5;";
 
+                            const startStr = row.StartDate ? moment(row.StartDate).format('YYYY-MM-DD') : '';
+                            const endStr = row.EndDate ? moment(row.EndDate).format('YYYY-MM-DD') : '';
+
+                            const buttons = [
+                                {
+                                    class: 'btn-update-year',
+                                    text: 'Update',
+                                    icon: 'mdi-pencil-outline',
+                                    color: '#6f42c1',
+                                    style: ''
+                                },
+                                {
+                                    class: 'btn-lock-year',
+                                    text: 'Lock',
+                                    icon: 'mdi-lock-outline',
+                                    color: '#fd7e14',
+                                    style: status === 'lock' ? disableStyle : ''
+                                },
+                                {
+                                    class: 'btn-open-year',
+                                    text: 'Open',
+                                    icon: 'mdi-lock-open-outline',
+                                    color: '#198754',
+                                    style: status === 'open' ? disableStyle : ''
+                                },
+                                {
+                                    class: 'btn-close-year',
+                                    text: 'Close',
+                                    icon: 'mdi-close-circle-outline',
+                                    color: '#dc3545',
+                                    style: status === 'close' ? disableStyle : ''
+                                }
+                            ];
+
+                            const dropdownItems = buttons.map(b => `
+                                <li>
+                                    <a class="dropdown-item ${b.class}"
+                                       href="#"
+                                       data-id="${row.Id}"
+                                       data-branch="${row.BranchId}"
+                                       data-branchname="${row.BranchName}"
+                                       data-year="${row.Year}"
+                                       data-status="${b.text.toUpperCase()}"
+                                       data-start="${startStr}"
+                                       data-end="${endStr}"
+                                       style="color:${b.color}; font-weight:500; ${b.style}">
+                                        <i class="mdi ${b.icon} me-1" style="color:${b.color};"></i>
+                                        ${b.text}
+                                    </a>
+                                </li>
+                            `).join('');
+
+                            return `
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline"></i> Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                        ${dropdownItems}
+                                    </ul>
+                                </div>
+                            `;
+                        }
+                    }
+                ]
+            });
         }
-    });
 
-    // ✅ AJAX Save
-    window.CreatAccountingYearSaveAjax = function (form) {
-        if (!$(form).valid()) return false;
+        // ==========================
+        // Generic post function
+        // ==========================
+        function postAccountingYear(payload, $btn) {
+            const $icon = $btn.find('i');
+            const $text = $btn.find('.btn-text');
 
-        const branchText = $('#BranchId option:selected').text();
-        const yearText = $('#Year option:selected').text();
-        const statusText = $('#Status option:selected').text();
+            $btn.prop('disabled', true);
+            $icon.removeClass().addClass('mdi mdi-loading mdi-spin');
 
-        if (!$('#BranchId').val()) { appalert("Select a branch.", 3, 1); return false; }
-        if (!$('#Year').val()) { appalert("Select an accounting year.", 3, 1); return false; }
-        if (!$('#Status').val()) { appalert("Select a status.", 3, 1); return false; }
+            $.ajax({
+                url: '/AccountingYear/Action',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message || payload.status + ' successful!');
+                        loadAccountingYearData();
+                    } else {
+                        toastr.error(response.message || payload.status + ' failed!');
+                        $btn.prop('disabled', false);
+                        $icon.removeClass().addClass('mdi mdi-cog-outline');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("An error occurred: " + error);
+                    $btn.prop('disabled', false);
+                    $icon.removeClass().addClass('mdi mdi-cog-outline');
+                }
+            });
+        }
 
-        const title = "Confirm Accounting Year Details";
+        // ==========================
+        // Handle LOCK / OPEN / CLOSE / UPDATE
+        // ==========================
+       function handleButtonClick(selector, statusText) {
+    $(document).on("click", selector, function (e) {
+        e.preventDefault();
+        const $btn = $(this);
+
+        const itemId     = $btn.data('id');
+        const branchId   = $btn.data('branch');
+        const branchText = $btn.data('branchname') || "";
+        const year       = $btn.data('year');
+        const status     = statusText;
+        const startDate  = $btn.data('start');
+        const endDate    = $btn.data('end');
+
+        const openingDateText = startDate ? moment(startDate).format("DD/MM/YYYY") : "";
+        const closingDateText = endDate ? moment(endDate).format("DD/MM/YYYY") : "";
+
+        // Determine if this is a dangerous action
+        const isDanger = status === "CLOSE"; // You can add 'LOCK' if needed
+
         const message = `
-            <p>Please review the details below before confirming:</p>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr><th>Branch</th><td>${branchText}</td></tr>
-                    <tr><th>Accounting Year</th><td>${yearText}</td></tr>
-                    <tr><th>Status</th><td>${statusText}</td></tr>
-                </tbody>
-            </table>
-            <div class="form-check mt-3">
-                <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-                <label for="alertifyConfirmCheckbox" class="form-check-label">
-                    I confirm that the above details are correct.
-                </label>
+            <div style="${isDanger ? 'border:2px solid red; padding:10px; border-radius:5px;' : ''}">
+                <p>Confirm details before continuing:</p>
+                <table class="table table-sm table-bordered">
+                    <tr><th>Branch</th><td>${branchText || branchId}</td></tr>
+                    <tr><th>Year</th><td>${year}</td></tr>
+                    <tr><th>Action</th><td>${status}</td></tr>
+                    <tr><th>Start Date</th><td>${openingDateText}</td></tr>
+                    <tr><th>End Date</th><td>${closingDateText}</td></tr>
+                </table>
+                <div class="form-check mt-3">
+                    <input type="checkbox" id="alertifyConfirmCheckbox" class="form-check-input">
+                    <label for="alertifyConfirmCheckbox" class="form-check-label">
+                        I confirm the above details.
+                    </label>
+                </div>
             </div>
         `;
 
-        alertify.confirm(title, message,
+        alertify.confirm(
+            isDanger ? "⚠️ DANGER: Confirm Accounting Year Action" : "Confirm Accounting Year",
+            message,
             function () {
                 if (!$('#alertifyConfirmCheckbox').is(':checked')) {
-                    appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                    appalert("Check the box to confirm.", 3, 1);
                     return false;
                 }
 
-                const token = $('input[name="__RequestVerificationToken"]').val();
+                const payload = {
+                    id: itemId,
+                    branchId: branchId,
+                    year: year,
+                    status: status,
+                    startDate: startDate,
+                    endDate: endDate
+                };
 
-                $.ajax({
-                    type: 'POST',
-                    url: form.action,
-                    data: new FormData(form),
-                    processData: false,
-                    contentType: false,
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    beforeSend: function () {
-                        $('.alertify .ajs-ok').prop('disabled', true)
-                            .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
-                    },
-                    success: function (response) {
-                        if (response && response.success) {
-                            appalert(response.message || "✅ Saved successfully!", 1, 1);
-                            alertify.dismissAll();
-                            if (String(response.reloadDataView).toLowerCase() === "yes") {
-                                form.reset();
-                                $('.select2').val(null).trigger('change');
-                            }
-                        } else {
-                            appalert(response?.message || "❌ Failed to save accounting year.", 2, 1);
-                        }
-                    },
-                    error: function (xhr) {
-                        appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
-                    },
-                    complete: function () {
-                        $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
-                    }
-                });
+                postAccountingYear(payload, $btn);
             },
             function () {
                 appalert("🚫 Operation cancelled.", 2, 1);
@@ -214,11 +403,83 @@ $(document).ready(function () {
                 });
             }
         });
-
-        return false;
-    };
-
-});
-    </script>
-
+    });
 }
+
+        // Initialize action buttons
+        handleButtonClick(".btn-lock-year", "LOCK");
+        handleButtonClick(".btn-open-year", "OPEN");
+        handleButtonClick(".btn-close-year", "CLOSE");
+
+        // ==========================
+        // Filter buttons
+        // ==========================
+        $('#applyFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            loadAccountingYearData();
+        });
+
+        $('#resetFilterBtn').on('click', function (e) {
+            e.preventDefault();
+            $('#journalHeaderFilterForm').trigger('reset');
+            $('.select2').val('').trigger('change');
+            $('#branchFilter').addClass('d-none');
+            $('#toggleBranch').prop('checked', false);
+            appalert('🧹 Filters reset.', 1, 1);
+        });
+
+        // ==========================
+        // Add / Update Modals
+        // ==========================
+        $('#btnAddYear').on('click', function () {
+            $.ajax({
+                url: addUrl,
+                type: 'GET',
+                beforeSend: function () {
+                    $("#accountingYearModalContent").html(`
+                        <div class="text-center my-4">
+                            <div class="spinner-border text-success"></div>
+                            <p>Loading form...</p>
+                        </div>`);
+                },
+                success: function (html) {
+                    $("#accountingYearModal .modal-content").html(html);
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingYearModal')).show();
+                },
+                error: function (xhr, status, error) {
+                    appalert("Failed to load Add view: " + error, 1, 4);
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-update-year', function () {
+            const id = $(this).data('id');
+            if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
+
+            $.ajax({
+                url: updateUrl,
+                type: 'GET',
+                data: { id: id },
+                beforeSend: function () {
+                    $("#accountingYearModalContent").html(`
+                        <div class="text-center my-4">
+                            <div class="spinner-border text-success"></div>
+                            <p>Loading form...</p>
+                        </div>`);
+                },
+                success: function (html) {
+                    $("#accountingYearModal .modal-content").html(html);
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('accountingYearModal')).show();
+                },
+                error: function (xhr, status, error) {
+                    appalert("Failed to load Update view: " + error, 1, 4);
+                }
+            });
+        });
+
+        // Initial load
+        //loadAccountingYearData();
+    });
+    </script>
+}
+

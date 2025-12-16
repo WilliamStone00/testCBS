@@ -4,164 +4,266 @@
     ViewBag.Title = "Cheque Number Configuration";
 }
 @using Resources
-
-<div class="row">
-    <div class="col-12">
-        <div class="card bg-light mb-2">
-            <div class="card-body text-center">
-                <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cog-outline me-2"></i> Cheque Number Configurations
-                </h1>
-                <p class="card-text">
-                    Define and manage the structure of cheque number identifiers by arranging variables
-                    (Bank Code, Branch Code, Year, Serial Number).
-                </p>
-                <div class="alert alert-info mt-3 py-2">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.
+<div id="listingviewdrop">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light mb-2">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary">
+                        <i class="mdi mdi-cog-outline me-2"></i> Cheque Number Configurations
+                    </h1>
+                    <p class="card-text">
+                        Define and manage the structure of cheque number identifiers by arranging variables
+                        (Bank Code, Branch Code, Year, Serial Number).
+                    </p>
+                    <div class="alert alert-info mt-3 py-2">
+                        <i class="mdi mdi-information-outline me-1"></i>
+                        Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.
+                    </div>
+                    <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
-                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
-</div>
-<!--tips-->
-<div class="card mb-3">
-    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for Cheque Number Configuration</span>
-        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChequeTips" aria-expanded="false">
-            <i class="mdi mdi-chevron-down"></i>
-        </button>
-    </h6>
-    <div id="collapseChequeTips" class="collapse">
-        <div class="card-body">
-            <ul>
-                <li>
-                    <i class="mdi mdi-cursor-move text-success me-2"></i>
-                    <strong>Drag & Drop:</strong> Drag placeholders (e.g. <code>{BranchCode}</code>, <code>{Year}</code>, <code>{Sequence}</code>) in the template area to build your cheque number format.
-                </li>
-                <li>
-                    <i class="mdi mdi-eye text-info me-2"></i>
-                    <strong>Preview:</strong> The template area shows your current format in real time.
-                    Example: <code>{BranchCode}-{Year}-{Sequence}</code>.
-                </li>
-                <li>
-                    <i class="mdi mdi-check-decagram text-warning me-2"></i>
-                    <strong>Validation:</strong> Ensure each required placeholder (like <code>{Sequence}</code>) is included at least once.
-                </li>
-                <li>
-                    <i class="mdi mdi-content-save text-primary me-2"></i>
-                    <strong>Save:</strong> Click "Save" to store your template. You can also <strong>Reset</strong> to clear and start fresh.
-                </li>
-                <li>
-                    <i class="mdi mdi-refresh text-secondary me-2"></i>
-                    <strong>Reorder:</strong> Drag placeholders horizontally to adjust the order of fields in your cheque number.
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Configurations</h5>
-    <div class="card mb-1">
-        <div class="card-body d-flex justify-content-end align-items-center">
-            <a type="button"
-               onclick="LoadDataGen('NumConfig', 'myDataTable', 'List', 0, 'datalistingview', null, 'list')"
-               class="btn btn-label-primary btn-sm me-2"
-               data-bs-toggle="tooltip" title="View List">
-                <i class="mdi mdi-view-list mdi-18px"></i> View List
-            </a>
-            <a type="button"
-               onclick="AddORUpdateGen(null,'datalistingview','_Create','new','NumConfig')"
-               class="btn btn-label-secondary btn-sm"
-               data-bs-toggle="tooltip" title="Add New Configuration">
-                <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
-            </a>
+    <!--tips-->
+    <div class="card mb-3">
+        <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Cheque Number Configuration</span>
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChequeTips" aria-expanded="false">
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </h6>
+        <div id="collapseChequeTips" class="collapse">
+            <div class="card-body">
+                <ul>
+                    <li>
+                        <i class="mdi mdi-cursor-move text-success me-2"></i>
+                        <strong>Drag & Drop:</strong> Drag placeholders (e.g. <code>{BranchCode}</code>, <code>{Year}</code>, <code>{Sequence}</code>) in the template area to build your cheque number format.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-eye text-info me-2"></i>
+                        <strong>Preview:</strong> The template area shows your current format in real time.
+                        Example: <code>{BranchCode}-{Year}-{Sequence}</code>.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-check-decagram text-warning me-2"></i>
+                        <strong>Validation:</strong> Ensure each required placeholder (like <code>{Sequence}</code>) is included at least once.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-content-save text-primary me-2"></i>
+                        <strong>Save:</strong> Click "Save" to store your template. You can also <strong>Reset</strong> to clear and start fresh.
+                    </li>
+                    <li>
+                        <i class="mdi mdi-refresh text-secondary me-2"></i>
+                        <strong>Reorder:</strong> Drag placeholders horizontally to adjust the order of fields in your cheque number.
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <!-- Placeholder for modals/forms -->
-    @Html.Partial("_model")
 
-    <!-- DataTable Partial -->
-    <div id="datalistingview">
-        @Html.Partial("_Create",Model)
+    <div class="card shadow p-3 mb-4">
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Configurations</h5>
+        <div class="card mb-1">
+            <div class="card-body d-flex justify-content-end align-items-center">
+                <a href="@Url.Action("List", "NumConfig")"
+                   class="btn btn-label-primary btn-sm me-2"
+                   id="btnViewList"
+                   data-bs-toggle="tooltip"
+                   title="@GlobalShared.ViewList">
+                    <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+                </a>
+                <a href="@Url.Action("Index", "NumConfig")"
+                   class="btn btn-label-primary btn-sm me-2"
+                   id="btnViewList"
+                   data-bs-toggle="tooltip"
+                   title="Add New Configuration">
+                    <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
+                </a>
+            </div>
+        </div>
+
+        <!-- Placeholder for modals/forms -->
+        @Html.Partial("_model")
+
+        <!-- DataTable Partial -->
+        <div id="datalistingview">
+            @Html.Partial("_Create", Model)
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script src="~/Scripts/Js/Crud/ChequeManagement/numconfig/Numconfog.js"></script>
-
     <script>
+        // --- ENHANCED DRAG & DROP SYSTEM ---
+        window.initializeDragAndDrop = function(container) {
+            console.log('Initializing drag and drop...');
 
-        // Toggle numeric inputs
-        document.getElementById('toggleNumericPositions').addEventListener('change', function () {
-            document.getElementById('numericPositions').style.display = this.checked ? 'flex' : 'none';
-        });
+            // Use specific container or search for dragZone
+            const dragZone = container ? container.find('#dragZone').get(0) : document.getElementById('dragZone');
+            if (!dragZone) {
+                console.log('Drag zone not found');
+                return;
+            }
 
-        // Drag-and-drop logic
-        const dragZone = document.getElementById('dragZone');
-        let draggedItem = null;
+            let draggedItem = null;
 
-        function updateNumericPositionsFromDrag() {
-            const items = [...dragZone.querySelectorAll('.draggable')];
-            items.forEach((item, index) => {
-                const varName = item.dataset.variable;
-                switch (varName) {
-                    case 'BankCode': document.getElementById('bankCodePosition').value = index + 1; break;
-                    case 'BranchCode': document.getElementById('branchCodePosition').value = index + 1; break;
-                    case 'Year': document.getElementById('yearPosition').value = index + 1; break;
-                    case 'SerialNumber': document.getElementById('seriaNumberPosition').value = index + 1; break;
+            function updateNumericPositionsFromDrag() {
+                const items = [...dragZone.querySelectorAll('.draggable')];
+                console.log('Updating positions from drag, items:', items.length);
+
+                items.forEach((item, index) => {
+                    const varName = item.dataset.variable;
+                    const position = index + 1;
+
+                    console.log(`Setting ${varName} to position ${position}`);
+
+                    switch (varName) {
+                        case 'BankCode':
+                            $('#bankCodePosition').val(position).trigger('change');
+                            break;
+                        case 'BranchCode':
+                            $('#branchCodePosition').val(position).trigger('change');
+                            break;
+                        case 'Year':
+                            $('#yearPosition').val(position).trigger('change');
+                            break;
+                        case 'SerialNumber':
+                            $('#seriaNumberPosition').val(position).trigger('change');
+                            break;
+                    }
+                });
+            }
+
+            // Clear existing event listeners
+            dragZone.querySelectorAll('.draggable').forEach(item => {
+                item.replaceWith(item.cloneNode(true));
+            });
+
+            // Make draggable and add events
+            dragZone.querySelectorAll('.draggable').forEach(item => {
+                item.setAttribute('draggable', true);
+
+                item.addEventListener('dragstart', (e) => {
+                    draggedItem = item;
+                    setTimeout(() => item.style.opacity = '0.4', 0);
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+
+                item.addEventListener('dragend', () => {
+                    if (draggedItem) {
+                        draggedItem.style.opacity = '1';
+                        draggedItem = null;
+                    }
+                    updateNumericPositionsFromDrag();
+                });
+            });
+
+            // Improved drag over handler
+            dragZone.addEventListener('dragover', e => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+
+                const afterElement = getDragAfterElement(dragZone, e.clientX);
+                if (!afterElement) {
+                    dragZone.appendChild(draggedItem);
+                } else {
+                    dragZone.insertBefore(draggedItem, afterElement);
                 }
             });
-        }
 
-        dragZone.querySelectorAll('.draggable').forEach(item => {
-            item.setAttribute('draggable', true);
+            function getDragAfterElement(container, x) {
+                const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+                let closest = null;
+                let closestOffset = Number.NEGATIVE_INFINITY;
 
-            item.addEventListener('dragstart', () => {
-                draggedItem = item;
-                setTimeout(() => item.style.opacity = '0.4', 0);
+                draggableElements.forEach(element => {
+                    const box = element.getBoundingClientRect();
+                    const offset = x - box.left - box.width / 2;
+
+                    if (offset < 0 && offset > closestOffset) {
+                        closestOffset = offset;
+                        closest = element;
+                    }
+                });
+
+                return closest;
+            }
+
+            // Initialize numeric positions from current drag zone state
+            updateNumericPositionsFromDrag();
+
+            // Set up numeric position toggle
+            const toggleCheckbox = document.getElementById('toggleNumericPositions');
+            const numericContainer = document.getElementById('numericPositions');
+
+            if (toggleCheckbox && numericContainer) {
+                toggleCheckbox.addEventListener('change', function() {
+                    numericContainer.style.display = this.checked ? 'flex' : 'none';
+                });
+
+                // Initialize state
+                numericContainer.style.display = toggleCheckbox.checked ? 'flex' : 'none';
+            }
+
+            console.log('Drag and drop initialized successfully');
+        };
+
+        // --- UNIFIED FORM INITIALIZATION ---
+        window.initializeNumConfigForm = function(container) {
+            console.log('Initializing NumConfig form...');
+
+            const $container = container ? $(container) : $(document);
+
+            // Initialize drag and drop
+            initializeDragAndDrop($container);
+
+            // Initialize Select2
+            if ($.fn.select2) {
+                $container.find('#branchId').each(function() {
+                    if (!$(this).hasClass('select2-hidden-accessible')) {
+                        $(this).select2({
+                            width: '100%',
+                            placeholder: 'Select Branch',
+                            dropdownParent: $container.closest('.modal-body') || $('body')
+                        });
+                    }
+                });
+            }
+
+            // Initialize tooltips
+            if ($.fn.tooltip) {
+                $container.find('[data-bs-toggle="tooltip"]').tooltip({ container: 'body' });
+            }
+
+            // Form submission handler
+            $container.find('#manualForm').off('submit').on('submit', function(e) {
+                console.log('Form submitted, updating positions...');
+                if (typeof window.NumconfogSyncBeforeSubmit === 'function') {
+                    window.NumconfogSyncBeforeSubmit(this);
+                }
+                return true;
             });
 
-            item.addEventListener('dragend', () => {
-                draggedItem.style.opacity = '1';
-                draggedItem = null;
-                updateNumericPositionsFromDrag(); // update numeric positions on drag end
-            });
+            console.log('NumConfig form initialization complete');
+        };
+
+        // --- MAIN PAGE INITIALIZATION ---
+        $(document).ready(function(){
+            console.log('NumConfig main page loading...');
+
+            // Initialize form if we're on the create page
+            if ($('#dragZone').length) {
+                initializeNumConfigForm();
+            }
+
+            // Initialize list view if we're on the list page
+            if ($('#numconfigFilterForm').length) {
+                initializeNumConfigListView();
+            }
         });
-
-        dragZone.addEventListener('dragover', e => {
-            e.preventDefault();
-            const afterElement = getDragAfterElement(dragZone, e.clientX);
-            if (!afterElement) dragZone.appendChild(draggedItem);
-            else dragZone.insertBefore(draggedItem, afterElement);
-        });
-
-        function getDragAfterElement(container, x) {
-            const draggableElements = [...container.querySelectorAll('.draggable')].filter(el => el !== draggedItem);
-            let closest = null;
-            let offset = Number.NEGATIVE_INFINITY;
-            draggableElements.forEach(child => {
-                const box = child.getBoundingClientRect();
-                const off = x - box.left - box.width / 2;
-                if (off < 0 && off > offset) { offset = off; closest = child; }
-            });
-            return closest;
-        }
-
-        function NumconfogSyncBeforeSubmit(form) {
-            updateNumericPositionsFromDrag(); // ensure numeric positions always reflect drag order
-            return true;
-        }
-
-        // Initial sync in case editing an existing config
-        updateNumericPositionsFromDrag();
     </script>
-
 }
-

@@ -1,0 +1,702 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.DaillyCollectorLicense.GenerateLicenseRequest
+@using Resources;
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary fw-bold">
+                    <i class="mdi mdi-license me-2"></i> Generate Daily Collector License
+                </h1>
+                <p class="card-text">
+                    Create new licenses for daily collectors with specific parameters and device binding.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-2 border-light">
+    <h6 class="card-header py-2 d-flex justify-content-between align-items-center text-primary bg-light">
+        <span class="small fw-bold">
+            <i class="mdi mdi-information-outline me-2"></i> Tips
+        </span>
+        <button class="btn btn-light btn-sm p-1" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseLicenseTips" aria-expanded="false" aria-controls="collapseLicenseTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+    <div id="collapseLicenseTips" class="collapse">
+        <div class="card-body py-3">
+            <div class="row">
+                <!-- License Generation Tips -->
+                <div class="col-md-6 mb-3">
+                    <h6 class="text-primary mb-2">
+                        <i class="mdi mdi-license me-1"></i> Generation Guidelines
+                    </h6>
+                    <ul class="small mb-0">
+                        <li class="mb-2">
+                            <strong class="text-success">✓ Collector Selection:</strong> Choose active collectors with valid user accounts
+                        </li>
+                        <li class="mb-2">
+                            <strong class="text-success">✓ Date Validation:</strong> Ensure expiry date is after start date
+                        </li>
+                        <li class="mb-2">
+                            <strong class="text-success">✓ Device Binding:</strong> Optional but recommended for security
+                        </li>
+                        <li class="mb-2">
+                            <strong class="text-warning">⚠ Deactivation:</strong> "Deactivate Existing" will revoke current active licenses
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Status Management Tips -->
+                <div class="col-md-6 mb-3">
+                    <h6 class="text-primary mb-2">
+                        <i class="mdi mdi-state-machine me-1"></i> Status Management
+                    </h6>
+                    <ul class="small mb-0">
+                        <li class="mb-2">
+                            <span class="badge bg-success me-1">Active</span> License is valid and operational
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-warning me-1">Inactive</span> Temporarily disabled, can be reactivated
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-danger me-1">Revoked</span> Permanently invalid, cannot be restored
+                        </li>
+                        <li class="mb-2">
+                            <span class="badge bg-secondary me-1">Expired</span> Automatically expired after end date
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Guidelines -->
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h6 class="text-primary mb-2">
+                        <i class="mdi mdi-playlist-check me-1"></i> Action Guidelines
+                    </h6>
+                    <div class="row small">
+                        <div class="col-md-3 mb-2">
+                            <i class="mdi mdi-cancel text-danger me-1"></i>
+                            <strong>Revoke:</strong> Permanent action for security issues
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <i class="mdi mdi-pause text-warning me-1"></i>
+                            <strong>Deactivate:</strong> Temporary suspension for maintenance
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <i class="mdi mdi-play text-success me-1"></i>
+                            <strong>Reactivate:</strong> Restore previously deactivated licenses
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <i class="mdi mdi-calendar-plus text-info me-1"></i>
+                            <strong>Extend:</strong> Increase validity period before expiry
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <a href="@Url.Action("List", "DailyCollectorLicense")"
+           class="btn btn-label-primary btn-sm me-2"
+           id="btnViewList"
+           data-bs-toggle="tooltip"
+           title="@GlobalShared.ViewList">
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+        </a>
+        <a type="button" onclick="AddORUpdateGen(null,'datalistingview','Index','new','DailyCollectorLicense')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalVault.AddNewVault">
+            <i class="mdi mdi-plus mdi-18px"></i> @ChequeManagements.addbutton
+        </a>
+    </div>
+</div>
+
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-plus-circle-outline me-1"></i>License Details</h5>
+
+    <form id="generateLicenseForm" autocomplete="off" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Branch </label>
+                @Html.DropDownListFor(m => m.BranchId,
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new
+                         {
+                        @class = "form-control select2 branch-select",
+                        required = "required",
+                        data_val = "true",
+                        data_val_required = "Branch is required"
+                    })
+                <span class="text-danger small field-validation-valid" data-valmsg-for="BranchId" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Collector User </label>
+                @Html.DropDownListFor(m => m.CollectorUserId,
+                    new SelectList(ViewBag.Collectors ?? new List<object>(), "Id", "Name"),
+                    "--- Select Collector ---",
+                    new
+                         {
+                        @class = "form-control select2 collector-select",
+                        required = "required",
+                        data_val = "true",
+                        data_val_required = "Collector is required"
+                    })
+                <span class="text-danger small field-validation-valid" data-valmsg-for="CollectorUserId" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Start Date </label>
+                @Html.TextBoxFor(m => m.StartDate,
+                    "{0:yyyy-MM-ddTHH:mm}",
+                    new
+                         {
+                        @class = "form-control start-date",
+                        type = "datetime-local",
+                        required = "required",
+                        data_val = "true",
+                        data_val_required = "Start date is required"
+                    })
+                <span class="text-danger small field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Expiry Date </label>
+                @Html.TextBoxFor(m => m.ExpiryDate,
+                    "{0:yyyy-MM-ddTHH:mm}",
+                    new
+                         {
+                        @class = "form-control expiry-date",
+                        type = "datetime-local",
+                        required = "required",
+                        data_val = "true",
+                        data_val_required = "Expiry date is required"
+                    })
+                <span class="text-danger small field-validation-valid" data-valmsg-for="ExpiryDate" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Device</label>
+                @Html.DropDownListFor(m => m.DeviceId,
+                    new SelectList(ViewBag.Devices ?? new List<object>(), "Id", "Name"),
+                    "--- Select Device (Optional) ---",
+                    new { @class = "form-control select2 device-select" })
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="form-check form-switch">
+                    @Html.CheckBoxFor(m => m.DeactivateExistingActive, new { @class = "form-check-input" })
+                    <label class="form-check-label fw-bold" for="DeactivateExistingActive">
+                        Deactivate Existing Active Licenses
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 d-flex justify-content-end">
+                <button type="button" id="generateLicenseBtn" class="btn btn-primary me-2">
+                    <i class="mdi mdi-license me-1"></i> Generate License
+                </button>
+                <button type="reset" class="btn btn-secondary" id="resetFormBtn">
+                    <i class="mdi mdi-refresh me-1"></i> Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Initialize select2
+            if ($.fn.select2) {
+                $('.select2').select2({
+                    width: '100%',
+                    placeholder: function(element) {
+                        return $(element).data('placeholder') || 'Select an option';
+                    }
+                });
+            }
+
+            // Get references to controls
+            var $branch = $('select[name="BranchId"]');
+            var $collector = $('select[name="CollectorUserId"]');
+            var $startDate = $('input[name="StartDate"]');
+            var $expiryDate = $('input[name="ExpiryDate"]');
+            var $device = $('select[name="DeviceId"]');
+            var $generateBtn = $('#generateLicenseBtn');
+            var $resetBtn = $('#resetFormBtn');
+            var $generateForm = $('#generateLicenseForm');
+
+            // Set minimum dates for date inputs
+            var now = new Date();
+            var timezoneOffset = now.getTimezoneOffset() * 60000;
+            var localISOTime = new Date(now - timezoneOffset).toISOString().slice(0, 16);
+
+            $startDate.attr('min', localISOTime);
+            $expiryDate.attr('min', localISOTime);
+
+            // Check if jQuery Validation is available
+            var isJQueryValidationAvailable = $.fn.validate !== undefined;
+            console.log('jQuery Validation available:', isJQueryValidationAvailable);
+
+            // Initialize form validation based on availability
+            if (isJQueryValidationAvailable) {
+                initializeJQueryValidation();
+            }
+
+            // Utility: populate collectors into the collector select
+            function populateCollectors(items) {
+                var normalized = (items || []).map(function (it) {
+                    if (it.hasOwnProperty('Value') && it.hasOwnProperty('Text')) {
+                        return { id: it.Value, text: it.Text };
+                    }
+                    if (it.hasOwnProperty('Id') && it.hasOwnProperty('Name')) {
+                        return { id: it.Id, text: it.Name };
+                    }
+                    if (it.hasOwnProperty('id') && it.hasOwnProperty('text')) {
+                        return { id: it.id, text: it.text };
+                    }
+                    var keys = Object.keys(it || {});
+                    return { id: it[keys[0]], text: it[keys[1]] || it[keys[0]] };
+                });
+
+                $collector.empty();
+                $collector.append($('<option>', { value: '', text: '--- Select Collector ---' }));
+
+                normalized.forEach(function (n) {
+                    var id = n.id == null ? '' : n.id;
+                    $collector.append($('<option>', { value: id, text: n.text || id }));
+                });
+
+                if ($.fn.select2) {
+                    $collector.val('').trigger('change');
+                } else {
+                    $collector.prop('selectedIndex', 0);
+                }
+            }
+
+            // Call server to get collectors by branchId
+            function loadCollectorsForBranch(branchId) {
+                if (!branchId) {
+                    populateCollectors([]);
+                    return;
+                }
+
+                $collector.prop('disabled', true);
+                $collector.empty().append($('<option>', { value: '', text: 'Loading collectors...' }));
+                if ($.fn.select2) {
+                    $collector.trigger('change.select2');
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetCollectorsByBranch", "DailyCollectorLicense")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { branchId: branchId },
+                    success: function (response) {
+                        try {
+                            var items = null;
+                            if (response && typeof response === 'object' && response.hasOwnProperty('success')) {
+                                if (response.success) {
+                                    items = response.data || response.items || response.collectors || [];
+                                } else {
+                                    appalert(response.message || 'No collectors found for this branch', 0, 1);
+                                    items = [];
+                                }
+                            } else {
+                                items = response || [];
+                            }
+                            populateCollectors(items);
+                        } catch (err) {
+                            console.error('Error parsing collectors response', err, response);
+                            appalert('Error loading collectors', 0, 1);
+                            populateCollectors([]);
+                        } finally {
+                            $collector.prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('GetCollectorsByBranch error:', status, err, xhr.responseText);
+                        appalert('Failed to load collectors. Please try again.', 0, 1);
+                        populateCollectors([]);
+                        $collector.prop('disabled', false);
+                    }
+                });
+            }
+
+            // Wire up: when branch changes, load collectors
+            $branch.on('change', function () {
+                var branchId = $(this).val();
+                loadCollectorsForBranch(branchId);
+            });
+
+            // Initialize jQuery Validation if available
+            function initializeJQueryValidation() {
+                // Custom validation method for date comparison
+                $.validator.addMethod("greaterThanStart", function(value, element) {
+                    var startDateValue = $startDate.val();
+                    if (!startDateValue || !value) return true;
+
+                    var startDate = new Date(startDateValue);
+                    var expiryDate = new Date(value);
+                    return expiryDate > startDate;
+                }, "Expiry date must be after start date");
+
+                // Custom validation method for future date
+                $.validator.addMethod("futureDate", function(value, element) {
+                    if (!value) return true;
+                    var selectedDate = new Date(value);
+                    var now = new Date();
+                    return selectedDate > now;
+                }, "Date must be in the future");
+
+                // Initialize the validator
+                $generateForm.validate({
+                    rules: {
+                        BranchId: {
+                            required: true
+                        },
+                        CollectorUserId: {
+                            required: true
+                        },
+                        StartDate: {
+                            required: true,
+                            futureDate: true
+                        },
+                        ExpiryDate: {
+                            required: true,
+                            greaterThanStart: true
+                        }
+                    },
+                    messages: {
+                        BranchId: {
+                            required: "Please select a branch"
+                        },
+                        CollectorUserId: {
+                            required: "Please select a collector"
+                        },
+                        StartDate: {
+                            required: "Please select a start date",
+                            futureDate: "Start date must be in the future"
+                        },
+                        ExpiryDate: {
+                            required: "Please select an expiry date",
+                            greaterThanStart: "Expiry date must be after start date"
+                        }
+                    },
+                    errorClass: "is-invalid",
+                    validClass: "is-valid",
+                    errorElement: "div",
+                    errorPlacement: function(error, element) {
+                        error.addClass('text-danger small');
+                        error.insertAfter(element);
+                    },
+                    highlight: function(element) {
+                        $(element).addClass('is-invalid').removeClass('is-valid');
+                    },
+                    unhighlight: function(element) {
+                        $(element).removeClass('is-invalid').addClass('is-valid');
+                    },
+                    submitHandler: function(form) {
+                        generateLicenseWithConfirmation();
+                        return false;
+                    }
+                });
+
+                // Real-time validation on field changes
+                $generateForm.find('select, input').on('change keyup', function() {
+                    $generateForm.validate().element(this);
+                });
+            }
+
+            // Manual form validation (fallback when jQuery Validation not available)
+            function validateFormManually() {
+                var errors = [];
+                var isValid = true;
+
+                // Clear previous error highlights
+                $generateForm.find('.is-invalid').removeClass('is-invalid');
+                $generateForm.find('.manual-error').remove();
+
+                // Validate Branch
+                if (!$branch.val()) {
+                    errors.push('Please select a branch');
+                    $branch.addClass('is-invalid');
+                    isValid = false;
+                    showManualError($branch, 'Please select a branch');
+                }
+
+                // Validate Collector
+                if (!$collector.val()) {
+                    errors.push('Please select a collector');
+                    $collector.addClass('is-invalid');
+                    isValid = false;
+                    showManualError($collector, 'Please select a collector');
+                }
+
+                // Validate Start Date
+                if (!$startDate.val()) {
+                    errors.push('Please select a start date');
+                    $startDate.addClass('is-invalid');
+                    isValid = false;
+                    showManualError($startDate, 'Please select a start date');
+                } else {
+                    var startDate = new Date($startDate.val());
+                    var now = new Date();
+                    if (startDate <= now) {
+                        errors.push('Start date must be in the future');
+                        $startDate.addClass('is-invalid');
+                        isValid = false;
+                        showManualError($startDate, 'Start date must be in the future');
+                    }
+                }
+
+                // Validate Expiry Date
+                if (!$expiryDate.val()) {
+                    errors.push('Please select an expiry date');
+                    $expiryDate.addClass('is-invalid');
+                    isValid = false;
+                    showManualError($expiryDate, 'Please select an expiry date');
+                } else if ($startDate.val()) {
+                    var startDate = new Date($startDate.val());
+                    var expiryDate = new Date($expiryDate.val());
+                    if (expiryDate <= startDate) {
+                        errors.push('Expiry date must be after start date');
+                        $expiryDate.addClass('is-invalid');
+                        isValid = false;
+                        showManualError($expiryDate, 'Expiry date must be after start date');
+                    }
+                }
+
+                return {
+                    isValid: isValid,
+                    errors: errors
+                };
+            }
+
+            // Show manual error messages
+            function showManualError($element, message) {
+                var $error = $('<div class="text-danger small manual-error">' + message + '</div>');
+                $error.insertAfter($element);
+            }
+
+            // Main validation function that works with or without jQuery Validation
+            function validateForm() {
+                if (isJQueryValidationAvailable) {
+                    return $generateForm.valid();
+                } else {
+                    var result = validateFormManually();
+                    return result.isValid;
+                }
+            }
+
+            // If a branch is pre-selected on page load, load collectors immediately
+            var initialBranch = $branch.val();
+            if (initialBranch) {
+                loadCollectorsForBranch(initialBranch);
+            }
+
+            // ---------- Generate License with Confirmation ----------
+            function generateLicenseWithConfirmation() {
+                // Debug form data
+                console.log('Form submission debug:');
+                console.log('Start Date:', $startDate.val());
+                console.log('Expiry Date:', $expiryDate.val());
+                console.log('Branch:', $branch.val());
+                console.log('Collector:', $collector.val());
+                console.log('Device:', $device.val());
+                console.log('Deactivate Existing:', $('input[name="DeactivateExistingActive"]').is(':checked'));
+
+                // Validate form
+                if (!validateForm()) {
+                    var errorMessage = 'Please fix all validation errors before submitting.';
+
+                    // Get specific error messages for manual validation
+                    if (!isJQueryValidationAvailable) {
+                        var manualResult = validateFormManually();
+                        if (manualResult.errors.length > 0) {
+                            errorMessage = manualResult.errors[0];
+                        }
+                    }
+
+                    appalert(errorMessage, 0, 1);
+
+                    // Scroll to first error
+                    var firstError = $('.is-invalid').first();
+                    if (firstError.length) {
+                        $('html, body').animate({
+                            scrollTop: firstError.offset().top - 100
+                        }, 500);
+                    }
+                    return false;
+                }
+
+                // Additional manual validation
+                if (!performAdditionalValidation()) {
+                    return false;
+                }
+
+                var $submitBtn = $generateBtn;
+                var originalHtml = $submitBtn.html();
+
+                function performGenerate() {
+                    $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Generating...');
+
+                    // Use FormData to ensure proper date formatting
+                    var formData = new FormData();
+                    formData.append('BranchId', $branch.val());
+                    formData.append('CollectorUserId', $collector.val());
+                    formData.append('StartDate', $startDate.val());
+                    formData.append('ExpiryDate', $expiryDate.val());
+                    formData.append('DeviceId', $device.val());
+                    formData.append('DeactivateExistingActive', $('input[name="DeactivateExistingActive"]').is(':checked'));
+                    formData.append('__RequestVerificationToken', $('input[name="__RequestVerificationToken"]').val());
+
+                    $.ajax({
+                        url: '@Url.Action("Generate", "DailyCollectorLicense")',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response && response.success) {
+                                appalert(response.message, 1, 1);
+                                resetForm();
+                                if (typeof licenseTable !== 'undefined' && licenseTable) {
+                                    licenseTable.ajax.reload();
+                                }
+                            } else {
+                                var msg = (response && response.message) ? response.message : 'Failed to generate license';
+                                appalert(msg, 0, 1);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Generate license error:', error);
+                            console.error('Response:', xhr.responseText);
+
+                            var errorMsg = 'Failed to generate license. Please try again.';
+                            try {
+                                var parsedResponse = JSON.parse(xhr.responseText);
+                                if (parsedResponse && parsedResponse.message) {
+                                    errorMsg = parsedResponse.message;
+                                }
+                            } catch (e) {
+                                // Use default error message
+                            }
+                            appalert(errorMsg, 0, 1);
+                        },
+                        complete: function () {
+                            $submitBtn.prop('disabled', false).html(originalHtml);
+                        }
+                    });
+                }
+
+                // Additional validation checks
+                function performAdditionalValidation() {
+                    var startDate = new Date($startDate.val());
+                    var expiryDate = new Date($expiryDate.val());
+                    var now = new Date();
+
+                    // Check if dates are reasonable (not too far in the future)
+                    var maxFutureDate = new Date();
+                    maxFutureDate.setFullYear(maxFutureDate.getFullYear() + 5); // 5 years max
+
+                    if (expiryDate > maxFutureDate) {
+                        appalert('Expiry date cannot be more than 5 years in the future.', 0, 1);
+                        $expiryDate.focus();
+                        return false;
+                    }
+
+                    // Check if license duration is reasonable (at least 1 day)
+                    var licenseDuration = (expiryDate - startDate) / (1000 * 60 * 60 * 24); // days
+                    if (licenseDuration < 1) {
+                        appalert('License duration must be at least 1 day.', 0, 1);
+                        $expiryDate.focus();
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                // Show confirmation dialog
+                if (window.alertify && typeof alertify.confirm === 'function') {
+                    alertify.confirm(
+                        "Generate License Confirmation",
+                        "Are you sure you want to generate a new license?<br><small class='text-muted'>This action will create a new license for the selected collector.</small>",
+                        function () {
+                            performGenerate();
+                        },
+                        function () {
+                            appalert('License generation cancelled', 3, 1);
+                        }
+                    ).set({
+                        labels: { ok: 'Generate', cancel: 'Cancel' },
+                        transition: 'zoom'
+                    });
+                } else {
+                    if (confirm('Are you sure you want to generate a new license?\n\nThis action will create a new license for the selected collector.')) {
+                        performGenerate();
+                    } else {
+                        appalert('License generation cancelled', 3, 1);
+                    }
+                }
+
+                return false;
+            }
+
+            // Form reset function
+            function resetForm() {
+                $generateForm[0].reset();
+                if ($.fn.select2) {
+                    $('.select2').val(null).trigger('change');
+                }
+                // Clear validation states
+                $generateForm.find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
+                $generateForm.find('.text-danger, .manual-error').remove();
+
+                // Reset min dates
+                $startDate.attr('min', localISOTime);
+                $expiryDate.attr('min', localISOTime);
+            }
+
+            // Attach click handler to generate button
+            $generateBtn.off('click').on('click', generateLicenseWithConfirmation);
+
+            // Attach reset handler
+            $resetBtn.off('click').on('click', function() {
+                resetForm();
+                appalert('Form has been reset', 3, 1);
+            });
+
+            // Also allow form submission via Enter key in required fields
+            $generateForm.on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    generateLicenseWithConfirmation();
+                }
+            });
+
+            // Real-time validation for manual mode
+            if (!isJQueryValidationAvailable) {
+                $generateForm.find('select, input').on('change keyup', function() {
+                    var $this = $(this);
+                    $this.removeClass('is-invalid');
+                    $this.next('.manual-error').remove();
+                });
+            }
+        });
+    </script>
+}

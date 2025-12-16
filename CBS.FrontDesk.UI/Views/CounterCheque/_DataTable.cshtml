@@ -257,10 +257,10 @@ $(document).ready(function () {
     }
 
     $(document).on('click', '#myDataTable .btn-details', function (e) {
-    e.preventDefault();
-    var id = decodeURIComponent($(this).data('id') || '');
-    if (!id) { appalert('Missing record id', 0, 1); return; }
-    viewCounterCheque(id);
+        e.preventDefault();
+        var id = decodeURIComponent($(this).data('id') || '');
+        if (!id) { appalert('Missing record id', 0, 1); return; }
+        viewCounterCheque(id);    // ⬅ loads modal + data
     });
 
     // Action buttons (Review/Validate/Reject)
@@ -296,13 +296,7 @@ $(document).ready(function () {
                 return;
             }
 
-            // show loader
-            $(containerSelector).html(
-                '<div class="p-4 text-center">' +
-                    '<div class="spinner-border text-primary" role="status"></div>' +
-                    '<div class="mt-2 text-muted">Loading cheque details...</div>' +
-                '</div>'
-            );
+           
             // show modal shell
             $(modalSelector).modal('show');
 
@@ -373,6 +367,6 @@ $(document).ready(function () {
     });
 
     // --- Initialize on first load ---
-    loadCounterCheques();
+    //loadCounterCheques();
 });
 </script>

@@ -181,7 +181,7 @@ namespace CBS.BusinessService.Accounts
                     // Handle the case where the branch is not found
                     continue;
                 }
-
+                string logo=PaymentReceiptMapping.GenerateAndSaveBankLogoImage(branch.Bank.LogoUrl, branch.Name);
                 var tillDs = new TillOpenAndClossingDS
                 {
                     UserIdInChargeOfThisTeller = tellerProvisioningHistory.UserIdInChargeOfThisTeller,
@@ -249,7 +249,7 @@ namespace CBS.BusinessService.Accounts
                     Id = tellerProvisioningHistory.Id,
 
                     // Branch and Bank Information
-                    Logo = branch.Bank?.LogoUrl,
+                    Logo = logo,
                     BranchName = branch.Name,
                     BranchCode = branch.BranchCode,
                     BranchAddress = branch.Address,

@@ -498,6 +498,10 @@ namespace CBS.BusinessService.CheckManagementSystem.Configurations.FeeConfigurat
         {
             try
             {
+                if (!IsHeadOffice())
+                {
+                    query.BranchId = GetBankID();
+                }
                 var response = await _apiCallerHelper.PostAsync<ResponseObject<CustomDataTable>>(
                     APICallHelper.FeeDatatable, query);
 

@@ -90,7 +90,6 @@
                         "--- Select Reconciliation Type ---",
                         new { @class = "form-control select2 mb-2", id = "ReconciliationType", required = "required" }
                     )
-
                 </div>
             </div>
 
@@ -105,21 +104,40 @@
                 </div>
             </div>
 
-            <!-- Till + Cashier -->
-            <div class="row mb-2">
-                <div class="col-md-6 mb-2">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name", required = "required" })
-                        <label for="TillName">Till Name</label>
-                        @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+            <!-- Checkbox to enable Super GL -->
+            <div class="form-check mb-2">
+                @Html.CheckBoxFor(model => model.EnableSuperGL, new { @class = "form-check-input", id = "EnableSuperGL" })
+                @Html.LabelFor(model => model.EnableSuperGL, "Check to Merge the Selected GL to Super GL", new { @class = "form-check-label" })
+            </div>
 
-                <div class="col-md-6 mb-2">
-                    <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name", required = "required" })
-                        <label for="NameOfCashier">Cashier Name</label>
-                        @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
+            <!-- Super GL Dropdown (initially hidden if checkbox is false) -->
+            <div class="row mb-2 align-items-end" id="SuperGLContainer" style="display:@(Model.EnableSuperGL ? "block" : "none");">
+                <div class="col-md-12 mb-2">
+                    @Html.Label("SuperGLAccountNumber", "Super GL", new { @class = "form-label fw-semibold", @for = "SuperGLAccountNumber" })
+                    @Html.DropDownList("SuperGLAccountNumber",
+                        new List<SelectListItem> { new SelectListItem { Text = "--- Select Super GL ---", Value = "" } },
+                        new { @class = "form-control select2 mb-2", id = "SuperGLAccountNumber", required = "required" })
+                </div>
+            </div>
+
+
+            <!-- Till + Cashier -->
+            <div id="TillCashierContainer">
+                <div class="row mb-2">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.TillName, new { @class = "form-control", id = "TillName", placeholder = "Enter Till name" })
+                            <label for="TillName">Till Name</label>
+                            @Html.ValidationMessageFor(m => m.TillName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <div class="form-floating shadow-sm">
+                            @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", id = "NameOfCashier", placeholder = "Enter Cashier name" })
+                            <label for="NameOfCashier">Cashier Name</label>
+                            @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,3 +161,9 @@
         </div>
     </div>
 }
+
+
+
+
+
+

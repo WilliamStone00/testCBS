@@ -1,65 +1,54 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear.accountingyear>
+﻿
 
-<fieldset class="fieldset-custom">
-    <h6 class="d-flex justify-content-between align-items-center text-primary mb-3">
-        <span><i class="mdi mdi-calendar-clock-outline me-2"></i> Accounting Year Configuration</span>
+@using Resources
+<div class="card p-3 shadow mb-2">
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Branch Name</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
 
-        <button type="button" id="btnAddYear" class="btn btn-sm btn-success px-3">
-            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
-        </button>
-    </h6>
-    @if (Model == null || !Model.Any())
-    {
-        <div class="text-center my-3">
-            <p>No accounting years have been defined yet.</p>
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table class="table table-sm table-hover align-middle border" id="myDataTable">
-                <thead class="bg-light text-center fw-semibold text-uppercase small">
-                    <tr>
-                        <th style="display:none;">Id</th>
-                        <th class="py-2">Branch</th>
-                        <th class="py-2">Year</th>
-                        <th class="py-2">Status</th>
-                        <th class="py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var d in Model)
-                    {
-                        <tr data-id="@d.Id">
-                            <td style="display:none;">@d.Id</td>
-                            <td class="text-nowrap">@d.BranchName</td>
-                            <td class="text-center">@d.Year</td>
-                            <td class="text-center">
-                                @if (d.Status?.ToUpper() == "OPEN")
-                                {
-                                    <span class="badge bg-success bg-opacity-75 px-3">Open</span>
-                                }
-                                else if (d.Status?.ToUpper() == "CLOSE")
-                                {
-                                    <span class="badge bg-secondary bg-opacity-75 px-3">Close</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning bg-opacity-75 px-3">Lock</span>
-                                }
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group" role="group">
-                                   
-                                    <button type="button" class="btn btn-outline-primary btn-sm px-3 btn-update-year" data-id="@d.Id">
-                                        <i class="mdi mdi-content-save-outline me-1"></i> Update
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

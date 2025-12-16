@@ -60,10 +60,20 @@
                 <li>
                     <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
                     <b>All core cash-control GLs are mandatory:</b><br />
-                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense.
-                    Operations such as Cash-In, Cash-Out, Teller Closure, and Vault Transfers
+                    Cash-In-Hand (Till), Vault, Surplus Income, Shortage Expense, <b>Cash Reversal Account</b>.
+                    Operations such as Cash-In, Cash-Out, Teller Closure, Vault Transfers and delayed cash reversals
                     will <b>fail immediately</b> if these are missing.
                 </li>
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    <b>Cash Reversal Account</b> is used for <b>delayed cash reversals</b> when the
+                    <b>accounting day of the incident has already passed</b> (e.g., reversal after 24h).
+                    This ensures reversing historical cash movements does <b>not impact the current Till/Vault cash position</b>.
+                    <br />
+                    <b>Note:</b> Same-day reversals are posted directly to the original Till/Vault accounts
+                    and do <em>not</em> use this reversal GL.
+                </li>
+
 
                 <!-- MoMoCash + Commissions Mandatory -->
                 <li>
@@ -222,7 +232,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
   // items can be [{ text, value }] or MVC's { Text, Value }
   function fillSelect($el, items, placeholder, selectedValue) {
     const getText  = (x) => x?.text  ?? x?.Text  ?? '';
@@ -253,67 +263,70 @@
   }
 
   // Exposed globally in your snippet already
-  function fetchBranchDetails(branchId) {
+function fetchBranchDetails(branchId) {
     if (!branchId) return;
 
     $.ajax({
-      url: '@Url.Action("GetByBranch", "BranchCashConfig")',
-      type: 'POST',
-      data: { branchId },
-      // include anti-forgery if enabled:
-      // headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
-      success: function (res) {
-        if (!res || res.success !== true) {
-          if (window.toastr) toastr.error(res && res.message ? res.message : 'Failed to load branch configuration.');
-          return;
+        url: '@Url.Action("GetByBranch", "BranchCashConfig")',
+        type: 'POST',
+        data: { branchId },
+        // include anti-forgery if enabled:
+        // headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+        success: function (res) {
+            if (!res || res.success !== true) {
+                if (window.toastr) toastr.error(res && res.message ? res.message : 'Failed to load branch configuration.');
+                return;
+            }
+
+            const accounts = res.accounts || [];
+
+            // Core mandatory cash accounts
+            fillSelect($('#CashInHandAccountId'), accounts, '-- Select Cash in Hand Account (Till) --', res.data?.cashInHandAccountId);
+            fillSelect($('#VaultAccountId'), accounts, '-- Select Vault Account --', res.data?.vaultAccountId);
+            fillSelect($('#SurplusIncomeAccountId'), accounts, '-- Select Surplus Income Account --', res.data?.surplusIncomeAccountId);
+            fillSelect($('#ShortageExpenseAccountId'), accounts, '-- Select Shortage Expense Account --', res.data?.shortageExpenseAccountId);
+            // ✅ NEW: Cash Reversal Account
+            fillSelect($('#CashReversalAccountId'), accounts, '-- Select Cash Reversal Account --', res.data?.cashReversalAccountId);
+
+            // Revenue & partner mappings
+            fillSelect($('#RevenueAccountId'), accounts, '-- Select Revenue Account (Optional) --', res.data?.revenueAccountId);
+            fillSelect($('#PartnerAccountId'), accounts, '-- Select Partner Account (Optional) --', res.data?.partnerAccountId);
+            fillSelect($('#CamcculAccountId'), accounts, '-- Select CamCCUL Account (Optional) --', res.data?.camcculAccountId);
+            fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --', res.data?.headOfficeLiaisonAccountId);
+            fillSelect($('#FormFeeIncomeAccountId'), accounts, '-- Select Form Fee Income Account (Optional) --', res.data?.formFeeIncomeAccountId);
+
+            // Loan & interest mappings
+            fillSelect($('#LoanTransitAccountId'), accounts, '-- Select Loan Transit Account --', res.data?.loanTransitAccountId);
+            fillSelect($('#InterestGeneratedFromAccountId'), accounts, '-- Select Interest Income Backup Account --', res.data?.interestGeneratedFromAccountId);
+
+            // Commission / VAT mappings
+            fillSelect($('#CashInCommisionAccountIDAccountId'), accounts, '-- Select Cash-In Commission Backup Account --', res.data?.cashInCommisionAccountIDAccountId);
+            fillSelect($('#CashOutCommisionAccountIDAccountId'), accounts, '-- Select Cash-Out Commission Backup Account --', res.data?.cashOutCommisionAccountIDAccountId);
+            fillSelect($('#TransfterCommisionAccountIDAccountId'), accounts, '-- Select Transfer Commission Backup Account --', res.data?.transfterCommisionAccountIDAccountId);
+            fillSelect($('#VATAccountId'), accounts, '-- Select VAT Backup Account --', res.data?.vatAccountId);
+
+            // MoMoCash mappings
+            fillSelect($('#MomocashAccountId'), accounts, '-- Select MoMoCash Settlement Account --', res.data?.momocashAccountId);
+            fillSelect($('#MomocashCommissionGlId'), accounts, '-- Select MoMoCash Commission Account --', res.data?.momocashCommissionGlId);
+
+            // 🔹 NEW: Global Fallback Suspense GL
+            fillSelect($('#FallbackSuspenseAccountId'), accounts, '-- Select Fallback Suspense GL --', res.data?.fallbackSuspenseAccountId);
+
+            // Real-time posting
+            $('#RealTimeCashPosting').prop(
+                'checked',
+                typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true
+            );
+
+            // $('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
+            // if (res.branchCode) { $('#BranchCode').val(res.branchCode); }
+            // $('input[name="BranchCashConfig.Id"]').val(res.data?.id || '');
+        },
+        error: function () {
+            if (window.toastr) toastr.error('Error loading branch configuration.');
         }
-
-          const accounts = res.accounts || [];
-
-          // Core mandatory cash accounts
-          fillSelect($('#CashInHandAccountId'), accounts, '-- Select Cash in Hand Account (Till) --', res.data?.cashInHandAccountId);
-          fillSelect($('#VaultAccountId'), accounts, '-- Select Vault Account --', res.data?.vaultAccountId);
-          fillSelect($('#SurplusIncomeAccountId'), accounts, '-- Select Surplus Income Account --', res.data?.surplusIncomeAccountId);
-          fillSelect($('#ShortageExpenseAccountId'), accounts, '-- Select Shortage Expense Account --', res.data?.shortageExpenseAccountId);
-
-          // Revenue & partner mappings
-          fillSelect($('#RevenueAccountId'), accounts, '-- Select Revenue Account (Optional) --', res.data?.revenueAccountId);
-          fillSelect($('#PartnerAccountId'), accounts, '-- Select Partner Account (Optional) --', res.data?.partnerAccountId);
-          fillSelect($('#CamcculAccountId'), accounts, '-- Select CamCCUL Account (Optional) --', res.data?.camcculAccountId);
-          fillSelect($('#HeadOfficeLiaisonAccountId'), accounts, '-- Select Head Office Liaison Account --', res.data?.headOfficeLiaisonAccountId);
-          fillSelect($('#FormFeeIncomeAccountId'), accounts, '-- Select Form Fee Income Account (Optional) --', res.data?.formFeeIncomeAccountId);
-
-          // Loan & interest mappings
-          fillSelect($('#LoanTransitAccountId'), accounts, '-- Select Loan Transit Account --', res.data?.loanTransitAccountId);
-          fillSelect($('#InterestGeneratedFromAccountId'), accounts, '-- Select Interest Income Backup Account --', res.data?.interestGeneratedFromAccountId);
-
-          // Commission / VAT mappings
-          fillSelect($('#CashInCommisionAccountIDAccountId'), accounts, '-- Select Cash-In Commission Backup Account --', res.data?.cashInCommisionAccountIDAccountId);
-          fillSelect($('#CashOutCommisionAccountIDAccountId'), accounts, '-- Select Cash-Out Commission Backup Account --', res.data?.cashOutCommisionAccountIDAccountId);
-          fillSelect($('#TransfterCommisionAccountIDAccountId'), accounts, '-- Select Transfer Commission Backup Account --', res.data?.transfterCommisionAccountIDAccountId);
-          fillSelect($('#VATAccountId'), accounts, '-- Select VAT Backup Account --', res.data?.vatAccountId);
-
-          // 🔥 NEW → MoMoCash mappings
-          fillSelect($('#MomocashAccountId'), accounts, '-- Select MoMoCash Settlement Account --', res.data?.momocashAccountId);
-          fillSelect($('#MomocashCommissionGlId'), accounts, '-- Select MoMoCash Commission Account --', res.data?.momocashCommissionGlId);
-
-          // Real-time posting
-          $('#RealTimeCashPosting').prop(
-              'checked',
-              typeof res.data?.realTimeCashPosting === 'boolean' ? res.data.realTimeCashPosting : true
-          );
-
-
-        //$('#saveOrUpdateBtn').text(res.exists ? 'Update' : 'Save');
-
-        //if (res.branchCode) { $('#BranchCode').val(res.branchCode); }
-        //$('input[name="BranchCashConfig.Id"]').val(res.data?.id || '');
-      },
-      error: function () {
-        if (window.toastr) toastr.error('Error loading branch configuration.');
-      }
     });
-  }
+}
 
   // If you’re in EDIT mode (BranchId readonly), auto-load accounts on page load:
   $(function () {
@@ -323,7 +336,7 @@
       if (fixedBranchId) fetchBranchDetails(fixedBranchId);
     }
   });
-    </script>
+</script>
 
 
     <script>

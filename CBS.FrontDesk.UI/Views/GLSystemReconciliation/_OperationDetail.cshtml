@@ -1,0 +1,109 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.StatisticsDetails
+@using Resources
+
+<style>
+    .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2a5298;
+        margin: 1rem 0 0.6rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .table-section {
+        margin-bottom: 1rem;
+    }
+
+    .table-sm th {
+        width: 260px;
+        background: #f1f1f1;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #333;
+    }
+
+    .table-sm td {
+        color: #444;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+</style>
+
+@if (Model?.Entry != null && Model.Entry.Any())
+{
+    foreach (var item in Model.Entry)
+    {
+        <fieldset class="fieldset-custom">
+
+            <!-- Header Card -->
+            <div class="card bg-light mb-4 shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="card-title text-primary fw-bold mb-2">
+                        <i class="mdi mdi-swap-horizontal-bold me-2"></i> JOURNAL @item.Id
+                    </h1>
+                    <p class="card-text text-muted mb-1">
+                        Detailed information for this journal entry
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- BASIC INFORMATION -->
+                <div class="col-md-6">
+                    <h6 class="section-title"><i class="mdi mdi-information-outline me-1"></i> BASIC INFORMATION</h6>
+                    <table class="table table-sm table-bordered table-section">
+                        <tbody>
+                            <tr><th>Reference</th><td>@item.Reference</td></tr>
+                            <tr><th>Status</th><td>@item.PostMode</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- REFERENCE & IDENTIFIERS -->
+                <div class="col-md-6">
+                    <h6 class="section-title"><i class="mdi mdi-link-variant me-1"></i> REFERENCE & IDENTIFIERS</h6>
+                    <table class="table table-sm table-bordered table-section">
+                        <tbody>
+                            <tr><th>Member Reference</th><td>@item.MemberReference</td></tr>
+                            <tr><th>Auxiliary Reference</th><td>@item.AuxiliaryRef</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FINANCIAL DETAILS -->
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <h6 class="section-title"><i class="mdi mdi-currency-usd me-1"></i> FINANCIAL DETAILS</h6>
+                    <table class="table table-sm table-bordered table-section">
+                        <tbody>
+                            <tr><th>Total Debit</th><td>@item.TotalDebit.ToString("N0")</td></tr>
+                            <tr><th>Total Credit</th><td>@item.TotalCredit.ToString("N0")</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <h6 class="section-title"><i class="mdi mdi-timeline-clock-outline me-1"></i> TIMELINE</h6>
+                    <table class="table table-sm table-bordered table-section">
+                        <tbody>
+                            <tr><th>Accounting Date</th><td>@item.AccountingDate.ToString("yyyy-MM-dd HH:mm")</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </fieldset>
+    }
+}
+else
+{
+    <p class="text-muted">No journal entries available.</p>
+}

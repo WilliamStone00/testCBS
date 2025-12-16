@@ -28,13 +28,12 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
     {
         private readonly CashDeskServices _cashDeskService;
         private readonly MemberNoneCashOperationServices _memberNoneCashOperationServices;
-        
-        private readonly BranchAccountService chartOfAccountServices;
 
+        private readonly BranchAccountService _branchAccountService;
         public MobileMoneyBackOfficeController(CashDeskServices cashDeskService = null, BranchAccountService chartOfAccountServices = null, MemberNoneCashOperationServices memberNoneCashOperationServices = null)
         {
             _cashDeskService = cashDeskService;
-            this.chartOfAccountServices=chartOfAccountServices;
+            this._branchAccountService = chartOfAccountServices;
             _memberNoneCashOperationServices=memberNoneCashOperationServices;
         }
         public ActionResult Index()
@@ -48,9 +47,9 @@ namespace CBS.FrontDesk.UI.Controllers.CashDeskOperations
         }
         public async Task<bool> GetChartOfAccounts()
         {
-            var chartOfAccounts = await chartOfAccountServices.GetAllBranchAccountsFromDataTableAsync(null);
-            ViewBag.chartOfAccounts = chartOfAccountServices.DropDownGen(chartOfAccounts.ToList());
-
+            var listing = await _branchAccountService.GetAllBranchAccountsFromDataTableAsync(null);
+            var accountsDto = _branchAccountService.DropDownGen(listing.ToList());
+            ViewBag.chartOfAccounts = accountsDto.ToList();
             return true;
         }
         public async Task<ActionResult> Ajaxloader(string Key,string path)

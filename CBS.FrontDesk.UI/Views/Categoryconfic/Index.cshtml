@@ -1,7 +1,19 @@
-﻿n@{
+﻿@{
     ViewBag.Title = "Cheque Management ";
 }
 @using Resources
+
+<!-- Early function definition to ensure it exists when partial view loads -->
+<script>
+    window.categorySubmitAjax = function (form) {
+        if (window.__categorySubmitAjaxFull) {
+            return window.__categorySubmitAjaxFull(form);
+        }
+        console.warn('Form handler not fully loaded yet, using fallback');
+        return true; // Allow normal submission as fallback
+    };
+</script>
+
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
@@ -15,7 +27,6 @@
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
                     @ChequeManagements.ImportantTextcat.
-                    
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -43,195 +54,190 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    @*<h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalUserManagement.AdvancedUserFilters</h5>*@
- 
-
     @Html.Partial("_model")
+
     <!-- DataTable Partial -->
     <div id="datalistingview1">
         @Html.Partial("_Categories")
     </div>
 </div>
 
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script>
+    (function ($) {
+        'use strict';
 
-<script>
-(function ($) {
-    'use strict';
-
-    // ---------- Utilities ----------
-    function normalizeResponse(raw) {
-        // Accept JSON object, JSON string, or HTML that contains JSON
-        if (!raw) return { success: false, message: 'Empty response' };
-        if (typeof raw === 'object') return raw;
-        if (typeof raw === 'string') {
-            var t = raw.trim();
-            try {
-                return JSON.parse(t);
-            } catch (e) {
-                // try to locate a JSON object inside HTML (very defensive)
-                var start = t.indexOf('{'), end = t.lastIndexOf('}');
-                if (start >= 0 && end > start) {
-                    try { return JSON.parse(t.substring(start, end + 1)); } catch (e2) { /* fallthrough */ }
+        // ---------- Utilities ----------
+        function normalizeResponse(raw) {
+            if (!raw) return { success: false, message: 'Empty response' };
+            if (typeof raw === 'object') return raw;
+            if (typeof raw === 'string') {
+                var t = raw.trim();
+                try {
+                    return JSON.parse(t);
+                } catch (e) {
+                    var start = t.indexOf('{'), end = t.lastIndexOf('}');
+                    if (start >= 0 && end > start) {
+                        try { return JSON.parse(t.substring(start, end + 1)); } catch (e2) { /* fallthrough */ }
+                    }
                 }
             }
+            return { success: false, message: 'Unexpected server response' };
         }
-        return { success: false, message: 'Unexpected server response' };
-    }
 
-    function showMsg(msg, level) {
-        // 1=success, 2=warning, 3=info, 4=error
-        if (typeof appalert === 'function') appalert(msg || 'No message', level || 1, 1);
-        else if (level && level <= 2) console.log((level === 1 ? 'OK: ' : 'WARN: ') + (msg || ''));
-        else alert(msg || 'No message');
-    }
+        function showMsg(msg, level) {
+            if (typeof appalert === 'function') appalert(msg || 'No message', level || 1, 1);
+            else if (level && level <= 2) console.log((level === 1 ? 'OK: ' : 'WARN: ') + (msg || ''));
+            else alert(msg || 'No message');
+        }
 
-    function getAntiForgeryToken() {
-        return $('input[name="__RequestVerificationToken"]').first().val() || null;
-    }
+        function getAntiForgeryToken() {
+            return $('input[name="__RequestVerificationToken"]').first().val() || null;
+        }
 
-    function reloadListing(response) {
-        // Try to keep current behavior (LoadDataGen preferred)
-        try {
-            if (typeof LoadDataGen === 'function') {
-                LoadDataGen(response.controller || response.controllerName || 'Categoryconfic',
-                            response.datatable || response.tableName || 'myDataTable',
-                            response.PartialView || response.dataLoaderActionName || '_CategoryDataTable',
-                            0,
-                            response.div || response.divLoaderList || 'datalistingview',
-                            null,
-                            response.path || 'list');
+        function reloadListing(response) {
+            try {
+                if (typeof LoadDataGen === 'function') {
+                    LoadDataGen(response.controller || response.controllerName || 'Categoryconfic',
+                                response.datatable || response.tableName || 'myDataTable',
+                                response.PartialView || response.dataLoaderActionName || '_CategoryDataTable',
+                                0,
+                                response.div || response.divLoaderList || 'datalistingview',
+                                null,
+                                response.path || 'list');
+                    return;
+                }
+            } catch (e) {
+                console.warn('LoadDataGen call failed, falling back to partial reload', e);
+            }
+
+            if ($('#datalistingview').length) {
+                $.get('/Categoryconfic/InitializeData', { path: 'list', partialView: '_Categories' })
+                    .done(function (html) { $('#datalistingview').html(html); })
+                    .fail(function () { location.reload(); });
                 return;
             }
-        } catch (e) {
-            console.warn('LoadDataGen call failed, falling back to partial reload', e);
+
+            location.reload();
         }
 
-        // Fallback: load InitializeData partial (server supports it)
-        if ($('#datalistingview').length) {
-            $.get('/Categoryconfic/InitializeData', { path: 'list', partialView: '_Categories' })
-                .done(function (html) { $('#datalistingview').html(html); })
-                .fail(function () { location.reload(); });
-            return;
-        }
+        // ---------- Create/Update AJAX (form submit) ----------
+        window.__categorySubmitAjaxFull = function (form) {
+            try { $.validator.unobtrusive.parse(form); } catch (e) {}
+            var $form = $(form);
+            if ($form.length && !$form.valid()) return false;
 
-        location.reload();
-    }
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = getAntiForgeryToken();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.data('orig-html') || $submit.html();
+            $submit.data('orig-html', origHtml);
+            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
 
-    // ---------- Create/Update AJAX (form submit) ----------
-    window.categorySubmitAjax = function (form) {
-        try { $.validator.unobtrusive.parse(form); } catch (e) {}
-        var $form = $(form);
-        if ($form.length && !$form.valid()) return false;
+            var doAjax = function () {
+                var ajaxOptions = {
+                    url: $form.attr('action'),
+                    type: ($form.attr('method') || 'POST').toUpperCase(),
+                    dataType: 'text',
+                    success: function (raw) {
+                        var res = normalizeResponse(raw);
+                        if (res && res.success) {
+                            var lvl = 1;
+                            if (res.status === 'Exist') lvl = 3;
+                            if (res.status === 'Failed') lvl = 2;
+                            showMsg(res.message || 'Operation successful', lvl);
 
-        var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
-        var token = getAntiForgeryToken();
-        var $submit = $form.find('[type="submit"]').first();
-        var origHtml = $submit.data('orig-html') || $submit.html();
-        $submit.data('orig-html', origHtml);
-        $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
-
-        var doAjax = function () {
-            var ajaxOptions = {
-                url: $form.attr('action'),
-                type: ($form.attr('method') || 'POST').toUpperCase(),
-                dataType: 'text', // defensive - we'll normalize
-                success: function (raw) {
-                    var res = normalizeResponse(raw);
-                    if (res && res.success) {
-                        var lvl = 1;
-                        if (res.status === 'Exist') lvl = 3;
-                        if (res.status === 'Failed') lvl = 2;
-                        showMsg(res.message || 'Operation successful', lvl);
-
-                        if (res.reloadDataView === "Yes" || res.reload === true) reloadListing(res);
-                    } else {
-                        var lvl = (res && res.status === 'Exist') ? 3 : 2;
-                        showMsg((res && res.message) ? res.message : 'Operation failed', lvl);
-                    }
-                },
-                error: function (xhr) {
-                    var parsed = normalizeResponse(xhr.responseText);
-                    if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
-                    else if (xhr.status === 401) window.location.href = '/Authentication/Login';
-                    else {
-                        showMsg(xhr.statusText || 'Network error', 4);
-                        console.error('categorySubmitAjax error', xhr.status, xhr.responseText);
-                    }
-                },
-                complete: function () {
-                    $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
-                }
-            };
-
-            if (isMultipart) {
-                ajaxOptions.data = new FormData(form);
-                ajaxOptions.processData = false;
-                ajaxOptions.contentType = false;
-                if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-            } else {
-                ajaxOptions.data = $form.serialize();
-                if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
-            }
-
-            $.ajax(ajaxOptions);
-        };
-
-        // confirmation (prefer alertify if present)
-        if (window.alertify && typeof alertify.confirm === 'function') {
-            try {
-                alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
-            } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
-        } else {
-            if (confirm('Are you sure you want to perform this action?')) doAjax(); else showMsg('Transaction cancelled', 3);
-        }
-
-        return false; // prevent normal form submit
-    };
-
-    // Auto-bind forms that target CreateOrUpdate/Categoryconfic (keeps compatibility)
-    $(document).on('submit', 'form[action*="CreateOrUpdate"][action*="Categoryconfic"]', function (e) {
-        e.preventDefault();
-        return window.categorySubmitAjax(this);
-    });
-
-    function confirmAndDeleteCategory(categoryId, categoryName) {
-        alertify.confirm('Confirm Deletion', `Are you sure you want to delete the category "${categoryName}"?`,
-            function() { // onOk
-                const token = $('input[name="__RequestVerificationToken"]').first().val();
-                $.ajax({
-                    url: '@Url.Action("Delete", "Categoryconfic")',
-                    type: 'POST', // Use POST for security
-                    data: {
-                        __RequestVerificationToken: token,
-                        KEY: categoryId
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            appalert(response.message, 1, 1);
-                            // On success, simply reload the list view
-                            LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list');
+                            if (res.reloadDataView === "Yes" || res.reload === true) reloadListing(res);
                         } else {
-                            appalert(response.message, 4, 1);
+                            var lvl = (res && res.status === 'Exist') ? 3 : 2;
+                            showMsg((res && res.message) ? res.message : 'Operation failed', lvl);
                         }
                     },
-                    error: function() {
-                        appalert("An error occurred during deletion.", 4, 1);
+                    error: function (xhr) {
+                        var parsed = normalizeResponse(xhr.responseText);
+                        if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
+                        else if (xhr.status === 401) window.location.href = '/Authentication/Login';
+                        else {
+                            showMsg(xhr.statusText || 'Network error', 4);
+                            console.error('categorySubmitAjax error', xhr.status, xhr.responseText);
+                        }
+                    },
+                    complete: function () {
+                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
                     }
-                });
-            },
-            function() { // onCancel
-                appalert("Delete operation cancelled.", 3, 1);
+                };
+
+                if (isMultipart) {
+                    ajaxOptions.data = new FormData(form);
+                    ajaxOptions.processData = false;
+                    ajaxOptions.contentType = false;
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                } else {
+                    ajaxOptions.data = $form.serialize();
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                }
+
+                $.ajax(ajaxOptions);
+            };
+
+            // confirmation
+            if (window.alertify && typeof alertify.confirm === 'function') {
+                try {
+                    alertify.confirm("Confirmation", "Are you sure you want to perform this action?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
+                } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
+            } else {
+                if (confirm('Are you sure you want to perform this action?')) doAjax(); else showMsg('Transaction cancelled', 3);
             }
-        );
-    }
 
-})(jQuery);
-</script>
+            return false;
+        };
 
+        // Update the global function to use the full implementation
+        window.categorySubmitAjax = window.__categorySubmitAjaxFull;
+
+        // Event delegation for form submission (backup method)
+        $(document).on('submit', 'form[action*="CreateOrUpdate"][action*="Categoryconfic"]', function (e) {
+            e.preventDefault();
+            return window.categorySubmitAjax(this);
+        });
+
+        function confirmAndDeleteCategory(categoryId, categoryName) {
+            alertify.confirm('Confirm Deletion', `Are you sure you want to delete the category "${categoryName}"?`,
+                function() {
+                    const token = $('input[name="__RequestVerificationToken"]').first().val();
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Categoryconfic")',
+                        type: 'POST',
+                        data: {
+                            __RequestVerificationToken: token,
+                            KEY: categoryId
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                appalert(response.message, 1, 1);
+                                LoadDataGen('Categoryconfic', 'myDataTable', '_CategoryDataTable', 0, 'datalistingview', null, 'list');
+                            } else {
+                                appalert(response.message, 4, 1);
+                            }
+                        },
+                        error: function() {
+                            appalert("An error occurred during deletion.", 4, 1);
+                        }
+                    });
+                },
+                function() {
+                    appalert("Delete operation cancelled.", 3, 1);
+                }
+            );
+        }
+
+        // Initialize tooltips
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+    })(jQuery);
+    </script>
 }
-
-

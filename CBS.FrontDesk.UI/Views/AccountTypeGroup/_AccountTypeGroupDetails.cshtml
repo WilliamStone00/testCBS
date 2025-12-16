@@ -1,0 +1,76 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.AccountTypeGroup.AccountTypeGroupResponse
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-account-multiple-outline me-2"></i>Account Type Group Details
+                </h1>
+                <p class="card-text">
+                    Here we have the details display of Account Type Group
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<fieldset class="fieldset-custom">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+            <table class="table table-sm table-bordered">
+                <tr><td class="fw-bold">Group ID:</td><td>@Model.Id</td></tr>
+                <tr><td class="fw-bold">Name:</td><td>@Model.Name</td></tr>
+                <tr><td class="fw-bold">Code:</td><td><code>@Model.Code</code></td></tr>
+                <tr><td class="fw-bold">Display Order:</td><td><span class="badge bg-info">@Model.DisplayOrder</span></td></tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-primary"><i class="mdi mdi-toggle-switch me-2"></i> Status Information</h6>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <td class="fw-bold">Status:</td>
+                    <td>
+                        <span class="badge @Model.StatusClass">@Model.StatusBadge</span>
+                    </td>
+                </tr>
+                <tr><td class="fw-bold">Account Types Count:</td><td><span class="badge bg-primary">@Model.AccountTypes.Count</span></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6 class="text-primary"><i class="mdi mdi-text-box-outline me-2"></i> Description</h6>
+            <div class="card">
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <p class="mb-0">@Model.Description</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0"><i>No description provided</i></p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.AccountTypes != null && Model.AccountTypes.Count > 0)
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="text-primary"><i class="mdi mdi-format-list-bulleted-type me-2"></i> Account Types</h6>
+                <div class="alert alert-info py-2">
+                    <i class="mdi mdi-information-outline me-1"></i>
+                    This group contains @Model.AccountTypes.Count account type(s).
+                </div>
+            </div>
+        </div>
+    }
+</fieldset>

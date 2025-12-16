@@ -1,6 +1,8 @@
 ﻿using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.Accounting;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.Queries;
 using CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation;
+using CBS.FrontDesk.Data.Entity.Accounting_V2.TrialBalance;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -13,6 +15,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
 {
@@ -216,6 +219,39 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 throw ex;
             }
         }
+
+       
+
+
+       
+
+        public async Task<CustomDataTable2> GetStatisticDataTableAsync(OperationDetailsFilter query)
+        {
+            try
+            {
+                query.Options.sortColumnName = "";
+                query.Options.sortColumnDirection = "";
+
+                var response = await _systemReconciliationapiCallerHelper.PostAsync<ResponseObject<CustomDataTable2>>(
+                    APICallHelper.GetReconciliationDetails, query);
+
+                if (!response.IsSuccess)
+                    throw new Exception($"API call failed: {response.Message}");
+
+                if (response.ApiResponseData == null)
+                    throw new Exception("API returned null data");
+
+                return response.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API Error (statistics): {ex.Message}");
+                throw new Exception($"Reconciliation service unavailable: {ex.Message}", ex);
+            }
+        }
+
+
+
 
     }
 }

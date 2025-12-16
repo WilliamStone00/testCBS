@@ -1,5 +1,7 @@
 ﻿using BusinessServices;
 using CBS.API.Helper;
+using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeRequest;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +27,32 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             var baseUrl = ConfigurationManager.AppSettings["CheckbookServiceBaseUrl"];
             _apiHelper = new ApiCallerHelper(baseUrl);
         }
+
+
+
+
+
+        public async Task<List<CounterCheques>> GetChequeDetails(string CustomerId, string BranchId)
+        {
+            try
+            {
+                // Build the URL with query parameters
+                var url = $"{APICallHelper.GetCustormerchequebook}?customerId={CustomerId}&branchId={BranchId}";
+
+                // Call the API with only 1 argument
+                var response = await _apiHelper.GetAsync<ResponseObject<List<CounterCheques>>>(url);
+
+
+
+                return response.ApiResponseData?.Data ?? new List<CounterCheques>();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
 
         public async Task<ExecutionMessages> IssueCounterChequeAsync(CounterCheques model)
         {
@@ -148,5 +177,34 @@ namespace CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque
             }
             return ExecutionMessage;
         }
+
+
+
+        public async Task<CustomerCheckBookDisplayDto> GetfullChequeDetails(string chequeBookId)
+        {
+            if (string.IsNullOrEmpty(chequeBookId))
+                throw new ArgumentException("ChequeBookId is required.");
+
+            try
+            {
+                var url = string.Format(APICallHelper.GetCustomerChequeBook, chequeBookId);
+                var response = await _apiHelper.GetAsync<ResponseObject<CustomerCheckBookDisplayDto>>(url);
+
+                if (response?.ApiResponseData?.Data == null)
+                    return null;
+
+                // Since your DTO already represents a single checkbook, just return it
+                var checkBook = response.ApiResponseData.Data;
+
+                return checkBook;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
     }
 }

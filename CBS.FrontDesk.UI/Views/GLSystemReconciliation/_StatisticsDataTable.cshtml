@@ -1,0 +1,129 @@
+﻿
+@using Resources
+@using Newtonsoft.Json
+@model CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation.OperationDetailsFilter
+
+
+
+
+<div class="card p-3 shadow mb-2">
+    <div class="table-responsive">
+        <table id="myDataTable" class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Reference</th>
+                    <th>Accounting Date</th>
+                    <th>Member Reference</th>
+                    <th>Narrative</th>
+                    <th>PostMode</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+@*Modal container (no body content yet)*@
+<div class="modal fade" id="journalStatisticsDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="journalStatisticsDetailsModalContent" class="p-3">
+                @* Content will be loaded here *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+$(function () {
+    // Render the server model into JS safely
+    var queryFilter = @Html.Raw(JsonConvert.SerializeObject(Model));
+    queryFilter.Options = {};   // always initialize Options
+
+    // Initialize DataTable
+    $('#myDataTable').DataTable({
+        serverSide: true,
+        destroy: true,
+        searching: false,
+        ajax: {
+            url: '/GLSystemReconciliation/LoadStatisticsData',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
+                queryFilter.Options = {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    searchValue: d.search?.value || '',
+                    sortColumnName: d.columns[d.order[0].column].data,
+                    sortColumnDirection: d.order[0].dir
+                };
+                return JSON.stringify(queryFilter);
+            }
+        },
+        columns: [
+            { data: 'Reference' },
+            { data: 'AccountingDate', render: d => d ? moment(d).format('DD/MM/YYYY') : '' },
+            { data: 'MemberReference' },
+            { data: 'Narrative' },
+            { data: 'PostMode' },
+            {   // Actions column
+                data: null,
+                orderable: false,
+                render: function (row, type, data) {
+                    return `
+                        <div class="text-center">
+                            <button class="btn btn-sm btn-info view-detailss" data-id="${row.Id}">
+                                <i class="mdi mdi-eye-outline me-1"></i> View
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        ]
+    });
+
+    // ==========================
+    // 🔹 VIEW DETAILS (Dynamic Modal)
+    // ==========================
+    $(document).on("click", ".view-detailss", function () {
+        const journalId = $(this).data("id");
+        if (!journalId) return;
+
+        $.ajax({
+            url: `/GLSystemReconciliation/GetStatisticsDetails?id=${encodeURIComponent(journalId)}`,
+            type: "GET",
+            dataType: "html",
+            success: function (html) {
+                // Inject HTML from partial view
+                $("#journalStatisticsDetailsModal .modal-content").html(html);
+
+                // Show modal
+                const modalEl = document.getElementById('journalStatisticsDetailsModal');
+                const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                bsModal.show();
+            },
+            error: function (xhr, status, err) {
+                console.error("❌ Error loading details:", status, err);
+                $("#journalStatisticsDetailsModal .modal-content").html(`
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            Failed to load journal details. Status: ${xhr.status}
+                        </div>
+                    </div>
+                `);
+
+                const modalEl = document.getElementById('journalStatisticsDetailsModal');
+                const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                bsModal.show();
+            }
+        });
+    });
+});
+    </script>
+}

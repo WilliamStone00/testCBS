@@ -468,15 +468,27 @@ namespace CBS.FrontDesk.UI.Controllers.MemberOperation
                     var loan = await _loanservices.GetLoan(model.AddLoanApplicationCommand.LoanId);
                     model.AddLoanApplicationCommand.AmortizationType = loan.LoanApplication.AmortizationType;
                     model.AddLoanApplicationCommand.LoanCategory = loan.LoanApplication.LoanCategory;
+                    model.AddLoanApplicationCommand.InterestRate = loan.LoanApplication.InterestRate;
                     model.AddLoanApplicationCommand.EconomicActivityId = loan.LoanApplication.EconomicActivityId;
                     model.AddLoanApplicationCommand.LoanProductId = loan.LoanApplication.LoanProductId;
                     model.AddLoanApplicationCommand.RepaymentCircle = loan.LoanApplication.RepaymentCircle;
                     model.AddLoanApplicationCommand.LoanPurposeId = loan.LoanApplication.LoanPurposeId;
                     model.AddLoanApplicationCommand.LoanTarget = loan.LoanApplication.LoanTarget;
                     model.AddLoanApplicationCommand.LoanType = loan.LoanApplication.LoanType;
-                    model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.NewBalance + model.AddLoanApplicationCommand.NewVAT + model.AddLoanApplicationCommand.NewInterest + model.AddLoanApplicationCommand.NewPenalty;
+                    model.AddLoanApplicationCommand.LoanId = loan.Id;
+                    model.AddLoanApplicationCommand.Amount = loan.Balance;
+                    model.AddLoanApplicationCommand.OldLoanPayment = model.AddLoanApplicationCommand.OldLoanPayment = new OldLoanPayment
+                    {
+                        LoanId = loan.Id,
+                        Amount = loan.Balance,
+                        Capital = loan.Balance,
+                        Interest = loan.AccrualInterest,
+                        Penalty = loan.Penalty,
+                        VAT = loan.Tax
+                    };
+                    //model.AddLoanApplicationCommand.Amount = model.AddLoanApplicationCommand.NewBalance + model.AddLoanApplicationCommand.NewVAT + model.AddLoanApplicationCommand.NewInterest + model.AddLoanApplicationCommand.NewPenalty;
                     var data = await _loanApplicationServices.Create(model.AddLoanApplicationCommand);
-                    return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
+                   return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
                 }
                 else if (model.AddLoanApplicationCommand.LoanApplicationType == "Refinancing")
                 {

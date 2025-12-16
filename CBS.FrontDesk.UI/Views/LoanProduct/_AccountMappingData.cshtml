@@ -1,5 +1,231 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+﻿@*@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+    @using Resources
+
+    @if (Model != null && Model.LoanProducts.Any())
+    {
+        <div class="table-responsive mb-3">
+            <table class="table table-hover table-bordered table-sm" id="myDataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 10%;">@GlobalLoanProduct.Target</th>
+                        <th style="width: 30%;">@GlobalLoanProduct.Type</th>
+                        <th style="width: 25%;">@GlobalLoanProduct.Name</th>
+                        <th style="width: 16%;">@GlobalLoanProduct.MinMax</th>
+                        <th style="width: 7%;">@GlobalLoanProduct.Status</th>
+                        <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                        <th style="width: 8%;">@GlobalShared.Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.LoanProducts)
+                    {
+                        // Determine if the row contains errors
+                        bool hasError = d.LoanMinimumAmount <= 0 ||
+                                        d.LoanMaximumAmount <= 0 ||
+                                        d.LoanMinimumAmount > d.LoanMaximumAmount ||
+                                        d.LoanProductCategory.Name == "N/A" ||
+                                        d.TargetType == "N/A" ||
+                                        d.LoanTerm.Name == "N/A";
+
+                        // Apply a red background if errors exist
+                        string rowClass = hasError ? "table-danger" : "";
+
+                        <tr class="@rowClass">
+                            <td>@d.TargetType</td>
+                            <td>@d.LoanTerm.Name</td>
+                            <td>
+                                @d.ProductName
+                                @if (hasError)
+                                {
+                                    <div class="text-danger small mt-1">
+                                        <ul class="mb-0">
+                                            @if (d.LoanMinimumAmount <= 0)
+                                            {
+                                                <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
+                                            }
+                                            @if (d.LoanMaximumAmount <= 0)
+                                            {
+                                                <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
+                                            }
+                                            @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
+                                            {
+                                                <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
+                                            }
+                                            @if (d.LoanProductCategory.Name == "N/A")
+                                            {
+                                                <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                            }
+                                            @if (d.TargetType == "N/A")
+                                            {
+                                                <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
+                                            }
+                                            @if (d.LoanTerm.Name == "N/A")
+                                            {
+                                                <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                            </td>
+                            <td>@d.LoanMinimumAmount.ToString("#,##0") : @d.LoanMaximumAmount.ToString("#,##0")</td>
+                            <td>
+                                @if (d.ActiveStatus)
+                                {
+                                    <span class="badge bg-info">@GlobalLoanProduct.Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                @switch (d.LoanTypeCategory)
+                                {
+                                    case "LineOfCredit":
+                                        <span class="badge bg-dark">LOC</span>
+                                        break;
+                                    case "Overdraft":
+                                        <span class="badge bg-secondary">ODT</span>
+                                        break;
+                                    case "SSF":
+                                        <span class="badge bg-info">SSF</span>
+                                        break;
+                                    case "Main_Loan":
+                                        <span class="badge bg-primary">ML</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-danger">N/A</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanAccountMapping','account_mapping','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set account mapping for @d.ProductName">@GlobalLoanProduct.AccMap</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center my-3">
+            <p>@GlobalLoanProduct.NoLoanProductHasBeenCreated.</p>
+        </div>
+    }*@
+
+
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
 @using Resources
+
+<!-- Account Mapping Modal -->
+<div class="modal fade" id="accountMappingModal" tabindex="-1" role="dialog" aria-labelledby="accountMappingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="container-fluid p-0">
+                    <div class="row m-0">
+                        <div class="col-12 p-4">
+
+                            <div class="card bg-light mb-2">
+                                <div class="d-flex">
+                                    <div class="card-body text-center">
+                                        <h5 class="modal-title text-primary" id="accountMappingModalLabel">
+                                            <i class="fas fa-exchange-alt me-2"></i>Account Mapping
+                                            <button type="button" class="close text-black opacity-100" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.8rem; margin-left: auto;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </h5>
+                                        <p class="card-text">
+
+                                        </p>
+                                        <div class="alert alert-info mt-3 py-2">
+                                            <i class="mdi mdi-information-outline me-1"></i>
+                                            Map your loan product to the appropriate GL accounts. This ensures proper accounting and financial reporting.
+                                        </div>
+                                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Content will be loaded here -->
+                            <div id="accountMappingModalBody">
+                                <div class="text-center p-5">
+                                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Loading account mapping configuration...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+         
+            <!-- Change from Bootstrap 4 to Bootstrap 5 syntax -->
+            <div class="modal-footer bg-light" style="border-top: 1px solid #dee2e6;">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom border colors */
+    .border-start-info-3 {
+        border-left-width: 4px !important;
+        border-left-color: #17a2b8 !important;
+    }
+
+    .border-light-gray {
+        border-color: #e0e0e0 !important;
+    }
+
+    /* Smooth transitions */
+    #accountMappingModal .modal-content {
+        border: none;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    #accountMappingModal .modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    #accountMappingModal .modal-body {
+        min-height: 300px;
+    }
+
+    /* Better close button */
+    #accountMappingModal .close {
+        opacity: 0.8;
+        transition: opacity 0.2s;
+        line-height: 1;
+        padding: 0.5rem;
+        margin: -0.5rem -0.5rem -0.5rem auto;
+    }
+
+    #accountMappingModal .close:hover {
+        opacity: 1;
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 0.25rem;
+    }
+
+    /* Tip box enhancements */
+    .alert-light {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+    }
+
+    /* Loading spinner container */
+    #accountMappingModalBody {
+        transition: opacity 0.3s ease;
+    }
+
+</style>
 
 @if (Model != null && Model.LoanProducts.Any())
 {
@@ -99,7 +325,14 @@
                             }
                         </td>
                         <td>
-                            <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanAccountMapping','account_mapping','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set account mapping for @d.ProductName">@GlobalLoanProduct.AccMap</a>
+                            <a href="javascript:void(0);"
+                               class="btn btn-sm btn-outline-primary mr-1"
+                               onclick="showAccountMappingModal('@d.Id', '@d.ProductName')"
+                               data-toggle="tooltip"
+                               data-placement="top"
+                               title="Set account mapping for @d.ProductName">
+                                <i class="fas fa-exchange-alt"></i> @GlobalLoanProduct.AccMap
+                            </a>
                         </td>
                     </tr>
                 }
@@ -113,3 +346,131 @@ else
         <p>@GlobalLoanProduct.NoLoanProductHasBeenCreated.</p>
     </div>
 }
+
+<script>
+    // Store current product ID for save operation
+    var currentProductId = null;
+
+    function showAccountMappingModal(key, productName) {
+        currentProductId = key;
+
+        // Show loading state
+        $('#accountMappingModalBody').html(`
+            <div class="text-center p-5">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading account mapping for <strong>${productName}</strong>...</p>
+            </div>
+        `);
+
+        // Hide save button initially
+        $('#saveAccountMappingBtn').hide();
+
+        // Set modal title
+        $('#accountMappingModalLabel').html(`<i class="fas fa-exchange-alt me-2"></i>Account Mapping - ${productName}`);
+
+        // Make AJAX call to the controller
+        $.ajax({
+            url: '@Url.Action("InitializeData", "LoanProduct")',
+            type: 'GET',
+            data: {
+                KEY: key,
+                partialView: '_LoanAccountMapping',
+                path: 'account_mapping'
+            },
+            success: function(response) {
+                $('#accountMappingModalBody').html(response);
+
+                // Show save button if there's a form
+                if ($('#accountMappingModalBody form').length > 0) {
+                    $('#saveAccountMappingBtn').show();
+                }
+
+                // Reinitialize tooltips if needed
+                $('[data-toggle="tooltip"]').tooltip();
+
+                // Initialize any select2 dropdowns if present
+                if ($.fn.select2) {
+                    $('#accountMappingModalBody select').select2({
+                        dropdownParent: $('#accountMappingModal')
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#accountMappingModalBody').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Error</h4>
+                        <p>Failed to load account mapping configuration.</p>
+                        <hr>
+                        <p class="mb-0 small">Error details: ${error}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
+        });
+
+        // Show the modal
+        $('#accountMappingModal').modal('show');
+    }
+
+    // Save account mapping
+    $(document).ready(function() {
+        $('#saveAccountMappingBtn').click(function() {
+            saveAccountMapping();
+        });
+
+        // Handle form submission via AJAX
+        $(document).on('submit', '#accountMappingModal form', function(e) {
+            e.preventDefault();
+            saveAccountMapping();
+        });
+    });
+
+    function showNotification(message, type) {
+        // Using toastr if available
+        if (typeof toastr !== 'undefined') {
+            toastr[type](message);
+        } else {
+            // Fallback to alert
+            alert(message);
+        }
+    }
+
+
+
+    // Initialize when page loads
+    $(document).ready(function() {
+              // Reinitialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<style>
+    #accountMappingModal .modal-xl {
+        max-width: 95%;
+    }
+
+    .table-danger {
+        background-color: #fff5f5;
+    }
+
+        .table-danger:hover {
+            background-color: #ffe6e6;
+        }
+
+    #saveAccountMappingBtn:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .modal-header .close {
+        opacity: 0.8;
+    }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+</style>

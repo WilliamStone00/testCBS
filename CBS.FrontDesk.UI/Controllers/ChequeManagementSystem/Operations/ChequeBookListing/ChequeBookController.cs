@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
+﻿using CBS.BusinessService.Accounting_V2.MemberReconciliation;
+using CBS.BusinessService.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookListing;
 using CBS.FrontDesk.Data.Entity.DataTable;
@@ -31,6 +32,11 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             await LoadViewBagData();
             return View();
         }
+        public async Task<ActionResult> List()
+        {
+            await LoadViewBagData();
+            return View();
+        }
 
         private async Task LoadViewBagData()
         {
@@ -53,52 +59,39 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 // Try main service first
                 var data = await _chequeBookService.GetChequeBooksDataTableAsync(query);
+                var Response = JsonConvert.DeserializeObject<List<ChequeBook>>(JsonConvert.SerializeObject(data.data));
                 return Json(new
                 {
                     draw = data.draw,
                     recordsTotal = data.recordsTotal,
                     recordsFiltered = data.recordsFiltered,
-                    data = data.data
+                    data = Response
                 });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
-                // Fall back to mock service
-               /* try
+
+                return Json(new
                 {
-                    var mockData = await _chequeBookMockService.GetChequeBooksDataTableAsync(query);
-                    return Json(new
-                    {
-                        draw = mockData.draw,
-                        recordsTotal = mockData.recordsTotal,
-                        recordsFiltered = mockData.recordsFiltered,
-                        data = mockData.data
-                    });
-                }
-                catch (Exception mockEx)
-                {*/
-                    return Json(new
-                    {
-                        draw = query.Options.draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0,
-                        data = new List<object>(),
-                        error = "Failed to load cheque books data"
-                    });
-                /*}*/
+                    draw = query.Options.draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = "Failed to load cheque books data"
+                });
+
             }
         }
 
-            // Example Download endpoint (GET) receives querystring params for export
-            //[HttpGet]
-            //public async Task<IActionResult> DownloadChequeBooks(ChequeBookQuery query)
-            //{
-            //    // implement export using the query (server will bind from query string)
-            //    var fileBytes = await _chequeBookService.GenerateChequeBookExportAsync(query);
-            //    return File(fileBytes, "application/octet-stream", "chequebooks.csv");
-            //}
-        
+        // Example Download endpoint (GET) receives querystring params for export
+        //[HttpGet]
+        //public async Task<IActionResult> DownloadChequeBooks(ChequeBookQuery query)
+        //{
+        //    // implement export using the query (server will bind from query string)
+        //    var fileBytes = await _chequeBookService.GenerateChequeBookExportAsync(query);
+        //    return File(fileBytes, "application/octet-stream", "chequebooks.csv");
+        //}
+
 
 
         public async Task<ActionResult> GetChequeBookDetails(string id)
@@ -107,18 +100,19 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
             {
                 // Try main service first
                 var chequeBook = await _chequeBookService.GetChequeBookByIdAsync(id);
-              
 
-                return PartialView("_ChequeBookDetails", chequeBook);
+
+                return View("_ChequeBookDetails", chequeBook);
             }
             catch (Exception ex)
             {
                 // Final fallback to mock service
-                    return HttpNotFound($"Cheque book with ID {id} not found");
+                return HttpNotFound($"Cheque book with ID {id} not found");
 
             }
         }
 
+      
         public async Task<ActionResult> GetLeafDetails(string leafId)
         {
             try
@@ -219,3 +213,4 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeB
         }
     }
 }
+

@@ -1,13 +1,16 @@
 ﻿using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.ConfigurationsManualEntry;
+using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.CheckManagementSystem;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity;
+using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.AccountingYear;
 using CBS.FrontDesk.Data.Entity.AccountingV2.CashReconciliation;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem;
 using CBS.FrontDesk.Data.Message;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,6 +128,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                 entry.StatusB = entry.Status.ToLower();
 
                 entry.YearB = entry.Year.ToString();
+
+                ViewBag.StartDate = entry.StartDate?.ToString("yyyy-MM-dd") ?? "";
+                ViewBag.EndDate = entry.EndDate?.ToString("yyyy-MM-dd") ?? "";
+
                 // Return the partial view that will be injected into the modal
                 return PartialView("_Update", entry);
             }
@@ -133,9 +140,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
                 return new HttpStatusCodeResult(500, ex.Message);
             }
         }
-
-        [HttpPost]
         
+        
+        [HttpPost]
+
         public async Task<ActionResult> CreateOrUpdate(accountingyear model)
         {
             model.Status = model.StatusB;
@@ -187,6 +195,80 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.AccountingYear
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+
+        public async Task<ActionResult> Action(accountingyear model)
+        {
+            //model.Status = model.StatusB;
+            //model.Year = int.Parse(model.YearB);
+            if (model == null)
+                return Json(new { success = false, message = "Invalid or empty model." });
+
+            try
+            {
+                    // Id present → update existing record
+                    var result = await _accountingYearService.UpdateAccoutingYearAsync(model);
+
+                    if (result == null)
+                        return Json(new { success = false, message = "No response from service." });
+
+                    return Json(new
+                    {
+                        success = result.Result,
+                        message = Messaging.MessageResult(result),
+                        data = result.Data
+                    });
+                
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+        public async Task<JsonResult> LoadAccountingYearData(AccoutingyearQuery query)
+        {
+            try
+            {
+
+
+                var data = await _accountingYearService.GetAccountingYearDaTableAsync(query);
+
+
+                // Deserialize DataTable payload into strongly-typed list
+                var Accountingyear = JsonConvert.DeserializeObject<List<Data.Entity.AccountingV2.AccountingYear.accountingyear>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
+                    data = Accountingyear,
+                    success = true,
+                    message = "Display DataTable for Accounting Year  successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Return DataTables-compatible empty result on error
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
             }
         }
 

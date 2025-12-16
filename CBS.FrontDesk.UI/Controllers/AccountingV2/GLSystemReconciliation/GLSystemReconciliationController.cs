@@ -1,4 +1,5 @@
-﻿using CBS.BusinessService.AccountingV2.CashReconciliation;
+﻿using CBS.BusinessService.Accounting_V2.MemberReconciliation;
+using CBS.BusinessService.AccountingV2.CashReconciliation;
 using CBS.BusinessService.AccountingV2.GLSystemReconciliation;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.Config;
@@ -15,6 +16,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 
+
 namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 {
     public class GLSystemReconciliationController : Controller
@@ -24,12 +26,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
         private readonly BranchServices _branchServices;
         private readonly GLSystemReconciliationService _glSystemReconciliationService;
+        private readonly JournalHeadService _journalHeadService;
 
-        public GLSystemReconciliationController(BranchServices branchServices, GLSystemReconciliationService glSystemReconciliationService)
+        public GLSystemReconciliationController(BranchServices branchServices, GLSystemReconciliationService glSystemReconciliationService, JournalHeadService journalHeadService)
         {
 
             _branchServices = branchServices;
             _glSystemReconciliationService = glSystemReconciliationService;
+            _journalHeadService = journalHeadService;
 
 
         }
@@ -105,8 +109,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         public async Task<ActionResult> GetReconciliationSummary(ReconciliationQuerys model)
          {
 
+            model.EndUtc = model.StartDate;
             model.StartUtc = model.StartDate;
-            model.EndUtc = model.EndDate;
+            model.EndDate = model.StartDate;
+            
+           
             try
             {
                 var summary = await _glSystemReconciliationService.GetReconciliationSummaryAsync(model);
@@ -256,6 +263,71 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+
+
+
+        public async Task<JsonResult> LoadStatisticsData(OperationDetailsFilter query)
+        {
+            try
+            {
+                var data = await _glSystemReconciliationService.GetStatisticDataTableAsync(query);
+
+                var reconciliations = JsonConvert.DeserializeObject<List<StatisticsDetails>>(
+                    JsonConvert.SerializeObject(data.data));
+
+                return Json(new
+                {
+                    //draw = data.Options.draw ?? "1",
+                    //recordsTotal = data.Options.recordsTotal,
+                    //recordsFiltered = data.Options.recordsFiltered,
+                    data = reconciliations,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    draw = query?.Options?.draw ?? "1",
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = ex.Message
+                });
+            }
+        }
+
+
+        public async Task<ActionResult> LoadOperationDetailsData(OperationDetailsFilter query)
+        {
+            return View("_StatisticsDataTable",query);
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetStatisticsDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(400, "Journal Entry ID is required");
+
+            Data.Entity.AccountingV2.JournalHead entry = null;
+
+            try
+            {
+                // 1️⃣ Get Journal Entry
+                entry = await _journalHeadService.GetJournalEntryByIdAsync(id);
+
+                var counterpartyBranch = await _branchServices.GetBranch(entry.CounterpartyBranchId);
+                entry.CounterpartyBranchName = counterpartyBranch?.Name ?? "—";
+
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404, ex.Message);
+            }
+
+            return PartialView("_StatisticsDetails", entry);
         }
 
 

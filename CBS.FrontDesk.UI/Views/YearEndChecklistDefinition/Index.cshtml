@@ -1,0 +1,454 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearConfig
+
+
+@{
+    ViewBag.Title = "End of Year Check list Definition";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> System Reconciliation
+        </h1>
+
+        @*<div class="alert alert-info mt-3 py-2">
+                <i class="mdi mdi-information-outline me-1"></i>
+                Use the filters below to search and review journal entries efficiently.
+            </div>*@
+    </div>
+</div>
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Add Year Button -->
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btnAddofYearConfig" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
+    </div>
+</div>
+
+
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="YearEndChecklistDefinitionFilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <div class="card p-3 mb-2 bg-light">
+
+            <!-- 🔹 Branch Filter -->
+            <div class="row mb-1">
+                <div class="col-md-12 mb-1">
+                    <label class="form-label fw-bold" for="branchId">Branch</label>
+                    @Html.DropDownList("BranchId",
+                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                        "--- Select Branch ---",
+                        new { @class = "form-control select2 mb-1", @id = "branchId" })
+                </div>
+            </div>
+
+            <!-- 🔹 Accounting Year Filter -->
+            <div class="col-md-6 mb-2">
+                @Html.LabelFor(model => model.AccountingYearId, "Accounting Year",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(model => model.AccountingYearId,
+                    new List<SelectListItem>(), // fill via AJAX if needed
+                    "--- Select Accounting Year ---",
+                    new { @class = "form-control select2 mb-2", id = "AccountingYearId", required = "required" })
+            </div>
+
+            <!-- 🔹 Apply / Reset Buttons -->
+            <div class="row g-2 mt-2">
+                <div class="col-12 col-md-6">
+                    <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                        <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="endOfYearConfigModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="endOfYearConfigModalContent" class="p-3"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- DataTable Load Script -->
+<!-- ============================== -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+
+
+     $(function () {
+         const addConfigUrl = '@Url.Action("New", "YearEndChecklistDefinition")';
+
+     
+        const updateConfigUrl = '@Url.Action("GetDetails", "YearEndChecklistDefinition")';
+
+        function loadYearEndChecklist() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+                destroy: true,
+                responsive: true,
+                searching: false,
+                order: [[0, 'asc']],
+                ajax: {
+                    url: '/YearEndChecklistDefinition/LoadYearEndChecklistDefinition',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        // collect filters
+                        const filters = {
+                            BranchId: $('#branchId').val(),
+                            AccountingYearId: $('#AccountingYearId').val(),
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: d.columns[d.order[0].column].data,
+                                sortColumnDirection: d.order[0].dir
+                            }
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('❌ Error loading checklist:', status, err);
+                        appalert('❌ Failed to load checklist. Status: ' + xhr.status, 4, 1);
+                    }
+                },
+                columns: [
+                    { data: 'Category', name: 'Category' },
+                    { data: 'Title', name: 'Title' },
+                    { data: 'Description', name: 'Description' },
+                    {
+                        data: 'IsMandatory', name: 'IsMandatory',
+                        render: value => value
+                            ? '<span class="badge bg-success">Yes</span>'
+                            : '<span class="badge bg-secondary">No</span>'
+                    },
+                    {
+                        data: 'IsActive', name: 'IsActive',
+                        render: value => value
+                            ? '<span class="badge bg-primary">Active</span>'
+                            : '<span class="badge bg-danger">Disabled</span>'
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: row => {
+                            const btnId = `actionDropdown${row.Id}`;
+
+                            return `
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                            type="button" id="${btnId}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-cog-outline me-1"></i> Actions
+                                    </button>
+
+                                    <ul class="dropdown-menu" aria-labelledby="${btnId}">
+
+                                        <li>
+                                            <a class="dropdown-item edit-task"
+                                               href="#"
+                                               data-id="${row.Id}"
+                                               style="color:#6f42c1; font-weight:500;">
+                                                <i class="mdi mdi-pencil-outline me-1" style="color:#6f42c1;"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item delete-task"
+                                               href="#"
+                                               data-id="${row.Id}"
+                                               style="color:#dc3545; font-weight:500;">
+                                                <i class="mdi mdi-delete-outline me-1" style="color:#dc3545;"></i>
+                                                Delete
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            `.trim();
+                        }
+                    }
+
+
+
+
+
+
+                ],
+                initComplete: function () {
+                    appalert('✅ Year-end checklist loaded successfully!', 1, 1);
+                },
+                drawCallback: function () {
+                    const api = this.api();
+                    if (api.rows({ page: 'current' }).data().length === 0) {
+                        appalert('⚠️ No checklist items found on this page.', 2, 1);
+                    }
+                }
+            });
+        }
+
+        // ==============================
+        // Filter Buttons
+        // ==============================
+        $(document).ready(function () {
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadYearEndChecklist();
+            });
+
+            $('#resetFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                // reset form fields
+                $('#YearEndChecklistDefinitionFilterForm').trigger('reset');
+                // reset any select2 dropdowns
+                $('.select2').val('').trigger('change');
+                // optional: hide any dynamic filters (if you have any)
+                $('#branchFilter, #dateFilters').addClass('d-none');
+
+                // ✅ Do NOT reload the table
+                appalert('🧹 Filters reset.', 1, 1);
+            });
+
+
+            // initial load
+            //loadYearEndChecklist();
+        });
+
+
+        $(document).on('click', '.edit-task', function () {
+            const id = $(this).data('id');
+
+            if (!id) { appalert("Invalid ID for update.", 3, 1); return; }
+
+            $.ajax({
+                url: updateConfigUrl,
+                type: 'GET',
+                data: { id: id },
+
+                beforeSend: function () {
+                    $("#endOfYearConfigModalContent").html(`
+                        <div class="text-center my-4">
+                            <div class="spinner-border text-primary"></div>
+                            <p>Loading form...</p>
+                        </div>
+                    `);
+                },
+
+                success: function (html) {
+                    $("#endOfYearConfigModal .modal-content").html(html);
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('endOfYearConfigModal')
+                    ).show();
+                },
+
+                error: function (xhr, status, error) {
+                    appalert("Failed to load Update view: " + error, 1, 4);
+                }
+            });
+        });
+
+
+            $(document).ready(function () {
+
+                $("#btnAddofYearConfig").click(function () {
+
+                    $("#endOfYearConfigModalContent").html(`
+                        <div class="text-center p-5">
+                            <div class="spinner-border text-primary"></div>
+                            <p class="mt-3">Loading...</p>
+                        </div>`);
+
+                    $("#endOfYearConfigModal").modal("show");
+
+                    $.get(addConfigUrl, function (html) {
+                        $("#endOfYearConfigModalContent").html(html);
+                    }).fail(function () {
+                        $("#endOfYearConfigModalContent").html(`
+                            <div class="alert alert-danger text-center">
+                                <i class="mdi mdi-alert-circle-outline"></i>
+                                Failed to load form.
+                            </div>`);
+                    });
+
+                });
+
+            });
+
+
+
+
+        // ==========================
+        // Save EndOfYearConfig (same style as AccountingYear)
+        // ==========================
+            window.SaveEndOfYearConfigAjax = function (form) {
+
+                if (!$(form).valid()) return false;
+
+                // Collect display values
+                const code = $('#Code').val();
+                const title = $('#Title').val();
+                const description = $('#Description').val();
+                const displayOrder = $('#DisplayOrder').val();
+                const category = $('#Category').val();
+                const isMandatory = $('#IsMandatory').is(':checked') ? "Yes" : "No";
+                const isActive = $('#IsActive').is(':checked') ? "Yes" : "No";
+                const comment = $('#Comment').val();
+
+                // Validation check (simple)
+                if (!code || !title || !category || !displayOrder) {
+                    appalert("All required fields must be filled.", 3, 1);
+                    return false;
+                }
+
+                // Confirmation message with table preview
+                const message = `
+                    <p>Confirm details before saving:</p>
+
+                    <table class="table table-sm table-bordered">
+                        <tr><th>Code</th><td>${code}</td></tr>
+                        <tr><th>Title</th><td>${title}</td></tr>
+                        <tr><th>Description</th><td>${description}</td></tr>
+                        <tr><th>Display Order</th><td>${displayOrder}</td></tr>
+                        <tr><th>Category</th><td>${category}</td></tr>
+                        <tr><th>Mandatory</th><td>${isMandatory}</td></tr>
+                        <tr><th>Active</th><td>${isActive}</td></tr>
+                        <tr><th>Comment</th><td>${comment}</td></tr>
+                    </table>
+
+                    <div class="form-check mt-3">
+                        <input type="checkbox" id="alertifyConfirmCheckbox" class="form-check-input">
+                        <label for="alertifyConfirmCheckbox" class="form-check-label">
+                            I confirm the above details.
+                        </label>
+                    </div>
+                `;
+
+                alertify.confirm("Confirm End of Year Config", message,
+                    function () {
+
+                        if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                            appalert("Check the confirmation box before continuing.", 3, 1);
+                            return false;
+                        }
+
+                        const token = $('input[name="__RequestVerificationToken"]').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: form.action,
+                            data: new FormData(form),
+                            processData: false,
+                            contentType: false,
+                            headers: token ? { 'RequestVerificationToken': token } : {},
+
+                            success: function (response) {
+                                if (response?.success) {
+                                    appalert(response.message || "Saved successfully!", 1, 1);
+                                    alertify.dismissAll();
+
+                                    form.reset();
+                                    $('.select2').val(null).trigger('change');
+
+                                    // RELOAD your datatable (must exist in your code)
+                                    if (typeof loadEndOfYearConfigData === 'function') {
+                                        loadEndOfYearConfigData();
+                                    }
+
+                                } else {
+                                    appalert(response?.message || "Save failed.", 2, 1);
+                                }
+                            },
+
+                            error: function (xhr) {
+                                appalert("Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                            }
+                        });
+
+                    },
+
+                    function () {
+                        appalert("Operation cancelled.", 2, 1);
+                    }
+                ).set({
+                    labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                    onshow: function () {
+                        const okBtn = $('.alertify .ajs-ok');
+                        okBtn.prop('disabled', true);
+
+                        $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
+                    }
+                });
+
+                return false;
+            };
+
+
+
+     });
+
+    </script>
+    }

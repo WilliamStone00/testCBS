@@ -1,53 +1,72 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <style>
-    /* tighter vertical rhythm */
-    .fieldset-custom .section {
-        border: 1px solid var(--bs-primary);
-        border-radius: .5rem;
-        padding: .75rem;
-        margin-bottom: .75rem;
+    /* General fieldset spacing */
+    .fieldset-custom {
+        padding: 0.5rem 0.75rem;
     }
 
-        .fieldset-custom .section h6 {
-            margin: 0 0 .25rem 0;
-            font-weight: 700;
+        .fieldset-custom .section {
+            border: 1px solid var(--bs-secondary, #dee2e6);
+            border-radius: .5rem;
+            padding: .5rem .75rem; /* was bigger */
+            margin-bottom: .5rem; /* was larger */
+            background-color: #fff;
         }
 
-    .fieldset-custom .form-floating {
-        padding: .5rem;
-    }
+            .fieldset-custom .section:last-of-type {
+                margin-bottom: 0.25rem;
+            }
 
-    .fieldset-custom .form-check.form-switch {
-        padding: .5rem .75rem;
-    }
+            .fieldset-custom .section h6 {
+                margin: 0 0 .35rem 0;
+                font-weight: 600;
+                font-size: .9rem; /* slightly smaller heading */
+            }
 
-    .fieldset-custom .form-control,
-    .fieldset-custom .select2-selection--single {
-        min-height: 36px;
-    }
+            /* Rows inside sections: reduce vertical rhythm */
+            .fieldset-custom .section .row {
+                margin-bottom: .25rem;
+            }
 
-    .fieldset-custom .table {
-        margin: .5rem 0 0 0;
-    }
+            /* Kill extra bottom margin on Bootstrap utilities inside */
+            .fieldset-custom .section .mb-3,
+            .fieldset-custom .section .mb-2 {
+                margin-bottom: .5rem !important;
+            }
 
-        .fieldset-custom .table tfoot td {
+        .fieldset-custom .form-floating {
+            padding: 0.35rem 0.5rem;
+        }
+
+        .fieldset-custom .form-control,
+        .fieldset-custom .select2-selection--single {
+            min-height: 34px;
             padding-top: .25rem;
+            padding-bottom: .25rem;
         }
-    #momoPathContainer .form-check-label strong {
-        display: inline-block;
-    }
 
-    #momoPathContainer .form-check {
-        padding-left: 0.25rem;
-    }
+        .fieldset-custom .table {
+            margin-bottom: 0.25rem;
+        }
+
+            .fieldset-custom .table tfoot td {
+                padding-top: .15rem;
+                padding-bottom: .15rem;
+            }
+
+        /* Buttons row */
+        .fieldset-custom .d-flex.justify-content-end.mt-3 {
+            margin-top: .75rem !important;
+        }
 </style>
+
 
 <fieldset class="fieldset-custom">
 
     <!-- Member summary -->
     <div class="section">
-        <div class="row g-2 align-items-center">
+        <div class="row g-1 align-items-center">
             <div class="col-12">
                 <span class="formatted-amount shadow-sm d-block py-2 px-3 bg-light rounded border border-secondary">
                     <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
@@ -62,7 +81,7 @@
     <!-- Branch (standalone section) -->
     <div class="section">
         <h6 class="text-dark">@GlobalLoanRepaymentBackOffice.BranchName</h6>
-        <div class="row g-3 mb-2">
+        <div class="row g-2 mb-1">
             <div class="col-md-12">
                 <div class="form-floating border rounded">
                     @Html.DropDownListFor(
@@ -76,9 +95,9 @@
             </div>
         </div>
 
-        <h6 class="fw-bold text-dark mb-2">Mobile Money</h6>
+        <h6 class="fw-bold text-dark mb-2" style="display:none">Mobile Money</h6>
 
-        <div class="row g-3">
+        <div class="row g-3" style="display:none">
             <!-- Left side: Checkbox + categories under it -->
             <div class="col-md-12">
                 <div class="form-check mb-2">
@@ -192,11 +211,11 @@
         </div>
     </div>
 
-    
+
 
     <!-- Booking dir + Accounting date on one line -->
     <div class="section">
-        <div class="row g-3 align-items-center">
+        <div class="row g-2 align-items-center">
             <div class="col-md-8">
                 <label class="fw-semibold text-dark mb-1">@GlobalMemberNoneCashOperation.BookingDirection:</label>
                 <div class="d-flex flex-wrap gap-3">
@@ -275,7 +294,7 @@
     <!-- Corresponding accounts + Note on one line on md+ -->
     <div class="section">
         <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.CorrespondingAccounts</h6>
-        <div class="row g-3">
+        <div class="row g-2">
             <div class="col-md-12" id="glContainer">
                 <div class="form-floating border rounded">
                     @Html.DropDownListFor(
@@ -299,7 +318,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="d-flex justify-content-end mt-3">
+    <div class="d-flex justify-content-end mt-2">
         <input type="hidden" name="OperationType" value="MemberNoneCash" id="OperationType" />
         <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
 
@@ -308,8 +327,86 @@
         </button>
     </div>
 
-    <hr class="mt-2" style="border: 2px solid green;" />
+    <hr class="mt-1" style="border: 2px solid green;" />
 </fieldset>
+<script>
+    $(document).ready(function () {
+        var $branch = $('#branchInput');
+        var $account = $('#account_number');
+
+        function resetGlDropdown(placeholderText) {
+            $account.empty();
+            $account.append($('<option/>', {
+                value: '',
+                text: placeholderText || '---GL Account---'
+            }));
+            $account.trigger('change.select2');
+        }
+
+        function setGlDisabled(isDisabled) {
+            $account.prop('disabled', isDisabled);
+            if ($.fn.select2) {
+                $account.trigger('change.select2');
+            }
+        }
+
+        // Initialize select2 if not already done elsewhere
+        if ($.fn.select2) {
+            $branch.select2();
+            $account.select2();
+        }
+
+        // Initial state: if no branch selected, disable GL dropdown
+        if (!$branch.val()) {
+            resetGlDropdown('Select a branch first');
+            setGlDisabled(true);
+        }
+
+        $branch.on('change', function () {
+            var branchId = $(this).val();
+            var branchName = $branch.find('option:selected').text().trim();
+
+            if (!branchId) {
+                // No branch selected
+                resetGlDropdown('Select a branch first');
+                setGlDisabled(true);
+                return;
+            }
+
+            // While we fetch GLs, disable dropdown & show loading text
+            setGlDisabled(true);
+            resetGlDropdown('Loading ' + branchName + ' GL accounts...');
+
+            $.ajax({
+                url: '@Url.Action("LoadGLbyBranchId", "MemberNoneCashOperation")', // adjust controller if needed
+                type: 'GET',
+                dataType: 'json',
+                data: { branchid: branchId },
+                success: function (data) {
+                    $account.empty();
+                    $account.append($('<option/>', {
+                        value: '',
+                        text: '---GL Account---'
+                    }));
+
+                    $.each(data, function (i, item) {
+                        $account.append($('<option/>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+
+                    // Re-enable GL dropdown after loading
+                    setGlDisabled(false);
+                },
+                error: function () {
+                    resetGlDropdown('Error loading ' + branchName + ' GL accounts');
+                    setGlDisabled(false);
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {

@@ -4,6 +4,7 @@ using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.GLSystemReconciliation;
 using CBS.FrontDesk.Data.Entity.AndriodApp;
+using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -32,10 +33,16 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
         }
 
+       
         public async Task<CustomDataTable2> GetJournalHeaderDataTableAsync(JournalEntryQuery query)
         {
             try
             {
+                // If not head office and branchId is null, set it
+                if (!IsHeadOffice() && string.IsNullOrEmpty(query.BranchId))
+                {
+                    query.BranchId = GetBranchID();
+                }
 
                 query.Options.sortColumnName = "";
                 query.Options.sortColumnDirection = "";
@@ -65,7 +72,6 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw new Exception($"Journal header service unavailable: {ex.Message}", ex);
             }
         }
-
 
         // Fetch a single journal entry by ID using internal branchId
         public async Task<FrontDesk.Data.Entity.AccountingV2.JournalHead> GetJournalEntryByIdAsync(string id)
@@ -143,7 +149,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                         // Non-HO + Source (or anything else): filter by BranchId only
                         query.BranchId = myBranchId;
                         query.CounterpartyBranchId = null; // ensure Counterparty is NOT set
-                        query.TicketType = "Source";
+                        //query.TicketType = "Source";
                     }
                 }
 
@@ -289,6 +295,34 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 throw ex;
             }
         }
+
+
+        public async Task<JournalApprovalResponse> RejectAsync(JournalApproval model)
+        {
+            
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
+                    APICallHelper.ApproveSourceJournalEntry, model); // now sending full model
+                return apiResponse.ApiResponseData.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<ResponseObject<FilterResponse>> GetFilters(GetFirlterData model)
+        {
+            var response = await _JournalheadapiCallerHelper
+                .PostAsync<ResponseObject<FilterResponse>>(APICallHelper.GetFilter, model);
+
+            return response.ApiResponseData;
+        }
+
 
     }
 }

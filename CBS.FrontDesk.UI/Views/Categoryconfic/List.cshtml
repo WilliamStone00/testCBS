@@ -12,15 +12,15 @@
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold">
-                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> @ChequeManagements.catlisting 
+                    <i class="mdi mdi-format-list-bulleted-type me-2"></i> @ChequeManagements.catlisting
                 </h1>
                 <p class="card-text">
-                    @ChequeManagements.catlistingtext                    
+                    @ChequeManagements.catlistingtext
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
                     @ChequeManagements.catlistingtext
-                 </div>
+                </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
@@ -48,11 +48,11 @@
                 </li>
                 <li>
                     <i class="mdi mdi-toggle-switch text-warning me-2"></i>
-                    <strong>@ChequeManagements.Centralisation:</strong> @ChequeManagements.Centralisationtext 
+                    <strong>@ChequeManagements.Centralisation:</strong> @ChequeManagements.Centralisationtext
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-range text-primary me-2"></i>
-                    <strong>@ChequeManagements.CreatedDate</strong> @ChequeManagements.createddatetiptext 
+                    <strong>@ChequeManagements.CreatedDate</strong> @ChequeManagements.createddatetiptext
                 </li>
                 <li>
                     <i class="mdi mdi-refresh text-info me-2"></i>
@@ -64,271 +64,430 @@
 </div>
 
 
-    <div class="card shadow p-3 mb-4" id="filtersSection">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@ChequeManagements.catfilters</h5>
+<div class="card shadow p-3 mb-4" id="filtersSection">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@ChequeManagements.catfilters</h5>
 
-        <form id="chequeFilterForm" autocomplete="off">
-            <div class="card p-3 mb-3 bg-light">
-                <!-- Toggle switches for optional filter groups -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                            <label class="form-check-label fw-bold" for="toggleBranch">@ChequeManagements.ShowBranchFilter</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                            <label class="form-check-label fw-bold" for="toggleDates">@ChequeManagements.ShowDateFilters</label>
-                        </div>
+    <form id="chequeFilterForm" autocomplete="off">
+        <div class="card p-3 mb-3 bg-light">
+            <!-- Toggle switches for optional filter groups -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">@ChequeManagements.ShowBranchFilter</label>
                     </div>
                 </div>
 
-                <!-- Default Filters (always visible) -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">@ChequeManagements.Name</label>
-                        <input type="text" id="name" name="Name" class="form-control" placeholder="@ChequeManagements.egChequebookname" />
-                    </div>
-
-                    <div class="col-md-6 d-flex align-items-center">
-                        <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" id="isCentralised" name="IsCentralised" value="true" />
-                            <label class="form-check-label fw-bold" for="isCentralised">@ChequeManagements.IsCentralised</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="isActive" name="IsActive" value="true" />
-                            <label class="form-check-label fw-bold" for="isActive">@ChequeManagements.isactive</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Numeric configuration fields -->
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">@ChequeManagements.BasePrice</label>
-                        <input type="number" step="0.01" id="basePrice" name="BasePrice" class="form-control" placeholder="0.00" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">@ChequeManagements.Numberofpages</label>
-                        <input type="number" id="numberOfPages" name="NumberOfPages" class="form-control" min="0" placeholder="e.g. 25" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">@ChequeManagements.validity</label>
-                        <input type="number" id="validityPeriodInMonths" name="ValidityPeriodInMonths" class="form-control" min="0" placeholder="e.g. 12" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">@ChequeManagements.isc</label>
-                        <input type="number" id="issuanceLimitPerCustomerType" name="IssuanceLimitPerCustomerType" class="form-control" min="0" placeholder="e.g. 2" />
-                    </div>
-                </div>
-
-                <!-- Branch Filter (togglable) -->
-                <div id="branchFilter" class="d-none">
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label fw-bold">@ChequeManagements.Branchtip</label>
-                            @* Replace ViewBag.Branches with your actual branches collection (Id/Name) *@
-                            @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Date Filters (togglable) -->
-                <div id="dateFilters" class="d-none">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">@ChequeManagements.StartDate</label>
-                            <input type="date" id="startDate" name="StartDate" class="form-control" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">@ChequeManagements.EndDate</label>
-                            <input type="date" id="endDate" name="EndDate" class="form-control" />
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDates">@ChequeManagements.ShowDateFilters</label>
                     </div>
                 </div>
             </div>
 
-            <div class="row mt-2">
-                <div class="col-md-12 d-flex">
-                    <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> @ChequeManagements.ApplyFilter
-                    </button>
+            <!-- Default Filters (always visible) -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">@ChequeManagements.Name</label>
+                    <input type="text" id="name" name="Name" class="form-control" placeholder="@ChequeManagements.egChequebookname" />
+                </div>
 
-                    <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> @ChequeManagements.Reset
-                    </button>
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="isCentralised" name="IsCentralised" value="true" />
+                        <label class="form-check-label fw-bold" for="isCentralised">@ChequeManagements.IsCentralised</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isActive" name="IsActive" value="true" />
+                        <label class="form-check-label fw-bold" for="isActive">@ChequeManagements.isactive</label>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
- 
-    <!-- DataTable Partial -->
-    <div id="datalistingview">
-        @Html.Partial("_CategoryDataTable")
-    </div>
 
-    @section Scripts {
-        <script>
-            var categoryTable = null;
+            <!-- Numeric configuration fields -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">@ChequeManagements.BasePrice</label>
+                    <input type="number" step="0.01" id="basePrice" name="BasePrice" class="form-control" placeholder="0.00" />
+                </div>
 
-            function emptyToNull(v) {
-                return (v === undefined || v === null || v === '') ? null : v;
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">@ChequeManagements.Numberofpages</label>
+                    <input type="number" id="numberOfPages" name="NumberOfPages" class="form-control" min="0" placeholder="e.g. 25" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">@ChequeManagements.validity</label>
+                    <input type="number" id="validityPeriodInMonths" name="ValidityPeriodInMonths" class="form-control" min="0" placeholder="e.g. 12" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">@ChequeManagements.isc</label>
+                    <input type="number" id="issuanceLimitPerCustomerType" name="IssuanceLimitPerCustomerType" class="form-control" min="0" placeholder="e.g. 2" />
+                </div>
+            </div>
+
+            <!-- Branch Filter (togglable) -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">@ChequeManagements.Branchtip</label>
+                        @* Replace ViewBag.Branches with your actual branches collection (Id/Name) *@
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Filters (togglable) -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@ChequeManagements.StartDate</label>
+                        <input type="date" id="startDate" name="StartDate" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">@ChequeManagements.EndDate</label>
+                        <input type="date" id="endDate" name="EndDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex">
+                <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
+                    <i class="mdi mdi-magnify"></i> @ChequeManagements.ApplyFilter
+                </button>
+
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
+                    <i class="mdi mdi-refresh"></i> @ChequeManagements.Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- DataTable Partial -->
+<div id="datalistingview">
+    @Html.Partial("_CategoryDataTable")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var categoryTable = null;
+
+        function emptyToNull(v) {
+            return (v === undefined || v === null || v === '') ? null : v;
+        }
+
+        function collectCategoryFilters() {
+            return {
+                BranchId: emptyToNull($('#branchId').val()),
+                Name: emptyToNull($('#name').val()),
+                IsCentralised: $('#isCentralised').is(':checked') ? true : null,
+                BasePrice: ($('#basePrice').val() === '' ? null : parseFloat($('#basePrice').val())),
+                NumberOfPages: ($('#numberOfPages').val() === '' ? null : parseInt($('#numberOfPages').val(), 10)),
+                ValidityPeriodInMonths: ($('#validityPeriodInMonths').val() === '' ? null : parseInt($('#validityPeriodInMonths').val(), 10)),
+                IssuanceLimitPerCustomerType: ($('#issuanceLimitPerCustomerType').val() === '' ? null : parseInt($('#issuanceLimitPerCustomerType').val(), 10)),
+                IsActive: $('#isActive').is(':checked') ? true : null,
+                StartDate: emptyToNull($('#startDate').val()),
+                EndDate: emptyToNull($('#endDate').val()),
+                options: {}
+            };
+        }
+
+        function escapeHtml(str) {
+            if (!str && str !== 0) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function initDataTableIfNeeded() {
+            // If already initialized, do nothing
+            if ($.fn.DataTable.isDataTable('#myDataTable') && categoryTable) {
+                return;
             }
 
-            function collectCategoryFilters() {
-                return {
-                    BranchId: emptyToNull($('#branchId').val()),
-                    Name: emptyToNull($('#name').val()),
-                    IsCentralised: $('#isCentralised').is(':checked') ? true : null,
-                    BasePrice: ($('#basePrice').val() === '' ? null : parseFloat($('#basePrice').val())),
-                    NumberOfPages: ($('#numberOfPages').val() === '' ? null : parseInt($('#numberOfPages').val(), 10)),
-                    ValidityPeriodInMonths: ($('#validityPeriodInMonths').val() === '' ? null : parseInt($('#validityPeriodInMonths').val(), 10)),
-                    IssuanceLimitPerCustomerType: ($('#issuanceLimitPerCustomerType').val() === '' ? null : parseInt($('#issuanceLimitPerCustomerType').val(), 10)),
-                    IsActive: $('#isActive').is(':checked') ? true : null,
-                    StartDate: emptyToNull($('#startDate').val()),
-                    EndDate: emptyToNull($('#endDate').val()),
-                    options: {}
-                };
+            // defensive: ensure element exists
+            if (!$('#myDataTable').length) {
+                appalert('Table element #myDataTable not found on page', 0, 1);
+                return;
             }
 
-            function escapeHtml(str) {
-                if (!str && str !== 0) return '';
-                return String(str)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#39;');
-            }
-
-            function initDataTableIfNeeded() {
-                // If already initialized, do nothing
-                if ($.fn.DataTable.isDataTable('#myDataTable') && categoryTable) {
-                    return;
-                }
-
-                // defensive: ensure element exists
-                if (!$('#myDataTable').length) {
-                    appalert('Table element #myDataTable not found on page', 0, 1);
-                    return;
-                }
-
-                categoryTable = $('#myDataTable').DataTable({
-                    serverSide: true,
-                    searching: false,
-                    responsive: true,
-                    destroy: false,
-                    order: [[0, 'desc']], // default sort by createdDate desc
-                    ajax: {
-                        url: '/Categoryconfic/LoadCategoryData',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: function (d) {
-                            const filters = collectCategoryFilters();
-                            filters.options = {
-                                draw: d.draw,
-                                start: d.start,
-                                length: d.length,
-                                skip: d.start,
-                                pageSize: d.length,
-                                searchValue: d.search?.value || '',
-                                sortColumnName: 'createdDate',
-                                sortColumnDirection: 'desc'
-                            };
-                            return JSON.stringify(filters);
-                        },
-                        error: function (jqXHR) {
-                            var msg = 'Failed to load data. Please try again.';
-                            try { msg = jqXHR.responseJSON?.message || msg; } catch { }
-                            appalert(msg, 0, 1);
+            categoryTable = $('#myDataTable').DataTable({
+                serverSide: true,
+                searching: true,
+                responsive: true,
+                destroy: false,
+                order: [[0, 'desc']], // default sort by createdDate desc
+                ajax: {
+                    url: '/Categoryconfic/LoadCategoryData',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+                        const filters = collectCategoryFilters();
+                        filters.options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: 'createdDate',
+                            sortColumnDirection: 'desc'
+                        };
+                        return JSON.stringify(filters);
+                    },
+                    error: function (jqXHR) {
+                        var msg = 'Failed to load data. Please try again.';
+                        try { msg = jqXHR.responseJSON?.message || msg; } catch { }
+                        appalert(msg, 0, 1);
+                    }
+                },
+                columns: [
+                    {
+                        data: 'createdDate',
+                        render: function (data) {
+                            return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
                         }
                     },
-                    columns: [
-                        {
-                            data: 'createdDate',
-                            render: function (data) {
-                                return data ? (window.moment ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data) : '-';
-                            }
-                        },
-                        { data: 'name', name: 'name' },
-                        {
-                            data: 'isCentralised',
-                            render: function (val) {
-                                return (val === true || val === 'true')
-                                    ? '<span class="badge bg-success">IsCentralised</span>'
-                                    : '<span class="badge bg-info">IsBranch</span>';
-                            }
-                        },
-                        {
-                            data: 'basePrice',
-                            render: function (v) { return (v == null) ? '-' : parseFloat(v).toFixed(2); }
-                        },
-                        { data: 'numberOfPages', defaultContent: '-' },
-                        {
-                            data: 'isActive',
-                            render: function (d) {
-                                return (d === true || d === 'true')
-                                    ? '<span class="badge bg-danger">IsActive</span>'
-                                    : '<span class="badge bg-secondary">InActive</span>';
-                            }
-                        },
-                        {
-                            data: 'id',
-                            orderable: false,
-                            searchable: false,
-                            render: function (data, type, row) {
-                                // compute ids safely
-                                var rawId = String(row.id || row.Id || data || '');
-                                var recordId = encodeURIComponent(rawId);
-                                var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x'; // safe DOM id fallback
-                                var btnId = 'actionDropdown_' + safeId;
-
-                                var name = escapeHtml(row.name || row.Name || '');
-                                var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
-
-                                var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
-                                                    <i class="mdi mdi-eye me-1 text-primary"></i> Details
-                                                  </button>`;
-
-                                var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
-                                                               <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
-                                                             </button>` : '';
-
-                                var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
-                                                                 <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
-                                                               </button>` : '';
-
-                                return `
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                                type="button" id="${btnId}"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="mdi mdi-cog-outline"></i> Actions
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="${btnId}">
-                                            <li>${detailsBtn}</li>
-                                            ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
-                                            ${!isDeleted ? `<li>${editBtn}</li>` : ''}
-                                            ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
-                                        </ul>
-                                    </div>
-                                `.trim();
-                            }
-
+                    { data: 'name', name: 'name' },
+                    {
+                        data: 'isCentralised',
+                        render: function (val) {
+                            return (val === true || val === 'true')
+                                ? '<span class="badge bg-success">IsCentralised</span>'
+                                : '<span class="badge bg-info">IsBranch</span>';
                         }
-                    ],
-                    language: { emptyTable: 'No category records found' },
-                    lengthMenu: [10, 25, 50],
-                    pageLength: 10,
-                    initComplete: function () {
-                        // optional: tooltip init for table-level controls (safe)
+                    },
+                    {
+                        data: 'basePrice',
+                        render: function (v) { return (v == null) ? '-' : parseFloat(v).toFixed(2); }
+                    },
+                    { data: 'numberOfPages', defaultContent: '-' },
+                    {
+                        data: 'isActive',
+                        render: function (d) {
+                            return (d === true || d === 'true')
+                                ? '<span class="badge bg-danger">IsActive</span>'
+                                : '<span class="badge bg-secondary">InActive</span>';
+                        }
+                    },
+                    {
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            // compute ids safely
+                            var rawId = String(row.id || row.Id || data || '');
+                            var recordId = encodeURIComponent(rawId);
+                            var safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, '') || 'x'; // safe DOM id fallback
+                            var btnId = 'actionDropdown_' + safeId;
+
+                            var name = escapeHtml(row.name || row.Name || '');
+                            var isDeleted = row.isDeleted === true || row.isDeleted === 'true' || row.isDeleted === 1;
+
+                            var detailsBtn = `<button type="button" class="dropdown-item btn-details" data-id="${recordId}" data-name="${name}">
+                                                        <i class="mdi mdi-eye me-1 text-primary"></i> Details
+                                                      </button>`;
+
+                            var editBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-edit" data-id="${recordId}" data-name="${name}">
+                                                                   <i class="mdi mdi-pencil-outline me-1 text-success"></i> Edit
+                                                                 </button>` : '';
+
+                            var deleteBtn = !isDeleted ? `<button type="button" class="dropdown-item btn-delete text-danger" data-id="${recordId}" data-name="${name}">
+                                                                     <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
+                                                                   </button>` : '';
+
+                            return `
+                                        <div class="dropdown text-center">
+                                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                                    type="button" id="${btnId}"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-cog-outline"></i> Actions
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                                                <li>${detailsBtn}</li>
+                                                ${!isDeleted ? `<li><hr class="dropdown-divider"></li>` : ''}
+                                                ${!isDeleted ? `<li>${editBtn}</li>` : ''}
+                                                ${!isDeleted ? `<li>${deleteBtn}</li>` : ''}
+                                            </ul>
+                                        </div>
+                                    `.trim();
+                        }
+
+                    }
+                ],
+                language: { emptyTable: 'No category records found' },
+                lengthMenu: [10, 25, 50],
+                pageLength: 10,
+                initComplete: function () {
+                    // optional: tooltip init for table-level controls (safe)
+                    try {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                                new bootstrap.Tooltip(el);
+                            });
+                        }
+                    } catch (e) { /* ignore */ }
+                }
+            });
+        }
+
+        function loadCategoryData() {
+            // ensure table is initialized
+            initDataTableIfNeeded();
+
+            if (categoryTable) {
+                // reload with current filters (keeps paging by default)
+                categoryTable.ajax.reload(null, false);
+            } else {
+                // nothing to load
+                console.warn('categoryTable not initialized');
+            }
+        }
+
+        function resetCategoryFilters() {
+            // reset form fields
+            var form = document.getElementById('chequeFilterForm');
+            if (form) form.reset();
+
+            // reset select2 if present
+            if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
+                $('#branchId').val(null).trigger('change');
+            }
+
+            // hide optional filter blocks
+            $('#branchFilter, #dateFilters').addClass('d-none');
+
+            // reload table with cleared filters
+            if (categoryTable) {
+                categoryTable.ajax.reload(null, false);
+            } else {
+                initDataTableIfNeeded();
+            }
+
+            appalert('Filters reset', 3, 1);
+        }
+
+        function enterEditMode() {
+            // hide filters
+            $('#filtersSection').addClass('d-none');
+
+            // If DataTable instance exists, destroy it to avoid re-init conflicts
+            try {
+                if (window.categoryTable && $.fn.DataTable.isDataTable('#myDataTable')) {
+                    window.categoryTable.destroy(true); // true => remove DOM (safer)
+                    window.categoryTable = null;
+                }
+            } catch (e) {
+                console.warn('Failed to destroy categoryTable', e);
+            }
+
+            // Optional: add an "edit-mode" class to body for styling (e.g. narrower layout)
+            $('body').addClass('edit-mode');
+        }
+
+        // call this to exit edit mode and restore the list (reload datatable partial)
+        function exitEditModeAndReload() {
+            // show filters again
+            $('#filtersSection').removeClass('d-none');
+
+            // load the datatable partial back into the listing view using your helper
+            // NOTE: we call AddORUpdateGen with id null to load the listing partial (adjust if your helper requires different args)
+            AddORUpdateGen(null, 'datalistingview', '_CategoryDataTable', 'get', 'Categoryconfic');
+
+            // remove edit-mode class
+            $('body').removeClass('edit-mode');
+
+            // re-initialize the datatable after a short delay to give DOM time to settle
+            setTimeout(function () {
+                try {
+                    if (typeof initDataTableIfNeeded === 'function') {
+                        initDataTableIfNeeded();
+                    } else {
+                        console.warn('initDataTableIfNeeded not found; call your table init manually.');
+                    }
+                } catch (e) {
+                    console.error('Failed to init datatable after exiting edit mode', e);
+                }
+            }, 300);
+        }
+
+
+        // Optional: if the edit partial is loaded via AJAX and contains no back button,
+        // we can automatically insert a small back button at the top of the loaded content.
+        // Listen for an event or simply observe changes to #datalistingview – here's a simple approach:
+        function ensureBackButtonInEditView() {
+            var container = $('#datalistingview');
+            if (!container.length) return;
+            // If the container contains an element with data-edit-form attribute, or contains form#editForm, insert back button
+            if (container.find('.edit-back-inserted').length === 0 && (container.find('form').length || container.find('#EditForm').length)) {
+                var backBtn = '<div class="mb-3"><button type="button" class="btn btn-outline-secondary btn-sm btn-back-to-list"><i class="mdi mdi-arrow-left me-1"></i> Back to List</button></div>';
+                // Prepend it to the container content
+                container.prepend('<div class="edit-back-inserted">' + backBtn + '</div>');
+            }
+        }
+
+
+        $(document).ready(function () {
+            // ensure button handlers are not double bound
+            $('#applyFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                console.log('Apply filter clicked');
+                loadCategoryData();
+            });
+
+            $('#resetFilterBtn').off('click').on('click', function (e) {
+                e.preventDefault();
+                console.log('Reset filter clicked');
+                resetCategoryFilters();
+            });
+
+            // Enter key triggers apply
+            $('#chequeFilterForm input').off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    loadCategoryData();
+                }
+            });
+
+            // init select2 safely
+            if ($.fn.select2) {
+                try {
+                    if ($('#branchId').length) {
+                        $('#branchId').select2({ width: '100%', placeholder: 'Select Branch' });
+                    }
+                } catch (err) {
+                    appalert('select2 init failed: ' + (err && err.message ? err.message : err), 2, 1);
+                    console.warn('select2 init failed', err);
+                }
+            }
+
+            // Delegated actions (details/edit/delete)
+            $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) { appalert('Missing id for details', 0, 1); return; }
+
+                var modalEl = document.getElementById('categoryDetailsModal');
+                if (!modalEl) { appalert('Details modal not found', 0, 1); return; }
+                var bsModal = null;
+                try { if (typeof bootstrap !== 'undefined' && bootstrap.Modal) bsModal = new bootstrap.Modal(modalEl); } catch (e) { }
+                $('#categoryDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+                if (bsModal) bsModal.show();
+
+                $.get('/Categoryconfic/InitializeData', { KEY: id })
+                    .done(function (html) {
+                        $('#categoryDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
                         try {
                             if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
                                 document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
@@ -336,230 +495,72 @@
                                 });
                             }
                         } catch (e) { /* ignore */ }
-                    }
-                });
-            }
-
-            function loadCategoryData() {
-                // ensure table is initialized
-                initDataTableIfNeeded();
-
-                if (categoryTable) {
-                    // reload with current filters (keeps paging by default)
-                    categoryTable.ajax.reload(null, false);
-                } else {
-                    // nothing to load
-                    console.warn('categoryTable not initialized');
-                }
-            }
-
-            function resetCategoryFilters() {
-                // reset form fields
-                var form = document.getElementById('chequeFilterForm');
-                if (form) form.reset();
-
-                // reset select2 if present
-                if ($.fn.select2 && $('#branchId').hasClass('select2-hidden-accessible')) {
-                    $('#branchId').val(null).trigger('change');
-                }
-
-                // hide optional filter blocks
-                $('#branchFilter, #dateFilters').addClass('d-none');
-
-                // reload table with cleared filters
-                if (categoryTable) {
-                    categoryTable.ajax.reload(null, false);
-                } else {
-                    initDataTableIfNeeded();
-                }
-
-                appalert('Filters reset', 3, 1);
-            }
-
-            function enterEditMode() {
-                // hide filters
-                $('#filtersSection').addClass('d-none');
-
-                // If DataTable instance exists, destroy it to avoid re-init conflicts
-                try {
-                    if (window.categoryTable && $.fn.DataTable.isDataTable('#myDataTable')) {
-                        window.categoryTable.destroy(true); // true => remove DOM (safer)
-                        window.categoryTable = null;
-                    }
-                } catch (e) {
-                    console.warn('Failed to destroy categoryTable', e);
-                }
-
-                // Optional: add an "edit-mode" class to body for styling (e.g. narrower layout)
-                $('body').addClass('edit-mode');
-            }
-
-            // call this to exit edit mode and restore the list (reload datatable partial)
-            function exitEditModeAndReload() {
-                // show filters again
-                $('#filtersSection').removeClass('d-none');
-
-                // load the datatable partial back into the listing view using your helper
-                // NOTE: we call AddORUpdateGen with id null to load the listing partial (adjust if your helper requires different args)
-                AddORUpdateGen(null, 'datalistingview', '_CategoryDataTable', 'get', 'Categoryconfic');
-
-                // remove edit-mode class
-                $('body').removeClass('edit-mode');
-
-                // re-initialize the datatable after a short delay to give DOM time to settle
-                setTimeout(function () {
-                    try {
-                        if (typeof initDataTableIfNeeded === 'function') {
-                            initDataTableIfNeeded();
-                        } else {
-                            console.warn('initDataTableIfNeeded not found; call your table init manually.');
-                        }
-                    } catch (e) {
-                        console.error('Failed to init datatable after exiting edit mode', e);
-                    }
-                }, 300);
-            }
-
-            
-            // Optional: if the edit partial is loaded via AJAX and contains no back button,
-            // we can automatically insert a small back button at the top of the loaded content.
-            // Listen for an event or simply observe changes to #datalistingview – here's a simple approach:
-            function ensureBackButtonInEditView() {
-                var container = $('#datalistingview');
-                if (!container.length) return;
-                // If the container contains an element with data-edit-form attribute, or contains form#editForm, insert back button
-                if (container.find('.edit-back-inserted').length === 0 && (container.find('form').length || container.find('#EditForm').length)) {
-                    var backBtn = '<div class="mb-3"><button type="button" class="btn btn-outline-secondary btn-sm btn-back-to-list"><i class="mdi mdi-arrow-left me-1"></i> Back to List</button></div>';
-                    // Prepend it to the container content
-                    container.prepend('<div class="edit-back-inserted">' + backBtn + '</div>');
-                }
-            }           
-
-
-            $(document).ready(function () {
-                // ensure button handlers are not double bound
-                $('#applyFilterBtn').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    console.log('Apply filter clicked');
-                    loadCategoryData();
-                });
-
-                $('#resetFilterBtn').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    console.log('Reset filter clicked');
-                    resetCategoryFilters();
-                });
-
-                // Enter key triggers apply
-                $('#chequeFilterForm input').off('keypress').on('keypress', function (e) {
-                    if (e.which === 13) {
-                        e.preventDefault();
-                        loadCategoryData();
-                    }
-                });
-
-                // init select2 safely
-                if ($.fn.select2) {
-                    try {
-                        if ($('#branchId').length) {
-                            $('#branchId').select2({ width: '100%', placeholder: 'Select Branch' });
-                        }
-                    } catch (err) {
-                        appalert('select2 init failed: ' + (err && err.message ? err.message : err), 2, 1);
-                        console.warn('select2 init failed', err);
-                    }
-                }
-
-                // Delegated actions (details/edit/delete)
-                $(document).off('click', '.btn-details').on('click', '.btn-details', function (e) {
-                    e.preventDefault();
-                    var raw = $(this).data('id');
-                    var id = raw ? decodeURIComponent(raw) : null;
-                    if (!id) { appalert('Missing id for details', 0, 1); return; }
-
-                    var modalEl = document.getElementById('categoryDetailsModal');
-                    if (!modalEl) { appalert('Details modal not found', 0, 1); return; }
-                    var bsModal = null;
-                    try { if (typeof bootstrap !== 'undefined' && bootstrap.Modal) bsModal = new bootstrap.Modal(modalEl); } catch (e) { }
-                    $('#categoryDetailsModal .modal-body').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-                    if (bsModal) bsModal.show();
-
-                    $.get('/Categoryconfic/InitializeData', { KEY: id })
-                        .done(function (html) {
-                            $('#categoryDetailsModal .modal-body').html(html || '<div class="text-center text-muted">No details available.</div>');
-                            try {
-                                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                                    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-                                        new bootstrap.Tooltip(el);
-                                    });
-                                }
-                            } catch (e) { /* ignore */ }
-                        })
-                        .fail(function () {
-                            $('#categoryDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
-                            appalert('Failed to load details', 0, 1);
-                        });
-                });
-
-                //$(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
-                //    e.preventDefault();
-                //    var raw = $(this).data('id');
-                //    var id = raw ? decodeURIComponent(raw) : null;
-                //    if (!id) { appalert('Missing id for edit', 0, 1); return; }
-                //    AddORUpdateGen(id, 'datalistingview1', '_Categories', 'get', 'Categoryconfic');
-                //});
-
-                // Delegated handler for Edit buttons: hides filters and loads edit partial
-                $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
-                    e.preventDefault();
-
-                    var raw = $(this).data('id');
-                    var id = raw ? decodeURIComponent(raw) : null;
-                    if (!id) {
-                        if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1);
-                        return;
-                    }
-
-                    // enter edit mode (hide filters + destroy datatable)
-                    enterEditMode();
-
-                    // Load edit partial into #datalistingview
-                    // Your original call was: AddORUpdateGen(id, 'datalistingview1', '_Categories', 'get', 'Categoryconfic');
-                    // Make sure the second parameter matches your container id (we assume 'datalistingview' here)
-                    AddORUpdateGen(id, 'datalistingview', '_Categories', 'get', 'Categoryconfic');
-                });
-
-                // Delegated handler for a "Back to list" button inside the edit partial
-                // Add this button into your edit partial (see note below) with class .btn-back-to-list
-                $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
-                    e.preventDefault();
-                    exitEditModeAndReload();
-                });
-
-                // If your edit partial uses a Cancel/Close button with a different selector (e.g., .btn-cancel-edit),
-                // add a delegated handler similarly:
-                $(document).off('click', '.btn-cancel-edit').on('click', '.btn-cancel-edit', function (e) {
-                    e.preventDefault();
-                    exitEditModeAndReload();
-                });
-
-                // Watch for AJAX replacement: after content is loaded into #datalistingview, call ensureBackButtonInEditView.
-                // If AddORUpdateGen triggers a global event after load, prefer to hook that. Otherwise, poll once after a delay
-                $(document).on('content:loadedIntoDatalistingview', function () {
-                    // custom event you can trigger after AddORUpdateGen finishes loading partial
-                    ensureBackButtonInEditView();
-                });
-
-                $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
-                    e.preventDefault();
-                    var raw = $(this).data('id');
-                    var id = raw ? decodeURIComponent(raw) : null;
-                    if (!id) { appalert('Missing id for delete', 0, 1); return; }
-                    DeleteRecordDataTable('Categoryconfic', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list');
-                });
-
-                // Initialize the table once on page load
-                initDataTableIfNeeded();
+                    })
+                    .fail(function () {
+                        $('#categoryDetailsModal .modal-body').html('<div class="text-center text-danger">Error loading details</div>');
+                        appalert('Failed to load details', 0, 1);
+                    });
             });
-        </script>
-    }
+
+            //$(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+            //    e.preventDefault();
+            //    var raw = $(this).data('id');
+            //    var id = raw ? decodeURIComponent(raw) : null;
+            //    if (!id) { appalert('Missing id for edit', 0, 1); return; }
+            //    AddORUpdateGen(id, 'datalistingview1', '_Categories', 'get', 'Categoryconfic');
+            //});
+
+            // Delegated handler for Edit buttons: hides filters and loads edit partial
+            $(document).off('click', '.btn-edit').on('click', '.btn-edit', function (e) {
+                e.preventDefault();
+
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) {
+                    if (typeof appalert === 'function') appalert('Missing id for edit', 0, 1);
+                    return;
+                }
+
+                // enter edit mode (hide filters + destroy datatable)
+                enterEditMode();
+
+                // Load edit partial into #datalistingview
+                // Your original call was: AddORUpdateGen(id, 'datalistingview1', '_Categories', 'get', 'Categoryconfic');
+                // Make sure the second parameter matches your container id (we assume 'datalistingview' here)
+                AddORUpdateGen(id, 'datalistingview', '_Categories', 'get', 'Categoryconfic');
+            });
+
+            // Delegated handler for a "Back to list" button inside the edit partial
+            // Add this button into your edit partial (see note below) with class .btn-back-to-list
+            $(document).off('click', '.btn-back-to-list').on('click', '.btn-back-to-list', function (e) {
+                e.preventDefault();
+                exitEditModeAndReload();
+            });
+
+            // If your edit partial uses a Cancel/Close button with a different selector (e.g., .btn-cancel-edit),
+            // add a delegated handler similarly:
+            $(document).off('click', '.btn-cancel-edit').on('click', '.btn-cancel-edit', function (e) {
+                e.preventDefault();
+                exitEditModeAndReload();
+            });
+
+            // Watch for AJAX replacement: after content is loaded into #datalistingview, call ensureBackButtonInEditView.
+            // If AddORUpdateGen triggers a global event after load, prefer to hook that. Otherwise, poll once after a delay
+            $(document).on('content:loadedIntoDatalistingview', function () {
+                // custom event you can trigger after AddORUpdateGen finishes loading partial
+                ensureBackButtonInEditView();
+            });
+
+            $(document).off('click', '.btn-delete').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var raw = $(this).data('id');
+                var id = raw ? decodeURIComponent(raw) : null;
+                if (!id) { appalert('Missing id for delete', 0, 1); return; }
+                DeleteRecordDataTable('Categoryconfic', id, 'myDataTable', '_DataTable', 0, 'datalistingview', null, 'list');
+            });
+
+            // Initialize the table once on page load
+            //initDataTableIfNeeded();
+        });
+    </script>
+}

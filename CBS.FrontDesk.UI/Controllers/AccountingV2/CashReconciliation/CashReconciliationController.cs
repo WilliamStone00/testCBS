@@ -31,7 +31,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         public async Task<ActionResult> Index()
         {
             await Loader();
-            return View();
+            return View(new CashAndVaultInit());
         }
 
 
@@ -113,6 +113,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.VaultInitialisation
         {
             if (model == null)
                 return Json(new { success = false, message = " Invalid or empty model." });
+
+            model.OwnerName = string.IsNullOrWhiteSpace(model.OwnerName) ? "N/A" : model.OwnerName;
+            model.TillName = string.IsNullOrWhiteSpace(model.TillName) ? "N/A" : model.TillName;
+
 
             try
             {

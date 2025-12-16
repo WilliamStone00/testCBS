@@ -24,22 +24,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string JournalId { get; set; }
         public string Message { get; set; }
     }
-    //public class DestinationJournalineApproval
-    //{
-    //    public string AccountId { get; set; }
-    //    public string DrCr { get; set; }
-    //    public decimal Amount { get; set; }
-    //    public string Memo { get; set; }
-    //}
-
-    //public class DestinationApproval
-    //{
-    //    public string Reference { get; set; }
-    //    public string BranchId { get; set; }
-    //    public string Approver { get; set; }
-    //    public string DestinationBranchId { get; set; }
-    //    public List<DestinationJournalineApproval> Lines { get; set; }
-    //}
+   
 
     public class JournalApproval
     {
@@ -54,6 +39,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
 
         // ===== Journal Line Details =====
         public List<DestinationJournalLineApproval> Lines { get; set; }
+
+
+       
+        public bool Approve { get; set; }
+        public string Reason { get; set; }
     }
 
     public class DestinationJournalLineApproval
@@ -62,6 +52,12 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string DrCr { get; set; }
         public decimal Amount { get; set; }
         public string Memo { get; set; }
+    }
+    public class RejectJournal
+    {
+        public string Id { get; set; }
+
+        public string comment { get; set;}
     }
 
 

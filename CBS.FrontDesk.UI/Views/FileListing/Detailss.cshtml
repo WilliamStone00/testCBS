@@ -219,11 +219,11 @@
                         <h6 class="text-info">
                             @if (Model?.CreatedDate != DateTime.MinValue)
                             {
-                            @Model.CreatedDate.ToString("MMM dd, yyyy")
+                                @Model.CreatedDate.ToString("MMM dd, yyyy")
                             }
                             else
                             {
-                            @:"—"
+                                @:"—"
                             }
                         </h6>
                         <small class="text-muted">Date</small>
@@ -237,12 +237,12 @@
                         <h5 class="text-muted">File Size</h5>
                         <h6 class="text-warning">
                             @{
-                            var fileSizeBytes = Model?.SizeBytes ?? 0L;
-                            string fileSizeDisplay;
-                            if (fileSizeBytes >= 1_000_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
-                            else if (fileSizeBytes >= 1_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
-                            else if (fileSizeBytes >= 1_000) { fileSizeDisplay = (fileSizeBytes / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
-                            else { fileSizeDisplay = fileSizeBytes + " B"; }
+                                var fileSizeBytes = Model?.SizeBytes ?? 0L;
+                                string fileSizeDisplay;
+                                if (fileSizeBytes >= 1_000_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " GB"; }
+                                else if (fileSizeBytes >= 1_000_000) { fileSizeDisplay = (fileSizeBytes / 1_000_000.0).ToString("N2", CultureInfo.InvariantCulture) + " MB"; }
+                                else if (fileSizeBytes >= 1_000) { fileSizeDisplay = (fileSizeBytes / 1_000.0).ToString("N2", CultureInfo.InvariantCulture) + " KB"; }
+                                else { fileSizeDisplay = fileSizeBytes + " B"; }
                             }
                             @fileSizeDisplay
                         </h6>
@@ -281,11 +281,11 @@
                                         <td style="width: 25%;">
                                             @if (Model?.CreatedDate != DateTime.MinValue)
                                             {
-                                            @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                                @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss K")
                                             }
                                             else
                                             {
-                                            @:"—"
+                                                @:"—"
                                             }
                                         </td>
                                     </tr>
@@ -296,11 +296,11 @@
                                         <td>
                                             @if (Model?.ModifiedDate != DateTime.MinValue && Model.ModifiedDate > DateTime.MinValue.AddYears(1))
                                             {
-                                            @Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss K")
+                                                @Model.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss K")
                                             }
                                             else
                                             {
-                                            @:"—"
+                                                @:"—"
                                             }
                                         </td>
                                     </tr>
@@ -355,15 +355,15 @@
                                         <td class="fw-bold text-muted small align-top">Error JSON</td>
                                         <td>
                                             @{
-                                            var errorJson = Model?.ErrorJson;
-                                            if (string.IsNullOrWhiteSpace(errorJson))
-                                            {
-                                            @:—
-                                            }
-                                            else
-                                            {
-                                            <pre class="small bg-light p-2 rounded border mb-0">@Html.Encode(errorJson)</pre>
-                                            }
+                                                var errorJson = Model?.ErrorJson;
+                                                if (string.IsNullOrWhiteSpace(errorJson))
+                                                {
+                                                    @:—
+                                                }
+                                                else
+                                                {
+                                                    <pre class="small bg-light p-2 rounded border mb-0">@Html.Encode(errorJson)</pre>
+                                                }
                                             }
                                         </td>
                                     </tr>
@@ -398,8 +398,8 @@
                                 <table id="trialBalanceTable" class="table table-striped" style="width:100%">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Source Code</th>
-                                            <th>Source Name</th>
+                                            <th>Branch Acc. Id</th>
+                                            <th>Branch Acc. Name</th>
                                             <th class="text-end">Opening Debit</th>
                                             <th class="text-end">Opening Credit</th>
                                             <th class="text-end">Movement Debit</th>
@@ -493,11 +493,6 @@
 <div class="modal fade" id="trialBalanceDetailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            @*<div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="mdi mdi-file-table-outline me-2"></i>Trial Balance Details</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>*@
-
             <div class="row">
                 <div class="col-12">
                     <div class="card bg-light mb-2 p-2">
@@ -521,10 +516,6 @@
 <div class="modal fade" id="memberBalanceDetailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            @*<div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="mdi mdi-account-group-outline me-2"></i>Member Balance Details</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>*@
             <div class="row">
                 <div class="col-12">
                     <div class="card bg-light mb-2 p-2">
@@ -549,32 +540,43 @@
 <div id="confirmReconciliationModalContainer"></div>
 
 @section Scripts {
-<script>
+    <script>
         $(document).ready(function () {
+            // Reusable decimal formatter function
+            function formatDecimal(value) {
+                return parseFloat(value).toLocaleString('en-US', {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                });
+            }
+
+            // Prepare data for DataTables
             // Prepare data for DataTables
             const trialBalanceData = [
                 @if (Model?.TrialBalanceRows != null)
                 {
+                    var first = true;
                     foreach (var row in Model.TrialBalanceRows)
                     {
-                        <text>
-                        {
-                            id: '@row.Id',
-                            sourceCode: '@row.SourceCode',
-                            sourceName: '@Html.Raw(row.SourceName)',
-                            openingDebit: @row.OpeningDebit,
-                            openingCredit: @row.OpeningCredit,
-                            movementDebit: @row.MovementDebit,
-                            movementCredit: @row.MovementCredit,
-                            endDebit: @row.EndDebit,
-                            endCredit: @row.EndCredit,
-                            branchAccountId: '@row.BranchAccountId',
-                            isReconciled: @row.IsReconciled.ToString().ToLower(),
-                            isActive: @row.IsCurrentlyActive.ToString().ToLower(),
-                            createdDate: '@row.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")',
-                            modifiedDate: '@row.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")'
-                        },
-                        </text>
+                        if (!first) { @:,
+                        }
+                        first = false;
+                        <text>{
+                            "id": "@row.Id",
+                            "sourceCode": "@Html.Raw(row.SourceCode?.Replace("\"", "\\\"") ?? "")",
+                            "sourceName": "@Html.Raw(row.SourceName?.Replace("\"", "\\\"")?.Replace("\n", "\\n") ?? "")",
+                            "openingDebit": @row.OpeningDebit,
+                            "openingCredit": @row.OpeningCredit,
+                            "movementDebit": @row.MovementDebit,
+                            "movementCredit": @row.MovementCredit,
+                            "endDebit": @row.EndDebit,
+                            "endCredit": @row.EndCredit,
+                            "branchAccountId": "@row.BranchAccountId",
+                            "isReconciled": @row.IsReconciled.ToString().ToLower(),
+                            "isActive": @row.IsCurrentlyActive.ToString().ToLower(),
+                            "createdDate": "@row.CreatedDate.ToString()",
+                            "modifiedDate": "@row.ModifiedDate.ToString()"
+                        }</text>
                     }
                 }
             ];
@@ -582,23 +584,25 @@
             const memberBalanceData = [
                 @if (Model?.MemberBalanceRows != null)
                 {
+                    var first = true;
                     foreach (var row in Model.MemberBalanceRows)
                     {
-                        <text>
-                        {
-                            id: '@row.Id',
-                            memberId: '@row.MemberId',
-                            accountType: '@Html.Raw(row.AccountType)',
-                            accountNumber: '@Html.Raw(row.AccountNumber)',
-                            branchCode: '@Html.Raw(row.BranchCode)',
-                            branchName: '@Html.Raw(row.BranchName)',
-                            balance: @row.Balance,
-                            reconciliationStatus: '@Html.Raw(row.RecocilationStatus)',
-                            reconciledBy: '@Html.Raw(row.ReconciledBy ?? "")',
-                            createdDate: '@row.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")',
-                            modifiedDate: '@row.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")'
-                        },
-                        </text>
+                        if (!first) { @:,
+                        }
+                        first = false;
+                        <text>{
+                            "id": "@row.Id",
+                            "memberId": "@row.MemberId",
+                            "accountType": "@Html.Raw(row.AccountType?.Replace("\"", "\\\"") ?? "")",
+                            "accountNumber": "@Html.Raw(row.AccountNumber?.Replace("\"", "\\\"") ?? "")",
+                            "branchCode": "@Html.Raw(row.BranchCode?.Replace("\"", "\\\"") ?? "")",
+                            "branchName": "@Html.Raw(row.BranchName?.Replace("\"", "\\\"") ?? "")",
+                            "balance": @row.Balance,
+                            "reconciliationStatus": "@Html.Raw(row.ReconcilationStatus.Replace("\"", "\\\"") ?? "")",
+                            "reconciledBy": "@Html.Raw(row.ReconciledBy?.Replace("\"", "\\\"") ?? "")",
+                            "createdDate": "@row.CreatedDate.ToString()",
+                            "modifiedDate": "@row.ModifiedDate.ToString()"
+                        }</text>
                     }
                 }
             ];
@@ -627,42 +631,42 @@
                         data: 'openingDebit',
                         className: 'text-end',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString( {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
                         data: 'openingCredit',
                         className: 'text-end',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
                         data: 'movementDebit',
                         className: 'text-end',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
                         data: 'movementCredit',
                         className: 'text-end',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
                         data: 'endDebit',
                         className: 'text-end fw-bold',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
                         data: 'endCredit',
                         className: 'text-end fw-bold',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
@@ -734,7 +738,7 @@
                         data: 'balance',
                         className: 'text-end fw-bold',
                         render: function(data, type, row) {
-                            return parseFloat(data).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            return formatDecimal(data);
                         }
                     },
                     {
@@ -791,8 +795,8 @@
                                     <h6 class="card-title text-primary mb-3"><i class="mdi mdi-information-outline me-2"></i>Basic Information</h6>
                                     <table class="table table-sm table-borderless">
                                         <tr><td class="fw-bold text-muted small">ID:</td><td class="font-monospace">${$btn.data('row-id')}</td></tr>
-                                        <tr><td class="fw-bold text-muted small">Source Code:</td><td><span class="badge bg-primary">${$btn.data('source-code')}</span></td></tr>
-                                        <tr><td class="fw-bold text-muted small">Source Name:</td><td>${$btn.data('source-name')}</td></tr>
+                                        <tr><td class="fw-bold text-muted small">Branch Account Id:</td><td><span class="badge bg-primary">${$btn.data('source-code')}</span></td></tr>
+                                        <tr><td class="fw-bold text-muted small">Branch Account Name:</td><td>${$btn.data('source-name')}</td></tr>
                                         <tr><td class="fw-bold text-muted small">Branch Account ID:</td><td>${$btn.data('branch-account-id') || '—'}</td></tr>
                                     </table>
                                 </div>
@@ -829,25 +833,25 @@
                                         <div class="col-md-3">
                                             <div class="border rounded p-3">
                                                 <div class="text-muted small">Opening Debit</div>
-                                                <div class="h5 text-primary fw-bold">${parseFloat($btn.data('opening-debit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                                <div class="h5 text-primary fw-bold">${formatDecimal($btn.data('opening-debit'))}</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="border rounded p-3">
                                                 <div class="text-muted small">Opening Credit</div>
-                                                <div class="h5 text-success fw-bold">${parseFloat($btn.data('opening-credit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                                <div class="h5 text-success fw-bold">${formatDecimal($btn.data('opening-credit'))}</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="border rounded p-3">
                                                 <div class="text-muted small">End Debit</div>
-                                                <div class="h5 text-primary fw-bold">${parseFloat($btn.data('end-debit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                                <div class="h5 text-primary fw-bold">${formatDecimal($btn.data('end-debit'))}</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="border rounded p-3">
                                                 <div class="text-muted small">End Credit</div>
-                                                <div class="h5 text-success fw-bold">${parseFloat($btn.data('end-credit')).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                                <div class="h5 text-success fw-bold">${formatDecimal($btn.data('end-credit'))}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -911,8 +915,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <table class="table table-sm table-borderless">
-                                                <tr><td class="fw-bold text-muted small">Current Balance:</td></tr>
-                                                <tr><td class="h2 text-success fw-bold">${parseFloat($btn.data('balance')).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</td></tr>
+                                               <tr><td class="fw-bold text-muted small">Current Balance:</td></tr>
+                                                <tr><td class="h2 text-success fw-bold">${formatDecimal($btn.data('balance'))}</td></tr>
                                                 <tr><td class="text-muted small">As of ${$btn.data('modified-date')}</td></tr>
                                             </table>
                                         </div>
@@ -935,199 +939,199 @@
                 new bootstrap.Modal(document.getElementById('memberBalanceDetailsModal')).show();
             });
 
-          // Confirm Reconciliation Button - Open Modal (Fixed Version)
-$('#confirmReconciliationBtn').on('click', function () {
-    console.log('Confirm button clicked - opening modal');
-    const $btn = $(this);
-    const id = $btn.data('id');
-    const branch = $btn.data('branch');
+            // Confirm Reconciliation Button - Open Modal (Fixed Version)
+            $('#confirmReconciliationBtn').on('click', function () {
+                console.log('Confirm button clicked - opening modal');
+                const $btn = $(this);
+                const id = $btn.data('id');
+                const branch = $btn.data('branch');
 
-    if (!id) {
-        if (typeof appalert === 'function') {
-            appalert('No file ID provided.', 3, 1);
-        } else {
-            alert('No file ID provided.');
-        }
-        return;
-    }
+                if (!id) {
+                    if (typeof appalert === 'function') {
+                        appalert('No file ID provided.', 3, 1);
+                    } else {
+                        alert('No file ID provided.');
+                    }
+                    return;
+                }
 
-    // Clean up any existing modal instances first
-    cleanupExistingModal();
+                // Clean up any existing modal instances first
+                cleanupExistingModal();
 
-    // Build URL for the GET action that returns the partial view
-    const url = '/FileListing/ConfirmUpload?id=' + encodeURIComponent(id) + '&branch=' + encodeURIComponent(branch);
+                // Build URL for the GET action that returns the partial view
+                const url = '/FileListing/ConfirmUpload?id=' + encodeURIComponent(id) + '&branch=' + encodeURIComponent(branch);
 
-    // Create container for modal if it doesn't exist
-    if ($('#confirmReconciliationModalContainer').length === 0) {
-        $('body').append('<div id="confirmReconciliationModalContainer"></div>');
-    }
+                // Create container for modal if it doesn't exist
+                if ($('#confirmReconciliationModalContainer').length === 0) {
+                    $('body').append('<div id="confirmReconciliationModalContainer"></div>');
+                }
 
-    // Show loading state on the button instead of showing loading modal
-    $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-2"></i> Loading...');
+                // Show loading state on the button instead of showing loading modal
+                $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-2"></i> Loading...');
 
-    // Fetch the partial view
-    fetch(url, { credentials: 'same-origin' })
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to load confirmation form');
-            return response.text();
-        })
-        .then(html => {
-            // Replace with the actual modal content
-            $('#confirmReconciliationModalContainer').html(html);
+                // Fetch the partial view
+                fetch(url, { credentials: 'same-origin' })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to load confirmation form');
+                        return response.text();
+                    })
+                    .then(html => {
+                        // Replace with the actual modal content
+                        $('#confirmReconciliationModalContainer').html(html);
 
-            // Initialize the new modal
-            const modalEl = document.getElementById('confirmReconciliationModal');
-            if (modalEl) {
-                const modalInstance = new bootstrap.Modal(modalEl, {
-                    backdrop: true,
-                    keyboard: true
-                });
+                        // Initialize the new modal
+                        const modalEl = document.getElementById('confirmReconciliationModal');
+                        if (modalEl) {
+                            const modalInstance = new bootstrap.Modal(modalEl, {
+                                backdrop: true,
+                                keyboard: true
+                            });
 
-                // Properly handle modal hide event to clean up backdrop
-                modalEl.addEventListener('hidden.bs.modal', function () {
-                    cleanupExistingModal();
-                });
+                            // Properly handle modal hide event to clean up backdrop
+                            modalEl.addEventListener('hidden.bs.modal', function () {
+                                cleanupExistingModal();
+                            });
 
-                // Show modal only after content is loaded
-                modalInstance.show();
+                            // Show modal only after content is loaded
+                            modalInstance.show();
 
-                // Attach form submit handler
-                $(document).off('submit', '#confirmReconciliationForm');
-                $(document).on('submit', '#confirmReconciliationForm', function (e) {
-                    e.preventDefault();
-                    submitConfirmForm($(this), modalInstance);
+                            // Attach form submit handler
+                            $(document).off('submit', '#confirmReconciliationForm');
+                            $(document).on('submit', '#confirmReconciliationForm', function (e) {
+                                e.preventDefault();
+                                submitConfirmForm($(this), modalInstance);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading confirmation form:', error);
+                        // Clean up container
+                        $('#confirmReconciliationModalContainer').empty();
+
+                        if (typeof appalert === 'function') {
+                            appalert('Failed to load confirmation form. Please try again.', 3, 1);
+                        } else {
+                            alert('Failed to load confirmation form. Please try again.');
+                        }
+                    })
+                    .finally(() => {
+                        // Re-enable button
+                        $btn.prop('disabled', false).html('<i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation');
+                    });
+            });
+
+            // Helper function to clean up modal and backdrop
+            function cleanupExistingModal() {
+                const existingModal = bootstrap.Modal.getInstance(document.getElementById('confirmReconciliationModal'));
+                if (existingModal) {
+                    existingModal.hide();
+                }
+
+                // Remove modal-open class and backdrop
+                document.body.classList.remove('modal-open');
+                const existingBackdrop = document.querySelector('.modal-backdrop');
+                if (existingBackdrop) {
+                    existingBackdrop.remove();
+                }
+
+                // Clean up container after a delay
+                setTimeout(() => {
+                    if ($('#confirmReconciliationModalContainer').length) {
+                        $('#confirmReconciliationModalContainer').empty();
+                    }
+                }, 300);
+            }
+
+            // Function to handle form submission from the modal
+            function submitConfirmForm($form, modalInstance) {
+                const $btn = $form.find('button[type="submit"]');
+                const originalText = $btn.html();
+
+                // Disable button and show loading
+                $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
+
+                // Get anti-forgery token
+                const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                // Prepare form data
+                const payload = {
+                    Id: $form.find('input[name="Id"]').val(),
+                    BranchId: $form.find('input[name="BranchId"]').val(),
+                    AccountingDate: $form.find('input[name="AccountingDate"]').val(),
+                    Memo: $form.find('input[name="Memo"]').val(),
+                    ExternalApplicationName: $form.find('input[name="ExternalApplicationName"]').val() || '',
+                    ReconciliationKind: $form.find('input[name="ReconciliationKind"]').val() || '',
+                    ReconciledBy: $form.find('input[name="ReconciledBy"]').val() || ''
+                };
+
+                console.log('Submitting reconciliation:', payload);
+
+                // Submit to POST endpoint
+                fetch('/FileListing/ConfirmUpload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token || '',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        // Success: show message, close modal, and reload page
+                        if (typeof appalert === 'function') {
+                            appalert(data.message || 'Reconciliation confirmed successfully!', 1, 1);
+                        } else {
+                            alert(data.message || 'Reconciliation confirmed successfully!');
+                        }
+
+                        modalInstance.hide();
+
+                        // Reload the page after a short delay to show updated status
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        // Show error message in the modal
+                        const message = (data && data.message) ? data.message : 'Failed to confirm reconciliation.';
+                        showFormAlert($form, message, 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Submission error:', error);
+                    showFormAlert($form, 'Error confirming reconciliation. Please try again.', 'danger');
+                })
+                .finally(() => {
+                    // Re-enable button
+                    $btn.prop('disabled', false).html(originalText);
                 });
             }
-        })
-        .catch(error => {
-            console.error('Error loading confirmation form:', error);
-            // Clean up container
-            $('#confirmReconciliationModalContainer').empty();
 
-            if (typeof appalert === 'function') {
-                appalert('Failed to load confirmation form. Please try again.', 3, 1);
-            } else {
-                alert('Failed to load confirmation form. Please try again.');
+            // Helper function to show form alerts in the modal
+            function showFormAlert($form, message, type) {
+                const $alert = $form.find('#confirmFormAlert');
+                const alertClass = type === 'danger' ? 'alert-danger' : type === 'warning' ? 'alert-warning' : 'alert-success';
+
+                if ($alert.length === 0) {
+                    $form.find('.modal-body').prepend(
+                        `<div id="confirmFormAlert" class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                            ${message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>`
+                    );
+                } else {
+                    $alert.removeClass('alert-success alert-danger alert-warning')
+                          .addClass(alertClass)
+                          .html(`${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`)
+                          .removeClass('d-none')
+                          .show();
+                }
             }
-        })
-        .finally(() => {
-            // Re-enable button
-            $btn.prop('disabled', false).html('<i class="mdi mdi-check-all me-2"></i> Confirm Reconciliation');
         });
-});
-
-// Helper function to clean up modal and backdrop
-function cleanupExistingModal() {
-    const existingModal = bootstrap.Modal.getInstance(document.getElementById('confirmReconciliationModal'));
-    if (existingModal) {
-        existingModal.hide();
-    }
-    
-    // Remove modal-open class and backdrop
-    document.body.classList.remove('modal-open');
-    const existingBackdrop = document.querySelector('.modal-backdrop');
-    if (existingBackdrop) {
-        existingBackdrop.remove();
-    }
-    
-    // Clean up container after a delay
-    setTimeout(() => {
-        if ($('#confirmReconciliationModalContainer').length) {
-            $('#confirmReconciliationModalContainer').empty();
-        }
-    }, 300);
-}
-
-// Function to handle form submission from the modal
-function submitConfirmForm($form, modalInstance) {
-    const $btn = $form.find('button[type="submit"]');
-    const originalText = $btn.html();
-
-    // Disable button and show loading
-    $btn.prop('disabled', true).html('<i class="mdi mdi-loading mdi-spin me-2"></i> Processing...');
-
-    // Get anti-forgery token
-    const token = $form.find('input[name="__RequestVerificationToken"]').val();
-
-    // Prepare form data
-    const payload = {
-        Id: $form.find('input[name="Id"]').val(),
-        BranchId: $form.find('input[name="BranchId"]').val(),
-        AccountingDate: $form.find('input[name="AccountingDate"]').val(),
-        Memo: $form.find('input[name="Memo"]').val(),
-        ExternalApplicationName: $form.find('input[name="ExternalApplicationName"]').val() || '',
-        ReconciliationKind: $form.find('input[name="ReconciliationKind"]').val() || '',
-        ReconciledBy: $form.find('input[name="ReconciledBy"]').val() || ''
-    };
-
-    console.log('Submitting reconciliation:', payload);
-
-    // Submit to POST endpoint
-    fetch('/FileListing/ConfirmUpload', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': token || '',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify(payload)
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
-    })
-    .then(data => {
-        if (data && data.success) {
-            // Success: show message, close modal, and reload page
-            if (typeof appalert === 'function') {
-                appalert(data.message || 'Reconciliation confirmed successfully!', 1, 1);
-            } else {
-                alert(data.message || 'Reconciliation confirmed successfully!');
-            }
-
-            modalInstance.hide();
-
-            // Reload the page after a short delay to show updated status
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-        } else {
-            // Show error message in the modal
-            const message = (data && data.message) ? data.message : 'Failed to confirm reconciliation.';
-            showFormAlert($form, message, 'danger');
-        }
-    })
-    .catch(error => {
-        console.error('Submission error:', error);
-        showFormAlert($form, 'Error confirming reconciliation. Please try again.', 'danger');
-    })
-    .finally(() => {
-        // Re-enable button
-        $btn.prop('disabled', false).html(originalText);
-    });
-}
-
-// Helper function to show form alerts in the modal
-function showFormAlert($form, message, type) {
-    const $alert = $form.find('#confirmFormAlert');
-    const alertClass = type === 'danger' ? 'alert-danger' : type === 'warning' ? 'alert-warning' : 'alert-success';
-
-    if ($alert.length === 0) {
-        $form.find('.modal-body').prepend(
-            `<div id="confirmFormAlert" class="alert ${alertClass} alert-dismissible fade show" role="alert">
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>`
-        );
-    } else {
-        $alert.removeClass('alert-success alert-danger alert-warning')
-              .addClass(alertClass)
-              .html(`${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`)
-              .removeClass('d-none')
-              .show();
-    }
-}
-        });
-</script>
+    </script>
 }

@@ -1,0 +1,112 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure.EndOfYearConfig
+
+
+
+
+@using (Html.BeginForm("CreateOrUpdate", "YearEndChecklistDefinition",
+    FormMethod.Post,
+    new { id = "endOfYearConfigForm", enctype = "multipart/form-data", onsubmit = "return SaveEndOfYearConfigAjax(this);" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
+
+<div class="container mt-2">
+    <div class="card bg-light mb-3">
+        <div class="card-body text-center">
+
+            <h3 class="card-title text-primary">
+                <i class="mdi mdi-cog-outline me-2"></i>
+                @(Model.Id == null ? "ADD END OF YEAR CONFIG" : "UPDATE END OF YEAR CONFIG")
+            </h3>
+
+            <p class="card-text">
+                @(Model.Id == null
+                ? "Fill in the details to create a new end-of-year configuration."
+                : "Modify the details below and update this configuration.")
+            </p>
+
+            <hr style="border: 2px solid rgba(128,128,128,0.5);" />
+        </div>
+    </div>
+
+
+    <div class="form-card">
+
+        <!-- Code -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Code, "Code", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Code,
+                new { @class = "form-control", placeholder = "Enter code", required = "required", id = "Code" })
+        </div>
+
+        <!-- Title -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Title, "Title", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Title,
+                new { @class = "form-control", placeholder = "Enter title", required = "required", id = "Title" })
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Description, "Description", new { @class = "form-label" })
+            @Html.TextAreaFor(m => m.Description,
+                new { @class = "form-control", rows = 3, placeholder = "Enter description", id = "Description" })
+        </div>
+
+        <!-- Display Order -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.DisplayOrder, "Display Order", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.DisplayOrder,
+                new { @class = "form-control", type = "number", required = "required", id = "DisplayOrder", min = "0" })
+        </div>
+
+
+        <!-- Category -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Category, "Category", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Category,
+                new { @class = "form-control", placeholder = "Enter category", required = "required", id = "Category" })
+        </div>
+
+        <!-- Is Mandatory + Is Active -->
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.IsMandatory, "Is Mandatory", new { @class = "form-label fw-bold" })
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsMandatory, new { @class = "form-check-input", id = "IsMandatory" })
+                    <label class="form-check-label" for="IsMandatory">Mandatory</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.IsActive, "Is Active", new { @class = "form-label fw-bold" })
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
+                    <label class="form-check-label" for="IsActive">Active</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Comment, "Comment", new { @class = "form-label" })
+            @Html.TextAreaFor(m => m.Comment,
+                new { @class = "form-control", rows = 3, placeholder = "Enter optional comment", required = "required", id = "Comment" })
+        </div>
+
+
+
+        <!-- Save/Update -->
+        <div class="text-end">
+            <button type="button" class="btn btn-primary btn-save"
+                    onclick="SaveEndOfYearConfigAjax(this.form)">
+                <i class="mdi mdi-content-save-outline me-1"></i>
+                @(Model.Id == null ? "Save" : "Update")
+            </button>
+        </div>
+
+    </div>
+</div>
+}
+

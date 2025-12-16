@@ -293,12 +293,14 @@
                   <i class="mdi mdi-eye me-1 text-primary"></i> Details
                 </button>
               </li>
-              <li>
-                <a class="dropdown-item" href="${downloadLink}" target="_blank" title="Download &quot;${name}&quot;">
-                  <i class="mdi mdi-download me-1 text-success"></i> Download
-                </a>
-              </li>
-              <li>
+            <li>
+  <a class="dropdown-item btn-download" href="#" data-id="${encodeURIComponent(id)}" title="Download &quot;${name}&quot;">
+    <i class="mdi mdi-download me-1 text-success"></i>
+    <span class="download-label">Download</span>
+  </a>
+</li>
+
+
                 <button type="button" class="dropdown-item btn-delete" data-id="${id}" title="Delete &quot;${name}&quot;">
                   <i class="mdi mdi-delete-outline me-1 text-danger"></i> Delete
                 </button>
@@ -598,6 +600,113 @@
               const url = detailUrl + '?id=' + encodeURIComponent(id); // partialView omitted -> full page
               window.open(url, '_blank');
           });
+
+          // Ensure jQuery is loaded before this script
+          $(document).off('click', '.btn-download').on('click', '.btn-download', function (e) {
+              e.preventDefault();
+
+              var $btn = $(this);
+              var raw = $btn.data('id');
+              var id = raw ? decodeURIComponent(raw) : null;
+              if (!id) {
+                  appalert('Missing id for download', 0, 1);
+                  return;
+              }
+
+              // Prevent duplicate downloads
+              if ($btn.data('downloading')) return;
+
+              // Mark as downloading and apply visual disabled state
+              $btn.data('downloading', true);
+              $btn.addClass('disabled').attr('aria-disabled', 'true').css('pointer-events', 'none');
+
+              // Swap icon to spinner (store original)
+              var $icon = $btn.find('i.mdi');
+              var origIconClass = $icon.attr('class') || '';
+              $icon.data('orig-class', origIconClass);
+              $icon.attr('class', 'mdi mdi-spin mdi-loading me-1'); // change to spinner icon (mdi classes)
+
+              // Also optionally change label text
+              var $label = $btn.find('.download-label');
+              var origLabel = $label.text();
+              $label.data('orig-label', origLabel);
+              $label.text('Downloading...');
+
+              var url = '/FileListing/Download?id=' + encodeURIComponent(id);
+
+              // Set a reasonable AJAX timeout (ms) to avoid hung requests
+              var ajaxTimeoutMs = 120000; // 2 minutes, adjust as needed
+
+              $.ajax({
+                  url: url,
+                  method: 'GET',
+                  // IMPORTANT: request binary blob
+                  xhrFields: { responseType: 'blob' },
+                  timeout: ajaxTimeoutMs,
+                  success: function (blob, textStatus, xhr) {
+                      // Attempt to parse filename from Content-Disposition header
+                      var disposition = xhr.getResponseHeader('Content-Disposition') || xhr.getResponseHeader('content-disposition') || '';
+                      var filename = 'download.bin';
+
+                      if (disposition) {
+                          // Regex supports filename*=UTF-8'' and filename="..."
+                          var matches = disposition.match(/filename\*=UTF-8''([^;]+)|filename=\"?([^;\"]+)\"?/);
+                          if (matches) {
+                              filename = decodeURIComponent(matches[1] || matches[2]).replace(/['"]/g, '');
+                          }
+                      }
+
+                      // Fallback: try to guess extension from content-type
+                      var contentType = xhr.getResponseHeader('Content-Type') || 'application/octet-stream';
+                      if (!filename || filename === 'download.bin') {
+                          var guessExt = (function (ct) {
+                              ct = (ct || '').toLowerCase();
+                              if (ct.indexOf('application/pdf') !== -1) return '.pdf';
+                              if (ct.indexOf('spreadsheetml.sheet') !== -1) return '.xlsx';
+                              if (ct.indexOf('ms-excel') !== -1) return '.xls';
+                              if (ct.indexOf('text/csv') !== -1) return '.csv';
+                              if (ct.indexOf('image/png') !== -1) return '.png';
+                              if (ct.indexOf('image/jpeg') !== -1) return '.jpg';
+                              return '';
+                          })(contentType);
+
+                          if (guessExt && filename.indexOf('.') === -1) filename = id + guessExt;
+                      }
+
+                      // Create temporary link and trigger download
+                      var urlBlob = window.URL.createObjectURL(blob);
+                      var link = document.createElement('a');
+                      link.href = urlBlob;
+                      link.download = filename;
+                      document.body.appendChild(link);
+                      link.click();
+                      link.remove();
+
+                      // release object URL after a short delay
+                      setTimeout(function () {
+                          window.URL.revokeObjectURL(urlBlob);
+                      }, 1500);
+                  },
+                  error: function (xhr, status, err) {
+                      if (status === 'timeout') {
+                          appalert('Download timed out. Please try again.', 0, 1);
+                      } else {
+                          // If server returned bytes but with an error page, `blob` may be an HTML string — try to read it.
+                          // Provide a friendly message and log for debugging.
+                          appalert('Download failed (' + (xhr.status || status) + ').', 0, 1);
+                          console.error('Download error', status, err, xhr);
+                      }
+                  },
+                  complete: function () {
+                      // restore button state
+                      $btn.data('downloading', false);
+                      $btn.removeClass('disabled').removeAttr('aria-disabled').css('pointer-events', '');
+                      if ($icon.data('orig-class')) { $icon.attr('class', $icon.data('orig-class')); }
+                      if ($label.data('orig-label')) { $label.text($label.data('orig-label')); }
+                  }
+              });
+          });
+
 
 
         // Row: Delete

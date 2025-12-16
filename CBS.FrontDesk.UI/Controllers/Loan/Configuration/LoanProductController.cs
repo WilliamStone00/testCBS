@@ -182,7 +182,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
 
         }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
-        {
+      {
             ViewBag.Key = KEY;
             if (path == "list")
             {

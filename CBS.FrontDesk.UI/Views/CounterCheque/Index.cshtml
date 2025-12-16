@@ -92,6 +92,109 @@
     <script>
     (function ($) {
         'use strict';
+        $(document).ready(function () {
+
+            // SEARCH CUSTOMER BUTTON
+            $("#searchCustomerBtn").click(function () {
+                let customerId = $("#customerIdInput").val();
+                let branchId = $("#BranchId").val();
+
+                if (!branchId) { appalert("Please select a branch", 3, 1); return; }
+                if (!customerId) { appalert("Please enter a Customer ID", 3, 1); return; }
+
+                $.ajax({
+                    url: '/CounterCheque/Search',
+                    type: 'GET',
+                    data: { CustomerId: customerId, BranchId: branchId },
+                    success: function (response) {
+                        let $dropdown = $("#ChequeBookId");
+                        $dropdown.empty().append(`<option value="">--- Select Cheque Book Type ---</option>`);
+
+                        if (Array.isArray(response) && response.length > 0) {
+                            $.each(response, function (i, item) {
+                                console.log("Appending option:", item.checkBookId, item.name); // debug
+                                $dropdown.append(`<option value="${item.checkBookId}">${item.name}</option>`);
+                            });
+
+                            $("#chequeTypeDiv").show();
+
+                            // Re-initialize select2 after populating
+                            if ($dropdown.hasClass("select2-hidden-accessible")) {
+                                $dropdown.select2("destroy").select2();
+                            } else {
+                                $dropdown.select2();
+                            }
+
+                            appalert("Customer cheque details loaded successfully", 1, 1);
+                        } else {
+                            $("#chequeTypeDiv, #detailsBlock").hide();
+                            appalert("No cheque books found for this customer", 3, 1);
+                        }
+                    },
+                    error: function (err) {
+                        console.error("Search AJAX error:", err);
+                        $("#chequeTypeDiv, #detailsBlock").hide();
+                        if (err.status === 401) window.location.href = '/Authentication/Login';
+                        else appalert("Unexpected error: " + err.statusText, 0, 1);
+                    }
+                });
+            });
+
+            // DROPDOWN CHANGE – GET FULL CHEQUE DETAILS
+            $(document).on("change", "#ChequeBookId", function () {
+                let chequeBookId = $(this).val();
+                console.log("Selected chequeBookId from dropdown:", chequeBookId); // debug
+
+                if (!chequeBookId) {
+                    console.log("No chequeBookId selected, hiding detailsBlock");
+                    $("#detailsBlock").hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: '/CounterCheque/GetChequeFullDetails',
+                    type: 'GET',
+                    data: { chequeBookId: chequeBookId },
+                    beforeSend: function () {
+                        console.log("Sending AJAX request with chequeBookId:", chequeBookId);
+                    },
+                    success: function (partialView) {
+                        console.log("AJAX success, partial view received");
+                        $("#datalistingview").html(partialView);
+                        $("#detailsBlock").show();
+                        appalert("Cheque book details loaded successfully", 1, 1);
+                    },
+                    error: function (err) {
+                        console.error("AJAX error:", err);
+                        $("#detailsBlock").hide();
+                        appalert("Unable to load cheque book details", 3, 1);
+                    }
+                });
+            });
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         window.showActionModal = function(action, id) {
             const url = `@Url.Action("InitializeData", "CounterCheque")`;

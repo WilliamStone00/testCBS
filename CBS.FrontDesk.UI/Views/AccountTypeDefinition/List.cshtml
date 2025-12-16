@@ -1,0 +1,740 @@
+﻿@{
+    ViewBag.Title = "Account Type Definitions - List";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title text-primary mb-1">
+                    <i class="mdi mdi-account-switch me-2"></i>Account Type Definitions
+                </h4>
+                <p class="card-text small text-muted mb-0">
+                    Manage all account type definitions in the system
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Container -->
+<div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1056; max-width: 400px;"></div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>Confirm Action
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction" data-bs-dismiss="modal">
+                    <i class="mdi mdi-close me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmAction">
+                    <i class="mdi mdi-check me-1"></i>Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit/Create Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Header section inside modal but outside modal-body -->
+            <div class="row mx-3 mt-3">
+                <div class="col-12">
+                    <div class="card bg-light">
+                        <div class="card-body text-center py-3">
+                            <h5 class="modal-title text-primary" id="editModalTitle">Create Member Ordinary Account Type</h5>
+                            <p class="card-text mb-2">
+                                Define and manage different types of accounts in the system.
+                            </p>
+                            <div class="alert alert-info py-2 mb-0">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                Account types define the classification and behavior of accounts in the system.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body" id="editModalBody">
+                <!-- Form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary me-2"
+                        onclick="refreshDataTable()"
+                        data-bs-toggle="tooltip"
+                        title="Refresh Table">
+                    <i class="mdi mdi-refresh me-1"></i> Refresh
+                </button>
+                <button type="button"
+                        class="btn btn-sm btn-primary"
+                        onclick="showCreateForm()"
+                        data-bs-toggle="tooltip"
+                        title="Add New Account Type">
+                    <i class="mdi mdi-plus me-1"></i> Add Account Type
+                </button>
+            </div>
+            <div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="showInactive"
+                           onchange="toggleInactive()">
+                    <label class="form-check-label small" for="showInactive">Show Inactive</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DataTable Container -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover" id="myDataTable" style="width:100%">
+                <colgroup>
+                    <col style="width: 15%;">
+                    <col style="width: 30%;">
+                    <col style="width: 25%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                </colgroup>
+                <thead class="table-light">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Parent</th>
+                        <th class="text-center">Order</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* make table widths stable */
+        #myDataTable {
+            font-size: 0.9rem;
+            table-layout: fixed; /* important for predictable widths */
+            width: 100% !important;
+        }
+
+            #myDataTable th {
+                font-weight: 600;
+                background-color: #f8f9fa;
+                vertical-align: middle;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            /* cells: allow text overflow ellipsis; allow second column to wrap but limit its max-width */
+            #myDataTable td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                vertical-align: middle;
+            }
+
+                /* Name column (2nd) — allow multi-line but limit width so layout stays stable */
+                #myDataTable td:nth-child(2) {
+                    white-space: normal;
+                    max-width: 320px; /* adjust to suit your layout */
+                }
+
+                /* Parent column — allow small wrap */
+                #myDataTable td:nth-child(3) {
+                    white-space: normal;
+                    max-width: 300px;
+                }
+
+                /* Order / Status / Actions center vertically */
+                #myDataTable td.text-center, #myDataTable th.text-center {
+                    vertical-align: middle;
+                }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px 8px;
+            margin-left: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        /* limit <code> width so it doesn't expand column */
+        #myDataTable td code {
+            display: block;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Global variables
+        let dataTable = null;
+        let showInactive = false;
+
+        $(document).ready(function() {
+            initializeDataTable();
+            enableTooltips();
+
+            // Handle browser back/forward buttons
+            $(window).on('popstate', function() {
+                refreshDataTable();
+            });
+
+            // Confirmation modal cleanup
+            $('#confirmationModal').on('hidden.bs.modal', function() {
+                $('#confirmationModal .modal-body').empty();
+            });
+
+            // Initialize Select2 when edit modal is shown
+            $('#editModal').on('shown.bs.modal', function() {
+                initializeSelect2();
+            });
+
+            // Cleanup Select2 when modal is hidden
+            $('#editModal').on('hidden.bs.modal', function() {
+                destroySelect2();
+            });
+
+            // Bind form submission when modal is shown (delegated approach)
+            $(document).on('submit', '#accountTypeForm', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isEdit = !!$(this).find('input[name="Id"]').val();
+                submitWithConfirmation(this, '@Url.Action("CreateOrUpdate", "AccountTypeDefinition")', isEdit);
+                return false;
+            });
+        });
+
+        function initializeDataTable() {
+            if (dataTable) return;
+
+            dataTable = $('#myDataTable').DataTable({
+                processing: false,
+                serverSide: false,
+                autoWidth: false,
+                responsive: false,
+                ajax: {
+                    url: '@Url.Action("GetAccountTypeDEF", "AccountTypeDefinition")',
+                    type: 'GET',
+                    data: function(d) {
+                        d.includeInactive = showInactive;
+                    },
+                    dataSrc: 'data'
+                },
+                columns: [
+                    {
+                        data: 'Code',
+                        className: 'fw-semibold',
+                        render: function(data, type, row) {
+                            return data ? `<code>${data}</code>` : '';
+                        }
+                    },
+                    {
+                        data: 'Name',
+                        render: function(data, type, row) {
+                            const shortName = row.ShortName ? `<br><small class="text-muted">${row.ShortName}</small>` : '';
+                            return `<strong>${data}</strong>${shortName}`;
+                        }
+                    },
+                    {
+                        data: 'ParentId',
+                        render: function(data, type, row) {
+                            return data || '-';
+                        }
+                    },
+                    {
+                        data: 'DisplayOrder',
+                        className: 'text-center',
+                        render: function(data) {
+                            return `<span class="badge bg-info">${data}</span>`;
+                        }
+                    },
+                    {
+                        data: 'IsActive',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data ?
+                                '<span class="badge bg-success">Active</span>' :
+                                '<span class="badge bg-danger">Inactive</span>';
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            const safeName = (row.Name || '').replace(/'/g, "\\'");
+                            return `
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-primary"
+                                            onclick="viewDetails('${data}')"
+                                            data-bs-toggle="tooltip" title="View Details">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary"
+                                            onclick="editItem('${data}')"
+                                            data-bs-toggle="tooltip" title="Edit">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger"
+                                            onclick="deleteItem('${data}', '${safeName}')"
+                                            data-bs-toggle="tooltip" title="Delete">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                columnDefs: [
+                    { targets: 0, width: '15%' },
+                    { targets: 1, width: '30%' },
+                    { targets: 2, width: '25%' },
+                    { targets: 3, width: '10%' },
+                    { targets: 4, width: '10%' },
+                    {
+                        targets: 5,
+                        width: '10%',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                order: [[0, 'asc']],
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                language: {
+                    emptyTable: "No account types found",
+                    zeroRecords: "No matching account types found",
+                    info: "Showing _START_ to _END_ of _TOTAL_ account types",
+                    infoEmpty: "Showing 0 to 0 of 0 account types",
+                    infoFiltered: "(filtered from _MAX_ total account types)",
+                    search: "Search:",
+                    paginate: {
+                        first: '<i class="mdi mdi-chevron-double-left"></i>',
+                        last: '<i class="mdi mdi-chevron-double-right"></i>',
+                        next: '<i class="mdi mdi-chevron-right"></i>',
+                        previous: '<i class="mdi mdi-chevron-left"></i>'
+                    }
+                },
+                initComplete: function() {
+                    enableTooltips();
+                },
+                drawCallback: function() {
+                    enableTooltips();
+                }
+            });
+        }
+
+        function enableTooltips(scope) {
+            const root = scope || document;
+            const triggers = [].slice.call(root.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            triggers.forEach(el => {
+                try { new bootstrap.Tooltip(el); } catch (e) { /* ignore */ }
+            });
+        }
+
+        function refreshDataTable() {
+            if (dataTable) {
+                dataTable.ajax.reload(null, false);
+                appalert('Table refreshed', 1, 1);
+            }
+        }
+
+        function toggleInactive() {
+            showInactive = $('#showInactive').is(':checked');
+            refreshDataTable();
+        }
+
+        function viewDetails(id) {
+            $.ajax({
+                url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                type: 'GET',
+                data: {
+                    KEY: id,
+                    partialView: '_AccountTypeDetails',
+                    path: 'details'
+                },
+                beforeSend: function() {
+                    $('#detailsModalBody').html(`
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading details...</p>
+                        </div>
+                    `);
+                },
+                success: function(response) {
+                    $('#detailsModalBody').html(response);
+                    $('#detailsModal').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error loading details:', error);
+                    appalert('Error loading details', 4, 1);
+                }
+            });
+        }
+
+        function editItem(id) {
+            const isEdit = !!id;
+            const title = isEdit ? 'Edit Member Ordinary Account Type' : 'Create Member Ordinary Account Type';
+            $('#editModalTitle').text(title);
+
+            $.ajax({
+                url: '@Url.Action("InitializeData", "AccountTypeDefinition")',
+                type: 'GET',
+                data: {
+                    KEY: id || null,
+                    partialView: '_AccountTypeForm',
+                    path: isEdit ? 'edit' : 'new'
+                },
+                beforeSend: function() {
+                    $('#editModalBody').html(`
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading form...</p>
+                        </div>
+                    `);
+                },
+                success: function(response) {
+                    $('#editModalBody').html(response);
+
+                    // Re-parse validation
+                    try { $.validator.unobtrusive.parse($('#editModalBody')); } catch (e) { }
+
+                    loadParentDropdown(id);
+                    $('#editModal').modal('show');
+                    enableTooltips($('#editModal')[0]);
+                },
+                error: function(error) {
+                    console.error('Error loading form:', error);
+                    appalert('Error loading form', 4, 1);
+                }
+            });
+        }
+
+        function showCreateForm() {
+            editItem(null);
+        }
+
+        function loadParentDropdown(excludeId = null) {
+            $.ajax({
+                url: '@Url.Action("GetAccountTypesForDropdown", "AccountTypeDefinition")',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success && response.data) {
+                        let options = '<option value="">-- Select Parent --</option>';
+                        response.data.forEach(function(item) {
+                            if (item.id !== excludeId) {
+                                options += `<option value="${item.id}">${item.text}</option>`;
+                            }
+                        });
+
+                        const parentSelect = $('#ParentId');
+                        if (parentSelect.length) {
+                            parentSelect.html(options);
+
+                            // Initialize Select2 after options are loaded
+                            if ($.fn.select2 && parentSelect.hasClass('select2')) {
+                                parentSelect.select2({
+                                    theme: 'bootstrap-5',
+                                    placeholder: '-- Select Parent --',
+                                    allowClear: true,
+                                    width: '100%',
+                                    dropdownParent: $('#editModal')
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeSelect2() {
+            // Initialize all select2 elements within the modal
+            if ($.fn.select2) {
+                $('.select2', $('#editModal')).each(function() {
+                    const select = $(this);
+                    if (!select.hasClass('select2-hidden-accessible')) {
+                        select.select2({
+                            theme: 'bootstrap-5',
+                            placeholder: select.attr('placeholder') || '--- Select an option ---',
+                            allowClear: true,
+                            width: '100%',
+                            dropdownParent: $('#editModal')
+                        });
+                    }
+                });
+            }
+        }
+
+        function destroySelect2() {
+            // Destroy all select2 instances within the modal
+            if ($.fn.select2) {
+                $('.select2', $('#editModal')).each(function() {
+                    const select = $(this);
+                    if (select.hasClass('select2-hidden-accessible')) {
+                        select.select2('destroy');
+                    }
+                });
+            }
+        }
+
+        function deleteItem(id, name) {
+            const confirmMessage = `Are you sure you want to delete <strong>"${name}"</strong>?<br><br>This action cannot be undone.`;
+
+            if (window.alertify && typeof alertify.confirm === 'function') {
+                alertify.confirm(
+                    "Confirm Delete",
+                    confirmMessage,
+                    function () {
+                        executeDelete(id);
+                    },
+                    function () {
+                        appalert('Delete cancelled', 3, 1);
+                    }
+                ).set('labels', { ok: 'Delete', cancel: 'Cancel' });
+            } else {
+                if (confirm(`Are you sure you want to delete "${name}"?\n\nThis action cannot be undone.`)) {
+                    executeDelete(id);
+                } else {
+                    appalert('Delete cancelled', 3, 1);
+                }
+            }
+        }
+
+        function executeDelete(id) {
+            $.ajax({
+                url: '@Url.Action("Delete", "AccountTypeDefinition")',
+                type: 'POST',
+                data: { id: id },
+                success: function(response) {
+                    if (response.success) {
+                        appalert(response.message, 1, 1);
+                        refreshDataTable();
+                    } else {
+                        appalert(response.message || 'Error deleting account type', 4, 1);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    appalert('Error deleting account type: ' + error, 4, 1);
+                }
+            });
+        }
+
+        // Enhanced form submission with alertify confirmation
+        function submitWithConfirmation(form, url, isEdit) {
+            // First validate the form
+            var $form = $(form);
+
+            // Parse validation if not already done
+            if (!$form.data("validator")) {
+                $.validator.unobtrusive.parse(form);
+            }
+
+            // Validate form
+            if (!$form.valid()) {
+                appalert('Please correct the validation errors before submitting.', 2, 1);
+                return false;
+            }
+
+            // Get form data
+            var isMultipart = ($form.attr('enctype') || '').toLowerCase() === 'multipart/form-data';
+            var token = getAntiForgeryToken();
+            var $submit = $form.find('[type="submit"]').first();
+            var origHtml = $submit.data('orig-html') || $submit.html();
+            $submit.data('orig-html', origHtml);
+
+            // Create confirmation message
+            const actionText = isEdit ? 'update' : 'create';
+            const confirmMessage = `Are you sure you want to ${actionText} this account type?`;
+
+            var doAjax = function () {
+                $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
+
+                var ajaxOptions = {
+                    url: url,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            const successLevel = response.status === 'Exist' ? 3 :
+                                                response.status === 'Failed' ? 2 : 1;
+                            appalert(response.message || 'Operation successful', successLevel, 1);
+
+                            // Reset form if it was a create operation
+                            if (!isEdit) {
+                                form.reset();
+                                // Clear Select2 values
+                                if ($.fn.select2) {
+                                    $('.select2', $form).val(null).trigger('change');
+                                }
+                            }
+
+                            // Close modal and refresh table
+                            $('#editModal').modal('hide');
+                            refreshDataTable();
+                        } else {
+                            const errorLevel = response.status === 'Exist' ? 3 : 4;
+                            appalert(response.message || 'Operation failed', errorLevel, 1);
+
+                            // Show validation errors if any
+                            if (response.errors) {
+                                response.errors.forEach(function(error) {
+                                    appalert(error, 4, 1);
+                                });
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        var parsed = normalizeResponse(xhr.responseText);
+                        if (parsed && parsed.message) {
+                            appalert(parsed.message, parsed.success ? 1 : 4, 1);
+                        } else if (xhr.status === 401) {
+                            window.location.href = '/Authentication/Login';
+                        } else {
+                            appalert(xhr.statusText || 'Network error', 4, 1);
+                            console.error('Form submission error', xhr.status, xhr.responseText);
+                        }
+                    },
+                    complete: function () {
+                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                    }
+                };
+
+                if (isMultipart) {
+                    ajaxOptions.data = new FormData(form);
+                    ajaxOptions.processData = false;
+                    ajaxOptions.contentType = false;
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                } else {
+                    ajaxOptions.data = $form.serialize();
+                    if (token) ajaxOptions.headers = { 'RequestVerificationToken': token };
+                }
+
+                $.ajax(ajaxOptions);
+            };
+
+            // Show confirmation dialog using alertify
+            if (window.alertify && typeof alertify.confirm === 'function') {
+                try {
+                    alertify.confirm(
+                        "Confirm Action",
+                        confirmMessage,
+                        function () {
+                            doAjax();
+                        },
+                        function () {
+                            appalert('Transaction cancelled', 3, 1);
+                            $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                        }
+                    ).set('labels', { ok: 'Confirm', cancel: 'Cancel' });
+                } catch (e) {
+                    console.error('Alertify error:', e);
+                    // Fallback to native confirm
+                    if (confirm(confirmMessage)) {
+                        doAjax();
+                    } else {
+                        appalert('Transaction cancelled', 3, 1);
+                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                    }
+                }
+            } else {
+                // Fallback to native confirm
+                if (confirm(confirmMessage)) {
+                    doAjax();
+                } else {
+                    appalert('Transaction cancelled', 3, 1);
+                    $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
+                }
+            }
+
+            return false;
+        }
+
+        // Helper functions
+        function getAntiForgeryToken() {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            if (!token) {
+                token = $('input[name="X-XSRF-TOKEN"]').val();
+            }
+            return token;
+        }
+
+        function normalizeResponse(raw) {
+            if (!raw) return null;
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                if (typeof raw === 'object') return raw;
+                return { message: raw, success: false };
+            }
+        }
+    </script>
+}

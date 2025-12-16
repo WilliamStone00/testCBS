@@ -97,7 +97,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
     public class JournalHead
     {
         public string Id { get; set; }
-        public string Reference { get; set; } 
+        public string Reference { get; set; }
         public string Narrative { get; set; } = null;
         public DateTime AccountingDate { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -106,7 +106,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string PostMode { get; set; } = null;
         public string OperationCode { get; set; } 
         public string BranchId { get; set; }
-        public string BranchNamw { get; set; }
+        public string BranchName { get; set; }
         public string Memo { get; set; } = null;
         public string Stage { get; set; }
         public string State { get; set; }
@@ -119,7 +119,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string CashDenomsJson { get; set; } = null;
         public string CashTillId { get; set; } = null;
         public decimal CashDenomsTotal { get; set; }
-        public string BranchName { get; set; }
+       
         public DateTime? ClosedAtUtc { get; set; }
         public string TicketType { get; set; }
 
@@ -144,7 +144,48 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string ModifiedBy { get; set; }
         public string WorkflowTicketNotes { get; set; } = null;
         public string CreatedBy { get; set; }
-       
+
+        public string JournalStatus { get; set; }
+        public string DailyOperator { get; set; }
+        public string Source { get; set; }
+        public DateTime? ApprovalDate { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTime? InitiationDate { get; set; }
+        public string InitiatedBy { get; set; }
+        public DateTime? RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
+
+
+    }
+
+    public class ExportWorkflowRequest
+    {
+        public List<WorkflowTicket> WorkflowData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+    }
+
+    //public class WorkflowTicketQuery
+    //{
+    //    public DataTableOptions Options { get; set; }
+    //    // Add other filter properties as needed
+    //}
+
+
+    public class ExportJournalRequest
+    {
+        public List<JournalHead> JournalData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public JournalEntryQuery Filters { get; set; }
+    }
+
+    public class ExportOptions
+    {
+        public string Format { get; set; }
+        public bool IncludeSummary { get; set; }
+        public string FileName { get; set; }
+        public string ReportType { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 
     // ==============================================
@@ -256,8 +297,9 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public decimal TotalDebit { get; set; }
         public string TicketType { get; set; }
         public decimal InitiatedAmount { get; set; }
+        public bool IsInterBranch { get; set; }
 
-        
+
     }
    
 
@@ -273,7 +315,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string Title { get; set; } = null;
         
         public string PayloadJson { get; set; } = null;
-        public string Number { get; set; } 
+        public string Number { get; set; } = null;
         public DateTime IssuedAtUtc { get; set; } = DateTime.UtcNow;
         public string Payor { get; set; } = null;
         public string Memo { get; set; } = null;
@@ -307,9 +349,41 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? EndAccountingDate { get; set; }
         public DateTime? StartDate { get; set; }    // For filtering creation date range
         public DateTime? EndDate { get; set; }
-        public string TicketSource { get; set; } 
+        public string TicketSource { get; set; }
+        public string JournalStatus { get; set; }
+        public string DailyOperator { get; set; }
+        public bool IsInterbranch { get; set; }
+        public string Source { get; set; }
     }
 
+
+    public class GetFirlterData
+    {
+        public string BranchId { get; set; }
+        public string JournalStatus { get; set; }
+        public string Source { get; set; }
+    }
+
+    public class FilterResponse
+    {
+        public List<OperationCodeDto> OperationCodes { get; set; }
+        public List<InitiatedByDto> InitiatedBy { get; set; }
+        public List<ApprovedByDto> ApprovedBy { get; set; }
+    }
+
+    public class OperationCodeDto
+    {
+        public string Code { get; set; }
+    }
+
+    public class InitiatedByDto
+    {
+        public string Name { get; set; }
+    }
+    public class ApprovedByDto
+    {
+        public string Name { get; set; }
+    }
     public class GetallWorkFlowTicketsQuery
     {
 
