@@ -245,7 +245,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
             model.SourceBranchId = model.BranchId;
             model.DestinationBranchId = model.BranchId;
-            
+
             try
             {
                 ApiResponse<ResponseObject<JournalApprovalResponse>> result = null;

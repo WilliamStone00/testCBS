@@ -34,6 +34,7 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public string BranchId { get; set; }
         public string Approver { get; set; }
         public string ApprovalName { get; set; }
+        public string ApprovedByName { get; set; }
         public string DestinationBranchId { get; set; }
         public string TicketType { get; set; }
 
