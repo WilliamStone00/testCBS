@@ -1,5 +1,12 @@
 ﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.MemberOperationPanel
 @using Resources
+
+@{
+    var isReschedule =
+        Model?.LoanApplication?.LoanApplicationType != null &&
+        Model.LoanApplication.LoanApplicationType.Equals("Reschedule", StringComparison.OrdinalIgnoreCase);
+}
+
 <div class="col">
     <div class="row my-4">
         <div class="accordion" id="collapsibleSection">
@@ -23,8 +30,38 @@
                      data-bs-parent="#collapsibleSection">
 
                     <div class="accordion-body">
+
                         <!-- OTP Sending Section -->
-                        @Html.Partial("_SendOTP")
+                        @if (!isReschedule)
+                        {
+                            @Html.Partial("_SendOTP")
+                        }
+                        else
+                        {
+                            <!-- ✅ Beautiful notification (matches form design) -->
+                            <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+                                <legend class="float-none w-auto px-2 text-info fw-bold">
+                                    <i class="mdi mdi-shield-check-outline me-1"></i>
+                                    OTP not required
+                                </legend>
+
+                                <div class="card border-0 shadow-sm rounded-3">
+                                    <div class="card-body d-flex align-items-start gap-3">
+                                        <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center"
+                                             style="width:44px;height:44px;">
+                                            <i class="mdi mdi-information-outline text-info fs-3"></i>
+                                        </div>
+
+                                        <div class="flex-grow-1">
+                                            <div class="fw-semibold mb-1">Rescheduling approval</div>
+                                            <div class="text-muted">
+                                                This is a <b>rescheduling</b> process. OTP verification is disabled for this operation.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        }
 
                         <!-- Loan Approval Form -->
                         @using (Html.BeginForm("Update", "MemberOperation", FormMethod.Post,
@@ -32,83 +69,106 @@
                         {
                             @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.Id)
                             @Html.HiddenFor(m => m.LoanApplication.Id)
-                        <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
-                            <legend class="float-none w-auto px-2 fw-bold text-primary">
-                                <i class="mdi mdi-check-decagram me-1"></i> Approval Details
-                            </legend>
 
-                            <div class="row g-4">
+                            <!-- ✅ ensure OTP posts even when disabled -->
+                            if (isReschedule)
+                            {
+                                @Html.HiddenFor(m => m.UpdateLoanApplicationStatus.OTPCode, new { Value = "0000" })
+                                <!-- If the helper above doesn't set value in your MVC version, keep the raw input: -->
+                                <input type="hidden" name="UpdateLoanApplicationStatus.OTPCode" value="0000" />
+                            }
 
-                                <!-- Accounting Date -->
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline position-relative">
-                                        @Html.TextBoxFor(
-                                            m => m.UpdateLoanApplicationStatus.AccountingDate,
-                                            Model.UpdateLoanApplicationStatus.AccountingDate == default(DateTime)
-                                                ? DateTime.Today.ToString("yyyy-MM-dd")
-                                                : "{0:yyyy-MM-dd}",
-                                            new
+                            <fieldset class="fieldset-custom border rounded-3 p-3 mb-3">
+                                <legend class="float-none w-auto px-2 fw-bold text-primary">
+                                    <i class="mdi mdi-check-decagram me-1"></i> Approval Details
+                                </legend>
+
+                                <div class="row g-4">
+
+                                    <!-- Accounting Date -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline position-relative">
+                                            @Html.TextBoxFor(
+                                                m => m.UpdateLoanApplicationStatus.AccountingDate,
+                                                Model.UpdateLoanApplicationStatus.AccountingDate == default(DateTime)
+                                                    ? DateTime.Today.ToString("yyyy-MM-dd")
+                                                    : "{0:yyyy-MM-dd}",
+                                                new
+                                                {
+                                                    @class = "form-control accounting-date",
+                                                    type = "date",
+                                                    data_date_default = "today",
+                                                    data_date_max = "today"
+                                                })
+                                            @Html.ValidationMessageFor(
+                                                m => m.UpdateLoanApplicationStatus.AccountingDate, "",
+                                                new { @class = "text-danger" })
+                                            <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
+                                        </div>
+                                        <small class="text-muted">
+                                            This date will be used for accounting entries tied to this approval.
+                                        </small>
+                                    </div>
+
+                                    <!-- OTP Code -->
+                                    <div class="col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode,
+                                                new
+                                                {
+                                                    @class = "form-control",
+                                                    placeholder = "Enter OTP",
+                                                    value = "0000"
+                                                })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "",
+                                                new { @class = "text-danger" })
+                                            <label>
+                                                @(isReschedule
+                                                    ? "OTP not required for rescheduling"
+                                                    : $"Enter OTP code from {Model.Customer.name}")
+                                            </label>
+
+                                            @if (isReschedule)
                                             {
-                                                @class = "form-control accounting-date",
-                                                type = "date",
-                                                data_date_default = "today",
-                                                data_date_max = "today"
-                                            })
-                                        @Html.ValidationMessageFor(
-                                            m => m.UpdateLoanApplicationStatus.AccountingDate, "",
-                                            new { @class = "text-danger" })
-                                        <label>@(Member_Global_LoanApplication.AccountingDate ?? "Accounting Date")</label>
+                                                <small class="text-muted">OTP is disabled for rescheduling approvals (default: 0000).</small>
+                                            }
+                                        </div>
                                     </div>
-                                    <small class="text-muted">
-                                        This date will be used for accounting entries tied to this approval.
-                                    </small>
-                                </div>
 
-                                <!-- OTP Code -->
-                                <div class="col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextBoxFor(m => m.UpdateLoanApplicationStatus.OTPCode,
-                                            new { @class = "form-control", placeholder = "Enter OTP" })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "",
-                                            new { @class = "text-danger" })
-                                        <label>Enter OTP code from @Model.Customer.name</label>
+                                    <!-- Approval Status -->
+                                    <div class="col-md-9">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.DropDownListFor(
+                                                m => m.UpdateLoanApplicationStatus.ApprovalStatus,
+                                                new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"),
+                                                "---Select---",
+                                                new { @class = "form-control select2", @search = "true" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "",
+                                                new { @class = "text-danger" })
+                                            <label>Select approval status</label>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Approval Status -->
-                                <div class="col-md-9">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(
-                                            m => m.UpdateLoanApplicationStatus.ApprovalStatus,
-                                            new SelectList(ViewBag.LoanApplicationStatus, "Value", "Text"),
-                                            "---Select---",
-                                            new { @class = "form-control select2", @search = "true" })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalStatus, "",
-                                            new { @class = "text-danger" })
-                                        <label>Select approval status</label>
+                                    <!-- Approval Comment -->
+                                    <div class="col-md-12">
+                                        <div class="form-floating form-floating-outline">
+                                            @Html.TextAreaFor(
+                                                m => m.UpdateLoanApplicationStatus.ApprovalComment,
+                                                new { @class = "form-control", style = "height: 200px;", placeholder = "Add comment" })
+                                            @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "",
+                                                new { @class = "text-danger" })
+                                            <label>Comment</label>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Approval Comment -->
-                                <div class="col-md-12">
-                                    <div class="form-floating form-floating-outline">
-                                        @Html.TextAreaFor(
-                                            m => m.UpdateLoanApplicationStatus.ApprovalComment,
-                                            new { @class = "form-control", style = "height: 200px;", placeholder = "Add comment" })
-                                        @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.ApprovalComment, "",
-                                            new { @class = "text-danger" })
-                                        <label>Comment</label>
-                                    </div>
+                                <!-- Submit Button -->
+                                <div class="mt-4 text-end">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="mdi mdi-content-save-check-outline me-1"></i> Submit Approval
+                                    </button>
                                 </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="mt-4 text-end">
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="mdi mdi-content-save-check-outline me-1"></i> Submit Approval
-                                </button>
-                            </div>
-                        </fieldset>
+                            </fieldset>
                         }
                     </div>
                 </div>

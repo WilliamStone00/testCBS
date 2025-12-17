@@ -33,10 +33,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 			await GetValues();
 			return View(new MobileMoney());
 		}
+
 		public ActionResult Initilization()
 		{
 			return View(new MobileMoney());
 		}
+
 		[HttpPost]
 		public async Task<ActionResult> Create(MobileMoney model)
 		{
@@ -77,6 +79,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.MobileMoneyV2
 			ViewBag.Branches = branches;
 			ViewBag.Accounts = newlistng;
 		}
+
 		public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
 		{
 			if (path == "list")

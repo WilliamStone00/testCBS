@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Global Configuration";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Page Header -->
+        <div class="card bg-light mb-2">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-cog-outline me-2"></i> Global Configuration
+                </h1>
+                <p class="card-text text-muted">
+                    Manage cheque configuration parameters globally and consistently.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="card mb-1">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span>
+            <i class="mdi mdi-information-outline me-2"></i> Tips
+        </span>
+        <button class="btn btn-light btn-sm"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseGlobalConfigTips"
+                aria-expanded="false"
+                aria-controls="collapseGlobalConfigTips">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseGlobalConfigTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    Ensure minimum and maximum cheque limits are correctly defined.
+                </li>
+                <li>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i>
+                    Cheque validity days must reflect operational policies.
+                </li>
+                <li>
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i>
+                    Centralised mode affects all branches.
+                </li>
+                <li>
+                    <i class="mdi mdi-information-outline text-primary me-2"></i>
+                    Only one global configuration should be active.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card shadow-sm">
+            <div id="accordionPopoutIcon" class="accordion accordion-popout">
+                <div class="accordion-item active">
+
+                    <h2 class="accordion-header text-body" id="accordionGlobalConfig">
+                        <button type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionGlobalConfigBody"
+                                aria-expanded="true"
+                                aria-controls="accordionGlobalConfigBody">
+                            <i class="mdi mdi-cog me-2"></i> Global Configuration
+                        </button>
+                    </h2>
+
+                    <div id="accordionGlobalConfigBody"
+                         class="accordion-collapse collapse show"
+                         data-bs-parent="#accordionPopoutIcon">
+
+                        <div class="accordion-body">
+                            <div id="mainviewChange">
+
+                                <!-- ACTION BUTTONS -->
+                                <div class="card mb-1">
+                                    <div class="card-body d-flex justify-content-end align-items-center">
+                                        <a type="button"
+                                           onclick="LoadDataGen('GlobalConfig','myDataTable','_Data',0,'datalistingview')"
+                                           class="btn btn-label-primary btn-sm me-2"
+                                           data-bs-toggle="tooltip"
+                                           title="View List">
+                                            <i class="mdi mdi-view-list mdi-18px"></i> View List
+                                        </a>
+
+                                        <a type="button"
+                                           onclick="AddORUpdateGen(null,'datalistingview','_Create','new','GlobalConfig')"
+                                           class="btn btn-label-secondary btn-sm"
+                                           data-bs-toggle="tooltip"
+                                           title="Add Configuration">
+                                            <i class="mdi mdi-plus mdi-18px"></i> New Configuration
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- DYNAMIC CONTENT -->
+                                <div id="datalistingview">
+                                    @Html.Partial("_Create")
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DETAILS MODAL -->
+<div class="modal fade"
+     id="globalConfigDetailsModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header p-2">
+                <header class="w-100 text-center">
+                    <h4 class="text-primary fw-bold mb-1">
+                        <i class="mdi mdi-cog-outline me-2"></i> Global Configuration Details
+                    </h4>
+                    <p class="text-muted mb-0">
+                        View global cheque configuration details.
+                    </p>
+                    <hr style="border: 1px solid rgba(128, 128, 128, 0.5);" />
+                </header>
+            </div>
+
+            <div class="modal-body p-2">
+                <div id="globalConfigDetailsContent">
+                    <!-- Partial view loaded here -->
+                </div>
+            </div>
+
+            <div class="modal-footer py-2">
+                <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function showGlobalConfigDetails(id) {
+            $('#globalConfigDetailsContent').html('<p>Loading...</p>');
+
+            $.ajax({
+                url: '/GlobalConfig/GetGlobalConfigPartialView',
+                type: 'GET',
+                data: { Key: id },
+                success: function (html) {
+                    $('#globalConfigDetailsContent').html(html);
+                    $('#globalConfigDetailsModal').modal('show');
+                },
+                error: function () {
+                    $('#globalConfigDetailsContent').html('<p>Error loading details.</p>');
+                    $('#globalConfigDetailsModal').modal('show');
+                }
+            });
+        }
+    </script>
+}
