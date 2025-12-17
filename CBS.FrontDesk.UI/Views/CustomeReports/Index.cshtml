@@ -46,7 +46,7 @@
         font-weight: 600;
         white-space: nowrap;
         text-decoration: none;
-        padding: 6px 10px;
+        padding: 4px 10px;
         border-radius: 4px;
         display: inline-flex;
         align-items: center;
@@ -496,61 +496,68 @@
             const reportName = $('#ReportType option:selected').text();
             const sourceMode = $('#SourceMode option:selected').text();
 
-            // Normalize backend response to a list
-            const reports = Array.isArray(response?.data)
-                ? response.data
-                : response?.data
-                    ? [response.data]
-                    : [response];
+            // ✅ Backend now sends an array of files
+            const files = response?.files || [];
+
+            if (!files.length) {
+                $('#reportTableBody').html(`
+            <tr>
+                <td colspan="4" class="text-center">
+                    No files available
+                </td>
+            </tr>
+        `);
+                return;
+            }
 
             let rowsHtml = '';
 
-            reports.forEach((item) => {
+            // Determine controller once
+            let controllerName = '';
+            switch (reportTypeValue.toLowerCase()) {
+                case 'trial balance 6 columns':
+                    controllerName = 'TrialBalance6Columns';
+                    break;
+                case 'trial balance 4 columns':
+                    controllerName = 'TrialBalance4Columns';
+                    break;
+                case 'account statement':
+                    controllerName = 'AccntStatement';
+                    break;
+                case 'bs':
+                    controllerName = 'BalanceSheet';
+                    break;
+                case 'je':
+                    controllerName = 'JournalEntries';
+                    break;
+                default:
+                    controllerName = 'TrialBalance6Columns';
+            }
 
-                // Determine the controller based on report type
-                let controllerName = '';
-                switch (reportTypeValue.toLowerCase()) {
-                    case 'trial balance 6 columns':
-                        controllerName = 'TrialBalance6Columns';
-                        break;
-                    case 'trial balance 4 columns':
-                        controllerName = 'TrialBalance4Columns';
-                        break;
-                    case 'account statement':
-                        controllerName = 'AccntStatement';
-                        break;
-                    case 'bs':
-                        controllerName = 'BalanceSheet';
-                        break;
-                    case 'je':
-                        controllerName = 'JournalEntries';
-                        break;
-                    default:
-                        controllerName = 'TrialBalance6Columns';
-                }
-
+            // ✅ One row per file
+            files.forEach(file => {
                 rowsHtml += `
             <tr>
-                <td class="report-name-column">${reportName}</td>
-                <td >${reportName}</td>
-                <td >${sourceMode}</td>
+                <td class="report-name-column">${file}</td>
+                <td>${reportName}</td>
+                <td>${sourceMode}</td>
                 <td class="actions-cell text-center">
-                   <div class="actions-container">
-                    <a href="javascript:void(0)"
-                       class="report-action-link btnExcel"
-                       data-controller="${controllerName}"
-                       data-file="${item?.downloadFile || ''}">
-                        <i class="mdi mdi-file-excel-outline"></i> Excel
-                    </a>
+                    <div class="actions-container">
+                        <a href="javascript:void(0)"
+                           class="report-action-link btnExcel"
+                           data-controller="${controllerName}"
+                           data-file="${file}">
+                            <i class="mdi mdi-file-excel-outline"></i> Excel
+                        </a>
 
-                    <span class="action-separator"></span>
+                        <span class="action-separator"></span>
 
-                    <a href="javascript:void(0)"
-                       class="report-action-link btnPdf"
-                       data-controller="${controllerName}">
-                        <i class="mdi mdi-file-pdf-box"></i> PDF
-                    </a>
-                </div>
+                        <a href="javascript:void(0)"
+                           class="report-action-link btnPdf"
+                           data-controller="${controllerName}">
+                            <i class="mdi mdi-file-pdf-box"></i> PDF
+                        </a>
+                    </div>
                 </td>
             </tr>
         `;
@@ -558,17 +565,12 @@
 
             $('#reportTableBody').html(rowsHtml);
 
-            // Excel download
+            // ✅ Excel download
             $('.btnExcel').off().on('click', function () {
                 const controller = $(this).data('controller');
                 const file = $(this).data('file');
 
-                if (!file) {
-                    alert("Download file not found in response.");
-                    return;
-                }
-
-                window.location = `/${controller}/Download?file=${file}`;
+                window.location = `/${controller}/Download?file=${encodeURIComponent(file)}`;
             });
 
             // PDF print
@@ -577,6 +579,7 @@
                 Reprint(controller);
             });
         }
+
 
         $(document).ready(function () {
 
