@@ -211,11 +211,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<JournalApprovalResponse> ApproveSourceAsync(JournalApproval model)
+        public async Task<ApiResponse< ResponseObject<JournalApprovalResponse>>> ApproveSourceAsync(JournalApproval model)
         {
             model.BranchId = null;
             model.DestinationBranchId = null;
             model.TicketType = null;
+            model.Approve = true;
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -223,7 +224,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveSourceJournalEntry, model); // now sending full model
-                return apiResponse.ApiResponseData.Data;
+               /* if (apiResponse.IsSuccess)
+                {
+                    return apiResponse?.ApiResponseData?.Data;
+                }*/
+                return apiResponse;
+               
             }
             catch (Exception ex)
             {
@@ -231,7 +237,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<JournalApprovalResponse> ApproveDestinationAsync(JournalApproval model)
+        public async Task<ApiResponse<ResponseObject<JournalApprovalResponse>>> ApproveDestinationAsync(JournalApproval model)
         {
 
             model.DestinationBranchId = model.BranchId;
@@ -249,7 +255,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                     model
                 );
 
-                return apiResponse?.ApiResponseData?.Data;
+                return apiResponse;
             }
             catch (Exception ex)
             {
@@ -262,7 +268,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
 
 
         // REJECT Journal Entry
-        public async Task<JournalApprovalResponse> ApproveMemberReconciliationAsync(JournalApproval model)
+        public async Task<ApiResponse<ResponseObject<JournalApprovalResponse>>> ApproveMemberReconciliationAsync(JournalApproval model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -271,7 +277,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveMemberReconciliation, model); // now sending full model
-                return apiResponse.ApiResponseData.Data;
+                return apiResponse;
             }
             catch (Exception ex)
             {
@@ -279,7 +285,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             }
         }
 
-        public async Task<JournalApprovalResponse> ApproveCashReconciliationAsync(JournalApproval model)
+        public async Task<ApiResponse<ResponseObject<JournalApprovalResponse>>> ApproveCashReconciliationAsync(JournalApproval model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -288,7 +294,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveCashReconciliation, model); // now sending full model
-                return apiResponse.ApiResponseData.Data;
+                return apiResponse;
             }
             catch (Exception ex)
             {
@@ -297,7 +303,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         }
 
 
-        public async Task<JournalApprovalResponse> RejectAsync(JournalApproval model)
+        public async Task<ApiResponse<ResponseObject<JournalApprovalResponse>>> RejectAsync(JournalApproval model)
         {
             
             if (model == null)
@@ -307,7 +313,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
                     APICallHelper.ApproveSourceJournalEntry, model); // now sending full model
-                return apiResponse.ApiResponseData.Data;
+                return apiResponse;
             }
             catch (Exception ex)
             {

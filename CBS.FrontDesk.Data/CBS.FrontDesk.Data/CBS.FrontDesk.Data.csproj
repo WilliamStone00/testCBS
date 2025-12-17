@@ -151,6 +151,7 @@
     <Compile Include="Entity\AccountingV2\LiaisonAccountConfiguration\LiaisonAccountConfigurationDto.cs" />
     <Compile Include="Entity\AccountingV2\LiaisonMappingV2\LiaisonMapping.cs" />
     <Compile Include="Entity\AccountingV2\MobileMoneyV2\MobileMoney.cs" />
+    <Compile Include="Entity\AccountingV2\ReconciledLine\Reconciled.cs" />
     <Compile Include="Entity\AccountingV2\ReportingV2\ReportDefinition\ReportDefinition.cs" />
     <Compile Include="Entity\AccountingV2\ReportingV2\ReportLineMapping\ReportLineMapping.cs" />
     <Compile Include="Entity\AccountingV2\ReportingV2\ReportLine\ReportLine.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\BranchAccountTreeDto.cs" />
     <Compile Include="Entity\Accounting V2\HoPcmfAccount\HoPcmfAccountDto.cs" />
     <Compile Include="Entity\AccountingV2\CashReconciliation\CashAndVaultInit.cs" />
+    <Compile Include="Entity\AccountingV2\SharedMonth\SharedMonthSimulation.cs" />
     <Compile Include="Entity\Accounting\Acknowledge.cs" />
     <Compile Include="Entity\Accounting\BlacklistAccount.cs" />
     <Compile Include="Entity\Accounting\Class1.cs" />

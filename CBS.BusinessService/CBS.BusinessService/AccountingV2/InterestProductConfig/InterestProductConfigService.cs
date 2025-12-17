@@ -40,6 +40,10 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
         {
             try
             {
+                model.ProductType = "Savings";
+                model.ProductName = "Loan";
+                model.AccountingYearId = "00000000000000";
+                model.Command = "Create";
                 if (model.BranchId == null)
                 {
                     model.BranchId = "Global Configuration"; // Assuming BranchId is a string. If int?, handle differently.
@@ -147,8 +151,8 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"API Error (Interest Product Config): {ex.Message}");
-                throw new Exception($"Interest Product Config Service unavailable: {ex.Message}", ex);
+                System.Diagnostics.Debug.WriteLine($" {ex.Message}");
+                throw new Exception($" {ex.Message}", ex);
             }
         }
 
@@ -162,18 +166,18 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
 
                 // ✅ Validate response
                 if (!response.IsSuccess)
-                    throw new Exception($"API call failed: {response.Message}");
+                    throw new Exception($" {response.Message}");
 
                 var data = response.ApiResponseData?.Data;
 
                 if (data == null || data.Count == 0)
-                    throw new Exception("No products found.");
+                    throw new Exception("null ");
 
                 return data;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[GetProductAsync] Error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($" {ex.Message}");
                 throw;
             }
         }
@@ -198,7 +202,7 @@ namespace CBS.BusinessService.AccountingV2.InterestProductConfig
             catch (Exception ex)
             {
                 // Optional: log error for diagnostics
-                System.Diagnostics.Debug.WriteLine($"[GetData] Error fetching Accounting Year: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GetData] {ex.Message}");
                 return new ProductCalculationConfig();
             }
         }

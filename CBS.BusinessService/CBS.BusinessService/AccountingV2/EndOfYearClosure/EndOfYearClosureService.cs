@@ -193,7 +193,7 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
                 model.CorrelationId = "CORR-GL2GL-20251101-02";
 
                 model.AuxiliaryReference = GetUserFullName();
-                model.OperationCode = "END.OF.YEAR.ADJUSTMENT";
+                model.OperationCode = "EOY.ADJ";
                 model.ExternalApplicationName = "TSC.BackOffice";
                 model.PostMode = "HOLD_FOR_APPROVAL";
                 model.Narration = model.Payload.Memo;

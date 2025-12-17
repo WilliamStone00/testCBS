@@ -1808,13 +1808,18 @@ namespace CBS.FrontDesk.Helper
 
         // ------------------- product --
         public static string GetAllProducts = "/api/v1/SavingProduct";
+        //----------------------- Reconciled Line --------------------------------------
+        public static string GetReconciledLineDataTable = "/api/v1/ledger/reconciled/datatable";
 
         //----------------------------  Interest Product  Config ---------------------------------
 
         public static string GetInterestProductConfigDataTable = "/api/v1/InterestProductConfig/GetInterestProductConfigDataTable";
-        public static string SaveInterestProductConfig = "/api/InterestProductConfig/Create";
-        public static string UpdateInterestProductConfig = "/api/InterestProductConfig/Update";
+        public static string SaveInterestProductConfig = "/api/v1/InterestProductConfig/Create";
+        public static string UpdateInterestProductConfig = "/api/v1/InterestProductConfig/Update";
         public static string GetByIdInterestProductConfig = "/api/v1/InterestProductConfig/GetById";
+
+        //-------------------------  Interest Distribution Simulation ----------------------------
+        public static string InterestDistributionSimulation = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
 
 
 

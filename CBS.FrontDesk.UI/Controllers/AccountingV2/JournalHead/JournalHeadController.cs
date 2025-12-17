@@ -1,10 +1,12 @@
-﻿using CBS.BusinessService.AccountingV2;
+﻿using CBS.API.Helper;
+using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Ajax.Utilities;
@@ -243,9 +245,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
             model.SourceBranchId = model.BranchId;
             model.DestinationBranchId = model.BranchId;
+            
             try
             {
-                object result = null;
+                ApiResponse<ResponseObject<JournalApprovalResponse>> result = null;
 
                 // ✅ Route to the correct service based on ticket type
                 switch (model.TicketType?.ToUpperInvariant())
@@ -270,15 +273,29 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                         return Json(new { success = false, message = "Unknown Ticket Type." });
                 }
 
+
+
                 if (result == null)
                     return Json(new { success = false, message = "No response from approval service." });
+
+                if (result.IsSuccess && result.ApiResponseData !=null && result.ApiResponseData.Data!= null )
+                {
+                    // ✅ Return structured JSON based on result
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.ApiResponseData.Data.Message ?? "Approved successfully",
+                        data = result.ApiResponseData.Data
+                    });
+                }
 
                 // ✅ Return structured JSON based on result
                 return Json(new
                 {
-                    success = true,
-                    statusCode = 200,
-                    message = (result as dynamic)?.Message ?? "Approved successfully",
+                    success = false,
+                    statusCode = 400,
+                    message = result.Message ?? "Approval Failed",
                     data = result
                 });
             }
@@ -308,12 +325,24 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 if (result == null)
                     return Json(new { success = false, message = "No response from approval service." });
 
+                if (result.IsSuccess && result.ApiResponseData != null && result.ApiResponseData.Data != null)
+                {
+                    // ✅ Return structured JSON based on result
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.ApiResponseData.Data.Message ?? "Rejected successfully",
+                        data = result.ApiResponseData.Data
+                    });
+                }
+
                 // ✅ Return structured JSON based on result
                 return Json(new
                 {
-                    success = true,
-                    statusCode = 200,
-                    message = (result as dynamic)?.Message ?? "Reject successfully",
+                    success = false,
+                    statusCode = 400,
+                    message = result.Message ?? "Rejection Failed",
                     data = result
                 });
             }
