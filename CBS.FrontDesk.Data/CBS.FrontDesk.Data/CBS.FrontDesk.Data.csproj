@@ -205,6 +205,7 @@
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\FeeConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\InitOptions.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\FeeConfiguration\Range.cs" />
+    <Compile Include="Entity\CheckManagementSystem\Configurations\GlobalConfig\GlobalConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationConfig.cs" />
     <Compile Include="Entity\CheckManagementSystem\Configurations\NotificationConfig\NotificationType.cs" />
     <Compile Include="Entity\CheckManagementSystem\LossManagementSystem\CheckbookDetailDto.cs" />
