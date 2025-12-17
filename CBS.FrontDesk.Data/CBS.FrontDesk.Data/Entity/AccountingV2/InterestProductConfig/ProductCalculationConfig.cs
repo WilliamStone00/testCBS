@@ -31,13 +31,14 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig
         public bool IsShareMonthProduct { get; set; }
         public string ShareMonthMode { get; set; }
         public string ShareMonthAverageDaysCsv { get; set; }
-        public decimal? ShareMonthFactorOverride { get; set; }
+        public int? ShareMonthFactorOverride { get; set; }
         public string RateSource { get; set; }
         public decimal? FixedRate { get; set; }
         public string RateProfileCode { get; set; }
         public bool ApplyRti { get; set; }
         public decimal? RtiRateOverride { get; set; }
         public bool ApplyTprcm { get; set; }
+        public string Command { get; set; }
         public decimal? TprcmRateOverride { get; set; }
         public decimal? TaxableThresholdOverride { get; set; }
         //public string PostingScope { get; set; }

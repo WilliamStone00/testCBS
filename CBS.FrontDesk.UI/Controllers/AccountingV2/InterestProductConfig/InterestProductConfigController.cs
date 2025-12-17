@@ -75,34 +75,34 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.InterestProductConfig
                     {
                         new SelectListItem { Value = "Weekly", Text = "Weekly" },
                         new SelectListItem { Value = "Monthly", Text = "Monthly" },
-                        new SelectListItem { Value = "Trimestely (Every 3 months)", Text = "Trimestely (Every 3 months)" },
-                        new SelectListItem { Value = "Quaterly (Q1, Q2, Q3, Q4)", Text = "Quaterly (Q1, Q2, Q3, Q4)" },
-                        new SelectListItem { Value = "Semesterly (Every 6 months)", Text = "Semesterly (Every 6 months)" },
+                        new SelectListItem { Value = "Trimestely", Text = "Trimestely (Every 3 months)" },
+                        new SelectListItem { Value = "Quaterly", Text = "Quaterly (Q1, Q2, Q3, Q4)" },
+                        new SelectListItem { Value = "Semesterly", Text = "Semesterly (Every 6 months)" },
                         new SelectListItem { Value = "Anually", Text = "Anually" }
                      
                     };
             ViewBag.ComputationMode = new List<SelectListItem>
                     {
-                        new SelectListItem { Value = "Beginning Balance", Text = "Beginning Balance" },
-                        new SelectListItem { Value = "Average of Points", Text = "Average of Points" },
-                        new SelectListItem { Value = "Daily Average", Text = "Daily Average" },
-                        new SelectListItem { Value = "PSIA (Preference Share Interest Average)", Text = "PSIA (Preference Share Interest Average)" }
+                        new SelectListItem { Value = "BeginningBalance", Text = "Beginning Balance" },
+                        new SelectListItem { Value = "AverageofPoints", Text = "Average of Points" },
+                        new SelectListItem { Value = "DailyAverage", Text = "Daily Average" },
+                        new SelectListItem { Value = "PSIA(PreferenceShareInterestAverage)", Text = "PSIA (Preference Share Interest Average)" }
 
                     };
             ViewBag.RateSource = new List<SelectListItem>
                     {
-                        new SelectListItem { Value = "Fixed Value", Text = "Fixed Value" },
-                        new SelectListItem { Value = "Yearly Board Decision", Text = "Yearly Board Decision" },
-                        new SelectListItem { Value = "Product Level Rate", Text = "Product Level Rate" }
+                        new SelectListItem { Value = "FixedValue", Text = "Fixed Value" },
+                        new SelectListItem { Value = "YearlyBoardDecision", Text = "Yearly Board Decision" },
+                        new SelectListItem { Value = "ProductLevelRate", Text = "Product Level Rate" }
 
                     };
 
             ViewBag.ShareMonthMode = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "None", Text = "None" },
-                        new SelectListItem { Value = "Simple Balance", Text = "Simple Balance" },
-                        new SelectListItem { Value = "Average of Points", Text = "Average of Points" },
-                        new SelectListItem { Value = "Daily Average", Text = "Daily Average" }
+                        new SelectListItem { Value = "SimpleBalance", Text = "Simple Balance" },
+                        new SelectListItem { Value = "AverageofPoints", Text = "Average of Points" },
+                        new SelectListItem { Value = "DailyAverage", Text = "Daily Average" }
                        
 
                     };
@@ -139,6 +139,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.InterestProductConfig
            
             if (model == null)
                 return Json(new { success = false, message = "Invalid or empty model." });
+
+           
 
             try
             {

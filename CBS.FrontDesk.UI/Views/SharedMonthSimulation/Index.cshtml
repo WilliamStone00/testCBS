@@ -1,0 +1,336 @@
+﻿
+@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.SharedMonthSimulation
+
+@using Resources
+@{
+    ViewBag.Title = "Shared Month Simulation";
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
+
+        <!-- Header Section -->
+        <div class="card bg-light mb-4 shadow-sm">
+            <div class="card-body text-center">
+                <h1 class="card-title text-primary">
+                    <i class="mdi mdi-calendar-month me-2"></i> SHARED MONTH
+                </h1>
+                <p class="card-text">
+                    <strong>Interest Distribution Module</strong> – Configure shared month interest distribution
+                    by branch, period, year, and journal type.
+                </p>
+                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+
+                <div class="alert alert-info mt-3">
+                    <i class="mdi mdi-alert-circle-outline me-2"></i>
+                    <strong>Important:</strong> Ensure the selected period and year are already closed before running
+                    distribution.
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("LoadSimulationData", "SharedMonthSimulation", FormMethod.Post, new { id = "sharedMonthForm", onsubmit = "return AjaxPostSharedMonth(this);" }))
+
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="mdi mdi-cog-outline me-2"></i> Distribution Parameters
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+
+                        <!-- Branch -->
+                        <div class="col-md-12  mb-1">
+                            <label class="form-label fw-bold">Branch</label>
+                            @Html.DropDownList(
+                                "BranchId",
+                                new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                                "--- Select Branch ---",
+                                new { @class = "form-select select2", required = "required" })
+                            <div class="invalid-feedback">Please select a branch</div>
+                        </div>
+
+                        <div class="col-md-4  mb-1">
+
+                            @Html.LabelFor(m => m.ProductId, "Product",
+                                new { @class = "form-label fw-bold" })
+
+                            @Html.DropDownListFor(
+                                m => m.ProductId,
+                                ViewBag.Products as List<SelectListItem>,
+                                "-- Select Product --",
+                                new { @class = "form-select select2" }
+                            )
+                            @*@Html.HiddenFor(m => m.ProductName)*@
+                        </div>
+
+                        <div class="col-md-4  mb-1">
+                            <label class="form-label fw-bold">Year</label>
+                            @Html.DropDownList(
+                                "Year",
+                                new SelectList(ViewBag.Year, "Value", "Text"),
+                                "--- Select Year ---",
+                                new { @class = "form-select select2", required = "required" })
+                            <div class="invalid-feedback">Please select a year</div>
+                        </div>
+
+                        <div class="col-md-4 mb-1">
+                            @Html.LabelFor(m => m.RateOverride, "Rate Override",
+                                new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(m => m.RateOverride,
+                                new { @class = "form-control", type = "number" })
+                        </div>
+                        <!-- Period -->
+                        <div class="col-md-4  mb-1">
+                            <label class="form-label fw-bold">Start Period Key</label>
+                            @Html.DropDownList(
+                                "StartPeriodKey",
+                                new SelectList(ViewBag.Period, "Value", "Text"),
+                                "--- Select Period ---",
+                                new { @class = "form-select select2", required = "required" })
+                            <div class="invalid-feedback">Please select a period</div>
+                        </div>
+
+                        <div class="col-md-4  mb-1">
+                            <label class="form-label fw-bold">End Period Key</label>
+                            @Html.DropDownList(
+                                "EndPeriodKey",
+                                new SelectList(ViewBag.Period, "Value", "Text"),
+                                "--- Select Period ---",
+                                new { @class = "form-select select2", required = "required" })
+                            <div class="invalid-feedback">Please select a period</div>
+                        </div>
+                        <!-- Year -->
+                        <!-- Interest Distribution Type -->
+                        <div class="col-md-4  mb-1">
+                            <label class="form-label fw-bold">Interest Distribution Type</label>
+                            @Html.DropDownList(
+                                "IntrestDistributionType ",
+                                new SelectList(ViewBag.IntrestDistributionType, "Value", "Text"),
+                                "--- Select Distribution Type ---",
+                                new { @class = "form-select select2", required = "required" })
+                            <div class="invalid-feedback">Please select distribution type</div>
+                        </div>
+
+
+
+
+
+
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Action Buttons -->
+                <div class="row">
+                    <div class="col-md-12 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="mdi mdi-play-circle-outline me-2"></i> Generate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        }
+
+
+
+
+
+        <!-- Account List Section -->
+        <div class="accordion mb-2 d-none" id="accountListAccordionShared">
+
+            @Html.Partial("_SimulationData")
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var sharedMonthTable = null;
+
+        // ===============================
+        // Initialize / Reinitialize Table
+        // ===============================
+        function initializeSharedMonthTable(tableData) {
+
+            // Destroy existing table if exists
+            if ($.fn.DataTable.isDataTable('#myDataTable')) {
+                sharedMonthTable.destroy();
+                $('#myDataTable tbody').empty();
+            }
+
+            sharedMonthTable = $('#myDataTable').DataTable({
+                data: tableData,
+                serverSide: false,
+                responsive: true,
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                order: [[0, 'asc']],
+
+                columns: [
+                    {
+                        data: 'MemberReference',
+                        name: 'MemberReference'
+                    },
+                    {
+                        data: 'MemberName',
+                        name: 'MemberName'
+                    },
+                    {
+                        data: 'Gross',
+                        name: 'Gross',
+                        className: 'text-end',
+                        render: data => Number(data).toFixed(2)
+                    },
+                    {
+                        data: 'Interest',
+                        name: 'Interest',
+                        className: 'text-end',
+                        render: data => Number(data).toFixed(2)
+                    },
+                    {
+                        data: 'Adjustment',
+                        name: 'Adjustment',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
+                                <input type="number"
+                                       class="form-control form-control-sm adjustment-input text-end"
+                                       value="${Number(data || 0).toFixed(2)}"
+                                       step="0.01"
+                                       min="0"
+                                       data-member-ref="${row.MemberReference}" />
+                            `;
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-end',
+                        render: function () {
+                            return `
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger remove-account">
+                                    <i class="mdi mdi-delete-outline"></i>
+                                </button>
+                            `;
+                        }
+                    }
+                ],
+
+                language: {
+                    emptyTable: "No simulation data available",
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+        }
+
+        // ===============================
+        // AJAX Submit
+        // ===============================
+        function AjaxPostSharedMonth(form) {
+            $.validator.unobtrusive.parse(form);
+
+            if (!$(form).valid()) {
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: $(form).serialize(),
+
+                beforeSend: function () {
+                    $(form).find('button[type="submit"]').prop('disabled', true);
+                },
+
+                success: function (response) {
+
+                    if (!response.success) {
+                        appalert(response.message || 'Simulation failed', 3, 1);
+                        return;
+                    }
+
+                    // Initialize DataTable with returned data
+                    initializeSharedMonthTable(response.data);
+
+                    // Show accordion
+                    $('#accountListAccordionShared').removeClass('d-none');
+                    $('#collapseAccountListShared').addClass('show');
+
+                    appalert(response.message || '✅ Simulation completed successfully', 1, 1);
+                },
+
+                error: function (err) {
+                    appalert(err.responseJSON?.message || 'Server error', 3, 1);
+                },
+
+                complete: function () {
+                    $(form).find('button[type="submit"]').prop('disabled', false);
+                }
+            });
+
+            return false;
+        }
+
+        // ===============================
+        // Remove Row
+        // ===============================
+        $(document).on('click', '.remove-account', function () {
+            sharedMonthTable
+                .row($(this).closest('tr'))
+                .remove()
+                .draw();
+        });
+
+        // ===============================
+        // Highlight Adjustment Change
+        // ===============================
+        $(document).on('input', '.adjustment-input', function () {
+            $(this).addClass('border-warning');
+        });
+
+        // ===============================
+        // Collect Adjustments (for save)
+        // ===============================
+        function collectAdjustments() {
+            const adjustments = [];
+
+            $('.adjustment-input').each(function () {
+                adjustments.push({
+                    MemberReference: $(this).data('member-ref'),
+                    Adjustment: parseFloat($(this).val()) || 0
+                });
+            });
+
+            return adjustments;
+        }
+    </script>
+}

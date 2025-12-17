@@ -479,7 +479,137 @@
 
         // Initial load
         //loadAccountingYearData();
+
+
+
+
+
+        window.CreatAccountingYearSaveAjax = function (form) {
+            const $form = $(form);
+            if (!$form.valid()) return false;
+
+            // ================================
+            // Helper: Get selected text safely
+            // ================================
+            function getSelectText(selector) {
+                const $el = $form.find(selector);
+                if (!$el.length) return "---";
+
+                if ($el.is('select')) {
+                    return $el.find('option:selected').text() || "---";
+                }
+                return $el.val() || "---";
+            }
+
+            // ================================
+            // Collect values for confirmation
+            // ================================
+            const fields = {
+                "Branch": getSelectText('#BranchId'),
+                "Accounting Year": getSelectText('#YearB'),
+                "Status": getSelectText('#StatusB'),
+                "Opening Date": $form.find('#openingDate').val() || "---",
+                "Closing Date": $form.find('#closingDate').val() || "---"
+            };
+
+            // ================================
+            // Build confirmation table
+            // ================================
+            let tableRows = '';
+            for (const key in fields) {
+                tableRows += `<tr><th>${key}</th><td>${fields[key]}</td></tr>`;
+            }
+
+            const title = $form.find('#Id').val()
+                ? "Update Accounting Year"
+                : "Create Accounting Year";
+
+            const message = `
+        <p>Please review the details before submitting:</p>
+        <table class="table table-sm table-bordered">
+            <tbody>${tableRows}</tbody>
+        </table>
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+            <label class="form-check-label" for="alertifyConfirmCheckbox">
+                I confirm that the above details are correct.
+            </label>
+        </div>
+    `;
+
+            // ================================
+            // Alertify confirmation
+            // ================================
+            alertify.confirm(title, message,
+                function () {
+
+                    if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                        appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                        return false;
+                    }
+
+                    const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        data: new FormData($form[0]),
+                        processData: false,
+                        contentType: false,
+                        headers: token ? { 'RequestVerificationToken': token } : {},
+                        beforeSend: function () {
+                            $('.alertify .ajs-ok')
+                                .prop('disabled', true)
+                                .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
+                        },
+                        success: function (response) {
+                            if (response?.success) {
+                                appalert(response.message || "✅ Accounting Year saved successfully!", 1, 1);
+                                alertify.dismissAll();
+
+                                if (String(response.reloadDataView).toLowerCase() === "yes") {
+                                    $form[0].reset();
+                                    $form.find('select').val('');
+                                }
+                            } else {
+                                appalert(response?.message || "❌ Failed to save Accounting Year.", 2, 1);
+                            }
+                        },
+                        error: function (xhr) {
+                            appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                        },
+                        complete: function () {
+                            $('.alertify .ajs-ok')
+                                .prop('disabled', false)
+                                .html('Yes, Continue');
+                        }
+                    });
+                },
+                function () {
+                    appalert("🚫 Operation cancelled.", 2, 1);
+                }
+            ).set({
+                labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+                onshow: function () {
+                    const okBtn = $('.alertify .ajs-ok');
+                    okBtn.prop('disabled', true);
+
+                    $('#alertifyConfirmCheckbox')
+                        .off('change')
+                        .on('change', function () {
+                            okBtn.prop('disabled', !this.checked);
+                        });
+                }
+            });
+
+            return false;
+        };
+
     });
+
+
+
+
     </script>
 }
 
