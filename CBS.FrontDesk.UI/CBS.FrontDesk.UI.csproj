@@ -621,10 +621,10 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TellerStatement.rpt</DependentUpon>
+      <DependentUpon>TellerStatement33.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AppFiles\Reporting\Transactions\TellerStatement1.cs">
@@ -9531,9 +9531,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TellerStatement.cs</LastGenOutput>
+      <LastGenOutput>TellerStatement33.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AppFiles\Reporting\Transactions\TellerStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
