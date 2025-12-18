@@ -199,214 +199,139 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
-        $(function () {
+$(function () {
 
-
-
-
-
-
-
-
-
-
-            function loadInterestProductConfig() {
-                $('#myDataTable').DataTable({
-                    serverSide: true,
-                    destroy: true,
-                    responsive: true,
-                    searching: false,
-                    order: [[0, 'asc']],
-                    ajax: {
-                        url: '/InterestProductConfig/LoadInterestProductConfigData', // adjust your endpoint
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: function (d) {
-                            const filters = {
-                                BranchId: $('#branchId1').val(),
-                                AccountingYearId: $('#AccountingYearId').val(),
-                                ProductId: $('#ProductId1').val(),
-                                IsEnabled: $('#IsEnabled').is(':checked'),
-                                Options: {
-                                    draw: d.draw,
-                                    start: d.start,
-                                    length: d.length,
-                                    searchValue: d.search?.value || '',
-                                    sortColumnName: d.columns[d.order[0].column].data,
-                                    sortColumnDirection: d.order[0].dir
-                                }
-                            };
-                            return JSON.stringify(filters);
-                        },
-                        error: function (xhr, status, err) {
-                            console.error('❌ Error loading interest products:', status, err);
-                            appalert('❌ Failed to load products. Status: ' + xhr.status, 4, 1);
+    // ================================
+    // LOAD INTEREST PRODUCT CONFIG
+    // ================================
+    function loadInterestProductConfig() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'asc']],
+            ajax: {
+                url: '/InterestProductConfig/LoadInterestProductConfigData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    return JSON.stringify({
+                        BranchId: $('#branchId1').val(),
+                        AccountingYearId: $('#AccountingYearId').val(),
+                        ProductId: $('#ProductId1').val(),
+                        IsEnabled: $('#IsEnabled').is(':checked'),
+                        Options: {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
                         }
-                    },
-                    columns: [
-                        { data: 'BranchName', name: 'BranchName' },
-                        { data: 'ProductName', name: 'ProductName' },
-                        { data: 'Frequency', name: 'Frequency' },
-                        { data: 'ComputationMode', name: 'ComputationMode' },
-                        {
-                            data: 'IsEnabled', name: 'IsEnabled',
-                            render: value => value
-                                ? '<span class="badge bg-primary">True</span>'
-                                : '<span class="badge bg-danger">False</span>'
-                        },
-                        {
-                            data: null,
-                            orderable: false,
-                            render: row => {
-                                const btnId = `actionDropdown${row.Id}`;
-                                return `
+                    });
+                },
+                error: function (xhr, status, err) {
+                    console.error('❌ Error loading interest products:', status, err);
+                    appalert('❌ Failed to load products. Status: ' + xhr.status, 4, 1);
+                }
+            },
+            columns: [
+                { data: 'BranchName' },
+                { data: 'ProductName' },
+                { data: 'Frequency' },
+                { data: 'ComputationMode' },
+                {
+                    data: 'IsEnabled',
+                    render: v => v
+                        ? '<span class="badge bg-primary">True</span>'
+                        : '<span class="badge bg-danger">False</span>'
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    render: row => `
                         <div class="dropdown text-center">
                             <button class="btn btn-sm btn-info dropdown-toggle text-white"
-                                    type="button" id="${btnId}"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    data-bs-toggle="dropdown">
                                 <i class="mdi mdi-cog-outline me-1"></i> Actions
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="${btnId}">
+                            <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item edit-task" href="#" data-id="${row.Id}" style="color:#6f42c1; font-weight:500;">
-                                        <i class="mdi mdi-pencil-outline me-1" style="color:#6f42c1;"></i> Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item delete-task" href="#" data-id="${row.Id}" style="color:#dc3545; font-weight:500;">
-                                        <i class="mdi mdi-delete-outline me-1" style="color:#dc3545;"></i> Delete
+                                    <a class="dropdown-item edit-task" href="#" data-id="${row.Id}">
+                                        <i class="mdi mdi-pencil-outline me-1"></i> Edit
                                     </a>
                                 </li>
                             </ul>
-                        </div>
-                    `.trim();
-                            }
-                        }
-                    ],
-                    initComplete: function () {
-                        appalert('✅ Interest product config loaded successfully!', 1, 1);
-                    },
-                    drawCallback: function () {
-                        const api = this.api();
-                        if (api.rows({ page: 'current' }).data().length === 0) {
-                            appalert('⚠️ No product configurations found on this page.', 2, 1);
-                        }
-                    }
-                });
-            }
-
-            // ==============================
-            // Filter Buttons
-            // ==============================
-            $(document).ready(function () {
-                $('#applyFilterBtn').on('click', function (e) {
-                    e.preventDefault();
-                    loadInterestProductConfig();
-                });
-
-                $('#resetFilterBtn').on('click', function (e) {
-                    e.preventDefault();
-                    $('#FilterForm').trigger('reset');
-                    $('.select2').val('').trigger('change');
-                    $('#branchFilter').addClass('d-none');
-                    appalert('🧹 Filters reset.', 1, 1);
-                });
-            });
-
+                        </div>`
+                }
+            ]
+        });
+    }
 
     // ================================
-    // EXISTING PRODUCT CONFIG MODAL LOGIC
+    // FILTER BUTTONS
     // ================================
-            const addUrl = '@Url.Action("New", "InterestProductConfig")';
-         const updateConfigUrl = '@Url.Action("GetDetails", "InterestProductConfig")';
+    $('#applyFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        loadInterestProductConfig();
+    });
 
+    $('#resetFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        $('#FilterForm')[0].reset();
+        $('#FilterForm select').val('');
+        $('#branchFilter').addClass('d-none');
+        appalert('🧹 Filters reset.', 1, 1);
+    });
+
+    // ================================
+    // MODAL URLS
+    // ================================
+    const addUrl = '@Url.Action("New", "InterestProductConfig")';
+    const updateUrl = '@Url.Action("GetDetails", "InterestProductConfig")';
+
+    // ================================
+    // ADD CONFIG
+    // ================================
     $('#btnAddproductConfig').on('click', function () {
-        $.ajax({
-            url: addUrl,
-            type: 'GET',
-            beforeSend: function () {
-                $("#ProductConfigurationModalContent").html(`
-                    <div class="text-center my-4">
-                        <div class="spinner-border"></div>
-                        <p>Loading form...</p>
-                    </div>
-                `);
-            },
-            success: function (html) {
-                $("#ProductConfigurationModalContent").html(html);
+        $.get(addUrl, function (html) {
+            $("#ProductConfigurationModalContent").html(html);
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('ProductConfigurationModal')
+            ).show();
 
-                // Initialize modal
-                const modal = bootstrap.Modal.getOrCreateInstance(
-                    document.getElementById('ProductConfigurationModal')
-                );
-                modal.show();
-
-                // 🔥 INIT LOGICS AFTER LOAD
-                // Initialize select2 inside modal first
-                $('#ProductConfigurationModalContent .select2').select2();
-
-                initFrequencyLogic();
-                initComputationModeLogic();
-                initRateSourceLogic();
-                initOverrideCheckboxLogic();
-                initShareMonthLogic();
-                initGlobalConfigLogic();// ✅ ADDED
-            },
-            error: function (xhr, status, error) {
-                appalert("Failed to load Product Configuration form: " + error, 1, 4);
-            }
+            initFrequencyLogic();
+            initComputationModeLogic();
+            initRateSourceLogic();
+            initOverrideCheckboxLogic();
+            initShareMonthLogic();
+            initGlobalConfigLogic();
         });
     });
 
+    // ================================
+    // EDIT CONFIG
+    // ================================
+    $(document).on('click', '.edit-task', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        if (!id) return appalert("Invalid ID.", 3, 1);
 
-            $(document).on('click', '.edit-task', function (e) {
-                e.preventDefault();
+        $.get(updateUrl, { id }, function (html) {
+            $("#ProductConfigurationModalContent").html(html);
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('ProductConfigurationModal')
+            ).show();
 
-                const id = $(this).data('id');
-                if (!id) {
-                    appalert("Invalid ID for update.", 3, 1);
-                    return;
-                }
-
-                $.ajax({
-                    url: updateConfigUrl, // e.g. /InterestProductConfig/Edit
-                    type: 'GET',
-                    data: { id: id },
-
-                    beforeSend: function () {
-                        $("#ProductConfigurationModalContent").html(`
-                <div class="text-center my-4">
-                    <div class="spinner-border text-primary"></div>
-                    <p>Loading form...</p>
-                </div>
-            `);
-                    },
-
-                    success: function (html) {
-                        $("#ProductConfigurationModalContent").html(html);
-
-                        const modal = bootstrap.Modal.getOrCreateInstance(
-                            document.getElementById('ProductConfigurationModal')
-                        );
-                        modal.show();
-
-                        // 🔥 INIT SAME LOGIC AS ADD
-                        $('#ProductConfigurationModalContent .select2').select2();
-
-                        initFrequencyLogic();
-                        initComputationModeLogic();
-                        initRateSourceLogic();
-                        initOverrideCheckboxLogic();
-                        initShareMonthLogic();
-                        initGlobalConfigLogic();
-                    },
-
-                    error: function (xhr, status, error) {
-                        appalert("Failed to load Update view: " + error, 1, 4);
-                    }
-                });
-            });
-
+            initFrequencyLogic();
+            initComputationModeLogic();
+            initRateSourceLogic();
+            initOverrideCheckboxLogic();
+            initShareMonthLogic();
+            initGlobalConfigLogic();
+        });
+    });
 
     // ================================
     // SHARE MONTH LOGIC
@@ -425,7 +350,7 @@
             if ($checkbox.is(':checked')) {
                 $modeWrapper.removeClass('d-none');
                 $factorWrapper.removeClass('d-none');
-                if ($mode.val() === 'Average of Points') {
+                if ($mode.val() === 'AverageofPoints') {
                     $averageWrapper.removeClass('d-none');
                 } else {
                     $averageWrapper.addClass('d-none');
@@ -453,272 +378,235 @@
     // FREQUENCY LOGIC
     // ================================
     function initFrequencyLogic() {
-        const $weekField = $("#weekField");
-        const $frequency = $("#Frequency");
-        if (!$weekField.length || !$frequency.length) return;
-
-        $weekField.hide();
-        $frequency.off("change").on("change", function () {
-            $(this).val() === "Weekly" ? $weekField.slideDown() : $weekField.slideUp();
-        });
-
-        if ($frequency.val() === "Weekly") $weekField.show();
+        const $f = $('#Frequency');
+        const $w = $('#weekField').hide();
+        $f.off().on('change', () => $w.toggle($f.val() === 'Weekly'));
+        if ($f.val() === 'Weekly') $w.show();
     }
 
     // ================================
-    // COMPUTATION MODE LOGIC
+    // COMPUTATION MODE
     // ================================
     function initComputationModeLogic() {
-        const $computation = $("#ComputationMode");
-        const $day1 = $("#day1Field");
-        const $day2 = $("#day2Field");
-        if (!$computation.length) return;
+        const $c = $('#ComputationMode');
+        const $d1 = $('#day1Field').hide();
+        const $d2 = $('#day2Field').hide();
 
-        $day1.hide();
-        $day2.hide();
-
-        $computation.off("change").on("change", function () {
-            if ($(this).val() === "Average of Points") {
-                $day1.slideDown();
-                $day2.slideDown();
-            } else {
-                $day1.slideUp();
-                $day2.slideUp();
-            }
+        $c.off().on('change', () => {
+            const on = $c.val() === 'AverageofPoints';
+            $d1.toggle(on);
+            $d2.toggle(on);
         });
 
-        if ($computation.val() === "Average of Points") {
-            $day1.show();
-            $day2.show();
+        if ($c.val() === 'AverageofPoints') {
+            $d1.show(); $d2.show();
         }
     }
 
-    $(document).on("shown.bs.modal", "#ProductConfigurationModal", function () {
-        initComputationModeLogic();
-    });
-
     // ================================
-    // RATE SOURCE LOGIC
+    // RATE SOURCE
     // ================================
     function initRateSourceLogic() {
-        const $rateSource = $("#RateSource");
-        const $fixedRateDiv = $("#FixedRateDiv");
-        const $rateProfileDiv = $("#RateProfileDiv");
-        const $containerDiv = $("#RateConfigContainer");
-        if (!$rateSource.length) return;
+        const $r = $('#RateSource');
+        const $f = $('#FixedRateDiv');
+        const $p = $('#RateProfileDiv');
+        const $c = $('#RateConfigContainer');
 
-        function updateRateFields() {
-            const val = $rateSource.val();
-            if (val === "Fixed Value") {
-                $fixedRateDiv.show();
-                $rateProfileDiv.hide();
-                $containerDiv.removeClass("col-md-12").addClass("col-md-6");
-            } else if (val === "Yearly Board Decision") {
-                $fixedRateDiv.hide();
-                $rateProfileDiv.show();
-                $containerDiv.removeClass("col-md-12").addClass("col-md-6");
-            } else if (val === "Product Level Rate") {
-                $fixedRateDiv.hide();
-                $rateProfileDiv.hide();
-                $containerDiv.removeClass("col-md-6").addClass("col-md-12");
-            } else {
-                $fixedRateDiv.hide();
-                $rateProfileDiv.hide();
-                $containerDiv.removeClass("col-md-12 col-md-6");
+        function toggle() {
+            $f.hide(); $p.hide();
+            $c.removeClass('col-md-6').addClass('col-md-12');
+
+            if ($r.val() === 'FixedValue') {
+                $f.show(); $c.addClass('col-md-6');
+            }
+            if ($r.val() === 'YearlyBoardDecision') {
+                $p.show(); $c.addClass('col-md-6');
             }
         }
 
-        updateRateFields();
-        $rateSource.on("change", updateRateFields);
+        $r.off().on('change', toggle);
+        toggle();
     }
 
     // ================================
-    // OVERRIDE CHECKBOX LOGIC
+    // OVERRIDE CHECKBOXES
     // ================================
     function initOverrideCheckboxLogic() {
-        const $applyRti = $("#ApplyRti");
-        const $rtiRateDiv = $("#RtiRateOverrideDiv");
+        $('#ApplyRti').off().on('change', function () {
+            $('#RtiRateOverrideDiv').toggle(this.checked);
+        }).trigger('change');
 
-        const $applyTprcm = $("#ApplyTprcm");
-        const $tprcmRateDiv = $("#TprcmRateOverrideDiv");
-        const $taxableThresholdDiv = $("#TaxableThresholdOverrideDiv");
-
-        if (!$applyRti.length && !$applyTprcm.length) return;
-
-        function toggleRtiFields() {
-            $applyRti.is(":checked") ? $rtiRateDiv.show() : $rtiRateDiv.hide();
-        }
-
-        function toggleTprcmFields() {
-            if ($applyTprcm.is(":checked")) {
-                $tprcmRateDiv.show();
-                $taxableThresholdDiv.show();
-            } else {
-                $tprcmRateDiv.hide();
-                $taxableThresholdDiv.hide();
-            }
-        }
-
-        toggleRtiFields();
-        toggleTprcmFields();
-
-        $applyRti.on("change", toggleRtiFields);
-        $applyTprcm.on("change", toggleTprcmFields);
+        $('#ApplyTprcm').off().on('change', function () {
+            $('#TprcmRateOverrideDiv, #TaxableThresholdOverrideDiv')
+                .toggle(this.checked);
+        }).trigger('change');
     }
 
-
-
     // ================================
-    // GLOBAL CONFIGURATION TOGGLE
+    // GLOBAL CONFIG
     // ================================
     function initGlobalConfigLogic() {
-        const $checkbox = $('#GlobalConfiguration');
-        const $branchDiv = $('#branchId').closest('.col-md-6.mb-1');
-        const $productDiv = $('#ProductId').closest('.col-md-6');
+        const $g = $('#GlobalConfiguration');
+        const $b = $('#branchId').closest('.col-md-6.mb-1');
+        const $p = $('#ProductId').closest('.col-md-6');
 
-        function toggleGlobalConfig() {
-            if ($checkbox.is(':checked')) {
-                $branchDiv.hide();          // Hide Branch dropdown
-                $productDiv.removeClass('col-md-6').addClass('col-md-12'); // Expand Product to full width
+        function toggle() {
+            if ($g.is(':checked')) {
+                $b.hide();
+                $p.removeClass('col-md-6').addClass('col-md-12');
             } else {
-                $branchDiv.show();          // Show Branch dropdown
-                $productDiv.removeClass('col-md-12').addClass('col-md-6'); // Restore Product width
+                $b.show();
+                $p.removeClass('col-md-12').addClass('col-md-6');
             }
         }
 
-        // Initialize state
-        toggleGlobalConfig();
-
-        // Bind change event
-        $checkbox.off('change').on('change', toggleGlobalConfig);
+        $g.off().on('change', toggle);
+        toggle();
     }
 
-    // Call this after your modal/form is loaded
-
-
+    // ================================
+    // SAVE AJAX
+    // ================================
+   window.SaveInterestProductConfigAjax = function (form) {
+    const $form = $(form);
+    if (!$form.valid()) return false;
 
     // ================================
-    // SAVE INTEREST PRODUCT CONFIG AJAX
+    // Helper: Get selected text safely (NO Select2)
     // ================================
-    window.SaveInterestProductConfigAjax = function (form) {
-        if (!$(form).valid()) return false;
-        const $form = $(form);
+    function getSelectText(selector) {
+        const $el = $form.find(selector);
+        if (!$el.length) return "---";
 
-        // Safe helper for select2 text
-        function getSelect2Text(selector) {
-            const $el = $(selector);
-            if ($el.hasClass('select2-hidden-accessible')) {
-                const data = $el.select2('data')[0];
-                return data ? data.text : $el.val() || "---";
+        if ($el.is('select')) {
+            return $el.find('option:selected').text() || "---";
+        }
+
+        return $el.val() || "---";
+    }
+
+    // ================================
+    // Collect values for confirmation
+    // ================================
+    const fields = {
+        "Product": getSelectText('#ProductId'),
+        "Branch": getSelectText('#branchId'),
+        "Frequency": getSelectText('#Frequency'),
+        "Computation Mode": getSelectText('#ComputationMode'),
+        "Calculation Day (Month)": $form.find('#CalculationDayOfMonth').val() || "---",
+        "Calculation Day (Week)": $form.find('#CalculationDayOfWeek').val() || "---",
+        "First Calculation Month": $form.find('#FirstCalculationMonth').val() || "---",
+        "Share Month Factor": $form.find('#ShareMonthFactor').val() || "---",
+        "Custom Denominator": $form.find('#CustomDenominator').val() || "---",
+        "Is Share Month Product": $form.find('#IsShareMonthProduct').is(':checked') ? "Yes" : "No",
+        "Share Month Mode": getSelectText('#ShareMonthMode'),
+        "Share Month Average Days (CSV)": $form.find('#ShareMonthAverageDaysCsv').val() || "---",
+        "Share Month Factor Override": $form.find('#ShareMonthFactorOverride').val() || "---",
+        "Rate Source": getSelectText('#RateSource'),
+        "Fixed Rate": $form.find('#FixedRate').val() || "---",
+        "Rate Profile Code": $form.find('#RateProfileCode').val() || "---",
+        "Apply RTI": $form.find('#ApplyRti').is(':checked') ? "Yes" : "No",
+        "RTI Rate Override": $form.find('#RtiRateOverride').val() || "---",
+        "Apply TPRCM": $form.find('#ApplyTprcm').is(':checked') ? "Yes" : "No",
+        "TPRCM Rate Override": $form.find('#TprcmRateOverride').val() || "---",
+        "Taxable Threshold Override": $form.find('#TaxableThresholdOverride').val() || "---",
+        "Min Balance for Interest": $form.find('#MinBalanceForInterest').val() || "---",
+        "Max Balance for Interest": $form.find('#MaxBalanceForInterest').val() || "---",
+        "Enabled": $form.find('#IsEnabled').is(':checked') ? "Yes" : "No"
+    };
+
+    // ================================
+    // Build confirmation table
+    // ================================
+    let tableRows = '';
+    for (const key in fields) {
+        tableRows += `<tr><th>${key}</th><td>${fields[key]}</td></tr>`;
+    }
+
+    const title = $form.find('#Id').val()
+        ? "Update Product Config"
+        : "Create Product Config";
+
+    const message = `
+        <p>Please review the details before submitting:</p>
+        <table class="table table-sm table-bordered">
+            <tbody>${tableRows}</tbody>
+        </table>
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+            <label class="form-check-label" for="alertifyConfirmCheckbox">
+                I confirm that the above details are correct.
+            </label>
+        </div>
+    `;
+
+    // ================================
+    // Alertify confirmation
+    // ================================
+    alertify.confirm(title, message,
+        function () {
+
+            if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                return false;
             }
-            return $el.val() || "---";
-        }
 
-        // Collect all values
-        const fields = {
-            "Product": getSelect2Text('#ProductId'),
-            "Branch": getSelect2Text('#branchId'),
-            "Frequency": getSelect2Text('#Frequency'),
-            "Computation Mode": getSelect2Text('#ComputationMode'),
-            "Calculation Day (Month)": $form.find('#CalculationDayOfMonth').val() || "---",
-            "Calculation Day (Week)": $form.find('#CalculationDayOfWeek').val() || "---",
-            "First Calculation Month": $form.find('#FirstCalculationMonth').val() || "---",
-            "Share Month Factor": $form.find('#ShareMonthFactor').val() || "---",
-            "Custom Denominator": $form.find('#CustomDenominator').val() || "---",
-            "Is Share Month Product": $form.find('#IsShareMonthProduct').is(':checked') ? "Yes" : "No",
-            "Share Month Mode": getSelect2Text('#ShareMonthMode'),
-            "Share Month Average Days (CSV)": $form.find('#ShareMonthAverageDaysCsv').val() || "---",
-            "Share Month Factor Override": $form.find('#ShareMonthFactorOverride').val() || "---",
-            "Rate Source": getSelect2Text('#RateSource'),
-            "Fixed Rate": $form.find('#FixedRate').val() || "---",
-            "Rate Profile Code": $form.find('#RateProfileCode').val() || "---",
-            "Apply RTI": $form.find('#ApplyRti').is(':checked') ? "Yes" : "No",
-            "RTI Rate Override": $form.find('#RtiRateOverride').val() || "---",
-            "Apply TPRCM": $form.find('#ApplyTprcm').is(':checked') ? "Yes" : "No",
-            "TPRCM Rate Override": $form.find('#TprcmRateOverride').val() || "---",
-            "Taxable Threshold Override": $form.find('#TaxableThresholdOverride').val() || "---",
-            "Min Balance for Interest": $form.find('#MinBalanceForInterest').val() || "---",
-            "Max Balance for Interest": $form.find('#MaxBalanceForInterest').val() || "---",
-            "Enabled": $form.find('#IsEnabled').is(':checked') ? "Yes" : "No"
-        };
+            const token = $form.find('input[name="__RequestVerificationToken"]').val();
 
-        // Build table dynamically
-        let tableRows = '';
-        for (const key in fields) {
-            tableRows += `<tr><th>${key}</th><td>${fields[key]}</td></tr>`;
-        }
+            $.ajax({
+                type: 'POST',
+                url: $form.attr('action'),
+                data: new FormData($form[0]),
+                processData: false,
+                contentType: false,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                beforeSend: function () {
+                    $('.alertify .ajs-ok')
+                        .prop('disabled', true)
+                        .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
+                },
+                success: function (response) {
+                    if (response?.success) {
+                        appalert(response.message || "✅ Product config saved successfully!", 1, 1);
+                        alertify.dismissAll();
 
-        const title = $form.find('#Id').val() ? "Update Product Config" : "Create Product Config";
-        const message = `
-            <p>Please review the details before submitting:</p>
-            <table class="table table-sm table-bordered"><tbody>
-                ${tableRows}
-            </tbody></table>
-            <div class="form-check mt-3">
-                <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-                <label for="alertifyConfirmCheckbox" class="form-check-label">
-                    I confirm that the above details are correct.
-                </label>
-            </div>
-        `;
-
-        alertify.confirm(title, message,
-            function () {
-                if (!$('#alertifyConfirmCheckbox').is(':checked')) {
-                    appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
-                    return false;
-                }
-
-                const token = $form.find('input[name="__RequestVerificationToken"]').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: $form.attr('action'),
-                    data: new FormData($form[0]),
-                    processData: false,
-                    contentType: false,
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    beforeSend: function () {
-                        $('.alertify .ajs-ok').prop('disabled', true)
-                            .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
-                    },
-                    success: function (response) {
-                        if (response?.success) {
-                            appalert(response.message || "✅ Product config saved successfully!", 1, 1);
-                            alertify.dismissAll();
-
-                            if (String(response.reloadDataView).toLowerCase() === "yes") {
-                                $form[0].reset();
-                                $('.select2').val(null).trigger('change');
-                            }
-                        } else {
-                            appalert(response?.message || "❌ Failed to save product config.", 2, 1);
+                        if (String(response.reloadDataView).toLowerCase() === "yes") {
+                            $form[0].reset();
+                            $form.find('select').val(''); // ✅ safe reset (no select2)
                         }
-                    },
-                    error: function (xhr) {
-                        appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
-                    },
-                    complete: function () {
-                        $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
+                    } else {
+                        appalert(response?.message || "❌ Failed to save product config.", 2, 1);
                     }
-                });
-            },
-            function () {
-                appalert("🚫 Operation cancelled.", 2, 1);
-            }
-        ).set({
-            labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
-            onshow: function () {
-                const okBtn = $('.alertify .ajs-ok');
-                okBtn.prop('disabled', true);
-                $('#alertifyConfirmCheckbox').off('change').on('change', function () {
+                },
+                error: function (xhr) {
+                    appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                },
+                complete: function () {
+                    $('.alertify .ajs-ok')
+                        .prop('disabled', false)
+                        .html('Yes, Continue');
+                }
+            });
+        },
+        function () {
+            appalert("🚫 Operation cancelled.", 2, 1);
+        }
+    ).set({
+        labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+        onshow: function () {
+            const okBtn = $('.alertify .ajs-ok');
+            okBtn.prop('disabled', true);
+            $('#alertifyConfirmCheckbox')
+                .off('change')
+                .on('change', function () {
                     okBtn.prop('disabled', !this.checked);
                 });
-            }
-        });
+        }
+    });
 
-        return false;
-    };
+    return false;
+};
+
 
 });
 </script>

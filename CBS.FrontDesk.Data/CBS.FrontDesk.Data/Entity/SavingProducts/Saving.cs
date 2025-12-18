@@ -237,6 +237,7 @@ namespace CBS.FrontDesk.Data.Entity.SavingProducts
         [StringLength(36, ErrorMessage = "GL for Provision More Than Four Years must not exceed 36 characters.")]
         [RegularExpression("^[a-zA-Z0-9-]+$", ErrorMessage = "GL for Provision More Than Four Years must contain only alphanumeric characters and dashes.")]
         public string ChartOfAccountIdForProvisionMoreThanFourYear { get; set; }
+        public string BranchId { get; set; }
     }
 
 

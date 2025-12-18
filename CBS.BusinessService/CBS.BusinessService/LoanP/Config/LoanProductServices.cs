@@ -499,9 +499,8 @@ namespace CBS.BusinessService.Config
                     LoanInterestPeriod = product.LoanInterestPeriod,
                     MinimumInterestRate = product.MinimumInterestRate,
                     MaximumInterestRate = product.MaximumInterestRate,
-                   
-
-        PenaltyId=product.PenaltyId,
+                    ChartOfAccountIdForFee=product.ChartOfAccountIdForFee,
+                    PenaltyId =product.PenaltyId,
                     LoanDurationPeriod = product.LoanDurationPeriod,
                     MinimumDurationPeriod = product.MinimumDurationPeriod,
                     MaximumDurationPeriod = product.MaximumDurationPeriod,
@@ -727,9 +726,10 @@ namespace CBS.BusinessService.Config
                         LoanProduct.ChartOfAccountIdForTaxiblePrincipalAmount = model.ChartOfAccountIdForTaxiblePrincipalAmount;
                         LoanProduct.ChartOfAccountIdForTaxibleInterestReceived = model.ChartOfAccountIdForTaxibleInterestReceived;
                         LoanProduct.UpdateOption = "assign_account_chart";
+                        LoanProduct.ChartOfAccountIdForFee = model.ChartOfAccountIdForFee;
 
                     }
-
+                    //ChartOfAccountIdForFee
                     else if (model.ServiceOption == "charges")
                     {
                         LoanProduct.IsChargesApplied = model.IsChargesApplied;

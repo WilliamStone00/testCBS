@@ -2144,8 +2144,10 @@
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
+    <Compile Include="Controllers\AccountingV2\ReconciledLine\ReconciledLineController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
     <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\SharedMonth\SharedMonthSimulationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -11146,6 +11148,10 @@
     <Content Include="Views\IPSConfig\_IPSConfigYearPartial.cshtml" />
     <Content Include="Views\IPSConfig\_IPSConfigDataTable.cshtml" />
     <Content Include="Views\IPSConfig\List.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\Index.cshtml" />
+    <Content Include="Views\ReconciledLine\Index.cshtml" />
+    <Content Include="Views\ReconciledLine\_DataTable.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\_SimulationData.cshtml" />
     <Content Include="Views\GlobalConfig\_Create.cshtml" />
     <Content Include="Views\GlobalConfig\_Data.cshtml" />
     <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />

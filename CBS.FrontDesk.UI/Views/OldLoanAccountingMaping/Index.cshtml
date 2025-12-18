@@ -59,6 +59,68 @@
 
 
 
-@section Scripts {@Scripts.Render("~/bundles/jqueryval")}
+@section Scripts {@Scripts.Render("~/bundles/jqueryval")
+<script>
+    function onBranchChange(branchId) {
+        if (!branchId) return;
+
+        loadLoanTypes(branchId);
+        loadBranchAccounts(branchId);
+    }
+
+    function loadLoanTypes(branchId) {
+        $.ajax({
+            url: '@Url.Action("GetLoanAccountTypesByBranch", "OldLoanAccountingMaping")',
+            type: 'GET',
+            data: { branchId: branchId },
+            success: function (res) {
+                if (res.success) {
+                    let loanTypeDropdown = $('#LoanTypeName');
+                    loanTypeDropdown.empty();
+                    loanTypeDropdown.append('<option value="">--- Select Loan Type ---</option>');
+
+                    $.each(res.data, function (i, item) {
+                        loanTypeDropdown.append(
+                            $('<option>', {
+                                value: item.Value || item.Id,
+                                text: item.Text || item.Name
+                            })
+                        );
+                    });
+
+                    loanTypeDropdown.trigger('change');
+                }
+            }
+        });
+    }
+
+    function loadBranchAccounts(branchId) {
+        $.ajax({
+            url: '@Url.Action("GetBranchAccountsByBranch", "OldLoanAccountingMaping")',
+            type: 'GET',
+            data: { branchId: branchId },
+            success: function (res) {
+                $('.branch-account').each(function () {
+                    let ddl = $(this);
+                    ddl.empty();
+                    ddl.append('<option value="">--- Select Account Ledger ---</option>');
+
+                    $.each(res, function (i, item) {
+                        ddl.append(
+                            $('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            })
+                        );
+                    });
+
+                    ddl.trigger('change');
+                });
+            }
+        });
+    }
+</script>
+
+}
 
 

@@ -155,6 +155,13 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2
         public DateTime? RejectedDate { get; set; }
         public string RejectedBy { get; set; }
 
+        public string ApprovedByTrim { get; set; }
+       
+        public string InitiatedByTrim { get; set; }
+       
+        public string RejectedByTrim { get; set; }
+        public string OperationCodeTrim { get; set; }
+
 
     }
 
