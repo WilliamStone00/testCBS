@@ -6,68 +6,112 @@
         <fieldset class="fieldset-custom">
             <legend>@GlobalOldLoanAccountingMaping.OldLoanAccountingMaping</legend>
             @Html.HiddenFor(model => model.Id)
-            <div class="row mt-2 gy-4">
-
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.LoanTypeName, new SelectList(ViewBag.LoanTypes, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectLoanType + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.LoanTypeName, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectLoanType</label>
-                    </div>
+        <div class="row mt-2 gy-4">
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.BranchId,
+                        new SelectList(ViewBag.Branches, "Id", "Name"),
+                        "--- Select Source Branch ---",
+                        new
+                        {
+                            @class = "form-control select2",
+                            required = "required",
+                            id = "BranchId",
+                            onchange = "onBranchChange(this.value)"
+                        })
+                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger small" })
+                    <label>Select Branch</label>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForCapital, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForCapital, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForCapitalAmount</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForInterest, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForInterest, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForInterestAmount</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForVAT, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForVAT, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForVatAmount</label>
-                    </div>
-                </div>
-
-                <!-- Added Missing Fields -->
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanOneYear</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanTwoYears</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---"+ @GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanThreeYears</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, new SelectList(ViewBag.AccountLedgers, "Value", "Text"), "---" +@GlobalOldLoanAccountingMaping.SelectAccountLedger + "---", new { @class = "form-control select2", @search = "true" })
-                        @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanFourYears</label>
-                    </div>
-                </div>
-
             </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.LoanTypeName,
+                        Enumerable.Empty<SelectListItem>(),
+                        "--- Select Loan Type ---",
+                        new { @class = "form-control select2", id = "LoanTypeName" }
+                    )                    @Html.ValidationMessageFor(m => m.LoanTypeName, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectLoanType</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(
+                        m => m.ChartOfAccountIdForCapital,
+                        Enumerable.Empty<SelectListItem>(),
+                        "--- Select Account Ledger ---",
+                        new { @class = "form-control select2 branch-account" }
+                    )
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForCapital, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForCapitalAmount</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForInterest, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForInterest, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForInterestAmount</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForVAT, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForVAT, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForVatAmount</label>
+                </div>
+            </div>
+
+            <!-- Added Missing Fields -->
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanOneYear</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanTwoYears</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanThreeYears</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    @Html.DropDownListFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, Enumerable.Empty<SelectListItem>(),
+    "--- Select Account Ledger ---",
+    new { @class = "form-control select2 branch-account" }
+)
+                    @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, "", new { @class = "text-danger " })
+                    <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanFourYears</label>
+                </div>
+            </div>
+
+        </div>
             <div class="mt-4">
                 @if (ViewBag.Key != null)
                 {
