@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TellerStatement33 : ReportClass {
+    public class TellerStatement_old : ReportClass {
         
-        public TellerStatement33() {
+        public TellerStatement_old() {
         }
         
         public override string ResourceName {
             get {
-                return "TellerStatement33.rpt";
+                return "TellerStatement_old.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,8 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement33.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement_old.rpt" +
+                    "";
             }
             set {
                 // Do nothing
@@ -130,17 +131,25 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+        public CrystalDecisions.Shared.IParameterField Parameter_DateNow {
             get {
                 return this.DataDefinition.ParameterFields[3];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_CurrentYear {
+            get {
+                return this.DataDefinition.ParameterFields[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTellerStatement33 : Component, ICachedReport {
+    public class CachedTellerStatement_old : Component, ICachedReport {
         
-        public CachedTellerStatement33() {
+        public CachedTellerStatement_old() {
         }
         
         [Browsable(false)]
@@ -177,7 +186,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TellerStatement33 rpt = new TellerStatement33();
+            TellerStatement_old rpt = new TellerStatement_old();
             rpt.Site = this.Site;
             return rpt;
         }
