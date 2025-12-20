@@ -2086,13 +2086,25 @@ Dictionary<string, string> additionalFields = null)
                                 {
                                     jsonResponse = JObject.Parse(responseData);
 
-
                                     if (jsonResponse["errors"] != null)
                                     {
-                                        var errorResponse = jsonResponse["errors"].ToObject<Dictionary<string, List<string>>>();
+                                        var errorsToken = jsonResponse["errors"];
+                                        List<string> errorMessages = new List<string>();
 
-                                        // Check if the error message indicates a duplicate record
-                                        if (errorResponse.Any(error => error.Value.Any(x => x.Contains("already exists"))))
+                                        // Case 1: errors is an array of strings
+                                        if (errorsToken.Type == JTokenType.Array)
+                                        {
+                                            errorMessages = errorsToken.ToObject<List<string>>();
+                                        }
+                                        // Case 2: errors is a dictionary<string, list<string>>
+                                        else if (errorsToken.Type == JTokenType.Object)
+                                        {
+                                            var errorDict = errorsToken.ToObject<Dictionary<string, List<string>>>();
+                                            errorMessages = errorDict.SelectMany(x => x.Value).ToList();
+                                        }
+
+                                        // Duplicate check
+                                        if (errorMessages.Any(x => x.Contains("already exists")))
                                         {
                                             return new ApiResponse<T>
                                             {
@@ -2100,30 +2112,24 @@ Dictionary<string, string> additionalFields = null)
                                                 Message = "A customer with the provided phone number already exists."
                                             };
                                         }
-                                        else
-                                        {
-                                            // Extract and join all error messages
-                                            var errorMessages = errorResponse
-                                                .SelectMany(error => error.Value) // Flatten the list of error messages
-                                                .ToList();
-                                            var errorMessage = string.Join(". ", errorMessages);
 
-                                            return new ApiResponse<T>
-                                            {
-                                                IsSuccess = false,
-                                                Message = string.IsNullOrEmpty(errorMessage) ? "Validation error occurred" : errorMessage
-                                            };
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // Handle case when there are no error messages in the response
                                         return new ApiResponse<T>
                                         {
                                             IsSuccess = false,
-                                            Message = "Unexpected error occurred: No error messages in the response."
+                                            Message = errorMessages.Any()
+                                                ? string.Join(". ", errorMessages)
+                                                : "Validation error occurred"
                                         };
                                     }
+
+                                    // Fallback
+                                    return new ApiResponse<T>
+                                    {
+                                        IsSuccess = false,
+                                        Message = jsonResponse["message"]?.ToString()
+                                            ?? "Unexpected error occurred."
+                                    };
+
 
 
 

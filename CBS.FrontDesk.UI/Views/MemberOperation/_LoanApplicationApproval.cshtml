@@ -118,9 +118,7 @@
                                                 {
                                                     @class = "form-control",
                                                     placeholder = "Enter OTP",
-                                                    value = isReschedule ? "0000" : null,  // ✅ UI default
-                                                    disabled = isReschedule ? "disabled" : null,
-                                                    @readonly = isReschedule ? "readonly" : null
+                                                    value = "0000"
                                                 })
                                             @Html.ValidationMessageFor(m => m.UpdateLoanApplicationStatus.OTPCode, "",
                                                 new { @class = "text-danger" })

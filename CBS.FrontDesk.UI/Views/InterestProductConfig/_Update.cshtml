@@ -45,6 +45,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                             "-- Select Product --",
                             new { @class = "form-control" }
                         )
+                        @Html.HiddenFor(m => m.ProductName)
                     </div>
 
 

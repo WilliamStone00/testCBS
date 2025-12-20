@@ -48,13 +48,12 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         {
             try
             {
-                // Reset report dataset in session before starting a new request
+                // Reset report dataset in session
                 HttpContext.Session["rptSource"] = null;
 
                 // Build Trial Balance dataset
                 var response = await _trialBalanceService.BuildTrialBalanceDataset(model);
 
-                // No results returned
                 if (response == null || !response.Any())
                 {
                     return Json(new
@@ -64,44 +63,49 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                // Prepare filename and folder
-                string fileName = $"TrialBalance_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
-                string directoryPath = Server.MapPath("~/TempReportFiles");
+                string userName = _trialBalanceService.GetUserFullName();
 
-                // Create directory if missing
+                // ✅ User-based folder
+                string directoryPath = Server.MapPath(
+                    $"~/TempReportFiles/TrialBalance6/{userName}");
+
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
-
                 }
-                else
-                {
-                    // Delete the temporary file once downloaded
 
-                    ClearTempReportFiles(directoryPath);
-
-
-                }
+                // ✅ User-based filename
+                string fileName =
+                    $"TrialBalance6_{userName}_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.xlsx";
 
                 string fullPath = Path.Combine(directoryPath, fileName);
 
-                // Export report to Excel
-                _repoExcel.ExportTb6(response, fullPath, _trialBalanceService.GetUserFullName());
+                // ✅ Create only if not exists
+                if (!System.IO.File.Exists(fullPath))
+                {
+                    _repoExcel.ExportTb6(
+                        response,
+                        fullPath,
+                        userName);
+                }
 
-                // Store dataset in session for Crystal Reports preview
                 HttpContext.Session["rptSource"] = response;
 
-                // Return download info to front-end
+                // ✅ Return all files for user (latest first)
+                var files = Directory.GetFiles(directoryPath)
+                    .OrderByDescending(System.IO.File.GetCreationTime)
+                    .Select(Path.GetFileName)
+                    .ToList();
+
                 return Json(new
                 {
                     success = true,
                     message = "Trial balance report ready.",
-                    downloadFile = fileName
+                    files = files
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                // Error handling (logging can be hooked here)
                 return Json(new
                 {
                     success = false,
@@ -111,21 +115,35 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.TrialBalance
         }
 
 
+
         /// <summary>
         /// Handles the physical download of the generated Excel file.
         /// The file is deleted immediately after downloading.
         /// </summary>
         public ActionResult Download(string file)
         {
-            string fullPath = Path.Combine(Server.MapPath("~/TempReportFiles"), file);
+            if (string.IsNullOrWhiteSpace(file))
+                return HttpNotFound();
+
+            string userName = _trialBalanceService.GetUserFullName();
+
+            string fullPath = Path.Combine(
+                Server.MapPath($"~/TempReportFiles/TrialBalance6/{userName}"),
+                file
+            );
+
+            if (!System.IO.File.Exists(fullPath))
+                return HttpNotFound();
 
             byte[] fileBytes = System.IO.File.ReadAllBytes(fullPath);
 
-
-            return File(fileBytes,
+            return File(
+                fileBytes,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                file);
+                file
+            );
         }
+
 
         public string ClearTempReportFiles(string directoryPath)
         {
