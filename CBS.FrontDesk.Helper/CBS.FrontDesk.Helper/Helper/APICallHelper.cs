@@ -1320,7 +1320,7 @@ namespace CBS.FrontDesk.Helper
         public const string GetAllChequeRequests = "not yet provided by backend";
         public const string ApproveChequeRequest = "/api/v1/CheckRequest/Approve";
         public const string RejectChequeRequest = "/api/v1/CheckRequest/Reject";
-        public const string ReviewChequeRequest = "/api/v1/CheckRequest/Review";
+		public const string ReviewChequeRequest = "/api/v1/CheckRequest/Review";
         public const string datatableforrequest = "/api/v1/CheckRequest/DataTable";
 
         //------------------------ Counter Cheque ------------------------
