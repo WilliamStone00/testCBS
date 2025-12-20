@@ -223,12 +223,12 @@
 
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
-                        <input type="datetime" id="startDate" name="StartDate" class="form-control mb-1" />
+                        <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
                     </div>
 
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="endDate">End Entry Date</label>
-                        <input type="datetime" id="endDate" name="EndDate" class="form-control mb-1" />
+                        <input type="date" id="endDate" name="EndDate" class="form-control mb-1" />
                     </div>
 
 
@@ -366,9 +366,9 @@ $(document).ready(function () {
                     }
                 },
                 { data: 'Memo', name: 'Memo' },
-                { data: 'InitiatedBy', name: 'InitiatedBy' },
-                { data: 'ApprovedBy', name: 'ApprovedBy' },
-                { data: 'OperationCode', name: 'OperationCode' },
+                { data: 'InitiatedByTrim', name: 'InitiatedByTrim' },
+                { data: 'ApprovedByTrim', name: 'ApprovedByTrim' },
+                { data: 'OperationCodeTrim', name: 'OperationCodeTrim' },
                 {
                     data: null,
                     orderable: false,

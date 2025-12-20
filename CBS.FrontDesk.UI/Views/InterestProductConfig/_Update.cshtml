@@ -1,0 +1,312 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig.ProductCalculationConfig
+
+@using (Html.BeginForm("CreateOrUpdate", "InterestProductConfig", FormMethod.Post,
+new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsubmit = "return SaveInterestProductConfigAjax(this);" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
+
+
+    <div class="container mt-2">
+
+        <!-- HEADER -->
+        <div class="card bg-light mb-3">
+            <div class="card-body text-center">
+                <h3 class="card-title btn-text-primary">
+                    <i class="mdi mdi-cog-outline me-2"></i>
+                    @(Model.Id == null ? "ADD PRODUCT CALCULATION CONFIG" : "UPDATE PRODUCT CALCULATION CONFIG")
+                </h3>
+                <p class="card-text">
+                    @(Model.Id == null
+                    ? "Fill in the details to create a new product calculation configuration."
+                    : "Modify the details below and update this configuration.")
+                </p>
+                <hr style="border: 2px solid rgba(128,128,128,0.5);" />
+            </div>
+        </div>
+
+        <!-- FORM BODY -->
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <!-- BASIC -->
+                <h6 class="mb-3 text-primary">Basic Information</h6>
+                <div class="row g-3 mb-4">
+
+
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.ProductId, "Product",
+                            new { @class = "form-label fw-bold" })
+
+                        @Html.DropDownListFor(
+                            m => m.ProductId,
+                            ViewBag.Products as List<SelectListItem>,
+                            "-- Select Product --",
+                            new { @class = "form-control" }
+                        )
+                        @Html.HiddenFor(m => m.ProductName)
+                    </div>
+
+
+
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsEnabled, new { @class = "form-check-input" })
+                            @Html.LabelFor(m => m.IsEnabled, "Enabled",
+                                new { @class = "form-check-label fw-bold" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="GlobalConfiguration">
+                            <label class="form-check-label" for="GlobalConfiguration">
+                                Global Configuration
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- FREQUENCY -->
+                <h6 class="mb-3 text-primary">Period & Frequency</h6>
+                <div class="row g-3 mb-4" id="frequencyFields">
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Interest Frequency</label>
+                        @Html.DropDownList("Frequency",
+                            new SelectList(ViewBag.Frequency, "Value", "Text"),
+                            "------  Select Frequency  ------",
+                            new { @class = "form-control select2 mb-1", @id = "Frequency" })
+                    </div>
+
+                    <div class="col-md-6 mb-1" id="calcDayMonth">
+                        @Html.LabelFor(m => m.CalculationDayOfMonth, "Calculation Day (Month)",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CalculationDayOfMonth,
+                            new { @class = "form-control", type = "number" })
+                    </div>
+
+                    <div class="col-md-6 mb-1" id="weekField">
+                        @Html.LabelFor(m => m.CalculationDayOfWeek, "Calculation Day (Week)",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CalculationDayOfWeek,
+                            new { @class = "form-control" })
+                    </div>
+
+
+                    <div class="col-md-6 mb-1" id="firstCalcMonth">
+                        @Html.LabelFor(m => m.FirstCalculationMonth, "First Calculation Month",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.FirstCalculationMonth,
+                            new { @class = "form-control", type = "number" })
+                    </div>
+
+                </div>
+
+                <!-- COMPUTATION -->
+                <h6 class="mb-3 text-primary">Computation</h6>
+                <div class="row g-3 mb-4">
+
+                    <div class="col-md-4 mb-1">
+                        <label class="form-label fw-bold">Computation Mode</label>
+                        @Html.DropDownList("ComputationMode",
+                            new SelectList(ViewBag.ComputationMode, "Value", "Text"),
+                            "------  Select Computation Mode  ------",
+                            new { @class = "form-control select2 mb-1", @id = "ComputationMode" })
+                    </div>
+
+                    <!-- Day fields (only for Average of Points) -->
+                    <div class="col-md-4" id="day1Field">
+                        @Html.LabelFor(m => m.Day1, "Day 1 (for Average of Points)",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.Day1,
+                            new { @class = "form-control", placeholder = "e.g. 1" })
+                    </div>
+
+                    <div class="col-md-4" id="day2Field">
+                        @Html.LabelFor(m => m.Day2, "Day 2 (for Average of Points)",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.Day2,
+                            new { @class = "form-control", placeholder = "e.g. 15" })
+                    </div>
+
+                    <!-- ShareMonthFactor & CustomDenominator (always visible) -->
+                    <div class="col-md-4" id="shareMonthFactorField">
+                        @Html.LabelFor(m => m.ShareMonthFactor, "Share Month Factor",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.ShareMonthFactor,
+                            new { @class = "form-control", type = "number", step = "0.01" })
+                    </div>
+
+                    <div class="col-md-4" id="customDenominatorField">
+                        @Html.LabelFor(m => m.CustomDenominator, "Custom Denominator",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.CustomDenominator,
+                            new { @class = "form-control", type = "number" })
+                    </div>
+
+                </div>
+
+                <h6 class="mb-3 text-primary">Share Month Configuration</h6>
+                
+                <div class="row">
+
+                    <!-- CHECKBOX -->
+                    <div class="col-md-12 mb-2">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(
+                                m => m.IsShareMonthProduct,
+                                new { @class = "form-check-input", id = "IsShareMonthProduct" }
+                            )
+                            @Html.LabelFor(
+                                m => m.IsShareMonthProduct,
+                                "Is Share Month Product",
+                                new { @class = "form-check-label fw-bold" }
+                            )
+                        </div>
+                    </div>
+
+                    <!-- SHARE MONTH MODE -->
+                    <div class="col-md-12 mb-1 d-none" id="shareMonthModeWrapper">
+                        <label class="form-label fw-bold">Share Month Mode</label>
+                        @Html.DropDownList(
+                            "ShareMonthMode",
+                            new SelectList(ViewBag.ShareMonthMode, "Value", "Text"),
+                            "------  Select Share Month Mode  ------",
+                            new { @class = "form-control select2", id = "ShareMonthMode" }
+                        )
+                    </div>
+
+                    <!-- SHARE MONTH AVERAGE DAYS -->
+                    <div class="col-md-6 d-none" id="shareMonthAverageWrapper">
+                        @Html.LabelFor(
+                            m => m.ShareMonthAverageDaysCsv,
+                            "Share Month Average Days (CSV)",
+                            new { @class = "form-label fw-bold" }
+                        )
+                        @Html.TextBoxFor(
+                            m => m.ShareMonthAverageDaysCsv,
+                            new { @class = "form-control", placeholder = "e.g. 30,31,28,29" }
+                        )
+                    </div>
+
+                    <!-- SHARE MONTH FACTOR -->
+                    <div class="col-md-6 d-none" id="shareMonthFactorWrapper">
+                        @Html.LabelFor(
+                            m => m.ShareMonthFactorOverride,
+                            "Share Month Factor Override",
+                            new { @class = "form-label fw-bold" }
+                        )
+                        @Html.TextBoxFor(
+                            m => m.ShareMonthFactorOverride,
+                            new { @class = "form-control", type = "number", step = "0.0001", min = "0" }
+                        )
+                    </div>
+
+                </div>
+
+
+
+                <!-- RATE -->
+                <h6 class="mb-3 text-primary">Rate Configuration</h6>
+                <div class="row g-3 mb-4" id="RateConfigContainer">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold">Rate Source</label>
+                        @Html.DropDownList("RateSource",
+                            new SelectList(ViewBag.RateSource, "Value", "Text"),
+                            "------  Select Rate Source  ------",
+                            new { @class = "form-control select2 mb-1", @id = "RateSource" })
+                    </div>
+
+                    <div class="col-md-6" id="FixedRateDiv">
+                        @Html.LabelFor(m => m.FixedRate, "Fixed Rate", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.FixedRate, new { @class = "form-control", type = "number", step = "0.0001" })
+                    </div>
+
+                    <div class="col-md-6" id="RateProfileDiv">
+                        @Html.LabelFor(m => m.RateProfileCode, "Rate Profile Code", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.RateProfileCode, new { @class = "form-control" })
+                    </div>
+                </div>
+                <h6 class="mb-3 text-primary">Tax Configuration</h6>
+                <div class="row g-3 mb-4">
+                    <div class="form-check col-md-4">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.ApplyRti, new { @class = "form-check-input", id = "ApplyRti" })
+                            @Html.LabelFor(m => m.ApplyRti, "Apply RTI (Revenue Tax on Interest)", new { @class = "form-check-label fw-bold" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-4" id="RtiRateOverrideDiv">
+                        @Html.LabelFor(m => m.RtiRateOverride, "RTI Rate Override", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.RtiRateOverride, new { @class = "form-control", placeholder = "e.g 0.165 for 16.5%" })
+                    </div>
+                    <div class="form-check col-md-4">
+
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.ApplyTprcm, new { @class = "form-check-input", id = "ApplyTprcm" })
+                            @Html.LabelFor(m => m.ApplyTprcm, "Apply Apply TPRCM/IRCM Tax", new { @class = "form-check-label fw-bold" })
+                        </div>
+
+                    </div>
+                    <div class="col-md-4" id="TprcmRateOverrideDiv">
+                        @Html.LabelFor(m => m.TprcmRateOverride, "TPRCM Rate Override", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.TprcmRateOverride, new { @class = "form-control", placeholder = "e.g 0.05 for 5%" })
+                    </div>
+
+                    <div class="col-md-4" id="TaxableThresholdOverrideDiv">
+                        @Html.LabelFor(m => m.TaxableThresholdOverride, "Taxable Threshold Override", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.TaxableThresholdOverride, new { @class = "form-control", placeholder = "e.g 10000" })
+                    </div>
+
+                </div>
+
+                <!-- LIMITS -->
+                <h6 class="mb-3 text-primary">Limits Rules</h6>
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.MinBalanceForInterest, "Minimum Balance for Interest",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.MinBalanceForInterest,
+                            new { @class = "form-control", type = "number", step = "0.01" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.MaxBalanceForInterest, "Maximum Balance for Interest",
+                            new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.MaxBalanceForInterest,
+                            new { @class = "form-control", type = "number", step = "0.01" })
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SAVE / UPDATE -->
+        <div class="text-end">
+            <button type="button" class="btn btn-primary btn-save"
+                    onclick="SaveInterestProductConfigAjax(this.form)">
+                <i class="mdi mdi-content-save-outline me-1"></i>
+                @(Model.Id == null ? "Save" : "Update")
+            </button>
+        </div>
+
+    </div>
+
+
+}

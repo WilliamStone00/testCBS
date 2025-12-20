@@ -483,12 +483,6 @@
       <DependentUpon>JER.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalEntries1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JournalEntries.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AppFiles\Accountingv2Reporting\ReportRPT\JournalReceipts1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -621,10 +615,16 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AppFiles\Reporting\Transactions\TellerStatement1.cs">
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TellerStatement.rpt</DependentUpon>
+      <DependentUpon>TellerStatement33.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement11.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TellerStatement1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="App_GlobalResources\AccountCategory\GlobalsAccountCategory.fr.designer.cs">
@@ -2139,8 +2139,10 @@
     <Compile Include="Controllers\AccountingV2\JournalHead\JournalHeadController.cs" />
     <Compile Include="Controllers\AccountingV2\ManualJournalEntry\ManualJournalEntryController.cs" />
     <Compile Include="Controllers\AccountingV2\BranchCashConfig\BranchCashConfigController.cs" />
+    <Compile Include="Controllers\AccountingV2\ReconciledLine\ReconciledLineController.cs" />
     <Compile Include="Controllers\AccountingV2\RoleGlResolution\RoleGlResolutionController.cs" />
     <Compile Include="Controllers\AccountingV2\CashReconciliation\CashReconciliationController.cs" />
+    <Compile Include="Controllers\AccountingV2\SharedMonth\SharedMonthSimulationController.cs" />
     <Compile Include="Controllers\Accounting\AccountBalanceInitializationController.cs" />
     <Compile Include="Controllers\Accounting\AccountCategoryController.cs" />
     <Compile Include="Controllers\Accounting\AccountClassController.cs" />
@@ -2178,6 +2180,7 @@
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\Category\CategoryconficController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\ChequeNumber\ChequeNumberController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\FeeConfiguration\FeeConfigController.cs" />
+    <Compile Include="Controllers\ChequeManagementSystem\Configurations\GlobalConfiguration\GlobalConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationConfigController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\LossManagementSys\LossManagementController.cs" />
     <Compile Include="Controllers\ChequeManagementSystem\Configurations\NotificationConfiguration\NotificationHistory\NotificationHistoryController.cs" />
@@ -8135,7 +8138,6 @@
     <Content Include="RateLimitConfig\_Data.cshtml" />
     <Content Include="RateLimitConfig\Index.cshtml" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Akum_TB.pubxml" />
     <None Include="Properties\PublishProfiles\CamCCULAdmin_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Cpcmc_TB.pubxml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
@@ -9527,9 +9529,13 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfig.fr.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="AppFiles\Reporting\Transactions\TellerStatement.rpt">
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement33.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>TellerStatement1.cs</LastGenOutput>
+      <LastGenOutput>TellerStatement33.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppFiles\Reporting\Transactions\Reciepts\TellerStatement1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TellerStatement11.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Login\GlobalLogin.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -11128,6 +11134,9 @@
     <Content Include="Views\AccountTypeDefinition\_AccountTypeDetails.cshtml" />
     <Content Include="Views\AccountTypeDefinition\List.cshtml" />
     <Content Include="Views\YearEndChecklistDefinition\_EndofYearConfiguration.cshtml" />
+    <Content Include="Views\InterestProductConfig\Index.cshtml" />
+    <Content Include="Views\InterestProductConfig\_Update.cshtml" />
+    <Content Include="Views\InterestProductConfig\_DataTable.cshtml" />
     <Content Include="Views\IPSConfig\Index.cshtml" />
     <Content Include="Views\IPSConfig\_IPSConfigForm.cshtml" />
     <Content Include="Views\IPSConfig\_IPSConfigDetailsPartial.cshtml" />
@@ -11141,6 +11150,14 @@
     <Content Include="Views\IPSClaim\List.cshtml" />
     <Content Include="Views\IPSClaim\_ClaimDataTable.cshtml" />
     <Content Include="Views\IPSClaim\UploadDocuments.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\Index.cshtml" />
+    <Content Include="Views\ReconciledLine\Index.cshtml" />
+    <Content Include="Views\ReconciledLine\_DataTable.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\_SimulationData.cshtml" />
+    <Content Include="Views\GlobalConfig\_Create.cshtml" />
+    <Content Include="Views\GlobalConfig\_Data.cshtml" />
+    <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />
+    <Content Include="Views\GlobalConfig\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
@@ -11172,7 +11189,6 @@
     <Folder Include="Views\ChequeNumber\" />
     <Folder Include="Views\DaillyCollectorLicense\" />
     <Folder Include="Views\Default\" />
-    <Folder Include="Views\InterestProductConfig\" />
     <Folder Include="Views\Language\" />
     <Folder Include="Views\ReportLineMapping\" />
     <Folder Include="Views\ReportLinet\" />

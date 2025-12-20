@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions {
+namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TellerStatement : ReportClass {
+    public class TellerStatement1 : ReportClass {
         
-        public TellerStatement() {
+        public TellerStatement1() {
         }
         
         public override string ResourceName {
             get {
-                return "TellerStatement.rpt";
+                return "TellerStatement1.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions {
         
         public override string FullResourceName {
             get {
-                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.TellerStatement.rpt";
+                return "CBS.FrontDesk.UI.AppFiles.Reporting.Transactions.Reciepts.TellerStatement1.rpt";
             }
             set {
                 // Do nothing
@@ -146,9 +146,9 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTellerStatement : Component, ICachedReport {
+    public class CachedTellerStatement1 : Component, ICachedReport {
         
-        public CachedTellerStatement() {
+        public CachedTellerStatement1() {
         }
         
         [Browsable(false)]
@@ -185,7 +185,7 @@ namespace CBS.FrontDesk.UI.AppFiles.Reporting.Transactions {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TellerStatement rpt = new TellerStatement();
+            TellerStatement1 rpt = new TellerStatement1();
             rpt.Site = this.Site;
             return rpt;
         }

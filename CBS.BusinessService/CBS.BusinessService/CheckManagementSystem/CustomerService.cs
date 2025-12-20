@@ -65,8 +65,9 @@ namespace CBS.BusinessService.CheckManagementSystem
                                 : $"{a.AccountNumber} - {a.AccountName} ({a.Balance:N2})"
                         })
                         .OrderBy(x => x.Text)
-                        .ToList()
-                };
+                        .ToList(),
+					BranchId = accounts.FirstOrDefault()?.BranchId
+				};
 
                 return vm;
             }

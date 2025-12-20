@@ -1,0 +1,614 @@
+﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig.ProductCalculationConfig
+
+
+@using Resources
+@{
+    ViewBag.Title = "Interest Product Configuration";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> Interest Product Configuration
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Configure interest calculation parameters for financial products
+        </div>
+    </div>
+</div>
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            @*<ul class="mb-0">
+                    <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                    <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                    <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                    <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                    <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                    <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                    <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                    <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+                </ul>*@
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btnAddproductConfig" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Add New
+        </button>
+    </div>
+</div>
+
+
+
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="FilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Main Filters Card -->
+        <div class="card p-3 mb-2 bg-light">
+
+            <!-- 🔹 Branch & Date Toggles -->
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-6 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 mb-1 d-flex align-items-center mt-4">
+                    <div class="form-check">
+                        @Html.CheckBox("IsEnabled", false, new { @class = "form-check-input", id = "IsEnabled" })
+                        <label class="form-check-label fw-bold" for="IsEnabled">Is Enabled</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- 🔹 Hidden Branch Dropdown -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId1" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- 🔹 Mode, Daily Operation & Is Interbranch -->
+            <div class="row mb-1">
+
+
+                <div class="col-md-6 mb-1">
+
+                    <label class="form-label fw-bold">Accounting Year</label>
+                    @Html.DropDownList("AccountingYearId",
+                        new SelectList(ViewBag.Year, "Value", "Text"),
+                        "Select Accounting Year",
+                        new { @class = "form-control select2 mb-1", @id = "AccountingYearId" })
+                </div>
+
+                @*<div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold">Daily Operator</label>
+                        @Html.DropDownList("DailyOperator",
+                            new List<SelectListItem>(), // backend will populate
+                            "--- Select Operator ---",
+                            new { @class = "form-control select2 mb-1", id = "DailyOperator" })
+                    </div>*@
+                <div class="col-md-6 mb-1">
+
+                    <label class="form-label fw-bold">Product</label>
+                    @Html.DropDownList("ProductId",
+                        new SelectList(ViewBag.Product, "Value", "Text"),
+                        "Select Accounting Year",
+                        new { @class = "form-control select2 mb-1", @id = "ProductId1" })
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row g-2 mt-2">
+            <div class="col-12 col-md-6">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                </button>
+            </div>
+
+            
+            <div class="col-12 col-md-6">
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+        </div>
+
+
+
+
+    </form>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="ProductConfigurationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div id="ProductConfigurationModalContent" class="p-3"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+$(function () {
+
+    // ================================
+    // LOAD INTEREST PRODUCT CONFIG
+    // ================================
+    function loadInterestProductConfig() {
+        $('#myDataTable').DataTable({
+            serverSide: true,
+            destroy: true,
+            responsive: true,
+            searching: false,
+            order: [[0, 'asc']],
+            ajax: {
+                url: '/InterestProductConfig/LoadInterestProductConfigData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: function (d) {
+                    return JSON.stringify({
+                        BranchId: $('#branchId1').val(),
+                        AccountingYearId: $('#AccountingYearId').val(),
+                        ProductId: $('#ProductId1').val(),
+                        IsEnabled: $('#IsEnabled').is(':checked'),
+                        Options: {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
+                        }
+                    });
+                },
+                error: function (xhr, status, err) {
+                    console.error('❌ Error loading interest products:', status, err);
+                    appalert('❌ Failed to load products. Status: ' + xhr.status, 4, 1);
+                }
+            },
+            columns: [
+                { data: 'BranchName' },
+                { data: 'ProductName' },
+                { data: 'Frequency' },
+                { data: 'ComputationMode' },
+                {
+                    data: 'IsEnabled',
+                    render: v => v
+                        ? '<span class="badge bg-primary">True</span>'
+                        : '<span class="badge bg-danger">False</span>'
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    render: row => `
+                        <div class="dropdown text-center">
+                            <button class="btn btn-sm btn-info dropdown-toggle text-white"
+                                    data-bs-toggle="dropdown">
+                                <i class="mdi mdi-cog-outline me-1"></i> Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item edit-task" href="#" data-id="${row.Id}">
+                                        <i class="mdi mdi-pencil-outline me-1"></i> Edit
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>`
+                }
+            ]
+        });
+    }
+
+    // ================================
+    // FILTER BUTTONS
+    // ================================
+    $('#applyFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        loadInterestProductConfig();
+    });
+
+    $('#resetFilterBtn').on('click', function (e) {
+        e.preventDefault();
+        $('#FilterForm')[0].reset();
+        $('#FilterForm select').val('');
+        $('#branchFilter').addClass('d-none');
+        appalert('🧹 Filters reset.', 1, 1);
+    });
+
+    // ================================
+    // MODAL URLS
+    // ================================
+    const addUrl = '@Url.Action("New", "InterestProductConfig")';
+    const updateUrl = '@Url.Action("GetDetails", "InterestProductConfig")';
+
+    // ================================
+    // ADD CONFIG
+    // ================================
+    $('#btnAddproductConfig').on('click', function () {
+        $.get(addUrl, function (html) {
+            $("#ProductConfigurationModalContent").html(html);
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('ProductConfigurationModal')
+            ).show();
+
+            initFrequencyLogic();
+            initComputationModeLogic();
+            initRateSourceLogic();
+            initOverrideCheckboxLogic();
+            initShareMonthLogic();
+            initGlobalConfigLogic();
+        });
+    });
+
+    // ================================
+    // EDIT CONFIG
+    // ================================
+    $(document).on('click', '.edit-task', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        if (!id) return appalert("Invalid ID.", 3, 1);
+
+        $.get(updateUrl, { id }, function (html) {
+            $("#ProductConfigurationModalContent").html(html);
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('ProductConfigurationModal')
+            ).show();
+
+            initFrequencyLogic();
+            initComputationModeLogic();
+            initRateSourceLogic();
+            initOverrideCheckboxLogic();
+            initShareMonthLogic();
+            initGlobalConfigLogic();
+        });
+    });
+
+    // ================================
+    // SHARE MONTH LOGIC
+    // ================================
+    function initShareMonthLogic() {
+        const $modal = $('#ProductConfigurationModal');
+
+        const $checkbox = $modal.find('#IsShareMonthProduct');
+        const $mode = $modal.find('#ShareMonthMode');
+
+        const $modeWrapper = $modal.find('#shareMonthModeWrapper');
+        const $factorWrapper = $modal.find('#shareMonthFactorWrapper');
+        const $averageWrapper = $modal.find('#shareMonthAverageWrapper');
+
+        function updateShareMonthVisibility() {
+            if ($checkbox.is(':checked')) {
+                $modeWrapper.removeClass('d-none');
+                $factorWrapper.removeClass('d-none');
+                if ($mode.val() === 'AverageofPoints') {
+                    $averageWrapper.removeClass('d-none');
+                } else {
+                    $averageWrapper.addClass('d-none');
+                }
+            } else {
+                $modeWrapper.addClass('d-none');
+                $factorWrapper.addClass('d-none');
+                $averageWrapper.addClass('d-none');
+                $mode.val('');
+                $('#ShareMonthAverageDaysCsv').val('');
+                $('#ShareMonthFactorOverride').val('');
+            }
+        }
+
+        $modal
+            .off('change', '#IsShareMonthProduct')
+            .off('change', '#ShareMonthMode')
+            .on('change', '#IsShareMonthProduct', updateShareMonthVisibility)
+            .on('change', '#ShareMonthMode', updateShareMonthVisibility);
+
+        updateShareMonthVisibility();
+    }
+
+    // ================================
+    // FREQUENCY LOGIC
+    // ================================
+    function initFrequencyLogic() {
+        const $f = $('#Frequency');
+        const $w = $('#weekField').hide();
+        $f.off().on('change', () => $w.toggle($f.val() === 'Weekly'));
+        if ($f.val() === 'Weekly') $w.show();
+    }
+
+    // ================================
+    // COMPUTATION MODE
+    // ================================
+    function initComputationModeLogic() {
+        const $c = $('#ComputationMode');
+        const $d1 = $('#day1Field').hide();
+        const $d2 = $('#day2Field').hide();
+
+        $c.off().on('change', () => {
+            const on = $c.val() === 'AverageofPoints';
+            $d1.toggle(on);
+            $d2.toggle(on);
+        });
+
+        if ($c.val() === 'AverageofPoints') {
+            $d1.show(); $d2.show();
+        }
+    }
+
+    // ================================
+    // RATE SOURCE
+    // ================================
+    function initRateSourceLogic() {
+        const $r = $('#RateSource');
+        const $f = $('#FixedRateDiv');
+        const $p = $('#RateProfileDiv');
+        const $c = $('#RateConfigContainer');
+
+        function toggle() {
+            $f.hide(); $p.hide();
+            $c.removeClass('col-md-6').addClass('col-md-12');
+
+            if ($r.val() === 'FixedValue') {
+                $f.show(); $c.addClass('col-md-6');
+            }
+            if ($r.val() === 'YearlyBoardDecision') {
+                $p.show(); $c.addClass('col-md-6');
+            }
+        }
+
+        $r.off().on('change', toggle);
+        toggle();
+    }
+
+    // ================================
+    // OVERRIDE CHECKBOXES
+    // ================================
+    function initOverrideCheckboxLogic() {
+        $('#ApplyRti').off().on('change', function () {
+            $('#RtiRateOverrideDiv').toggle(this.checked);
+        }).trigger('change');
+
+        $('#ApplyTprcm').off().on('change', function () {
+            $('#TprcmRateOverrideDiv, #TaxableThresholdOverrideDiv')
+                .toggle(this.checked);
+        }).trigger('change');
+    }
+
+    // ================================
+    // GLOBAL CONFIG
+    // ================================
+    function initGlobalConfigLogic() {
+        const $g = $('#GlobalConfiguration');
+        const $b = $('#branchId').closest('.col-md-6.mb-1');
+        const $p = $('#ProductId').closest('.col-md-6');
+
+        function toggle() {
+            if ($g.is(':checked')) {
+                $b.hide();
+                $p.removeClass('col-md-6').addClass('col-md-12');
+            } else {
+                $b.show();
+                $p.removeClass('col-md-12').addClass('col-md-6');
+            }
+        }
+
+        $g.off().on('change', toggle);
+        toggle();
+    }
+
+    // ================================
+    // SAVE AJAX
+    // ================================
+   window.SaveInterestProductConfigAjax = function (form) {
+    const $form = $(form);
+    if (!$form.valid()) return false;
+
+    // ================================
+    // Helper: Get selected text safely (NO Select2)
+    // ================================
+    function getSelectText(selector) {
+        const $el = $form.find(selector);
+        if (!$el.length) return "---";
+
+        if ($el.is('select')) {
+            return $el.find('option:selected').text() || "---";
+        }
+
+        return $el.val() || "---";
+    }
+
+    // ================================
+    // Collect values for confirmation
+    // ================================
+    const fields = {
+        "Product": getSelectText('#ProductId'),
+        "Branch": getSelectText('#branchId'),
+        "Frequency": getSelectText('#Frequency'),
+        "Computation Mode": getSelectText('#ComputationMode'),
+        "Calculation Day (Month)": $form.find('#CalculationDayOfMonth').val() || "---",
+        "Calculation Day (Week)": $form.find('#CalculationDayOfWeek').val() || "---",
+        "First Calculation Month": $form.find('#FirstCalculationMonth').val() || "---",
+        "Share Month Factor": $form.find('#ShareMonthFactor').val() || "---",
+        "Custom Denominator": $form.find('#CustomDenominator').val() || "---",
+        "Is Share Month Product": $form.find('#IsShareMonthProduct').is(':checked') ? "Yes" : "No",
+        "Share Month Mode": getSelectText('#ShareMonthMode'),
+        "Share Month Average Days (CSV)": $form.find('#ShareMonthAverageDaysCsv').val() || "---",
+        "Share Month Factor Override": $form.find('#ShareMonthFactorOverride').val() || "---",
+        "Rate Source": getSelectText('#RateSource'),
+        "Fixed Rate": $form.find('#FixedRate').val() || "---",
+        "Rate Profile Code": $form.find('#RateProfileCode').val() || "---",
+        "Apply RTI": $form.find('#ApplyRti').is(':checked') ? "Yes" : "No",
+        "RTI Rate Override": $form.find('#RtiRateOverride').val() || "---",
+        "Apply TPRCM": $form.find('#ApplyTprcm').is(':checked') ? "Yes" : "No",
+        "TPRCM Rate Override": $form.find('#TprcmRateOverride').val() || "---",
+        "Taxable Threshold Override": $form.find('#TaxableThresholdOverride').val() || "---",
+        "Min Balance for Interest": $form.find('#MinBalanceForInterest').val() || "---",
+        "Max Balance for Interest": $form.find('#MaxBalanceForInterest').val() || "---",
+        "Enabled": $form.find('#IsEnabled').is(':checked') ? "Yes" : "No"
+    };
+
+    // ================================
+    // Build confirmation table
+    // ================================
+    let tableRows = '';
+    for (const key in fields) {
+        tableRows += `<tr><th>${key}</th><td>${fields[key]}</td></tr>`;
+    }
+
+    const title = $form.find('#Id').val()
+        ? "Update Product Config"
+        : "Create Product Config";
+
+    const message = `
+        <p>Please review the details before submitting:</p>
+        <table class="table table-sm table-bordered">
+            <tbody>${tableRows}</tbody>
+        </table>
+        <div class="form-check mt-3">
+            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+            <label class="form-check-label" for="alertifyConfirmCheckbox">
+                I confirm that the above details are correct.
+            </label>
+        </div>
+    `;
+
+    // ================================
+    // Alertify confirmation
+    // ================================
+    alertify.confirm(title, message,
+        function () {
+
+            if (!$('#alertifyConfirmCheckbox').is(':checked')) {
+                appalert("❗ Please confirm by checking the box before proceeding.", 3, 1);
+                return false;
+            }
+
+            const token = $form.find('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                type: 'POST',
+                url: $form.attr('action'),
+                data: new FormData($form[0]),
+                processData: false,
+                contentType: false,
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                beforeSend: function () {
+                    $('.alertify .ajs-ok')
+                        .prop('disabled', true)
+                        .html('<span class="spinner-border spinner-border-sm"></span> Processing...');
+                },
+                success: function (response) {
+                    if (response?.success) {
+                        appalert(response.message || "✅ Product config saved successfully!", 1, 1);
+                        alertify.dismissAll();
+
+                        if (String(response.reloadDataView).toLowerCase() === "yes") {
+                            $form[0].reset();
+                            $form.find('select').val(''); // ✅ safe reset (no select2)
+                        }
+                    } else {
+                        appalert(response?.message || "❌ Failed to save product config.", 2, 1);
+                    }
+                },
+                error: function (xhr) {
+                    appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
+                },
+                complete: function () {
+                    $('.alertify .ajs-ok')
+                        .prop('disabled', false)
+                        .html('Yes, Continue');
+                }
+            });
+        },
+        function () {
+            appalert("🚫 Operation cancelled.", 2, 1);
+        }
+    ).set({
+        labels: { ok: 'Yes, Continue', cancel: 'Cancel' },
+        onshow: function () {
+            const okBtn = $('.alertify .ajs-ok');
+            okBtn.prop('disabled', true);
+            $('#alertifyConfirmCheckbox')
+                .off('change')
+                .on('change', function () {
+                    okBtn.prop('disabled', !this.checked);
+                });
+        }
+    });
+
+    return false;
+};
+
+
+});
+</script>
+
+}

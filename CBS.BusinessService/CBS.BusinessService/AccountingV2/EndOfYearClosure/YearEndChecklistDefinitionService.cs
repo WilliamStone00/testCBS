@@ -2,6 +2,7 @@
 using CBS.API.Helper;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure;
+using CBS.FrontDesk.Data.Entity.BulkOperation;
 using CBS.FrontDesk.Data.Entity.DataTable;
 using CBS.FrontDesk.Data.Message;
 using CBS.FrontDesk.Helper;
@@ -161,6 +162,9 @@ namespace CBS.BusinessService.AccountingV2.EndOfYearClosure
 
             return ExecutionMessage; // Return accumulated execution result
         }
+
+
+
 
 
     }

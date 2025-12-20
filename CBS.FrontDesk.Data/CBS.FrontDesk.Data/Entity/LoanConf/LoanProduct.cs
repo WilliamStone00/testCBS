@@ -352,7 +352,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public bool IsPaidFeeBeforeProcessing { get; set; }
         public string AccountTypeDefinitionId { get; set; } 
         public virtual AccountTypeDefinition AccountTypeDefinition { get; set; }
-
+        public string ChartOfAccountIdForFee { get; set; }
     }
     public class AccountTypeGroup
     {

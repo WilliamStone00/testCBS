@@ -399,13 +399,13 @@
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('approve', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('reject', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-close me-2 text-danger"></i> Reject</button></li>`;
                         }
-                        if (status === 'reviewed') {
+                        if (status === 'review') {
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('approve', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-check me-2 text-success"></i> Approve</button></li>`;
                             items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('reject', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-close me-2 text-danger"></i> Reject</button></li>`;
                         }
-                        if (status === 'approved') {
-                            items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('delivered', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-truck-delivery me-2 text-info"></i> Mark as Delivered</button></li>`;
-                        }
+                        //if (status === 'approved') {
+                        //    items += `<li><button class="dropdown-item text-dark" onclick="showActionModal('delivered', '${id}', '${name}', '${customerId}', '${status}')"><i class="mdi mdi-truck-delivery me-2 text-info"></i> Mark as Delivered</button></li>`;
+                        //}
 
                         var detailsBtn = `<li><button class="dropdown-item text-dark" onclick="viewDetails('${id}')"><i class="mdi mdi-eye-outline me-2 text-primary"></i> Details</button></li>`;
 

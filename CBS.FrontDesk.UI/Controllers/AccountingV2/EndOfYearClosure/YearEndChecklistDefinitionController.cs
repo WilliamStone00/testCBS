@@ -1,6 +1,7 @@
 ﻿using CBS.BusinessService.AccountingV2.AccountingYear;
 using CBS.BusinessService.AccountingV2.EndOfYearClosure;
 using CBS.BusinessService.AccountingV2.JournalHead;
+using CBS.BusinessService.BulkOperations;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.AccountingV2.EndOfYearClosure;
@@ -71,8 +72,8 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                     //recordsTotal = data.Options.recordsTotal,
                     //recordsFiltered = data.Options.recordsFiltered,
                     data = EndChecklist,
-                    success = true,
-                    message = "Display DataTable for End of Year check Definition status   successfully"
+                    success = true
+                    
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -172,6 +173,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return Json(new { success = false, message = $"❌ Error: {ex.Message}" });
             }
         }
+
+
+
+       
 
     }
 }

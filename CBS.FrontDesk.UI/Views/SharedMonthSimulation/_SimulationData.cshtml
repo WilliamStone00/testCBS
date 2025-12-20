@@ -1,0 +1,47 @@
+﻿<div class="accordion-item">
+    <h2 class="accordion-header" id="headingAccountListShared">
+        <button class="accordion-button" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseAccountListShared"
+                aria-expanded="true"
+                aria-controls="collapseAccountListShared">
+            <i class="mdi mdi-account-details me-2"></i> Share Month Simulation
+        </button>
+    </h2>
+
+    <div id="collapseAccountListShared"
+         class="accordion-collapse collapse show"
+         aria-labelledby="headingAccountListShared">
+
+        <div class="accordion-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="myDataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Member Reference</th>
+                            <th>Member Name</th>
+                            <th>Gross Amount</th>
+                            <th>Amount</th>
+                            <th>Adjustment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<!-- Action Buttons -->
+<div class="card mb-3">
+    <div class="card-body d-flex justify-content-end align-items-center">
+        <button type="button" id="btn" class="btn btn-success btn-sm px-2">
+            <i class="mdi mdi-plus-circle-outline me-1"></i> Post Adjustment
+        </button>
+    </div>
+</div>

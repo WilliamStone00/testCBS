@@ -390,6 +390,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         public decimal Interest { get; set; }
         public decimal Penalty { get; set; }
         public string LoanId { get; set; }
+       
     }
     // Custom Validation Attributes
     public class ValidateAmountAttribute : ValidationAttribute

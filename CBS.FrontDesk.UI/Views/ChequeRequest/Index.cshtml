@@ -330,4 +330,46 @@
             showSearchSection();
         });
     </script>
+
+    <script>
+        $(document).on('change', '#CheckBookCategoryId', function () {
+
+            const categoryId = $(this).val();
+
+            if (!categoryId) {
+                $('#NumberOfPages').val('');
+                $('#BasePrice').val('');
+                $('#BasePriceDisplay').val('');
+                $('#SubscriptionDurationInMonths').val('');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetChequeBookCategoryDetails", "ChequeRequest")',
+                type: 'GET',
+                data: { categoryId: categoryId },
+                success: function (response) {
+                    if (response && response.success) {
+                        $('#NumberOfPages').val(response.numberOfPages);
+
+                        // Met à jour le champ caché pour le binding
+                        $('#BasePrice').val(response.basePrice);
+
+                        // Met à jour le champ readonly avec format currency
+                        $('#BasePriceDisplay').val(
+                            parseFloat(response.basePrice)
+                                .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                        );
+
+                        $('#SubscriptionDurationInMonths').val(response.subscriptionDuration);
+                    }
+                },
+                error: function () {
+                    appalert('Unable to load cheque book category details', 4, 1);
+                }
+            });
+        });
+    </script>
+
+
 }

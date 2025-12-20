@@ -1,0 +1,391 @@
+﻿@model  CBS.FrontDesk.Data.Entity.AccountingV2.ReconciledLine.Reconciled
+@using Resources
+@{
+    ViewBag.Title = "Reconciled Ledger Line";
+}
+
+<div class="card bg-light mb-3">
+    <div class="card-body text-center">
+        <h1 class="card-title text-primary">
+            <i class="mdi mdi-cog-outline me-2"></i> Reconciled Ledger Line
+        </h1>
+
+        <div class="alert alert-info mt-3 py-2">
+            <i class="mdi mdi-information-outline me-1"></i>
+            Use the filters below to search and review Reconciled Ledger Line efficiently.
+        </div>
+    </div>
+</div>
+
+<div class="card mb-2">
+    <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
+        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
+            <i class="mdi mdi-chevron-down"></i>
+        </button>
+    </h6>
+
+    <div id="collapseFilterTips" class="collapse">
+        <div class="card-body">
+            <ul class="mb-0">
+                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
+                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
+                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
+                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
+                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
+                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
+                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
+                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="card shadow p-3 mb-2">
+    <h5 class="text-primary mb-2">
+        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+    </h5>
+
+    <form id="FilterForm" autocomplete="off" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- DataTable hidden options -->
+        <input type="hidden" name="Options.Page" value="1" />
+        <input type="hidden" name="Options.PageSize" value="10" />
+        <input type="hidden" name="Options.Sort" value="" />
+
+        <!-- Main Filters Card -->
+        <div class="card p-3 mb-2 bg-light">
+
+            <!-- 🔹 Branch & Date Toggles -->
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-4 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show Branch Filter
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleBranch"
+                               onclick="document.getElementById('CounterbranchFilter').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleBranch">
+                            Show counter party Branch Filter
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="toggleDateFilters"
+                               onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
+                        <label class="form-check-label fw-bold" for="toggleDateFilters">
+                            Show Entry Date Filters
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-1 d-flex align-items-center mt-4">
+                    <div class="form-check">
+                        @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
+                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- 🔹 Hidden Branch Dropdown -->
+            <div id="branchFilter" class="d-none">
+                <div class="row mb-1">
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        @Html.DropDownList("BranchId",
+                            new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "branchId" })
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div id="CounterbranchFilter" class="d-none">
+                <div class="row mb-1">
+                    
+
+                    <div class="col-md-12 mb-1">
+                        <label class="form-label fw-bold" for="branchId">Counterparty BranchId</label>
+                        @Html.DropDownList("CounterpartyBranchId",
+                            new SelectList(ViewBag.CounterBranches ?? new List<object>(), "Id", "Name"),
+                            "--- Select Branch ---",
+                            new { @class = "form-control select2 mb-1", @id = "CounterpartyBranchId" })
+                    </div>
+                </div>
+            </div>
+
+
+           
+
+
+
+
+            <div class="row mb-1">
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">Reference Number</label>
+                    <input type="text" id="referenceNumber" name="ReferenceNumber" class="form-control mb-1" placeholder="Enter Reference Number" />
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <label class="form-label fw-bold">UserName</label>
+                    <input type="text" id="userName" name="UserName" class="form-control mb-1" placeholder="Enter User Name" />
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    @Html.LabelFor(m => m.BranchAccountId, "Select GL",new { @class = "form-label fw-semibold" })
+                    @Html.DropDownListFor(m => m.BranchAccountId,new List<SelectListItem>{new SelectListItem {Text = "--- Select GL ---", Value = "" }},
+                          new{@class = "form-control select2 mb-2",@id = "BranchAccountId",required = "required"})
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+            <!-- 🔹 Hidden Date Filters -->
+            <div id="dateFilters" class="d-none">
+                <div class="row mb-1">
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
+                        <input type="datetime" id="startDate" name="StartDate" class="form-control mb-1" />
+                    </div>
+
+                    <div class="col-md-6 mb-1">
+                        <label class="form-label fw-bold" for="endDate">End Entry Date</label>
+                        <input type="datetime" id="endDate" name="EndDate" class="form-control mb-1" />
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div class="row g-2 mt-2">
+            <div class="col-12 col-md-4">
+                <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100">
+                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                </button>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                    <i class="mdi mdi-export me-1"></i> Export
+                </button>
+            </div>
+        </div>
+
+
+
+
+    </form>
+</div>
+
+
+<hr />
+
+
+
+<div id="datalistingview">
+    @Html.Partial("_DataTable")
+</div>
+
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        function loadReconciledLines() {
+            $('#myDataTable').DataTable({
+                serverSide: true,
+              
+                destroy: true,
+                responsive: true,
+                searching: false,
+                order: [[1, 'desc']], // CreatedDate desc
+                ajax: {
+                    url: '/ReconciledLine/LoadDataTable',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: function (d) {
+
+                        const filters = {
+                            BranchId: $('#branchId').val(),
+                            CounterpartyBranchId: $('#CounterpartyBranchId').val(),
+                            ReferenceNumber: $('#referenceNumber').val(),
+                            UserName: $('#userName').val(),
+                            StartDate: $('#startDate').val(),
+                            EndDate: $('#endDate').val(),
+                            IsInterbranch: $('#IsInterbranch').is(':checked'),
+
+                            Options: {
+                                draw: d.draw,
+                                start: d.start,
+                                length: d.length,
+                                searchValue: d.search?.value || '',
+                                sortColumnName: d.columns[d.order[0].column].data,
+                                sortColumnDirection: d.order[0].dir
+                            }
+                        };
+
+                        return JSON.stringify(filters);
+                    },
+                    error: function (xhr, status, err) {
+                        console.error('❌ Error loading reconciled lines:', err);
+                        appalert('❌ Failed to load reconciled lines.', 4, 1);
+                    }
+                },
+                columns: [
+                    { data: 'BranchName', name: 'BranchName' },
+                    {
+                        data: 'CreatedDate',
+                        name: 'CreatedDate',
+                        render: function (data) {
+                            return data ? moment(data).format('YYYY-MM-DD HH:mm') : '';
+                        }
+                    },
+                    { data: 'Description', name: 'Description' },
+                    { data: 'CreatedBy', name: 'CreatedBy' },
+                    {
+                        data: 'InterbranchStatus',
+                        name: 'InterbranchStatus',
+                        render: function (value) {
+                            return value
+                                ? '<span class="badge bg-success">true</span>'
+                                : '<span class="badge bg-secondary">false</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function (_, __, row) {
+                            return `
+                             <div class="text-center">
+                                 <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
+                                     <i class="mdi mdi-eye-outline me-1"></i> Details
+                                 </button>
+                             </div>`;
+                        }
+                    }
+                ],
+                initComplete: function () {
+                    appalert('✅ Reconciled lines loaded successfully!', 1, 1);
+                },
+                drawCallback: function () {
+                    const api = this.api();
+                    if (api.rows({ page: 'current' }).data().length === 0) {
+                        appalert('⚠️ No records found for the selected filters.', 2, 1);
+                    }
+                }
+            });
+        }
+
+        // ==============================
+        // Filter Buttons
+        // ==============================
+        $(document).ready(function () {
+
+            $('#applyFilterBtn').on('click', function (e) {
+                e.preventDefault();
+                loadReconciledLines();
+            });
+
+            $('#resetFilterBtn').on('click', function () {
+                $('#FilterForm').trigger('reset');
+                $('.select2').val('').trigger('change');
+                $('#branchFilter, #dateFilters').addClass('d-none');
+                appalert('🧹 Filters reset.', 1, 1);
+            });
+
+            // Optional initial load
+            // loadReconciledLines();
+        });
+
+
+
+
+
+        // ==================== Load GL Accounts by Branch ====================
+        function loadBranchAccounts(branchId) {
+
+            if (!branchId) {
+                $('#BranchAccountId')
+                    .html('<option value="">--- Select GL ---</option>')
+                    .trigger('change');
+                return;
+            }
+
+            $.ajax({
+                url: '/ReconciledLine/GetBranchAccounts',
+                type: 'GET',
+                data: { branchId: branchId },
+                dataType: 'json',
+                success: function (response) {
+
+                    if (!response.success || !response.data) {
+                        appalert(response.message || '⚠️ No GL accounts found for this branch.', 2, 1);
+                        return;
+                    }
+
+                    let options = '<option value="">--- Select GL ---</option>';
+
+                    $.each(response.data, function (i, item) {
+                        options += `<option value="${item.Value}">${item.Text}</option>`;
+                    });
+
+                    $('#BranchAccountId')
+                        .html(options)
+                        .trigger('change');
+
+                    appalert('✅ GL accounts loaded successfully.', 1, 1);
+                },
+                error: function (err) {
+                    appalert('❌ Error loading GL accounts: ' + err.statusText, 0, 1);
+                }
+            });
+        }
+
+        // ==================== Branch Change Event ====================
+        $(document).ready(function () {
+
+            $('#branchId').on('change', function () {
+                const branchId = $(this).val();
+                loadBranchAccounts(branchId);
+            });
+
+        });
+    </script>
+}

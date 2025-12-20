@@ -1,0 +1,71 @@
+﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.GlobalConfig.GlobalConfig
+
+<fieldset class="fieldset-custom">
+    <legend>GLOBAL CONFIGURATION</legend>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Create", "GlobalConfig", FormMethod.Post,
+            new { onsubmit = "return AjaxPostAndUpdate(this);" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+
+            <!-- SETTINGS -->
+            <fieldset class="border rounded p-3 mb-4">
+                <legend class="float-none w-auto px-2 text-primary fw-bold">
+                    General Settings
+                </legend>
+
+                <div class="row gy-3">
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.MinimumOfChequeLeave,
+                                new { @class = "form-control", type = "number" })
+                            <label>Minimum Cheque Leave</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.MaximumOfChequeLeave,
+                                new { @class = "form-control", type = "number" })
+                            <label>Maximum Cheque Leave</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            @Html.TextBoxFor(m => m.ChequeValidityDays,
+                                new { @class = "form-control", type = "number" })
+                            <label>Cheque Validity (Days)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsCentralised,
+                                new { @class = "form-check-input" })
+                            <label class="form-check-label ms-1">
+                                Is Centralised
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-end gap-2">
+                @if (ViewBag.Key != null)
+                {
+                    <button class="btn btn-primary">Update</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary">Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                }
+            </div>
+        }
+    </div>
+</fieldset>

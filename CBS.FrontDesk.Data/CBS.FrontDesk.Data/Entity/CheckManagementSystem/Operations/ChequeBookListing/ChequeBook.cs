@@ -74,7 +74,7 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public string BlockReasons { get; set; }
         public DateTime? BlockedDate { get; set; }
         public string CheckBookCategoryId { get; set; }
-        public string CheckBookCategoryName { get; set; }
+        public string CategoryName { get; set; }
         public bool IsReissued { get; set; }
         public string ReplacementCheckBookId { get; set; }
         public bool NotifyOnClearance { get; set; }
@@ -89,7 +89,8 @@ namespace CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.ChequeBookL
         public string customerId { get; set; }
         public string customerName { get; set; }
         public string accountNumber { get; set; }
-        public string branchId { get; set; }
+		public string accountId { get; set; }
+		public string branchId { get; set; }
         public string branchName { get; set; }
         public string categoryId { get; set; }
         public string categoryName { get; set; }

@@ -51,9 +51,9 @@
                             </tr>
                             @if (Model.ApprovalDate.HasValue)
                             {
-                                <tr><th>Approval/Rejection Date</th><td>@Model.ApprovalDate?.ToString("f")</td></tr>
+                                <tr><th>Approval/Review/Rejection Date</th><td>@(Model.ApprovalDate.HasValue ? Model.ApprovalDate.Value.ToString("f") : "N/A")</td></tr>
                             }
-                            <tr><th>Approval/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
+                            <tr><th>Approval/Review/Rejection Note</th><td>@Model.ApprovalNote</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -87,11 +87,11 @@
                     <hr />
                     <table class="table table-borderless table-sm mb-0">
                         <tbody>
-                            <tr><th>Base Price</th><td>@Model.BasePrice.ToString("C")</td></tr>
+                            <tr><th>Subscription Fee</th><td>@Model.BasePrice.ToString("N2")</td></tr>
                             <tr><th>Number of Pages</th><td>@Model.NumberOfPages</td></tr>
                             <tr><th>Subscription Duration</th><td>@Model.SubscriptionDurationInMonths months</td></tr>
                             <tr><th>Recurring Subscription</th><td>@(Model.IsRecurringSubscription ? "Yes" : "No")</td></tr>
-                            <tr><th>Recurring Amount</th><td>@Model.RecurringAmount.ToString() ?? "-" </td></tr>
+                            <tr><th>Automatic Renewal (amount)</th><td>@(Model.RecurringAmount?.ToString("N2") ?? "N/A")</td></tr>
                         </tbody>
                     </table>
                 </div>

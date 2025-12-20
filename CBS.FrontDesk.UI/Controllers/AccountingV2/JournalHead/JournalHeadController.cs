@@ -1,10 +1,12 @@
-﻿using CBS.BusinessService.AccountingV2;
+﻿using CBS.API.Helper;
+using CBS.BusinessService.AccountingV2;
 using CBS.BusinessService.AccountingV2.JournalHead;
 using CBS.BusinessService.CheckManagementSystem.Operations.CounterCheque;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.AccountingV2;
 using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Operations.CounterCheque;
 using CBS.FrontDesk.Data.Entity.DataTable;
+using CBS.FrontDesk.Helper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Ajax.Utilities;
@@ -53,14 +55,14 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
             var branches = await _branchServices.GetBranches();
             ViewBag.Branches = branches;
 
-            ViewBag.OperationTypes = new List<SelectListItem>
+                    ViewBag.OperationTypes = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "Cashin", Text = "CASH IN" },
                         new SelectListItem { Value = "Cashout", Text = "CASH OUT" }
                     };
 
                                 // Reconciliation Status (WorkTicket) dropdown
-                                ViewBag.JournalStatus = new List<SelectListItem>
+                    ViewBag.JournalStatus = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "RECEIVED", Text = "RECEIVED" },
                         new SelectListItem { Value = "TEMP_CREATED", Text = "TEMP_CREATED" },
@@ -72,16 +74,16 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                         new SelectListItem { Value = "REJECTED", Text = "REJECTED" }
                     };
 
-                                ViewBag.TicketSource = new List<SelectListItem>
+                    ViewBag.TicketSource = new List<SelectListItem>
                     {
                         new SelectListItem { Value = "Source", Text = "Source " },
                         new SelectListItem { Value = "Destination", Text = "Destination" }
                     };
 
-                                ViewBag.Source = new List<SelectListItem>
+                    ViewBag.Source = new List<SelectListItem>
                     {
-                        new SelectListItem { Value = "real", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
-                        new SelectListItem { Value = "temp", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
+                        new SelectListItem { Value = "temp", Text = "TEMPORAL JOURNAL (TODAY JOURNAL) " },
+                        new SelectListItem { Value = "real", Text = "RECONCILED JOURNAL (n - 1) JOURNAL" }
                     };
 
 
@@ -143,8 +145,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                     recordsTotal = data.Options.recordsTotal,
                     recordsFiltered = data.Options.recordsFiltered,
                     data = journalHeaders,
-                    success = true,
-                    message = "Display DataTable for Journal Head  successfully"
+                    success = true
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -244,9 +245,10 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
             model.SourceBranchId = model.BranchId;
             model.DestinationBranchId = model.BranchId;
+
             try
             {
-                object result = null;
+                ApiResponse<ResponseObject<JournalApprovalResponse>> result = null;
 
                 // ✅ Route to the correct service based on ticket type
                 switch (model.TicketType?.ToUpperInvariant())
@@ -271,15 +273,29 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                         return Json(new { success = false, message = "Unknown Ticket Type." });
                 }
 
+
+
                 if (result == null)
                     return Json(new { success = false, message = "No response from approval service." });
+
+                if (result.IsSuccess && result.ApiResponseData !=null && result.ApiResponseData.Data!= null )
+                {
+                    // ✅ Return structured JSON based on result
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.ApiResponseData.Data.Message ?? "Approved successfully",
+                        data = result.ApiResponseData.Data
+                    });
+                }
 
                 // ✅ Return structured JSON based on result
                 return Json(new
                 {
-                    success = true,
-                    statusCode = 200,
-                    message = (result as dynamic)?.Message ?? "Approved successfully",
+                    success = false,
+                    statusCode = 400,
+                    message = result.Message ?? "Approval Failed",
                     data = result
                 });
             }
@@ -309,12 +325,24 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
                 if (result == null)
                     return Json(new { success = false, message = "No response from approval service." });
 
+                if (result.IsSuccess && result.ApiResponseData != null && result.ApiResponseData.Data != null)
+                {
+                    // ✅ Return structured JSON based on result
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.ApiResponseData.Data.Message ?? "Rejected successfully",
+                        data = result.ApiResponseData.Data
+                    });
+                }
+
                 // ✅ Return structured JSON based on result
                 return Json(new
                 {
-                    success = true,
-                    statusCode = 200,
-                    message = (result as dynamic)?.Message ?? "Reject successfully",
+                    success = false,
+                    statusCode = 400,
+                    message = result.Message ?? "Rejection Failed",
                     data = result
                 });
             }
