@@ -1733,6 +1733,18 @@ namespace CBS.FrontDesk.Helper
         public const string GetIPSConfigsByYear = "/api/v1/IPSConfig/year/{0}";
         public const string IPSConfigDataTable = "/api/v1/IPSConfig/datatable";
 
+        //----------------------------- IPS Claim ---------------------------
+
+            public const string CreateIPSClaim = "/api/v1/IPSClaim";
+            public const string GetIPSClaimById = "/api/v1/IPSClaim/{0}";
+            public const string ApproveIPSClaim = "/api/v1/IPSClaim/{0}/approve";
+            public const string RejectIPSClaim = "/api/v1/IPSClaim/{0}/reject";
+            public const string DeleteIPSClaim = "/api/v1/IPSClaim/{0}";
+            public const string PostIPSClaim = "/api/v1/IPSClaim/{0}/post";
+            public const string UploadIPSClaimDocument = "/api/v1/IPSClaim/{0}/document";
+            public const string IPSClaimDataTable = "/api/v1/IPSClaim/datatable";
+            public const string Clientdata = "/api/v1/IPS/CustomerMetaData/{0}";
+        
         //*************************** End of Accounting V2 **************************************
 
         //------------------------cash Reconciliation ------------------------------------------------

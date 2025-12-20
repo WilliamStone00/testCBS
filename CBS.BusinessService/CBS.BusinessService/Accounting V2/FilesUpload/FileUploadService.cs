@@ -279,6 +279,7 @@ namespace CBS.BusinessService.Accounting_V2.FilesUpload
                         Message = "❌ No file provided."
                     };
                 }
+            
                 var endpoint = string.Format(APICallHelper.AffiliateUpload, Uri.EscapeDataString(affiliateUpload.affiliateId));
                 var result = await _apiHelper.UploadBulkCashPaymentFileAsync<ServiceResponse<AffiliateFileUploadResponse>>(affiliateUpload.file, endpoint);
                 return result;

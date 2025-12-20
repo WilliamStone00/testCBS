@@ -75,8 +75,27 @@
         </div>
     </div>
 </div>
-
 <div id="datalistingview2">
+    <div class="card mb-1">
+        <div class="card-body d-flex justify-content-end align-items-center">
+            <a href="@Url.Action("List", "IPSConfig")"
+               class="btn btn-label-primary btn-sm me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="@GlobalShared.ViewList">
+                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
+            </a>
+            <a href="@Url.Action("Index", "IPSConfig")"
+               class="btn btn-light text-primary me-2"
+               id="btnViewList"
+               data-bs-toggle="tooltip"
+               title="Add New">
+                <i class="mdi mdi-plus mdi-18px"></i> Add New
+            </a>
+        </div>
+    </div>
+
+
     <div class="card shadow p-3 mb-1">
         <h5 class="text-primary mb-1">
             <i class="mdi mdi-filter-outline me-1"></i> IPS Configuration Filters
@@ -231,7 +250,11 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-check mb-3">
-                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="IsActive"
+                                       name="IsActive"
+                                       value="true" />
                                 <label class="form-check-label fw-semibold" for="IsActive">
                                     Is Active
                                 </label>
@@ -294,7 +317,7 @@
                 CreatedFromUtc: $('#CreatedFromUtc').val() || null,
                 CreatedToUtc: $('#CreatedToUtc').val() || null,
 
-                IsActive: $('#IsActive').is(':checked') ? true : null,
+                IsActive: $('#IsActive').is(':checked') || null,
                 IncludeDeleted: $('#IncludeDeleted').is(':checked') ? true : null,
 
                 options: {}
@@ -630,7 +653,7 @@
         });
 
         $(document).on('click', '.btn-year-configs', function () {
-            var year = $(this).data('year');   
+            var year = $(this).data('year');
 
             console.log('All by year:', year);
 

@@ -2114,6 +2114,7 @@
     <Compile Include="Controllers\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicenseController.cs" />
     <Compile Include="Controllers\Accounting V2\FallBack\DeAffiliateToBranchFallbackfaultController.cs" />
     <Compile Include="Controllers\Accounting V2\IncomeStatement\IncomeStatementController.cs" />
+    <Compile Include="Controllers\Accounting V2\IPS\IPSClaimController.cs" />
     <Compile Include="Controllers\Accounting V2\IPS\IPSConfigController.cs" />
     <Compile Include="Controllers\Accounting V2\JournalEntries\JournalEntriesController.cs" />
     <Compile Include="Controllers\Accounting V2\MemberReconciliation\FileListingController.cs" />
@@ -11133,6 +11134,13 @@
     <Content Include="Views\IPSConfig\_IPSConfigYearPartial.cshtml" />
     <Content Include="Views\IPSConfig\_IPSConfigDataTable.cshtml" />
     <Content Include="Views\IPSConfig\List.cshtml" />
+    <Content Include="Views\IPSClaim\Index.cshtml" />
+    <Content Include="Views\IPSClaim\_Create.cshtml" />
+    <Content Include="Views\IPSClaim\_Details.cshtml" />
+    <Content Include="Views\IPSClaim\_ActionModal.cshtml" />
+    <Content Include="Views\IPSClaim\List.cshtml" />
+    <Content Include="Views\IPSClaim\_ClaimDataTable.cshtml" />
+    <Content Include="Views\IPSClaim\UploadDocuments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />
