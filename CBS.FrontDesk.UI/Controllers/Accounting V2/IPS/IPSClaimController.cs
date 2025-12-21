@@ -667,7 +667,9 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(claimId) || string.IsNullOrWhiteSpace(memberId) || string.IsNullOrWhiteSpace(branchId))
+                if (string.IsNullOrWhiteSpace(claimId) ||
+                    string.IsNullOrWhiteSpace(memberId) ||
+                    string.IsNullOrWhiteSpace(branchId))
                 {
                     return Json(new
                     {
@@ -676,36 +678,52 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                // Get customer details
-                var customerData = await _ipsClaimService.GetinfoAsync(memberId);
-                if (customerData == null || customerData.customer == null)
+                // Explicit types (NO var = null)
+                dynamic customerData = null;
+                dynamic claim = null;
+
+                // Try get customer info
+                try
                 {
-                    return Json(new { success = false, message = "Customer not found." }, JsonRequestBehavior.AllowGet);
+                    customerData = await _ipsClaimService.GetinfoAsync(memberId);
+                }
+                catch
+                {
+                    // Ignore and continue
                 }
 
-                // Get claim details
-                var claim = await _ipsClaimService.GetClaimByIdAsync(claimId);
+                // Try get claim info
+                try
+                {
+                    claim = await _ipsClaimService.GetClaimByIdAsync(claimId);
+                }
+                catch
+                {
+                    // Ignore and continue
+                }
 
-                // Get branch accounts for dropdown
-                var branchAccounts = await _BranchAccountService.GetAllBranchAccountsFromDataTableAsync(branchId);
+                // Dropdown data
+                var branchAccounts = await _BranchAccountService
+                    .GetAllBranchAccountsFromDataTableAsync(branchId);
 
-                // Get affiliate accounts for source GL dropdown
-                var affiliateAccounts = await _AffiliateAccountService.GetAllAffiliateAccounts();
+                var affiliateAccounts = await _AffiliateAccountService
+                    .GetAllAffiliateAccounts();
 
                 return Json(new
                 {
                     success = true,
                     data = new
                     {
-                        claim = new
+                        claim = claim == null ? null : new
                         {
-                            Id = claim?.Id,
-                            ClaimType = claim?.ClaimType,
-                            ClaimedAmount = claim?.ClaimedAmount,
-                            ApprovedAmount = claim?.ApprovedAmount,
-                            Status = claim?.Status
+                            claim.Id,
+                            claim.ClaimType,
+                            claim.ClaimedAmount,
+                            claim.ApprovedAmount,
+                            claim.Status
                         },
-                        customer = new
+
+                        customer = customerData?.customer == null ? null : new
                         {
                             customerData.customer.customerId,
                             customerData.customer.firstName,
@@ -714,31 +732,41 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                             customerData.customer.address,
                             customerData.customer.email
                         },
-                        accounts = customerData.accounts?.Select(a => new
-                        {
-                            a.id,
-                            a.accountNumber,
-                            a.accountName,
-                            a.accountType,
-                            a.balance,
-                            a.availableBalance,
-                            a.blockedAmount
-                        }).ToList(),
 
-                        // Add ViewBag data for dropdowns
+                        accounts = customerData?.accounts != null
+                            ? ((IEnumerable<dynamic>)customerData.accounts)
+                                .Select(a => new
+                                {
+                                    a.id,
+                                    a.accountNumber,
+                                    a.accountName,
+                                    a.accountType,
+                                    a.balance,
+                                    a.availableBalance,
+                                    a.blockedAmount
+                                })
+                                .Cast<object>()
+                                .ToList()
+                            : new List<object>(),
+
+
                         viewBagData = new
                         {
-                            affiliateAccounts = affiliateAccounts?.Select(a => new
-                            {
-                                Value = a.Value?.ToString(),
-                                Text = a.Text // Adjust based on your AffiliateAccount model
-                            }).ToList(),
+                            affiliateAccounts = affiliateAccounts == null
+                                ? new List<object>()
+                                : affiliateAccounts.Select(a => new
+                                {
+                                    Value = a.Value?.ToString(),
+                                    Text = a.Text
+                                }).Cast<object>().ToList(),
 
-                            branchAccounts = branchAccounts?.Select(b => new
-                            {
-                                Value = b.Id?.ToString(),
-                                Text = $"{b.Code} - {b.Name}" // Adjust based on your BranchAccount model
-                            }).ToList()
+                            branchAccounts = branchAccounts == null
+                                ? new List<object>()
+                                : branchAccounts.Select(b => new
+                                {
+                                    Value = b.Id?.ToString(),
+                                    Text = $"{b.Code} - {b.Name}"
+                                }).Cast<object>().ToList()
                         }
                     }
                 }, JsonRequestBehavior.AllowGet);
@@ -752,6 +780,7 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
         // Ensure you have these services injected in your Constructor
         // private readonly AffiliateAccountService _affiliateAccountService;
         // private readonly BranchAccountService _branchAccountService;
