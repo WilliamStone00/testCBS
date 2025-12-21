@@ -678,10 +678,10 @@ namespace CBS.FrontDesk.UI.Controllers.Accounting_V2.IPS
 
                 // Get customer details
                 var customerData = await _ipsClaimService.GetinfoAsync(memberId);
-                //if (customerData == null || customerData.customer == null)
-                //{
-                //    return Json(new { success = false, message = "Customer not found." }, JsonRequestBehavior.AllowGet);
-                //}
+                if (customerData == null || customerData.customer == null)
+                {
+                    return Json(new { success = false, message = "Customer not found." }, JsonRequestBehavior.AllowGet);
+                }
 
                 // Get claim details
                 var claim = await _ipsClaimService.GetClaimByIdAsync(claimId);

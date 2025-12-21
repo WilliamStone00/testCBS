@@ -150,31 +150,33 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover mb-0" id="sourceAccountsTable">
+                                    <table class="table table-bordered" id="SourceAccountEntryListing">
                                         <thead class="table-light">
                                             <tr>
-                                                <th width="40%">Source GL Account</th>
-                                                <th width="25%">Amount</th>
-                                                <th width="25%">Description</th>
-                                                <th width="10%" class="text-center">Action</th>
+                                                <th>Source GL Account</th>
+                                                <th>Amount</th>
+                                                <th>Description</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="sourceAccountsTableBody">
-                                            <tr id="noSourceRows">
-                                                <td colspan="4" class="text-center text-muted py-4">
-                                                    <i class="mdi mdi-information-outline me-1"></i>
-                                                    No source accounts added yet. Click "Add Row" to add entries.
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select source-gl-account">
+                                                        <option value="">-- Select Source GL --</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control source-amount" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control source-narration" />
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="table-light">
-                                            <tr>
-                                                <td class="text-end fw-bold">Source Total:</td>
-                                                <td id="sourceTotalAmount" class="fw-bold text-success">0.00</td>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
+
+                                
                                 </div>
                             </div>
                         </div>
@@ -222,31 +224,32 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover mb-0" id="branchAccountsTable">
+                                    <table class="table table-bordered" id="DestinationBranchEntryListing">
                                         <thead class="table-light">
                                             <tr>
-                                                <th width="40%">Destination GL Account</th>
-                                                <th width="25%">Amount</th>
-                                                <th width="25%">Description</th>
-                                                <th width="10%" class="text-center">Action</th>
+                                                <th>Destination Branch Account</th>
+                                                <th>Amount</th>
+                                                <th>Narration</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="branchAccountsTableBody">
-                                            <tr id="noBranchRows">
-                                                <td colspan="4" class="text-center text-muted py-4">
-                                                    <i class="mdi mdi-information-outline me-1"></i>
-                                                    No branch accounts added yet. Click "Add Row" to add entries.
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select destination-branch-account">
+                                                        <option value="">-- Select Destination Branch --</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control destination-amount" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control destination-narration" />
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="table-light">
-                                            <tr>
-                                                <td class="text-end fw-bold">Branch Total:</td>
-                                                <td id="branchTotalAmount" class="fw-bold text-success">0.00</td>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
+
                                 </div>
                             </div>
                         </div>

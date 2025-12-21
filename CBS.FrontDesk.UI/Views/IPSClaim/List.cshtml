@@ -344,7 +344,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+<script>
     var ClaimsTable = null;
     var currentTableData = [];
     var postingDataCache = {};
@@ -909,453 +909,464 @@
     // ============================
     // POSTING DATA FUNCTIONS - UPDATED
     // ============================
+
     function loadPostingData(claimId, memberId, branchId) {
-        $('#customerInfoSection').html(`
-            <div class="text-center py-4">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading posting data...</span>
-                </div>
-                <p class="mt-2 text-muted">Loading posting data...</p>
-            </div>
-        `);
 
-        $.ajax({
-            url: '@Url.Action("GetPostingData", "IPSClaim")',
-            type: 'GET',
-            data: { claimId: claimId, memberId: memberId, branchId: branchId },
-            success: function(response) {
-                if (response.success && response.data) {
-                    postingDataCache = response.data;
-                    displayCustomerInfo(postingDataCache);
-                    setupPostingTables(postingDataCache);
+               
 
-                    // Store ViewBag data from controller
-                    if (response.data.viewBagData) {
-                        affiliateAccounts = response.data.viewBagData.affiliateAccounts || [];
-                        branchAccounts = response.data.viewBagData.branchAccounts || [];
+                $.ajax({
+                    url: '@Url.Action("GetPostingData", "IPSClaim")',
+                    type: 'GET',
+                    data: {
+                        claimId: claimId,
+                        memberId: memberId,
+                        branchId: branchId
+                    },
+                      url: '@Url.Action("GetPostingData", "IPSClaim")',
+                      type: 'GET',
+                      data: { claimId: claimId, memberId: memberId, branchId: branchId },
+                    success: function (response) {
 
-                        console.log('Loaded affiliate accounts:', affiliateAccounts.length);
-                        console.log('Loaded branch accounts:', branchAccounts.length);
+                        if (!response.success) {
+                            alert(response.message);
+                            return;
+                        }
+
+                        const data = response.data;
+
+                        /* ===============================
+                           SOURCE GL DROPDOWN
+                        =============================== */
+                        let sourceSelect = $('.source-gl-account');
+                        sourceSelect.empty();
+                        sourceSelect.append(`<option value="">-- Select Source GL --</option>`);
+
+                        $.each(data.viewBagData.affiliateAccounts, function (i, acc) {
+                            sourceSelect.append(
+                                `<option value="${acc.Value}">${acc.Text}</option>`
+                            );
+                        });
+
+                        /* ===============================
+                           DESTINATION BRANCH DROPDOWN
+                        =============================== */
+                        let destinationSelect = $('.destination-branch-account');
+                        destinationSelect.empty();
+                        destinationSelect.append(`<option value="">-- Select Destination Branch --</option>`);
+
+                        $.each(data.viewBagData.branchAccounts, function (i, acc) {
+                            destinationSelect.append(
+                                `<option value="${acc.Value}">${acc.Text}</option>`
+                            );
+                        });
+                    },
+                    error: function () {
+                        appalert('Error loading posting data', 4, 1);
                     }
-                } else {
-                    $('#customerInfoSection').html(`
-                        <div class="alert alert-danger">
-                            <i class="mdi mdi-alert-circle me-1"></i>
-                            ${response.message || 'Failed to load posting data'}
-                        </div>
-                    `);
-                }
-            },
-            error: function(xhr, status, error) {
-                $('#customerInfoSection').html(`
-                    <div class="alert alert-danger">
-                        <i class="mdi mdi-alert-circle me-1"></i>
-                        Error loading posting data: ${error}
-                    </div>
-                `);
+                });
             }
-        });
-    }
+
+
 
     function displayCustomerInfo(data) {
-        var customer = data.customer;
-        var claim = data.claim;
+    var customer = data.customer;
+    var claim = data.claim;
 
-        $('#customerInfoSection').html(`
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-2">
-                        <span class="text-muted small">Member ID:</span>
-                        <div class="fw-bold">${customer.customerId}</div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="text-muted small">Name:</span>
-                        <div class="fw-bold">${customer.firstName} ${customer.lastName}</div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="text-muted small">Email:</span>
-                        <div class="fw-bold">${customer.email || 'N/A'}</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-2">
-                        <span class="text-muted small">Phone:</span>
-                        <div class="fw-bold">${customer.phone || 'N/A'}</div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="text-muted small">Address:</span>
-                        <div class="fw-bold">${customer.address || 'N/A'}</div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="text-muted small">Claim Type:</span>
-                        <div class="fw-bold">${claim.ClaimType === 'LoanProtection' ? 'Loan Protection' : 'Life Savings'}</div>
-                    </div>
-                </div>
+    $('#customerInfoSection').html(`
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-2">
+                <span class="text-muted small">Member ID:</span>
+                <div class="fw-bold">${customer.customerId}</div>
             </div>
-        `);
+            <div class="mb-2">
+                <span class="text-muted small">Name:</span>
+                <div class="fw-bold">${customer.firstName} ${customer.lastName}</div>
+            </div>
+            <div class="mb-2">
+                <span class="text-muted small">Email:</span>
+                <div class="fw-bold">${customer.email || 'N/A'}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-2">
+                <span class="text-muted small">Phone:</span>
+                <div class="fw-bold">${customer.phone || 'N/A'}</div>
+            </div>
+            <div class="mb-2">
+                <span class="text-muted small">Address:</span>
+                <div class="fw-bold">${customer.address || 'N/A'}</div>
+            </div>
+            <div class="mb-2">
+                <span class="text-muted small">Claim Type:</span>
+                <div class="fw-bold">${claim.ClaimType === 'LoanProtection' ? 'Loan Protection' : 'Life Savings'}</div>
+            </div>
+        </div>
+    </div>
+    `);
     }
 
     function setupPostingTables(data) {
-        // Setup source accounts table
-        setupSourceAccountsTable();
+    // Setup source accounts table
+    setupSourceAccountsTable();
 
-        // Setup member accounts table
-        setupMemberAccountsTable(data.accounts);
+    // Setup member accounts table
+    setupMemberAccountsTable(data.accounts);
 
-        // Setup branch accounts table using ViewBag data
-        if (data.viewBagData && data.viewBagData.branchAccounts) {
-            setupBranchAccountsTable(data.viewBagData.branchAccounts);
-        } else {
-            setupBranchAccountsTable([]);
-        }
+    // Setup branch accounts table using ViewBag data
+    if (data.viewBagData && data.viewBagData.branchAccounts) {
+    setupBranchAccountsTable(data.viewBagData.branchAccounts);
+    } else {
+    setupBranchAccountsTable([]);
+    }
 
-        // Update totals
-        updateAllTotals();
+    // Update totals
+    updateAllTotals();
     }
 
     function setupSourceAccountsTable() {
-        // Clear existing rows except the "no rows" message
-        $('#sourceAccountsTableBody').html(`
-            <tr id="noSourceRows">
-                <td colspan="4" class="text-center text-muted py-4">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    No source accounts added yet. Click "Add Row" to add entries.
-                </td>
-            </tr>
-        `);
+    // Clear existing rows except the "no rows" message
+    $('#sourceAccountsTableBody').html(`
+    <tr id="noSourceRows">
+        <td colspan="4" class="text-center text-muted py-4">
+            <i class="mdi mdi-information-outline me-1"></i>
+            No source accounts added yet. Click "Add Row" to add entries.
+        </td>
+    </tr>
+    `);
 
-        // Add first row
-        addSourceAccountRow();
+    // Add first row
+    addSourceAccountRow();
     }
 
     function setupMemberAccountsTable(accounts) {
-        $('#memberAccountsTableBody').empty();
+    $('#memberAccountsTableBody').empty();
 
-        if (accounts && accounts.length > 0) {
-            accounts.forEach(function(account, index) {
-                addMemberAccountRow(account);
-            });
-            $('#memberAccountsCount').text(accounts.length + ' accounts');
-        } else {
-            $('#memberAccountsTableBody').html(`
-                <tr>
-                    <td colspan="5" class="text-center text-muted py-4">
-                        <i class="mdi mdi-information-outline me-1"></i>
-                        No member accounts found
-                    </td>
-                </tr>
-            `);
-            $('#memberAccountsCount').text('0 accounts');
-        }
+    if (accounts && accounts.length > 0) {
+    accounts.forEach(function(account, index) {
+    addMemberAccountRow(account);
+    });
+    $('#memberAccountsCount').text(accounts.length + ' accounts');
+    } else {
+    $('#memberAccountsTableBody').html(`
+    <tr>
+        <td colspan="5" class="text-center text-muted py-4">
+            <i class="mdi mdi-information-outline me-1"></i>
+            No member accounts found
+        </td>
+    </tr>
+    `);
+    $('#memberAccountsCount').text('0 accounts');
+    }
     }
 
     function setupBranchAccountsTable(accounts) {
-        // Store accounts for later use
-        branchAccounts = accounts || [];
+    // Store accounts for later use
+    branchAccounts = accounts || [];
 
-        // Clear existing rows except the "no rows" message
-        $('#branchAccountsTableBody').html(`
-            <tr id="noBranchRows">
-                <td colspan="4" class="text-center text-muted py-4">
-                    <i class="mdi mdi-information-outline me-1"></i>
-                    No branch accounts added yet. Click "Add Row" to add entries.
-                </td>
-            </tr>
-        `);
+    // Clear existing rows except the "no rows" message
+    $('#branchAccountsTableBody').html(`
+    <tr id="noBranchRows">
+        <td colspan="4" class="text-center text-muted py-4">
+            <i class="mdi mdi-information-outline me-1"></i>
+            No branch accounts added yet. Click "Add Row" to add entries.
+        </td>
+    </tr>
+    `);
 
-        // Add first row if we have accounts
-        if (branchAccounts.length > 0) {
-            addBranchAccountRow();
-        }
+    // Add first row if we have accounts
+    if (branchAccounts.length > 0) {
+    addBranchAccountRow();
+    }
     }
 
     // ============================
     // TABLE ROW FUNCTIONS - UPDATED (Based on FeeConfig pattern)
     // ============================
     function addSourceAccountRow() {
-        var rowId = 'sourceRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    var rowId = 'sourceRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
-        var rowHtml = `
-            <tr id="${rowId}" class="source-account-row">
-                <td>
-                    <select class="form-control form-control-sm source-gl-account select2" required>
-                        <option value="">Select Affiliate Account</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="form-control form-control-sm source-amount"
-                           step="0.01" min="0" placeholder="0.00" required>
-                </td>
-                <td>
-                    <input type="text" class="form-control form-control-sm source-description"
-                           placeholder="Description" value="IPS Claim Source Entry">
-                </td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger delete-source-row-btn">
-                        <i class="mdi mdi-delete"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
+    var rowHtml = `
+    <tr id="${rowId}" class="source-account-row">
+        <td>
+            <select class="form-control form-control-sm source-gl-account select2" required>
+                <option value="">Select Affiliate Account</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control form-control-sm source-amount"
+                   step="0.01" min="0" placeholder="0.00" required>
+        </td>
+        <td>
+            <input type="text" class="form-control form-control-sm source-description"
+                   placeholder="Description" value="IPS Claim Source Entry">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-sm btn-danger delete-source-row-btn">
+                <i class="mdi mdi-delete"></i>
+            </button>
+        </td>
+    </tr>
+    `;
 
-        $('#noSourceRows').remove();
-        $('#sourceAccountsTableBody').append(rowHtml);
+    $('#noSourceRows').remove();
+    $('#sourceAccountsTableBody').append(rowHtml);
 
-        // Populate dropdown with affiliateAccounts from ViewBag
-        var $select = $('#' + rowId + ' .source-gl-account');
+    // Populate dropdown with affiliateAccounts from ViewBag
+    var $select = $('#' + rowId + ' .source-gl-account');
 
-        // Clear existing options
-        $select.empty().append('<option value="">Select Affiliate Account</option>');
+    // Clear existing options
+    $select.empty().append('<option value="">Select Affiliate Account</option>');
 
-        // Add options from affiliateAccounts (from ViewBag)
-        if (affiliateAccounts && affiliateAccounts.length > 0) {
-            affiliateAccounts.forEach(function(account) {
-                $select.append(`<option value="${account.Value}">${account.Text}</option>`);
-            });
-        } else {
-            $select.append(`<option value="">No affiliate accounts available</option>`);
-        }
+    // Add options from affiliateAccounts (from ViewBag)
+    if (affiliateAccounts && affiliateAccounts.length > 0) {
+    affiliateAccounts.forEach(function(account) {
+    $select.append(`<option value="${account.Value}">${account.Text}</option>`);
+    });
+    } else {
+    $select.append(`<option value="">No affiliate accounts available</option>`);
+    }
 
-        // Initialize Select2 if available
-        if ($.fn.select2) {
-            $select.select2({
-                width: '100%',
-                placeholder: 'Select Affiliate Account'
-            });
-        }
+    // Initialize Select2 if available
+    if ($.fn.select2) {
+    $select.select2({
+    width: '100%',
+    placeholder: 'Select Affiliate Account'
+    });
+    }
     }
 
     function addMemberAccountRow(account) {
-        var rowId = 'memberRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        var maxAmount = account.availableBalance || account.balance || 0;
+    var rowId = 'memberRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    var maxAmount = account.availableBalance || account.balance || 0;
 
-        var rowHtml = `
-            <tr id="${rowId}" class="member-account-row">
-                <td>
-                    <span class="fw-bold">${account.accountName}</span>
-                    <br>
-                    <small class="text-muted">${account.accountNumber}</small>
-                    <input type="hidden" class="account-id" value="${account.id}">
-                    <input type="hidden" class="account-type" value="${account.accountType}">
-                </td>
-                <td>
-                    <span class="badge bg-secondary">${account.accountType}</span>
-                </td>
-                <td>
-                    <input type="number" class="form-control form-control-sm member-amount"
-                           step="0.01" min="0" max="${maxAmount}"
-                           placeholder="0.00" value="0">
-                    <small class="text-muted">Max: ${formatCurrency(maxAmount)}</small>
-                </td>
-                <td>
-                    <input type="text" class="form-control form-control-sm member-description"
-                           placeholder="Description" value="IPS Claim Settlement">
-                </td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger delete-member-row-btn">
-                        <i class="mdi mdi-delete"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
+    var rowHtml = `
+    <tr id="${rowId}" class="member-account-row">
+        <td>
+            <span class="fw-bold">${account.accountName}</span>
+            <br>
+            <small class="text-muted">${account.accountNumber}</small>
+            <input type="hidden" class="account-id" value="${account.id}">
+            <input type="hidden" class="account-type" value="${account.accountType}">
+        </td>
+        <td>
+            <span class="badge bg-secondary">${account.accountType}</span>
+        </td>
+        <td>
+            <input type="number" class="form-control form-control-sm member-amount"
+                   step="0.01" min="0" max="${maxAmount}"
+                   placeholder="0.00" value="0">
+            <small class="text-muted">Max: ${formatCurrency(maxAmount)}</small>
+        </td>
+        <td>
+            <input type="text" class="form-control form-control-sm member-description"
+                   placeholder="Description" value="IPS Claim Settlement">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-sm btn-danger delete-member-row-btn">
+                <i class="mdi mdi-delete"></i>
+            </button>
+        </td>
+    </tr>
+    `;
 
-        $('#memberAccountsTableBody').append(rowHtml);
+    $('#memberAccountsTableBody').append(rowHtml);
     }
 
     function addBranchAccountRow() {
-        var rowId = 'branchRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    var rowId = 'branchRow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
-        var rowHtml = `
-            <tr id="${rowId}" class="branch-account-row">
-                <td>
-                    <select class="form-control form-control-sm branch-gl-account select2" required>
-                        <option value="">Select Branch Account</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="form-control form-control-sm branch-amount"
-                           step="0.01" min="0" placeholder="0.00" required>
-                </td>
-                <td>
-                    <input type="text" class="form-control form-control-sm branch-description"
-                           placeholder="Description" value="IPS Claim Branch Allocation">
-                </td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger delete-branch-row-btn">
-                        <i class="mdi mdi-delete"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
+    var rowHtml = `
+    <tr id="${rowId}" class="branch-account-row">
+        <td>
+            <select class="form-control form-control-sm branch-gl-account select2" required>
+                <option value="">Select Branch Account</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control form-control-sm branch-amount"
+                   step="0.01" min="0" placeholder="0.00" required>
+        </td>
+        <td>
+            <input type="text" class="form-control form-control-sm branch-description"
+                   placeholder="Description" value="IPS Claim Branch Allocation">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-sm btn-danger delete-branch-row-btn">
+                <i class="mdi mdi-delete"></i>
+            </button>
+        </td>
+    </tr>
+    `;
 
-        $('#noBranchRows').remove();
-        $('#branchAccountsTableBody').append(rowHtml);
+    $('#noBranchRows').remove();
+    $('#branchAccountsTableBody').append(rowHtml);
 
-        // Populate dropdown with branchAccounts from ViewBag
-        var $select = $('#' + rowId + ' .branch-gl-account');
+    // Populate dropdown with branchAccounts from ViewBag
+    var $select = $('#' + rowId + ' .branch-gl-account');
 
-        // Clear existing options
-        $select.empty().append('<option value="">Select Branch Account</option>');
+    // Clear existing options
+    $select.empty().append('<option value="">Select Branch Account</option>');
 
-        // Add options from branchAccounts (from ViewBag)
-        if (branchAccounts && branchAccounts.length > 0) {
-            branchAccounts.forEach(function(account) {
-                $select.append(`<option value="${account.Value}">${account.Text}</option>`);
-            });
-        } else {
-            $select.append(`<option value="">No branch accounts available</option>`);
-        }
+    // Add options from branchAccounts (from ViewBag)
+    if (branchAccounts && branchAccounts.length > 0) {
+    branchAccounts.forEach(function(account) {
+    $select.append(`<option value="${account.Value}">${account.Text}</option>`);
+    });
+    } else {
+    $select.append(`<option value="">No branch accounts available</option>`);
+    }
 
-        // Initialize Select2 if available
-        if ($.fn.select2) {
-            $select.select2({
-                width: '100%',
-                placeholder: 'Select Branch Account'
-            });
-        }
+    // Initialize Select2 if available
+    if ($.fn.select2) {
+    $select.select2({
+    width: '100%',
+    placeholder: 'Select Branch Account'
+    });
+    }
     }
 
     // ============================
     // VALIDATION & TOTALS
     // ============================
     function updateAllTotals() {
-        // Calculate source total
-        var sourceTotal = 0;
-        $('.source-amount').each(function() {
-            var val = parseFloat($(this).val()) || 0;
-            sourceTotal += val;
-        });
-        $('#sourceTotalAmount').text(formatCurrency(sourceTotal));
-        $('#validationSourceTotal').text(formatCurrency(sourceTotal));
+    // Calculate source total
+    var sourceTotal = 0;
+    $('.source-amount').each(function() {
+    var val = parseFloat($(this).val()) || 0;
+    sourceTotal += val;
+    });
+    $('#sourceTotalAmount').text(formatCurrency(sourceTotal));
+    $('#validationSourceTotal').text(formatCurrency(sourceTotal));
 
-        // Calculate member total
-        var memberTotal = 0;
-        $('.member-amount').each(function() {
-            var val = parseFloat($(this).val()) || 0;
-            memberTotal += val;
-        });
-        $('#memberTotalAmount').text(formatCurrency(memberTotal));
-        $('#validationMemberTotal').text(formatCurrency(memberTotal));
+    // Calculate member total
+    var memberTotal = 0;
+    $('.member-amount').each(function() {
+    var val = parseFloat($(this).val()) || 0;
+    memberTotal += val;
+    });
+    $('#memberTotalAmount').text(formatCurrency(memberTotal));
+    $('#validationMemberTotal').text(formatCurrency(memberTotal));
 
-        // Calculate branch total
-        var branchTotal = 0;
-        $('.branch-amount').each(function() {
-            var val = parseFloat($(this).val()) || 0;
-            branchTotal += val;
-        });
-        $('#branchTotalAmount').text(formatCurrency(branchTotal));
-        $('#validationBranchTotal').text(formatCurrency(branchTotal));
+    // Calculate branch total
+    var branchTotal = 0;
+    $('.branch-amount').each(function() {
+    var val = parseFloat($(this).val()) || 0;
+    branchTotal += val;
+    });
+    $('#branchTotalAmount').text(formatCurrency(branchTotal));
+    $('#validationBranchTotal').text(formatCurrency(branchTotal));
 
-        // Calculate combined total
-        var combinedTotal = sourceTotal + memberTotal + branchTotal;
-        $('#validationCombinedTotal').text(formatCurrency(combinedTotal));
-        $('#combinedTotalDisplay').text(formatCurrency(combinedTotal));
+    // Calculate combined total
+    var combinedTotal = sourceTotal + memberTotal + branchTotal;
+    $('#validationCombinedTotal').text(formatCurrency(combinedTotal));
+    $('#combinedTotalDisplay').text(formatCurrency(combinedTotal));
 
-        // Update entered total
-        var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-        $('#validationEnteredTotal').text(formatCurrency(enteredTotal));
+    // Update entered total
+    var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
+    $('#validationEnteredTotal').text(formatCurrency(enteredTotal));
 
-        // Update validation status
-        updateValidation();
+    // Update validation status
+    updateValidation();
     }
 
     function updateValidation() {
-        var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
-        var sourceTotal = parseFloat($('#validationSourceTotal').text().replace(/,/g, '')) || 0;
-        var memberTotal = parseFloat($('#validationMemberTotal').text().replace(/,/g, '')) || 0;
-        var branchTotal = parseFloat($('#validationBranchTotal').text().replace(/,/g, '')) || 0;
-        var combinedTotal = sourceTotal + memberTotal + branchTotal;
+    var enteredTotal = parseFloat($('#totalAmount').val()) || 0;
+    var sourceTotal = parseFloat($('#validationSourceTotal').text().replace(/,/g, '')) || 0;
+    var memberTotal = parseFloat($('#validationMemberTotal').text().replace(/,/g, '')) || 0;
+    var branchTotal = parseFloat($('#validationBranchTotal').text().replace(/,/g, '')) || 0;
+    var combinedTotal = sourceTotal + memberTotal + branchTotal;
 
-        if (enteredTotal === 0) {
-            $('#validationStatus').removeClass().addClass('badge bg-warning').text('Enter Amount');
-            $('#validationMessage').text('Please enter total amount first');
-            $('#amountValidation').removeClass().addClass('badge bg-warning').text('Enter Amount');
-            return false;
-        }
+    if (enteredTotal === 0) {
+    $('#validationStatus').removeClass().addClass('badge bg-warning').text('Enter Amount');
+    $('#validationMessage').text('Please enter total amount first');
+    $('#amountValidation').removeClass().addClass('badge bg-warning').text('Enter Amount');
+    return false;
+    }
 
-        if (combinedTotal > enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
-            $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) exceeds entered amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
-            return false;
-        }
+    if (combinedTotal > enteredTotal) {
+    $('#validationStatus').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
+    $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) exceeds entered amount`);
+    $('#amountValidation').removeClass().addClass('badge bg-danger').text('Exceeds Limit');
+    return false;
+    }
 
-        if (combinedTotal === enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-success').text('Valid');
-            $('#validationMessage').text('All amounts match');
-            $('#amountValidation').removeClass().addClass('badge bg-success').text('Valid');
-            return true;
-        }
+    if (combinedTotal === enteredTotal) {
+    $('#validationStatus').removeClass().addClass('badge bg-success').text('Valid');
+    $('#validationMessage').text('All amounts match');
+    $('#amountValidation').removeClass().addClass('badge bg-success').text('Valid');
+    return true;
+    }
 
-        if (combinedTotal < enteredTotal) {
-            $('#validationStatus').removeClass().addClass('badge bg-warning').text('Under Amount');
-            $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) is less than entered amount`);
-            $('#amountValidation').removeClass().addClass('badge bg-warning').text('Under Amount');
-            return true;
-        }
+    if (combinedTotal < enteredTotal) {
+    $('#validationStatus').removeClass().addClass('badge bg-warning').text('Under Amount');
+    $('#validationMessage').text(`Total entries (${formatCurrency(combinedTotal)}) is less than entered amount`);
+    $('#amountValidation').removeClass().addClass('badge bg-warning').text('Under Amount');
+    return true;
+    }
 
-        return false;
+    return false;
     }
 
     // ============================
     // DATA COLLECTION FOR POSTING
     // ============================
     function collectPostingData() {
-        var data = {
-            ClaimId: $('#hiddenClaimId').val(),
-            CustomerId: $('#hiddenMemberId').val(),
-            Note: $('#actionNote').val(),
-            TotalAmount: parseFloat($('#totalAmount').val()) || 0,
-            ExternalApplicationName: $('#externalApplicationName').val(),
-            AccountingDate: $('#accountingDate').val(),
-            ForceRepost: $('#forceRepost').is(':checked'),
-            MemberBalanceDestinationEntries: [],
-            SourceAccountEntryListing: [],
-            DestinationBranchEntryListing: []
-        };
+    var data = {
+    ClaimId: $('#hiddenClaimId').val(),
+    CustomerId: $('#hiddenMemberId').val(),
+    Note: $('#actionNote').val(),
+    TotalAmount: parseFloat($('#totalAmount').val()) || 0,
+    ExternalApplicationName: $('#externalApplicationName').val(),
+    AccountingDate: $('#accountingDate').val(),
+    ForceRepost: $('#forceRepost').is(':checked'),
+    MemberBalanceDestinationEntries: [],
+    SourceAccountEntryListing: [],
+    DestinationBranchEntryListing: []
+    };
 
-        // Collect source account entries
-        $('.source-account-row').each(function() {
-            var $row = $(this);
-            var entry = {
-                SourceGLAccountId: $row.find('.source-gl-account').val(),
-                Amount: parseFloat($row.find('.source-amount').val()) || 0,
-                Description: $row.find('.source-description').val()
-            };
-            if (entry.SourceGLAccountId && entry.Amount > 0) {
-                data.SourceAccountEntryListing.push(entry);
-            }
-        });
-
-        // Collect member account entries
-        $('.member-account-row').each(function() {
-            var $row = $(this);
-            var entry = {
-                AccountId: $row.find('.account-id').val(),
-                AccountType: $row.find('.account-type').val(),
-                Amount: parseFloat($row.find('.member-amount').val()) || 0,
-                Description: $row.find('.member-description').val()
-            };
-            if (entry.AccountId && entry.Amount > 0) {
-                data.MemberBalanceDestinationEntries.push(entry);
-            }
-        });
-
-        // Collect branch account entries
-        $('.branch-account-row').each(function() {
-            var $row = $(this);
-            var entry = {
-                DestinationBranchGLAccountId: $row.find('.branch-gl-account').val(),
-                Amount: parseFloat($row.find('.branch-amount').val()) || 0,
-                Description: $row.find('.branch-description').val()
-            };
-            if (entry.DestinationBranchGLAccountId && entry.Amount > 0) {
-                data.DestinationBranchEntryListing.push(entry);
-            }
-        });
-
-        return data;
+    // Collect source account entries
+    $('.source-account-row').each(function() {
+    var $row = $(this);
+    var entry = {
+    SourceGLAccountId: $row.find('.source-gl-account').val(),
+    Amount: parseFloat($row.find('.source-amount').val()) || 0,
+    Description: $row.find('.source-description').val()
+    };
+    if (entry.SourceGLAccountId && entry.Amount > 0) {
+    data.SourceAccountEntryListing.push(entry);
     }
+    });
+
+    // Collect member account entries
+    $('.member-account-row').each(function() {
+    var $row = $(this);
+    var entry = {
+    AccountId: $row.find('.account-id').val(),
+    AccountType: $row.find('.account-type').val(),
+    Amount: parseFloat($row.find('.member-amount').val()) || 0,
+    Description: $row.find('.member-description').val()
+    };
+    if (entry.AccountId && entry.Amount > 0) {
+    data.MemberBalanceDestinationEntries.push(entry);
+    }
+    });
+
+    // Collect branch account entries
+    $('.branch-account-row').each(function() {
+    var $row = $(this);
+    var entry = {
+    DestinationBranchGLAccountId: $row.find('.branch-gl-account').val(),
+    Amount: parseFloat($row.find('.branch-amount').val()) || 0,
+    Description: $row.find('.branch-description').val()
+    };
+    if (entry.DestinationBranchGLAccountId && entry.Amount > 0) {
+    data.DestinationBranchEntryListing.push(entry);
+    }
+    });
+
+    return data;
+}
 
     function showConfirmationModal(postingData) {
         // Populate confirmation modal
@@ -1376,12 +1387,12 @@
         postingData.SourceAccountEntryListing.forEach(function(entry, index) {
             var account = affiliateAccounts.find(a => a.Value === entry.SourceGLAccountId);
             $tbody.append(`
-                <tr>
-                    <td><span class="badge bg-info">Source</span></td>
-                    <td>${account ? account.Text : entry.SourceGLAccountId}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                </tr>
+<tr>
+    <td><span class="badge bg-info">Source</span></td>
+    <td>${account ? account.Text : entry.SourceGLAccountId}</td>
+    <td class="text-end">${formatCurrency(entry.Amount)}</td>
+    <td>${entry.Description}</td>
+</tr>
             `);
             totalEntries += entry.Amount;
         });
@@ -1389,12 +1400,12 @@
         // Add member entries
         postingData.MemberBalanceDestinationEntries.forEach(function(entry, index) {
             $tbody.append(`
-                <tr>
-                    <td><span class="badge bg-warning">Member</span></td>
-                    <td>${entry.AccountType}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                </tr>
+<tr>
+    <td><span class="badge bg-warning">Member</span></td>
+    <td>${entry.AccountType}</td>
+    <td class="text-end">${formatCurrency(entry.Amount)}</td>
+    <td>${entry.Description}</td>
+</tr>
             `);
             totalEntries += entry.Amount;
         });
@@ -1403,12 +1414,12 @@
         postingData.DestinationBranchEntryListing.forEach(function(entry, index) {
             var account = branchAccounts.find(a => a.Value === entry.DestinationBranchGLAccountId);
             $tbody.append(`
-                <tr>
-                    <td><span class="badge bg-danger">Branch</span></td>
-                    <td>${account ? account.Text : entry.DestinationBranchGLAccountId}</td>
-                    <td class="text-end">${formatCurrency(entry.Amount)}</td>
-                    <td>${entry.Description}</td>
-                </tr>
+<tr>
+    <td><span class="badge bg-danger">Branch</span></td>
+    <td>${account ? account.Text : entry.DestinationBranchGLAccountId}</td>
+    <td class="text-end">${formatCurrency(entry.Amount)}</td>
+    <td>${entry.Description}</td>
+</tr>
             `);
             totalEntries += entry.Amount;
         });
@@ -1509,255 +1520,255 @@
                     ApprovedAmount: parseFloat($('#actionAmount').val()),
                     ApprovalComment: $('#actionNote').val(),
                     ApprovedBy: '@User.Identity.Name'
-                };
-                break;
+                    };
+                    break;
 
-            case 'reject':
-                requestData = {
+                    case 'reject':
+                    requestData = {
                     ClaimId: claimId,
                     Reason: $('#actionNote').val(),
                     RejectedBy: '@User.Identity.Name'
-                };
-                break;
+                    };
+                    break;
 
-            case 'post':
-                requestData = collectPostingData();
-                break;
-        }
+                    case 'post':
+                    requestData = collectPostingData();
+                    break;
+                    }
 
-        var url = '';
-        switch (actionType) {
-            case 'approve': url = '@Url.Action("Approve", "IPSClaim")'; break;
-            case 'reject': url = '@Url.Action("Reject", "IPSClaim")'; break;
-            case 'post': url = '@Url.Action("Post", "IPSClaim")'; break;
-        }
+                    var url = '';
+                    switch (actionType) {
+                    case 'approve': url = '@Url.Action("Approve", "IPSClaim")'; break;
+                    case 'reject': url = '@Url.Action("Reject", "IPSClaim")'; break;
+                    case 'post': url = '@Url.Action("Post", "IPSClaim")'; break;
+                    }
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(requestData),
-            headers: {
-                'RequestVerificationToken': token,
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            success: function(response) {
-                if (response.success) {
+                    $.ajax({
+                    url: url,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(requestData),
+                    headers: {
+                    'RequestVerificationToken': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                    if (response.success) {
                     appalert(response.message || 'Action completed successfully', 1, 1);
                     $('#actionModal').modal('hide');
                     if (response.reload && ClaimsTable) {
-                        ClaimsTable.ajax.reload(null, false);
+                    ClaimsTable.ajax.reload(null, false);
                     }
-                } else {
+                    } else {
                     appalert(response.message || 'Action failed', 4, 1);
                     $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
-                }
-            },
-            error: function(xhr, status, error) {
-                appalert('Error: ' + (xhr.responseJSON?.message || error), 4, 1);
-                $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
-            }
-        });
-    }
+                    }
+                    },
+                    error: function(xhr, status, error) {
+                    appalert('Error: ' + (xhr.responseJSON?.message || error), 4, 1);
+                    $btn.prop('disabled', false).html('<i class="mdi mdi-check-circle-outline me-1"></i><span id="submitButtonText">Submit</span>');
+                    }
+                    });
+                    }
 
-    // ============================
-    // ACTION HANDLERS
-    // ============================
-    $(document).on('click', '.btn-details', function() {
-        var claimId = $(this).data('id');
-        window.open('@Url.Action("Details2", "IPSClaim")/' + encodeURIComponent(claimId), '_blank');
-    });
+                    // ============================
+                    // ACTION HANDLERS
+                    // ============================
+                    $(document).on('click', '.btn-details', function() {
+                    var claimId = $(this).data('id');
+                    window.open('@Url.Action("Details2", "IPSClaim")/' + encodeURIComponent(claimId), '_blank');
+                    });
 
-    $(document).on('click', '.btn-documents', function() {
-        var claimId = $(this).data('id');
-        window.open('@Url.Action("UploadDocuments", "IPSClaim")?claimId=' + encodeURIComponent(claimId), '_blank');
-    });
+                    $(document).on('click', '.btn-documents', function() {
+                    var claimId = $(this).data('id');
+                    window.open('@Url.Action("UploadDocuments", "IPSClaim")?claimId=' + encodeURIComponent(claimId), '_blank');
+                    });
 
-        // ============================
-        // ACTION HANDLERS
-        // ============================
-        $(document).on('click', '.btn-approve', function () {
-            var $row = $(this).closest('tr');
-            var rowData = ClaimsTable.row($row).data();
+                    // ============================
+                    // ACTION HANDLERS
+                    // ============================
+                    $(document).on('click', '.btn-approve', function () {
+                    var $row = $(this).closest('tr');
+                    var rowData = ClaimsTable.row($row).data();
 
-            var claimId = $(this).data('id');
-            var memberId = $(this).data('member');
-            var branchId = $(this).data('branch');
+                    var claimId = $(this).data('id');
+                    var memberId = $(this).data('member');
+                    var branchId = $(this).data('branch');
 
-            var claimData = {
-                claimId: claimId,
-                memberId: memberId,
-                branchId: branchId,
-                branchName: rowData.BranchName || '-',
-                claimType: rowData.ClaimType || '-',
-                claimedAmount: rowData.ClaimedAmount || 0,
-                approvedAmount: rowData.ApprovedAmount || rowData.ClaimedAmount || 0,
-                status: rowData.Status || '-'
-            };
+                    var claimData = {
+                    claimId: claimId,
+                    memberId: memberId,
+                    branchId: branchId,
+                    branchName: rowData.BranchName || '-',
+                    claimType: rowData.ClaimType || '-',
+                    claimedAmount: rowData.ClaimedAmount || 0,
+                    approvedAmount: rowData.ApprovedAmount || rowData.ClaimedAmount || 0,
+                    status: rowData.Status || '-'
+                    };
 
-            showActionModal('approve', claimId, memberId, branchId, claimData);
-        });
+                    showActionModal('approve', claimId, memberId, branchId, claimData);
+                    });
 
-        $(document).on('click', '.btn-reject', function () {
-            var $row = $(this).closest('tr');
-            var rowData = ClaimsTable.row($row).data();
+                    $(document).on('click', '.btn-reject', function () {
+                    var $row = $(this).closest('tr');
+                    var rowData = ClaimsTable.row($row).data();
 
-            var claimId = $(this).data('id');
-            var memberId = $(this).data('member');
-            var branchId = $(this).data('branch');
+                    var claimId = $(this).data('id');
+                    var memberId = $(this).data('member');
+                    var branchId = $(this).data('branch');
 
-            var claimData = {
-                claimId: claimId,
-                memberId: memberId,
-                branchId: branchId,
-                branchName: rowData.BranchName || '-',
-                claimType: rowData.ClaimType || '-',
-                status: rowData.Status || '-'
-            };
+                    var claimData = {
+                    claimId: claimId,
+                    memberId: memberId,
+                    branchId: branchId,
+                    branchName: rowData.BranchName || '-',
+                    claimType: rowData.ClaimType || '-',
+                    status: rowData.Status || '-'
+                    };
 
-            showActionModal('reject', claimId, memberId, branchId, claimData);
-        });
+                    showActionModal('reject', claimId, memberId, branchId, claimData);
+                    });
 
-        $(document).on('click', '.btn-post', function () {
-            var $row = $(this).closest('tr');
-            var rowData = ClaimsTable.row($row).data();
+                    $(document).on('click', '.btn-post', function () {
+                    var $row = $(this).closest('tr');
+                    var rowData = ClaimsTable.row($row).data();
 
-            var claimId = $(this).data('id');
-            var memberId = $(this).data('member');
-            var branchId = $(this).data('branch');
+                    var claimId = $(this).data('id');
+                    var memberId = $(this).data('member');
+                    var branchId = $(this).data('branch');
 
-            var claimData = {
-                claimId: claimId,
-                memberId: memberId,
-                branchId: branchId,
-                branchName: rowData.BranchName || '-',
-                claimType: rowData.ClaimType || '-',
-                claimedAmount: rowData.ClaimedAmount || 0,
-                approvedAmount: rowData.ApprovedAmount || rowData.ClaimedAmount || 0,
-                status: rowData.Status || '-'
-            };
+                    var claimData = {
+                    claimId: claimId,
+                    memberId: memberId,
+                    branchId: branchId,
+                    branchName: rowData.BranchName || '-',
+                    claimType: rowData.ClaimType || '-',
+                    claimedAmount: rowData.ClaimedAmount || 0,
+                    approvedAmount: rowData.ApprovedAmount || rowData.ClaimedAmount || 0,
+                    status: rowData.Status || '-'
+                    };
 
-            showActionModal('post', claimId, memberId, branchId, claimData);
-        });
+                    showActionModal('post', claimId, memberId, branchId, claimData);
+                    });
 
-    $(document).on('click', '.btn-delete', function() {
-        var claimId = $(this).data('id');
+                    $(document).on('click', '.btn-delete', function() {
+                    var claimId = $(this).data('id');
 
-        alertify.confirm('Confirm Delete',
-            `Are you sure you want to delete this claim? This action cannot be undone.`,
-            function() {
-                $.ajax({
+                    alertify.confirm('Confirm Delete',
+                    `Are you sure you want to delete this claim? This action cannot be undone.`,
+                    function() {
+                    $.ajax({
                     url: '@Url.Action("Delete", "IPSClaim")',
                     type: 'POST',
                     data: { id: claimId },
                     success: function(response) {
-                        if (response.success) {
-                            appalert(response.message, 1, 1);
-                            if (response.reload && ClaimsTable) {
-                                ClaimsTable.ajax.reload();
-                            }
-                        } else {
-                            appalert(response.message, 4, 1);
-                        }
+                    if (response.success) {
+                    appalert(response.message, 1, 1);
+                    if (response.reload && ClaimsTable) {
+                    ClaimsTable.ajax.reload();
+                    }
+                    } else {
+                    appalert(response.message, 4, 1);
+                    }
                     },
                     error: function() {
-                        appalert('Error deleting claim', 4, 1);
+                    appalert('Error deleting claim', 4, 1);
                     }
-                });
-            },
-            function() {
-                // Cancel action
-            }
-        );
-    });
+                    });
+                    },
+                    function() {
+                    // Cancel action
+                    }
+                    );
+                    });
 
-    // ============================
-    // EXPORT FUNCTIONALITY
-    // ============================
-    function showExportModal() {
-        if (!ClaimsTable || currentTableData.length === 0) {
-            appalert('Please load the table data first by applying filters', 3, 1);
-            return;
-        }
+                    // ============================
+                    // EXPORT FUNCTIONALITY
+                    // ============================
+                    function showExportModal() {
+                    if (!ClaimsTable || currentTableData.length === 0) {
+                    appalert('Please load the table data first by applying filters', 3, 1);
+                    return;
+                    }
 
-        $('#exportModal').modal('show');
-    }
+                    $('#exportModal').modal('show');
+                    }
 
-    function exportData() {
-        var exportFormat = $('#exportFormat').val();
-        var reportType = $('#reportType').val();
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
-        var fileName = $('#fileName').val() || 'IPS_Claims_Report';
-        var includeSummary = $('#includeSummary').is(':checked');
+                    function exportData() {
+                    var exportFormat = $('#exportFormat').val();
+                    var reportType = $('#reportType').val();
+                    var startDate = $('#startDate').val();
+                    var endDate = $('#endDate').val();
+                    var fileName = $('#fileName').val() || 'IPS_Claims_Report';
+                    var includeSummary = $('#includeSummary').is(':checked');
 
-        var exportRequest = {
-            ExportFormat: exportFormat,
-            ReportType: reportType,
-            StartDate: startDate,
-            EndDate: endDate,
-            FileName: fileName,
-            IncludeSummary: includeSummary,
-            Data: currentTableData
-        };
+                    var exportRequest = {
+                    ExportFormat: exportFormat,
+                    ReportType: reportType,
+                    StartDate: startDate,
+                    EndDate: endDate,
+                    FileName: fileName,
+                    IncludeSummary: includeSummary,
+                    Data: currentTableData
+                    };
 
-        // Show progress
-        $('#exportProgress').removeClass('d-none');
-        $('#progressText').text('Preparing export...');
-        $('.progress-bar').css('width', '30%');
+                    // Show progress
+                    $('#exportProgress').removeClass('d-none');
+                    $('#progressText').text('Preparing export...');
+                    $('.progress-bar').css('width', '30%');
 
-        $.ajax({
-            url: '@Url.Action("ExportClaimsData", "IPSClaim")',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(exportRequest),
-            xhrFields: {
-                responseType: 'blob'
-            },
-            beforeSend: function() {
-                $('.progress-bar').css('width', '60%');
-                $('#progressText').text('Generating export file...');
-            },
-            success: function(data, status, xhr) {
-                $('.progress-bar').css('width', '100%');
-                $('#progressText').text('Export complete! Downloading...');
+                    $.ajax({
+                    url: '@Url.Action("ExportClaimsData", "IPSClaim")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(exportRequest),
+                    xhrFields: {
+                    responseType: 'blob'
+                    },
+                    beforeSend: function() {
+                    $('.progress-bar').css('width', '60%');
+                    $('#progressText').text('Generating export file...');
+                    },
+                    success: function(data, status, xhr) {
+                    $('.progress-bar').css('width', '100%');
+                    $('#progressText').text('Export complete! Downloading...');
 
-                // Create download link
-                var blob = new Blob([data], {
+                    // Create download link
+                    var blob = new Blob([data], {
                     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                });
-                var link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
+                    });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
 
-                // Get filename from headers or use default
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                var filename = fileName + '.xlsx';
-                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    // Get filename from headers or use default
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    var filename = fileName + '.xlsx';
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
                     var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(disposition);
                     if (matches != null && matches[1]) {
-                        filename = matches[1].replace(/['"]/g, '');
+                    filename = matches[1].replace(/['"]/g, '');
                     }
-                }
+                    }
 
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
 
-                setTimeout(function() {
+                    setTimeout(function() {
                     $('#exportModal').modal('hide');
                     $('#exportProgress').addClass('d-none');
                     $('.progress-bar').css('width', '0%');
-                }, 1000);
-            },
-            error: function(xhr, status, error) {
-                console.error('Export error:', error);
-                appalert('Error exporting data: ' + error, 4, 1);
-                $('#exportProgress').addClass('d-none');
-                $('.progress-bar').css('width', '0%');
-            }
-        });
-    }
-    </script>
-}
+                    }, 1000);
+                    },
+                    error: function(xhr, status, error) {
+                    console.error('Export error:', error);
+                    appalert('Error exporting data: ' + error, 4, 1);
+                    $('#exportProgress').addClass('d-none');
+                    $('.progress-bar').css('width', '0%');
+                    }
+                    });
+                    }
+</script>
+                    }
