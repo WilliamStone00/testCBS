@@ -359,17 +359,43 @@ $(document).ready(function () {
             },
             columns: [
                 {
-                    data: 'CreatedAt',
-                    name: 'CreatedAt',
-                    render: function (data) {
-                        return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
-                    }
-                },
-                {
-                    data: 'AccountingDate',
-                    name: 'AccountingDate',
-                    render: function (data) {
-                        return data ? moment(data).format('DD/MM/YYYY') : '';
+                    data: null,
+                    name: 'Dates',
+                    render: function (_, __, row) {
+                        const today = moment();
+
+                        const createdAt = row.CreatedAt
+                            ? moment(row.CreatedAt).format('DD/MM/YYYY HH:mm:ss')
+                            : '-';
+
+                        const accountingMoment = row.AccountingDate
+                            ? moment(row.AccountingDate)
+                            : null;
+
+                        const accountingDate = accountingMoment
+                            ? accountingMoment.format('DD/MM/YYYY')
+                            : '-';
+
+                        // Only the Accounting DATE gets colored
+                        const accountingClass =
+                            accountingMoment && accountingMoment.isSame(today, 'day')
+                                ? 'text-success'
+                                : 'text-danger';
+
+                        return `
+                <div>
+                    <div>
+                        <small class="text-muted fw-bold">Entry:</small>
+                        <span class="text-info fw-semibold">${createdAt}</span>
+                    </div>
+                    <div>
+                        <small class="text-muted fw-bold">Accounting:</small>
+                        <span class="${accountingClass}">
+                            ${accountingDate}
+                        </span>
+                    </div>
+                </div>
+            `;
                     }
                 },
                 { data: 'Memo', name: 'Memo' },
