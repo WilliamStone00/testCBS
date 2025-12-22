@@ -175,12 +175,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         {
             try
             {
-                //if (string.IsNullOrWhiteSpace(id))
-                //    throw new ArgumentException("Journal entry ID cannot be null or empty.", nameof(id));
-
-                // Define operationCode for API call
-                /* string operationCode = "MANUAL.ENTRY";*/ // Or call GetBranchID() if you want to use branch info
-
+                
                 // Make API call including operationCode
                 var response = await _JournalheadapiCallerHelper.GetAsync<
                     ResponseObject<WorkflowTicket>>(string.Format(APICallHelper.GetJournalSourceById, id));
@@ -191,18 +186,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
                 return null;
 
 
-                //// Validate response
-                //if (!response.IsSuccess)
-                //    throw new Exception($"API call failed: {response.Message}");
-
-                //var entry = response.ApiResponseData?.Data;
-                //if (entry == null)
-                //    throw new Exception("Journal Entry not found.");
-
-                // Optionally, set OperationCode or other properties on the returned entry
-                //entry.OperationCode = operationCode;
-
-                //return entry;
+                
             }
             catch (Exception ex)
             {

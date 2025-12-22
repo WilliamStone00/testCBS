@@ -1,0 +1,234 @@
+﻿<style>
+
+
+    .table tbody tr td {
+        vertical-align: middle;
+        color: #555;
+    }
+
+    .table thead th {
+        background-color: #f1f1f1;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .table-sm th.bg-label {
+        background-color: #EDEDED;
+        width: 220px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+</style>
+
+
+
+
+
+@model System.Collections.Generic.IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReconciledLine.Reconciled>
+
+@{
+    var header = Model?.FirstOrDefault();
+    decimal totalDebit = 0;
+    decimal totalCredit = 0;
+}
+
+<div class="modal-body">
+
+    <!-- Header Section -->
+    <div class="card bg-light mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h1 class="card-title text-primary">
+                <i class="mdi mdi-file-document-outline me-2"></i> RECONCILED JOURNALS
+            </h1>
+            <p class="card-text">
+                <strong>Reconciled Line Module</strong> – View and analyze journal entries reconciled by reference,
+                branch, and account. Check debit/credit totals and balances for each entry.
+            </p>
+            <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+
+            <div class="alert alert-info mt-3">
+                <i class="mdi mdi-alert-circle-outline me-2"></i>
+                <strong>Important:</strong> Ensure the journal reference you select exists and has reconciled lines
+                before viewing details.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== JOURNAL HEADER ===================== -->
+    <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+        <i class="mdi mdi-file-document me-1"></i> Journal Information
+    </h6>
+
+    <table class="table table-sm table-bordered mb-3">
+        <tbody>
+            <tr>
+                <th class="bg-label">Journal Header</th>
+                <td>@header.JournalHeaderId</td>
+            </tr>
+            <tr>
+                <th class="bg-label" id="reference">Reference</th>
+                <td>@header.ReferenceNumber</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Branch</th>
+                <td>@header.BranchName</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Entry Date</th>
+                <td>@header.EntryDate.ToString("dd/MM/yyyy")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">User</th>
+                <td>@header.UserName</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Interbranch</th>
+                <td>@(header?.InterbranchStatus == true ? "Yes" : "No")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Initiated By</th>
+                <td>@header.CreatedBy</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Created Date</th>
+                <td>@header.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+            <tr>
+                <th class="bg-label">Approved By</th>
+                <td>
+                    @(string.IsNullOrWhiteSpace(header.ApprovedBy)
+                    ? "-"
+                    : header.ApprovedBy)
+                </td>
+            </tr>
+            <tr>
+                <th class="bg-label">Approval Date</th>
+                <td>
+                    @(header.ApprovalDate != DateTime.MinValue
+            ? header.ApprovalDate.ToString("dd/MM/yyyy HH:mm")
+            : "-")
+                </td>
+            </tr>
+
+            <tr>
+                <th class="bg-label">Rejected By</th>
+                <td>
+                    @(string.IsNullOrWhiteSpace(header.RejectedBy)
+            ? "-"
+            : header.RejectedBy)
+                </td>
+            </tr>
+
+            <tr>
+                <th class="bg-label">Rejected Date</th>
+                <td>
+                    @(header.RejectedDate != DateTime.MinValue
+            ? header.RejectedDate.ToString("dd/MM/yyyy HH:mm")
+            : "-")
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <!-- ===================== JOURNAL LINES ===================== -->
+    <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
+        <i class="mdi mdi-table me-1"></i> Reconciled Journal Lines
+    </h6>
+
+    <div class="card border-0">
+        <div class="card-body card-body-tight">
+            <table class="table table-hover table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Account No</th>
+                        <th>Account Name</th>
+                        <th>Description</th>
+                        <th class="text-end">Debit (FCFA)</th>
+                        <th class="text-end">Credit (FCFA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in Model.OrderBy(x => x.Seq))
+                    {
+                        totalDebit += line.DebitAmount;
+                        totalCredit += line.CreditAmount;
+
+                        <tr>
+                            <td>@line.Seq</td>
+                            <td>@line.AccountNumber</td>
+                            <td>@line.AccountName</td>
+                            <td>@line.Description</td>
+                            <td class="text-end">
+                                @(line.DebitAmount > 0 ? line.DebitAmount.ToString("N0") : "-")
+                            </td>
+                            <td class="text-end">
+                                @(line.CreditAmount > 0 ? line.CreditAmount.ToString("N0") : "-")
+                            </td>
+                        </tr>
+                    }
+
+                    <!-- TOTALS -->
+                    <tr class="fw-bold bg-light">
+                        <td colspan="4" class="text-end">Totals</td>
+                        <td class="text-end">@totalDebit.ToString("N0")</td>
+                        <td class="text-end">@totalCredit.ToString("N0")</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ================= MODAL FOOTER ================= -->
+<div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="mdi mdi-close"></i> Close
+    </button>
+
+    <div>
+
+        <button type="button" id="btnPrintAccountingReport" class="btn btn-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> Print
+        </button>
+
+
+        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2" >
+            <i class="mdi mdi-file-excel-outline"></i> Export Excel 
+        </button>
+
+    </div>
+</div>
+
+
+
+<script>
+
+     $(document).on('click', '#btnExportExcel', function () {
+
+      const referenceNumber = '@(header?.ReferenceNumber ?? "")';
+
+      console.log('Export clicked');
+      console.log('ReferenceNumber from Razor:', referenceNumber);
+
+      if (!referenceNumber) {
+          appalert("Invalid reference number!", 3, 1);
+          return;
+      }
+
+      const url =
+          '@Url.Action("DownloadReconciledLinesExcel", "ReconciledLine")'
+          + '?referenceNumber=' + encodeURIComponent(referenceNumber);
+
+      console.log('Redirecting to:', url);
+      window.location.href = url;
+  });
+
+</script>
+
+
+

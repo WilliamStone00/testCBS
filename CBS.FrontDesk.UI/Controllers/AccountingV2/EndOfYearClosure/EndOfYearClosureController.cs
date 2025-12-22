@@ -43,7 +43,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
         // GET: EndOfYearClosure
         public async Task<ActionResult> Index()
         {
+           
             await loader();
+            
             return View(new EndOfYear());
         }
         public async Task<ActionResult> List()
@@ -235,9 +237,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return Json(new
                 {
 
-                    //draw = data.Options.draw ?? "1",
-                    //recordsTotal = data.Options.recordsTotal,
-                    //recordsFiltered = data.Options.recordsFiltered,
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
                     data = EndChecklist,
                     success = true,
                     message = "Display DataTable for End of Year check  status   successfully"

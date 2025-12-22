@@ -11115,7 +11115,6 @@
     <Content Include="Views\JournalHead\_ExportJournalHeadDataTable.cshtml" />
     <Content Include="Views\CounterCheque\_ChequeBooks.cshtml" />
     <Content Include="Views\GLSystemReconciliation\_StatisticsDetails.cshtml" />
-    <Content Include="Views\JournalHead\_ExportWorkTicketDataTable.cshtml" />
     <Content Include="Views\EndOfYearClosure\Index.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Initiation.cshtml" />
     <Content Include="Views\EndOfYearClosure\_Adjustment.cshtml" />
@@ -11156,6 +11155,11 @@
     <Content Include="Views\GlobalConfig\_Data.cshtml" />
     <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />
     <Content Include="Views\GlobalConfig\Index.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\List.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\_Datatable.cshtml" />
+    <Content Include="Views\ReconciledLine\_Details.cshtml" />
+    <Content Include="Views\SharedMonthSimulation\_intrestgeneration.cshtml" />
+    <Content Include="Views\ReconciledLine\_ExportTableReconciled.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

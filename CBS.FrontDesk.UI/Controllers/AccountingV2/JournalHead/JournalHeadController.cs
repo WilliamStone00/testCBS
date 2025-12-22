@@ -514,8 +514,6 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
 
         [HttpPost]
 
-
-
         public async Task<ActionResult> ExportJournalData(ExportJournalRequest request)
         {
             try
