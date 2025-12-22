@@ -365,6 +365,13 @@ $(document).ready(function () {
                         return data ? moment(data).format('DD/MM/YYYY HH:mm:ss') : '';
                     }
                 },
+                {
+                    data: 'AccountingDate',
+                    name: 'AccountingDate',
+                    render: function (data) {
+                        return data ? moment(data).format('DD/MM/YYYY') : '';
+                    }
+                },
                 { data: 'Memo', name: 'Memo' },
                 { data: 'InitiatedByTrim', name: 'InitiatedByTrim' },
                 { data: 'ApprovedByTrim', name: 'ApprovedByTrim' },
