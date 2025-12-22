@@ -155,16 +155,23 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
         }
 
         [HttpPost]
-        public async Task<ActionResult> TakeAction(Approval approval, string action)
+        public async Task<ActionResult> TakeAction(Approval approval)
         {
-            if (string.IsNullOrWhiteSpace(approval.approvalNote))
-                return Json(new { success = false, message = "Please enter a note/comment." });
+			//if (string.IsNullOrWhiteSpace(approval.approvalNote))
+			//    return Json(new { success = false, message = "Please enter a note/comment." });
 
-            if (string.IsNullOrWhiteSpace(approval.id))
-                return Json(new { success = false, message = "Invalid request identifier." });
+			//if (string.IsNullOrWhiteSpace(approval.id))
+			//    return Json(new { success = false, message = "Invalid request identifier." });
 
-            ExecutionMessages result;
-            switch (approval.action?.ToLower())
+			if (approval == null || string.IsNullOrWhiteSpace(approval.action))
+			{
+				return Json(new { success = false, message = "Invalid action." });
+			}
+
+
+			ExecutionMessages result;
+
+            switch (approval.action.ToLower())
             {
                 case "approve":
                     result = await _chequeRequestService1.ApproveRequestAsync(approval);
@@ -191,7 +198,7 @@ namespace CBS.FrontDesk.UI.Controllers.ChequeManagementSystem.Operations.ChequeR
             {
                 success = result.Result,
                 message = result.MessageString,
-                status = result.MessageStatus
+                //status = result.MessageStatus
             });
         }
 

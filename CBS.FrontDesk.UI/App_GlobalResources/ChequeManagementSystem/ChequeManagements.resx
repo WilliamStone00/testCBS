@@ -744,4 +744,7 @@
   <data name="chequerequesttext1" xml:space="preserve">
     <value> Create new cheque book requests on behalf of customers and manage the lifecycle from pending to delivery.</value>
   </data>
+  <data name="MaxTransactionAmount" xml:space="preserve">
+    <value>Max Transaction Amount</value>
+  </data>
 </root>

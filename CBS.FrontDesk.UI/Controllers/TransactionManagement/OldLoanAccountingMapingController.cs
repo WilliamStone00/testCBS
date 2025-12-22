@@ -1,5 +1,6 @@
 ﻿using CBS.BusinessService.Accounting;
 using CBS.BusinessService.Accounting_V2.BranchAccountService;
+using CBS.BusinessService.Accounting_V2.MemberReconciliation;
 using CBS.BusinessService.Accounts;
 using CBS.BusinessService.Config;
 using CBS.FrontDesk.Data.Entity.SavingProducts;
@@ -19,13 +20,15 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
         private readonly BranchAccountService _accountingServices;
         private readonly LoanProductServices _loanProductServices;
         private readonly BranchServices _branchServices;
+        private readonly LoanReconciliationService _LoanReconciliationService;
 
-        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, BranchAccountService accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null)
+        public OldLoanAccountingMapingController(OldLoanAccountingMapingServices FeeServices, BranchAccountService accountingServices, LoanProductServices loanProductServices = null, BranchServices branchServices = null, LoanReconciliationService loanReconciliationService = null)
         {
             _FeeServices = FeeServices;
             _accountingServices = accountingServices;
             _loanProductServices = loanProductServices;
             _branchServices = branchServices;
+            _LoanReconciliationService = loanReconciliationService;
         }
 
         public async Task<ActionResult> Index()
@@ -68,7 +71,17 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) });
 
         }
+        public async Task<bool> GetChartOfAccounts()
+        {
+            var branches = await _branchServices.GetBranches();
+            ViewBag.Branches = branches;
 
+            // Do NOT preload loan types or account ledgers
+            ViewBag.LoanTypes = Enumerable.Empty<SelectListItem>();
+            ViewBag.AccountLedgers = Enumerable.Empty<SelectListItem>();
+
+            return true;
+        }
         public async Task<ActionResult> InitializeData(string KEY = null, string partialView = null, string path = null)
         {
    
@@ -99,15 +112,44 @@ namespace CBS.FrontDesk.UI.Controllers.TransactionManagement
             var data = await _FeeServices.Delete(KEY);
             return Json(new { success = data.Result, status = data.MessageStatus, message = Messaging.MessageResult(data) }, JsonRequestBehavior.AllowGet);
         }
-        public async Task<bool> GetChartOfAccounts()
+       
+
+        [HttpGet]
+        public async Task<JsonResult> GetLoanAccountTypesByBranch(string branchId)
         {
-            var chartOfAccounts = await _accountingServices.GetAllBranchAccountsFromDataTableAsync(null);
-            var productEnumAgregates = await _loanProductServices.GetLoanProductEnumAggregates();
-            var branches = await _branchServices.GetBranches();
-            ViewBag.Branches = branches;
-            ViewBag.LoanTypes = productEnumAgregates.LoanTypes;
-            ViewBag.AccountLedgers = _accountingServices.DropDownGen(chartOfAccounts.ToList()); ;
-            return true;
+            try
+            {
+                // Get member account types filtered by branch
+                var data = await _LoanReconciliationService.LoanAccountTypeAsync(branchId);
+
+
+                return Json(new { success = true, message = "Success", data }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error loading account types" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetBranchAccountsByBranch(string branchId)
+        {
+            try
+            {
+                var branchAccounts = await _accountingServices.GetAllBranchAccountsFromDataTableAsync(branchId);
+
+                var resultList = branchAccounts.Select(a => new
+                {
+                    Id = a.Id,
+                    Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : $"{a.Name}"
+                });
+
+                return Json(resultList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { success = false, message = "Failed to load branch accounts" }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

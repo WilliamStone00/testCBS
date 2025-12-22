@@ -201,6 +201,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
             model.DestinationBranchId = null;
             model.TicketType = null;
             model.Approve = true;
+         
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -254,9 +255,12 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         // REJECT Journal Entry
         public async Task<ApiResponse<ResponseObject<JournalApprovalResponse>>> ApproveMemberReconciliationAsync(JournalApproval model)
         {
+
+          
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
+            model.ApprovedByName = GetUserFullName();
             try
             {
                 var apiResponse = await _JournalheadapiCallerHelper.PostAsync<ResponseObject<JournalApprovalResponse>>(
@@ -273,6 +277,8 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
+
+            model.ApprovalName = GetUserFullName();
 
             try
             {
