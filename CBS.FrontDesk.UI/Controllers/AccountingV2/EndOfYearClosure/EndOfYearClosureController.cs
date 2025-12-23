@@ -78,11 +78,12 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
             return true;
         }
         [HttpGet]
-        public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId)
+        public async Task<ActionResult> GetClosureOpenYearByBranchId(string branchId, string init)
         {
             try
             {
-                var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId);
+                
+                var years = await _endOfYearClosureService.GetAccountingYearByBranchIdAsync(branchId,init);
 
                 var firstYear = years.FirstOrDefault();
                 if (firstYear != null)

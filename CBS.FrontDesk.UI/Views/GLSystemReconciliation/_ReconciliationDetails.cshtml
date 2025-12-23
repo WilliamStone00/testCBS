@@ -239,32 +239,56 @@
 
 
     // Save edited payload
-    document.getElementById('btnSavePayload').addEventListener('click', async function () {
+    document.getElementById('btnSavePayload').addEventListener('click', function () {
+
         const editedJson = document.getElementById('formattedJson').value;
 
         try {
-            const payload = JSON.parse(editedJson); // validate JSON
+            // ✅ Validate JSON only (do NOT convert)
+            JSON.parse(editedJson);
 
-            // ✅ No need to attach Id, server uses session
+            alertify.confirm(
+                "Confirmation",
+                "Are you sure you want to save the updated payload?",
+                async function () {
 
-            const response = await fetch('/GLSystemReconciliation/UpdatePayload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+                    try {
+                        const response = await fetch('/GLSystemReconciliation/UpdatePayload', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                payload: editedJson // ✅ sent as STRING
+                            })
+                        });
 
-            const result = await response.json();
+                        const result = await response.json();
 
-            if (result.success) {
-                appalert(result.message, 1, 1);
-                bootstrap.Modal.getInstance(document.getElementById('payloadModal')).hide();
-            } else {
-                appalert(result.message, 3, 1);
-            }
+                        if (result.success) {
+                            appalert(result.message, 1, 1);
+                            bootstrap.Modal
+                                .getInstance(document.getElementById('payloadModal'))
+                                .hide();
+                        } else {
+                            appalert(result.message, 3, 1);
+                        }
+
+                    } catch (err) {
+                        console.error("Request failed:", err);
+                        appalert("❌ Failed to save payload. Please try again.", 3, 1);
+                    }
+                },
+                function () {
+                    // ❌ User cancelled
+                    console.log("Payload update cancelled");
+                }
+            );
 
         } catch (e) {
-            appalert("❌ Invalid JSON. Fix before saving.", 3, 1);
+            appalert("❌ Invalid JSON format. Please fix before saving.", 3, 1);
             console.error(e);
         }
     });
+
 </script>
