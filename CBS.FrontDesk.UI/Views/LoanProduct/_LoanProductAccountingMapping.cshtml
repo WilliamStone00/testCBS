@@ -32,9 +32,9 @@
     if (p != null)
     {
         map.LoanProductId = p.Id;
-        map.PcmfBaseCode = p.PcmfBaseCode;
+        map.PcmfBaseCode = p.PcmfBaseCode.Value;
         map.PcmfSection = p.PcmfSection;
-        map.PcmfGroupCode = p.PcmfGroupCode;
+        map.PcmfGroupCode = p.PcmfGroupCode.Value;
         map.PcmfPopulation = p.PcmfPopulation;
     }
 }
