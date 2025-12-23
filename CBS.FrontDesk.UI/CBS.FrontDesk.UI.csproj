@@ -10268,7 +10268,7 @@
     <Content Include="Views\LoanProduct\_AccountMappingData.cshtml" />
     <Content Include="Views\LoanProduct\_Data.cshtml" />
     <Content Include="Views\LoanProduct\_DataPolicySet.cshtml" />
-    <Content Include="Views\LoanProduct\_LoanAccountMapping.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProductAccountingMapping.cshtml" />
     <Content Include="Views\LoanProduct\_LoanProduct.cshtml" />
     <Content Include="Views\LoanProduct\_SetPenalty.cshtml" />
     <Content Include="Views\LoanProduct\_Update.cshtml" />
@@ -11121,7 +11121,7 @@
     <Content Include="Views\EndOfYearClosure\_Confirm.cshtml" />
     <Content Include="Views\EndOfYearClosure\_ClosingForm.cshtml" />
     <Content Include="Views\CounterCheque\_Detailscountercheque.cshtml" />
-    <Content Include="Views\LoanProduct\_Create.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProductSimpleForm.cshtml" />
     <Content Include="Views\AccountTypeGroup\Index.cshtml" />
     <Content Include="Views\AccountTypeGroup\_AccountTypeGroupForm.cshtml" />
     <Content Include="Views\AccountTypeGroup\_AccountTypeGroupTable.cshtml" />
@@ -11150,6 +11150,7 @@
     <Content Include="Views\GlobalConfig\_Data.cshtml" />
     <Content Include="Views\GlobalConfig\_GlobalConfigDetailsPartial.cshtml" />
     <Content Include="Views\GlobalConfig\Index.cshtml" />
+    <Content Include="Views\LoanProduct\_LoanProductData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppFiles\BarCodeImages\" />

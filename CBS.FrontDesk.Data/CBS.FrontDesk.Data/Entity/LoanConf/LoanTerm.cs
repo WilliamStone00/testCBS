@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace CBS.FrontDesk.Data.Entity.LoanConf
 {
+    using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure;
     using System.ComponentModel.DataAnnotations;
 
     public class LoanTerm
     {
         public string Id { get; set; }
+        public string NameEn { get; set; }
+        public string NameFr { get; set; }
+        public bool IsActive { get; set; } = true;
+        // ✅ NEW
+        public LoanTermKind TermKind { get; set; }
+        public virtual ICollection<PCMFLoanProduct> LoanProducts { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, ErrorMessage = "Name must not exceed 100 characters.")]
@@ -25,7 +32,6 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
         [Range(1, int.MaxValue, ErrorMessage = "Maximum term in months must be at least 1.")]
         [CustomValidation(typeof(LoanTerm), nameof(ValidateTermRange))]
         public int MaxInMonth { get; set; }
-        public virtual ICollection<LoanProduct> LoanProducts { get; set; }
         /// <summary>
         /// Custom validation to ensure MinInMonth is less than or equal to MaxInMonth.
         /// </summary>
@@ -38,6 +44,7 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf
             }
             return ValidationResult.Success;
         }
+
     }
 
 }
