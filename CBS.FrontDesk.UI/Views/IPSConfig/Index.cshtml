@@ -111,12 +111,48 @@
     }
 
     /* =========================
+       SELECT2 INITIALIZATION
+    ========================= */
+    function initializeSelect2(selector) {
+        $(selector).select2({
+            placeholder: "--- Select ---",
+            allowClear: true,
+            width: '100%'
+        });
+    }
+
+    function reinitializeAllSelect2() {
+        // Destroy existing instances
+        $('.select2').select2('destroy');
+
+        // Reinitialize only visible select2 elements
+        $('.select2:visible').each(function() {
+            $(this).select2({
+                placeholder: $(this).attr('placeholder') || "--- Select ---",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    }
+
+    /* =========================
        ACCOUNT SECTION TOGGLER
     ========================= */
     function toggleSection(sectionId, enable) {
         const section = $(sectionId);
         section.toggle(enable);
         section.find('select').prop('disabled', !enable);
+
+        // Reinitialize Select2 for the section
+        if (enable) {
+            setTimeout(function() {
+                section.find('.select2').select2({
+                    placeholder: "--- Select ---",
+                    allowClear: true,
+                    width: '100%'
+                });
+            }, 100);
+        }
     }
 
     function toggleCentralizedMode() {
@@ -145,6 +181,9 @@
             // Clear affiliate accounts
             $('#affiliateAccountsSection select').val('').trigger('change');
         }
+
+        // Reinitialize Select2 after mode change
+        setTimeout(reinitializeAllSelect2, 200);
     }
 
     /* =========================
@@ -177,7 +216,19 @@
                     options += `<option value="${a.Id}">${a.Name}</option>`;
                 });
 
-                $('#branchAccountsSection select').html(options).trigger('change');
+                $('#branchAccountsSection select').html(options);
+
+                // Reinitialize Select2 after loading options
+                setTimeout(function() {
+                    $('#branchAccountsSection .select2').select2({
+                        placeholder: "--- Select Account ---",
+                        allowClear: true,
+                        width: '100%'
+                    });
+
+                    // Set values from model if in edit mode
+                    setAccountValuesFromModel();
+                }, 100);
             },
             error: function () {
                 clearBranchAccounts();
@@ -194,7 +245,26 @@
 
     function showLoading() {
         $('#branchAccountsSection select')
-            .html('<option disabled selected>Loading accounts...</option>')
+            .html('<option disabled>Loading accounts...</option>')
+            .trigger('change');
+    }
+
+    /* =========================
+       SET ACCOUNT VALUES FROM MODEL (Edit Mode)
+    ========================= */
+    function setAccountValuesFromModel() {
+        // Set values for branch accounts
+        $('#LifeSavingsClaimDebitAccountId')
+            .val('@Model.LifeSavingsClaimDebitAccountId')
+            .trigger('change');
+        $('#LifeSavingsClaimCreditAccountId')
+            .val('@Model.LifeSavingsClaimCreditAccountId')
+            .trigger('change');
+        $('#LoanProtectionDebitAccountId')
+            .val('@Model.LoanProtectionDebitAccountId')
+            .trigger('change');
+        $('#LoanProtectionCreditAccountId')
+            .val('@Model.LoanProtectionCreditAccountId')
             .trigger('change');
     }
 
@@ -208,17 +278,24 @@
        INITIALIZATION
     ========================= */
     $(document).ready(function () {
+        // Initialize all Select2 dropdowns with delay
+        setTimeout(function() {
+            // Initialize main dropdowns
+            initializeSelect2('#BranchId');
+            initializeSelect2('.select2');
 
-        if ($.fn.select2) {
-            $('#BranchId').select2({ width: '100%' });
-            $('.select2-account').select2({ width: '100%' });
-        }
+            // Set initial values if in edit mode
+            if ('@Model.Id' !== '') {
+                setAccountValuesFromModel();
+            }
+        }, 300);
 
+        // Initialize mode
         toggleCentralizedMode();
 
-        // Edit mode
+        // Edit mode - load branch accounts if needed
         if ($('#BranchId').val() && !$('#IsCentralized').is(':checked')) {
-            loadBranchAccounts();
+            setTimeout(loadBranchAccounts, 500);
         }
     });
 
