@@ -63,7 +63,7 @@
 
             <!-- 🔹 Branch & Date Toggles -->
             <div class="row mb-2 align-items-center">
-                <div class="col-md-4 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
@@ -72,7 +72,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-md-4 mb-1">
+                <div class="col-md-3 mb-1">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('CounterbranchFilter').classList.toggle('d-none')" />
@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-1 d-flex align-items-center mt-4">
+                <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
                     <div class="form-check">
                         @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
                         <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
@@ -199,7 +199,7 @@
             </div>
 
             <div class="col-12 col-md-4">
-                <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
+                <button type="button" id="btnExportReconciled" class="btn btn-success btn-sm w-100">
                     <i class="mdi mdi-export me-1"></i> Export
                 </button>
             </div>
@@ -221,6 +221,29 @@
 </div>
 
 
+
+<div class="modal fade" id="reconciledExportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+           
+
+            @Html.Partial("_ExportTableReconciled")
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="reconciledModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- AJAX will load _Details.cshtml here -->
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
 
 
@@ -228,48 +251,37 @@
 
 
     <script>
-        function loadReconciledLines() {
+        function loadReconciledLinesData() {
             $('#myDataTable').DataTable({
                 serverSide: true,
-              
                 destroy: true,
                 responsive: true,
                 searching: false,
-                order: [[1, 'desc']], // CreatedDate desc
+                order: [[0, 'desc']], // CreatedDate desc (adjusted from [[1, 'desc']] since CreatedDate is first column)
                 ajax: {
                     url: '/ReconciledLine/LoadDataTable',
                     type: 'POST',
                     contentType: 'application/json',
                     data: function (d) {
-
-                        const filters = {
-                            BranchId: $('#branchId').val(),
-                            CounterpartyBranchId: $('#CounterpartyBranchId').val(),
-                            ReferenceNumber: $('#referenceNumber').val(),
-                            UserName: $('#userName').val(),
-                            StartDate: $('#startDate').val(),
-                            EndDate: $('#endDate').val(),
-                            IsInterbranch: $('#IsInterbranch').is(':checked'),
-
-                            Options: {
-                                draw: d.draw,
-                                start: d.start,
-                                length: d.length,
-                                searchValue: d.search?.value || '',
-                                sortColumnName: d.columns[d.order[0].column].data,
-                                sortColumnDirection: d.order[0].dir
-                            }
+                        const filters = collectReconciledLinesFilters();
+                        filters.Options = {
+                            draw: d.draw,
+                            start: d.start,
+                            length: d.length,
+                            skip: d.start,
+                            pageSize: d.length,
+                            searchValue: d.search?.value || '',
+                            sortColumnName: d.columns[d.order[0].column].data,
+                            sortColumnDirection: d.order[0].dir
                         };
-
                         return JSON.stringify(filters);
                     },
                     error: function (xhr, status, err) {
-                        console.error('❌ Error loading reconciled lines:', err);
-                        appalert('❌ Failed to load reconciled lines.', 4, 1);
+                        console.error('❌ Error loading reconciled lines:', status, err);
+                        appalert('❌ Failed to load reconciled lines. Status: ' + xhr.status, 4, 1);
                     }
                 },
                 columns: [
-                    { data: 'BranchName', name: 'BranchName' },
                     {
                         data: 'CreatedDate',
                         name: 'CreatedDate',
@@ -277,15 +289,23 @@
                             return data ? moment(data).format('YYYY-MM-DD HH:mm') : '';
                         }
                     },
+                    { data: 'AccountNumber', name: 'AccountNumber' },
+                    { data: 'AccountName', name: 'AccountName' },
+                    { data: 'ReferenceNumber', name: 'ReferenceNumber' },
+                    { data: 'AuxiliaryRef', name: 'AuxiliaryRef' },
                     { data: 'Description', name: 'Description' },
-                    { data: 'CreatedBy', name: 'CreatedBy' },
                     {
-                        data: 'InterbranchStatus',
-                        name: 'InterbranchStatus',
-                        render: function (value) {
-                            return value
-                                ? '<span class="badge bg-success">true</span>'
-                                : '<span class="badge bg-secondary">false</span>';
+                        data: 'DebitAmount',
+                        name: 'DebitAmount',
+                        render: function (data) {
+                            return data > 0 ? data.toLocaleString() : '-';
+                        }
+                    },
+                    {
+                        data: 'CreditAmount',
+                        name: 'CreditAmount',
+                        render: function (data) {
+                            return data > 0 ? data.toLocaleString() : '-';
                         }
                     },
                     {
@@ -293,11 +313,11 @@
                         orderable: false,
                         render: function (_, __, row) {
                             return `
-                             <div class="text-center">
-                                 <button class="btn btn-sm btn-info view-details" data-id="${row.Id}">
-                                     <i class="mdi mdi-eye-outline me-1"></i> Details
-                                 </button>
-                             </div>`;
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-info view-details" data-id="${row.ReferenceNumber}">
+                                        <i class="mdi mdi-eye-outline me-1"></i> Details
+                                    </button>
+                                </div>`;
                         }
                     }
                 ],
@@ -313,6 +333,18 @@
             });
         }
 
+        function collectReconciledLinesFilters() {
+            return {
+                BranchId: $('#branchId').val(),
+                CounterpartyBranchId: $('#CounterpartyBranchId').val(),
+                ReferenceNumber: $('#referenceNumber').val(),
+                UserName: $('#userName').val(),
+                StartDate: $('#startDate').val(),
+                EndDate: $('#endDate').val(),
+                IsInterbranch: $('#IsInterbranch').is(':checked'),
+                Options: {}
+            };
+        }
         // ==============================
         // Filter Buttons
         // ==============================
@@ -320,7 +352,7 @@
 
             $('#applyFilterBtn').on('click', function (e) {
                 e.preventDefault();
-                loadReconciledLines();
+                loadReconciledLinesData();
             });
 
             $('#resetFilterBtn').on('click', function () {
@@ -332,6 +364,27 @@
 
             // Optional initial load
             // loadReconciledLines();
+        });
+
+               // Use event delegation because buttons are rendered dynamically
+        // Event delegation for dynamically generated buttons
+        $('#myDataTable').on('click', '.view-details', function () {
+            var referenceNumber = $(this).data('id');
+
+            $.ajax({
+                url: '/ReconciledLine/Details',
+                type: 'GET',
+                data: { referenceNumber: referenceNumber },
+                success: function (html) {
+                    // Inject the partial view HTML into the modal
+                    $('#reconciledModal .modal-content').html(html);
+                    // Show the modal
+                    $('#reconciledModal').modal('show');
+                },
+                error: function () {
+                    alert('Failed to load details.');
+                }
+            });
         });
 
 
@@ -387,5 +440,66 @@
             });
 
         });
+
+        $('#btnExportReconciled').on('click', function () {
+            const modalEl = document.getElementById('reconciledExportModal');
+            const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            bsModal.show();
+        });
+
+        $('#btnConfirmReconciledExport').on('click', function () {
+            let filters = collectReconciledLinesFilters(); // Your filter collection function
+            let exportOptions = {
+                FileName: $("#reconciledFileName").val(),
+                Format: $("#reconciledExportFormat").val(),
+                ReportType: $("#reconciledReportType").val(),
+                StartDate: $("#reconciledStartDate").val(),
+                EndDate: $("#reconciledEndDate").val(),
+                IncludeSummary: $("#includeSummary").is(":checked")
+            };
+
+            let request = { 
+                Filters: filters, 
+                ExportOptions: exportOptions 
+            };
+
+            $("#btnConfirmReconciledExport").prop("disabled", true).html(`<span class="spinner-border spinner-border-sm"></span> Exporting...`);
+
+            $.ajax({
+                url: '@Url.Action("ExportReconciledData", "ReconciledLine")',
+                type: "POST",
+                data: JSON.stringify(request),
+                contentType: "application/json",
+                xhrFields: { responseType: 'blob' },
+                success: function (data, status, xhr) {
+                    let disposition = xhr.getResponseHeader("Content-Disposition");
+                    let filename = "ReconciledEntries.xlsx";
+                    if (disposition && disposition.indexOf("filename=") !== -1) {
+                        filename = disposition.split("filename=")[1].trim();
+                    }
+                    let blob = new Blob([data]);
+                    let link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    link.click();
+                    $("#reconciledExportModal").modal("hide");
+                    toastr.success("Export completed successfully.");
+                },
+                error: function (xhr) {
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        toastr.error(response.message || "Export failed.");
+                    } catch (e) {
+                        toastr.error("Export failed. Please try again.");
+                    }
+                },
+                complete: function () {
+                    $("#btnConfirmReconciledExport").prop("disabled", false).html(`<i class="mdi mdi-export"></i> Export`);
+                }
+            });
+        });
+
+
+
     </script>
 }

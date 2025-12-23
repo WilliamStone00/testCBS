@@ -68,9 +68,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.EndOfYearClosure
                 return Json(new
                 {
 
-                    //draw = data.Options.draw ?? "1",
-                    //recordsTotal = data.Options.recordsTotal,
-                    //recordsFiltered = data.Options.recordsFiltered,
+                    draw = data.Options.draw ?? "1",
+                    recordsTotal = data.Options.recordsTotal,
+                    recordsFiltered = data.Options.recordsFiltered,
                     data = EndChecklist,
                     success = true
                     

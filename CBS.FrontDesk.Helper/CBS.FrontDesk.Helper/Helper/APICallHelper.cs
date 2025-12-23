@@ -610,6 +610,7 @@ namespace CBS.FrontDesk.Helper
         public static string Get_Update_Delete_LoanTerm = "/api/v1/LoanTerm/{0}";
         public static string GetAllLoanTerm = "/api/v1/LoanTerms";
         public static string CreateLoanTerm = "/api/v1/LoanTerm";
+        public static string GetPCMFCatalog = "/api/v1/pcmf-ui-catalog";
 
 
         public static string Get_Update_Delete_InstallmentType = "/api/v1/InstallmentType/{0}";
@@ -625,6 +626,10 @@ namespace CBS.FrontDesk.Helper
         public static string GetLoanProductConfigurationAgregates = "/api/v1/LoanProductConfigurationAgregates";
         public static string GetAllLoanApplicationByCustomerId = "/api/v1/LoanApplication/GetAllLoanApplicationByCustomerId/{0}";
         public static string AttachedDocumentsRemotelyMembers = "/api/v1/uploadCustomerDocuments";
+        public static string LoanProductUpsertPolicy = "/api/v1/LoanProduct/UpsertPolicy";
+        public static string LoanProductAccountingMapping = "/api/v1/LoanProduct/UpsertAccountingMapping";
+        public static string LoanProductUpdateCore = "/api/v1/LoanProduct/UpdateCore";
+
 
         //
 
@@ -1804,6 +1809,7 @@ namespace CBS.FrontDesk.Helper
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
+        public static string UpdateTillClosePayload = "/api/v1/AccountingOperationTrack/PushJournalExecutionWithModifyCommand";
 
 
         //----------------------------  EndOfYearClosure -----------------------------
@@ -1816,7 +1822,7 @@ namespace CBS.FrontDesk.Helper
       
         public static string GetCheckListStatusDataTable = "/api/v1/YearEndChecklistStatus/datatable";
         public static string PostJournalAdjustment = "/api/v1/ops/generic";
-        public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";
+        public static string CloseYear = "/api/v1/ops/EndOfYearCarryForward";     
 
 
 
@@ -1830,6 +1836,7 @@ namespace CBS.FrontDesk.Helper
         public static string GetAllProducts = "/api/v1/SavingProduct";
         //----------------------- Reconciled Line --------------------------------------
         public static string GetReconciledLineDataTable = "/api/v1/ledger/reconciled/datatable";
+        public static string GetReconciledLines = "/api/v1/ledger/reconciled/fetchbyref/{0}";
 
         //----------------------------  Interest Product  Config ---------------------------------
 
@@ -1839,8 +1846,9 @@ namespace CBS.FrontDesk.Helper
         public static string GetByIdInterestProductConfig = "/api/v1/InterestProductConfig/GetById";
 
         //-------------------------  Interest Distribution Simulation ----------------------------
-        public static string InterestDistributionSimulation = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
-
+        public static string InterestDistributionSimulation1 = "/api/v1/InterestDistributionSimulationMock/generate/GenerateInterestDistributionSampleDataQuery";
+        public static string InterestDistributionSimulation = "/api/v1/ProcessSnapshotInterestSimulation/GenerateInterestSimulation";
+        public static string CreateShareMonthSimulation = "/api/v1/ProcessSnapshotInterestSimulation/Create";
 
 
     }

@@ -370,7 +370,7 @@ $(document).ready(function () {
     $('#btnExportExcel').click(function () {
         const id = '@Model.Id';
         if (!id) {
-            alert("Invalid journal ID!");
+            appalert("Invalid journal ID!",3,1);
             return;
         }
 

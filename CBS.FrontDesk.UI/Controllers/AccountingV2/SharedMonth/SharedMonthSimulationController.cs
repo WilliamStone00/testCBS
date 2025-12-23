@@ -37,9 +37,11 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             await loader();
             return View();
         }
-        private List<StringValues> getNext5Years()
+        private List<StringValues> getAccountingYears()
         {
-            return Enumerable.Range(DateTime.Now.Year, 5)
+            int currentYear = DateTime.Now.Year;
+
+            return Enumerable.Range(currentYear - 3, 5)
                 .Select(y => new StringValues
                 {
                     Value = y.ToString(),
@@ -48,6 +50,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 .ToList();
         }
 
+
         public async Task<bool> loader()
         {
             var branches = await _branchServices.GetBranches();
@@ -55,13 +58,13 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
 
                     ViewBag.IntrestDistributionType = new List<SelectListItem>
                     {
-                        new SelectListItem { Value = "Share Month", Text = "Share Month" },
-                        new SelectListItem { Value = "Preference Share", Text = "Preference Share" }
+                        new SelectListItem { Value = "OrdinaryShare", Text = " Ordinary Share" },
+                        new SelectListItem { Value = "PreferenceShare", Text = "Preference Share" }
                     };
 
            
 
-            ViewBag.Period = new List<SelectListItem>
+            ViewBag.Month = new List<SelectListItem>
             {
                 new SelectListItem { Value = "January", Text = "January" },
                 new SelectListItem { Value = "February", Text = "February" },
@@ -74,65 +77,29 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
                 new SelectListItem { Value = "September", Text = "September" },
                 new SelectListItem { Value = "October", Text = "October" },
                 new SelectListItem { Value = "November", Text = "November" },
-                new SelectListItem { Value = "December", Text = "December" }
+                new SelectListItem { Value = "December", Text = "December" },
+                 new SelectListItem { Value = "Anaully", Text = "Anaully" }
             };
 
-            ViewBag.Year = getNext5Years();
+            ViewBag.Year = getAccountingYears();
 
 
 
-            var products = await _interestProductConfigService.GetProductAsync();
-
-            // PRODUCTS DROPDOWN
-            ViewBag.Products = products?
-                .Select(p => new SelectListItem
-                {
-                    Value = p.Id,                       // ProductId posted
-                    Text = $"{p.Code} {p.Name}"         // [Code] [Name] shown
-                })
-                .OrderBy(x => x.Text)
-                .ToList()
-                ?? new List<SelectListItem>();
-
+            
 
             return true;
         }
 
 
 
-        
+
+        public async Task<ActionResult> List()
+        {
+            await loader();
+            return View();
+        }
 
 
-        //[HttpPost]
-        //public async Task<ActionResult> LoadSimulationData(SharedMonthSimulation model)
-        //{
-        //    model.IntrestDistributionType = "Share Month";
-        //    try
-        //    {
-        //        var result = await _sharedMonthSimulationService.GetSimulationData(model);
-
-        //        if (result == null)
-        //            return Json(new { success = false });
-
-        //        // ✅ Return structured JSON based on result
-        //        return Json(new
-        //        {
-        //            success = true,
-        //            statusCode = 200,
-        //            message = (result as dynamic)?.Message ,
-        //            data = result
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            success = false,
-        //            statusCode = 500,
-        //            message = $"Simulation failed: {ex.Message}"
-        //        });
-        //    }
-        //}
 
         [HttpPost]
         public async Task<ActionResult> LoadSimulationData(SharedMonthSimulation model)
@@ -169,6 +136,66 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.SharedMonth
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> SaveSimulation(CreateSimulations model)
+        {
+            if (model == null || model.ShareMonthPsiReportLineDto == null || !model.ShareMonthPsiReportLineDto.Any())
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 400,
+                    message = "Simulation data is required"
+                });
+            }
+
+            var Branch = await _branchServices.GetBranch(model.BranchId);
+            model.BranchName = Branch?.Name ?? "—";
+
+            try
+            {
+                var result = await _sharedMonthSimulationService.CreateShareMonthSimulationAsync(model);
+
+                if (result == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        statusCode = 500,
+                        message = "No response from simulation service."
+                    });
+                }
+
+                if (result.IsSuccess && result.ApiResponseData?.Data != null)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.ApiResponseData.Data.Description
+                                  ?? "Simulation saved successfully",
+                        data = result.ApiResponseData.Data
+                    });
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 400,
+                    message = result.Message ?? "Simulation save failed",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Simulation save failed: {ex.Message}"
+                });
+            }
+        }
 
 
 

@@ -47,7 +47,7 @@
                 <div class="row mb-2">
                     <div class="col-md-12 mb-2">
                         @Html.Label("Remarks", "Note", new { @class = "form-label fw-bold", @for = "Memo" })
-                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control shadow-sm", rows = "3", placeholder = "Enter any remark or note about the cash reconciliation", required = "required", id = "Memo" })
+                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control shadow-sm", rows = "3", placeholder = "Enter any remark or note ", required = "required", id = "Memo" })
                         @Html.ValidationMessageFor(m => m.Remarks, "", new { @class = "text-danger" })
                     </div>
                 </div>
