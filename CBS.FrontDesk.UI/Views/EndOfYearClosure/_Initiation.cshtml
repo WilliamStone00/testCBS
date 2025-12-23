@@ -6,64 +6,71 @@
 {
     @Html.AntiForgeryToken()
 
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" id="btnRefresh" class="btn btn-outline-primary">
+            <i class="mdi mdi-refresh"></i> Refresh
+        </button>
+    </div>
+
+
     <!-- Main Filters Card -->
-        <div class="card p-3 mb-2 ">
-            <!-- 🔹 Branch & Date Toggles -->
-            @* Hidden DB ID (use a different id) *@
-            @Html.HiddenFor(model => model.Id, new { id = "TaskAccountingYearId" })
+    <div class="card p-3 mb-2 ">
+        <!-- 🔹 Branch & Date Toggles -->
+        @* Hidden DB ID (use a different id) *@
+        @Html.HiddenFor(model => model.Id, new { id = "TaskAccountingYearId" })
 
-            <div class="row mb-1">
-                <div class="col-md-6 mb-2">
-                    @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
-                    @Html.DropDownList(
-                        "BranchId",
-                        new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                        "--- Select Branch ---",
-                        new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
-                    )
-                </div>
-
-
-
-                <div class="col-md-6 mb-2">
-                    @Html.LabelFor(model => model.Year, "Accounting Year",
-                        new { @class = "form-label fw-semibold" })
-
-                    @Html.TextBoxFor(model => model.Year,
-                        new { @class = "form-control", id = "AccountingYearId", @readonly = "readonly" })
-                </div>
-
-
-
+        <div class="row mb-1">
+            <div class="col-md-6 mb-2">
+                @Html.Label("BranchId", "Branch", new { @class = "form-label fw-bold", @for = "BranchId" })
+                @Html.DropDownList(
+                    "BranchId",
+                    new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
+                    "--- Select Branch ---",
+                    new { @class = "form-control select2 mb-2", id = "BranchId", required = "required" }
+                )
             </div>
 
 
 
-            <div class="row mb-1">
+            <div class="col-md-6 mb-2">
+                @Html.LabelFor(model => model.Year, "Accounting Year",
+                    new { @class = "form-label fw-semibold" })
 
-
-
-                <!-- Note -->
-                <div class="row mb-2">
-                    <div class="col-md-12 mb-2">
-                        @Html.Label("Remarks", "Note", new { @class = "form-label fw-bold", @for = "Memo" })
-                        @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control shadow-sm", rows = "3", placeholder = "Enter any remark or note ", required = "required", id = "Memo" })
-                        @Html.ValidationMessageFor(m => m.Remarks, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <!-- Save Button -->
-                <div class="row mb-2">
-                    <div class="col-md-12 text-end">
-                        <button type="submit" class="btn btn-primary" onclick="return InitiateSubmitAjax(this);">
-                            Initiate Closure
-                        </button>
-
-                    </div>
-                </div>
-
+                @Html.TextBoxFor(model => model.Year,
+                    new { @class = "form-control", id = "AccountingYearId", @readonly = "readonly" })
             </div>
+
+
+
         </div>
+
+
+
+        <div class="row mb-1">
+
+
+
+            <!-- Note -->
+            <div class="row mb-2">
+                <div class="col-md-12 mb-2">
+                    @Html.Label("Remarks", "Note", new { @class = "form-label fw-bold", @for = "Memo" })
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control shadow-sm", rows = "3", placeholder = "Enter any remark or note ", required = "required", id = "Memo" })
+                    @Html.ValidationMessageFor(m => m.Remarks, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="row mb-2">
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-primary" onclick="return InitiateSubmitAjax(this);">
+                        Initiate Closure
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 }

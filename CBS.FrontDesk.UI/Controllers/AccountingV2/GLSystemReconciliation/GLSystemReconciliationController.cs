@@ -332,17 +332,20 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdatePayload(TillCloseModel model)
+        public async Task<ActionResult> UpdatePayload(string payload)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Reference))
-                return Json(new { success = false, message = "Reference is required" });
+            if (string.IsNullOrWhiteSpace(payload))
+                return Json(new { success = false, message = "Payload is required" });
+
             var idFromSession = Session["ReconciliationId"] as string;
 
+            if (string.IsNullOrWhiteSpace(idFromSession))
+                return Json(new { success = false, message = "Session expired. Reconciliation ID missing." });
 
             try
             {
-                model.Id = idFromSession;
-                var result = await _glSystemReconciliationService.UpdateTillClosePayloadAsync(model);
+                var result = await _glSystemReconciliationService
+                    .UpdateTillClosePayloadAsync(idFromSession, payload);
 
                 if (result != null && result.IsSuccess)
                 {
@@ -373,6 +376,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
                 });
             }
         }
+
 
 
     }

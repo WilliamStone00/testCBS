@@ -1815,7 +1815,7 @@ namespace CBS.FrontDesk.Helper
         //----------------------------  EndOfYearClosure -----------------------------
         public static string InitiateClosure = "/api/v1/YearEndClosure/start";
         public static string GetAllEndOfYearTask = "/api/v1/YearEndChecklistDefinition/all";
-        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{0}";
+        public static string GetAccoutingYearByBranchId = "/api/v1/AccountingYear/GetAccountingYearByYear/{0}/{1}";
         public static string ReviewClosure = "/api/v1/YearEndChecklistStatus/set";
 
 
