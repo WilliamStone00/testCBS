@@ -202,6 +202,7 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
 
             try
             {
+                Session["ReconciliationId"] = id;
                 entry = await _glSystemReconciliationService.GetReconciliationByIdAsync(id);
             }
             catch (Exception ex)
@@ -328,6 +329,49 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.GLSystemReconciliation
             }
 
             return PartialView("_StatisticsDetails", entry);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdatePayload(TillCloseModel model)
+        {
+            if (model == null || string.IsNullOrWhiteSpace(model.Reference))
+                return Json(new { success = false, message = "Reference is required" });
+            var idFromSession = Session["ReconciliationId"] as string;
+
+
+            try
+            {
+                model.Id = idFromSession;
+                var result = await _glSystemReconciliationService.UpdateTillClosePayloadAsync(model);
+
+                if (result != null && result.IsSuccess)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        statusCode = 200,
+                        message = result.Message ?? "Payload updated successfully",
+                        data = result
+                    });
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 400,
+                    message = result?.Message ?? "Failed to update payload",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    statusCode = 500,
+                    message = $"Update failed: {ex.Message}"
+                });
+            }
         }
 
 

@@ -58,6 +58,11 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.ReconciledLine
         public DateTime CreatedDate { get; set; }
 
         public int LineNum { get; set; }
+
+        public string ApprovedBy { get; set; }
+        public DateTime ApprovalDate { get; set; }
+        public string RejectedBy { get; set; }
+        public DateTime RejectedDate { get; set; }
     }
 
 
@@ -92,6 +97,21 @@ namespace CBS.FrontDesk.Data.Entity.AccountingV2.ReconciledLine
 
         public bool IsInterbranch { get; set; }
     }
+    public class ExportReconciledEntry
+    {
+        public List<Reconciled> ReconciledData { get; set; }
+        public ExportOptions ExportOptions { get; set; }
+        public ReconciledQuery Filters { get; set; }
+    }
 
+    public class ExportOptions
+    {
+        public string Format { get; set; }
+        public bool IncludeSummary { get; set; }
+        public string FileName { get; set; }
+        public string ReportType { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+    }
 }
 

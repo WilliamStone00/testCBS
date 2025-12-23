@@ -100,11 +100,11 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-1">
                     @*<div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Accounting Date</label>
-                        <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
+                            <label class="form-label fw-bold">Start Accounting Date</label>
+                            <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
 
-                    </div>*@
-                        @*<div class="col-md-6 mb-1">
+                        </div>*@
+                    @*<div class="col-md-6 mb-1">
                             <label class="form-label fw-bold">End Accounting Date</label>
                             <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                         </div>*@
@@ -115,9 +115,9 @@
                     </div>
 
                     @*<div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="endDate">End Date</label>
-                        <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
-                    </div>*@
+                            <label class="form-label fw-bold" for="endDate">End Date</label>
+                            <input type="datetime-local" id="endDate" name="EndDate" class="form-control mb-1" />
+                        </div>*@
 
 
                 </div>
@@ -195,12 +195,59 @@
     </div>
 </div>
 
+<div class="modal fade" id="payloadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <!-- ================= Header Card ================= -->
+                <div class="card bg-light mb-3">
+                    <div class="card-body text-center">
+                        <h1 class="card-title text-primary">
+                            <i class="mdi mdi-file-document-outline me-2"></i> Request Payload (Editable)
+                        </h1>
+                        <p class="card-text">
+                            Use this page to modify the payload (Request Json).
+                        </p>
+                        <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
+                    </div>
+                </div>
+
+                <label class="form-label fw-bold">Request JSON</label>
+
+                <textarea id="formattedJson"
+                          class="form-control font-monospace"
+                          rows="20"
+                          style="resize: vertical;"></textarea>
+
+                <small class="text-muted">
+                    Edit the JSON payload carefully. Invalid JSON will not be accepted.
+                </small>
+
+                <div id="jsonError" class="text-danger mt-2 d-none"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-success btn-sm" id="btnSavePayload">
+                    <i class="mdi mdi-content-save-outline me-1"></i> Post
+                </button>
+
+                <button class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal">
+                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
 
 
 
@@ -214,7 +261,7 @@
                             StartDate: $('#startDate').val(),
                             EndDate: $('#endDate').val(),
                             StartAccountingDate: $('#startaccountingDate').val()
-                             
+
                         };
                     }
 
@@ -432,12 +479,21 @@
                             data: JSON.stringify(payload),
                             contentType: "application/json",
                             success: function (res) {
-                                toastr.success("Record pushed successfully!");
+                                if (res && res.success) {
+                                    appalert("✅ Record pushed successfully!", 1, 1);
+                                } else {
+                                    appalert(res?.message || "⚠️ Push completed with warnings.", 3, 1);
+                                }
                             },
                             error: function (err) {
-                                toastr.error("Push failed.");
+                                appalert("❌ Push failed. Please try again.", 3, 1);
                             }
                         });
+
+
+
+
+
                     });
 
 
@@ -556,7 +612,7 @@
     });
 
 
-    
+
 
     $(document).on('click', '.view-detail', function () {
         const params = {
@@ -569,9 +625,8 @@
         window.open('/GLSystemReconciliation/LoadOperationDetailsData?' + $.param(params), '_blank');
     });
 
-    
 
-  
 
-</script>
+
+    </script>
 }

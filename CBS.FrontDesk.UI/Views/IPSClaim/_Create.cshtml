@@ -1,0 +1,874 @@
+﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSClaimCreate
+@{
+    ViewBag.Title = "Create IPS Claim";
+}
+
+<div class="card shadow p-4">
+    @using (Html.BeginForm("CreateOrUpdate", "IPSClaim", FormMethod.Post,
+        new { id = "claimForm", onsubmit = "return validateForm(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.MemberId)
+
+        <!-- =========================
+             MEMBER LOOKUP
+        ========================== -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="text-primary mb-3">
+                    <i class="mdi mdi-account-search me-2"></i> Member Lookup
+                </h5>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="MemberReference" class="form-label">Member Reference *</label>
+                <div class="input-group">
+                    @Html.TextBox("MemberReference", "",
+                        new
+                             {
+                            @class = "form-control",
+                            id = "MemberReference",
+                            placeholder = "Enter member reference",
+                            autocomplete = "off",
+                            required = "required"
+                        })
+                    <button type="button" class="btn btn-primary" onclick="searchMemberByReference()">
+                        <i class="mdi mdi-magnify me-1"></i> Load Member
+                    </button>
+                </div>
+                <div class="form-text">Enter member reference number and click Load</div>
+            </div>
+            
+        </div>
+
+        <!-- MEMBER DETAILS ALERT -->
+        <div class="row">
+            <div class="col-12">
+                <div id="memberDetails" class="alert alert-info d-none"></div>
+            </div>
+        </div>
+
+        <!-- =========================
+             COLLAPSIBLE SECTIONS (HIDDEN UNTIL MEMBER FOUND)
+        ========================== -->
+        <div id="memberSections" style="display:none;">
+
+            <!-- SECTION 1: EDITABLE CUSTOMER INFORMATION -->
+            <div class="card mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                        <span class="d-flex align-items-center">
+                            <i class="mdi mdi-account-edit me-2"></i>
+                            Customer Information (Editable)
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCustomerInfo" aria-expanded="true">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseCustomerInfo" class="collapse show">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Personal Information -->
+                            <div class="col-md-6 mb-3">
+                                <h6 class="border-bottom pb-2 mb-3 text-primary">
+                                    <i class="mdi mdi-account-card-details me-2"></i>
+                                    Personal Information
+                                </h6>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="FirstName" class="form-label">First Name *</label>
+                                        @Html.TextBoxFor(m => m.FirstName,
+                                            new
+                                                 {
+                                                @class = "form-control bg-light",
+                                                id = "FirstName",
+                                                required = "required",
+                                                @readonly = "readonly"
+                                            })
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="LastName" class="form-label">Last Name *</label>
+                                        @Html.TextBoxFor(m => m.LastName,
+                                            new
+                                                 {
+                                                @class = "form-control bg-light",
+                                                id = "LastName",
+                                                required = "required",
+                                                @readonly = "readonly"
+                                            })
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Phone" class="form-label">Phone Number *</label>
+                                    @Html.TextBoxFor(m => m.Phone,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "Phone",
+                                            required = "required"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Email" class="form-label">Email</label>
+                                    @Html.TextBoxFor(m => m.Email,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "Email",
+                                            type = "email"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Address" class="form-label">Address *</label>
+                                    @Html.TextAreaFor(m => m.Address, 2, 10,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "Address",
+                                            required = "required"
+                                        })
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="Gender" class="form-label">Gender</label>
+                                        @Html.DropDownListFor(m => m.Gender,
+                                            new SelectList(new[] {
+                                                new SelectListItem { Value = "", Text = "Select" },
+                                                new SelectListItem { Value = "Male", Text = "Male" },
+                                                new SelectListItem { Value = "Female", Text = "Female" }
+                                            }, "Value", "Text"),
+                                            new { @class = "form-control", id = "Gender" })
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="DateOfBirth" class="form-label">Date of Birth</label>
+                                        @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}",
+                                            new
+                                                 {
+                                                @class = "form-control",
+                                                type = "date",
+                                                id = "DateOfBirth"
+                                            })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Identification & Employment -->
+                            <div class="col-md-6 mb-3">
+                                <h6 class="border-bottom pb-2 mb-3 text-primary">
+                                    <i class="mdi mdi-card-account-details-outline me-2"></i>
+                                    Identification & Employment
+                                </h6>
+
+                                <div class="mb-3">
+                                    <label for="IdNumber" class="form-label">ID Number</label>
+                                    @Html.TextBoxFor(m => m.IdNumber,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "IdNumber"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="PlaceOfBirth" class="form-label">Place of Birth</label>
+                                    @Html.TextBoxFor(m => m.PlaceOfBirth,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "PlaceOfBirth"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Occupation" class="form-label">Occupation</label>
+                                    @Html.TextBoxFor(m => m.Occupation,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "Occupation"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EmployerName" class="form-label">Employer Name</label>
+                                    @Html.TextBoxFor(m => m.EmployerName,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "EmployerName"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EmployerTelephone" class="form-label">Employer Phone</label>
+                                    @Html.TextBoxFor(m => m.EmployerTelephone,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "EmployerTelephone"
+                                        })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="EmployerAddress" class="form-label">Employer Address</label>
+                                    @Html.TextAreaFor(m => m.EmployerAddress, 2, 10,
+                                        new
+                                             {
+                                            @class = "form-control",
+                                            id = "EmployerAddress"
+                                        })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: ACCOUNTS TABLE -->
+            <div class="card mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                        <span class="d-flex align-items-center">
+                            <i class="mdi mdi-bank me-2"></i>
+                            Accounts Summary
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccounts" aria-expanded="true">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseAccounts" class="collapse show">
+                    <div class="card-body">
+                        <div id="accountInfoContent">
+                            <!-- Accounts table will be loaded here -->
+                            <div class="text-center text-muted py-5">
+                                <i class="mdi mdi-database-search mdi-48px mb-3"></i>
+                                <p>No accounts loaded yet. Search for a member to view their accounts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: LOANS TABLE -->
+            <div class="card mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                        <span class="d-flex align-items-center">
+                            <i class="mdi mdi-cash me-2"></i>
+                            Loan Information
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoans" aria-expanded="true">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseLoans" class="collapse show">
+                    <div class="card-body">
+                        <div id="loanInfoContent">
+                            <!-- Loans table will be loaded here -->
+                            <div class="text-center text-muted py-5">
+                                <i class="mdi mdi-cash-search mdi-48px mb-3"></i>
+                                <p>No loans loaded yet. Search for a member to view their loans.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: FINANCIAL SUMMARY -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0 d-flex align-items-center justify-content-between text-white">
+                        <span class="d-flex align-items-center">
+                            <i class="mdi mdi-calculator-variant me-2"></i>
+                            Financial Summary
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinancialSummary" aria-expanded="true">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFinancialSummary" class="collapse show">
+                    <div class="card-body">
+                        <div class="row align-items-center g-3">
+                            <!-- Total Account Balance -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                                        <i class="mdi mdi-cash-multiple fs-4 text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Total Account Balance</div>
+                                        <h3 id="totalAccountBalance" class="text-success fw-bold mb-0">0.00 FCFA</h3>
+                                        <div class="text-muted small">All active accounts</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Loan Balance -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
+                                        <i class="mdi mdi-cash-usd fs-4 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Total Loan Balance</div>
+                                        <h3 id="totalLoanBalance" class="text-warning fw-bold mb-0">0.00 FCFA</h3>
+                                        <div class="text-muted small">All outstanding loans</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Net Claimable Amount -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                                        <i class="mdi mdi-calculator fs-4 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Net Claimable Amount</div>
+                                        <h3 id="netClaimableAmount" class="text-primary fw-bold mb-0">0.00 FCFA</h3>
+                                        <div class="text-muted small">Available for claim</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: CLAIM INFORMATION -->
+            <div class="card">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
+                        <span class="d-flex align-items-center">
+                            <i class="mdi mdi-file-document-edit me-2"></i>
+                            Claim Information
+                        </span>
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClaimInfo" aria-expanded="true">
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseClaimInfo" class="collapse show">
+                    <div class="card-body">
+
+                        <div class="row gy-3">
+                            <div class="col-md-12" id="branchSection">
+                                <label>Branch</label>
+                                <div class="form-floating shadow-sm">
+                                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchId" })
+                                    @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-text text-muted">
+                                    Select the branch where the member is registered
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLAIM TYPE & EVENT INFO -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label for="ClaimType" class="form-label">Claim Type *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-file-document-outline"></i>
+                                    </span>
+                                    @Html.DropDownListFor(m => m.ClaimType,
+                                        new SelectList(ViewBag.ClaimTypes, "Value", "Text"),
+                                        "Select Claim Type",
+                                        new { @class = "form-control", required = "required", id = "ClaimType" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ClaimType, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Select the type of claim you are submitting
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="Cause" class="form-label">Cause *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-alert-circle-outline"></i>
+                                    </span>
+                                    @Html.DropDownListFor(m => m.Cause,
+                                        new SelectList(ViewBag.Causes, "Value", "Text"),
+                                        "Select Cause",
+                                        new { @class = "form-control", required = "required", id = "Cause" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Cause, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Select the reason/cause for this claim
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="DateOfEvent" class="form-label">Date of Event *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-calendar"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}",
+                                        new
+                                             {
+                                                 @class = "form-control",
+                                                 type = "date",
+                                                 required = "required",
+                                              max = DateTime.Now.ToString("yyyy-MM-dd"),
+                                                 id = "DateOfEvent"
+                                             })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.DateOfEvent, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Date when the event (death/disability/illness) occurred
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="EventCategory" class="form-label">Event Category</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-folder-outline"></i>
+                                    </span>
+                                    @Html.DropDownListFor(m => m.EventCategory,
+                                        new SelectList(new[] {
+                                            new SelectListItem { Value = "", Text = "Select" },
+                                            new SelectListItem { Value = "Death", Text = "Death" },
+                                            new SelectListItem { Value = "TemporalDisability", Text = "Temporale Disability" },
+                                            new SelectListItem { Value = "TotalAndPermanentDisability", Text = "Total & Permanent Disability" }
+                                        }, "Value", "Text"),
+                                        new { @class = "form-control", id = "EventCategory" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.EventCategory, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Categorize the event type for claim processing
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLAIM AMOUNT -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label for="ClaimedAmount" class="form-label">Claimed Amount *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">FCFA</span>
+                                    @Html.TextBoxFor(m => m.ClaimedAmount,
+                                        new
+                                             {
+                                                 @class = "form-control",
+                                                 type = "number",
+                                                 step = "0.01",
+                                                 min = "0.01",
+                                              required = "required",
+                                                 id = "ClaimedAmount"
+                                             })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ClaimedAmount, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    <span id="suggestedAmountInfo" class="text-info">
+                                        <i class="mdi mdi-information-outline me-1"></i>
+                                        Suggested amount based on balances: <strong id="suggestedAmount">0.00 FCFA</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-light">
+                                    <div class="card-body p-3">
+                                        <h6 class="mb-2">
+                                            <i class="mdi mdi-calculator-variant me-2"></i>
+                                            Balance Summary
+                                        </h6>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Total Balance</small>
+                                                <span class="fw-bold text-success" id="displayTotalBalance">0.00</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Loan Balance</small>
+                                                <span class="fw-bold text-warning" id="displayLoanBalance">0.00</span>
+                                            </div>
+                                        </div>
+                                        <hr class="my-2">
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-muted">Net Available</small>
+                                            <span class="fw-bold text-primary" id="displayNetAvailable">0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EMPLOYMENT DETAILS -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label for="UsualDutiesOfLivelihood" class="form-label">Usual Duties of Livelihood</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-briefcase-outline"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.UsualDutiesOfLivelihood,
+                                        new
+                                             {
+                                                 @class = "form-control",
+                                                 id = "UsualDutiesOfLivelihood",
+                                              placeholder = "e.g. Labourer, Housewife"
+                                             })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.UsualDutiesOfLivelihood, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Regular occupation or work performed before the event
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="DateLastFullyPerformedSuchDuties" class="form-label">Date Last Fully Performed Such Duties</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-calendar-clock"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.DateLastFullyPerformedSuchDuties, "{0:yyyy-MM-dd}",
+                                        new { @class = "form-control", type = "date", id = "DateLastFullyPerformedSuchDuties" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.DateLastFullyPerformedSuchDuties, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Last date the member could perform their regular duties
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="ReasonForStopping" class="form-label">Reason For Stopping</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-account-cancel-outline"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.ReasonForStopping,
+                                        new
+                                             {
+                                                 @class = "form-control",
+                                                 id = "ReasonForStopping",
+                                              placeholder = "Reason for stopping duties"
+                                             })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ReasonForStopping, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Reason why the member stopped performing their duties
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BENEFICIARY INFORMATION -->
+                        <h6 class="mt-4 text-primary">
+                            <i class="mdi mdi-account-heart-outline me-2"></i>
+                            Beneficiary Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="BeneficiaryName" class="form-label">Beneficiary Name *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-account-outline"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.BeneficiaryName,
+                                        new { @class = "form-control", id = "BeneficiaryName", required = "required" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.BeneficiaryName, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Full name of the person who will receive the claim amount
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="BeneficiaryContact" class="form-label">Beneficiary Contact *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-phone"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.BeneficiaryContact,
+                                        new { @class = "form-control", id = "BeneficiaryContact", required = "required" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.BeneficiaryContact, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Phone number or contact details of the beneficiary
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="BeneficiaryAddress" class="form-label">Beneficiary Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-map-marker-outline"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.BeneficiaryAddress,
+                                        new
+                                             {
+                                                 @class = "form-control",
+                                                 id = "BeneficiaryAddress",
+                                              placeholder = "Beneficiary Address"
+                                             })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.BeneficiaryAddress, "", new { @class = "text-danger small" })
+                                <div class="form-text">
+                                    Physical address of the beneficiary
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADDITIONAL INFORMATION -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="form-check">
+                                    @Html.CheckBoxFor(m => m.IsAccountSubjectToPayrollDeduction,
+                                        new { @class = "form-check-input", id = "IsAccountSubjectToPayrollDeduction" })
+                                    <label class="form-check-label" for="IsAccountSubjectToPayrollDeduction">
+                                        Account subject to payroll deduction
+                                    </label>
+                                </div>
+                                <div class="form-text">
+                                    Check if member's contributions are deducted from salary
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="form-check">
+                                    @Html.CheckBoxFor(m => m.IsAccidentRelated,
+                                        new { @class = "form-check-input", id = "IsAccidentRelated" })
+                                    <label class="form-check-label" for="IsAccidentRelated">
+                                        Accident related
+                                    </label>
+                                </div>
+                                <div class="form-text">
+                                    Check if the claim is related to an accident
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CONDITIONAL SECTIONS -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3 payroll-section" style="display:none;">
+                                <label for="PayrollLastPostingDate" class="form-label">Payroll Last Posting Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-calendar-check"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.PayrollLastPostingDate, "{0:yyyy-MM-dd}",
+                                        new { @class = "form-control", type = "date", id = "PayrollLastPostingDate" })
+                                </div>
+                                <div class="form-text">
+                                    Last date when payroll deductions were made
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3 accident-section" style="display:none;">
+                                <label for="AccidentDate" class="form-label">Accident Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-alert"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.AccidentDate, "{0:yyyy-MM-dd}",
+                                        new { @class = "form-control", type = "date", id = "AccidentDate" })
+                                </div>
+                                <div class="form-text">
+                                    Date when the accident occurred (if applicable)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOAN PROTECTION SECTION -->
+                        <div class="row loan-section" style="display:none;">
+                            <div class="col-md-4 mb-3">
+                                <label for="LoanGrantedDate" class="form-label">Loan Granted Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-calendar"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.LoanGrantedDate, "{0:yyyy-MM-dd}",
+                                        new { @class = "form-control", type = "date", id = "LoanGrantedDate" })
+                                </div>
+                                <div class="form-text">
+                                    Date when the loan was originally granted
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="LoanGrantedAmount" class="form-label">Loan Granted Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-cash"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.LoanGrantedAmount,
+                                        new { @class = "form-control", type = "number", step = "0.01", id = "LoanGrantedAmount" })
+                                </div>
+                                <div class="form-text">
+                                    Original loan amount that was granted
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="DateOfLastPrincipalOrInterestPayment" class="form-label">Date of Last Principal/Interest Payment</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-calendar-clock"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.DateOfLastPrincipalOrInterestPayment, "{0:yyyy-MM-dd}",
+                                        new { @class = "form-control", type = "date", id = "DateOfLastPrincipalOrInterestPayment" })
+                                </div>
+                                <div class="form-text">
+                                    Last date any loan payment was made
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="LoanInterestClaimed" class="form-label">Loan Interest Claimed</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="mdi mdi-percent"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.LoanInterestClaimed,
+                                        new { @class = "form-control", type = "number", step = "0.01", id = "LoanInterestClaimed" })
+                                </div>
+                                <div class="form-text">
+                                    Interest amount being claimed on the loan
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REMARKS -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <label for="Remarks" class="form-label">Remarks</label>
+                                @Html.TextAreaFor(m => m.Remarks, 5, 100,
+                                    new { @class = "form-control", id = "Remarks", placeholder = "Enter any additional remarks here..." })
+                                <div class="form-text">
+                                    Any additional information or notes about this claim
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBMIT BUTTONS -->
+                        <div class="row mt-5">
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="mdi mdi-content-save me-2"></i> Submit Claim
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-lg" onclick="window.history.back()">
+                                    <i class="mdi mdi-close me-2"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+    <style>
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .card-header h5 {
+            font-weight: 600;
+        }
+
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .claim-verification-alert .card {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .claim-verification-alert .card-header {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        /* Responsive table */
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Badge styling */
+        .badge {
+            font-size: 0.75em;
+            padding: 0.35em 0.65em;
+        }
+
+        /* Form label styling */
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Input group styling */
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+
+        /* Alert styling */
+        .alert {
+            border-radius: 8px;
+            border: 1px solid transparent;
+        }
+
+        /* Card header toggle button */
+        .card-header button {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header button[aria-expanded="false"] i {
+            transform: rotate(-90deg);
+        }
+
+        /* Financial summary cards */
+        .card.border-success .card-body h2,
+        .card.border-warning .card-body h2,
+        .card.border-primary .card-body h2 {
+            font-size: 1.8rem;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+
+            .card.border-success .card-body h2,
+            .card.border-warning .card-body h2,
+            .card.border-primary .card-body h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>

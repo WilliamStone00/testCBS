@@ -86,274 +86,173 @@
 </div>
 
 <div class="card shadow p-3 mb-4">
-    @Html.Partial("_IPSConfigForm")   
+    @Html.Partial("_IPSConfigForm")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-    (function ($) {
-        'use strict';
+(function ($) {
+    'use strict';
 
-        // ---------- Utilities ----------
-        function normalizeResponse(raw) {
-            if (!raw) return { success: false, message: 'Empty response' };
-            if (typeof raw === 'object') return raw;
-            if (typeof raw === 'string') {
-                var t = raw.trim();
-                try {
-                    return JSON.parse(t);
-                } catch (e) {
-                    var start = t.indexOf('{'), end = t.lastIndexOf('}');
-                    if (start >= 0 && end > start) {
-                        try { return JSON.parse(t.substring(start, end + 1)); } catch (e2) { /* fallthrough */ }
-                    }
-                }
-            }
-            return { success: false, message: 'Unexpected server response' };
+    /* =========================
+       UTILITIES
+    ========================= */
+    function normalizeResponse(raw) {
+        if (!raw) return { success: false, message: 'Empty response' };
+        if (typeof raw === 'object') return raw;
+        try { return JSON.parse(raw); } catch { }
+        return { success: false, message: 'Unexpected response' };
+    }
+
+    function getAntiForgeryToken() {
+        return $('input[name="__RequestVerificationToken"]').first().val() || null;
+    }
+
+    /* =========================
+       ACCOUNT SECTION TOGGLER
+    ========================= */
+    function toggleSection(sectionId, enable) {
+        const section = $(sectionId);
+        section.toggle(enable);
+        section.find('select').prop('disabled', !enable);
+    }
+
+    function toggleCentralizedMode() {
+        const isCentralized = $('#IsCentralized').is(':checked');
+
+        if (isCentralized) {
+            // Centralized → Affiliate accounts
+            toggleSection('#affiliateAccountsSection', true);
+            toggleSection('#branchAccountsSection', false);
+
+            // Hide branch
+            $('#branchSection').hide();
+            $('#BranchId').val('').trigger('change').prop('required', false);
+
+            // Clear branch accounts
+            $('#branchAccountsSection select').val('').trigger('change');
+
+        } else {
+            // Branch-based mode
+            toggleSection('#branchAccountsSection', true);
+            toggleSection('#affiliateAccountsSection', false);
+
+            $('#branchSection').show();
+            $('#BranchId').prop('required', true);
+
+            // Clear affiliate accounts
+            $('#affiliateAccountsSection select').val('').trigger('change');
+        }
+    }
+
+    /* =========================
+       BRANCH ACCOUNT LOADING
+    ========================= */
+    function loadBranchAccounts() {
+        if ($('#IsCentralized').is(':checked')) return;
+
+        const branchId = $('#BranchId').val();
+        if (!branchId) {
+            clearBranchAccounts();
+            return;
         }
 
-        function showMsg(msg, level) {
-            if (typeof appalert === 'function') appalert(msg || 'No message', level || 1, 1);
-            else if (level && level <= 2) console.log((level === 1 ? 'OK: ' : 'WARN: ') + (msg || ''));
-            else alert(msg || 'No message');
-        }
+        showLoading();
 
-        function getAntiForgeryToken() {
-            return $('input[name="__RequestVerificationToken"]').first().val() || null;
-        }
-
-        // ---------- Branch Accounts Loading ----------
-        function loadBranchAccounts() {
-            var branchId = $('#BranchId').val();
-
-            if (!branchId) {
-                clearAccountDropdowns();
-                return;
-            }
-
-            showLoadingAccounts();
-
-            $.ajax({
-                url: '@Url.Action("GetBranchAccountsByBranch", "IPSConfig")',
-                type: 'GET',
-                data: { branchId: branchId },
-                success: function (accounts) {
-                    if (accounts && accounts.length > 0) {
-                        updateAccountDropdowns(accounts);
-                    } else {
-                        clearAccountDropdowns();
-                        appalert('No accounts found for the selected branch', 3, 1);
-                    }
-                },
-                error: function (xhr) {
-                    clearAccountDropdowns();
-                    console.error('Error loading branch accounts:', xhr);
-                    var msg = 'Failed to load branch accounts';
-                    try {
-                        var parsed = JSON.parse(xhr.responseText);
-                        if (parsed && parsed.message) msg = parsed.message;
-                    } catch (e) {}
-                    appalert(msg, 0, 1);
-                }
-            });
-        }
-
-        function updateAccountDropdowns(accounts) {
-            var accountOptions = '<option value="">--- Select Account ---</option>';
-
-            $.each(accounts, function (index, account) {
-                accountOptions += '<option value="' + account.Id + '">' + account.Name + '</option>';
-            });
-
-            $('#LifeSavingsClaimDebitAccountId').html(accountOptions);
-            $('#LifeSavingsClaimCreditAccountId').html(accountOptions);
-            $('#LoanProtectionDebitAccountId').html(accountOptions);
-            $('#LoanProtectionCreditAccountId').html(accountOptions);
-
-            if ($.fn.select2) {
-                $('.select2-account').trigger('change.select2');
-            }
-        }
-
-        function clearAccountDropdowns() {
-            var emptyOption = '<option value="">--- Select Account ---</option>';
-
-            $('#LifeSavingsClaimDebitAccountId').html(emptyOption);
-            $('#LifeSavingsClaimCreditAccountId').html(emptyOption);
-            $('#LoanProtectionDebitAccountId').html(emptyOption);
-            $('#LoanProtectionCreditAccountId').html(emptyOption);
-
-            if ($.fn.select2) {
-                $('.select2-account').trigger('change.select2');
-            }
-        }
-
-        function showLoadingAccounts() {
-            var loadingOption = '<option value="" disabled>Loading accounts...</option>';
-
-            $('#LifeSavingsClaimDebitAccountId').html(loadingOption);
-            $('#LifeSavingsClaimCreditAccountId').html(loadingOption);
-            $('#LoanProtectionDebitAccountId').html(loadingOption);
-            $('#LoanProtectionCreditAccountId').html(loadingOption);
-
-            if ($.fn.select2) {
-                $('.select2-account').trigger('change.select2');
-            }
-        }
-
-        // ---------- Form Submission ----------
-        window.__IPSConfigSubmitAjaxFull = function (form) {
-            try { $.validator.unobtrusive.parse(form); } catch (e) {}
-            var $form = $(form);
-            if ($form.length && !$form.valid()) return false;
-
-            var token = getAntiForgeryToken();
-            var $submit = $form.find('[type="submit"]').first();
-            var origHtml = $submit.data('orig-html') || $submit.html();
-            $submit.data('orig-html', origHtml);
-            $submit.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...');
-
-            var doAjax = function () {
-                $.ajax({
-                    url: $form.attr('action'),
-                    type: 'POST',
-                    data: $form.serialize(),
-                    dataType: 'text',
-                    headers: token ? { 'RequestVerificationToken': token } : {},
-                    success: function (raw) {
-                        var res = normalizeResponse(raw);
-                        if (res && res.success) {
-                            var lvl = 1;
-                            if (res.status === 'Exist') lvl = 3;
-                            if (res.status === 'Failed') lvl = 2;
-                            showMsg(res.message || 'Operation successful', lvl);
-
-                            if (res.reloadDataView === "Yes" || res.reload === true) {
-                                LoadDataGen('IPSConfig', 'IPSDataTable', '_IPSConfigDataTable', 0, 'datalistingview', null, 'list');
-                            }
-                        } else {
-                            var lvl = (res && res.status === 'Exist') ? 3 : 2;
-                            showMsg((res && res.message) ? res.message : 'Operation failed', lvl);
-                        }
-                    },
-                    error: function (xhr) {
-                        var parsed = normalizeResponse(xhr.responseText);
-                        if (parsed && parsed.message) showMsg(parsed.message, parsed.success ? 1 : 2);
-                        else if (xhr.status === 401) window.location.href = '/Authentication/Login';
-                        else {
-                            showMsg(xhr.statusText || 'Network error', 4);
-                            console.error('IPSConfigSubmitAjax error', xhr.status, xhr.responseText);
-                        }
-                    },
-                    complete: function () {
-                        $submit.prop('disabled', false).html($submit.data('orig-html') || origHtml);
-                    }
-                });
-            };
-
-            if (window.alertify && typeof alertify.confirm === 'function') {
-                try {
-                    alertify.confirm("Confirmation", "Are you sure you want to save this IPS Configuration?", function () { doAjax(); }, function () { showMsg('Transaction cancelled', 3); }).set('labels', { ok: 'Yes', cancel: 'No' });
-                } catch (e) { if (confirm('Are you sure?')) doAjax(); else showMsg('Cancelled', 3); }
-            } else {
-                if (confirm('Are you sure you want to save this IPS Configuration?')) doAjax(); else showMsg('Transaction cancelled', 3);
-            }
-
-            return false;
-        };
-
-        window.IPSConfigSubmitAjax = window.__IPSConfigSubmitAjaxFull;
-
-        // ---------- Event Handlers ----------
-        $(document).on('submit', 'form[action*="CreateOrUpdate"][action*="IPSConfig"]', function (e) {
-            e.preventDefault();
-            return window.IPSConfigSubmitAjax(this);
-        });
-
-        // Branch change handler for account loading
-        $(document).on('change', '#BranchId', function () {
-            loadBranchAccounts();
-        });
-
-        // Initialize Select2 on page load
-        $(document).ready(function () {
-            if ($.fn.select2) {
-                // Initialize branch dropdown
-                $('#BranchId').select2({
-                    width: '100%',
-                    placeholder: '--- Select Branch ---'
-                });
-
-                // Initialize account dropdowns
-                $('.select2-account').select2({
-                    width: '100%',
-                    placeholder: '--- Select Account ---'
-                });
-            }
-
-            // Load accounts if branch is already selected (edit mode)
-            if ($('#BranchId').val()) {
-                loadBranchAccounts();
-            }
-
-            // Initialize tooltips
-            $('[data-bs-toggle="tooltip"]').tooltip();
-        });
-
-        function confirmAndDeleteIPSConfig(configId, year) {
-            alertify.confirm('Confirm Deletion', `Are you sure you want to delete the IPS Configuration for year ${year}?`,
-                function() {
-                    const token = getAntiForgeryToken();
-                    $.ajax({
-                        url: '@Url.Action("Delete", "IPSConfig")',
-                        type: 'POST',
-                        data: {
-                            __RequestVerificationToken: token,
-                            KEY: configId
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                appalert(response.message, 1, 1);
-                                LoadDataGen('IPSConfig', 'IPSDataTable', '_IPSConfigDataTable', 0, 'datalistingview', null, 'list');
-                            } else {
-                                appalert(response.message, 4, 1);
-                            }
-                        },
-                        error: function(xhr) {
-                            var parsed = normalizeResponse(xhr.responseText);
-                            if (parsed && parsed.message) appalert(parsed.message, 4, 1);
-                            else appalert("An error occurred during deletion.", 4, 1);
-                        }
-                    });
-                },
-                function() {
-                    appalert("Delete operation cancelled.", 3, 1);
-                }
-            );
-        }
-
-        // ---------- Global Helper Functions ----------
-        function reloadListing(response) {
-            try {
-                if (typeof LoadDataGen === 'function') {
-                    LoadDataGen(response.controller || response.controllerName || 'IPSConfig',
-                                response.datatable || response.tableName || 'IPSDataTable',
-                                response.PartialView || response.dataLoaderActionName || '_IPSConfigDataTable',
-                                0,
-                                response.div || response.divLoaderList || 'datalistingview',
-                                null,
-                                response.path || 'list');
+        $.ajax({
+            url: '@Url.Action("GetBranchAccountsByBranch", "IPSConfig")',
+            type: 'GET',
+            data: { branchId },
+            success: function (accounts) {
+                if (!accounts || accounts.length === 0) {
+                    clearBranchAccounts();
+                    appalert('No accounts found for selected branch', 3, 1);
                     return;
                 }
-            } catch (e) {
-                console.warn('LoadDataGen call failed', e);
-            }
 
-            location.reload();
+                let options = '<option value="">--- Select Account ---</option>';
+                $.each(accounts, function (_, a) {
+                    options += `<option value="${a.Id}">${a.Name}</option>`;
+                });
+
+                $('#branchAccountsSection select').html(options).trigger('change');
+            },
+            error: function () {
+                clearBranchAccounts();
+                appalert('Failed to load branch accounts', 0, 1);
+            }
+        });
+    }
+
+    function clearBranchAccounts() {
+        $('#branchAccountsSection select')
+            .html('<option value="">--- Select Account ---</option>')
+            .trigger('change');
+    }
+
+    function showLoading() {
+        $('#branchAccountsSection select')
+            .html('<option disabled selected>Loading accounts...</option>')
+            .trigger('change');
+    }
+
+    /* =========================
+       EVENTS
+    ========================= */
+    $(document).on('change', '#IsCentralized', toggleCentralizedMode);
+    $(document).on('change', '#BranchId', loadBranchAccounts);
+
+    /* =========================
+       INITIALIZATION
+    ========================= */
+    $(document).ready(function () {
+
+        if ($.fn.select2) {
+            $('#BranchId').select2({ width: '100%' });
+            $('.select2-account').select2({ width: '100%' });
         }
 
-    })(jQuery);
+        toggleCentralizedMode();
+
+        // Edit mode
+        if ($('#BranchId').val() && !$('#IsCentralized').is(':checked')) {
+            loadBranchAccounts();
+        }
+    });
+
+    /* =========================
+       DELETE HANDLER
+    ========================= */
+    window.confirmAndDeleteIPSConfig = function (id, year) {
+        alertify.confirm(
+            'Confirm Delete',
+            `Delete IPS Configuration for year ${year}?`,
+            function () {
+                $.post('@Url.Action("Delete", "IPSConfig")', {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    KEY: id
+                })
+                .done(function (res) {
+                    if (res.success) {
+                        appalert(res.message, 1, 1);
+                        LoadDataGen('IPSConfig', 'IPSDataTable', '_IPSConfigDataTable', 0, 'datalistingview');
+                    } else {
+                        appalert(res.message, 4, 1);
+                    }
+                })
+                .fail(function (xhr) {
+                    const r = normalizeResponse(xhr.responseText);
+                    appalert(r.message || 'Delete failed', 4, 1);
+                });
+            },
+            function () {
+                appalert('Delete cancelled', 3, 1);
+            }
+        );
+    };
+
+})(jQuery);
     </script>
 }

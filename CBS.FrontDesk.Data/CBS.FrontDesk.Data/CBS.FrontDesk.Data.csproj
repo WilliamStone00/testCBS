@@ -126,6 +126,7 @@
     <Compile Include="Entity\Accounting V2\Base\BranchInfo.cs" />
     <Compile Include="Entity\Accounting V2\DaillyCollectorLicense\DaillyCollectorLicense.cs" />
     <Compile Include="Entity\Accounting V2\FallBack\FallbackReconciliation.cs" />
+    <Compile Include="Entity\Accounting V2\IPS\IPSClaim.cs" />
     <Compile Include="Entity\Accounting V2\IPS\IPSConfig.cs" />
     <Compile Include="Entity\Accounting V2\Queries\AccountingV2ReportsFilter.cs" />
     <Compile Include="Entity\Accounting V2\API\APiKey.cs" />

@@ -151,6 +151,8 @@
 
 </div>
 
+
+
 <div id="view-review" class="workflow-view d-none">
     
     <h3 class="text-primary">Validate End of year Activites</h3>
@@ -423,28 +425,7 @@
             $("#" + target).removeClass("d-none");
         });
 
-        /* ==========================================================
-           4️⃣ Load End-of-Year Tasks
-           ========================================================== */
-       $(document).ready(function () {
-            $.ajax({
-                url: '@Url.Action("GetAllEndTask", "EndOfYearClosure")',
-                type: 'GET',
-                success: function (html) {
-                    $("#endOfYearTasksContainer").html(html);
-
-                    // Show success alert
-                    appalert("✅ End-of-year tasks loaded successfully.", 1, 1);
-                },
-                error: function (xhr) {
-                    $("#endOfYearTasksContainer").html('<p class="text-danger">Failed to load tasks.</p>');
-                    console.error(xhr);
-
-                    // Show error alert
-                    appalert("❌ Failed to load end-of-year tasks. Please try again.", 2, 1);
-                }
-            });
-        });
+         
 
 
         /* ==========================================================
@@ -902,12 +883,34 @@
     });
 
 
+     /* ==========================================================
+    4️⃣ Load End-of-Year Tasks
+    ========================================================== */
+    $(document).ready(function () {
+         $.ajax({
+             url: '@Url.Action("GetAllEndTask", "EndOfYearClosure")',
+             type: 'GET',
+             success: function (html) {
+                 $("#endOfYearTasksContainer").html(html);
+
+                 // Show success alert
+                 appalert("✅ End-of-year tasks loaded successfully.", 1, 1);
+             },
+             error: function (xhr) {
+                 $("#endOfYearTasksContainer").html('<p class="text-danger">Failed to load tasks.</p>');
+                 console.error(xhr);
+
+                 // Show error alert
+                 appalert("❌ Failed to load end-of-year tasks. Please try again.", 2, 1);
+             }
+         });
+     });
 
 
 
     /* ==========================================================
-   Review End-of-Year Closure (AJAX Submit)
-========================================================== */
+     Review End-of-Year Closure (AJAX Submit)
+    ========================================================== */
     window.ReviewClosureSubmitAjax = function (form) {
         console.log("Validate button clicked");
 
@@ -924,19 +927,12 @@
         const branchId = branchData.id;
         const branchText = branchData.text;
 
-        // 2️⃣ Accounting year
-        const accountingYearId = $('#TaskAccountingYearId').val();
-        if (!accountingYearId) {
-            appalert("⚠️ Accounting Year missing.", 3, 1);
-            return false;
-        }
-
-        // 3️⃣ Build checklist
+        // 2️⃣ Build checklist
         const checklist = [];
         let hasSelected = false;
         let validationFailed = false;
 
-        $form.find('.list-group-item').each(function (i) {
+        $form.find('.list-group-item').each(function () {
             const $item = $(this);
             const id = $item.find('.task-id').val();
             const isCompleted = $item.find('.task-checkbox').is(':checked');
@@ -956,27 +952,27 @@
         });
 
         if (validationFailed) return false;
+
         if (!hasSelected) {
             appalert("⚠️ Please select at least one task before submitting.", 3, 1);
             return false;
         }
 
-        // 4️⃣ Confirmation modal
+        // 3️⃣ Confirmation modal
         const title = "Confirm Review Completion";
         const message = `
-        <p>Please verify before submitting.</p>
-        <table class="table table-sm table-bordered">
-            <tr><th>Branch</th><td>${branchText}</td></tr>
-            <tr><th>Accounting Year</th><td>${accountingYearId}</td></tr>
-            <tr><th>Selected Tasks</th><td>${checklist.filter(c => c.isCompleted).length}</td></tr>
-        </table>
-        <div class="form-check mt-3">
-            <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
-            <label class="form-check-label" for="alertifyConfirmCheckbox">
-                I confirm that all reviewed tasks are correct.
-            </label>
-        </div>
-    `;
+            <p>Please verify before submitting.</p>
+            <table class="table table-sm table-bordered">
+                <tr><th>Branch</th><td>${branchText}</td></tr>
+                <tr><th>Selected Tasks</th><td>${checklist.filter(c => c.isCompleted).length}</td></tr>
+            </table>
+            <div class="form-check mt-3">
+                <input type="checkbox" class="form-check-input" id="alertifyConfirmCheckbox">
+                <label class="form-check-label" for="alertifyConfirmCheckbox">
+                    I confirm that all reviewed tasks are correct.
+                </label>
+            </div>
+        `;
 
         alertify.confirm(
             title,
@@ -991,7 +987,6 @@
 
                 // ✅ Build FormData
                 const formData = new FormData();
-                formData.append('AccountingYearId', accountingYearId);
                 formData.append('BranchId', branchId);
                 formData.append('CompletedByUserId', ''); // optional
 
@@ -1011,7 +1006,8 @@
                     processData: false,
                     contentType: false,
                     beforeSend: function () {
-                        $('.alertify .ajs-ok').prop('disabled', true)
+                        $('.alertify .ajs-ok')
+                            .prop('disabled', true)
                             .html('<span class="spinner-border spinner-border-sm"></span> Submitting...');
                     },
                     success: function (response) {
@@ -1028,7 +1024,9 @@
                         appalert("❌ Error: " + (xhr?.statusText || "Request failed"), 0, 1);
                     },
                     complete: function () {
-                        $('.alertify .ajs-ok').prop('disabled', false).html('Yes, Continue');
+                        $('.alertify .ajs-ok')
+                            .prop('disabled', false)
+                            .html('Yes, Continue');
                     }
                 });
 
@@ -1040,9 +1038,11 @@
             labels: { ok: "Yes, Continue", cancel: "Cancel" },
             onshow: function () {
                 const okBtn = $('.alertify .ajs-ok').prop('disabled', true);
-                $('#alertifyConfirmCheckbox').off('change').on('change', function () {
-                    okBtn.prop('disabled', !this.checked);
-                });
+                $('#alertifyConfirmCheckbox')
+                    .off('change')
+                    .on('change', function () {
+                        okBtn.prop('disabled', !this.checked);
+                    });
             }
         });
 

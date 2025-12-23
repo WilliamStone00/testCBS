@@ -158,7 +158,6 @@ namespace CBS.BusinessService.Accounting_V2.IPS
             try
             {
                 model.CreatedBy = GetUserId();
-                model.BranchCode = GetBankCode();
                 var response = await _apiCallerHelper.PostAsync<ServiceResponse<IPSConfig>>(APICallHelper.CreateIPSConfig, model);
 
                 if (response.IsSuccess)
