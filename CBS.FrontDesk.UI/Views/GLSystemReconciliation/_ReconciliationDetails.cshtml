@@ -63,7 +63,6 @@
                 max-height: 40vh;
                 overflow: auto;
             }
-
 </style>
 
 @if (Model != null)
@@ -193,6 +192,79 @@
                     data-bs-dismiss="modal">
                 <i class="mdi mdi-close-circle-outline me-1"></i> Close
             </button>
+
+
+            <button type="button" id="btnUpdatePayload" class="btn btn-outline-primary me-2">
+                <i class="mdi mdi-pencil-outline"></i> Update Payload
+            </button>
+
         </div>
     </div>
 }
+
+
+<script>
+    document.getElementById('btnUpdatePayload').addEventListener('click', function () {
+
+        const rawJson = `@Html.Raw(
+            (Model.RequestJson ?? "").Replace("\\", "\\\\").Replace("`", "\\`")
+        )`;
+
+        if (!rawJson) {
+            alert('No payload available.');
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(rawJson);
+            const pretty = JSON.stringify(parsed, null, 4);
+
+            document.getElementById('formattedJson').textContent = pretty;
+
+            const modal = new bootstrap.Modal(
+                document.getElementById('payloadModal')
+            );
+            modal.show();
+
+        } catch (e) {
+            document.getElementById('formattedJson').textContent =
+                'Invalid JSON format:\n\n' + rawJson;
+
+            const modal = new bootstrap.Modal(
+                document.getElementById('payloadModal')
+            );
+            modal.show();
+        }
+    });
+
+
+    // Save edited payload
+    document.getElementById('btnSavePayload').addEventListener('click', async function () {
+        const editedJson = document.getElementById('formattedJson').value;
+
+        try {
+            const payload = JSON.parse(editedJson); // validate JSON
+
+            // ✅ No need to attach Id, server uses session
+
+            const response = await fetch('/GLSystemReconciliation/UpdatePayload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                appalert(result.message, 1, 1);
+                bootstrap.Modal.getInstance(document.getElementById('payloadModal')).hide();
+            } else {
+                appalert(result.message, 3, 1);
+            }
+
+        } catch (e) {
+            appalert("❌ Invalid JSON. Fix before saving.", 3, 1);
+            console.error(e);
+        }
+    });
+</script>

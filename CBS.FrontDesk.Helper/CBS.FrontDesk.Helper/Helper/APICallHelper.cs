@@ -1804,6 +1804,7 @@ namespace CBS.FrontDesk.Helper
         public static string PushRecordReconciliation = "/api/v1/AccountingOperationTrack/PushJournalExecution";
         public static string SubmitCloseOfDay = "/api/DailyReconciliationStatus/add";
         public static string GetReconciliationDetails = "/api/v1/AccountingOperationTrack/GetOperationJournalDataTableQuery";
+        public static string UpdateTillClosePayload = "/api/v1/AccountingOperationTrack/PushJournalExecutionWithModifyCommand";
 
 
         //----------------------------  EndOfYearClosure -----------------------------

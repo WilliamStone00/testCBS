@@ -320,5 +320,7 @@ namespace CBS.BusinessService.AccountingV2.JournalHead
         }
 
 
+        
+
     }
 }

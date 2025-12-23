@@ -358,6 +358,9 @@ namespace CBS.FrontDesk.UI.Controllers.AccountingV2.JournalHead
         }
 
 
+
+
+
         [HttpPost]
         public async Task<ActionResult> LoadFilterDependencies(GetFirlterData model)
         {

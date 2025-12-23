@@ -249,6 +249,23 @@ namespace CBS.BusinessService.AccountingV2.GLSystemReconciliation
                 throw new Exception($"Reconciliation service unavailable: {ex.Message}", ex);
             }
         }
+        public async Task<ApiResponse<bool>> UpdateTillClosePayloadAsync(TillCloseModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            try
+            {
+                // Send full model to API
+                var apiResponse = await _systemReconciliationapiCallerHelper.PostAsync<ApiResponse<bool>>(APICallHelper.UpdateTillClosePayload,new {trackerId = model.Id,payload = model } );
+
+                return apiResponse.ApiResponseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"API call failed: {ex.Message}", ex);
+            }
+        }
 
 
 

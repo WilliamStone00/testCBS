@@ -391,31 +391,83 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
             worksheet.Cells.Style.Font.Name = fontName;
 
             // ===== HEADER SECTION =====
-            int headerColumns = 8; // Reduced to match image: SN, Entry Date, Reference, Auxiliary Ref, Branch, Account, Account Name, Dr/Cr, Amount
+            int headerColumns = 9; // SN (1), Entry Date (2), Reference (3), Auxiliary Ref (4), Branch (5), Account (6), Account Name (7), Dr/Cr (8), Amount (9)
             string headerEndColumn = GetColumnLetter(headerColumns);
-            int currentRow = CreateHeaderSection(worksheet, bank, branchcode, branchid, branchname, exportedBy, exportOptions, "DETAILED RECONCILED ENTRIES", headerEndColumn);
 
-            // ===== DETAILED DATA TABLE =====
-            // Title row
+            // Start header section
+            int currentRow = 1;
+
+            // ===== BANK HEADER =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = bank;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 18;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 100, 0)); // Dark green
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Row(currentRow).Height = 30;
+            currentRow++;
+
+            // ===== BRANCH INFO =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"Branch Code: {branchcode} | Branch: {branchname} | Branch ID: {branchid}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 12;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(70, 130, 180)); // Steel blue
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Color.SetColor(Color.White);
+            worksheet.Row(currentRow).Height = 22;
+            currentRow++;
+
+            // ===== EXPORT INFO =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"Exported By: {exportedBy}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Row(currentRow).Height = 18;
+            currentRow++;
+
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = $"Export Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Row(currentRow).Height = 18;
+            currentRow++;
+
+            // ===== MAIN REPORT TITLE =====
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "DETAILED RECONCILED ENTRIES";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
             worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 14;
-            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[$"A{currentRow}"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+            worksheet.Cells[$"A{currentRow}"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 215, 0)); // Gold
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Color.SetColor(Color.Black);
+            worksheet.Row(currentRow).Height = 25;
             currentRow++;
 
-            // Subtitle row
+            // ===== SECTION TITLE (matching image) =====
+            worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
+            worksheet.Cells[$"A{currentRow}"].Value = "DETAILED RECONCILED ENTRIES";
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 12;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Row(currentRow).Height = 20;
+            currentRow++;
+
+            // ===== SUBTITLE (matching image) =====
             worksheet.Cells[$"A{currentRow}:{headerEndColumn}{currentRow}"].Merge = true;
             worksheet.Cells[$"A{currentRow}"].Value = "RECONCILED ENTRIES DETAIL";
             worksheet.Cells[$"A{currentRow}"].Style.Font.Bold = true;
-            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 12;
-            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            currentRow += 2;
+            worksheet.Cells[$"A{currentRow}"].Style.Font.Size = 10;
+            worksheet.Cells[$"A{currentRow}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            worksheet.Row(currentRow).Height = 18;
+            currentRow++;
 
             // ===== TABLE HEADERS =====
-            // Headers matching the image
+            // Headers matching the image exactly
             var headers = new[]
             {
         "SN", "Entry Date", "Reference", "Auxiliary Ref", "Branch", "Account",
@@ -425,7 +477,7 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
             int headerRow = currentRow;
 
             // Set header row properties
-            worksheet.Row(headerRow).Height = 35; // Taller for better visibility
+            worksheet.Row(headerRow).Height = 35;
 
             for (int i = 0; i < headers.Length; i++)
             {
@@ -449,7 +501,7 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
                 // Set row height for data rows
                 worksheet.Row(currentRow).Height = 25;
 
-                // Fill data
+                // Fill data - matching image format
                 worksheet.Cells[currentRow, 1].Value = serialNumber++;
                 worksheet.Cells[currentRow, 2].Value = entry.EntryDate.ToString("yyyy-MM-dd HH:mm:ss");
                 worksheet.Cells[currentRow, 3].Value = entry.ReferenceNumber ?? "N/A";
@@ -457,10 +509,10 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
                 worksheet.Cells[currentRow, 5].Value = entry.BranchName ?? "N/A";
                 worksheet.Cells[currentRow, 6].Value = entry.AccountNumber ?? "N/A";
                 worksheet.Cells[currentRow, 7].Value = entry.AccountName ?? "N/A";
-                worksheet.Cells[currentRow, 8].Value = entry.DrCr;
+                worksheet.Cells[currentRow, 8].Value = entry.DrCr == "DR" ? "Debit" : "Credit"; // Match image format
                 worksheet.Cells[currentRow, 9].Value = entry.Amount;
 
-                // Color code Dr/Cr
+                // Color code Dr/Cr - match image styling
                 if (entry.DrCr == "DR")
                 {
                     worksheet.Cells[currentRow, 8].Style.Font.Color.SetColor(Color.Red);
@@ -472,11 +524,21 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
                     worksheet.Cells[currentRow, 8].Style.Font.Bold = true;
                 }
 
-                // Add borders to all cells in the row
-                for (int col = 1; col <= headerColumns; col++)
+                // Add borders and alignment to all cells in the row
+                for (int col = 1; col <= headers.Length; col++)
                 {
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[currentRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    // Different alignments based on column type
+                    if (col == 1 || col == 8 || col == 9) // SN, Dr/Cr, Amount
+                    {
+                        worksheet.Cells[currentRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+                    else // Text columns
+                    {
+                        worksheet.Cells[currentRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    }
+
                     worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
 
@@ -488,89 +550,107 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
             // ===== TOTALS ROW =====
             if (data.Any())
             {
-                // Merge first 7 cells for "TOTALS:" label
+                // Merge first 7 cells for "TOTALS:" label (matching image)
                 worksheet.Cells[currentRow, 1, currentRow, 7].Merge = true;
                 worksheet.Cells[currentRow, 1].Value = "TOTALS:";
                 worksheet.Cells[currentRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 worksheet.Cells[currentRow, 1].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[currentRow, 1].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
 
                 worksheet.Cells[currentRow, 8].Value = ""; // Dr/Cr column
                 worksheet.Cells[currentRow, 9].Value = data.Sum(x => x.Amount);
 
-                // Style the totals row
-                for (int col = 1; col <= headerColumns; col++)
+                // Style the totals row cells
+                for (int col = 1; col <= headers.Length; col++)
                 {
                     worksheet.Cells[currentRow, col].Style.Font.Bold = true;
                     worksheet.Cells[currentRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells[currentRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
                     worksheet.Cells[currentRow, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[currentRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    if (col == 8 || col == 9) // Dr/Cr, Amount
+                    {
+                        worksheet.Cells[currentRow, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+
                     worksheet.Cells[currentRow, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
             }
 
-            // ===== FORMATTING FOR SCROLLABILITY =====
+            // ===== FORMATTING =====
 
-            // 1. Format numbers
+            // 1. Format numbers (matching image)
             if (data.Any())
             {
-                // Format amount column (column I/9)
-                worksheet.Cells[$"I{dataStartRow}:I{dataEndRow + 1}"].Style.Numberformat.Format = "#,##0.00";
+                // Format amount column (column I/9) with negative numbers in parentheses
+                var amountRange = worksheet.Cells[$"I{dataStartRow}:I{dataEndRow + 1}"];
+                amountRange.Style.Numberformat.Format = "#,##0.00;[Red](#,##0.00)";
 
-                // Format date column
+                // Format date column to match image (yyyy-MM-dd HH:mm:ss)
                 worksheet.Column(2).Style.Numberformat.Format = "yyyy-MM-dd HH:mm:ss";
+
+                // Auto-fit numbers
+                amountRange.AutoFitColumns();
             }
 
-            // 2. Set optimal column widths for scrolling
+            // 2. Set optimal column widths (matching image proportions)
             worksheet.Column(1).Width = 8;   // SN
-            worksheet.Column(2).Width = 20;  // Entry Date
-            worksheet.Column(3).Width = 30;  // Reference
-            worksheet.Column(4).Width = 25;  // Auxiliary Ref
-            worksheet.Column(5).Width = 25;  // Branch
-            worksheet.Column(6).Width = 20;  // Account
-            worksheet.Column(7).Width = 35;  // Account Name
+            worksheet.Column(2).Width = 18;  // Entry Date
+            worksheet.Column(3).Width = 25;  // Reference
+            worksheet.Column(4).Width = 18;  // Auxiliary Ref
+            worksheet.Column(5).Width = 20;  // Branch
+            worksheet.Column(6).Width = 15;  // Account
+            worksheet.Column(7).Width = 30;  // Account Name
             worksheet.Column(8).Width = 10;  // Dr/Cr
-            worksheet.Column(9).Width = 20;  // Amount
+            worksheet.Column(9).Width = 18;  // Amount
 
-            // 3. FREEZE PANES FOR SCROLLING WITH HEADERS
-            // Freeze rows 1 through headerRow (all header information) and column 1 (SN)
-            worksheet.View.FreezePanes(headerRow + 1, 1);
-
-            // 4. Enable grid lines for better scrolling visualization
+            // 3. Enable grid lines
             worksheet.View.ShowGridLines = true;
 
-            // 5. Set zoom level for optimal viewing
+            // 4. Set zoom level for optimal viewing
             worksheet.View.ZoomScale = 100;
 
-            // 6. Add autofilter for column sorting/filtering (optional)
+            // 5. Add autofilter for column sorting/filtering
+            //if (data.Any())
+            //{
+            //    worksheet.Cells[$"A{headerRow}:{headerEndColumn}{headerRow}"].AutoFilter = true;
+            //}
+
+            // 6. Set print area for proper printing
             if (data.Any())
             {
-                worksheet.Cells[$"A{headerRow}:{headerEndColumn}{headerRow}"].AutoFilter = true;
+                int printEndRow = data.Any() ? currentRow : headerRow;
+                worksheet.PrinterSettings.PrintArea = worksheet.Cells[$"A1:{headerEndColumn}{printEndRow}"];
+                worksheet.PrinterSettings.FitToPage = true;
+                worksheet.PrinterSettings.FitToWidth = 1;
             }
 
-            // 7. Make data area scrollable by setting print area
-            worksheet.PrinterSettings.PrintArea = worksheet.Cells[$"A1:{headerEndColumn}{currentRow}"];
-            worksheet.PrinterSettings.FitToPage = true;
-            worksheet.PrinterSettings.FitToWidth = 1;
-
-            // 8. Alternate row shading for better readability during scrolling
+            // 7. Alternate row shading for better readability
             if (data.Any())
             {
                 for (int row = dataStartRow; row <= dataEndRow; row++)
                 {
-                    if (row % 2 == 0) // Even rows
+                    if (row % 2 == 0) // Even rows - light gray
                     {
-                        for (int col = 1; col <= headerColumns; col++)
+                        for (int col = 1; col <= headers.Length; col++)
                         {
                             worksheet.Cells[row, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            worksheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240));
+                            worksheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(248, 248, 248));
                         }
                     }
                 }
             }
 
+            // 8. Wrap text for long account names
+            worksheet.Column(7).Style.WrapText = true;
+
             // Auto-fit any columns that might have overflow
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+            // 9. Set sheet view properties
+            worksheet.View.ShowHeaders = true;
+            worksheet.View.ShowGridLines = true;
         }
         private void CreateBranchAnalysisSheet(ExcelPackage package, List<Reconciled> data, string bank, string branchcode, string branchid, string branchname, string exportedBy, ExportOptions exportOptions)
         {
@@ -855,10 +935,10 @@ namespace CBS.BusinessService.AccountingV2.ReconciledLine
             worksheet.View.ShowGridLines = true;
 
             // 5. Add filter for column sorting/filtering
-            if (interbranchSummary.Any())
-            {
-                worksheet.Cells[$"A{headerRow}:{headerEndColumn}{headerRow}"].AutoFilter = true;
-            }
+            //if (interbranchSummary.Any())
+            //{
+            //    worksheet.Cells[$"A{headerRow}:{headerEndColumn}{headerRow}"].AutoFilter = true;
+            //}
 
             // 6. Set print area for scrolling
             worksheet.PrinterSettings.FitToPage = true;
