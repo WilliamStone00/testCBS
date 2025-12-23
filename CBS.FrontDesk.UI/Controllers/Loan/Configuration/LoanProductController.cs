@@ -59,7 +59,6 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
         }
         // ✅ ONE POST: create if Id empty, update if Id present
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrUpdateSimple(PCMFLoanProductManagementObjects model)
         {
             var cmd = model?.CreateOrUpdate;

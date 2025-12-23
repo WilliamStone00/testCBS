@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Reflection;
 
     public sealed class PCMFLoanProductManagementObjects
     {
@@ -73,35 +75,102 @@ namespace CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
     public sealed class AccountingProfileLight
     {
         public string Id { get; set; } 
-        public string Name { get; set; } 
+        public string Name { get; set; }
     }
 
+
+
+
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class RequiredWhenAttribute : ValidationAttribute
+    {
+        private readonly string _dependentProperty;
+        private readonly string _expectedValue;
+
+        public RequiredWhenAttribute(string dependentProperty, string expectedValue)
+        {
+            _dependentProperty = dependentProperty;
+            _expectedValue = expectedValue;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var instance = validationContext.ObjectInstance;
+            var type = instance.GetType();
+
+            var prop = type.GetProperty(_dependentProperty, BindingFlags.Public | BindingFlags.Instance);
+            if (prop == null)
+            {
+                return new ValidationResult($"Validation configuration error: property '{_dependentProperty}' not found.");
+            }
+
+            var dependentValue = prop.GetValue(instance)?.ToString();
+            var mustRequire = string.Equals(dependentValue, _expectedValue, StringComparison.OrdinalIgnoreCase);
+
+            if (mustRequire && string.IsNullOrWhiteSpace(value?.ToString()))
+            {
+                var msg = !string.IsNullOrWhiteSpace(ErrorMessage)
+                    ? ErrorMessage
+                    : $"{validationContext.DisplayName} is required when {_dependentProperty} is {_expectedValue}.";
+
+                return new ValidationResult(msg);
+            }
+
+            return ValidationResult.Success;
+        }
+    }
 
     public sealed class CreateLoanProductCommand
     {
         public string Id { get; set; }
+
+        [Required(ErrorMessage = "Product Code is required.")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Product Code must be between 2 and 50 characters.")]
         public string ProductCode { get; set; }
+
+        [Required(ErrorMessage = "Product Name is required.")]
+        [StringLength(200, MinimumLength = 3, ErrorMessage = "Product Name must be between 3 and 200 characters.")]
         public string ProductName { get; set; }
+
+        [Required(ErrorMessage = "Description is required.")]
+        [StringLength(1000, MinimumLength = 10, ErrorMessage = "Description must be between 10 and 1000 characters.")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Loan Facility drives PCMF section + UI requirements.
-        /// Classic requires LoanTermId; others do not.
         /// Values: Classic, SSF, Overdraft, LineOfCredit
         /// </summary>
-        public string LoanFacility { get; set; } = LoanFacilityType.Classic.ToString();
+        [Required(ErrorMessage = "Loan Facility is required.")]
+        [RegularExpression(
+            "^(Classic|SSF|Overdraft|LineOfCredit)$",
+            ErrorMessage = "Loan Facility must be one of: Classic, SSF, Overdraft, LineOfCredit.")]
+        public string LoanFacility { get; set; }
 
         /// <summary>
         /// Required ONLY when LoanFacility == Classic
         /// </summary>
+        [RequiredWhen(nameof(LoanFacility), "Classic",
+            ErrorMessage = "Loan Term is required when Loan Facility is Classic.")]
         public string LoanTermId { get; set; }
 
+        [Required(ErrorMessage = "PCMF Loan Purpose is required.")]
         public string PcmfLoanPurposeId { get; set; }
+
+        [Required(ErrorMessage = "Loan Target is required.")]
         public string LoanTargetId { get; set; }
 
+        // If you want a message when ActiveStatus isn't supplied in UI, use nullable bool:
+        // public bool? ActiveStatus { get; set; }
+        // [Required(ErrorMessage="Active Status is required.")]
         public bool ActiveStatus { get; set; }
+
+        /// <summary>
+        /// Optional: Accounting profile / mapping profile to pre-bind GL mappings for this product.
+        /// If not provided, the product can still be created, and mapping can be configured later.
+        /// </summary>
+        [StringLength(64, ErrorMessage = "Accounting Profile Id must not exceed 64 characters.")]
         public string AccountingProfileId { get; set; }
     }
+
 
     public static class LoanFacilityType
     {
