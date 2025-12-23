@@ -320,7 +320,7 @@ namespace CBS.FrontDesk.UI.Controllers.Configuration
             // -----------------------------
             // SIMPLE EDIT (same form)
             // -----------------------------
-            if (string.Equals(path, "edit", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(path, "simple_edit", StringComparison.OrdinalIgnoreCase))
             {
                 await GetValues();
 
