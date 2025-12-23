@@ -476,7 +476,7 @@
     }
 
     // ============================
-    // ENHANCED VALIDATION FUNCTIONS - CORRECTED LOGIC
+    // ENHANCED VALIDATION FUNCTIONS - SIMPLIFIED LOGIC
     // ============================
     function updateAllTotals() {
         // =========================
@@ -505,8 +505,8 @@
         // AVAILABLE ALLOCATION BALANCES
         // =========================
         var remainingTotal = enteredTotal - combinedTotal;
-        var remainingForSource = enteredTotal - sourceTotal; // Source independent check
-        var remainingForMemberBranch = enteredTotal - memberBranchTotal; // Member+Branch share pool
+        var remainingForSource = enteredTotal - sourceTotal;
+        var remainingForMemberBranch = enteredTotal - memberBranchTotal;
 
         // =========================
         // DISPLAY TOTALS
@@ -580,20 +580,14 @@
         });
 
         // MEMBER: Check against total amount minus branch allocation
-        // (Source doesn't affect this)
+        // (Source doesn't affect this) - NO BALANCE CHECK FOR ANY ACCOUNT TYPE
         $('.member-amount').each(function () {
             var $input = $(this);
             var currentValue = parseFloat($input.val()) || 0;
-            var accountType = $input.data('account-type');
-            var accountBalance = parseFloat($input.data('account-max')) || 0;
 
             // Member can use what's left after branch allocation
+            // NO ACCOUNT BALANCE CHECK FOR IPS CLAIMS
             var maxMember = enteredTotal - branchTotal;
-
-            // For non-deposit accounts, also check account balance
-            if (accountType !== 'Deposit' && accountType !== 'deposit') {
-                maxMember = Math.min(maxMember, accountBalance);
-            }
 
             // Update max attribute
             $input.attr('max', maxMember > 0 ? maxMember : 0);
@@ -602,10 +596,7 @@
             if (currentValue > maxMember) {
                 $input.addClass('is-invalid');
                 $input.siblings('.invalid-feedback').remove();
-                var errorMsg = accountType === 'Deposit'
-                    ? 'Cannot exceed total approved amount minus branch allocation'
-                    : 'Cannot exceed available balance or total approved amount minus branch allocation';
-                $input.after(`<div class="invalid-feedback">${errorMsg}</div>`);
+                $input.after('<div class="invalid-feedback">Cannot exceed total approved amount minus branch allocation</div>');
             } else {
                 $input.removeClass('is-invalid');
                 $input.siblings('.invalid-feedback').remove();
@@ -684,7 +675,7 @@
         $('#remainingBalance').text(formatCurrency(remainingTotal));
         $('#availableForMemberBranch').text(formatCurrency(enteredTotal));
 
-        return Math.abs(combinedTotal - enteredTotal) < 0.01; // Return true if fully allocated
+        return Math.abs(combinedTotal - enteredTotal) < 0.01;
     }
 
     function getSourceTotal() {
@@ -712,7 +703,7 @@
     }
 
     // ============================
-    // AMOUNT ENTRY VALIDATION - CORRECTED LOGIC
+    // AMOUNT ENTRY VALIDATION - SIMPLIFIED LOGIC
     // ============================
     function preventOverEntry() {
         $(document).on('input', '.source-amount', function () {
@@ -745,24 +736,14 @@
 
             var currentValue = parseFloat($input.val()) || 0;
             var branchTotal = getBranchTotal();
-            var accountType = $input.data('account-type');
-            var accountBalance = parseFloat($input.data('account-max')) || 0;
 
             // Member can use what's left after branch allocation
-            // (Source doesn't affect this)
+            // NO ACCOUNT BALANCE CHECK FOR ANY ACCOUNT TYPE IN IPS CLAIMS
             var maxMember = enteredTotal - branchTotal;
-
-            // For non-deposit accounts, also check account balance
-            if (accountType !== 'Deposit' && accountType !== 'deposit') {
-                maxMember = Math.min(maxMember, accountBalance);
-            }
 
             if (currentValue > maxMember) {
                 $input.val(maxMember > 0 ? maxMember : 0);
-                var msg = accountType === 'Deposit'
-                    ? 'Member amount cannot exceed total approved amount minus branch allocation'
-                    : 'Member amount cannot exceed available balance or total approved amount minus branch allocation';
-                appalert(msg, 3, 1);
+                appalert('Member amount cannot exceed total approved amount minus branch allocation', 3, 1);
             }
             updateAllTotals();
         });
@@ -1641,17 +1622,15 @@
         <td class="text-end">
             <span class="fw-bold">${accountBalance}</span>
             <br>
-            <small class="text-muted">Available balance</small>
+            <small class="text-muted">Current balance</small>
         </td>
         <td>
             <input type="number" class="form-control form-control-sm member-amount"
-                   step="0.01" min="0" max="${maxAmount}"
-                   placeholder="0.00" value="0"
-                   data-account-max="${maxAmount}"
+                   step="0.01" min="0" placeholder="0.00" value="0"
                    data-account-type="${accountType}">
             <div class="mt-1">
-                <small class="text-muted">Max: ${formatCurrency(maxAmount)}</small>
-                ${accountType === 'Deposit' ? '<br><small class="text-info"><i class="mdi mdi-information-outline"></i> No balance limit</small>' : ''}
+                <small class="text-muted">Current: ${formatCurrency(maxAmount)}</small>
+                <br><small class="text-info"><i class="mdi mdi-information-outline"></i> No balance limit for IPS claim allocation</small>
             </div>
         </td>
         <td>
@@ -1837,7 +1816,9 @@
                     <br>
                     <small class="text-muted">${entry.AccountType}</small>
                     <br>
-                    <small class="text-info">Balance: ${formatCurrency(entry.OriginalBalance)}</small>
+                    <small class="text-info">Current Balance: ${formatCurrency(entry.OriginalBalance)}</small>
+                    <br>
+                    <small class="text-success"><i class="mdi mdi-check-circle-outline"></i> No balance limit for IPS claim</small>
                 </td>
                 <td class="text-end">
                     ${formatCurrency(entry.Amount)}
@@ -1955,10 +1936,10 @@
                 var branchTotal = getBranchTotal();
                 var combinedTotal = sourceTotal + memberTotal + branchTotal;
 
-                if (Math.abs(combinedTotal - totalAmount) > 0.01) { // Allow small floating point error
-                    appalert('Total allocations must equal the total approved amount', 3, 1);
-                    isValid = false;
-                }
+                //if (Math.abs(combinedTotal - totalAmount) > 0.01) { // Allow small floating point error
+                //    appalert('Total allocations must equal the total approved amount', 3, 1);
+                //    isValid = false;
+                //}
 
                 // Check if we have at least one entry
                 var hasEntries = $('.source-account-row').length > 0 ||
